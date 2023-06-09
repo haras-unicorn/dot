@@ -1,10 +1,7 @@
 #!/uxr/bin/env sh
 
 DEVICE=$1
-if [ ! -b "$DEVICE" ]; then
-  printf "Please enter a valid block device\n"
-  exit 1
-fi
+HOST=$2
 
 part() {
   if echo "$1" | grep -q "nvme"; then
@@ -31,4 +28,7 @@ mkswap /mnt/swap
 swapon /mnt/swap
 mount | grep "$DEVICE"
 
-printf "\n[VIRTUOSO]: The device was set up\n"
+git clone https://gitlab.com/hrle/dotfiles-nixos /opt/dotfiles
+nixos-install --root /mnt --flake /opt/dotfiles
+mkdir /mnt/opt
+mv /opt/dotfiles /mnt/opt/dotfiles
