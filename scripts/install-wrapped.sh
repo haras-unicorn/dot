@@ -29,6 +29,6 @@ swapon /mnt/swap
 mount | grep "$DEVICE"
 
 git clone https://gitlab.com/hrle/dotfiles-nixos /opt/dotfiles
-nixos-install --root /mnt --flake /opt/dotfiles
+nixos-install --root /mnt --flake "/opt/dotfiles#$HOST"
 mkdir /mnt/opt
 mv /opt/dotfiles /mnt/opt/dotfiles
