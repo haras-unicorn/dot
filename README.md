@@ -12,5 +12,5 @@ curl -s 'https://gitlab.com/Hrle/dotfiles-nixos/-/raw/{revision(main)}/scripts/i
 ## Updating
 
 ```sh
-nix-rebuild switch --flake '/opt/dotfiles#{host(desktop)}'
+nixos-rebuild {switch/boot} --flake '/opt/dotfiles#{host(desktop)}'
 ```

@@ -11,13 +11,13 @@ part() {
   fi
 }
 
-parted "$DEVICE" mktable gpt
+parted --script "$DEVICE" mktable gpt
 parted --script "$DEVICE" mkpart nixboot fat32 0% 8GB
 parted --script "$DEVICE" toggle 1 esp
 parted --script "$DEVICE" mkpart nixroot ext4 8GB 100%
 mkfs.fat -F 32 /dev/disk/by-label/nixboot
 mkfs.ext4 -f /dev/disk/by-label/nixroot
-parted "$DEVICE" print
+parted --script "$DEVICE" print
 
 mount /dev/disk/by-label/nixroot /mnt
 mkdir /mnt/boot
