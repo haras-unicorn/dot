@@ -27,6 +27,7 @@ parted --script "$DEVICE" name 1 nixboot
 parted --script "$DEVICE" toggle 1 esp
 parted --script "$DEVICE" mkpart primary ext4 8GB 100%
 parted --script "$DEVICE" name 2 nixroot
+partprobe /dev/sda
 mkfs.fat -F 32 /dev/disk/by-partlabel/nixboot
 mkfs.ext4 /dev/disk/by-partlabel/nixroot
 parted --script "$DEVICE" print
