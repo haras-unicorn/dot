@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs;
+    home-manager.url = github:nix-community/home-manager; 
   };
 
   outputs = { self, nixpkgs, ... } @ inputs: 
