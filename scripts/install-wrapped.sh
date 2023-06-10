@@ -6,6 +6,7 @@ if [ ! -b "$DEVICE" ]; then
   exit 1
 fi
 
+mkdir /opt
 git clone https://gitlab.com/hrle/dotfiles-nixos /opt/dotfiles
 HOST=$2
 if [ ! -d "/opt/dotfiles/hosts/$HOST" ]; then
