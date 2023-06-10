@@ -35,7 +35,7 @@ parted --script "$DEVICE" print
 mount /dev/disk/by-partlabel/nixroot /mnt
 mkdir /mnt/boot
 mount /dev/disk/by-partlabel/nixboot /mnt/boot
-dd if=/dev/zero of=/mnt/swap bs=1M count=8k
+fallocate -l 4G /mnt/swap
 chmod 600 /mnt/swap
 mkswap /mnt/swap
 swapon /mnt/swap

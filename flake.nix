@@ -11,13 +11,13 @@
         system = "${system}";
         modules = [
           ./hosts/hyperv/configuration.nix
-        ]
+        ];
       };
       nixosConfigurations.virtualbox = nixpkgs.lib.nixosSystem {
         system = "${system}";
         modules = [
           ./hosts/virtualbox/configuration.nix
-        ]
+        ];
       };
     };
 }
