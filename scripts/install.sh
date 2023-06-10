@@ -1,4 +1,5 @@
-#!/uxr/bin/env sh
+#!/uxr/bin/env bash
+set -eo pipefail
 
 DEVICE=$1
 HOST=$2

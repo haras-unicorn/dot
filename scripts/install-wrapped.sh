@@ -1,4 +1,5 @@
-#!/uxr/bin/env sh
+#!/uxr/bin/env bash
+set -eo pipefail
 
 DEVICE=$1
 if [ ! -b "$DEVICE" ]; then
@@ -15,16 +16,18 @@ if [ ! -d "/opt/dotfiles/hosts/$HOST" ]; then
 fi
 
 parted --script "$DEVICE" mktable gpt
-parted --script "$DEVICE" mkpart nixboot fat32 0% 8GB
+parted --script "$DEVICE" mkpart primary fat32 0% 8GB
+parted --script "$DEVICE" name 1 nixboot
 parted --script "$DEVICE" toggle 1 esp
-parted --script "$DEVICE" mkpart nixroot ext4 8GB 100%
-mkfs.fat -F 32 /dev/disk/by-label/nixboot
-mkfs.ext4 -f /dev/disk/by-label/nixroot
+parted --script "$DEVICE" mkpart primary ext4 8GB 100%
+parted --script "$DEVICE" name 2 nixroot
+mkfs.fat -F 32 /dev/disk/by-partlabel/nixboot
+mkfs.ext4 /dev/disk/by-partlabel/nixroot
 parted --script "$DEVICE" print
 
-mount /dev/disk/by-label/nixroot /mnt
+mount /dev/disk/by-partlabel/nixroot /mnt
 mkdir /mnt/boot
-mount /dev/disk/by-label/nixboot /mnt/boot
+mount /dev/disk/by-partlabel/nixboot /mnt/boot
 dd if=/dev/zero of=/mnt/swap bs=1M count=8k
 chmod 600 /mnt/swap
 mkswap /mnt/swap
