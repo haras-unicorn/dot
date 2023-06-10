@@ -41,6 +41,11 @@
 
   services.syncthing.enable = true;
   services.syncthing.openDefaultPorts = true;
+  services.syncthing.user = "virtuoso";
+  services.syncthing.group = "users";
+  services.syncthing.dataDir = "/home/virtuoso";
+  services.syncthing.overrideDevices = false;
+  services.syncthing.overrideFolders = false;
   programs.gnupg.agent.enable = true;
   programs.gnupg.agent.enableSSHSupport = true;
   services.openssh.enable = true;
@@ -57,7 +62,7 @@
   security.pam.services.virtuoso.enableGnomeKeyring = true;
 
   environment.systemPackages = with pkgs; [
-    vim
+    vim-full
     git
     nushell
 
