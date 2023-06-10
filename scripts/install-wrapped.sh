@@ -17,7 +17,9 @@ if [ ! -d "/opt/dotfiles/hosts/$HOST" ]; then
   exit 1
 fi
 
-umount -R /mnt
+if grep -q "$DEVICE" /proc/mounts; then
+  umount -R /mnt
+fi
 
 parted --script "$DEVICE" mktable gpt
 parted --script "$DEVICE" mkpart primary fat32 0% 8GB
