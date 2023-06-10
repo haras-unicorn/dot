@@ -6,7 +6,7 @@ Configurations for my NixOS systems.
 
 ```sh
 curl -s 'https://gitlab.com/Hrle/dotfiles-nixos/-/raw/{revision(main)}/scripts/install.sh' | \
-  bash -s '{device(/dev/sda)}' '{host(virtualbox)}'
+  sudo bash -s '{device(/dev/sda)}' '{host(virtualbox)}'
 ```
 
 ## Updating
