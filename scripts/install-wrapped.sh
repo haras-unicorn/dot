@@ -1,15 +1,17 @@
 #!/uxr/bin/env sh
 
 DEVICE=$1
-HOST=$2
+if [ ! -b "$DEVICE" ]; then
+  printf "Please enter a valid block device\n"
+  exit 1
+fi
 
-part() {
-  if echo "$1" | grep -q "nvme"; then
-    echo "$1p$2"
-  else
-    echo "$1$2"
-  fi
-}
+git clone https://gitlab.com/hrle/dotfiles-nixos /opt/dotfiles
+HOST=$2
+if [ ! -d "/opt/dotfiles/hosts/$HOST" ]; then
+  printf "Please enter a valid host\n"
+  exit 1
+fi
 
 parted --script "$DEVICE" mktable gpt
 parted --script "$DEVICE" mkpart nixboot fat32 0% 8GB
@@ -28,7 +30,6 @@ mkswap /mnt/swap
 swapon /mnt/swap
 mount | grep "$DEVICE"
 
-git clone https://gitlab.com/hrle/dotfiles-nixos /opt/dotfiles
 nixos-install --root /mnt --flake "/opt/dotfiles#$HOST"
 mkdir /mnt/opt
 mv /opt/dotfiles /mnt/opt/dotfiles
