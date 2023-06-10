@@ -25,8 +25,7 @@
     }
   ];
 
-  networking.useDHCP = false;
-  networking.interfaces.eth0.useDHCP = true;
+  networking.useDHCP = true;
 
   nixpkgs.hostPlatform = "x86_64-linux";
   virtualisation.virtualbox.guest.enable = true;
