@@ -22,5 +22,12 @@
           ./hosts/virtualbox/configuration.nix
         ];
       };
+      nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+        system = "${system}";
+        specialArgs = inputs;
+        modules = [
+          ./hosts/desktop/configuration.nix
+        ];
+      };
     };
 }
