@@ -7,6 +7,8 @@ if [ ! -b "$DEVICE" ]; then
   exit 1
 fi
 
+rm -rf /opt
+
 mkdir /opt
 git clone https://gitlab.com/hrle/dotfiles-nixos /opt/dotfiles
 HOST=$2
@@ -14,6 +16,8 @@ if [ ! -d "/opt/dotfiles/hosts/$HOST" ]; then
   printf "Please enter a valid host\n"
   exit 1
 fi
+
+umount -R /mnt
 
 parted --script "$DEVICE" mktable gpt
 parted --script "$DEVICE" mkpart primary fat32 0% 8GB
