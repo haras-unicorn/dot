@@ -10,12 +10,14 @@
     in {
       nixosConfigurations.hyperv = nixpkgs.lib.nixosSystem {
         system = "${system}";
+        specialArgs = inputs;
         modules = [
           ./hosts/hyperv/configuration.nix
         ];
       };
       nixosConfigurations.virtualbox = nixpkgs.lib.nixosSystem {
         system = "${system}";
+        specialArgs = inputs;
         modules = [
           ./hosts/virtualbox/configuration.nix
         ];
