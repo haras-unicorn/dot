@@ -18,7 +18,7 @@ if [ ! -d "/opt/dotfiles/hosts/$HOST" ]; then
 fi
 
 if grep -q "$DEVICE" /proc/mounts; then
-  umount -R /mnt
+  umount -fR /mnt
 fi
 
 parted --script "$DEVICE" mktable gpt
