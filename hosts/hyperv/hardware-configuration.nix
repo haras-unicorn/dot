@@ -25,8 +25,6 @@
     }
   ];
 
-  networking.useDHCP = true;
-
   nixpkgs.hostPlatform = "x86_64-linux";
   virtualisation.hypervGuest.enable = true;
 }
