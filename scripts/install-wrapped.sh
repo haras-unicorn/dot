@@ -18,7 +18,13 @@ if [ ! -d "/opt/dotfiles/hosts/$HOST" ]; then
 fi
 
 if grep -q "$DEVICE" /proc/mounts; then
-  umount -fR /mnt
+  umount -Rl /mnt
+  sleep 1s
+
+  if grep -q "$DEVICE" /proc/mounts; then
+    printf "Failed to unmount %s\n" "$DEVICE"
+    exit 1
+  fi
 fi
 
 parted --script "$DEVICE" mktable gpt
