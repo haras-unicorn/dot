@@ -6,11 +6,11 @@ Configurations for my NixOS systems.
 
 ```sh
 curl -s 'https://gitlab.com/Hrle/dotfiles-nixos/-/raw/{revision(main)}/scripts/install.sh' | \
-  bash -s '{device(/dev/sda)}' '{host(desktop)}'
+  bash -s '{device(/dev/sda)}' '{host(virtualbox)}'
 ```
 
 ## Updating
 
 ```sh
-nixos-rebuild {switch/boot} --flake '/opt/dotfiles#{host(desktop)}'
+nixos-rebuild {switch/boot} --flake '/opt/dotfiles#{host(virtualbox)}'
 ```

@@ -1,16 +1,23 @@
 {
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs;
-    nixpkgs-unstable.url = "nixpkgs/nixpkgs-unstable";
-    home-manager.url = github:nix-community/home-manager;
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, ... } @ inputs: 
+  outputs = { self, nixpkgs, ... } @ inputs: 
     let 
       system = "x86_64-linux";
     in {
-      nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.hyperv = nixpkgs.lib.nixosSystem {
         system = "${system}";
+        modules = [
+          ./hosts/hyperv/configuration.nix
+        ]
+      };
+      nixosConfigurations.virtualbox = nixpkgs.lib.nixosSystem {
+        system = "${system}";
+        modules = [
+          ./hosts/virtualbox/configuration.nix
+        ]
       };
     };
 }
