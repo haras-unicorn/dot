@@ -12,5 +12,7 @@
   programs.vim.enable = true;
   programs.vim.extraConfig = builtins.readFile ../../assets/.vimrc;
 
+  home.file.".config/qtile".source = ../../assets/.config/qtile;
+
   home.stateVersion = "23.11";
 }

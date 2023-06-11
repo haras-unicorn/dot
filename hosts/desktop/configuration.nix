@@ -30,7 +30,9 @@
   services.xserver.enable = true;
   services.xserver.layout = "us";
   services.xserver.libinput.enable = true;
+  services.picom.enable = true;
   services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.sddm.autoNumlock = true;
   services.xserver.windowManager.qtile.enable = true;
 
   services.pipewire.enable = true;
@@ -67,12 +69,15 @@
     dunst
     rofi
     flameshot
+    networkmanagerapplet
     xclip
     xorg.xkill
+    lxde.lxsession
     lxde.lxtask
     lxde.lxrandr
     kitty
     brave
+    pcmanfm
     keepassxc
   ];
 
