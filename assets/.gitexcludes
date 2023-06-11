@@ -1,0 +1,14 @@
+# formatting
+# list the included matches first and then exclude from that
+# if something needs to be added add a section like the one below
+
+
+# vim
+
+.*.swp
+~*
+**/.*.swp
+**/*~
+
+
+# TODO: example

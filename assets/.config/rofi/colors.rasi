@@ -1,0 +1,27 @@
+* {
+  transparent:        #00000000;
+  black:              #13233999;
+  white:              #ffeeff;
+  blue:               #82aaff;
+  cyan:               #89ddff;
+  green:              #c3e88d;
+  magenta:            #c792ea;
+  red:                #ff5874;
+  yellow:             #ffeb95;
+  brightBlack:        #3c435ecc;
+  brightWhite:        #ffffff;
+  brightBlue:         #92baff;
+  brightCyan:         #99fdff;
+  brightGreen:        #c3f88d;
+  brightMagenta:      #d792fa;
+  brightRed:          #ff6884;
+  brightYellow:       #fffba5;
+  dimBlack:           #000200;
+  dimWhite:           #ddccdd;
+  dimBlue:            #72baff;
+  dimCyan:            #79edff;
+  dimGreen:           #b3d87d;
+  dimMagenta:         #b782da;
+  dimRed:             #ff4884;
+  dimYellow:          #ffdb85;
+}

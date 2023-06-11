@@ -1,0 +1,356 @@
+# NOTE: formatting
+# list the included matches first and then exclude from that
+
+
+# ignore everything by default and keep the gitignore file
+*
+!.gitignore
+
+
+##############################################################################
+# SYSTEM
+
+
+# git
+
+!.gitexcludes
+!.gitconfig
+
+
+# paru
+
+!.config/
+!.config/paru/
+!.config/paru/paru.conf
+
+
+# xdg
+
+!.config/
+!.config/user-dirs.dirs
+!.config/user-dirs.locale
+
+
+# scripts
+
+!scripts/
+!scripts/*
+!scripts/*/*
+!scripts/*/*/*
+!scripts/*/*/*/*
+!scripts/*/*/*/*/*
+!scripts/*/*/*/*/*/*
+!scripts/*/*/*/*/*/*/*
+!scripts/*/*/*/*/*/*/*/*
+
+scripts/openvpn
+
+
+# systemd
+
+!.config/
+!.config/systemd/
+!.config/systemd/user/
+!.config/systemd/user/*.service
+!.config/systemd/user/*.timer
+
+
+##############################################################################
+# SHELL
+
+
+# shell
+
+!.config/
+!.config/shell/
+!.config/shell/env.sh
+!.config/shell/profile.sh
+!.config/shell/alias.sh
+!.config/shell/wsl.sh
+
+
+# bash
+
+!.bashrc
+!.hushlogin
+
+
+# zsh
+
+!.zshenv
+!.config/
+!.config/zsh/
+!.config/zsh/.zshrc
+!.config/zsh/.zprofile
+!.config/zsh/.zshenv
+!.config/zsh/user/
+!.config/zsh/user/*
+
+
+# fish
+
+!.config/
+!.config/fish/
+!.config/fish/config.fish
+!.config/fish/user/
+!.config/fish/user/*
+
+
+# nushell
+
+!.config/
+!.config/nushell/
+!.config/nushell/env.nu
+!.config/nushell/config.nu
+
+
+# starship
+
+!.config/
+!.config/starship/
+!.config/starship/starship.toml
+
+
+# thefuck
+
+!.config/
+!.config/thefuck/
+!.config/thefuck/settings.py
+
+
+# ranger
+
+!.config/
+!.config/ranger/
+!.config/ranger/rc.conf
+!.config/ranger/rifle.conf
+!.config/ranger/commands.py
+!.config/ranger/scope.sh
+
+
+# GPG
+
+!.gnupg/
+!.gnupg/gpg-agent.conf
+
+
+# lazygit
+
+!.config/
+!.config/lazygit/
+!.config/lazygit/config.yml
+
+
+# ncdu
+
+!.config/
+!.config/ncdu/
+!.config/ncdu/config
+
+
+# nvm
+
+!.nvmrc
+
+
+##############################################################################
+# EDITOR
+
+
+# vim
+
+!.vimrc
+
+
+# helix
+
+!.config/
+!.config/helix/
+!.config/helix/config.toml
+
+
+# VSCodium
+
+!.config/
+!.config/VSCodium/
+!.config/VSCodium/User/
+!.config/VSCodium/User/settings.json
+!.config/VSCodium/User/keybindings.json
+!.config/VSCodium/User/snippets/
+!.config/VSCodium/User/snippets/*
+
+
+# Vale
+
+!.vale.ini
+!.config/
+!.config/vale/
+!.config/vale/styles/
+!.config/vale/styles/*
+!.config/vale/styles/*/*
+
+
+# Python
+
+!.pylintrc
+!.config/
+!.config/black
+
+
+##############################################################################
+# DESKTOP
+
+
+# picom
+
+!.config/
+!.config/picom/
+!.config/picom/picom.conf
+
+
+# qtile
+
+!.config/
+!.config/qtile/
+!.config/qtile/config.py
+!.config/qtile/logo.png
+!.config/qtile/scripts/
+!.config/qtile/scripts/*
+
+
+# betterlockscreen
+
+!.config/
+!.config/betterlockscreenrc
+
+
+# dunst
+
+!.config/
+!.config/dunst/
+!.config/dunst/dunstrc
+
+
+# rofi
+
+!.config/
+!.config/rofi/
+!.config/rofi/*
+!.config/rofi/*/*
+!.config/rofi/*/*/*
+!.config/rofi/*/*/*/*
+!.config/rofi/*/*/*/*/*
+!.config/rofi/*/*/*/*/*/*
+!.config/rofi/*/*/*/*/*/*/*
+!.config/rofi/*/*/*/*/*/*/*/*
+
+
+# keepmenu
+
+!.config/
+!.config/keepmenu/
+!.config/keepmenu/config.ini
+
+
+# QT
+
+!.config/
+!.config/Kvantum/
+!.config/Kvantum/*
+!.config/Kvantum/*/*
+
+
+# GTK
+
+.gtkrc-2.0
+!.config/
+!.config/gtk-3.0/
+!.config/gtk-3.0/settings.ini
+
+
+# kitty
+
+!.config/
+!.config/kitty/
+!.config/kitty/kitty.conf
+
+
+# galculator
+
+!.config/
+!.config/galculator/
+!.config/galculator/galculator.conf
+
+
+# pipewire
+
+!.config/
+!.config/pipewire/
+!.config/pipewire/jack.conf
+
+
+# spotifyd
+
+!.config/
+!.config/spotifyd/
+!.config/spotifyd/spotifyd.conf
+
+
+# ardour6
+
+!.config/
+!.config/ardour6/
+!.config/ardour6/config
+!.config/ardour6/themes/
+!.config/ardour6/themes/*
+
+
+# onedrive
+
+!.config/
+!.config/onedrive/
+!.config/onedrive/*
+!.config/onedrive/*/*
+!.config/onedrive/*/*/config
+
+
+# NOTE: add when https://github.com/flameshot-org/flameshot/issues/3041 gets
+# resolved
+
+# flameshot
+
+# !.config/
+# !.config/flameshot/
+# !.config/flameshot/flameshot.ini
+
+
+# radicale
+
+!.config/
+!.config/radicale/
+!.config/radicale/config
+!.config/radicale/users
+
+
+##############################################################################
+# ASSETS
+
+
+# wallpapers
+
+!.local/
+!.local/share/
+!.local/share/wallpapers/
+!.local/share/wallpapers/*
+!.local/share/wallpapers/*/*
+
+
+# icons
+
+!.local/
+!.local/share/
+!.local/share/icons/
+!.local/share/icons/*
+!.local/share/icons/*/*
+
+.local/share/icons/hicolor

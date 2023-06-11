@@ -1,0 +1,4 @@
+--exclude .snapshots
+--exclude .rollbacks
+--exclude sync
+--exclude user
