@@ -24,7 +24,7 @@ let-env PATH = (
 
 let-env VIRTUAL_ENV_DISABLE_PROMPT = "1"
 
-let-env STARSHIP_CONFIG = $"($env.HOMEPATH)/.config/starship/starship.toml"
+let-env STARSHIP_CONFIG = $"($env.HOME)/.config/starship/starship.toml"
 mkdir ~/.cache/starship
 starship init nu | save --force ~/.cache/starship/init.nu
 
