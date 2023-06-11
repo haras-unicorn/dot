@@ -61,10 +61,14 @@
   };
   security.pam.services.virtuoso.enableGnomeKeyring = true;
 
+  programs.starship.enable = true;
+
   environment.systemPackages = with pkgs; [
     vim-full
     git
     nushell
+    zoxide
+    lazygit
 
     dunst
     rofi
@@ -77,6 +81,7 @@
     lxde.lxrandr
     kitty
     brave
+    ferdium
     pcmanfm
     keepassxc
   ];
