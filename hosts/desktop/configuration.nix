@@ -70,6 +70,7 @@
     rofi
     flameshot
     xclip
+    xorg.xkill
     lxde.lxtask
     lxde.lxrandr
     kitty
