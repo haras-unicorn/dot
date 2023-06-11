@@ -1,13 +1,13 @@
 let-env PATH = (
   $env.PATH |
   split row (char esep) |
-  prepend $"($env.HOMEPATH)/bin"
+  prepend $"($env.HOME)/bin"
 )
 
 let-env PATH = (
   $env.PATH |
   split row (char esep) |
-  prepend $"($env.HOMEPATH)/scripts"
+  prepend $"($env.HOME)/scripts"
 )
 
 let-env PATH = (
