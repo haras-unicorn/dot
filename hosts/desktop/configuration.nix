@@ -8,8 +8,6 @@
     '';
   };
 
-  imports = [ ./hardware-configuration.nix ];
-
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
@@ -24,7 +22,7 @@
   # fix no realtime group ?
   security.rtkit.enable = true;
 
-  networking.hostName = "virtuoso";
+  networking.hostName = "KARBURATOR";
   networking.nftables.enable = true;
   networking.firewall.package = pkgs.nftables;
   networking.networkmanager.enable = true;
@@ -46,13 +44,6 @@
   virtualisation.docker.enable = true;
   services.cockpit.enable = true;
 
-  services.syncthing.enable = true;
-  services.syncthing.openDefaultPorts = true;
-  services.syncthing.user = "virtuoso";
-  services.syncthing.group = "users";
-  services.syncthing.dataDir = "/home/virtuoso";
-  services.syncthing.overrideDevices = false;
-  services.syncthing.overrideFolders = false;
   programs.gnupg.agent.enable = true;
   programs.gnupg.agent.enableSSHSupport = true;
   services.openssh.enable = true;
@@ -85,11 +76,5 @@
     keepassxc
   ];
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11";
 }
