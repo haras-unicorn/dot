@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs;
     home-manager.url = github:nix-community/home-manager; 
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, ... } @ inputs: 
@@ -27,6 +28,13 @@
         specialArgs = inputs;
         modules = [
           ./hosts/desktop/configuration.nix
+          home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.virtuoso = {
+              imports = [ ./hosts/desktop/home.nix ]; 
+            };
+          }
         ];
       };
     };
