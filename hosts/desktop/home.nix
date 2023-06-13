@@ -12,9 +12,7 @@
     nil
     ferdium
     keepassxc
-    brave
     python311Packages.adblock
-    nerdfonts.override { fonts = [ "JetBrainsMono" ]; }
   ];
   home.shellAliases = {
     lg = "lazygit";
@@ -23,7 +21,19 @@
   services.syncthing.enable = true;
   services.syncthing.tray.enable = true;
 
+  programs.mpv.enable = true;
   programs.qutebrowser.enable = true;
+  programs.qutebrowser.searchEngines = {
+    "DEFAULT" = "https://google.com/search?hl=en&q={}";
+    "g" = "https://google.com/search?hl=en&q={}";
+  };
+  programs.qutebrowser.keyBindings = {
+    normal = {
+      ",m" = "spawn mpv {url}";
+      ",M" = "hint links spawn mpv {hint-url}";
+    };
+  };
+  home.file.".local/share/qutebrowser".source = ../../assets/.local/share/qutebrowser;
   programs.qutebrowser.settings = {
     auto_save.session = true;
     colors.webpage.darkmode.enabled = true;
@@ -37,39 +47,39 @@
     editor.command = [ "kitty" "hx" "{file}:{line}:{column}" ];
     fonts.default_family = "JetBrainsMono Nerd Font";
     scrolling.bar = "never";
-    scrolling.smooth = true;
-    spellcheck.languages = [
-      "en-US"
-      "hr-HR"
-    ];
-    statusbar.padding = {
-      left = 2;
-      right = 2;
-      top = 2;
-      bottom = 2;
-    };
-    tabs.indicator.padding = {
-      left = 2;
-      right = 2;
-      top = 2;
-      bottom = 2;
-    };
     tabs.max_width = 200;
-    tabs.padding = {
-      left = 2;
-      right = 2;
-      top = 2;
-      bottom = 2;
-    };
     url.default_page = "https://google.com";
-    url.searchengines = {
-      DEFAULT = "https://google.com/search?q={}";
-    };
     url.start_pages = "https://google.com";
     window.hide_decoration = true;
     window.transparent = true;
     zoom.default = "150%";
     zoom.text_only = true;
+    # TODO: this is so bad...
+    # scrolling.smooth = true;
+    # TODO: /usr/share/qutebrowser/scripts/dictcli.py install en-US ??
+    # spellcheck.languages = [
+    #   "en-US"
+    #   "hr-HR"
+    # ];
+    # TODO: generates code with dot but supposed to generate dictionary constructor
+    # statusbar.padding = {
+    #   left = 2;
+    #   right = 2;
+    #   top = 2;
+    #   bottom = 2;
+    # };
+    # tabs.indicator.padding = {
+    #   left = 2;
+    #   right = 2;
+    #   top = 2;
+    #   bottom = 2;
+    # };
+    # tabs.padding = {
+    #   left = 2;
+    #   right = 2;
+    #   top = 2;
+    #   bottom = 2;
+    # };
   };
   
   programs.vim.enable = true;

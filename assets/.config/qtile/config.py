@@ -818,11 +818,11 @@ keys = [
     Key([super_mod, shift], "p", lazy.spawn("keepassxc"), desc="Passwords"),
     Key([super_mod], "t", lazy.spawn("kitty"), desc="Terminal"),
     Key([super_mod], "e", lazy.spawn("emote"), desc="Emotes"),
-    Key([super_mod], "w", lazy.spawn("brave"), desc="Browse"),
+    Key([super_mod], "w", lazy.spawn("qutebrowser"), desc="Browse"),
     Key(
         [super_mod, control],
         "w",
-        lazy.spawn("brave --incognito"),
+        lazy.spawn("qutebrowser ':open -p'"),
         desc="Incognito",
     ),
     Key([super_mod, shift], "w", lazy.spawn("brave --tor"), desc="Tor"),
