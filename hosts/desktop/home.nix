@@ -71,6 +71,7 @@
   services.udiskie.enable = true;
   services.flameshot.enable = true;
   services.redshift.enable = true;
+  services.redshift.provider = "geoclue2";
   services.network-manager-applet.enable = true;
   services.dunst.enable = true;
   programs.rofi.enable = true;
