@@ -65,6 +65,7 @@
     vim-full
     git
     nushell
+    helix
     zoxide
     lazygit
     starship
