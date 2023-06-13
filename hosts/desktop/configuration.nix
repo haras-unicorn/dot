@@ -7,20 +7,29 @@
       experimental-features = nix-command flakes
     '';
   };
+  nixpkgs.config.allowUnfree = true;
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
+  boot.loader.grub.useOSProber = true;
+  boot.initrd.systemd.enable = true;
+  boot.kernelParams = [ "quiet" ];
+  boot.plymouth.enable = true;
+  boot.plymouth.theme = "nixos-bgrt";
+  boot.plymouth.themePackages = with pkgs; [
+    nixos-bgrt-plymout
+  ];
+
+  services.ananicy.enable = true;
+  services.earlyoom.enable = true;
+  security.rtkit.enable = true;
 
   location.provider = "geoclue2";
   time.timeZone = "Europe/Zagreb";
   i18n.defaultLocale = "en_US.UTF-8";
   console.useXkbConfig = true;
-
-  services.ananicy.enable = true;
-  services.earlyoom.enable = true;
-  security.rtkit.enable = true;
 
   networking.hostName = "KARBURATOR";
   networking.nftables.enable = true;
@@ -47,6 +56,7 @@
   virtualisation.libvirtd.enable = true;
   virtualisation.docker.enable = true;
   services.cockpit.enable = true;
+  programs.steam.enable = true;
 
   programs.gnupg.agent.enable = true;
   programs.gnupg.agent.enableSSHSupport = true;
@@ -54,7 +64,7 @@
   services.openssh.allowSFTP = true;
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
-
+  
   users.users.virtuoso = {
     isNormalUser = true;
     extraGroups = [ "wheel" "libvirtd" "docker" ];
@@ -77,6 +87,7 @@
     lxde.lxrandr
     pcmanfm
     xarchiver
+    lutris
   ];
 
   system.stateVersion = "23.11";
