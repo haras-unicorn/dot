@@ -34,6 +34,7 @@
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.sddm.autoNumlock = true;
   services.xserver.windowManager.qtile.enable = true;
+  programs.dconf.enable = true;
 
   services.pipewire.enable = true;
   services.pipewire.wireplumber.enable = true;
