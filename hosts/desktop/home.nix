@@ -5,6 +5,17 @@
 
   home.username = "virtuoso";
   home.homeDirectory = "/home/virtuoso";
+  home.sessionVariables = {
+    QT_QPA_PLATFORMTHEME = "gtk2";
+  };
+  home.packages = with pkgs; [
+    nil
+    ferdium
+    keepassxc
+  ];
+  home.shellAliases = {
+    lg = "lazygit";
+  };
 
   services.syncthing.enable = true;
   services.syncthing.tray.enable = true;
@@ -38,6 +49,18 @@
   programs.zoxide.enableNushellIntegration = true;
   home.file.".config/starship.toml".source = ../../assets/.config/starship/starship.toml;
 
+  programs.lazygit.enable = true;
+  programs.lazygit.settings = {
+    notARepository = "quit";
+    promptToReturnFromSubprocess= false;
+    gui = {
+      showIcons = true;
+    };
+  };
+
+  services.random-background.enable = true;
+  services.random-background.imageDirectory = "%h/.local/share/wallpapers";
+  home.file.".local/share/wallpapers".source = ../../assets/.local/share/wallpapers;
   home.file.".config/qtile".source = ../../assets/.config/qtile;
 
   gtk.enable = true;
@@ -51,13 +74,6 @@
   qt.platformTheme = "gtk";
   qt.style.name = "Sweet-Dark";
   qt.style.package = pkgs.sweet;
-  home.sessionVariables = {
-    QT_QPA_PLATFORMTHEME = "gtk2";
-  };
-
-  home.packages = with pkgs; [
-    nil
-  ];
 
   home.stateVersion = "23.11";
 }

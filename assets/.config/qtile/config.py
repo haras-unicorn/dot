@@ -826,7 +826,7 @@ keys = [
         desc="Incognito",
     ),
     Key([super_mod, shift], "w", lazy.spawn("brave --tor"), desc="Tor"),
-    Key([super_mod], "m", lazy.spawn("ferdi"), desc="Communication"),
+    Key([super_mod], "m", lazy.spawn("ferdium"), desc="Communication"),
     Key([super_mod], "s", lazy.spawn(terminal_wrap("spt")), desc="Spotify"),
     Key(
         [super_mod, control],

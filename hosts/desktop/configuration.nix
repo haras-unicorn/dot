@@ -14,12 +14,12 @@
   boot.loader.grub.efiSupport = true;
 
   location.provider = "geoclue2";
+  time.timeZone = "Europe/Zagreb";
   i18n.defaultLocale = "en_US.UTF-8";
   console.useXkbConfig = true;
 
   services.ananicy.enable = true;
   services.earlyoom.enable = true;
-  # fix no realtime group ?
   security.rtkit.enable = true;
 
   networking.hostName = "KARBURATOR";
@@ -66,12 +66,6 @@
   environment.systemPackages = with pkgs; [
     vim-full
     git
-    nushell
-    helix
-    zoxide
-    lazygit
-    starship
-
     dunst
     rofi
     flameshot
@@ -81,12 +75,8 @@
     lxde.lxsession
     lxde.lxtask
     lxde.lxrandr
-    kitty
-    brave
-    ferdium
     pcmanfm
     xarchiver
-    keepassxc
   ];
 
   system.stateVersion = "23.11";
