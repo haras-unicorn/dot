@@ -57,7 +57,6 @@
 
   home.packages = with pkgs; [
     nil
-    gtk-engine-murrine
   ];
 
   home.stateVersion = "23.11";
