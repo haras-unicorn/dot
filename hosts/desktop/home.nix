@@ -12,6 +12,9 @@
     nil
     ferdium
     keepassxc
+    brave
+    python311Packages.adblock
+    nerdfonts.override { fonts = [ "JetBrainsMono" ]; }
   ];
   home.shellAliases = {
     lg = "lazygit";
@@ -20,6 +23,55 @@
   services.syncthing.enable = true;
   services.syncthing.tray.enable = true;
 
+  programs.qutebrowser.enable = true;
+  programs.qutebrowser.settings = {
+    auto_save.session = true;
+    colors.webpage.darkmode.enabled = true;
+    content.blocking.enabled = true;
+    content.blocking.method = "adblock";
+    content.fullscreen.window = true;
+    content.geolocation = false;
+    content.notifications.enabled = false;
+    content.pdfjs = true;
+    content.webrtc_ip_handling_policy = "default-public-interface-only";
+    editor.command = [ "kitty" "hx" "{file}:{line}:{column}" ];
+    fonts.default_family = "JetBrainsMono Nerd Font";
+    scrolling.bar = "never";
+    scrolling.smooth = true;
+    spellcheck.languages = [
+      "en-US"
+      "hr-HR"
+    ];
+    statusbar.padding = {
+      left = 2;
+      right = 2;
+      top = 2;
+      bottom = 2;
+    };
+    tabs.indicator.padding = {
+      left = 2;
+      right = 2;
+      top = 2;
+      bottom = 2;
+    };
+    tabs.max_width = 200;
+    tabs.padding = {
+      left = 2;
+      right = 2;
+      top = 2;
+      bottom = 2;
+    };
+    url.default_page = "https://google.com";
+    url.searchengines = {
+      DEFAULT = "https://google.com/search?q={}";
+    };
+    url.start_pages = "https://google.com";
+    window.hide_decoration = true;
+    window.transparent = true;
+    zoom.default = "150%";
+    zoom.text_only = true;
+  };
+  
   programs.vim.enable = true;
   programs.vim.extraConfig = builtins.readFile ../../assets/.vimrc;
 
