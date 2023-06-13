@@ -13,6 +13,7 @@
     ferdium
     keepassxc
     brave
+    ncdu
     python311Packages.adblock
   ];
   home.shellAliases = {
