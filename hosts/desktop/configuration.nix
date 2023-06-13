@@ -18,7 +18,7 @@
   boot.plymouth.enable = true;
   boot.plymouth.theme = "nixos-bgrt";
   boot.plymouth.themePackages = with pkgs; [
-    nixos-bgrt-plymout
+    nixos-bgrt-plymouth
   ];
 
   services.ananicy.enable = true;
