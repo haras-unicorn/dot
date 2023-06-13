@@ -58,9 +58,6 @@ pictures_dir = os.path.join(user_dir, "pictures")
 screenshot_dir = os.path.join(pictures_dir, "screenshots")
 keymap_dir = os.path.join(pictures_dir, "keymap")
 
-scripts_dir = os.path.join(qtile_config_dir, "scripts")
-startup_once_loc = os.path.join(scripts_dir, "startup_once.sh")
-
 assets_dir = os.path.join(home_dir, ".local", "share")
 
 wallpaper_dir = os.path.join(assets_dir, "wallpapers")
@@ -98,7 +95,7 @@ termianl_prefix = "kitty -e fish"
 
 
 def terminal_wrap(x):
-    return "kitty -e fish -c '" + x + "'"
+    return "kitty -e nu -c '" + x + "'"
 
 
 # Colors
@@ -731,14 +728,6 @@ keys = [
         decrease_keyboard_brightness,
         desc="Keyboard brightness -",
     ),
-    # update
-    Key(
-        [super_mod, shift],
-        "u",
-        lazy.spawn(terminal_wrap("paru -Syu")),
-        lazy.spawn(terminal_wrap("nvim -c PackerSync")),
-        desc="Keymap",
-    ),
     # config
     Key(
         [super_mod, control],
@@ -798,13 +787,6 @@ keys = [
     ),
     Key(
         [super_mod],
-        "v",
-        # FIX: this opens builtin for some reason
-        lazy.spawn(terminal_wrap("nvim -c 'Telescope project'")),
-        desc="Neovim",
-    ),
-    Key(
-        [super_mod],
         "p",
         lazy.spawn("keepmenu -a '{USERNAME}{TAB}{PASSWORD}'"),
         desc="Fill credentials",
@@ -856,11 +838,6 @@ for group_name in visible_group_names:
 
 
 # Hooks
-
-
-@hook.subscribe.startup_once
-def start_once():
-    subprocess.call([startup_once_loc])
 
 
 @hook.subscribe.client_new

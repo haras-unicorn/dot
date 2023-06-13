@@ -44,7 +44,6 @@
   services.xserver.displayManager.sddm.autoNumlock = true;
   services.xserver.windowManager.qtile.enable = true;
   programs.dconf.enable = true;
-  services.gvfs.enable = true;
 
   services.pipewire.enable = true;
   services.pipewire.wireplumber.enable = true;
@@ -57,6 +56,9 @@
   virtualisation.docker.enable = true;
   services.cockpit.enable = true;
   programs.steam.enable = true;
+  environment.systemPackages = with pkgs; [
+    lutris
+  ];
 
   programs.gnupg.agent.enable = true;
   programs.gnupg.agent.enableSSHSupport = true;
@@ -72,23 +74,6 @@
     shell = pkgs.nushell;
   };
   security.pam.services.virtuoso.enableGnomeKeyring = true;
-
-  environment.systemPackages = with pkgs; [
-    vim-full
-    git
-    dunst
-    rofi
-    flameshot
-    networkmanagerapplet
-    xclip
-    xorg.xkill
-    lxde.lxsession
-    lxde.lxtask
-    lxde.lxrandr
-    pcmanfm
-    xarchiver
-    lutris
-  ];
 
   system.stateVersion = "23.11";
 }
