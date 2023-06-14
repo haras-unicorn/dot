@@ -189,7 +189,7 @@ def shutdown_os(_: Qtile):
 
 @lazy.function
 def lock_user(_: Qtile):
-    os.system("betterlockscreen --lock")
+    os.system("betterlockscreen --lock " + lock_wallpaper_loc)
 
 
 @lazy.function
@@ -572,8 +572,6 @@ screens = [
             size=25,
             background=colors["transparent"],
         ),
-        wallpaper=wallpaper_loc,
-        wallpaper_mode="stretch",
     ),
 ]
 
