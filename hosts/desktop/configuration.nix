@@ -83,7 +83,6 @@
     initialPassword = "virtuoso";
     shell = pkgs.nushell;
   };
-  security.pam.services.virtuoso.enableGnomeKeyring = true;
 
   system.stateVersion = "23.11";
 }
