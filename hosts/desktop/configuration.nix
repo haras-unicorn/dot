@@ -15,7 +15,15 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
   boot.initrd.systemd.enable = true;
-  boot.kernelParams = [ "quiet" ];
+  boot.kernelParams = [
+    "quiet" 
+    "splash"
+    "vt.global_cursor_default=0"
+    "vga=current"
+    "loglevel=3"
+    "rd.systemd.show_status=auto"
+    "rd.udev.log_level=3"
+  ];
   boot.plymouth.enable = true;
   boot.plymouth.theme = "nixos-bgrt";
   boot.plymouth.themePackages = with pkgs; [

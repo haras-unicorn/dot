@@ -29,7 +29,7 @@ in
       # services
       keepmenu
       brightnessctl
-      seahorse
+      gnome.seahorse
 
       # apps
       ferdium
@@ -91,7 +91,7 @@ in
         showIcons = true;
       };
     };
-    services.htop.enable = true;
+    programs.htop.enable = true;
 
     # services
     services.gnome-keyring.enable = true;
