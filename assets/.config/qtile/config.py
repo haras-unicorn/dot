@@ -819,6 +819,11 @@ for group_name in visible_group_names:
 # Hooks
 
 
+@hook.subscribe.startup_once
+def startup_once():
+    lazy.spawn("betterlockscreen --update " + lock_wallpaper_loc)
+
+
 @hook.subscribe.client_new
 def set_floating(window: Window):
     if not floating_layout.float_rules:
