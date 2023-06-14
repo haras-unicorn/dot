@@ -737,12 +737,13 @@ keys = [
     ),
     # screenshot
     Key(
+        [super_mod],
         print_screen,
         lazy.spawn("flameshot full -p " + screenshot_dir),
         desc="Screenshot",
     ),
     Key(
-        [control],
+        [super_mod, control],
         print_screen,
         lazy.spawn("flameshot gui -p " + screenshot_dir),
         desc="Screenshot",
