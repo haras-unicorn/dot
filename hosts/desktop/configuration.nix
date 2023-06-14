@@ -43,6 +43,10 @@
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.sddm.autoNumlock = true;
   services.xserver.windowManager.qtile.enable = true;
+  services.xserver.windowManager.qtile.extraPackages =
+    python3Packages: with python3Packages; [
+      psutil
+    ];
   programs.dconf.enable = true;
 
   services.pipewire.enable = true;
@@ -60,12 +64,8 @@
     lutris
   ];
 
-  programs.gnupg.agent.enable = true;
-  programs.gnupg.agent.enableSSHSupport = true;
   services.openssh.enable = true;
   services.openssh.allowSFTP = true;
-  services.gnome.gnome-keyring.enable = true;
-  programs.seahorse.enable = true;
   
   users.users.virtuoso = {
     isNormalUser = true;

@@ -47,4 +47,13 @@
   hardware.opengl.driSupport32Bit = true;
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.open = true;
+
+  environment.variables = {
+     NVIDIA_BUS_ID = "31:0:0";
+     NET_INTERFACE_ID = "enp27s0";
+     CPU_SENSOR_TAG = "k10temp-pci-00c3";
+  };
+
+  programs.corectrl.enable = true;
+  programs.corectrl.gpuOverclock.enable = true;
 }

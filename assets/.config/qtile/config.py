@@ -33,14 +33,14 @@ from libqtile.widget.backlight import Backlight
 
 # IDs
 
-nvidia_bus_id = os.environ.get("QTILE_NVIDIA_BUS_ID", None)
-net_interface_id = os.environ.get("QTILE_NET_INTERFACE", None)
-cpu_sensor_tag = os.environ.get("QTILE_CPU_SENSOR_TAG", None)
+nvidia_bus_id = os.environ.get("NVIDIA_BUS_ID", None)
+net_interface_id = os.environ.get("NET_INTERFACE", None)
+cpu_sensor_tag = os.environ.get("CPU_SENSOR_TAG", None)
 display_brightness_device = os.environ.get(
-    "QTILE_DISPLAY_BRIGHTNESS_DEVICE", None
+    "DISPLAY_BRIGHTNESS_DEVICE", None
 )
 keyboard_brightness_device = os.environ.get(
-    "QTILE_KEYBOARD_BRIGHTNESS_DEVICE", None
+    "KEYBOARD_BRIGHTNESS_DEVICE", None
 )
 
 
@@ -91,7 +91,7 @@ focus_on_window_activation = "focus"
 # doesn't mean anything
 wmname = "LG3D"
 
-termianl_prefix = "kitty -e fish"
+termianl_prefix = "kitty -e nu"
 
 
 def terminal_wrap(x):
@@ -149,7 +149,7 @@ widget_defaults = {
     "margin_y": 2,
     "padding": 5,
     "margin": 5,
-    "font": "JetBrainsMono Nerd Font Mono",
+    "font": "JetBrainsMono Nerd Font",
     "fontsize": 16,
     "icon_size": 20,
     "background": colors["background"],
@@ -215,10 +215,6 @@ def start_spt(_: Qtile):
 @lazy.function
 def kill_window(_qtile: Qtile):
     if not _qtile.current_window:
-        return
-
-    if _qtile.current_window.name in ["Lutris"]:
-        _qtile.current_window.cmd_togroup("0")
         return
 
     _qtile.current_window.cmd_kill()
@@ -324,15 +320,7 @@ def show_cpu_config():
 
 
 def show_process_list():
-    qtile.cmd_spawn("lxtask")
-
-
-def show_input_config():
-    qtile.cmd_spawn("lxinput")
-
-
-def show_keyboard_config():
-    qtile.cmd_spawn("fcitx5-configtool")
+    qtile.cmd_spawn(terminal_wrap("htop"))
 
 
 # Groups
@@ -471,7 +459,6 @@ screens = [
                 KeyboardLayout(
                     foreground=colors["cyan"],
                     configured_keyboards=["us", "hr"],
-                    mouse_callbacks={"Button1": show_keyboard_config},
                 ),
                 TextBox(
                     text="|",
@@ -479,7 +466,6 @@ screens = [
                 ),
                 CapsNumLockIndicator(
                     foreground=colors["green"],
-                    mouse_callbacks={"Button1": show_input_config},
                 ),
                 Chord(foreground=colors["yellow"]),
                 Spacer(length=bar.STRETCH),
@@ -668,7 +654,10 @@ keys = [
     Key([super_mod, control, shift], "f", lazy.layout.flip()),
     # lifecycle
     Key([super_mod], escape, kill_window, desc="Kill"),
-    Key([super_mod, control], escape, lazy.spawn("lxsession-logout"), desc="Sleep"),
+    Key([super_mod, control, shift], escape, shutdown_os, desc="Shutdown"),
+    Key([super_mod, control, alt], escape, restart_os, desc="Restart"),
+    Key([super_mod, control], escape, lock_user, desc="Lock"),
+    Key([super_mod, alt], escape, suspend_os, desc="Suspend"),
     Key([super_mod, shift], "c", restart_qtile, desc="Restart Qtile"),
     # keyboard
     Key(
@@ -691,17 +680,17 @@ keys = [
     Key(
         [],
         "XF86AudioMute",
-        lazy.spawn("pactl set-sink-mute '@DEFAULT_SINK@' 'toggle'"),
+        lazy.spawn("playerctl volume 0.0"),
     ),
     Key(
         [],
         "XF86AudioLowerVolume",
-        lazy.spawn("pactl set-sink-volume '@DEFAULT_SINK@' '-2%'"),
+        lazy.spawn("playerctl volume 0.05 -"),
     ),
     Key(
         [],
         "XF86AudioRaiseVolume",
-        lazy.spawn("pactl set-sink-volume '@DEFAULT_SINK@' '+2%'"),
+        lazy.spawn("playerctl volume 0.05 +"),
     ),
     # brightness
     Key(
@@ -738,12 +727,6 @@ keys = [
         lazy.spawn(f"feh '{keymap_dir}'"),
         desc="Keymap",
     ),
-    Key(
-        [super_mod],
-        "c",
-        lazy.spawn(terminal_wrap(f"cd '{qtile_config_dir}'; nvim config.py")),
-        desc="Config",
-    ),
     # apps
     Key(
         [super_mod],
@@ -753,28 +736,21 @@ keys = [
         ),
         desc="Launch",
     ),
-    Key(
-        [super_mod, control],
-        enter,
-        lazy.spawn("lxtask"),
-        desc="Tasks",
-    ),
     # screenshot
     Key(
-        [super_mod],
         print_screen,
         lazy.spawn("flameshot full -p " + screenshot_dir),
         desc="Screenshot",
     ),
     Key(
-        [super_mod, control],
+        [control],
         print_screen,
         lazy.spawn("flameshot gui -p " + screenshot_dir),
         desc="Screenshot",
     ),
     # shortcuts
     Key(
-        [super_mod, control],
+        [super_mod],
         "v",
         lazy.spawn("pavucontrol"),
         desc="Volume",
@@ -797,6 +773,18 @@ keys = [
         lazy.spawn("keepmenu -a '{PASSWORD}'"),
         desc="Fill password",
     ),
+    Key(
+        [super_mod, shift],
+        "p",
+        lazy.spawn("keepmenu -a '{USERNAME}'"),
+        desc="Fill username",
+    ),
+    Key(
+        [super_mod, alt],
+        "p",
+        lazy.spawn("keepmenu -a '{TOTP}'"),
+        desc="Fill totp",
+    ),
     Key([super_mod, shift], "p", lazy.spawn("keepassxc"), desc="Passwords"),
     Key([super_mod], "t", lazy.spawn("kitty"), desc="Terminal"),
     Key([super_mod], "e", lazy.spawn("emote"), desc="Emotes"),
@@ -810,13 +798,6 @@ keys = [
     Key([super_mod, shift], "w", lazy.spawn("brave --tor"), desc="Tor"),
     Key([super_mod], "m", lazy.spawn("ferdium"), desc="Communication"),
     Key([super_mod], "s", lazy.spawn(terminal_wrap("spt")), desc="Spotify"),
-    Key(
-        [super_mod, control],
-        "s",
-        lazy.spawn("systemctl restart --user spotifyd.service"),
-        lazy.spawn("keepmenu -a '{PASSWORD}{ENTER}'"),
-        desc="Spotifyd",
-    ),
 ]
 
 for group_name in visible_group_names:
