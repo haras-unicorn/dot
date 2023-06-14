@@ -91,6 +91,7 @@ in
         showIcons = true;
       };
     };
+    services.htop.enable = true;
 
     # services
     services.gnome-keyring.enable = true;
@@ -135,7 +136,6 @@ in
       };
     };
     services.playerctld.enable = true;
-    services.htop.enable = true;
     home.file.".local/share/wallpapers".source = ../../assets/.local/share/wallpapers;
     home.file.".config/qtile".source = ../../assets/.config/qtile;
 
