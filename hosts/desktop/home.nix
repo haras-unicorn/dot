@@ -107,7 +107,6 @@ in
     };
   };
   services.syncthing.enable = true;
-  services.syncthing.tray.enable = true;
   services.udiskie.enable = true;
   services.flameshot.enable = true;
   services.redshift.enable = true;
