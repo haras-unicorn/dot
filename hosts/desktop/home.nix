@@ -80,9 +80,9 @@ in
     };
     programs.starship.enable = true;
     programs.starship.enableNushellIntegration = true;
+    home.file.".config/starship.toml".source = ../../assets/.config/starship/starship.toml;
     programs.zoxide.enable = true;
     programs.zoxide.enableNushellIntegration = true;
-    home.file.".config/starship.toml".source = ../../assets/.config/starship/starship.toml;
     programs.lazygit.enable = true;
     programs.lazygit.settings = {
       notARepository = "quit";
@@ -114,12 +114,13 @@ in
     services.redshift.provider = "geoclue2";
     services.network-manager-applet.enable = true;
     services.dunst.enable = true;
-    home.file.".config/dunst".source = ../../assets/.config/dunst;
+    # home.file.".config/dunst".source = ../../assets/.config/dunst;
     programs.rofi.enable = true;
-    home.file.".config/rofi".source = ../../assets/.config/rofi;
+    # home.file.".config/rofi".source = ../../assets/.config/rofi;
     services.random-background.enable = true;
     services.random-background.imageDirectory = "%h/.local/share/wallpapers";
     services.betterlockscreen.enable = true;
+    home.file.".local/share/wallpapers".source = ../../assets/.local/share/wallpapers;
     services.spotifyd.enable = true;
     services.spotifyd.package = pkgs.spotifyd.override { withKeyring = true; };
     services.spotifyd.settings = {
@@ -136,7 +137,6 @@ in
       };
     };
     services.playerctld.enable = true;
-    home.file.".local/share/wallpapers".source = ../../assets/.local/share/wallpapers;
     home.file.".config/qtile".source = ../../assets/.config/qtile;
 
     # theming
