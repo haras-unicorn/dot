@@ -70,6 +70,7 @@ lock_wallpaper_loc = os.path.join(wallpaper_dir, "cat-roof-city-neon.jpg")
 super_mod = "mod4"
 control = "control"
 shift = "shift"
+alt = "alt"
 enter = "Return"
 escape = "Escape"
 tab = "Tab"
