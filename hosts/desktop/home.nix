@@ -113,7 +113,9 @@ in
     services.redshift.provider = "geoclue2";
     services.network-manager-applet.enable = true;
     services.dunst.enable = true;
+    home.file.".config/dunst".source = ../../assets/.config/dunst;
     programs.rofi.enable = true;
+    home.file.".config/rofi".source = ../../assets/.config/rofi;
     services.random-background.enable = true;
     services.random-background.imageDirectory = "%h/.local/share/wallpapers";
     services.betterlockscreen.enable = true;
