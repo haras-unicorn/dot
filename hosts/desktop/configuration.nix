@@ -67,6 +67,7 @@
   virtualisation.libvirtd.enable = true;
   virtualisation.docker.enable = true;
   services.cockpit.enable = true;
+  services.packagekit.enable = true;
   programs.steam.enable = true;
   environment.systemPackages = with pkgs; [
     lutris
