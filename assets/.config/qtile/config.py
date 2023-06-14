@@ -190,7 +190,7 @@ def shutdown_os(_: Qtile):
 
 @lazy.function
 def lock_user(_: Qtile):
-    os.system("betterlockscreen --lock " + lock_wallpaper_loc)
+    os.system("betterlockscreen --lock")
 
 
 @lazy.function
