@@ -25,6 +25,7 @@ in
     xclip
     spotify-tui
     feh
+    lazydocker
 
     # services
     keepmenu
