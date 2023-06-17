@@ -277,9 +277,12 @@ in
      git clone ssh://gitlab.com/hrle/dotfiles-nixos ~/repos/dotfiles
     fi
 
+    wd="$(pwd)"
+    cd ~/repos/dotfiles
     git add .
     git commit -m "WIP"
     sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#desktop
+    cd "$wd"
   '';
   home.file."scripts/recreate".executable = true;
   home.file."scripts/update".text = ''
