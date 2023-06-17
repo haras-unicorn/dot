@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, sweet-theme, ... }:
 
 {
   nix = {
@@ -50,6 +50,7 @@
   services.xserver.libinput.enable = true;
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.sddm.autoNumlock = true;
+  services.xserver.displayManager.sddm.theme = "${sweet-theme}/kde/sddm";
   services.xserver.windowManager.qtile.enable = true;
   services.xserver.windowManager.qtile.extraPackages =
     python3Packages: with python3Packages; [
@@ -69,12 +70,15 @@
   services.cockpit.enable = true;
   services.packagekit.enable = true;
   programs.steam.enable = true;
-  environment.systemPackages = with pkgs; [
-    lutris
-  ];
 
   services.openssh.enable = true;
   services.openssh.allowSFTP = true;
+
+  environment.systemPackages = with pkgs; [
+    lutris
+    libsForQt5.qt5.qtgraphicaleffects
+    libsForQt5.plasma-framework
+  ];
 
   users.users.virtuoso = {
     isNormalUser = true;
