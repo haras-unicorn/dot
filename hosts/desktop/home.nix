@@ -242,7 +242,7 @@ in
     file
     xdotool
     atool
-    bsdtar
+    libarchive
     unrar
     p7zip
     vim-full
