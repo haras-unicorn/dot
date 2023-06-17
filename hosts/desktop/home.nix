@@ -34,11 +34,6 @@ in
     python311Packages.python-lsp-server
     nil
     nixpkgs-fmt
-    cudaPackages.cudatoolkit
-    freeglut
-    zlib
-    gcc
-    python311
 
     # tui
     ncdu
@@ -246,17 +241,24 @@ in
       mkdir -p ~/repos
       git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui ~/repos/stable-diffusion-webui
     fi
+    if [[ ! -d ~/repos/automatic1111-webui-nix ]]; then
+      mkdir -p ~/repos
+      git clone https://github.com/virchau13/automatic1111-webui-nix ~/repos/automatic1111-webui-nix
+    fi
     wd="$(pwd)"
+    cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/stable-diffusion-webui
     cd ~/repos/stable-diffusion-webui
     if [[ ! -x ./webui.sh ]]; then
       printf "Stable Diffusion WebUI script not present\n.Exiting...\n"
       exit 1
     fi
-    export COMMANDLINE_ARGS="--listen --enable-insecure-extensions-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions --skip-torch-cuda-test"
-    export TORCH_COMMAND="pip install torch==2.0.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117"
-    export NO_TCMALLOC="True"
-    source ./venv/bin/activate
-    exec python launch.py
+    nix develop --command bash -c " \
+      export COMMANDLINE_ARGS="--listen --enable-insecure-extensions-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions --skip-torch-cuda-test" && \
+      export TORCH_COMMAND="pip install torch==2.0.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117" && \
+      export NO_TCMALLOC="True" && \
+      source ./venv/bin/activate && \
+      exec python launch.py \
+    "
     cd "$wd"
   '';
   home.file."scripts/stable-diffusion-webui".executable = true;
