@@ -1,14 +1,14 @@
 { lib, modulesPath, ... }:
 
 {
-  imports = [ 
+  imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   nixpkgs.config.allowUnfree = true;
 
-  boot.initrd.availableKernelModules = [ 
+  boot.initrd.availableKernelModules = [
     "nvme"
     "xhci_pci"
     "ahci"
@@ -29,7 +29,7 @@
     device = "/dev/disk/by-partlabel/nixroot";
     fsType = "ext4";
   };
-  fileSystems."/boot" = { 
+  fileSystems."/boot" = {
     device = "/dev/disk/by-partlabel/nixboot";
     fsType = "vfat";
   };
@@ -49,9 +49,9 @@
   hardware.nvidia.open = true;
 
   environment.variables = {
-     NVIDIA_BUS_ID = "31:0:0";
-     NET_INTERFACE_ID = "enp27s0";
-     CPU_SENSOR_TAG = "k10temp-pci-00c3";
+    NVIDIA_BUS_ID = "31:0:0";
+    NET_INTERFACE_ID = "enp27s0";
+    CPU_SENSOR_TAG = "k10temp-pci-00c3";
   };
 
   programs.corectrl.enable = true;

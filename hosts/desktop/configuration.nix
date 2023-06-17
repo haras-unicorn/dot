@@ -101,7 +101,7 @@
 
   users.users.virtuoso = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "libvirtd" "docker" ];
+    extraGroups = [ "wheel" ];
     initialPassword = "virtuoso";
     shell = pkgs.nushell;
   };
