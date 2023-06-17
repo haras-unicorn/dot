@@ -201,6 +201,24 @@ in
   programs.kitty.enable = true;
   programs.kitty.extraConfig = builtins.readFile ../../assets/.config/kitty/kitty.conf;
   programs.nushell.enable = true;
+  programs.nushell.extraEnv = ''
+    def-env ensure-path [new_path: string] {
+      let updated_env_path = (
+        if ($env.PATH | split row ":" | any { |it| $it == $new_path }) {
+          $env.PATH
+        }
+        else {
+          $"($new_path):($env.PATH)"
+        }
+      )
+      let-env PATH = $updated_env_path
+    }
+
+    ensure-path "/home/${username}/scripts"
+    ensure-path "/home/${username}/bin"
+    ensure-path "scripts"
+    ensure-path "bin"
+  '';
   programs.nushell.extraConfig = ''
     let-env config = {
       show_banner: false
@@ -215,6 +233,27 @@ in
     PROMPT_INDICATOR_VI_INSERT = "'i '";
     PROMPT_INDICATOR_VI_NORMAL = "'n '";
   };
+  home.file."scripts/stable-diffusion-webui".text = ''
+    #!/usr/bin/env bash
+    set -eo pipefail
+
+    if [[ ! -d ~/repos/stable-diffusion-webui ]]; then
+      mkdir -p ~/repos
+      git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui ~/repos/stable-diffusion-webui
+    fi
+    wd="$(pwd)"
+    cd ~/repos/stable-diffusion-webui
+    if [[ ! -x ./webui.sh ]]; then
+      printf "Stable Diffusion WebUI script not present\n.Exiting...\n"
+      exit 1
+    fi
+    export COMMANDLINE_ARGS="--listen --enable-insecure-extensions-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions --skip-torch-cuda-test"
+    export TORCH_COMMAND="pip install torch==2.0.1+cu118 --extra-index-url https://download.pytorch.org/whl/cu118"
+    export NO_TCMALLOC="True"
+    ./webui.sh
+    cd "$wd"
+  '';
+  home.file."scripts/stable-diffusion-webui".executable = true;
   programs.starship.enable = true;
   programs.starship.enableNushellIntegration = true;
   home.file.".config/starship.toml".source = ../../assets/.config/starship/starship.toml;
