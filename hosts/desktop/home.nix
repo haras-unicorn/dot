@@ -5,7 +5,8 @@ let
 in
 {
   programs.home-manager.enable = true;
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = import ./nixpkgs-config.nix;
+  xdg.configFile."nixpkgs/config.nix".source = ../../assets/.config/nixpkgs/config.nix;
 
   home.username = "${username}";
   home.homeDirectory = "/home/${username}";
@@ -323,7 +324,7 @@ in
   home.file."scripts/update".executable = true;
   programs.starship.enable = true;
   programs.starship.enableNushellIntegration = true;
-  home.file.".config/starship.toml".source = ../../assets/.config/starship/starship.toml;
+  xdg.configFile."starship.toml".source = ../../assets/.config/starship/starship.toml;
   programs.zoxide.enable = true;
   programs.zoxide.enableNushellIntegration = true;
   programs.lazygit.enable = true;
@@ -406,7 +407,7 @@ in
   # home.file.".config/dunst".source = ../../assets/.config/dunst;
   programs.rofi.enable = true;
   # home.file.".config/rofi".source = ../../assets/.config/rofi;
-  home.file.".config/keepmenu/config.ini".source = ../../assets/.config/keepmenu/config.ini;
+  xdg.configFile."keepmenu/config.ini".source = ../../assets/.config/keepmenu/config.ini;
   services.random-background.enable = true;
   services.random-background.imageDirectory = "%h/.local/share/wallpapers";
   services.betterlockscreen.enable = true;
@@ -427,7 +428,7 @@ in
     };
   };
   services.playerctld.enable = true;
-  home.file.".config/qtile".source = ../../assets/.config/qtile;
+  xdg.configFile."qtile".source = ../../assets/.config/qtile;
 
   # theming
   gtk.enable = true;
