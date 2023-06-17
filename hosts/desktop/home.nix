@@ -48,6 +48,7 @@ in
     unrar
     ripgrep
     lsof
+    duf
 
     # services
     keepmenu
