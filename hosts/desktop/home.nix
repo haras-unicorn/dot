@@ -39,7 +39,6 @@ in
     zlib
     gcc
     python311
-    python310
 
     # tui
     ncdu
