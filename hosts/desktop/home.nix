@@ -244,9 +244,9 @@ in
     if [[ ! -d ~/repos/automatic1111-webui-nix ]]; then
       mkdir -p ~/repos
       git clone https://github.com/virchau13/automatic1111-webui-nix ~/repos/automatic1111-webui-nix
+      cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/stable-diffusion-webui
     fi
     wd="$(pwd)"
-    cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/stable-diffusion-webui
     cd ~/repos/stable-diffusion-webui
     if [[ ! -x ./webui.sh ]]; then
       printf "Stable Diffusion WebUI script not present\n.Exiting...\n"
