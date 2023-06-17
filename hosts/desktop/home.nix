@@ -38,6 +38,8 @@ in
     freeglut
     zlib
     gcc
+    python311
+    python310
 
     # tui
     ncdu
@@ -252,7 +254,7 @@ in
       exit 1
     fi
     export COMMANDLINE_ARGS="--listen --enable-insecure-extensions-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions"
-    export TORCH_COMMAND="pip install torch==2.0.1+cu118 --extra-index-url https://download.pytorch.org/whl/cu118"
+    export TORCH_COMMAND="pip install torch==2.0.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117"
     export NO_TCMALLOC="True"
     exec python launch.py
     cd "$wd"

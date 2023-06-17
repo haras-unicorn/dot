@@ -95,14 +95,12 @@
   # services.transmission.settings.watch-dir-enabled = true;
 
   environment.systemPackages = with pkgs; [
-    pinentry
     vim-full
+    git
+    pinentry
     lutris
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.plasma-framework
-    wget
-    git
-    python311
   ];
 
   users.users.virtuoso = {
