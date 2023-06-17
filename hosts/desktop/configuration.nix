@@ -63,12 +63,13 @@
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.sddm.autoNumlock = true;
   services.xserver.displayManager.sddm.theme = "${sweet-theme}/kde/sddm";
+  programs.dconf.enable = true;
+  # TODO: remove and switch to another wm (i3 cuz easy or leftwm cuz rust)
   services.xserver.windowManager.qtile.enable = true;
   services.xserver.windowManager.qtile.extraPackages =
     python3Packages: with python3Packages; [
       psutil
     ];
-  programs.dconf.enable = true;
 
   services.pipewire.enable = true;
   services.pipewire.wireplumber.enable = true;
