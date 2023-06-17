@@ -268,8 +268,13 @@ in
     set -eo pipefail
 
     command=switch
+    comment="$1"
     if [[ "$1" == "boot" ]]; then
       command=boot
+      comment="$2"
+    fi
+    if [[ -z "$comment" ]]; then
+      comment="WIP"
     fi
 
     if [[ ! -d ~/repos/dotfiles ]]; then
@@ -280,7 +285,7 @@ in
     wd="$(pwd)"
     cd ~/repos/dotfiles
     git add .
-    git commit -m "WIP"
+    git commit -m "$comment"
     git push
     sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#desktop
     cd "$wd"
@@ -291,8 +296,13 @@ in
     set -eo pipefail
 
     command=switch
+    comment="$1"
     if [[ "$1" == "boot" ]]; then
       command=boot
+      comment="$2"
+    fi
+    if [[ -z "$comment" ]]; then
+      comment="WIP"
     fi
 
     if [[ ! -d ~/repos/dotfiles ]]; then
@@ -304,7 +314,7 @@ in
     cd ~/repos/dotfiles
     nix flake update
     git add .
-    git commit -m "WIP"
+    git commit -m "$comment"
     git push
     sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#desktop
     cd "$wd"
