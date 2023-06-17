@@ -252,7 +252,7 @@ in
       printf "Stable Diffusion WebUI script not present\n.Exiting...\n"
       exit 1
     fi
-    export COMMANDLINE_ARGS="--listen --enable-insecure-extensions-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions"
+    export COMMANDLINE_ARGS="--listen --enable-insecure-extensions-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions --skip-torch-cuda-test"
     export TORCH_COMMAND="pip install torch==2.0.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117"
     export NO_TCMALLOC="True"
     source ./venv/bin/activate
