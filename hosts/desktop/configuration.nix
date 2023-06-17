@@ -1,4 +1,4 @@
-{ pkgs, sweet-theme, ... }:
+{ config, pkgs, sweet-theme, ... }:
 
 {
   nix = {
@@ -45,7 +45,10 @@
 
   networking.hostName = "KARBURATOR";
   networking.nftables.enable = true;
-  networking.firewall.package = pkgs.nftables;
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [
+    7860
+  ];
   networking.networkmanager.enable = true;
 
   services.picom.enable = true;
@@ -75,13 +78,25 @@
   services.packagekit.enable = true;
   programs.steam.enable = true;
 
+  security.sudo.package = pkgs.sudo.override { withInsults = true; };
   services.openssh.enable = true;
   services.openssh.allowSFTP = true;
+  services.transmission.enable = true;
+  services.transmission.openPeerPorts = true;
+  services.transmission.settings.download-dir = "${config.services.transmission.home}/downloads";
+  services.transmission.settings.incomplete-dir = "${config.services.transmission.home}/.incomplete";
+  services.transmission.settings.watch-dir = "${config.services.transmission.home}/torrents";
+  services.transmission.settings.watch-dir-enabled = true;
 
   environment.systemPackages = with pkgs; [
+    pinentry
+    vim-full
     lutris
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.plasma-framework
+    wget
+    git
+    python311
   ];
 
   users.users.virtuoso = {

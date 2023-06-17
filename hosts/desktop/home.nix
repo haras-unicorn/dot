@@ -10,12 +10,27 @@ in
   home.homeDirectory = "/home/${username}";
   home.sessionVariables = {
     QT_QPA_PLATFORMTHEME = "gtk2";
+    VISUAL = "hx";
+    EDITOR = "hx";
+    PAGER = "bat";
+    BROWSER = "brave";
   };
   home.shellAliases = {
     lg = "lazygit";
+    cat = "bat";
+    grep = "rg";
+    rm = "rm -i";
+    mv = "mv -i";
+    la = "exa";
+
+    pls = "sudo";
+    bruh = "git";
+    sis = "hx";
+    yas = "yes";
   };
   home.packages = with pkgs; [
     # dev
+    meld
     python311Packages.python-lsp-server
     nil
     nixpkgs-fmt
@@ -26,6 +41,11 @@ in
     spotify-tui
     feh
     lazydocker
+    file
+    unzip
+    unrar
+    ripgrep
+    lsof
 
     # services
     keepmenu
@@ -40,6 +60,26 @@ in
 
   # dev
   programs.git.enable = true;
+  programs.git.delta.enable = true;
+  programs.git.attributes = [
+    "* text=auto eof=lf"
+  ];
+  programs.git.lfs.enable = true;
+  programs.git.signing.key = "8A2BB645A7A84277A9D6BC41987A64C9A6B34535";
+  programs.git.signing.signByDefault = true;
+  programs.git.userEmail = "social@hrvojej.anonaddy.me";
+  programs.git.userName = "Hrle";
+  programs.git.extraConfig = {
+    interactive.singleKey = true;
+    init.defaultBranch = "main";
+    pull.rebase = true;
+    push.default = "upstream";
+    push.followTags = true;
+    rerere.enabled = true;
+    merge.tool = "meld";
+    "mergetool \"meld\"".cmd = ''meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
+    color.ui = "auto";
+  };
   programs.helix.enable = true;
   programs.helix.languages = {
     language = [
@@ -188,6 +228,53 @@ in
     };
   };
   programs.htop.enable = true;
+  programs.nnn.enable = true;
+  programs.nnn.package = pkgs.nnn.override { withNerdIcons = true; };
+  programs.nnn.bookmarks = {
+    r = "~/repos";
+    d = "~/repos/dotfiles";
+  };
+  programs.nnn.extraPackages = with pkgs; [
+    mpv
+    nsxiv
+    zathura
+    tabbed
+    file
+    xdotool
+    atool
+    bsdtar
+    unrar
+    p7zip
+    vim-full
+  ];
+  programs.nnn.plugins = {
+    mappings = {
+      p = "preview-tabbed";
+      o = "nuke";
+      f = "fzopen";
+    };
+  };
+  programs.bat.enable = true;
+  programs.bat.config = {
+    style = "header,rule,snip,changes";
+  };
+  programs.ripgrep.enable = true;
+  programs.ripgrep.arguments = [
+    "--max-columns=100"
+    "--max-columns-preview"
+    "--colors=auto"
+    "--smart-case"
+  ];
+  programs.exa.enable = true;
+  programs.exa.extraOptions = [
+    "--all"
+    "--list"
+    "--color=always"
+    "--group-directories-first"
+    "--icons"
+    "--group"
+    "--header"
+  ];
 
   # services
   services.gnome-keyring.enable = true;
@@ -212,6 +299,7 @@ in
   # home.file.".config/dunst".source = ../../assets/.config/dunst;
   programs.rofi.enable = true;
   # home.file.".config/rofi".source = ../../assets/.config/rofi;
+  home.file.".config/keepmenu/config.ini".source = ../../assets/.config/keepmenu/config.ini;
   services.random-background.enable = true;
   services.random-background.imageDirectory = "%h/.local/share/wallpapers";
   services.betterlockscreen.enable = true;
