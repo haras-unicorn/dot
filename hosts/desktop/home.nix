@@ -248,6 +248,7 @@ in
     fi
     wd="$(pwd)"
     cd ~/repos/stable-diffusion-webui
+    git add *.nix
     if [[ ! -x ./webui.sh ]]; then
       printf "Stable Diffusion WebUI script not present\n.Exiting...\n"
       exit 1
