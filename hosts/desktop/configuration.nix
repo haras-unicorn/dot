@@ -83,10 +83,11 @@
   services.openssh.allowSFTP = true;
   services.transmission.enable = true;
   services.transmission.openPeerPorts = true;
-  services.transmission.settings.download-dir = "${config.services.transmission.home}/downloads";
-  services.transmission.settings.incomplete-dir = "${config.services.transmission.home}/.incomplete";
-  services.transmission.settings.watch-dir = "${config.services.transmission.home}/torrents";
-  services.transmission.settings.watch-dir-enabled = true;
+  # FIX: Failed to set up mount namespacing
+  # services.transmission.settings.download-dir = "${config.services.transmission.home}/downloads";
+  # services.transmission.settings.incomplete-dir = "${config.services.transmission.home}/.incomplete";
+  # services.transmission.settings.watch-dir = "${config.services.transmission.home}/torrents";
+  # services.transmission.settings.watch-dir-enabled = true;
 
   environment.systemPackages = with pkgs; [
     pinentry
