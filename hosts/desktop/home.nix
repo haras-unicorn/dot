@@ -262,7 +262,7 @@ in
       source ./venv/bin/activate && \
       exec python launch.py \
     "
-    echo "$command"
+    echo "Running '$command'"
     nix-shell --command "bash -c '$command'"
     cd "$wd"
   '';
