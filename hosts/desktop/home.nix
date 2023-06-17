@@ -34,6 +34,10 @@ in
     python311Packages.python-lsp-server
     nil
     nixpkgs-fmt
+    cudaPackages.cudatoolkit
+    freeglut
+    zlib
+    gcc
 
     # tui
     ncdu
@@ -247,10 +251,10 @@ in
       printf "Stable Diffusion WebUI script not present\n.Exiting...\n"
       exit 1
     fi
-    export COMMANDLINE_ARGS="--listen --enable-insecure-extensions-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions --skip-torch-cuda-test"
+    export COMMANDLINE_ARGS="--listen --enable-insecure-extensions-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions"
     export TORCH_COMMAND="pip install torch==2.0.1+cu118 --extra-index-url https://download.pytorch.org/whl/cu118"
     export NO_TCMALLOC="True"
-    ./webui.sh
+    exec python launch.py
     cd "$wd"
   '';
   home.file."scripts/stable-diffusion-webui".executable = true;
