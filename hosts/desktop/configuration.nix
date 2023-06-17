@@ -1,4 +1,9 @@
-{ config, pkgs, sweet-theme, ... }:
+{
+  # config,
+  pkgs
+, sweet-theme
+, ...
+}:
 
 {
   nix = {
