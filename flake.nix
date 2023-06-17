@@ -5,10 +5,11 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... } @ inputs: 
-    let 
+  outputs = { self, nixpkgs, home-manager, ... } @ inputs:
+    let
       system = "x86_64-linux";
-    in {
+    in
+    {
       nixosConfigurations.hyperv = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = inputs;
@@ -29,7 +30,8 @@
         modules = [
           ./hosts/desktop/hardware-configuration.nix
           ./hosts/desktop/configuration.nix
-          home-manager.nixosModules.home-manager {
+          home-manager.nixosModules.home-manager
+          {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = inputs;

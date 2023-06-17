@@ -41,11 +41,6 @@ in
   # dev
   programs.git.enable = true;
   programs.helix.enable = true;
-  programs.helix.settings = {
-    editor = {
-      auto-format = true;
-    };
-  };
   programs.helix.languages = {
     language = [
       {
@@ -59,6 +54,106 @@ in
         formatter = { command = "nixpkgs-fmt"; };
       }
     ];
+  };
+  programs.helix.settings = {
+    # theme = "palenight";
+    editor = {
+      file-picker = {
+        hidden = false;
+      };
+    };
+  };
+  programs.helix.themes = {
+    palenight =
+      let
+        # transparent = "#000000";
+        background = "#191349";
+        foreground = "#c7d5ff";
+        black = "#132339";
+        white = "#ffddff";
+        blue = "#82aaff";
+        cyan = "#89ddff";
+        green = "#c3e88d";
+        magenta = "#c792ea";
+        # red = "#ff5874";
+        yellow = "#ffeb95";
+        brightBlack = "#3c435e";
+        brightWhite = "#ffffff";
+        brightBlue = "#92baff";
+        brightCyan = "#99fdff";
+        brightGreen = "#c3f88d";
+        brightMagenta = "#d792fa";
+        brightRed = "#ff6884";
+        brightYellow = "#fffba5";
+        dimBlack = "#000200";
+        dimWhite = "#ddccdd";
+        dimBlue = "#72baff";
+        # dimCyan = "#79edff";
+        # dimGreen = "#b3d87d";
+        # dimMagenta = "#b782da";
+        # dimRed = "#ff4884";
+        # dimYellow = "#ffdb85";
+      in
+      {
+        "ui.background" = background;
+        "ui.background.separator" = dimWhite;
+        "ui.cursor" = white;
+        "ui.cursor.normal" = white;
+        "ui.cursor.insert" = white;
+        "ui.cursor.select" = white;
+        "ui.cursor.match" = green;
+        "ui.cursor.primary" = white;
+        "ui.cursor.primary.normal" = white;
+        "ui.cursor.primary.insert" = white;
+        "ui.cursor.primary.select" = white;
+        "ui.debug.breakpoint" = brightRed;
+        "ui.debug.active" = brightBlue;
+        "ui.gutter" = dimBlack;
+        "ui.gutter.selected" = white;
+        "ui.highlight.frameline" = yellow;
+        "ui.linenr" = white;
+        "ui.linenr.selected" = brightWhite;
+        "ui.statusline" = foreground;
+        "ui.statusline.inactive" = dimWhite;
+        "ui.statusline.normal" = green;
+        "ui.statusline.insert" = blue;
+        "ui.statusline.select" = magenta;
+        "ui.statusline.separator" = dimWhite;
+        "ui.popup" = background;
+        "ui.popup.info" = cyan;
+        "ui.window" = black;
+        "ui.help" = foreground;
+        "ui.text" = foreground;
+        "ui.text.focus" = white;
+        "ui.text.inactive" = dimWhite;
+        "ui.text.info" = brightCyan;
+        "ui.virtual.ruler" = dimWhite;
+        "ui.virtual.whitespace" = dimWhite;
+        "ui.virtual.indent-guide" = dimWhite;
+        "ui.virtual.inlay-hint" = dimWhite;
+        "ui.virtual.inlay-hint.parameter" = brightCyan;
+        "ui.virtual.inlay-hint.type" = brightMagenta;
+        "ui.virtual.wrap" = dimWhite;
+        "ui.menu" = brightBlack;
+        "ui.menu.selected" = blue;
+        "ui.menu.scroll" = { fg = brightBlue; bg = dimBlue; };
+        "ui.selection" = brightBlue;
+        "ui.selection.primary" = brightBlue;
+        "ui.highlight" = brightYellow;
+        "ui.cursorline.primary" = dimWhite;
+        "ui.cursorline.secondary" = dimWhite;
+        "ui.cursorcolumn.primary" = dimWhite;
+        "ui.cursorcolumn.secondary" = dimWhite;
+        "warning" = brightYellow;
+        "error" = brightRed;
+        "info" = brightCyan;
+        "hint" = brightGreen;
+        "diagnostic" = { modifiers = [ "underlined" ]; };
+        "diagnostic.hint" = brightGreen;
+        "diagnostic.info" = brightCyan;
+        "diagnostic.warning" = brightYellow;
+        "diagnostic.error" = brightRed;
+      };
   };
 
   # tui
