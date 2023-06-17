@@ -263,6 +263,48 @@ in
     cd "$wd"
   '';
   home.file."scripts/stable-diffusion-webui".executable = true;
+  home.file."scripts/recreate".text = ''
+    #!/usr/bin/env bash
+    set -eo pipefail
+
+    command=switch
+    if [[ "$1" == "boot" ]]; then
+      command=boot
+    fi
+
+    if [[ ! -d ~/repos/dotfiles ]]; then
+     mkdir -p ~/repos
+     git clone ssh://gitlab.com/hrle/dotfiles-nixos ~/repos/dotfiles
+    fi
+
+    git add .
+    git commit -m "WIP"
+    sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#desktop
+  '';
+  home.file."scripts/recreate".executable = true;
+  home.file."scripts/update".text = ''
+    #!/usr/bin/env bash
+    set -eo pipefail
+
+    command=switch
+    if [[ "$1" == "boot" ]]; then
+      command=boot
+    fi
+
+    if [[ ! -d ~/repos/dotfiles ]]; then
+     mkdir -p ~/repos
+     git clone ssh://gitlab.com/hrle/dotfiles-nixos ~/repos/dotfiles
+    fi
+
+    wd="$(pwd)"
+    cd ~/repos/dotfiles
+    nix flake update
+    git add .
+    git commit -m "WIP"
+    sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#desktop
+    cd "$wd"
+  '';
+  home.file."scripts/update".executable = true;
   programs.starship.enable = true;
   programs.starship.enableNushellIntegration = true;
   home.file.".config/starship.toml".source = ../../assets/.config/starship/starship.toml;
