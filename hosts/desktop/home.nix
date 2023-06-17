@@ -255,6 +255,7 @@ in
     export COMMANDLINE_ARGS="--listen --enable-insecure-extensions-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions"
     export TORCH_COMMAND="pip install torch==2.0.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117"
     export NO_TCMALLOC="True"
+    source ./venv/bin/activate
     exec python launch.py
     cd "$wd"
   '';
