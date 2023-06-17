@@ -10,9 +10,7 @@
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
-  nixpkgs.allowUnfree = {
-    allowUnfree = true;
-  };
+  nixpkgs.config.allowUnfree = true;
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.loader.efi.canTouchEfiVariables = true;
