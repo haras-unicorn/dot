@@ -281,6 +281,7 @@ in
     cd ~/repos/dotfiles
     git add .
     git commit -m "WIP"
+    git push
     sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#desktop
     cd "$wd"
   '';
@@ -304,6 +305,7 @@ in
     nix flake update
     git add .
     git commit -m "WIP"
+    git push
     sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#desktop
     cd "$wd"
   '';
