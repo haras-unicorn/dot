@@ -257,7 +257,7 @@ in
     fi
     nix develop --profile ./profile --command bash -c 'echo "Recorded profile"'
     git add .
-    git commit -m "Flake"
+    git commit -m "Flake" && echo "Flake commited" || echo "Flake already commited"
     git pull
     command=" \
       export COMMANDLINE_ARGS=\"--listen --enable-insecure-extension-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions --skip-torch-cuda-test\" && \
