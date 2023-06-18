@@ -61,7 +61,7 @@
   services.xserver.libinput.enable = true;
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.sddm.autoNumlock = true;
-  services.xserver.displayManager.sddm.theme = "${sweet-theme}/kde/sddm";
+  # services.xserver.displayManager.sddm.theme = "${sweet-theme}/kde/sddm";
   services.xserver.displayManager.defaultSession = "xfce+qtile";
   services.xserver.desktopManager.xfce.enable = true;
   services.xserver.desktopManager.xfce.noDesktop = true;
