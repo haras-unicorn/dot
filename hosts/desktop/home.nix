@@ -85,7 +85,6 @@ in
     "mergetool \"meld\"".cmd = ''meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
     color.ui = "auto";
   };
-  programs.gpg.enable = true;
   programs.helix.enable = true;
   programs.helix.languages = {
     language = [
@@ -400,7 +399,10 @@ in
   ];
 
   # services
+  programs.gpg.enable = true;
+  services.gpg-agent.enable = true;
   services.gnome-keyring.enable = true;
+  services.gnome-keyring.components = [ "pkcs11" "secrets" "ssh" ];
   programs.ssh.enable = true;
   programs.ssh.matchBlocks = {
     "github.com" = {
