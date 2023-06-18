@@ -60,6 +60,7 @@ in
     ferdium
     keepassxc
     brave
+    emote
   ];
 
   # dev

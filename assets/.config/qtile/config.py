@@ -169,33 +169,8 @@ widget_defaults = {
 
 
 @lazy.function
-def suspend_os(_: Qtile):
-    os.system("systemctl suspend-then-hibernate")
-
-
-@lazy.function
-def hibernate_os(_: Qtile):
-    os.system("systemctl hibernate")
-
-
-@lazy.function
-def restart_os(_: Qtile):
-    os.system("systemctl reboot")
-
-
-@lazy.function
-def shutdown_os(_: Qtile):
-    os.system("systemctl poweroff")
-
-
-@lazy.function
-def lock_user(_: Qtile):
+def lock(_: Qtile):
     os.system("betterlockscreen --lock")
-
-
-@lazy.function
-def logoff_user(_qtile: Qtile):
-    _qtile.stop()
 
 
 @lazy.function
@@ -204,19 +179,9 @@ def restart_qtile(_qtile: Qtile):
 
 
 @lazy.function
-def restart_spotifyd(_: Qtile):
-    os.system("systemctl restart --user spotifyd.service")
-
-
-@lazy.function
-def start_spt(_: Qtile):
-    terminal_wrap("spt")
-
-
-@lazy.function
-def kill_window(_qtile: Qtile):
+def kill(_qtile: Qtile):
     if not _qtile.current_window:
-        return
+        os.system("xfce4-session-logout")   
 
     _qtile.current_window.cmd_kill()
 
@@ -649,15 +614,10 @@ keys = [
     Key([super_mod, shift], "l", lazy.layout.shuffle_right()),
     Key([super_mod], tab, lazy.screen.next_group()),
     Key([super_mod, shift], tab, lazy.screen.prev_group()),
-    # flip for monadtall
-    Key([super_mod, control, shift], "f", lazy.layout.flip()),
     # lifecycle
-    Key([super_mod], escape, kill_window, desc="Kill"),
-    Key([super_mod, control, shift], escape, shutdown_os, desc="Shutdown"),
-    Key([super_mod, control, alt], escape, restart_os, desc="Restart"),
-    Key([super_mod, control], escape, lock_user, desc="Lock"),
-    Key([super_mod, alt], escape, suspend_os, desc="Suspend"),
-    Key([super_mod, shift], "c", restart_qtile, desc="Restart Qtile"),
+    Key([super_mod], escape, kill, desc="Kill"),
+    Key([super_mod, control], escape, lock, desc="Lock"),
+    Key([super_mod, shift], escape, restart_qtile, desc="Restart Qtile"),
     # keyboard
     Key(
         [super_mod],
@@ -717,15 +677,15 @@ keys = [
         desc="Keyboard brightness -",
     ),
     # config
-    Key(
-        [super_mod, control],
-        "c",
-        lazy.spawn(
-            f"gen-keybinding-img -o '{keymap_dir}' -c '{qtile_config_loc}'"
-        ),
-        lazy.spawn(f"feh '{keymap_dir}'"),
-        desc="Keymap",
-    ),
+    # Key(
+    #     [super_mod, control],
+    #     "c",
+    #     lazy.spawn(
+    #         f"gen-keybinding-img -o '{keymap_dir}' -c '{qtile_config_loc}'"
+    #     ),
+    #     lazy.spawn(f"feh '{keymap_dir}'"),
+    #     desc="Keymap",
+    # ),
     # apps
     Key(
         [super_mod],
@@ -758,7 +718,7 @@ keys = [
     Key(
         [super_mod],
         "f",
-        lazy.spawn("pcmanfm"),
+        lazy.spawn("thunar"),
         desc="File manager",
     ),
     Key(
