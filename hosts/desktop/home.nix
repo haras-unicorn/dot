@@ -401,6 +401,7 @@ in
   # services
   programs.gpg.enable = true;
   services.gpg-agent.enable = true;
+  services.gpg-agent.pinentryFlavor = "gnome3";
   services.gnome-keyring.enable = true;
   services.gnome-keyring.components = [ "pkcs11" "secrets" "ssh" ];
   programs.ssh.enable = true;
