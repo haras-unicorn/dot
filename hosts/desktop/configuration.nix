@@ -79,6 +79,7 @@
     noto-fonts-emoji
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
+  fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
   fonts.fontconfig.defaultFonts.emoji = [
   ];
