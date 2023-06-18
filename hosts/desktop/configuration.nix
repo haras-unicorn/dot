@@ -74,7 +74,6 @@
     ];
 
   fonts.fonts = with pkgs; [
-    dejavu_fonts
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
