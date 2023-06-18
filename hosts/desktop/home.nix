@@ -264,7 +264,7 @@ in
       ./webui.sh
     "
     echo "Running $command"
-    nix develop --command "bash -c '$command'"
+    nix develop ./profile --command "bash -c '$command'"
     cd "$wd"
   '';
   home.file."scripts/stable-diffusion-webui".executable = true;
