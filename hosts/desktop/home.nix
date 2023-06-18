@@ -54,6 +54,7 @@ in
     keepmenu
     brightnessctl
     gnome.seahorse
+    ntfs3g
 
     # apps
     ferdium
