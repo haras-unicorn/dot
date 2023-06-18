@@ -69,8 +69,8 @@ in
     "* text=auto eof=lf"
   ];
   programs.git.lfs.enable = true;
-  # programs.git.signing.key = "8A2BB645A7A84277A9D6BC41987A64C9A6B34535";
-  # programs.git.signing.signByDefault = true;
+  programs.git.signing.key = "8A2BB645A7A84277A9D6BC41987A64C9A6B34535";
+  programs.git.signing.signByDefault = true;
   programs.git.userEmail = "social@hrvojej.anonaddy.me";
   programs.git.userName = "Hrle";
   programs.git.extraConfig = {
