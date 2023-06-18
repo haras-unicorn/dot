@@ -33,6 +33,10 @@
     device = "/dev/disk/by-partlabel/nixboot";
     fsType = "vfat";
   };
+  fileSystems."/archive" = {
+    device = "dev/disk/by-label/Archive";
+    fsType = "ntfs";
+  };
   swapDevices = [
     {
       device = "/var/swap";
