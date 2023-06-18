@@ -405,11 +405,11 @@ in
   programs.ssh.matchBlocks = {
     "github.com" = {
       user = "git";
-      identityFile = "/home/${username}/.ssh/keys/personal";
+      identityFile = "/home/${username}/.ssh/personal";
     };
     "gitlab.com" = {
       user = "git";
-      identityFile = "/home/${username}/.ssh/keys/personal";
+      identityFile = "/home/${username}/.ssh/personal";
     };
   };
   services.syncthing.enable = true;
