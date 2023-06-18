@@ -73,6 +73,18 @@
       psutil
     ];
 
+  fonts.fonts = [
+    pkgs.dejavu_fonts
+    pkgs.emojione
+    pkgs.nerdfonts.override
+    {
+      fonts = [ "JetBrainsMono" ];
+    }
+  ];
+  fonts.enableDefaultFonts = true;
+  fonts.fontconfig.defaultFonts.emoji = [
+  ];
+
   services.pipewire.enable = true;
   services.pipewire.wireplumber.enable = true;
   services.pipewire.alsa.enable = true;
