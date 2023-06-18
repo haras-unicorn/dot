@@ -54,7 +54,6 @@ in
     # services
     keepmenu
     brightnessctl
-    gnome.seahorse
     ntfs3g
 
     # apps
@@ -402,8 +401,6 @@ in
   programs.gpg.enable = true;
   services.gpg-agent.enable = true;
   services.gpg-agent.pinentryFlavor = "gnome3";
-  services.gnome-keyring.enable = true;
-  services.gnome-keyring.components = [ "pkcs11" "secrets" "ssh" ];
   programs.ssh.enable = true;
   programs.ssh.matchBlocks = {
     "github.com" = {

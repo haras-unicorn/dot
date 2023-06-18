@@ -95,9 +95,13 @@
   services.packagekit.enable = true;
   programs.steam.enable = true;
 
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.sddm.enableGnomeKeyring = true;
+  programs.seahorse.enable = true;
   security.sudo.package = pkgs.sudo.override { withInsults = true; };
   services.openssh.enable = true;
   services.openssh.allowSFTP = true;
+  security.pam.enableSSHAgentAuth = true;
   services.transmission.enable = true;
   services.transmission.openPeerPorts = true;
   # FIX: Failed to set up mount namespacing
