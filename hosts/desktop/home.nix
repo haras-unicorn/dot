@@ -429,6 +429,7 @@ in
   home.file.".local/share/wallpapers".source = ../../assets/.local/share/wallpapers;
   services.spotifyd.enable = true;
   services.spotifyd.package = pkgs.spotifyd.override { withKeyring = true; };
+  # security add-generic-password -s spotifyd -D rust-keyring -a <your username> -w
   services.spotifyd.settings = {
     global = {
       username = "ftsedf157kfova8yuzoq1dfax";
