@@ -46,7 +46,6 @@
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.open = true;
 
   environment.variables = {
     NVIDIA_BUS_ID = "31:0:0";
