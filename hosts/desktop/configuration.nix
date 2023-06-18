@@ -99,7 +99,6 @@
   security.pam.services.sddm.enableGnomeKeyring = true;
   programs.seahorse.enable = true;
   security.sudo.package = pkgs.sudo.override { withInsults = true; };
-  programs.ssh.enable = true;
   programs.ssh.startAgent = true;
   services.openssh.enable = true;
   services.openssh.allowSFTP = true;
