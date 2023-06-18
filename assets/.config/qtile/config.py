@@ -763,7 +763,7 @@ keys = [
     Key([super_mod], "m", lazy.spawn("ferdium"), desc="Communication"),
     Key([super_mod], "s", lazy.spawn(terminal_wrap("spt")), desc="Spotify"),
     # extras
-    Key([super_mod], "r", random_wallpaper, desc="Randomize wallpaper"),
+    Key([super_mod, alt], "r", random_wallpaper, desc="Randomize wallpaper"),
 ]
 
 for group_name in visible_group_names:
