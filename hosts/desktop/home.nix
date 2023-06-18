@@ -324,6 +324,13 @@ in
     cd "$wd"
   '';
   home.file."scripts/update".executable = true;
+  home.file."scripts/clean".text = ''
+    #!/usr/bin/env bash
+    set -eo pipefail
+
+    nix-env --delete-generations 7d
+    nix-store --gc
+  '';
   programs.starship.enable = true;
   programs.starship.enableNushellIntegration = true;
   xdg.configFile."starship.toml".source = ../../assets/.config/starship/starship.toml;
