@@ -115,6 +115,7 @@
     vim-full
     git
     pinentry
+    wineWowPackages.stable
     lutris
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.plasma-framework
