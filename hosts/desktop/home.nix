@@ -431,7 +431,6 @@ in
   services.spotifyd.package = pkgs.spotifyd.override { withKeyring = true; };
   services.spotifyd.settings = {
     global = {
-      username = "ftsedf157kfova8yuzoq1dfax";
       use_keyring = true;
       use_mpris = true;
       dbus_type = "session";

@@ -118,6 +118,7 @@
     lutris
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.plasma-framework
+    libsecret
   ];
 
   users.users.virtuoso = {
