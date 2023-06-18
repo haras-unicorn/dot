@@ -187,7 +187,7 @@ def kill(_qtile: Qtile):
 
 @lazy.function
 def random_wallpaper(_: Qtile):
-    os.system("systemctl start --user random-wallpaper")
+    os.system("systemctl start --user random-background")
 
 
 @lazy.function
