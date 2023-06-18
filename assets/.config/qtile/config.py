@@ -185,6 +185,10 @@ def kill(_qtile: Qtile):
 
     _qtile.current_window.cmd_kill()
 
+@lazy.function
+def random_wallpaper(_: Qtile):
+    os.system("systemctl start --user random-wallpaper")
+
 
 @lazy.function
 def increase_display_brightness(_: Qtile):
@@ -758,6 +762,8 @@ keys = [
     Key([super_mod, shift], "w", lazy.spawn("brave --tor"), desc="Tor"),
     Key([super_mod], "m", lazy.spawn("ferdium"), desc="Communication"),
     Key([super_mod], "s", lazy.spawn(terminal_wrap("spt")), desc="Spotify"),
+    # extras
+    Key([super_mod], "r", random_wallpaper, desc="Randomize wallpaper"),
 ]
 
 for group_name in visible_group_names:
