@@ -81,8 +81,6 @@
   ];
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
-  fonts.fontconfig.defaultFonts.emoji = [
-  ];
 
   services.pipewire.enable = true;
   services.pipewire.wireplumber.enable = true;
