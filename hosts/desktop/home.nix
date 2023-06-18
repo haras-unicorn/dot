@@ -49,6 +49,7 @@ in
     ripgrep
     lsof
     duf
+    woeusb
 
     # services
     keepmenu
