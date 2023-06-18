@@ -68,6 +68,7 @@ in
   programs.git.attributes = [
     "* text=auto eof=lf"
   ];
+  # test
   programs.git.lfs.enable = true;
   programs.git.signing.key = "8A2BB645A7A84277A9D6BC41987A64C9A6B34535";
   programs.git.signing.signByDefault = true;
