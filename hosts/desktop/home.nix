@@ -331,6 +331,7 @@ in
     nix-env --delete-generations 7d
     nix-store --gc
   '';
+  home.file."scripts/clean".executable = true;
   programs.starship.enable = true;
   programs.starship.enableNushellIntegration = true;
   xdg.configFile."starship.toml".source = ../../assets/.config/starship/starship.toml;
