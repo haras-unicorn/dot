@@ -434,12 +434,14 @@ in
       username = "ftsedf157kfova8yuzoq1dfax";
       use_keyring = true;
       use_mpris = true;
+      dbus_type = "session";
       backend = "pulseaudio";
-      device_name = "${username}";
       bitrate = 320;
       cache_path = "/home/${username}/.cache/spotifyd";
       volume_normalisation = true;
       device_type = "computer";
+      device_name = "${username}";
+      zeroconf_port = 8888;
     };
   };
   services.playerctld.enable = true;
