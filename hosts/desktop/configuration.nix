@@ -73,13 +73,12 @@
       psutil
     ];
 
-  fonts.fonts = [
-    pkgs.dejavu_fonts
-    pkgs.emojione
-    pkgs.nerdfonts.override
-    {
-      fonts = [ "JetBrainsMono" ];
-    }
+  fonts.fonts = with pkgs; [
+    dejavu_fonts
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
   fonts.enableDefaultFonts = true;
   fonts.fontconfig.defaultFonts.emoji = [

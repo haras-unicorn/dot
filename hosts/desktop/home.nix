@@ -451,6 +451,7 @@ in
   xdg.configFile."qtile".source = ../../assets/.config/qtile;
 
   # theming
+  fonts.fontconfig.enable = true;
   gtk.enable = true;
   gtk.font.package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
   gtk.font.name = "JetBrainsMono Nerd Font";
