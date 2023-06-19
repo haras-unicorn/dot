@@ -61,6 +61,10 @@ in
     keepassxc
     brave
     emote
+    libreoffice-fresh
+    obs-studio
+    shotwell
+    pinta
   ];
 
   # dev
