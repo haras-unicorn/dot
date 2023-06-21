@@ -89,6 +89,8 @@
   services.pipewire.pulse.enable = true;
 
   services.qemuGuest.enable = true;
+  virtualisation.efi.enable = true;
+  virtualisation.useSecureBoot = true;
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu.ovmf.enable = true;
   virtualisation.libvirtd.qemu.swtpm.enable = true;
