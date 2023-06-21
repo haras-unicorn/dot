@@ -47,6 +47,7 @@ in
     unzip
     unrar
     ripgrep
+    pciutils
     lsof
     duf
     woeusb
