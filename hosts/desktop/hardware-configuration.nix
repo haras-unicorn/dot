@@ -24,9 +24,6 @@
   boot.kernelModules = [
     "kvm-amd"
   ];
-  boot.kernelParams = [
-    "amd_iommu=on"
-  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-partlabel/nixroot";
