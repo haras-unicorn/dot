@@ -90,6 +90,8 @@
 
   services.qemuGuest.enable = true;
   virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd.qemu.ovmf.enable = true;
+  virtualisation.libvirtd.qemu.swtpm.enable = true;
   virtualisation.docker.enable = true;
   services.cockpit.enable = true;
   services.packagekit.enable = true;
@@ -126,7 +128,7 @@
 
   users.users.virtuoso = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "libvirtd" "docker" ];
     initialPassword = "virtuoso";
     shell = pkgs.nushell;
   };
