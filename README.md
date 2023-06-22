@@ -71,6 +71,7 @@ I should have a modules folder for packages with a lot of configurations or grou
 
 ## Ideal state (or TODO)
 
+- [ ] proper Windows 11 VM
 - [ ] xdg.configFile for config files, xdg.dataFile for data files, xdg.desktopEntries for syncthing, transmission...
 - [ ] xdg.mimeApps configure default applications
 - [ ] xdg.userDirs
