@@ -51,6 +51,7 @@ in
     lsof
     duf
     woeusb
+    lazydocker
 
     # services
     keepmenu
