@@ -51,3 +51,15 @@ services.transmission.settings.watch-dir-enabled = true;
 
 I should have a modules folder for packages with a lot of configurations or groups of packages since my `home.nix` is getting crowded and hard to navigate.
 
+
+## Ideal state (or TODO)
+
+- [ ] secure boot
+- [ ] tpm 2 once i get a CPU that supports it
+- [ ] rEFInd (maybe once NixOS officially supports it)
+- [ ] better plymouth? (right now it flashes several times when i boot)
+- [ ] wayland
+- [ ] sway/leftwm (in general looking for a minimal config TWM for wayland preferrably written in rust)
+- [ ] a separate bar for my desktop environment (for now using the Qtile bar for that)
+- [ ] something more minimal than xfce ? (idk how this will work even with wayland)
+
