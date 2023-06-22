@@ -62,4 +62,17 @@ I should have a modules folder for packages with a lot of configurations or grou
 - [ ] sway/leftwm (in general looking for a minimal config TWM for wayland preferrably written in rust)
 - [ ] a separate bar for my desktop environment (for now using the Qtile bar for that)
 - [ ] something more minimal than xfce ? (idk how this will work even with wayland)
+- [ ] save brave settings here or different browser? (qutebrowser rendering and adblock sucks tbh)
+- [ ] keepassxc save settings or different key storage strategy? (maybe bitwarden but i fear TOTP is behind a paywall...)
+- [ ] replace syncthing with centralized storage and a server once i get a personal cloud (either raspberry pi + vpn or a cloud vm)
+
+### Cloud
+
+- [ ] vpn server or ipv6
+- [ ] storage
+- [ ] calendar
+- [ ] mail server?
+- [ ] matrix server?
+- [ ] ocr and elasticsearch for mail/documents
+- [ ] maybe home assistant
 

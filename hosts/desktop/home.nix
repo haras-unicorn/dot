@@ -40,6 +40,9 @@ in
     # tui
     pciutils
     lsof
+    dmidecode
+    inxi
+    hwinfo
     ncdu
     xclip
     woeusb
