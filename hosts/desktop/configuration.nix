@@ -90,7 +90,12 @@
   services.qemuGuest.enable = true;
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu.ovmf.enable = true;
-  virtualisation.libvirtd.qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
+  virtualisation.libvirtd.qemu.ovmf.packages = [
+    (pkgs.OVMF.override {
+      secureBoot = true;
+      tpmSupport = true;
+    }).fd
+  ];
   virtualisation.libvirtd.qemu.swtpm.enable = true;
   virtualisation.docker.enable = true;
   services.cockpit.enable = true;
