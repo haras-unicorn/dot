@@ -72,6 +72,9 @@ I should have a modules folder for packages with a lot of configurations or grou
 ## Ideal state (or TODO)
 
 - [ ] proper Windows 11 VM
+- [ ] check that Windows 11 VM is appropriate for visual studio and apps that are bad on linux
+- [ ] more ram for Windows 11 VM
+- [ ] use nixos as primary os
 - [ ] figure out direnv
 - [ ] xdg.configFile for config files, xdg.dataFile for data files, xdg.desktopEntries for syncthing, transmission...
 - [ ] xdg.mimeApps configure default applications
