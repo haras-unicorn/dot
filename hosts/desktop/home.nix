@@ -38,20 +38,18 @@ in
     nixpkgs-fmt
 
     # tui
-    ncdu
-    xclip
-    spotify-tui
-    feh
-    lazydocker
-    file
-    unzip
-    unrar
-    ripgrep
     pciutils
     lsof
-    duf
+    ncdu
+    xclip
     woeusb
     lazydocker
+    spotify-tui
+    fd
+    file
+    duf
+    unzip
+    unrar
 
     # services
     keepmenu
@@ -403,6 +401,7 @@ in
     "--group"
     "--header"
   ];
+  programs.feh.enable = true;
 
   # services
   programs.gpg.enable = true;
