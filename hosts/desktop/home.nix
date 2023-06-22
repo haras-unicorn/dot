@@ -41,10 +41,8 @@ in
     python311Packages.python-lsp-server
     python311Packages.black
     dotnet-sdk_7
-    dotnet-aspnetcore_7
     omnisharp-roslyn
     nodejs_20
-    # nodePackages.vscode-langservers-extracted
     nodePackages.bash-language-server
     nodePackages.yaml-language-server
     nodePackages.dockerfile-language-server-nodejs
