@@ -88,7 +88,6 @@
   services.pipewire.pulse.enable = true;
 
   services.qemuGuest.enable = true;
-  virtualisation.efi.OVMF = pkgs.OVMFFull.fd;
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.qemu.ovmf.enable = true;
   virtualisation.libvirtd.qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
