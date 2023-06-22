@@ -127,7 +127,10 @@
     lutris
     virt-manager
     spice
+    spice-vdagent
     virglrenderer
+    win-virtio
+    win-spice
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.plasma-framework
     libsecret
