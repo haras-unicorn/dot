@@ -12,7 +12,6 @@
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.loader.efi.canTouchEfiVariables = true;
-  # TODO: switch to systemd-boot once you move everything to nixos
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
@@ -108,11 +107,6 @@
   security.pam.enableSSHAgentAuth = true;
   services.transmission.enable = true;
   services.transmission.openPeerPorts = true;
-  # FIX: Failed to set up mount namespacing
-  # services.transmission.settings.download-dir = "${config.services.transmission.home}/downloads";
-  # services.transmission.settings.incomplete-dir = "${config.services.transmission.home}/.incomplete";
-  # services.transmission.settings.watch-dir = "${config.services.transmission.home}/torrents";
-  # services.transmission.settings.watch-dir-enabled = true;
 
   environment.systemPackages = with pkgs; [
     vim-full
