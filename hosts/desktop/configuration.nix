@@ -1,5 +1,6 @@
-{ config
-, pkgs
+{
+  # config, 
+  pkgs
 , sweet-theme
 , ...
 }:
@@ -126,6 +127,7 @@
     lutris
     virt-manager
     spice
+    virglrenderer
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.plasma-framework
     libsecret
