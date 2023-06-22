@@ -17,7 +17,9 @@ nixos-rebuild {switch/boot} --flake '/opt/dotfiles#{host(virtualbox)}'
 
 ## Virtualisation
 
-To enable virtio with Nvidia GPU add the following xml to your VM config in virt-manager:
+### NVIDIA Virtio
+
+To enable virtio with Nvidia GPU add:
 
 ```xml
 <video>
@@ -32,6 +34,21 @@ To enable virtio with Nvidia GPU add the following xml to your VM config in virt
 <graphics type="egl-headless">
   <gl rendernode="/dev/nvidia0"/>
 </graphics>
+```
+
+### Secure boot
+
+To enable secure boot add this to the `os` section:
+
+```xml
+<loader readonly="yes" secure="yes" type="pflash">/etc/ovmf/edk2-x86_64-secure-code.fd</loader>
+<nvram template="/etc/ovmf/edk2-i386-vars.fd"/>
+```
+
+, and this to the `features` section:
+
+```xml
+<smm state="on"/>
 ```
 
 ## Known issues
@@ -54,6 +71,12 @@ I should have a modules folder for packages with a lot of configurations or grou
 
 ## Ideal state (or TODO)
 
+- [ ] xdg.configFile for config files, xdg.dataFile for data files, xdg.desktopEntries for syncthing, transmission...
+- [ ] xdg.mimeApps configure default applications
+- [ ] xdg.userDirs
+- [ ] xresources theme
+- [ ] xsession.windowManager and not thorough system configuration
+- [ ] theme switching?
 - [ ] secure boot
 - [ ] tpm 2 once i get a CPU that supports it
 - [ ] rEFInd (maybe once NixOS officially supports it)
