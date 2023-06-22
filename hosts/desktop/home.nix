@@ -35,6 +35,8 @@ in
     meld
     nil
     nixpkgs-fmt
+    direnv
+    nix-direnv
     python311
     python311Packages.python-lsp-server
     python311Packages.black
@@ -127,6 +129,7 @@ in
   programs.vscode.mutableExtensionsDir = false;
   programs.vscode.package = pkgs.vscodium-fhs;
   programs.vscode.extensions = with pkgs.vscode-extensions; [
+    jnoortheen.nix-ide
     ms-python.python
     ms-dotnettools.csharp
     rust-lang.rust-analyzer
