@@ -261,10 +261,19 @@ in
   programs.nushell.extraConfig = ''
     let-env config = {
       show_banner: false
+
       edit_mode: vi
       cursor_shape: {
         vi_insert: line
         vi_normal: underscore
+      }
+
+      hooks: {
+        pre_prompt: [{ ||
+          let direnv = (direnv export json | from json)
+          let direnv = if ($direnv | length) == 1 { $direnv } else { {} }
+          $direnv | load-env
+        }]
       }
     }
   '';
