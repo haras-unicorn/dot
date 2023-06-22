@@ -105,6 +105,7 @@ I should have a modules folder for packages with a lot of configurations or grou
 
 - [ ] check if rust formats
 - [ ] csharpier
+- [ ] fix langservers-extracted package?
 
 ### VS Code
 
