@@ -33,9 +33,23 @@ in
   home.packages = with pkgs; [
     # dev
     meld
-    python311Packages.python-lsp-server
     nil
     nixpkgs-fmt
+    python311
+    python311Packages.python-lsp-server
+    python311Packages.black
+    dotnet-sdk_7
+    dotnet-runtime_7
+    dotnet-aspnetcore_7
+    omnisharp-roslyn
+    nodejs_20
+    nodePackages.vscode-langservers-extracted
+    nodePackages.bash-language-server
+    nodePackages.yaml-language-server
+    nodePackages.dockerfile-language-server-nodejs
+    rustc
+    cargo
+    marksman
 
     # tui
     pciutils
@@ -107,6 +121,17 @@ in
       }
     ];
   };
+  programs.vscode.enable = true;
+  programs.vscode.enableExtensionUpdateCheck = false;
+  programs.vscode.enableUpdateCheck = false;
+  programs.vscode.mutableExtensionsDir = false;
+  programs.vscode.package = pkgs.vscodium-fhs;
+  programs.vscode.extensions = with pkgs.vscode-extensions; [
+    ms-python.python
+    ms-dotnettools.csharp
+    rust-lang.rust-analyzer
+    redhat.vscode-yaml
+  ];
   programs.helix.settings = {
     # theme = "palenight";
     editor = {

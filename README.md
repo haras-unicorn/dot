@@ -72,12 +72,13 @@ I should have a modules folder for packages with a lot of configurations or grou
 ## Ideal state (or TODO)
 
 - [ ] proper Windows 11 VM
+- [ ] figure out direnv
 - [ ] xdg.configFile for config files, xdg.dataFile for data files, xdg.desktopEntries for syncthing, transmission...
 - [ ] xdg.mimeApps configure default applications
 - [ ] xdg.userDirs
 - [ ] xresources theme
 - [ ] xsession.windowManager and not thorough system configuration
-- [ ] theme switching?
+- [ ] theme switching? (idea: matrix of `<host>-<theme>`)
 - [ ] secure boot
 - [ ] tpm 2 once i get a CPU that supports it
 - [ ] rEFInd (maybe once NixOS officially supports it)
@@ -100,3 +101,19 @@ I should have a modules folder for packages with a lot of configurations or grou
 - [ ] ocr and elasticsearch for mail/documents
 - [ ] maybe home assistant
 
+### Helix
+
+- [ ] check if rust formats
+- [ ] csharpier
+
+### VS Code
+
+- [ ] settings
+- [ ] tasks (for nixos recreate/update)
+
+#### Extensions
+
+- [ ] csharpier
+- [ ] black
+- [ ] dockerfile
+- [ ] marksman
