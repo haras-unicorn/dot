@@ -291,16 +291,20 @@ in
       git clone https://github.com/virchau13/automatic1111-webui-nix ~/repos/automatic1111-webui-nix
       cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/stable-diffusion-webui
     fi
+
     wd="$(pwd)"
     cd ~/repos/stable-diffusion-webui
     if [[ ! -x ./webui.sh ]]; then
       printf "Stable Diffusion WebUI script not present\n.Exiting...\n"
       exit 1
     fi
+
     nix develop --profile ./profile --command bash -c 'echo "Recorded profile"'
+
     git add .
     git commit -m "Flake" && echo "Flake commited" || echo "Flake already commited"
     git pull
+
     command=" \
       export COMMANDLINE_ARGS=\"--listen --enable-insecure-extension-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions --skip-torch-cuda-test\" && \
       export TORCH_COMMAND=\"pip install torch==2.0.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117\" && \
@@ -309,9 +313,47 @@ in
     "
     echo "Running $command"
     nix develop ./profile --command bash -c "$command"
+
     cd "$wd"
   '';
   home.file."scripts/stable-diffusion-webui".executable = true;
+  home.file."scripts/text-generation-webui".text = ''
+    #!/usr/bin/env bash
+    set -eo pipefail
+
+    if [[ ! -d ~/repos/text-generation-webui ]]; then
+      mkdir -p ~/repos
+      git clone https://github.com/oobabooga/text-generation-webui ~/repos/text-generation-webui
+    fi
+    if [[ ! -d ~/repos/automatic1111-webui-nix ]]; then
+      mkdir -p ~/repos
+      git clone https://github.com/virchau13/automatic1111-webui-nix ~/repos/automatic1111-webui-nix
+      cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/text-generation-webui
+    fi
+
+    wd="$(pwd)"
+    cd ~/repos/text-generation-webui
+
+    nix develop --profile ./profile --command bash -c 'echo "Recorded profile"'
+    cat <<END > ./webui.sh
+      #!/usr/bin/env bash
+      set -eo pipefail
+
+      printf "Hello world!"
+    END
+    chmod +x ./webui.sh
+
+    git add .
+    git update-index --chmod=+x ./webui.sh
+    git commit -m "Flake" && echo "Flake commited" || echo "Flake already commited"
+    git pull
+
+    echo "Running $command"
+    nix develop ./profile --command bash ./webui.sh
+
+    cd "$wd"
+  '';
+  home.file."scripts/text-generation-webui".executable = true;
   home.file."scripts/recreate".text = ''
     #!/usr/bin/env bash
     set -eo pipefail
