@@ -289,8 +289,8 @@ in
     if [[ ! -d ~/repos/automatic1111-webui-nix ]]; then
       mkdir -p ~/repos
       git clone https://github.com/virchau13/automatic1111-webui-nix ~/repos/automatic1111-webui-nix
-      cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/stable-diffusion-webui
     fi
+    cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/stable-diffusion-webui
 
     wd="$(pwd)"
     cd ~/repos/stable-diffusion-webui
@@ -328,8 +328,8 @@ in
     if [[ ! -d ~/repos/automatic1111-webui-nix ]]; then
       mkdir -p ~/repos
       git clone https://github.com/virchau13/automatic1111-webui-nix ~/repos/automatic1111-webui-nix
-      cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/text-generation-webui
     fi
+    cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/text-generation-webui
 
     wd="$(pwd)"
     cd ~/repos/text-generation-webui
