@@ -348,7 +348,7 @@ in
     git commit -m "Flake" && echo "Flake commited" || echo "Flake already commited"
     git pull
 
-    echo "Running $command"
+    echo "Running ./webui.sh"
     nix develop ./profile --command bash ./webui.sh
 
     cd "$wd"
