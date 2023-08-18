@@ -5,6 +5,9 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    nixos-wsl.url = "github:nix-community/NixOS-WSL";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
   };
@@ -41,6 +44,13 @@
             home-manager.extraSpecialArgs = inputs;
             home-manager.users.virtuoso = import ./hosts/desktop/home.nix;
           }
+        ];
+      };
+      nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = inputs;
+        modules = [
+          ./hosts/wsl/configuration.nix
         ];
       };
     };
