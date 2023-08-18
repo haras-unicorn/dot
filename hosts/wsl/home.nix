@@ -247,8 +247,8 @@ in
     }
   '';
   programs.nushell.environmentVariables = {
-    PROMPT_INDICATOR_VI_INSERT = "'i '";
-    PROMPT_INDICATOR_VI_NORMAL = "'n '";
+    PROMPT_INDICATOR_VI_INSERT = "'λ '";
+    PROMPT_INDICATOR_VI_NORMAL = "' '";
   };
   home.file."scripts/recreate".text = ''
     #!/usr/bin/env bash
