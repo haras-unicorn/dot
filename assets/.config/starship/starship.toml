@@ -61,7 +61,6 @@ $time\
 $line_break\
 
 [╰─](bold dimmed cyan)\
-$character\
 """
 
 scan_timeout = 500

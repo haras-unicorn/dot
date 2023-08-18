@@ -51,6 +51,13 @@
         specialArgs = inputs;
         modules = [
           ./hosts/wsl/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = inputs;
+            home-manager.users.nixos = import ./hosts/wsl/home.nix;
+          }
         ];
       };
     };
