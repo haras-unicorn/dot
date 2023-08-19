@@ -22,6 +22,7 @@
     man-pages
     man-pages-posix
     nushell
+    nixos-generators
   ];
 
   users.users.nixos.shell = pkgs.nushell;
