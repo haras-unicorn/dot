@@ -17,6 +17,7 @@
   wsl.enable = true;
   wsl.startMenuLaunchers = true;
   wsl.defaultUser = "nixos";
+  wsl.interop.regitster = true;
 
   environment.systemPackages = with pkgs; [
     vim
