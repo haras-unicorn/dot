@@ -104,7 +104,7 @@ in
     ];
   };
   programs.helix.settings = {
-    theme = "everforest_dark";
+    theme = "everforest_transparent";
     editor = {
       true-color = true;
       scrolloff = 999;
@@ -112,6 +112,9 @@ in
       rulers = [ 80 ];
       gutters = [ "diagnostics" "spacer" "diff" ];
     };
+  };
+  programs.helix.themes.everforest_transparent = {
+    inherits = "everforest_dark";
   };
 
   # tui
@@ -131,7 +134,6 @@ in
       )
       let-env PATH = $updated_env_path
     }
-
     def-env prepend-path [new_path string] {
       let updated_env_path = (
         if ($env.PATH | split row ":" | any { |it| $it == $new_path }) {
