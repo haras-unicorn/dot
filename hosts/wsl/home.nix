@@ -109,7 +109,7 @@ in
       true-color = true;
       scrolloff = 999;
       auto-save = true;
-      rulers = [ 80 ];
+      rulers = [ ];
       gutters = [ "diagnostics" "spacer" "diff" ];
     };
   };
@@ -117,6 +117,7 @@ in
     inherits = "everforest_dark";
 
     "ui.background" = { };
+    "ui.statusline" = { fg = "fg"; };
   };
 
   # tui
