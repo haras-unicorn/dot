@@ -60,5 +60,19 @@
           }
         ];
       };
+      nixosConfigurations.raspberrypi = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = inputs;
+        modules = [
+          ./hosts/raspberrypi/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = inputs;
+            home-manager.users.pi = import ./hosts/raspberrypi/home.nix;
+          }
+        ];
+      };
     };
 }

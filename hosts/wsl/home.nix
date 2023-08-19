@@ -127,7 +127,7 @@ in
   programs.direnv.nix-direnv.enable = true;
   programs.nushell.enable = true;
   programs.nushell.extraEnv = ''
-    def-env append-path [new_path string] {
+    def-env append-path [new_path: string] {
       let updated_env_path = (
         if ($env.PATH | split row ":" | any { |it| $it == $new_path }) {
           $env.PATH
@@ -138,7 +138,7 @@ in
       )
       let-env PATH = $updated_env_path
     }
-    def-env prepend-path [new_path string] {
+    def-env prepend-path [new_path: string] {
       let updated_env_path = (
         if ($env.PATH | split row ":" | any { |it| $it == $new_path }) {
           $env.PATH
