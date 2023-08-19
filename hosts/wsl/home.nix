@@ -104,7 +104,7 @@ in
     ];
   };
   programs.helix.settings = {
-    # theme = "palenight";
+    theme = "everforest";
     editor = {
       file-picker = {
         hidden = false;
@@ -112,7 +112,7 @@ in
     };
   };
   programs.helix.themes = {
-    palenight =
+    everforest =
       let
         transparent = "#000000";
         bg0 = "#1d2329";
