@@ -5,7 +5,6 @@ let
 in
 {
   programs.home-manager.enable = true;
-  nixpkgs.config = import ../../assets/.config/nixpkgs/config.nix;
   xdg.configFile."nixpkgs/config.nix".source = ../../assets/.config/nixpkgs/config.nix;
 
   home.username = "${username}";

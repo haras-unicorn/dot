@@ -1,8 +1,6 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ ... }:
 
 {
-  imports = [ ];
-
   boot.initrd.availableKernelModules = [ "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
@@ -18,7 +16,7 @@
     fsType = "vfat";
   };
 
-  swapDevices = [ 
+  swapDevices = [
     {
       device = "/.swapfile";
       size = 4 * 1024;

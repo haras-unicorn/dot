@@ -1,4 +1,4 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ ... }:
 
 {
   imports = [ ];
@@ -18,7 +18,7 @@
     fsType = "vfat";
   };
 
-  swapDevices = [ 
+  swapDevices = [
     {
       device = "/.swapfile";
       size = 4 * 1024;

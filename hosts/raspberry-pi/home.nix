@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  username = "nixos";
+  username = "pi";
 in
 {
   programs.home-manager.enable = true;

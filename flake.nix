@@ -8,31 +8,33 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
+
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
   };
 
   outputs = { self, nixpkgs, home-manager, ... } @ inputs:
-    let
-      system = "x86_64-linux";
-    in
     {
       nixosConfigurations.hyperv = nixpkgs.lib.nixosSystem {
-        inherit system;
+        system = "x86_64-linux";
         specialArgs = inputs;
         modules = [
+          ./hosts/hyperv/hardware-configuration.nix
           ./hosts/hyperv/configuration.nix
         ];
       };
       nixosConfigurations.virtualbox = nixpkgs.lib.nixosSystem {
-        inherit system;
+        system = "x86_64-linux";
         specialArgs = inputs;
         modules = [
+          ./hosts/virtualbox/hardware-configuration.nix
           ./hosts/virtualbox/configuration.nix
         ];
       };
       nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-        inherit system;
+        system = "x86_64-linux";
         specialArgs = inputs;
         modules = [
           ./hosts/desktop/hardware-configuration.nix
@@ -47,9 +49,10 @@
         ];
       };
       nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
-        inherit system;
+        system = "x86_64-linux";
         specialArgs = inputs;
         modules = [
+          ./hosts/wsl/hardware-configuration.nix
           ./hosts/wsl/configuration.nix
           home-manager.nixosModules.home-manager
           {
@@ -60,17 +63,18 @@
           }
         ];
       };
-      nixosConfigurations.raspberrypi = nixpkgs.lib.nixosSystem {
-        inherit system;
+      nixosConfigurations.raspberry-pi = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
         specialArgs = inputs;
         modules = [
-          ./hosts/raspberrypi/configuration.nix
+          ./hosts/raspberry-pi/hardware-configuration.nix
+          ./hosts/raspberry-pi/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = inputs;
-            home-manager.users.pi = import ./hosts/raspberrypi/home.nix;
+            home-manager.users.pi = import ./hosts/raspberry-pi/home.nix;
           }
         ];
       };

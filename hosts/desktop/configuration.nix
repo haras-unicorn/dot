@@ -6,9 +6,8 @@
 
 {
   nix.package = pkgs.nixFlakes;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
+  nix.extraOptions = "experimental-features = nix-command flakes";
+  nixpkgs.config = import ../../assets/.config/nixpkgs/config.nix;
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.loader.efi.canTouchEfiVariables = true;
