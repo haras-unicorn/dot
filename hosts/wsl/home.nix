@@ -104,7 +104,7 @@ in
     ];
   };
   programs.helix.settings = {
-    theme = "everforest";
+    theme = "everforest_dark";
     editor = {
       true-color = true;
       scrolloff = 999;
