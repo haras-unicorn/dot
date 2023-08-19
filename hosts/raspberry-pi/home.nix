@@ -55,9 +55,6 @@ in
     hwinfo
     ncdu
     xclip
-    woeusb
-    lazydocker
-    spotify-tui
     fd
     file
     duf
