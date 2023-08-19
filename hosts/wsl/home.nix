@@ -104,7 +104,7 @@ in
     ];
   };
   programs.helix.settings = {
-    theme = "everforest_transparent";
+    theme = "transparent";
     editor = {
       true-color = true;
       scrolloff = 999;
@@ -113,8 +113,10 @@ in
       gutters = [ "diagnostics" "spacer" "diff" ];
     };
   };
-  programs.helix.themes.everforest_transparent = {
+  programs.helix.themes.transparent = {
     inherits = "everforest_dark";
+
+    ui.background = { bg = "#00000000"; };
   };
 
   # tui
