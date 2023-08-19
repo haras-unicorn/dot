@@ -64,6 +64,7 @@ in
     duf
     unzip
     unrar
+    sd
   ];
 
   # dev
