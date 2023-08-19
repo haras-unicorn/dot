@@ -547,5 +547,5 @@ in
   qt.style.name = "Sweet-Dark";
   qt.style.package = pkgs.sweet;
 
-  home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
 }

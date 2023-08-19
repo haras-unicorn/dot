@@ -20,15 +20,14 @@
   wsl.interop.register = true;
 
   environment.systemPackages = with pkgs; [
-    vim
+    vim-full
     git
     man-pages
     man-pages-posix
-    nushell
     nixos-generators
   ];
 
   users.users.nixos.shell = pkgs.nushell;
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 }

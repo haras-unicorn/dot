@@ -1,20 +1,23 @@
-{ lib, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
-    <nixpkgs/nixos/modules/installer/cd-dvd/sd-image-aarch64.nix>
+    <nixpkgs/nixos/modules/installer/sd-card/sd-image-raspberrypi.nix>
   ];
-  # The installer starts with a "nixos" user to allow installation, so add the SSH key to
-  # that user. Note that the key is, at the time of writing, put in `/etc/ssh/authorized_keys.d`
-  users.extraUsers.nixos.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 ..."
-  ];
-  # bzip2 compression takes loads of time with emulation, skip it.
+
+  users.users.pi.isNormalUser = true;
+  users.users.pi.initialPassword = "pi";
+  users.users.pi.shell = pkgs.nushell;
+
   sdImage.compressImage = false;
-  # OpenSSH is forced to have an empty `wantedBy` on the installer system[1], this won't allow it
-  # to be started. Override it with the normal value.
-  # [1] https://github.com/NixOS/nixpkgs/blob/9e5aa25/nixos/modules/profiles/installation-device.nix#L76
-  systemd.services.sshd.wantedBy = lib.mkOverride 40 [ "multi-user.target" ];
-  # Enable OpenSSH out of the box.
-  services.sshd.enabled = true;
+  services.openssh.enabl = true;
+
+  environment.systemPackages = with pkgs; [
+    vim-full
+    git
+    man-pages
+    man-pages-posix
+  ];
+
+  system.stateVersion = "23.11";
 }
