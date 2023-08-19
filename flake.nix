@@ -9,7 +9,6 @@
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
 
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
