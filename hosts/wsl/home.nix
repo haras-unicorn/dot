@@ -116,7 +116,7 @@ in
   programs.helix.themes.transparent = {
     inherits = "everforest_dark";
 
-    ui.background = { bg = "#00000000"; };
+    "ui.background" = { };
   };
 
   # tui
