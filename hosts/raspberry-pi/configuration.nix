@@ -6,7 +6,7 @@
   nixpkgs.config = import ../../assets/.config/nixpkgs/config.nix;
 
   services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = true;
+  # services.openssh.settings.PasswordAuthentication = true;
   # networking.hostName = "pi";
 
   environment.systemPackages = with pkgs; [
