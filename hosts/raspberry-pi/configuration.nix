@@ -7,7 +7,7 @@
 
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = true;
-  networking.hostName = "pi";
+  # networking.hostName = "pi";
 
   environment.systemPackages = with pkgs; [
     libraspberrypi
@@ -20,7 +20,7 @@
 
   users.users.pi.isNormalUser = true;
   users.users.pi.initialPassword = "pi";
-  users.users.pi.extraGroups = [ "wheel" ];
+  # users.users.pi.extraGroups = [ "wheel" ];
   users.users.pi.shell = pkgs.nushell;
 
   system.stateVersion = "23.11";
