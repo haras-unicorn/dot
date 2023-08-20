@@ -18,10 +18,7 @@ nixos-rebuild {switch/boot} --flake '/opt/dotfiles#{host(virtualbox)}'
 ## Imaging
 
 ```sh
-nixos-generate \
-  --format sd-aarch64 \
-  --system aarch64-linux \
-  --flake ~/repos/dotfiles#raspberry-pi
+nix build .#nixosConfigurations.raspberry-pi.config.system.build.sdImage
 ```
 
 ## Virtualisation
