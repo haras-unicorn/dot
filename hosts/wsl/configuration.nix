@@ -10,7 +10,6 @@
     git
     man-pages
     man-pages-posix
-    nixos-generators
   ];
 
   users.users.nixos.shell = pkgs.nushell;
