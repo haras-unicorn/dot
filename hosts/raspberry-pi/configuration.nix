@@ -34,8 +34,8 @@ in
   services.openssh.settings.PasswordAuthentication = true;
   networking.hostName = "pi";
 
-  environment.etc."ssl/certs/mess/ca.crt" = import ../../artifacts/ca.crt;
-  environment.etc."ssl/certs/mess/ca.key" = import ../../artifacts/ca.key;
+  # environment.etc."ssl/certs/mess/ca.crt" = import ../../artifacts/ca.crt;
+  # environment.etc."ssl/certs/mess/ca.key" = import ../../artifacts/ca.key;
   environment.systemPackages = with pkgs; [
     libraspberrypi
     raspberrypi-eeprom
