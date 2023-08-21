@@ -22,9 +22,12 @@ openssl x509 -req -in "$ARTIFACTS_DIR/ca.csr" \
   -days 3650;
 
 echo "Generating passwords...";
-openssl rand -base64 32 > "$ARTIFACTS/postgres.key";
-openssl rand -base64 32 > "$ARTIFACTS/mess.key";
-chmod 600 "$ARTIFACTS/postgres.key" "$ARTIFACTS/mess.key";
+POSTGRES_PASSWORD=$(openssl rand -base64 32)
+MESS_PASSWORD=$(openssl rand -base64 32)
+cat > "$ARTIFACTS/alter-passwords.sql" <<EOL
+ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';
+ALTER USER mess WITH PASSWORD '$MESS_PASSWORD';
+EOL
 
 echo "Building Raspberry Pi image...";
 wd="$(abs "$(pwd)")";

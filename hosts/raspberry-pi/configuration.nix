@@ -90,6 +90,7 @@ in
     hostssl   all         all         192.168.1.0/24  scram-sha-256
   '';
   services.postgresql.enableTCPIP = true;
+  services.postgresql.initialScript = import ../../artifacts/alter-passwords.sql;
 
   users.users.pi.isNormalUser = true;
   users.users.pi.initialPassword = "pi";
