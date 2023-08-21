@@ -46,12 +46,12 @@ in
     man-pages-posix
     age
     ssh-to-age
-    mkCertificate
-    {
-      name = "mess/postgres";
-      subject = "Mess Raspberry Pi Postgres certificate";
-      ca = "mess/ca";
-    }
+    # mkCertificate
+    # {
+    #   name = "mess/postgres";
+    #   subject = "Mess Raspberry Pi Postgres certificate";
+    #   ca = "mess/ca";
+    # }
   ];
 
   systemd.services.renew-postgres-cert.description = "Renew postgres SSL certificate";
