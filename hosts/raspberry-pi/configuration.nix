@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   nix.package = pkgs.nixFlakes;
@@ -17,6 +17,26 @@
     man-pages
     man-pages-posix
   ];
+
+  services.postgresql.enable = true;
+  services.postgresql.package = pkgs.postgresql_14;
+  services.postgresql.extraPlugins = with config.services.postgresql.package.pkgs; [
+    timescaledb
+  ];
+  services.postgresql.settings.shared_preload_libraries = "timescaledb";
+  services.postgresql.ensureDatabases = [ "mess" ];
+  services.postgresql.ensureUsers = [
+    {
+      name = "mess";
+      ensurePermissions = {
+        "DATABASE mess" = "ALL PRIVILEGES";
+      };
+      ensureClauses = {
+        login = true;
+      };
+    }
+  ];
+  services.postgresql.enableTCPIP = true;
 
   users.users.pi.isNormalUser = true;
   users.users.pi.initialPassword = "pi";

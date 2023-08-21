@@ -198,7 +198,7 @@ in
     git add .
     git commit -m "$comment"
     git push
-    sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#wsl
+    sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#raspberry-pi
     cd "$wd"
   '';
   home.file."scripts/recreate".executable = true;
@@ -227,7 +227,7 @@ in
     git add .
     git commit -m "$comment"
     git push
-    sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#wsl
+    sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#raspberry-pi
     cd "$wd"
   '';
   home.file."scripts/update".executable = true;
