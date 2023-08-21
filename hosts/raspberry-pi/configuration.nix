@@ -44,6 +44,8 @@ in
     openssl
     man-pages
     man-pages-posix
+    age
+    ssh-to-age
     mkCertificate
     {
       name = "mess/postgres";
@@ -68,9 +70,9 @@ in
     timescaledb
   ];
   services.postgresql.settings.shared_preload_libraries = "timescaledb";
-  services.postgresql.settings.ssl = "on";
-  services.postgresql.settings.ssl_cert_file = "/etc/ssl/certs/mess/postgres.crt";
-  services.postgresql.settings.ssl_key_file = "/etc/ssl/certs/mess/postgres.key";
+  # services.postgresql.settings.ssl = "on";
+  # services.postgresql.settings.ssl_cert_file = "/etc/ssl/certs/mess/postgres.crt";
+  # services.postgresql.settings.ssl_key_file = "/etc/ssl/certs/mess/postgres.key";
   services.postgresql.ensureDatabases = [ "mess" ];
   services.postgresql.ensureUsers = [
     {
@@ -90,7 +92,7 @@ in
     hostssl   all         all         192.168.1.0/24  scram-sha-256
   '';
   services.postgresql.enableTCPIP = true;
-  services.postgresql.initialScript = import ../../artifacts/alter-passwords.sql;
+  # services.postgresql.initialScript = import ../../artifacts/alter-passwords.sql;
 
   users.users.pi.isNormalUser = true;
   users.users.pi.initialPassword = "pi";

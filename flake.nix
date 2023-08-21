@@ -10,11 +10,14 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
   };
 
-  outputs = { self, nixpkgs, home-manager, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, ... } @ inputs:
     {
       nixosConfigurations.hyperv = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -68,6 +71,7 @@
         modules = [
           ./hosts/raspberry-pi/hardware-configuration.nix
           ./hosts/raspberry-pi/configuration.nix
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
