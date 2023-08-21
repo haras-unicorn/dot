@@ -30,11 +30,11 @@ ALTER USER postgres WITH PASSWORD '$POSTGRES_PASSWORD';
 ALTER USER mess WITH PASSWORD '$MESS_PASSWORD';
 EOF
 
-# echo "Building Raspberry Pi image...";
-# wd="$(abs "$(pwd)")";
-# cd "$ROOT";
-# nix build ".#nixosConfigurations.raspberry-pi.config.system.build.sdImage";
-# cd "$wd";
+echo "Building Raspberry Pi image...";
+wd="$(abs "$(pwd)")";
+cd "$ROOT";
+nix build ".#nixosConfigurations.raspberry-pi.config.system.build.sdImage";
+cd "$wd";
 
 echo "Done!";
 
