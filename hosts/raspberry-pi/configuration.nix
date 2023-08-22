@@ -41,11 +41,12 @@ in
     raspberrypi-eeprom
     vim-full
     git
-    openssl
     man-pages
     man-pages-posix
+    openssl
     age
     ssh-to-age
+    sops
     # mkCertificate
     # {
     #   name = "mess/postgres";
@@ -86,7 +87,7 @@ in
     }
   ];
   services.postgresql.authentication = pkgs.lib.mkOverride 10 ''
-    # TYPE    DATABASE    USER        ADDRESS         METHOD  OPTIONS
+    # TYPE    DATABASE    USER        ADDRESS         METHOD        OPTIONS
     local     all         all                         scram-sha-256
     host      all         all         samehost        scram-sha-256
     hostssl   all         all         192.168.1.0/24  scram-sha-256
