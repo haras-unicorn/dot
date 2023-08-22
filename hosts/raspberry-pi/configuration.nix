@@ -21,6 +21,7 @@ let
   '';
 
   mkCertificate = { name, subject, ca }:
+    with import <nixpkgs> { };
     stdenv.mkDerivation
       {
         name = name;
