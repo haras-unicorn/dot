@@ -19,7 +19,7 @@ let
   '';
 
   mkCertificate = { name, subject, ca }:
-    pkgs.runCommandLocal name { } mkCertificateCommand {
+    pkgs.runCommand name { } mkCertificateCommand {
       name = name;
       subject = subject;
       ca = ca;
