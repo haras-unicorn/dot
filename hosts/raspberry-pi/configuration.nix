@@ -3,6 +3,8 @@
 let
   mkCertificateCommand = { name, subject, ca }: ''
     #!/usr/bin/env bash
+
+    mkdir -p "$(dirname ${name})";
   
     openssl genpkey -algorithm ED25519 \
       -out /etc/ssl/certs/${name}.key;
