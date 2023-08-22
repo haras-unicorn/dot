@@ -2,7 +2,7 @@ keys:
   - &mess age1kenfnysyt7w7nq0nnvnlqrrn40unkphts4ycuxd5lv7679t9pejqnh8twf
   - &pi age16fvhjve0x8cv82qdr6hjke9ftr3lsy7muue8f6x0dzjnjfg5fdysekgd06
 creation_rules:
-  - path_regex: /dev/stdin
+  - path_regex: secrets.yaml
     key_groups:
     - age:
        - *mess
