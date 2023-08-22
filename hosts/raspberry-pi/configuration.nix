@@ -24,13 +24,27 @@ let
       subject = subject;
       ca = ca;
     };
+
+  postgresCert = mkCertificate
+    {
+      name = "mess/postgres";
+      subject = "Mess Raspberry Pi Postgres certificate";
+      ca = "mess/ca";
+    };
+
+  renewScript = mkCertificateCommand {
+    name = "mess/postgres";
+    subject = "Mess Raspberry Pi Postgres certificate";
+    ca = "mess/ca";
+  };
 in
 {
   sops.defaultSopsFile = ../../secrets.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
-  sops.secrets.foo.path = "/etc/secrets.yaml";
+  sops.secrets.ca.crt.path = "/etc/ssl/certs/mess/ca.crt";
+  sops.secrets.ca.key.path = "/etc/ssl/certs/mess/ca.key";
 
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = "experimental-features = nix-command flakes";
@@ -40,8 +54,6 @@ in
   services.openssh.settings.PasswordAuthentication = true;
   networking.hostName = "pi";
 
-  # environment.etc."ssl/certs/mess/ca.crt" = import ../../artifacts/ca.crt;
-  # environment.etc."ssl/certs/mess/ca.key" = import ../../artifacts/ca.key;
   environment.systemPackages = with pkgs; [
     libraspberrypi
     raspberrypi-eeprom
@@ -53,52 +65,43 @@ in
     age
     ssh-to-age
     sops
-    # mkCertificate
-    # {
-    #   name = "mess/postgres";
-    #   subject = "Mess Raspberry Pi Postgres certificate";
-    #   ca = "mess/ca";
-    # }
+    postgresCert
   ];
 
-  # systemd.services.renew-postgres-cert.description = "Renew postgres SSL certificate";
-  # systemd.services.renew-postgres-cert.script = mkCertificateCommand {
-  #   name = "mess/postgres";
-  #   subject = "Mess Raspberry Pi Postgres certificate";
-  #   ca = "mess/ca";
-  # };
-  # systemd.timers.renew-postgres-cert.description = "Renew postgres SSL certificate";
-  # systemd.timers.renew-postgres-cert.wantedBy = [ "timers.target" ];
-  # systemd.timers.renew-postgres-cert.timerConfig.OnCalendar = "*-*-01 00:00:00";
+  systemd.services.renew-postgres-cert.description = "Renew postgres SSL certificate";
+  systemd.services.renew-postgres-cert.script = renewScript;
+  systemd.timers.renew-postgres-cert.description = "Renew postgres SSL certificate";
+  systemd.timers.renew-postgres-cert.wantedBy = [ "timers.target" ];
+  systemd.timers.renew-postgres-cert.timerConfig.OnCalendar = "*-*-01 00:00:00";
 
-  # services.postgresql.enable = true;
-  # services.postgresql.package = pkgs.postgresql_14;
-  # services.postgresql.extraPlugins = with config.services.postgresql.package.pkgs; [
-  #   timescaledb
-  # ];
-  # services.postgresql.settings.shared_preload_libraries = "timescaledb";
-  # services.postgresql.settings.ssl = "on";
-  # services.postgresql.settings.ssl_cert_file = "/etc/ssl/certs/mess/postgres.crt";
-  # services.postgresql.settings.ssl_key_file = "/etc/ssl/certs/mess/postgres.key";
-  # services.postgresql.ensureDatabases = [ "mess" ];
-  # services.postgresql.ensureUsers = [
-  #   {
-  #     name = "mess";
-  #     ensurePermissions = {
-  #       "DATABASE mess" = "ALL PRIVILEGES";
-  #     };
-  #     ensureClauses = {
-  #       login = true;
-  #     };
-  #   }
-  # ];
-  # services.postgresql.authentication = pkgs.lib.mkOverride 10 ''
-  #   # TYPE    DATABASE    USER        ADDRESS         METHOD        OPTIONS
-  #   local     all         all                         scram-sha-256
-  #   host      all         all         samehost        scram-sha-256
-  #   hostssl   all         all         192.168.1.0/24  scram-sha-256
-  # '';
-  # services.postgresql.enableTCPIP = true;
+  services.postgresql.enable = true;
+  services.postgresql.package = pkgs.postgresql_14;
+  services.postgresql.extraPlugins = with config.services.postgresql.package.pkgs; [
+    timescaledb
+  ];
+  services.postgresql.settings.shared_preload_libraries = "timescaledb";
+  services.postgresql.settings.ssl = "on";
+  services.postgresql.settings.ssl_cert_file = "/etc/ssl/certs/mess/postgres.crt";
+  services.postgresql.settings.ssl_key_file = "/etc/ssl/certs/mess/postgres.key";
+  services.postgresql.ensureDatabases = [ "mess" ];
+  services.postgresql.ensureUsers = [
+    {
+      name = "mess";
+      ensurePermissions = {
+        "DATABASE mess" = "ALL PRIVILEGES";
+      };
+      ensureClauses = {
+        login = true;
+      };
+    }
+  ];
+  services.postgresql.authentication = pkgs.lib.mkOverride 10 ''
+    # TYPE    DATABASE    USER        ADDRESS         METHOD        OPTIONS
+    local     all         all                         scram-sha-256
+    host      all         all         samehost        scram-sha-256
+    hostssl   all         all         192.168.1.0/24  scram-sha-256
+  '';
+  services.postgresql.enableTCPIP = true;
   # services.postgresql.initialScript = import ../../artifacts/alter-passwords.sql;
 
   users.users.pi.isNormalUser = true;
