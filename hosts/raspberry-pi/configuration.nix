@@ -43,8 +43,8 @@ in
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
-  sops.secrets.ca.crt.path = "/etc/ssl/certs/mess/ca.crt";
-  sops.secrets.ca.key.path = "/etc/ssl/certs/mess/ca.key";
+  sops.secrets."ca.crt".path = "/etc/ssl/certs/mess/ca.crt";
+  sops.secrets."ca.key".path = "/etc/ssl/certs/mess/ca.key";
 
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = "experimental-features = nix-command flakes";
