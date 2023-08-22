@@ -38,7 +38,6 @@ let
       cp ${name}.key $dir;
     '';
 
-
   postgresCert = mkCertificate
     {
       name = "mess/postgres";
