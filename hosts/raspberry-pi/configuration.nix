@@ -21,28 +21,22 @@ let
   '';
 
   mkCertificate = { name, subject, ca }:
-    pkgs.stdenv.mkDerivation
+    pkgs.runCommand name
       {
-        name = name;
-        pname = name;
-        version = "1.0.0";
         buildInputs = with pkgs; [ openssl ];
-        buildPhase = ''
-          ${
-            mkCertificateCommand {
-              name = name;
-              subject = subject;
-              ca = ca;
-            }
-          }
-        '';
-        installPhase = ''
-          dir="$(dirname "$out/etc/ssl/certs/${name}")"
-          mkdir -p "$dir";
-          cp ${name}.crt $dir;
-          cp ${name}.key $dir;
-        '';
-      };
+      } ''
+      ${
+        mkCertificateCommand {
+          name = name;
+          subject = subject;
+          ca = ca;
+        }
+      }
+      dir="$(dirname "$out/etc/ssl/certs/${name}")"
+      mkdir -p "$dir";
+      cp ${name}.crt $dir;
+      cp ${name}.key $dir;
+    '';
 
 
   postgresCert = mkCertificate
