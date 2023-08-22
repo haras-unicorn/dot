@@ -19,11 +19,15 @@ let
   '';
 
   mkCertificate = { name, subject, ca }:
-    pkgs.runCommand name { } mkCertificateCommand {
-      name = name;
-      subject = subject;
-      ca = ca;
-    };
+    pkgs.runCommand name { } ''
+      ${
+        mkCertificateCommand {
+          name = name;
+          subject = subject;
+          ca = ca;
+        }
+      }
+    '';
 
   postgresCert = mkCertificate
     {
