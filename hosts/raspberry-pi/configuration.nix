@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, stdenv, ... }:
 
 let
   mkCertificateCommand = { name, subject, ca }: ''
@@ -7,44 +7,55 @@ let
     mkdir -p "$(dirname ${name})";
   
     openssl genpkey -algorithm ED25519 \
-      -out /etc/ssl/certs/${name}.key;
+      -out ${name}.key;
 
     openssl req -new \
-      -key /etc/ssl/certs/${name}.key \
-      -out /etc/ssl/certs/${name}.csr \
+      -key ${name}.key \
+      -out ${name}.csr \
       -subj "/CN=${subject}";
 
     openssl x509 -req -in ${name}.csr \
-      -CA /etc/ssl/certs/${ca}.crt -CAkey /etc/ssl/certs/${ca}.key -CAcreateserial \
-      -out /etc/ssl/certs/${name}.crt \
+      -CA ${ca}.crt -CAkey ${ca}.key -CAcreateserial \
+      -out ${name}.crt \
       -days 400;
   '';
 
   mkCertificate = { name, subject, ca }:
-    pkgs.runCommand name
+    stdenv.mkDerivation
       {
+        name = name;
+        pname = name;
+        version = "1.0.0";
         buildInputs = with pkgs; [ openssl ];
-      } ''
-      ${
-        mkCertificateCommand {
-          name = name;
-          subject = subject;
-          ca = ca;
-        }
-      }
-    '';
+        buildPhase = ''
+          ${
+            mkCertificateCommand {
+              name = name;
+              subject = subject;
+              ca = ca;
+            }
+          }
+        '';
+        installPhase = ''
+          dir="$(dirname "$out/etc/ssl/certs/${name}")"
+          mkdir -p "$dir";
+          cp ${name}.crt $dir;
+          cp ${name}.key $dir;
+        '';
+      };
+
 
   postgresCert = mkCertificate
     {
       name = "mess/postgres";
       subject = "Mess Raspberry Pi Postgres certificate";
-      ca = "mess/ca";
+      ca = "/etc/ssl/certs/mess/ca";
     };
 
   renewScript = mkCertificateCommand {
     name = "mess/postgres";
     subject = "Mess Raspberry Pi Postgres certificate";
-    ca = "mess/ca";
+    ca = "/etc/ssl/certs/mess/ca";
   };
 in
 {
