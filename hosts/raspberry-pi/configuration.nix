@@ -19,7 +19,10 @@ let
   '';
 
   mkCertificate = { name, subject, ca }:
-    pkgs.runCommand name { } ''
+    pkgs.runCommand name
+      {
+        buildInputs = with pkgs; [ openssl ];
+      } ''
       ${
         mkCertificateCommand {
           name = name;
