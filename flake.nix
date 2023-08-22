@@ -44,6 +44,7 @@
         modules = [
           ./hosts/desktop/hardware-configuration.nix
           ./hosts/desktop/configuration.nix
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -59,6 +60,7 @@
         modules = [
           ./hosts/wsl/hardware-configuration.nix
           ./hosts/wsl/configuration.nix
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

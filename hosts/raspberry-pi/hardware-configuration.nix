@@ -3,6 +3,8 @@
 {
   imports = [
     nixos-hardware.nixosModules.raspberry-pi-4
+    # NOTE: doesn't work without this for now
+    # it should work with just `nixos-generate`though
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
