@@ -1,56 +1,5 @@
-{ pkgs, config, stdenv, ... }:
+{ pkgs, config, ... }:
 
-let
-  mkCertificateCommand = { name, subject, ca }: ''
-    #!/usr/bin/env bash
-
-    mkdir -p "$(dirname ${name})";
-  
-    openssl genpkey -algorithm ED25519 \
-      -out ${name}.key;
-
-    openssl req -new \
-      -key ${name}.key \
-      -out ${name}.csr \
-      -subj "/CN=${subject}";
-
-    openssl x509 -req -in ${name}.csr \
-      -CA ${ca}.crt -CAkey ${ca}.key -CAcreateserial \
-      -out ${name}.crt \
-      -days 400;
-  '';
-
-  mkCertificate = { name, subject, ca }:
-    pkgs.runCommand name
-      {
-        buildInputs = with pkgs; [ openssl ];
-      } ''
-      ${
-        mkCertificateCommand {
-          name = name;
-          subject = subject;
-          ca = ca;
-        }
-      }
-      dir="$(dirname "$out/etc/ssl/certs/${name}")"
-      mkdir -p "$dir";
-      cp ${name}.crt $dir;
-      cp ${name}.key $dir;
-    '';
-
-  postgresCert = mkCertificate
-    {
-      name = "mess/postgres";
-      subject = "Mess Raspberry Pi Postgres certificate";
-      ca = "/etc/ssl/certs/mess/ca";
-    };
-
-  renewScript = mkCertificateCommand {
-    name = "mess/postgres";
-    subject = "Mess Raspberry Pi Postgres certificate";
-    ca = "/etc/ssl/certs/mess/ca";
-  };
-in
 {
   sops.defaultSopsFile = ../../secrets.yaml;
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
@@ -78,14 +27,7 @@ in
     age
     ssh-to-age
     sops
-    postgresCert
   ];
-
-  systemd.services.renew-postgres-cert.description = "Renew postgres SSL certificate";
-  systemd.services.renew-postgres-cert.script = renewScript;
-  systemd.timers.renew-postgres-cert.description = "Renew postgres SSL certificate";
-  systemd.timers.renew-postgres-cert.wantedBy = [ "timers.target" ];
-  systemd.timers.renew-postgres-cert.timerConfig.OnCalendar = "*-*-01 00:00:00";
 
   services.postgresql.enable = true;
   services.postgresql.package = pkgs.postgresql_14;
@@ -115,6 +57,7 @@ in
     hostssl   all         all         192.168.1.0/24  scram-sha-256
   '';
   services.postgresql.enableTCPIP = true;
+  # TODO: passwords
   # services.postgresql.initialScript = import ../../artifacts/alter-passwords.sql;
 
   users.users.pi.isNormalUser = true;
