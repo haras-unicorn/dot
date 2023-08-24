@@ -55,6 +55,7 @@
   services.postgresql.enableTCPIP = true;
   services.postgresql.port = 5432;
   networking.firewall.allowedTCPPorts = [ 5432 ];
+  services.postgresql.settings.ssl = "on";
   sops.secrets."server.crt".path = "/var/lib/postgresql/15/server.crt";
   sops.secrets."server.key".path = "/var/lib/postgresql/15/server.key";
   sops.secrets."passwords.sql".path = "/var/lib/postgresql/15/passwords.sql";
