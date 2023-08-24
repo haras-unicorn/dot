@@ -28,7 +28,7 @@
   ];
 
   services.postgresql.enable = true;
-  services.postgresql.package = pkgs.postgresql_14;
+  services.postgresql.package = pkgs.postgresql_15;
   services.postgresql.extraPlugins = with config.services.postgresql.package.pkgs; [
     timescaledb
   ];
