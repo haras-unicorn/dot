@@ -47,11 +47,13 @@
   ];
   services.postgresql.authentication = pkgs.lib.mkOverride 10 ''
     # TYPE    DATABASE    USER        ADDRESS         METHOD        OPTIONS
+    local     all         all                         trust
+    host      all         all         samehost        trust
     hostssl   all         all         192.168.1.0/24  scram-sha-256
   '';
   services.postgresql.enableTCPIP = true;
-  # sops.secrets."server.crt".path = "/var/lib/pgsql/data/server.crt";
-  # sops.secrets."server.key".path = "/var/lib/pgsql/data/server.key";
+  sops.secrets."server.crt".path = "/var/lib/pgsql/data/server.crt";
+  sops.secrets."server.key".path = "/var/lib/pgsql/data/server.key";
   # TODO: passwords
   # services.postgresql.initialScript = import ../../artifacts/alter-passwords.sql;
 
