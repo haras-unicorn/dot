@@ -55,8 +55,8 @@
   services.postgresql.enableTCPIP = true;
   sops.secrets."server.crt".path = "/var/lib/postgresql/15/server.crt";
   sops.secrets."server.key".path = "/var/lib/postgresql/15/server.key";
-  # TODO: passwords
-  # services.postgresql.initialScript = import ../../artifacts/alter-passwords.sql;
+  sops.secrets."passwords.sql".path = "/var/lib/postgresql/15/passwords.sql";
+  services.postgresql.initialScript = "/var/lib/postgresql/15/passwords.sql";
 
   users.users.pi.isNormalUser = true;
   users.users.pi.initialPassword = "pi";
