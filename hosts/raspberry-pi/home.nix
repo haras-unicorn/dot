@@ -253,6 +253,7 @@ in
     };
   };
   programs.htop.enable = true;
+  programs.lf.enable = true;
   programs.nnn.enable = true;
   programs.nnn.package = pkgs.nnn.override { withNerdIcons = true; };
   programs.nnn.bookmarks = {
