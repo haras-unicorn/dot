@@ -66,9 +66,7 @@ in
   # dev
   programs.git.enable = true;
   programs.git.delta.enable = true;
-  programs.git.attributes = [
-    "* text=auto eof=lf"
-  ];
+  programs.git.attributes = [ "* text=auto eof=lf" ];
   programs.git.lfs.enable = true;
   programs.git.signing.key = "8A2BB645A7A84277A9D6BC41987A64C9A6B34535";
   programs.git.signing.signByDefault = true;
@@ -174,6 +172,58 @@ in
     PROMPT_INDICATOR_VI_INSERT = "'λ '";
     PROMPT_INDICATOR_VI_NORMAL = "' '";
   };
+  programs.starship.enable = true;
+  programs.starship.enableNushellIntegration = true;
+  xdg.configFile."starship.toml".source = ../../assets/.config/starship/starship.toml;
+  programs.zoxide.enable = true;
+  programs.zoxide.enableNushellIntegration = true;
+  programs.lazygit.enable = true;
+  programs.lazygit.settings = {
+    notARepository = "quit";
+    promptToReturnFromSubprocess = false;
+    gui = {
+      showIcons = true;
+    };
+  };
+  programs.htop.enable = true;
+  programs.lf.enable = true;
+  programs.bat.enable = true;
+  programs.bat.config = { style = "header,rule,snip,changes"; };
+  programs.ripgrep.enable = true;
+  programs.ripgrep.arguments = [
+    "--max-columns=100"
+    "--max-columns-preview"
+    "--colors=auto"
+    "--smart-case"
+  ];
+  programs.exa.enable = true;
+  programs.exa.extraOptions = [
+    "--all"
+    "--list"
+    "--color=always"
+    "--group-directories-first"
+    "--icons"
+    "--group"
+    "--header"
+  ];
+
+  # services
+  programs.gpg.enable = true;
+  services.gpg-agent.enable = true;
+  services.gpg-agent.pinentryFlavor = "tty";
+  programs.ssh.enable = true;
+  programs.ssh.matchBlocks = {
+    "github.com" = {
+      user = "git";
+      identityFile = "/home/${username}/.ssh/personal";
+    };
+    "gitlab.com" = {
+      user = "git";
+      identityFile = "/home/${username}/.ssh/personal";
+    };
+  };
+
+  # scripts
   home.file."scripts/recreate".text = ''
     #!/usr/bin/env bash
     set -eo pipefail
@@ -239,84 +289,6 @@ in
     nix-store --gc
   '';
   home.file."scripts/clean".executable = true;
-  programs.starship.enable = true;
-  programs.starship.enableNushellIntegration = true;
-  xdg.configFile."starship.toml".source = ../../assets/.config/starship/starship.toml;
-  programs.zoxide.enable = true;
-  programs.zoxide.enableNushellIntegration = true;
-  programs.lazygit.enable = true;
-  programs.lazygit.settings = {
-    notARepository = "quit";
-    promptToReturnFromSubprocess = false;
-    gui = {
-      showIcons = true;
-    };
-  };
-  programs.htop.enable = true;
-  programs.lf.enable = true;
-  programs.nnn.enable = true;
-  programs.nnn.package = pkgs.nnn.override { withNerdIcons = true; };
-  programs.nnn.bookmarks = {
-    r = "~/repos";
-    d = "~/repos/dotfiles";
-  };
-  programs.nnn.extraPackages = with pkgs; [
-    mpv
-    nsxiv
-    zathura
-    tabbed
-    file
-    xdotool
-    atool
-    libarchive
-    unrar
-    p7zip
-    vim-full
-  ];
-  programs.nnn.plugins = {
-    mappings = {
-      p = "preview-tabbed";
-      o = "nuke";
-      f = "fzopen";
-    };
-  };
-  programs.bat.enable = true;
-  programs.bat.config = {
-    style = "header,rule,snip,changes";
-  };
-  programs.ripgrep.enable = true;
-  programs.ripgrep.arguments = [
-    "--max-columns=100"
-    "--max-columns-preview"
-    "--colors=auto"
-    "--smart-case"
-  ];
-  programs.exa.enable = true;
-  programs.exa.extraOptions = [
-    "--all"
-    "--list"
-    "--color=always"
-    "--group-directories-first"
-    "--icons"
-    "--group"
-    "--header"
-  ];
-
-  # services
-  programs.gpg.enable = true;
-  services.gpg-agent.enable = true;
-  services.gpg-agent.pinentryFlavor = "tty";
-  programs.ssh.enable = true;
-  programs.ssh.matchBlocks = {
-    "github.com" = {
-      user = "git";
-      identityFile = "/home/${username}/.ssh/personal";
-    };
-    "gitlab.com" = {
-      user = "git";
-      identityFile = "/home/${username}/.ssh/personal";
-    };
-  };
 
   home.stateVersion = "23.11";
 }
