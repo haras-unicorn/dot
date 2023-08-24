@@ -224,7 +224,7 @@ in
   };
 
   # scripts
-  home.file."scripts/recreate".text = ''
+  home.file."scripts/nix-recreate".text = ''
     #!/usr/bin/env bash
     set -eo pipefail
 
@@ -251,8 +251,8 @@ in
     sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#raspberry-pi
     cd "$wd"
   '';
-  home.file."scripts/recreate".executable = true;
-  home.file."scripts/update".text = ''
+  home.file."scripts/nix-recreate".executable = true;
+  home.file."scripts/nix-update".text = ''
     #!/usr/bin/env bash
     set -eo pipefail
 
@@ -280,15 +280,15 @@ in
     sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#raspberry-pi
     cd "$wd"
   '';
-  home.file."scripts/update".executable = true;
-  home.file."scripts/clean".text = ''
+  home.file."scripts/nix-update".executable = true;
+  home.file."scripts/nix-clean".text = ''
     #!/usr/bin/env bash
     set -eo pipefail
 
     nix-env --delete-generations 7d
     nix-store --gc
   '';
-  home.file."scripts/clean".executable = true;
+  home.file."scripts/nix-clean".executable = true;
 
   home.stateVersion = "23.11";
 }
