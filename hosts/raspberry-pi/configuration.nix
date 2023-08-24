@@ -1,10 +1,10 @@
 { pkgs, config, ... }:
 
 {
-  sops.defaultSopsFile = ../../secrets.yaml;
-  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-  sops.age.generateKey = true;
+  # sops.defaultSopsFile = ../../secrets.yaml;
+  # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  # sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+  # sops.age.generateKey = true;
 
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = "experimental-features = nix-command flakes";
@@ -50,8 +50,8 @@
     hostssl   all         all         192.168.1.0/24  scram-sha-256
   '';
   services.postgresql.enableTCPIP = true;
-  sops.secrets."server.crt".path = "/var/lib/pgsql/data/server.crt";
-  sops.secrets."server.key".path = "/var/lib/pgsql/data/server.key";
+  # sops.secrets."server.crt".path = "/var/lib/pgsql/data/server.crt";
+  # sops.secrets."server.key".path = "/var/lib/pgsql/data/server.key";
   # TODO: passwords
   # services.postgresql.initialScript = import ../../artifacts/alter-passwords.sql;
 
