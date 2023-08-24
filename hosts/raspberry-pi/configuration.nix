@@ -28,7 +28,7 @@
   ];
 
   services.postgresql.enable = true;
-  services.postgresql.package = pkgs.postgresql_15;
+  services.postgresql.package = pkgs.postgresql_14;
   services.postgresql.extraPlugins = with config.services.postgresql.package.pkgs; [
     timescaledb
   ];
@@ -46,14 +46,15 @@
     }
   ];
   services.postgresql.authentication = pkgs.lib.mkOverride 10 ''
+    # NOTE: do not remove local privileges because that breaks timescaledb
     # TYPE    DATABASE    USER        ADDRESS         METHOD        OPTIONS
     local     all         all                         trust
     host      all         all         samehost        trust
     hostssl   all         all         192.168.1.0/24  scram-sha-256
   '';
   services.postgresql.enableTCPIP = true;
-  sops.secrets."server.crt".path = "/var/lib/pgsql/data/server.crt";
-  sops.secrets."server.key".path = "/var/lib/pgsql/data/server.key";
+  sops.secrets."server.crt".path = "/var/lib/postgresql/15/server.crt";
+  sops.secrets."server.key".path = "/var/lib/postgresql/15/server.key";
   # TODO: passwords
   # services.postgresql.initialScript = import ../../artifacts/alter-passwords.sql;
 
