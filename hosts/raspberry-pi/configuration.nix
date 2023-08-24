@@ -5,8 +5,8 @@
   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
-  sops.secrets."ca.crt".path = "/etc/ssl/certs/mess/ca.crt";
-  sops.secrets."ca.key".path = "/etc/ssl/certs/mess/ca.key";
+  sops.secrets."server.crt".path = "/var/lib/pgsql/data/server.crt";
+  sops.secrets."server.key".path = "/var/lib/pgsql/data/server.key";
 
   nix.package = pkgs.nixFlakes;
   nix.extraOptions = "experimental-features = nix-command flakes";
@@ -35,9 +35,6 @@
     timescaledb
   ];
   services.postgresql.settings.shared_preload_libraries = "timescaledb";
-  services.postgresql.settings.ssl = "on";
-  services.postgresql.settings.ssl_cert_file = "/etc/ssl/certs/mess/postgres.crt";
-  services.postgresql.settings.ssl_key_file = "/etc/ssl/certs/mess/postgres.key";
   services.postgresql.ensureDatabases = [ "mess" ];
   services.postgresql.ensureUsers = [
     {
