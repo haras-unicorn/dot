@@ -65,6 +65,9 @@
   sops.secrets."server.key".group = "postgres";
   sops.secrets."server.key".mode = "0600";
   sops.secrets."passwords.sql".path = "/var/lib/postgresql/14/passwords.sql";
+  sops.secrets."passwords.sql".owner = "postgres";
+  sops.secrets."passwords.sql".group = "postgres";
+  sops.secrets."passwords.sql".mode = "0600";
   services.postgresql.initialScript = "/var/lib/postgresql/14/passwords.sql";
 
   users.users.pi.isNormalUser = true;
