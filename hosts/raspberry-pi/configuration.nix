@@ -56,12 +56,10 @@
   services.postgresql.port = 5432;
   networking.firewall.allowedTCPPorts = [ 5432 ];
   services.postgresql.settings.ssl = "on";
-  sops.secrets."server.crt".path = "/var/lib/postgresql/15/server.crt";
-  services.postgresql.settings.ssl_cert_file = "/var/lib/postgresql/15/server.crt";
-  sops.secrets."server.key".path = "/var/lib/postgresql/15/server.key";
-  services.postgresql.settings.ssl_key_file = "/var/lib/postgresql/15/server.key";
-  sops.secrets."passwords.sql".path = "/var/lib/postgresql/15/passwords.sql";
-  services.postgresql.initialScript = "/var/lib/postgresql/15/passwords.sql";
+  sops.secrets."server.crt".path = "/var/lib/postgresql/14/server.crt";
+  sops.secrets."server.key".path = "/var/lib/postgresql/14/server.key";
+  sops.secrets."passwords.sql".path = "/var/lib/postgresql/14/passwords.sql";
+  services.postgresql.initialScript = "/var/lib/postgresql/14/passwords.sql";
 
   users.users.pi.isNormalUser = true;
   users.users.pi.initialPassword = "pi";
