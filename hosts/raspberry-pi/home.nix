@@ -130,7 +130,7 @@ in
           $"($env.PATH):($new_path)"
         }
       )
-      let-env PATH = $updated_env_path
+      $env.PATH = $updated_env_path
     }
     def-env prepend-path [new_path: string] {
       let updated_env_path = (
@@ -141,7 +141,7 @@ in
           $"($new_path):($env.PATH)"
         }
       )
-      let-env PATH = $updated_env_path
+      $env.PATH = $updated_env_path
     }
 
     prepend-path "/home/${username}/scripts"
