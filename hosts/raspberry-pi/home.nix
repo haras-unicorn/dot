@@ -217,6 +217,10 @@ in
       user = "git";
       identityFile = "/home/${username}/.ssh/personal";
     };
+    "altibiz.github.com" = {
+      user = "git";
+      identityFile = "/home/${username}/.ssh/altibiz";
+    };
     "gitlab.com" = {
       user = "git";
       identityFile = "/home/${username}/.ssh/personal";
