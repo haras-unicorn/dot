@@ -218,7 +218,7 @@ in
       identityFile = "/home/${username}/.ssh/personal";
     };
     "altibiz.github.com" = {
-      hostName = "github.com";
+      hostname = "github.com";
       user = "git";
       identityFile = "/home/${username}/.ssh/altibiz";
     };
