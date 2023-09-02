@@ -52,6 +52,9 @@
       auto-save = true;
       rulers = [ ];
       gutters = [ "diagnostics" "spacer" "diff" ];
+      file-picker = {
+        hidden = false;
+      };
     };
   };
   programs.helix.themes.transparent = {
