@@ -9,6 +9,7 @@
     ../../module/system/pipewire/pipewire.nix
     ../../module/system/xserver/xserver.nix
     ../../module/system/fonts/fonts.nix
+    ../../module/system/sudo/sudo.nix
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
@@ -18,7 +19,6 @@
   services.transmission.enable = true;
   services.transmission.openPeerPorts = true;
 
-  security.sudo.package = pkgs.sudo.override { withInsults = true; };
   programs.ssh.startAgent = true;
   services.openssh.enable = true;
   services.openssh.allowSFTP = true;
