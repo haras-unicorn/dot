@@ -126,33 +126,8 @@ in
   programs.direnv.nix-direnv.enable = true;
   programs.nushell.enable = true;
   programs.nushell.extraEnv = ''
-    def-env append-path [new_path: string] {
-      let updated_env_path = (
-        if ($env.PATH | split row ":" | any { |it| $it == $new_path }) {
-          $env.PATH
-        }
-        else {
-          $"($env.PATH):($new_path)"
-        }
-      )
-      let-env PATH = $updated_env_path
-    }
-    def-env prepend-path [new_path: string] {
-      let updated_env_path = (
-        if ($env.PATH | split row ":" | any { |it| $it == $new_path }) {
-          $env.PATH
-        }
-        else {
-          $"($new_path):($env.PATH)"
-        }
-      )
-      let-env PATH = $updated_env_path
-    }
-
-    prepend-path "/home/${username}/scripts"
-    prepend-path "/home/${username}/bin"
-    prepend-path "scripts"
-    prepend-path "bin"
+    $env.PATH = $"(/home/${username}/bin):($env.PATH)"
+    $env.PATH = $"(/home/${username}/bin):(bin)"
   '';
   programs.nushell.extraConfig = ''
     let-env config = {
