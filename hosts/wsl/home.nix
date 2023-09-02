@@ -168,7 +168,7 @@ in
 
     if [[ ! -d ~/repos/dotfiles ]]; then
      mkdir -p ~/repos
-     git clone ssh://gitlab.com/hrle/dotfiles-nixos ~/repos/dotfiles
+     git clone ssh://git@gitlab.com/hrle/dotfiles-nixos ~/src/dotfiles
     fi
 
     wd="$(pwd)"
@@ -196,7 +196,7 @@ in
 
     if [[ ! -d ~/repos/dotfiles ]]; then
      mkdir -p ~/repos
-     git clone ssh://gitlab.com/hrle/dotfiles-nixos ~/repos/dotfiles
+     git clone ssh://git@gitlab.com/hrle/dotfiles-nixos ~/src/dotfiles
     fi
 
     wd="$(pwd)"
@@ -284,16 +284,6 @@ in
   services.gpg-agent.enable = true;
   services.gpg-agent.pinentryFlavor = "tty";
   programs.ssh.enable = true;
-  programs.ssh.matchBlocks = {
-    "github.com" = {
-      user = "git";
-      identityFile = "/home/${username}/.ssh/personal";
-    };
-    "gitlab.com" = {
-      user = "git";
-      identityFile = "/home/${username}/.ssh/personal";
-    };
-  };
 
   home.stateVersion = "23.11";
 }
