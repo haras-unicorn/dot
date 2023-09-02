@@ -32,6 +32,4 @@
     PROMPT_INDICATOR_VI_INSERT = "'λ '";
     PROMPT_INDICATOR_VI_NORMAL = "' '";
   };
-  programs.starship.enableNushellIntegration = true;
-  programs.zoxide.enableNushellIntegration = true;
 }
