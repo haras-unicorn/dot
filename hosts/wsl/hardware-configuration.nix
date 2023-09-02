@@ -1,4 +1,4 @@
-{ nixos-wsl, ... }:
+{ nixos-wsl, username, ... }:
 
 {
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -9,7 +9,7 @@
 
   wsl.enable = true;
   wsl.startMenuLaunchers = true;
-  wsl.defaultUser = "nixos";
+  wsl.defaultUser = "${username}";
   wsl.interop.register = true;
 
   system.stateVersion = "23.11";

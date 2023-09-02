@@ -1,8 +1,5 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
-let
-  username = "nixos";
-in
 {
   imports = [
     ../../modules/nu.nix

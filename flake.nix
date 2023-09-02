@@ -22,69 +22,43 @@
 
   outputs = { self, nixpkgs, home-manager, sops-nix, ... } @ inputs:
     {
-      nixosConfigurations.hyperv = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = inputs;
-        modules = [
-          ./hosts/hyperv/hardware-configuration.nix
-          ./hosts/hyperv/configuration.nix
-        ];
-      };
-      nixosConfigurations.virtualbox = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = inputs;
-        modules = [
-          ./hosts/virtualbox/hardware-configuration.nix
-          ./hosts/virtualbox/configuration.nix
-        ];
-      };
-      nixosConfigurations.desktop = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = inputs;
-        modules = [
-          ./hosts/desktop/hardware-configuration.nix
-          ./hosts/desktop/configuration.nix
-          sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = inputs;
-            home-manager.users.virtuoso = import ./hosts/desktop/home.nix;
-          }
-        ];
-      };
-      nixosConfigurations.wsl = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = inputs;
-        modules = [
-          ./hosts/wsl/hardware-configuration.nix
-          ./hosts/wsl/configuration.nix
-          sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = inputs;
-            home-manager.users.nixos = import ./hosts/wsl/home.nix;
-          }
-        ];
-      };
-      nixosConfigurations.raspberry-pi = nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
-        specialArgs = inputs;
-        modules = [
-          ./hosts/raspberry-pi/hardware-configuration.nix
-          ./hosts/raspberry-pi/configuration.nix
-          sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = inputs;
-            home-manager.users.pi = import ./hosts/raspberry-pi/home.nix;
-          }
-        ];
-      };
+      nixosConfigurations =
+        builtins.foldl'
+          (nixosConfigurations: host:
+            nixpkgs.lib.nixosSystem
+              (
+                let
+                  meta = builtins.import "./hosts/${host}/meta.nix";
+                in
+                nixosConfigurations // {
+                  "${host}" = {
+                    system = meta.system;
+                    specialArgs = inputs // {
+                      username = "haras";
+                      hostname = "haras-${host}";
+                    };
+                    modules = [
+                      ./host/${host}/hardware-configuration.nix
+                      ./host/${host}/configuration.nix
+                    ]
+                    ++ (if (builtins.pathExists "./hosts/${host}/home.nix") then [
+                      home-manager.nixosModules.home-manager
+                      {
+                        home-manager.useGlobalPkgs = true;
+                        home-manager.useUserPackages = true;
+                        home-manager.extraSpecialArgs = inputs;
+                        home-manager.users.haras = import ./hosts/${host}/home.nix;
+                      }
+                    ] else [ ])
+                    ++ (if (builtins.pathExists "./hosts/${host}/secrets.nix") then [
+                      sops-nix.nixosModules.sops
+                      ./host/${host}/secrets.nix
+                    ] else [ ]);
+                  };
+                }
+              ))
+          { }
+          (builtins.attrNames
+            (builtins.readDir "./hosts"));
     };
 }

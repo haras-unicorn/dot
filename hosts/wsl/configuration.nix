@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
 {
   nix.package = pkgs.nixFlakes;
@@ -13,7 +13,7 @@
     man-pages-posix
   ];
 
-  users.users.nixos.shell = pkgs.nushell;
+  users.users."${username}".shell = pkgs.nushell;
 
   system.stateVersion = "23.11";
 }
