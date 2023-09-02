@@ -1,21 +1,22 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
+
 let
   sdui = pkgs.mkScriptBin "sdui" ''
     #!${pkgs.stdenv.shell}
     set -eo pipefail
 
-    if [[ ! -d ~/repos/stable-diffusion-webui ]]; then
-      mkdir -p ~/repos
-      git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui ~/repos/stable-diffusion-webui
+    if [[ ! -d ${config.xdg.dataHome}/stable-diffusion-webui ]]; then
+      mkdir -p ${config.xdg.dataHome}
+      git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui ${config.xdg.dataHome}/stable-diffusion-webui
     fi
-    if [[ ! -d ~/repos/automatic1111-webui-nix ]]; then
-      mkdir -p ~/repos
-      git clone https://github.com/virchau13/automatic1111-webui-nix ~/repos/automatic1111-webui-nix
+    if [[ ! -d ${config.xdg.dataHome}/automatic1111-webui-nix ]]; then
+      mkdir -p ${config.xdg.dataHome}
+      git clone https://github.com/virchau13/automatic1111-webui-nix ${config.xdg.dataHome}/automatic1111-webui-nix
     fi
-    cp ~/repos/automatic1111-webui-nix/*.nix ~/repos/stable-diffusion-webui
+    cp ${config.xdg.dataHome}/automatic1111-webui-nix/*.nix ${config.xdg.dataHome}/stable-diffusion-webui
 
     wd="$(pwd)"
-    cd ~/repos/stable-diffusion-webui
+    cd ${config.xdg.dataHome}/stable-diffusion-webui
     if [[ ! -x ./webui.sh ]]; then
       printf "Stable Diffusion WebUI script not present\n.Exiting...\n"
       exit 1
