@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../modules/nu.nix
+    ../../modules/nu/nu.nix
   ];
 
   home.sessionVariables = {
