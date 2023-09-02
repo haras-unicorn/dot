@@ -1,14 +1,10 @@
-{ pkgs, username, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
-    ../../modules/nu.nix
+    ../../modules/nu/nu.nix
   ];
-  programs.home-manager.enable = true;
-  xdg.configFile."nixpkgs/config.nix".source = ../../assets/.config/nixpkgs/config.nix;
 
-  home.username = "${username}";
-  home.homeDirectory = "/home/${username}";
   home.sessionVariables = {
     VISUAL = "hx";
     EDITOR = "hx";
@@ -121,71 +117,6 @@
   };
 
   # tui
-  home.file."bin/recreate".text = ''
-    #!/usr/bin/env bash
-    set -eo pipefail
-
-    command=switch
-    comment="$1"
-    if [[ "$1" == "boot" ]]; then
-      command=boot
-      comment="$2"
-    fi
-    if [[ -z "$comment" ]]; then
-      comment="WIP"
-    fi
-
-    if [[ ! -d ~/repos/dotfiles ]]; then
-     mkdir -p ~/repos
-     git clone ssh://git@gitlab.com/hrle/dotfiles-nixos ~/src/dotfiles
-    fi
-
-    wd="$(pwd)"
-    cd ~/repos/dotfiles
-    git add .
-    git commit -m "$comment"
-    git push
-    sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#wsl
-    cd "$wd"
-  '';
-  home.file."bin/recreate".executable = true;
-  home.file."bin/update".text = ''
-    #!/usr/bin/env bash
-    set -eo pipefail
-
-    command=switch
-    comment="$1"
-    if [[ "$1" == "boot" ]]; then
-      command=boot
-      comment="$2"
-    fi
-    if [[ -z "$comment" ]]; then
-      comment="WIP"
-    fi
-
-    if [[ ! -d ~/repos/dotfiles ]]; then
-     mkdir -p ~/repos
-     git clone ssh://git@gitlab.com/hrle/dotfiles-nixos ~/src/dotfiles
-    fi
-
-    wd="$(pwd)"
-    cd ~/repos/dotfiles
-    nix flake update
-    git add .
-    git commit -m "$comment"
-    git push
-    sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#wsl
-    cd "$wd"
-  '';
-  home.file."bin/update".executable = true;
-  home.file."bin/clean".text = ''
-    #!/usr/bin/env bash
-    set -eo pipefail
-
-    nix-env --delete-generations 7d
-    nix-store --gc
-  '';
-  home.file."bin/clean".executable = true;
   programs.starship.enable = true;
   xdg.configFile."starship.toml".source = ../../assets/.config/starship/starship.toml;
   programs.zoxide.enable = true;

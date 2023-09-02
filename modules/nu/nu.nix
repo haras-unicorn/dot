@@ -1,4 +1,4 @@
-{ username, ... }:
+{ config, ... }:
 
 {
   programs.direnv.enable = true;
@@ -6,7 +6,7 @@
   programs.direnv.nix-direnv.enable = true;
   programs.nushell.enable = true;
   programs.nushell.extraEnv = ''
-    $env.PATH = $"/home/${username}/bin:($env.PATH)"
+    $env.PATH = $"${config.home.homeDirectory}/bin:($env.PATH)"
     $env.PATH = $"bin:($env.PATH)"
   '';
   programs.nushell.extraConfig = ''

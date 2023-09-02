@@ -92,6 +92,8 @@
                           {
                             programs.home-manager.enable = true;
                             xdg.configFile."nixpkgs/config.nix".text = builtins.toString nixpkgsConfig;
+                            home.username = "${username}";
+                            home.homeDirectory = "/home/${username}";
                           } // ((import "${hosts}/${host}/home.nix") specialArgs);
                       }
                     ] else [ ])
