@@ -20,45 +20,62 @@
     sweet-theme.flake = false;
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, pkgs, ... } @ inputs:
+    let
+      hosts = "./hosts";
+      username = "haras";
+    in
     {
       nixosConfigurations =
         builtins.foldl'
           (nixosConfigurations: host:
-            nixpkgs.lib.nixosSystem
-              (
-                let
-                  meta = builtins.import "./hosts/${host}/meta.nix";
-                in
-                nixosConfigurations // {
-                  "${host}" = {
+            let
+              meta =
+                if builtins.pathExists "${hosts}/${host}/meta.nix"
+                then builtins.import "${hosts}/${host}/meta.nix"
+                else {
+                  system = "x86_64-linux";
+                };
+            in
+            nixosConfigurations // {
+              "${host}" =
+                nixpkgs.lib.nixosSystem
+                  {
                     system = meta.system;
                     specialArgs = inputs // {
-                      username = "haras";
-                      hostname = "haras-${host}";
+                      username = "${username}";
+                      hostname = "${username}-${host}";
                     };
                     modules = [
-                      ./host/${host}/hardware-configuration.nix
-                      ./host/${host}/configuration.nix
+                      "./host/${host}/hardware-configuration.nix"
+                      "./host/${host}/configuration.nix"
                     ]
-                    ++ (if (builtins.pathExists "./hosts/${host}/home.nix") then [
+                    ++ (if (builtins.pathExists "${hosts}/${host}/home.nix") then [
                       home-manager.nixosModules.home-manager
+                      {
+                        users.users."${username}" = {
+                          isNormalUser = true;
+                          initialPassword = "${username}";
+                          extraGroups = [ "wheel" ];
+                          shell = pkgs.nushell;
+                        };
+                      }
                       {
                         home-manager.useGlobalPkgs = true;
                         home-manager.useUserPackages = true;
                         home-manager.extraSpecialArgs = inputs;
-                        home-manager.users.haras = import ./hosts/${host}/home.nix;
+                        home-manager.users."${username}" = import "${hosts}/${host}/home.nix";
                       }
                     ] else [ ])
-                    ++ (if (builtins.pathExists "./hosts/${host}/secrets.nix") then [
+                    ++ (if (builtins.pathExists "${hosts}/${host}/secrets.nix") then [
                       sops-nix.nixosModules.sops
-                      ./host/${host}/secrets.nix
+                      "./host/${host}/secrets.nix"
                     ] else [ ]);
                   };
-                }
-              ))
+            }
+          )
           { }
           (builtins.attrNames
-            (builtins.readDir "./hosts"));
+            (builtins.readDir hosts));
     };
 }

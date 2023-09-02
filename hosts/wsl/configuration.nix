@@ -13,7 +13,5 @@
     man-pages-posix
   ];
 
-  users.users."${username}".shell = pkgs.nushell;
-
   system.stateVersion = "23.11";
 }

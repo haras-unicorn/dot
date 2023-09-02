@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
 {
   boot.loader.efi.canTouchEfiVariables = true;
@@ -44,12 +44,8 @@
   services.gnome.gnome-keyring.enable = true;
   programs.seahorse.enable = true;
 
-  users.users.virtuoso = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "libvirtd" "docker" ];
-    initialPassword = "virtuoso";
-    shell = pkgs.nushell;
-  };
+  users.users.virtuoso."${username}".extraGroups = [ "wheel" "libvirtd" "docker" ];
+
   security.pam.services.virtuoso.enableGnomeKeyring = true;
 
   environment.systemPackages = with pkgs; [

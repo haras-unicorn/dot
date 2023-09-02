@@ -1,8 +1,4 @@
-{ config
-, pkgs
-, sweet-theme
-, ...
-}:
+{ config, pkgs, sweet-theme, username, ... }:
 
 {
   nix.package = pkgs.nixFlakes;
@@ -134,12 +130,7 @@
     };
   };
 
-  users.users.virtuoso = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "libvirtd" "docker" ];
-    initialPassword = "virtuoso";
-    shell = pkgs.nushell;
-  };
+  users.users."${username}".extraGroups = [ "wheel" "libvirtd" "docker" ];
 
   system.stateVersion = "23.11";
 }

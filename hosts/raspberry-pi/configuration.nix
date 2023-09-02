@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, username, ... }:
 
 {
   sops.defaultSopsFile = ../../secrets.yaml;
@@ -69,11 +69,6 @@
   sops.secrets."passwords.sql".group = "postgres";
   sops.secrets."passwords.sql".mode = "0600";
   services.postgresql.initialScript = "/var/lib/postgresql/14/passwords.sql";
-
-  users.users.pi.isNormalUser = true;
-  users.users.pi.initialPassword = "pi";
-  users.users.pi.extraGroups = [ "wheel" ];
-  users.users.pi.shell = pkgs.nushell;
 
   system.stateVersion = "23.11";
 }
