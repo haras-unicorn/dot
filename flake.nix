@@ -20,7 +20,7 @@
     sweet-theme.flake = false;
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, ... } @ inputs:
+  outputs = { nixpkgs, home-manager, sops-nix, nixos-wsl, nixos-hardware, ... }:
     let
       hosts = "./hosts";
       username = "haras";
@@ -44,7 +44,10 @@
                 then builtins.import "${hosts}/${host}/meta.nix"
                 else { });
 
-              specialArgs = inputs;
+              specialArgs = {
+                nixos-wsl = nixos-wsl;
+                nixos-hardware = nixos-hardware;
+              };
             in
             nixosConfigurations // {
               "${host}" =
