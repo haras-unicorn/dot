@@ -1,39 +1,26 @@
 { config, pkgs, sweet-theme, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  imports = [
+    ../../module/plymouth/plymouth.nix
+    ../../module/pipewire/pipewire.nix
+  ];
+
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
-  boot.initrd.systemd.enable = true;
-  boot.initrd.verbose = false;
-  boot.consoleLogLevel = 0;
-  boot.kernelParams = [
-    "quiet"
-    "splash"
-    "boot.shell_on_fail"
-    "vt.global_cursor_default=0"
-    "loglevel=3"
-    "rd.systemd.show_status=false"
-    "rd.udev.log_level=3"
-    "udev.log_priority=3"
-  ];
-  boot.plymouth.enable = true;
-  boot.plymouth.theme = "nixos-bgrt";
-  boot.plymouth.themePackages = with pkgs; [
-    nixos-bgrt-plymouth
-  ];
 
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   services.ananicy.enable = true;
   services.earlyoom.enable = true;
+
   security.rtkit.enable = true;
 
   location.provider = "geoclue2";
   time.timeZone = "Europe/Zagreb";
   i18n.defaultLocale = "en_US.UTF-8";
-  console.useXkbConfig = true;
 
   networking.hostName = "KARBURATOR";
   networking.nftables.enable = true;
@@ -61,6 +48,7 @@
     python3Packages: with python3Packages; [
       psutil
     ];
+  console.useXkbConfig = true;
 
   fonts.fonts = with pkgs; [
     noto-fonts
@@ -70,12 +58,6 @@
   ];
   fonts.fontDir.enable = true;
   fonts.enableDefaultFonts = true;
-
-  services.pipewire.enable = true;
-  services.pipewire.wireplumber.enable = true;
-  services.pipewire.alsa.enable = true;
-  services.pipewire.jack.enable = true;
-  services.pipewire.pulse.enable = true;
 
   services.qemuGuest.enable = true;
   virtualisation.libvirtd.enable = true;
