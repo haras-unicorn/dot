@@ -1,10 +1,6 @@
-{ pkgs, username, ... }:
+{ pkgs, ... }:
 
 {
-  nix.package = pkgs.nixFlakes;
-  nix.extraOptions = "experimental-features = nix-command flakes";
-  nixpkgs.config = import ../../assets/.config/nixpkgs/config.nix;
-
   environment.systemPackages = with pkgs; [
     vim-full
     git

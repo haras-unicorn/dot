@@ -20,10 +20,13 @@
     sweet-theme.flake = false;
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, pkgs, ... } @ inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, ... } @ inputs:
     let
       hosts = "./hosts";
       username = "haras";
+      nixpkgsConfig = {
+        allowUnfree = true;
+      };
     in
     {
       nixosConfigurations =
@@ -33,43 +36,60 @@
               meta =
                 {
                   system = "x86_64-linux";
+                  hostname = "${host}-${username}";
+                  username = username;
                   groups = [ ];
+                  nixpkgsConfig = nixpkgsConfig;
                 } // (if builtins.pathExists "${hosts}/${host}/meta.nix"
                 then builtins.import "${hosts}/${host}/meta.nix"
                 else { });
+
+              specialArgs = inputs;
             in
             nixosConfigurations // {
               "${host}" =
                 nixpkgs.lib.nixosSystem
                   {
                     system = meta.system;
-                    specialArgs = inputs // {
-                      username = "${username}";
-                      hostname = "${username}-${host}";
-                    };
+                    specialArgs = specialArgs;
                     modules = [
+                      ({ pkgs, ... }: {
+                        nix.package = pkgs.nixFlakes;
+                        nix.extraOptions = "experimental-features = nix-command flakes";
+                        nixpkgs.config = nixpkgsConfig;
+                        networking.hostName = meta.hostname;
+                      })
                       "./host/${host}/hardware-configuration.nix"
                       "./host/${host}/configuration.nix"
                     ]
                     ++ (if (builtins.pathExists "${hosts}/${host}/home.nix") then [
-                      home-manager.nixosModules.home-manager
-                      {
+                      ({ pkgs, ... }: {
                         users.users."${username}" = {
                           isNormalUser = true;
-                          initialPassword = "${username}";
+                          initialPassword = username;
                           extraGroups = [ "wheel" ] ++ meta.groups;
                           shell = pkgs.nushell;
                         };
-                      }
+                      })
+                      home-manager.nixosModules.home-manager
                       {
                         home-manager.useGlobalPkgs = true;
                         home-manager.useUserPackages = true;
-                        home-manager.extraSpecialArgs = inputs;
-                        home-manager.users."${username}" = import "${hosts}/${host}/home.nix";
+                        home-manager.extraSpecialArgs = specialArgs;
+                        home-manager.users."${username}" = { ... } @specialArgs:
+                          {
+                            programs.home-manager.enable = true;
+                            xdg.configFile."nixpkgs/config.nix".text = builtins.toString nixpkgsConfig;
+                          } // ((import "${hosts}/${host}/home.nix") specialArgs);
                       }
                     ] else [ ])
                     ++ (if (builtins.pathExists "${hosts}/${host}/secrets.nix") then [
                       sops-nix.nixosModules.sops
+                      {
+                        sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+                        sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+                        sops.age.generateKey = true;
+                      }
                       "./host/${host}/secrets.nix"
                     ] else [ ]);
                   };

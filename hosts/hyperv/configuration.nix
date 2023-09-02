@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, ... }:
 
 {
   boot.loader.efi.canTouchEfiVariables = true;

@@ -1,10 +1,6 @@
-{ config, pkgs, sweet-theme, username, ... }:
+{ config, pkgs, sweet-theme, ... }:
 
 {
-  nix.package = pkgs.nixFlakes;
-  nix.extraOptions = "experimental-features = nix-command flakes";
-  nixpkgs.config = import ../../assets/.config/nixpkgs/config.nix;
-
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.enable = true;
