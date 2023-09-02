@@ -130,7 +130,5 @@
     };
   };
 
-  users.users."${username}".extraGroups = [ "wheel" "libvirtd" "docker" ];
-
   system.stateVersion = "23.11";
 }

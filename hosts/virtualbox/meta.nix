@@ -1,0 +1,3 @@
+{
+  groups = [ "libvirtd" "docker" ];
+}

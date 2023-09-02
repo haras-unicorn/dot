@@ -31,11 +31,12 @@
           (nixosConfigurations: host:
             let
               meta =
-                if builtins.pathExists "${hosts}/${host}/meta.nix"
-                then builtins.import "${hosts}/${host}/meta.nix"
-                else {
+                {
                   system = "x86_64-linux";
-                };
+                  groups = [ ];
+                } // (if builtins.pathExists "${hosts}/${host}/meta.nix"
+                then builtins.import "${hosts}/${host}/meta.nix"
+                else { });
             in
             nixosConfigurations // {
               "${host}" =
@@ -56,7 +57,7 @@
                         users.users."${username}" = {
                           isNormalUser = true;
                           initialPassword = "${username}";
-                          extraGroups = [ "wheel" ];
+                          extraGroups = [ "wheel" ] ++ meta.groups;
                           shell = pkgs.nushell;
                         };
                       }
