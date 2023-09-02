@@ -1,6 +1,18 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ../../module/brave/brave.nix
+    ../../module/dunst/dunst.nix
+    ../../module/qtile/qtile.nix
+    ../../module/redshift/redshift.nix
+    ../../module/rofi/rofi.nix
+    ../../module/sdui/sdui.nix
+    ../../module/spotify/spotify.nix
+    ../../module/tui/tui.nix
+    ../../module/wallpaper/wallpaper.nix
+  ];
+
   home.sessionVariables = {
     # TODO: not working cuz nushell?
     QT_QPA_PLATFORMTHEME = "gtk2";
