@@ -126,8 +126,8 @@ in
   programs.direnv.nix-direnv.enable = true;
   programs.nushell.enable = true;
   programs.nushell.extraEnv = ''
-    $env.PATH = $"(/home/${username}/bin):($env.PATH)"
-    $env.PATH = $"(/home/${username}/bin):(bin)"
+    $env.PATH = $"/home/${username}/bin:($env.PATH)"
+    $env.PATH = $"bin:($env.PATH)"
   '';
   programs.nushell.extraConfig = ''
     let-env config = {
@@ -152,7 +152,7 @@ in
     PROMPT_INDICATOR_VI_INSERT = "'λ '";
     PROMPT_INDICATOR_VI_NORMAL = "' '";
   };
-  home.file."scripts/recreate".text = ''
+  home.file."bin/recreate".text = ''
     #!/usr/bin/env bash
     set -eo pipefail
 
@@ -179,8 +179,8 @@ in
     sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#wsl
     cd "$wd"
   '';
-  home.file."scripts/recreate".executable = true;
-  home.file."scripts/update".text = ''
+  home.file."bin/recreate".executable = true;
+  home.file."bin/update".text = ''
     #!/usr/bin/env bash
     set -eo pipefail
 
@@ -208,15 +208,15 @@ in
     sudo nixos-rebuild "$command" --flake ~/repos/dotfiles#wsl
     cd "$wd"
   '';
-  home.file."scripts/update".executable = true;
-  home.file."scripts/clean".text = ''
+  home.file."bin/update".executable = true;
+  home.file."bin/clean".text = ''
     #!/usr/bin/env bash
     set -eo pipefail
 
     nix-env --delete-generations 7d
     nix-store --gc
   '';
-  home.file."scripts/clean".executable = true;
+  home.file."bin/clean".executable = true;
   programs.starship.enable = true;
   programs.starship.enableNushellIntegration = true;
   xdg.configFile."starship.toml".source = ../../assets/.config/starship/starship.toml;
@@ -231,32 +231,7 @@ in
     };
   };
   programs.htop.enable = true;
-  programs.nnn.enable = true;
-  programs.nnn.package = pkgs.nnn.override { withNerdIcons = true; };
-  programs.nnn.bookmarks = {
-    r = "~/repos";
-    d = "~/repos/dotfiles";
-  };
-  programs.nnn.extraPackages = with pkgs; [
-    mpv
-    nsxiv
-    zathura
-    tabbed
-    file
-    xdotool
-    atool
-    libarchive
-    unrar
-    p7zip
-    vim-full
-  ];
-  programs.nnn.plugins = {
-    mappings = {
-      p = "preview-tabbed";
-      o = "nuke";
-      f = "fzopen";
-    };
-  };
+  programs.lf.enable = true;
   programs.bat.enable = true;
   programs.bat.config = {
     style = "header,rule,snip,changes";
