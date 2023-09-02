@@ -20,7 +20,15 @@
     sweet-theme.flake = false;
   };
 
-  outputs = { nixpkgs, home-manager, sops-nix, nixos-wsl, nixos-hardware, ... }:
+  outputs =
+    { nixpkgs
+    , home-manager
+    , sops-nix
+    , nixos-wsl
+    , nixos-hardware
+    , sweet-theme
+    , ...
+    }:
     let
       hosts = "./hosts";
       username = "haras";
@@ -47,6 +55,7 @@
               specialArgs = {
                 nixos-wsl = nixos-wsl;
                 nixos-hardware = nixos-hardware;
+                sweet-theme = sweet-theme;
               };
             in
             nixosConfigurations // {
