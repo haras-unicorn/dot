@@ -4,6 +4,9 @@ let
   username = "nixos";
 in
 {
+  imports = [
+    ../../modules/nu.nix
+  ];
   programs.home-manager.enable = true;
   xdg.configFile."nixpkgs/config.nix".source = ../../assets/.config/nixpkgs/config.nix;
 
@@ -121,37 +124,6 @@ in
   };
 
   # tui
-  programs.direnv.enable = true;
-  programs.direnv.enableNushellIntegration = true;
-  programs.direnv.nix-direnv.enable = true;
-  programs.nushell.enable = true;
-  programs.nushell.extraEnv = ''
-    $env.PATH = $"/home/${username}/bin:($env.PATH)"
-    $env.PATH = $"bin:($env.PATH)"
-  '';
-  programs.nushell.extraConfig = ''
-    $env.config = {
-      show_banner: false
-
-      edit_mode: vi
-      cursor_shape: {
-        vi_insert: line
-        vi_normal: underscore
-      }
-
-      hooks: {
-        pre_prompt: [{ ||
-          let direnv = (direnv export json | from json)
-          let direnv = if ($direnv | length) == 1 { $direnv } else { {} }
-          $direnv | load-env
-        }]
-      }
-    }
-  '';
-  programs.nushell.environmentVariables = {
-    PROMPT_INDICATOR_VI_INSERT = "'λ '";
-    PROMPT_INDICATOR_VI_NORMAL = "' '";
-  };
   home.file."bin/recreate".text = ''
     #!/usr/bin/env bash
     set -eo pipefail
@@ -218,10 +190,8 @@ in
   '';
   home.file."bin/clean".executable = true;
   programs.starship.enable = true;
-  programs.starship.enableNushellIntegration = true;
   xdg.configFile."starship.toml".source = ../../assets/.config/starship/starship.toml;
   programs.zoxide.enable = true;
-  programs.zoxide.enableNushellIntegration = true;
   programs.lazygit.enable = true;
   programs.lazygit.settings = {
     notARepository = "quit";
