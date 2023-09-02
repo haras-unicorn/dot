@@ -29,6 +29,7 @@ in
     bruh = "git";
     sis = "hx";
     yas = "yes";
+    g = "g";
   };
   home.packages = with pkgs; [
     # dev
