@@ -22,7 +22,6 @@
   time.timeZone = "Europe/Zagreb";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  networking.hostName = "KARBURATOR";
   networking.nftables.enable = true;
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [
