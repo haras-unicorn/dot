@@ -2,15 +2,15 @@
 
 {
   imports = [
-    ../../module/brave/brave.nix
-    ../../module/dunst/dunst.nix
-    ../../module/qtile/qtile.nix
-    ../../module/redshift/redshift.nix
-    ../../module/rofi/rofi.nix
-    ../../module/sdui/sdui.nix
-    ../../module/spotify/spotify.nix
-    ../../module/tui/tui.nix
-    ../../module/wallpaper/wallpaper.nix
+    ../../module/home/brave/brave.nix
+    ../../module/home/dunst/dunst.nix
+    ../../module/home/qtile/qtile.nix
+    ../../module/home/redshift/redshift.nix
+    ../../module/home/rofi/rofi.nix
+    ../../module/home/sdui/sdui.nix
+    ../../module/home/spotify/spotify.nix
+    ../../module/home/tui/tui.nix
+    ../../module/home/wallpaper/wallpaper.nix
   ];
 
   home.sessionVariables = {

@@ -2,14 +2,14 @@
 
 {
   imports = [
-    ../../module/git/git.nix
-    ../../module/helix/helix.nix
-    ../../module/nushell/nushell.nix
-    ../../module/starship/starship.nix
-    ../../module/zoxide/zoxide.nix
-    ../../module/bat/bat.nix
-    ../../module/ripgrep/ripgrep.nix
-    ../../module/exa/exa.nix
+    ../../module/home/git/git.nix
+    ../../module/home/helix/helix.nix
+    ../../module/home/nushell/nushell.nix
+    ../../module/home/starship/starship.nix
+    ../../module/home/zoxide/zoxide.nix
+    ../../module/home/bat/bat.nix
+    ../../module/home/ripgrep/ripgrep.nix
+    ../../module/home/exa/exa.nix
   ];
 
   programs.starship.enableNushellIntegration = true;
