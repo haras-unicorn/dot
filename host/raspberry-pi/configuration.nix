@@ -47,6 +47,4 @@
   networking.firewall.allowedTCPPorts = [ 5432 ];
   services.postgresql.settings.ssl = "on";
   services.postgresql.initialScript = "/var/lib/postgresql/14/passwords.sql";
-
-  system.stateVersion = "23.11";
 }

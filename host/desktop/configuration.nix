@@ -125,6 +125,4 @@
       source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-i386-vars.fd";
     };
   };
-
-  system.stateVersion = "23.11";
 }

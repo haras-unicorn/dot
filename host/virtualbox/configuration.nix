@@ -59,5 +59,4 @@
     kitty
     brave
   ];
-  system.stateVersion = "23.11";
 }

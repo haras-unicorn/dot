@@ -8,6 +8,4 @@
     man-pages
     man-pages-posix
   ];
-
-  system.stateVersion = "23.11";
 }

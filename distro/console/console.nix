@@ -2,14 +2,14 @@
 
 {
   imports = [
-    ../../modules/git/git.nix
-    ../../modules/helix/helix.nix
-    ../../modules/nushell/nushell.nix
-    ../../modules/starship/starship.nix
-    ../../modules/zoxide/zoxide.nix
-    ../../modules/bat/bat.nix
-    ../../modules/ripgrep/ripgrep.nix
-    ../../modules/exa/exa.nix
+    ../../module/git/git.nix
+    ../../module/helix/helix.nix
+    ../../module/nushell/nushell.nix
+    ../../module/starship/starship.nix
+    ../../module/zoxide/zoxide.nix
+    ../../module/bat/bat.nix
+    ../../module/ripgrep/ripgrep.nix
+    ../../module/exa/exa.nix
   ];
 
   programs.starship.enableNushellIntegration = true;
@@ -22,14 +22,12 @@
     yas = "yes";
   };
   home.packages = with pkgs; [
-    # tui
     pciutils
     lsof
     dmidecode
     inxi
     hwinfo
     ncdu
-    xclip
     fd
     file
     duf
@@ -38,17 +36,12 @@
     sd
   ];
 
-  # dev
-
-  # tui
   programs.htop.enable = true;
   programs.lf.enable = true;
 
-  # services
   programs.gpg.enable = true;
   services.gpg-agent.enable = true;
   services.gpg-agent.pinentryFlavor = "tty";
   programs.ssh.enable = true;
-
-  home.stateVersion = "23.11";
+  services.ssh-agent.enable = true;
 }

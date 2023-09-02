@@ -30,7 +30,7 @@
     , ...
     }:
     let
-      hosts = "./hosts";
+      hosts = "./host";
       username = "haras";
       nixpkgsConfig = {
         allowUnfree = true;
@@ -70,6 +70,7 @@
                         nix.extraOptions = "experimental-features = nix-command flakes";
                         nixpkgs.config = nixpkgsConfig;
                         networking.hostName = meta.hostname;
+                        system.stateVersion = "23.11";
                       })
                       "./host/${host}/hardware-configuration.nix"
                       "./host/${host}/configuration.nix"
@@ -94,6 +95,7 @@
                             xdg.configFile."nixpkgs/config.nix".text = builtins.toString nixpkgsConfig;
                             home.username = "${username}";
                             home.homeDirectory = "/home/${username}";
+                            home.stateVersion = "23.11";
                           } // ((import "${hosts}/${host}/home.nix") specialArgs);
                       }
                     ] else [ ])
