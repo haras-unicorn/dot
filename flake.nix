@@ -21,7 +21,8 @@
   };
 
   outputs =
-    { nixpkgs
+    { self
+    , nixpkgs
     , home-manager
     , sops-nix
     , nixos-wsl
@@ -30,7 +31,7 @@
     , ...
     }:
     let
-      hosts = "./host";
+      hosts = self + "/src/host";
       username = "haras";
       nixpkgsConfig = {
         allowUnfree = true;
@@ -48,6 +49,7 @@
                   username = username;
                   groups = [ ];
                   nixpkgsConfig = nixpkgsConfig;
+                  wsl = false;
                 } // (if builtins.pathExists "${hosts}/${host}/meta.nix"
                 then builtins.import "${hosts}/${host}/meta.nix"
                 else { });
@@ -72,8 +74,8 @@
                         networking.hostName = meta.hostname;
                         system.stateVersion = "23.11";
                       })
-                      "./host/${host}/hardware-configuration.nix"
-                      "./host/${host}/configuration.nix"
+                      "${hosts}/${host}/hardware-configuration.nix"
+                      "${hosts}/${host}/configuration.nix"
                     ]
                     ++ (if (builtins.pathExists "${hosts}/${host}/home.nix") then [
                       ({ pkgs, ... }: {
@@ -106,7 +108,16 @@
                         sops.age.keyFile = "/var/lib/sops-nix/key.txt";
                         sops.age.generateKey = true;
                       }
-                      "./host/${host}/secrets.nix"
+                      "${hosts}/${host}/secrets.nix"
+                    ] else [ ])
+                    ++ (if meta.wsl then [
+                      nixos-wsl.nixosModules.wsl
+                      {
+                        wsl.enable = true;
+                        wsl.startMenuLaunchers = true;
+                        wsl.defaultUser = "${meta.username}";
+                        wsl.interop.register = true;
+                      }
                     ] else [ ]);
                   };
             }
