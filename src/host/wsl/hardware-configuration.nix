@@ -11,6 +11,4 @@
   wsl.startMenuLaunchers = true;
   wsl.defaultUser = "${username}";
   wsl.interop.register = true;
-
-  system.stateVersion = "23.11";
 }
