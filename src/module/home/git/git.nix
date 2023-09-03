@@ -2,7 +2,13 @@
 {
   home.packages = with pkgs; [
     meld
+    delta
   ];
+
+  home.shellAliases = {
+    bruh = "git";
+    lg = "lazygit";
+  };
 
   programs.git.enable = true;
   programs.git.delta.enable = true;
@@ -24,7 +30,16 @@
     color.ui = "auto";
   };
 
-  home.shellAliases = {
-    bruh = "git";
+  programs.lazygit.enable = true;
+  programs.lazygit.settings = {
+    notARepository = "quit";
+    promptToReturnFromSubprocess = false;
+    gui = {
+      showIcons = true;
+      paging = {
+        colorArg = "always";
+        pager = "delta --dark --paging=never";
+      };
+    };
   };
 }

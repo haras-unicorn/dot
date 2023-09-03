@@ -1,7 +1,7 @@
-{ ... }:
+{ self, ... }:
 
 {
   imports = [
-    ../../distro/console/console.nix
+    "${self}/distro/console/console.nix"
   ];
 }
