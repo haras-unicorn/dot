@@ -33,9 +33,6 @@
     let
       hosts = self + "/src/host";
       username = "haras";
-      nixpkgsConfig = {
-        allowUnfree = true;
-      };
     in
     {
       nixosConfigurations =
@@ -48,7 +45,6 @@
                   hostname = "${host}-${username}";
                   username = username;
                   groups = [ ];
-                  nixpkgsConfig = nixpkgsConfig;
                   wsl = false;
                 } // (if builtins.pathExists "${hosts}/${host}/meta.nix"
                 then builtins.import "${hosts}/${host}/meta.nix"
@@ -71,7 +67,7 @@
                       ({ pkgs, ... }: {
                         nix.package = pkgs.nixFlakes;
                         nix.extraOptions = "experimental-features = nix-command flakes";
-                        nixpkgs.config = nixpkgsConfig;
+                        nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
                         networking.hostName = meta.hostname;
                         system.stateVersion = "23.11";
                       })
@@ -92,14 +88,16 @@
                         home-manager.useGlobalPkgs = true;
                         home-manager.useUserPackages = true;
                         home-manager.extraSpecialArgs = specialArgs;
-                        home-manager.users."${username}" = { ... } @specialArgs:
-                          {
-                            programs.home-manager.enable = true;
-                            xdg.configFile."nixpkgs/config.nix".text = builtins.toString nixpkgsConfig;
-                            home.username = "${username}";
-                            home.homeDirectory = "/home/${username}";
-                            home.stateVersion = "23.11";
-                          } // ((import "${hosts}/${host}/home.nix") specialArgs);
+                        home-manager.users."${username}" =
+                          ({ ... } @specialArgs:
+                            {
+                              programs.home-manager.enable = true;
+                              nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
+                              xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
+                              home.username = "${username}";
+                              home.homeDirectory = "/home/${username}";
+                              home.stateVersion = "23.11";
+                            } // ((import "${hosts}/${host}/home.nix") specialArgs));
                       }
                     ] else [ ])
                     ++ (if (builtins.pathExists "${hosts}/${host}/secrets.nix") then [
