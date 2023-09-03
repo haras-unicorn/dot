@@ -2,6 +2,6 @@
 
 {
   imports = [
-    "${self}/distro/console/console.nix"
+    "${self}/src/distro/console/console.nix"
   ];
 }
