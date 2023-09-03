@@ -42,10 +42,11 @@
               meta =
                 {
                   system = "x86_64-linux";
+                  wsl = false;
                   hostname = "${host}-${username}";
                   username = username;
                   groups = [ ];
-                  wsl = false;
+                  shell = "nushell";
                 } // (if builtins.pathExists "${hosts}/${host}/meta.nix"
                 then builtins.import "${hosts}/${host}/meta.nix"
                 else { });
@@ -80,7 +81,7 @@
                           isNormalUser = true;
                           initialPassword = username;
                           extraGroups = [ "wheel" ] ++ meta.groups;
-                          shell = pkgs.nushell;
+                          shell = pkgs."${meta.shell}";
                         };
                       })
                       home-manager.nixosModules.home-manager
@@ -113,9 +114,7 @@
                       nixos-wsl.nixosModules.wsl
                       {
                         wsl.enable = true;
-                        wsl.startMenuLaunchers = true;
                         wsl.defaultUser = "${meta.username}";
-                        wsl.interop.register = true;
                       }
                     ] else [ ]);
                   };
