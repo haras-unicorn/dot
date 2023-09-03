@@ -5,7 +5,5 @@
     vim-full
     git
     openssl
-    man-pages
-    man-pages-posix
   ];
 }

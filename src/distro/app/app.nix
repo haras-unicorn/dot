@@ -1,16 +1,16 @@
-{ pkgs, ... }:
+{ self, pkgs, ... }:
 
 {
   imports = [
-    ../../module/home/brave/brave.nix
-    ../../module/home/dunst/dunst.nix
-    ../../module/home/qtile/qtile.nix
-    ../../module/home/redshift/redshift.nix
-    ../../module/home/rofi/rofi.nix
-    ../../module/home/sdui/sdui.nix
-    ../../module/home/spotify/spotify.nix
-    ../../module/home/tui/tui.nix
-    ../../module/home/wallpaper/wallpaper.nix
+    "${self}/src/module/home/brave/brave.nix"
+    "${self}/src/module/home/dunst/dunst.nix"
+    "${self}/src/module/home/qtile/qtile.nix"
+    "${self}/src/module/home/redshift/redshift.nix"
+    "${self}/src/module/home/rofi/rofi.nix"
+    "${self}/src/module/home/sdui/sdui.nix"
+    "${self}/src/module/home/spotify/spotify.nix"
+    "${self}/src/module/home/tui/tui.nix"
+    "${self}/src/module/home/wallpaper/wallpaper.nix"
   ];
 
   home.sessionVariables = {

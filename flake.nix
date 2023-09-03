@@ -55,6 +55,7 @@
                 else { });
 
               specialArgs = {
+                self = self;
                 nixos-wsl = nixos-wsl;
                 nixos-hardware = nixos-hardware;
                 sweet-theme = sweet-theme;

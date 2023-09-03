@@ -1,15 +1,15 @@
-{ pkgs, ... }:
+{ self, pkgs, ... }:
 
 {
   imports = [
-    ../../module/home/git/git.nix
-    ../../module/home/helix/helix.nix
-    ../../module/home/nushell/nushell.nix
-    ../../module/home/starship/starship.nix
-    ../../module/home/zoxide/zoxide.nix
-    ../../module/home/bat/bat.nix
-    ../../module/home/ripgrep/ripgrep.nix
-    ../../module/home/exa/exa.nix
+    "${self}/src/module/home/git/git.nix"
+    "${self}/src/module/home/helix/helix.nix"
+    "${self}/src/module/home/nushell/nushell.nix"
+    "${self}/src/module/home/starship/starship.nix"
+    "${self}/src/module/home/zoxide/zoxide.nix"
+    "${self}/src/module/home/bat/bat.nix"
+    "${self}/src/module/home/ripgrep/ripgrep.nix"
+    "${self}/src/module/home/exa/exa.nix"
   ];
 
   programs.starship.enableNushellIntegration = true;
@@ -22,6 +22,8 @@
     yas = "yes";
   };
   home.packages = with pkgs; [
+    man-pages
+    man-pages-posix
     pciutils
     lsof
     dmidecode
