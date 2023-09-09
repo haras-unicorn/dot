@@ -12,7 +12,7 @@ rm -rf /opt
 mkdir /opt
 git clone https://gitlab.com/hrle/dotfiles-nixos /opt/dotfiles
 HOST=$2
-if [ ! -d "/opt/dotfiles/src/hosts/$HOST" ]; then
+if [ ! -d "/opt/dotfiles/src/host/$HOST" ]; then
   printf "Please enter a valid host\n"
   exit 1
 fi
