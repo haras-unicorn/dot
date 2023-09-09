@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 
 let
-  sdui = pkgs.mkScriptBin "sdui" ''
+  sdui = pkgs.writeScriptBin "sdui" ''
     #!${pkgs.stdenv.shell}
     set -eo pipefail
 
