@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 
 let
-  tui = pkgs.mkScriptBin "tui" ''
+  tui = pkgs.writeScriptBin "tui" ''
     #!${pkgs.stdenv.shell}
     set -eo pipefail
 
