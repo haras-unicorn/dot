@@ -70,11 +70,6 @@ services.transmission.settings.watch-dir = "${config.services.transmission.home}
 services.transmission.settings.watch-dir-enabled = true;
 ````
 
-### Compartmentalization
-
-I should have a modules folder for packages with a lot of configurations or groups of packages since my `home.nix` is getting crowded and hard to navigate.
-
-
 ## Ideal state (or TODO)
 
 - [ ] either:
@@ -84,10 +79,8 @@ I should have a modules folder for packages with a lot of configurations or grou
   - [ ] if Windows 11 VM is not an option use dual-boot on NVME (probably the way forward)
     - [ ] set up secure boot on nixos
     - [ ] set up tpm on nixos 
-- [ ] use nixos as "primary" os
 - [ ] use https://github.com/nix-community/nixago
 - [ ] figure out direnv
-- [ ] xdg.configFile for config files, xdg.dataFile for data files, xdg.desktopEntries for syncthing, transmission...
 - [ ] xdg.mimeApps configure default applications
 - [ ] xdg.userDirs
 - [ ] xresources theme
@@ -98,22 +91,26 @@ I should have a modules folder for packages with a lot of configurations or grou
 - [ ] rEFInd (maybe once NixOS officially supports it)
 - [ ] better plymouth? (right now it flashes several times when i boot)
 - [ ] wayland
-- [ ] sway/leftwm (in general looking for a minimal config TWM for wayland preferrably written in rust)
-- [ ] a separate bar for my desktop environment (for now using the Qtile bar for that)
+- [ ] hyprland
+- [ ] swww
+- [ ] eww
+- [ ] sddm wayland?
 - [ ] something more minimal than xfce ? (idk how this will work even with wayland)
 - [ ] save brave settings here or different browser? (qutebrowser rendering and adblock sucks tbh)
-- [ ] keepassxc save settings or different key storage strategy? (maybe bitwarden but i fear TOTP is behind a paywall...)
+- [ ] use vault once i get my hands on a personal cloud
 - [ ] replace syncthing with centralized storage and a server once i get a personal cloud (either raspberry pi + vpn or a cloud vm)
 
 ### Cloud
 
 - [ ] vpn server or ipv6
+- [ ] vault
 - [ ] storage
 - [ ] calendar
-- [ ] mail server?
-- [ ] matrix server?
-- [ ] ocr and elasticsearch for mail/documents
-- [ ] maybe home assistant
+- [ ] mail
+- [ ] matrix
+- [ ] mastodon
+- [ ] ocr document storage
+- [ ] home assistant
 
 ### Helix
 
@@ -124,7 +121,6 @@ I should have a modules folder for packages with a lot of configurations or grou
 ### VS Code
 
 - [ ] settings
-- [ ] tasks (for nixos recreate/update)
 
 #### Extensions
 
