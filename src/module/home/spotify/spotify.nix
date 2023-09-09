@@ -19,7 +19,7 @@
       cache_path = "${config.xdg.cacheHome}/spotifyd";
       volume_normalisation = true;
       device_type = "computer";
-      device_name = "${config.networking.hostName}";
+      # device_name = "${config.networking.hostName}";
       zeroconf_port = 8888;
     };
   };
