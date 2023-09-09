@@ -10,6 +10,7 @@
     virglrenderer
     win-virtio
     win-spice
+    lazydocker
   ];
 
   services.qemuGuest.enable = true;

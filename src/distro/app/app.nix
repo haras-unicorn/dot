@@ -2,11 +2,6 @@
 
 {
   imports = [
-    "${self}/src/module/home/qtile/qtile.nix"
-    "${self}/src/module/home/dunst/dunst.nix"
-    "${self}/src/module/home/redshift/redshift.nix"
-    "${self}/src/module/home/rofi/rofi.nix"
-    "${self}/src/module/home/wallpaper/wallpaper.nix"
     "${self}/src/module/home/gtk/gtk.nix"
     "${self}/src/module/home/qt/qt.nix"
     "${self}/src/module/home/brave/brave.nix"
@@ -18,18 +13,16 @@
   ];
 
   home.packages = with pkgs; [
+    emote
     brightnessctl
-    lazydocker
     ferdium
     keepassxc
-    emote
     libreoffice-fresh
     obs-studio
     shotwell
     pinta
   ];
 
-  programs.feh.enable = true;
   services.udiskie.enable = true;
   services.flameshot.enable = true;
   services.betterlockscreen.enable = true;
