@@ -6,9 +6,9 @@
     nixpkgs-fmt
     direnv
     nix-direnv
-    python311
-    python311Packages.python-lsp-server
-    python311Packages.black
+    # python311
+    # python311Packages.python-lsp-server
+    # python311Packages.black
     dotnet-sdk_7
     omnisharp-roslyn
     nodejs_20
