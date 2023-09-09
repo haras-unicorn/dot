@@ -17,6 +17,8 @@ if [ ! -d "/opt/dotfiles/src/host/$HOST" ]; then
   exit 1
 fi
 
+printf "Installing %s on %s" "$HOST" "$DEVICE"
+
 if grep -q "$DEVICE" /proc/mounts; then
   umount -Rl /mnt
   sleep 1s
