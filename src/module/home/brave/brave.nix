@@ -5,7 +5,10 @@
     brave
   ];
 
-  home.sessionVariables = {
-    BROWSER = "brave";
-  };
+  # home.sessionVariables = {
+  #   BROWSER = "brave";
+  # };
+  programs.nushell.extraEnv = ''
+    $env.BROWSER = "brave";
+  '';
 }

@@ -20,14 +20,18 @@
     marksman
   ];
 
-  home.sessionVariables = {
-    VISUAL = "hx";
-    EDITOR = "hx";
-  };
-
-  home.shellAliases = {
-    sis = "hx";
-  };
+  # home.sessionVariables = {
+  #   VISUAL = "hx";
+  #   EDITOR = "hx";
+  # };
+  # home.shellAliases = {
+  #   sis = "hx";
+  # };
+  programs.nushell.extraEnv = ''
+    $env.VISUAL = "hx";
+    $env.EDITOR = "hx";
+    alias sis = hx;
+  '';
 
   programs.helix.enable = true;
   programs.helix.languages = {

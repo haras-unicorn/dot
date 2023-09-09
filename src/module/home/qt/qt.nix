@@ -1,10 +1,12 @@
 { pkgs, ... }:
 
 {
-  home.sessionVariables = {
-    # TODO: not working cuz nushell?
-    QT_QPA_PLATFORMTHEME = "gtk2";
-  };
+  # home.sessionVariables = {
+  #   QT_QPA_PLATFORMTHEME = "gtk2";
+  # };
+  programs.nushell.extraEnv = ''
+    $env.QT_QPA_PLATFORMTHEME = "gtk2";
+  '';
 
   qt.enable = true;
   qt.platformTheme = "gtk";

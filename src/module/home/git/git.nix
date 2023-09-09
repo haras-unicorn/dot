@@ -5,10 +5,14 @@
     delta
   ];
 
-  home.shellAliases = {
-    bruh = "git";
-    lg = "lazygit";
-  };
+  # home.shellAliases = {
+  #   bruh = "git";
+  #   lg = "lazygit";
+  # };
+  programs.nushell.extraEnv = ''
+    alias rawdog = git;
+    alias bruh = lazygit;
+  '';
 
   programs.git.enable = true;
   programs.git.delta.enable = true;

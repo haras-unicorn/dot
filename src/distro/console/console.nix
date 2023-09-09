@@ -12,15 +12,6 @@
     "${self}/src/module/home/exa/exa.nix"
   ];
 
-  programs.starship.enableNushellIntegration = true;
-  programs.zoxide.enableNushellIntegration = true;
-
-  home.shellAliases = {
-    pls = "sudo";
-    rm = "rm -i";
-    mv = "mv -i";
-    yas = "yes";
-  };
   home.packages = with pkgs; [
     pinentry
     man-pages
@@ -38,6 +29,22 @@
     unrar
     sd
   ];
+
+  # home.shellAliases = {
+  #   pls = "sudo";
+  #   rm = "rm -i";
+  #   mv = "mv -i";
+  #   yas = "yes";
+  # };
+  programs.nushell.extraEnv = ''
+    alias pls = sudo;
+    alias rm = rm -i;
+    alias mv = mv -i;
+    alias yas = yes;
+  '';
+
+  programs.starship.enableNushellIntegration = true;
+  programs.zoxide.enableNushellIntegration = true;
 
   programs.htop.enable = true;
   programs.lf.enable = true;
