@@ -1,0 +1,88 @@
+@import "colors"
+
+* {
+  background-color:       @black;
+  text-color:             @white;
+  border:                 0;
+  spacing:                0;
+  padding:                0;
+}
+
+configuration {
+  font:                   "JetBrainsMono Nerd Font Regular 12";
+
+  dmenu {
+    display-name:         "";
+  }
+}
+
+window {
+  location:               center;
+  transparency:           "real";
+  border:                 2;
+  border-color:           @dimYellow;
+  background-color:       @transparent;
+
+  // NOTE: seems broken
+  padding:                0;
+}
+
+mainbox {
+  children:               [ inputbar, listview ];
+}
+
+inputbar {
+  padding:                1.5% 1%;
+  background-color:       @brightBlack;
+  children:               [ prompt, entry ];
+}
+
+prompt {
+  padding:                0 20px 0 0;
+  background-color:       @transparent;
+  text-color:             @dimCyan;
+}
+
+entry {
+  padding:                0;
+  background-color:       @transparent;
+  text-color:             @brightYellow;
+  placeholder-color:      @dimGreen;
+  placeholder:            "Search";
+}
+
+listview {
+  dynamic:                true;
+  scrollbar:              false;
+  lines:                  10;
+
+  // NOTE: seems broken
+  border:                 0;
+  padding:                0;
+  spacing:                0;
+}
+
+element {
+  background-color:       @brightBlack;
+  text-color:             @white;
+}
+
+element normal normal {
+  background-color:       @black;
+  text-color:             @white;
+}
+
+element alternate normal {
+  background-color:       @black;
+  text-color:             @white;
+}
+
+element selected normal {
+  background-color:       @brightBlack;
+  text-color:             @brightWhite;
+}
+
+element-text {
+  highligh:               underline;
+  padding:                5 1%;
+}

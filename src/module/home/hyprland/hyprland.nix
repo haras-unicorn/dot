@@ -9,6 +9,7 @@
       $mainMod = SUPER
 
       bind = $mainMod, Q, exec, kitty
+      bind = $mainMod, Enter, exec, wofi --show drun
     '';
   };
 }
