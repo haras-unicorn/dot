@@ -11,6 +11,7 @@
     "${self}/src/module/home/spotify/spotify.nix"
     "${self}/src/module/home/tui/tui.nix"
     "${self}/src/module/home/wallpaper/wallpaper.nix"
+    "${self}/src/module/home/kitty/kitty.nix"
   ];
 
   home.sessionVariables = {
