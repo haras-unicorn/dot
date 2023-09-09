@@ -5,7 +5,7 @@
     ../../module/system/grub/grub.nix
     ../../module/system/plymouth/plymouth.nix
     ../../module/system/location/location.nix
-    ../../module/system/networking/networking.nix
+    ../../module/system/network/network.nix
     ../../module/system/pipewire/pipewire.nix
     ../../module/system/xserver/xserver.nix
     ../../module/system/fonts/fonts.nix
