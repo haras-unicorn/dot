@@ -10,4 +10,5 @@
   fonts.enableDefaultPackages = true;
   fonts.enableGhostscriptFonts = true;
   fonts.fontDir.enable = true;
+  fonts.fontconfig.enable = true;
 }
