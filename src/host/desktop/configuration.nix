@@ -16,6 +16,7 @@
   services.ananicy.enable = true;
   services.earlyoom.enable = true;
 
+  # TODO
   services.transmission.enable = true;
   services.transmission.openPeerPorts = true;
 
@@ -25,8 +26,7 @@
   security.pam.enableSSHAgentAuth = true;
 
   environment.systemPackages = with pkgs; [
-    vim-full
+    helix
     git
-    pinentry
   ];
 }

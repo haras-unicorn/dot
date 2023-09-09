@@ -26,6 +26,7 @@
   programs.seahorse.enable = true;
 
   environment.systemPackages = with pkgs; [
+    xclip
     libsForQt5.qt5.qtgraphicaleffects
     libsForQt5.plasma-framework
   ];

@@ -12,6 +12,7 @@
     "${self}/src/module/home/tui/tui.nix"
     "${self}/src/module/home/wallpaper/wallpaper.nix"
     "${self}/src/module/home/kitty/kitty.nix"
+    "${self}/src/module/home/syncthing/syncthing.nix"
   ];
 
   home.sessionVariables = {
@@ -20,15 +21,8 @@
   };
 
   home.packages = with pkgs; [
-    xclip
-    woeusb
-    lazydocker
-    spotify-tui
-
-    keepmenu
     brightnessctl
-    ntfs3g
-
+    lazydocker
     ferdium
     keepassxc
     emote
@@ -39,7 +33,6 @@
   ];
 
   programs.feh.enable = true;
-  services.syncthing.enable = true;
   services.udiskie.enable = true;
   services.flameshot.enable = true;
   services.betterlockscreen.enable = true;

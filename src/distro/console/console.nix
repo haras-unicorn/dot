@@ -22,6 +22,7 @@
     yas = "yes";
   };
   home.packages = with pkgs; [
+    pinentry
     man-pages
     man-pages-posix
     pciutils
