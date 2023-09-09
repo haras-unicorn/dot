@@ -1,6 +1,6 @@
 { self, ... }:
 {
   imports = [
-    "${self}/src/modules/home/hyprland.nix"
+    "${self}/src/module/home/hyprland.nix"
   ];
 }
