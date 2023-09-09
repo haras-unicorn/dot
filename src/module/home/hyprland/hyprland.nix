@@ -11,10 +11,10 @@
       bind = $mainMod, Q, exec, kitty
       bind = $mainMod, E, exec, wofi --show drun
 
-      bind = $mainMod, right, movefocus, r
-      bind = $mainMod, left, movefocus, l
-      bind = $mainMod, up, movefocus, u
-      bind = $mainMod, down, movefocus, d
+      bind = $mainMod, H, movefocus, l
+      bind = $mainMod, J, movefocus, d
+      bind = $mainMod, K, movefocus, u
+      bind = $mainMod, L, movefocus, r
 
       bind = $mainMod, R, submap, resize
       submap = resize
