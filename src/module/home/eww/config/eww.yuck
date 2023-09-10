@@ -1,3 +1,5 @@
+;; TODO: https://github.com/elkowar/eww/pull/743
+
 (defwindow top-bar
   :monitor 0
   :geometry (geometry
