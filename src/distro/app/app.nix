@@ -17,7 +17,6 @@
     ferdium
     keepassxc
     libreoffice-fresh
-    obs-studio
     shotwell
     pinta
   ];
