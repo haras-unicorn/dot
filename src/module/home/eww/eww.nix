@@ -4,5 +4,5 @@
   programs.eww.enable = true;
   programs.eww.package = pkgs.eww-wayland;
   programs.eww.configDir = ./config;
-  wayland.windowManager.hyprland.extraConfig = ''exec-once = ${pkgs.eww-wayland} daemon'';
+  wayland.windowManager.hyprland.extraConfig = ''exec-once = ${pkgs.eww-wayland}/bin/eww daemon'';
 }
