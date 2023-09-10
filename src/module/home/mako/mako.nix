@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.pacakges = with pkgs; [
+  home.packages = with pkgs; [
     libnotify
   ];
 
