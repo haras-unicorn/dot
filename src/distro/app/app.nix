@@ -9,7 +9,6 @@
     "${self}/src/module/home/kitty/kitty.nix"
     "${self}/src/module/home/syncthing/syncthing.nix"
     "${self}/src/module/home/sdui/sdui.nix"
-    "${self}/src/module/home/tui/tui.nix"
   ];
 
   home.packages = with pkgs; [
