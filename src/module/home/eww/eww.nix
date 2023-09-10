@@ -7,6 +7,6 @@
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.eww-wayland}/bin/eww daemon
 
-    monitor = DP-1, addreserved, 20, 0, 0, 0, 0
+    monitor = , addreserved, 20, 0, 0, 0, 0
   '';
 }
