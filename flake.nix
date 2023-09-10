@@ -47,6 +47,7 @@
                   username = username;
                   groups = [ ];
                   shell = "nushell";
+                  hardware = { };
                 } // (if builtins.pathExists "${hosts}/${host}/meta.nix"
                 then builtins.import "${hosts}/${host}/meta.nix"
                 else { });
@@ -56,6 +57,7 @@
                 nixos-wsl = nixos-wsl;
                 nixos-hardware = nixos-hardware;
                 sweet-theme = sweet-theme;
+                hardware = meta.hardware;
               };
             in
             nixosConfigurations // {

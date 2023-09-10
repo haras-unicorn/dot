@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, hardware, ... }:
 
 {
   programs.eww.enable = true;
@@ -7,6 +7,6 @@
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.eww-wayland}/bin/eww daemon
 
-    monitor = , addreserved, 20, 0, 0, 0, 0
+    monitor = ${hardware.mainMonitor}, addreserved, 20, 0, 0, 0, 0
   '';
 }
