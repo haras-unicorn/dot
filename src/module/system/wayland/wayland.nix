@@ -13,7 +13,9 @@
     beauty-line-icon-theme
     numix-cursor-theme
     (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+    gtklock
   ];
+  security.pam.services.gtklock = { };
 
   programs.hyprland.enable = true;
   programs.hyprland.enableNvidiaPatches = true;

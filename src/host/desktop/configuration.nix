@@ -24,7 +24,7 @@
   services.ananicy.enable = true;
   services.earlyoom.enable = true;
 
-  # TODO: per user?
+  # TODO: per user
   services.transmission.enable = true;
   services.transmission.openPeerPorts = true;
 
