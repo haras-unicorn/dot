@@ -4,10 +4,17 @@
   programs.direnv.enable = true;
   programs.direnv.enableNushellIntegration = true;
   programs.direnv.nix-direnv.enable = true;
+
   programs.nushell.enable = true;
+
   programs.nushell.extraEnv = ''
     $env.PATH = $"${config.home.homeDirectory}/bin:($env.PATH)"
     $env.PATH = $"bin:($env.PATH)"
+
+    alias pls = sudo;
+    alias rm = rm -i;
+    alias mv = mv -i;
+    alias yas = yes;
   '';
   programs.nushell.extraConfig = ''
     $env.config = {
@@ -29,7 +36,10 @@
     }
   '';
   programs.nushell.environmentVariables = {
-    PROMPT_INDICATOR_VI_INSERT = "'λ '";
-    PROMPT_INDICATOR_VI_NORMAL = "' '";
+    PROMPT_INDICATOR_VI_INSERT = "󰞷";
+    PROMPT_INDICATOR_VI_NORMAL = " ";
   };
+
+  programs.starship.enableNushellIntegration = true;
+  programs.zoxide.enableNushellIntegration = true;
 }

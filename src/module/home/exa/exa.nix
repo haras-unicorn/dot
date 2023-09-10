@@ -1,9 +1,6 @@
 { ... }:
 
 {
-  # home.shellAliases = {
-  #   la = "exa";
-  # };
   programs.nushell.extraEnv = ''
     alias la = exa;
   '';

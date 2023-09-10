@@ -20,16 +20,12 @@
     marksman
   ];
 
-  # home.sessionVariables = {
-  #   VISUAL = "hx";
-  #   EDITOR = "hx";
-  # };
-  # home.shellAliases = {
-  #   sis = "hx";
-  # };
+  wayland.windowManager.hyprland.extraConfig = ''
+    env = VISUAL, hx
+    env = EDITOR, hx
+  '';
+
   programs.nushell.extraEnv = ''
-    $env.VISUAL = "hx";
-    $env.EDITOR = "hx";
     alias sis = hx;
   '';
 

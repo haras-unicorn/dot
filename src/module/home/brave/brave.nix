@@ -5,10 +5,9 @@
     brave
   ];
 
-  # home.sessionVariables = {
-  #   BROWSER = "brave";
-  # };
-  programs.nushell.extraEnv = ''
-    $env.BROWSER = "brave";
+  wayland.windowManager.hyprland.extraConfig = ''
+    env = BROWSER, brave
+
+    bind = super, w, exec, brave
   '';
 }

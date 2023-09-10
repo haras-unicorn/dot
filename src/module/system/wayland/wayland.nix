@@ -2,6 +2,7 @@
 
 {
   environment.sessionVariables = {
+    # TODO: ferdium not working
     NIXOS_OZONE_WL = "1";
     WLR_NO_HARDWARE_CURSORS = "1";
   };
@@ -24,10 +25,10 @@
     };
     GTK = {
       application_prefer_dark_theme = true;
-      cursor_theme_name = "Numix-Cursor";
+      theme_name = "Sweet-Dark";
       font_name = "JetBrainsMono Nerd Font";
       icon_theme_name = "BeautyLine";
-      theme_name = "Sweet-Dark";
+      cursor_theme_name = "Numix-Cursor";
     };
   };
 }

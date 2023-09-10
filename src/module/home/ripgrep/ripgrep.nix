@@ -1,9 +1,6 @@
 { ... }:
 
 {
-  # home.shellAliases = {
-  #   grep = "rg";
-  # };
   programs.nushell.extraEnv = ''
     alias grep = rg;
   '';
