@@ -8,13 +8,13 @@
     "${self}/src/module/home/spotify/spotify.nix"
     "${self}/src/module/home/kitty/kitty.nix"
     "${self}/src/module/home/syncthing/syncthing.nix"
+    "${self}/src/module/home/keepassxc/keepassxc.nix"
     "${self}/src/module/home/sdui/sdui.nix"
   ];
 
   home.packages = with pkgs; [
     emote
     ferdium
-    keepassxc
     libreoffice-fresh
     vlc
     shotwell
