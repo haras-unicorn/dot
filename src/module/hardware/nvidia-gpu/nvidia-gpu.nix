@@ -16,4 +16,6 @@
 
   programs.corectrl.enable = true;
   programs.corectrl.gpuOverclock.enable = true;
+
+  programs.hyprland.enableNvidiaPatches = true;
 }

@@ -22,6 +22,9 @@
   ];
   security.pam.services.gtklock = { };
 
+  programs.hyprland.enable = true;
+  programs.hyprland.xwayland.enable = true;
+
   programs.regreet.enable = true;
   programs.regreet.settings = {
     background = {
