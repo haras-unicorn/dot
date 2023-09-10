@@ -9,5 +9,7 @@
     "${self}/src/module/home/wofi/wofi.nix"
     "${self}/src/module/home/obs-studio/obs-studio.nix"
     "${self}/src/module/home/grim/grim.nix"
+    "${self}/src/module/home/brightnessctl/brightnessctl.nix"
+    "${self}/src/module/home/playerctl/playerctl.nix"
   ];
 }

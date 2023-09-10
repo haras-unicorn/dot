@@ -13,10 +13,10 @@
 
   home.packages = with pkgs; [
     emote
-    brightnessctl
     ferdium
     keepassxc
     libreoffice-fresh
+    vlc
     shotwell
     pinta
   ];
