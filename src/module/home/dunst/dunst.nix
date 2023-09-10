@@ -1,6 +1,10 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
+  home.pacakges = with pkgs; [
+    libnotify
+  ];
+
   services.dunst.enable = true;
-  xdg.configFile."dunst/dunstrc".source = ./dunstrc;
+  services.dunst.configFile = ./dunstrc;
 }
