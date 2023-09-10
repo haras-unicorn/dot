@@ -1,7 +1,6 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
-  home.packages = with pkgs; [
-    mako
-  ];
+  services.mako.enable = true;
+  services.mako.extraConfig = builtins.readFile ./config;
 }
