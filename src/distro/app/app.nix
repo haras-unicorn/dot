@@ -23,7 +23,5 @@
   ];
 
   services.udiskie.enable = true;
-  services.flameshot.enable = true;
-  services.betterlockscreen.enable = true;
   services.network-manager-applet.enable = true;
 }

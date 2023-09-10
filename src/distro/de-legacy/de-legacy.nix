@@ -10,4 +10,6 @@
   ];
 
   programs.feh.enable = true;
+  services.flameshot.enable = true;
+  services.betterlockscreen.enable = true;
 }

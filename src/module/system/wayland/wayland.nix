@@ -16,6 +16,8 @@
   ];
 
   programs.hyprland.enable = true;
+  programs.hyprland.enableNvidiaPatches = true;
+  programs.hyprland.xwayland.enable = true;
 
   programs.regreet.enable = true;
   programs.regreet.settings = {

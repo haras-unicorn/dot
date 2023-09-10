@@ -7,5 +7,7 @@
     "${self}/src/module/home/swww/swww.nix"
     "${self}/src/module/home/eww/eww.nix"
     "${self}/src/module/home/wofi/wofi.nix"
+    "${self}/src/module/home/grim/grim.nix"
+    "${self}/src/module/home/gtklock/gtklock.nix"
   ];
 }
