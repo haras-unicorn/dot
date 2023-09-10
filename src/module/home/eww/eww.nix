@@ -6,7 +6,8 @@
   programs.eww.configDir = ./config;
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.eww-wayland}/bin/eww daemon
+    exec-once = ${pkgs.eww-wayland}/bin/eww open top-bar
 
-    monitor = ${hardware.mainMonitor}, addreserved, 20, 0, 0, 0, 0
+    monitor = ${hardware.mainMonitor}, addreserved, 32, 0, 0, 0, 0
   '';
 }
