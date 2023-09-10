@@ -2,7 +2,10 @@
 
 {
   imports = [
+    "${self}/src/module/home/gpg/gpg.nix"
+    "${self}/src/module/home/ssh/ssh.nix"
     "${self}/src/module/home/git/git.nix"
+    "${self}/src/module/home/lf/lf.nix"
     "${self}/src/module/home/helix/helix.nix"
     "${self}/src/module/home/nushell/nushell.nix"
     "${self}/src/module/home/starship/starship.nix"
@@ -13,7 +16,6 @@
   ];
 
   home.packages = with pkgs; [
-    pinentry
     man-pages
     man-pages-posix
     pciutils
@@ -28,14 +30,6 @@
     unzip
     unrar
     sd
+    htop
   ];
-
-  programs.htop.enable = true;
-  programs.lf.enable = true;
-
-  programs.gpg.enable = true;
-  services.gpg-agent.enable = true;
-  services.gpg-agent.pinentryFlavor = "tty";
-  programs.ssh.enable = true;
-  services.ssh-agent.enable = true;
 }

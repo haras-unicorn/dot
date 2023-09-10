@@ -12,6 +12,9 @@
 
     "${self}/src/module/system/pipewire/pipewire.nix"
 
+    "${self}/src/module/system/ssh/ssh.nix"
+    "${self}/src/module/system/keyring/keyring.nix"
+
     "${self}/src/module/system/fonts/fonts.nix"
     # "${self}/src/module/system/xserver/xserver.nix"
     "${self}/src/module/system/wayland/wayland.nix"
@@ -27,11 +30,6 @@
   # TODO: per user
   services.transmission.enable = true;
   services.transmission.openPeerPorts = true;
-
-  programs.ssh.startAgent = true;
-  services.openssh.enable = true;
-  services.openssh.allowSFTP = true;
-  security.pam.enableSSHAgentAuth = true;
 
   environment.systemPackages = with pkgs; [
     helix
