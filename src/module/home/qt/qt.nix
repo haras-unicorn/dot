@@ -1,5 +1,7 @@
 { pkgs, sweet-theme, ... }:
 
+# TODO: try minimize but be careful cuz its really brittle
+
 {
   qt.enable = true;
   qt.platformTheme = "kde";
