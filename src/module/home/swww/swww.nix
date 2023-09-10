@@ -14,5 +14,7 @@ in
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.swww}/bin/swww init
     exec = ${swww-img}/bin/swww-img
+
+    bind = super, tab, exec, ${swww-img}/bin/swww-img
   '';
 }
