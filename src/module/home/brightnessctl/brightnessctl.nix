@@ -6,6 +6,5 @@
   ];
 
   wayland.windowManager.hyprland.extraConfig = ''
-    bind = super, t, exec, kitty
   '';
 }
