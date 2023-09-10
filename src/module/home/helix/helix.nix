@@ -59,6 +59,26 @@
       file-picker = {
         hidden = false;
       };
+      statusline = {
+        left = [
+          "spinner"
+          "workspace-diagnostics"
+          "diagnostics"
+        ];
+        center = [ ];
+        right = [
+          "file-base-name"
+          "position"
+        ];
+      };
+      lsp = {
+        display-inlay-hints = true;
+      };
+      cursor-shape = {
+        normal = "block";
+        insert = "bar";
+        select = "underline";
+      };
     };
   };
   programs.helix.themes.transparent = {
