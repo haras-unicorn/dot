@@ -6,12 +6,15 @@
   ];
 
   services.spotifyd.enable = true;
-  services.spotifyd.package = pkgs.spotifyd.override { withKeyring = true; };
-  # security add-generic-password -s spotifyd -D rust-keyring -a <your username> -w
+  services.spotifyd.package = pkgs.spotifyd.override {
+    withKeyring = true;
+    withMpris = true;
+  };
   services.spotifyd.settings = {
     global = {
       username = "ftsedf157kfova8yuzoq1dfax";
       # TODO: check if has keyring?
+      # secret-tool store --label=spotifyd application rust-keyring service spotifyd username ftsedf157kfova8yuzoq1dfax
       use_keyring = true;
       use_mpris = true;
       dbus_type = "session";

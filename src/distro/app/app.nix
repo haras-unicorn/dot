@@ -2,6 +2,7 @@
 
 {
   imports = [
+    "${self}/src/module/home/cursor/cursor.nix"
     "${self}/src/module/home/gtk/gtk.nix"
     "${self}/src/module/home/qt/qt.nix"
     "${self}/src/module/home/brave/brave.nix"
