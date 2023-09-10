@@ -15,6 +15,10 @@ in
     exec-once = ${pkgs.swww}/bin/swww init
     exec = ${swww-img}/bin/swww-img
 
+    misc {
+      disable_hyprland_logo = true
+    }
+
     bind = super, tab, exec, ${swww-img}/bin/swww-img
   '';
 }
