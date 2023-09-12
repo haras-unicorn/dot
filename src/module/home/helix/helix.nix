@@ -70,6 +70,8 @@ in
     dotnet-sdk_7
     omnisharp-roslyn
     nodejs_20
+    bun
+    nodePackages.typescript-language-server
     nodePackages.bash-language-server
     nodePackages.yaml-language-server
     nodePackages.dockerfile-language-server-nodejs
