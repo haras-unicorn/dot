@@ -88,7 +88,8 @@
                       })
                       home-manager.nixosModules.home-manager
                       {
-                        home-manager.useGlobalPkgs = true;
+                        # NOTE: it seems docs recommend this but i need it disabled cuz nodejs
+                        # home-manager.useGlobalPkgs = true;
                         home-manager.useUserPackages = true;
                         home-manager.extraSpecialArgs = specialArgs;
                         home-manager.users."${username}" =
