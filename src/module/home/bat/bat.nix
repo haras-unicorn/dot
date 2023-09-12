@@ -9,6 +9,8 @@
   '';
 
   programs.nushell.extraEnv = ''
+    $env.PAGER = bat;
+
     alias cat = bat;
   '';
 }
