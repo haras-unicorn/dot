@@ -12,7 +12,7 @@
     "${self}/src/module/home/zoxide/zoxide.nix"
     "${self}/src/module/home/bat/bat.nix"
     "${self}/src/module/home/ripgrep/ripgrep.nix"
-    "${self}/src/module/home/exa/exa.nix"
+    "${self}/src/module/home/eza/eza.nix"
   ];
 
   home.packages = with pkgs; [

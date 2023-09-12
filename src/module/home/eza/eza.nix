@@ -5,8 +5,8 @@
     alias la = exa;
   '';
 
-  programs.exa.enable = true;
-  programs.exa.extraOptions = [
+  programs.eza.enable = true;
+  programs.eza.extraOptions = [
     "--all"
     "--list"
     "--color=always"
