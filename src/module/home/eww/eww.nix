@@ -1,4 +1,4 @@
-{ pkgs, hardware, ... }:
+{ pkgs, ... }:
 
 # TODO: https://github.com/elkowar/eww/pull/743
 

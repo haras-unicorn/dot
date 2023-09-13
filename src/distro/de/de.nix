@@ -7,7 +7,7 @@
     "${self}/src/module/home/swww/swww.nix"
     "${self}/src/module/home/eww/eww.nix"
     "${self}/src/module/home/wofi/wofi.nix"
-    "${self}/src/module/home/wofi/waybar.nix"
+    "${self}/src/module/home/waybar/waybar.nix"
     "${self}/src/module/home/obs-studio/obs-studio.nix"
     "${self}/src/module/home/grim/grim.nix"
     "${self}/src/module/home/brightnessctl/brightnessctl.nix"
