@@ -18,6 +18,6 @@
   };
 
   wayland.windowManager.hyprland.extraConfig = ''
-    monitor = ${hardware.mainMonitor}, addreserved, 32, 0, 0, 0, 0
+    exec-once = waybar
   '';
 }
