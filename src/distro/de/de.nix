@@ -2,6 +2,7 @@
 
 {
   imports = [
+    "${self}/src/module/home/pywal/pywal.nix"
     "${self}/src/module/home/hyprland/hyprland.nix"
     "${self}/src/module/home/waybar/waybar.nix"
     "${self}/src/module/home/wlogout/wlogout.nix"
