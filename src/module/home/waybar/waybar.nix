@@ -6,7 +6,7 @@ let
     runtimeInputs = [ pkgs.coreutils-full pkgs.waybar ];
     text = ''
       pkill waybar || true
-      nohup waybar >/dev/null 2>&1 &
+      waybar >/dev/null 2>&1 & disown
     '';
   };
 in
