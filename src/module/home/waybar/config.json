@@ -85,7 +85,7 @@
   "custom/updates": {
     "format": "<span color=\"#61afef\"></span> {}",
     "tooltip": false,
-    "interval": 3600,
+    "interval": 3600
   },
   "pulseaudio": {
     "format": "{volume}% {icon}",
