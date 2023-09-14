@@ -5,7 +5,7 @@ let
     name = "waybar-reload";
     runtimeInputs = [ pkgs.coreutils-full pkgs.waybar ];
     text = ''
-      pkill -f waybar || true
+      pkill -x waybar || true
       waybar >/dev/null 2>&1 & disown
     '';
   };
