@@ -8,7 +8,7 @@ let
       # NOTE: only kill those that don't match this script
       pids=($(pgrep -f waybar))
       for pid in "''${pids[@]}"; do
-        if [[ $pid != $$ ]]; then
+        if [[ $pid != "$$" ]]; then
           kill "$pid"
         fi
       done
