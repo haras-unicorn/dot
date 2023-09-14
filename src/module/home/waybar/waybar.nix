@@ -8,6 +8,9 @@ let
       if [[ $(type -P nohup) ]]; then
         exit 1
       fi
+      if [[ $(type -P waybar) ]]; then
+        exit 1
+      fi
       pkill waybar || true
       nohup waybar >/dev/null 2>&1 &
     '';
