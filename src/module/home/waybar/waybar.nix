@@ -31,7 +31,8 @@ in
     (builtins.fromJSON (builtins.readFile ./config.json))
   ];
   programs.waybar.style = ''
-    @import "colors.css"
+    @import "colors.css";
+
     ${builtins.readFile ./style.css}
   '';
 
