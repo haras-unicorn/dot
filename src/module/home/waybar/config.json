@@ -53,45 +53,45 @@
   "network": {
     "tooltip-format-ethernet": "{ifname} ",
     "interval": 1,
-    "format": " {bandwidthDownBits}  {bandwidthUpBits}"
+    "format": " {bandwidthDownBits}  {bandwidthUpBits}"
   },
   "temperature": {
     "format": "{icon} {temperatureC}°C",
     "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
     "critical-threshold": 80,
-    "format-icons": ["", "", ""]
+    "format-icons": ["", "", ""]
   },
   "memory": {
-    "format": " {}%",
+    "format": "󰍛 {}%",
     "tooltip": "false"
   },
   "cpu": {
-    "format": "  {usage}%",
+    "format": "󰻠 {usage}%",
     "tooltip": "false"
   },
   "custom/powermenu": {
-    "format": "",
+    "format": "⏻",
     "tooltip": false,
     "on-click": "exec wlogout -p layer-shell"
   },
   "pulseaudio": {
     "format": "{volume}% {icon}",
     "format-bluetooth": "{volume}% {icon}",
-    "format-muted": "",
+    "format-muted": "󰝟",
     "format-icons": {
-        "headphone": "",
-        "hands-free": "",
-        "headset": "",
-        "phone": "",
+        "headphone": "󰋋",
+        "hands-free": "󰕹",
+        "headset": "󰋎",
+        "phone": "󰏲",
         "portable": "",
-        "car": "",
-        "default": ["", ""]
+        "car": "󰄋",
+        "default": ["󰕿", "󰕾"]
     },
     "scroll-step": 1,
     "on-click": "pavucontrol"
   },
   "clock": {
-    "format": "{:%H:%M:%S}",
+    "format": "🕰️  {:%H:%M:%S}",
     "interval": 1,
     "tooltip": true,
     "tooltip-format": "{:%d %B %H:%M:%S}"
