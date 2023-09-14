@@ -16,7 +16,7 @@
 
   home.packages = with pkgs; [
     emote
-    (ferdium.override {
+    (ferdium.overrideAttrs {
       commandLineArgs = "--ozone-platform-hint=auto";
     })
     libreoffice-fresh
