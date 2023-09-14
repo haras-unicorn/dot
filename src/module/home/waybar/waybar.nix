@@ -1,4 +1,4 @@
-{ hardware, pkgs, ... }:
+{ hardware, pkgs, config, ... }:
 
 let
   waybar-reload = pkgs.writeShellApplication {
@@ -30,7 +30,16 @@ in
     }
     (builtins.fromJSON (builtins.readFile ./config.json))
   ];
-  programs.waybar.style = builtins.readFile ./style.css;
+  programs.waybar.style = ''
+    @import "colors.css"
+    ${builtins.readFile ./style.css}
+  '';
+
+  xdg.configFile."colorap/waybar".text = ''
+    cp "$1/colors-waybar.css" "${config.xdg.configHome}/waybar/colors.css"
+  '';
+  xdg.configFile."colorap/waybar".executable = true;
+
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.waybar}/bin/waybar

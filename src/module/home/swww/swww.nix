@@ -1,22 +1,22 @@
-{ self, pkgs, ... }:
+{ self, pkgs, config, ... }:
 
 let
-  colorap = pkgs.writeShellApplication {
+  walapp = pkgs.writeShellApplication {
     name = "colorap";
     runtimeInputs = [ pkgs.coreutils-full ];
     text = ''
-      # TODO: "event listener" API so other modules can hook into it
+      run-parts --arg="${config.xdg.cacheHome}/wal/" "${config.xdg.configHome}/walapp"
     '';
   };
 
   shwal =
     pkgs.writeShellApplication {
       name = "shwal";
-      runtimeInputs = [ pkgs.coreutils-full pkgs.swww pkgs.pywal colorap ];
+      runtimeInputs = [ pkgs.coreutils-full pkgs.swww pkgs.pywal walapp ];
       text = ''
         image="$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
         swww img "$image"
-        wal -steq -i "$image" -o colorap
+        wal -steq -i "$image" -o walapp
       '';
     };
 in
@@ -25,7 +25,7 @@ in
     pywal
     swww
     shwal
-    colorap
+    walapp
   ];
 
   wayland.windowManager.hyprland.extraConfig = ''
