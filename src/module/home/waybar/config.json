@@ -5,8 +5,8 @@
   "modules-left": [
     "clock",
     "tray",
-    "hyprland/workspaces",
-    "hyprland/submap"
+    "hyprland/submap",
+    "hyprland/workspaces"
   ],
   "modules-center": [
     "hyprland/window"
