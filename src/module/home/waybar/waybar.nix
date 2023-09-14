@@ -6,7 +6,7 @@
     mainBar = {
       layer = "top";
       position = "top";
-      height = 30;
+      height = 32;
       output = [ hardware.mainMonitor ];
       modules-left = [ "sway/mode" "sway/workspaces" "wlr/taskbar" ];
       modules-right = [ "tray" ];
