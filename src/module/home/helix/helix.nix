@@ -1,43 +1,40 @@
 { pkgs, ... }:
 
 let
-  poetryPylsp = pkgs.writeScriptBin "poetry-pylsp"
-    ''
-      #!${pkgs.stdenv.shell}
-      set -eo pipefail
+  # poetryPylsp = pkgs.writeShellApplication {
+  #   name = "poetry-pylsp";
+  #   runtimeInputs = [ pkgs.poetry pkgs.python310Packages.python-lsp-server ];
+  #   text = ''
+  #     source "$(poetry env info --path)/bin/activate"
+  #     pylsp "$@"
+  #   '';
+  # };
 
-      source "$("${pkgs.poetry}/bin/poetry" env info --path)/bin/activate"
-
-      "${pkgs.python310Packages.python-lsp-server}/bin/pylsp" "$@"
+  poetryPyrightLangserver = pkgs.writeShellApplication {
+    name = "poetry-pyright-langserver";
+    runtimeInputs = [ pkgs.poetry pkgs.nodePackages.pyright ];
+    text = ''
+      source "$(poetry env info --path)/bin/activate"
+      pyright-langserver "$@"
     '';
+  };
 
-  poetryPyrightLangserver = pkgs.writeScriptBin "poetry-pyright-langserver"
-    ''
-      #!${pkgs.stdenv.shell}
-      set -eo pipefail
+  # poetryRuffLsp = pkgs.writeShellApplication {
+  #   name = "poetry-ruff-lsp";
+  #   runtimeInputs = [ pkgs.poetry pkgs.python310Packages.ruff-lsp ];
+  #   text = ''
+  #     source "$(poetry env info --path)/bin/activate"
+  #     ruff-lsp "$@"
+  #   '';
+  # };
 
-      source "$("${pkgs.poetry}/bin/poetry" env info --path)/bin/activate"
-
-      "${pkgs.nodePackages.pyright}/bin/pyright-langserver" "$@"
+  poet = pkgs.writeShellApplication {
+    name = "poet";
+    runtimeInputs = [ pkgs.poetry ];
+    text = ''
+      poetry run python "$@"
     '';
-
-  poetryRuffLsp = pkgs.writeScriptBin "poetry-ruff-lsp"
-    ''
-      #!${pkgs.stdenv.shell}
-      set -eo pipefail
-
-      source "$("${pkgs.poetry}/bin/poetry" env info --path)/bin/activate"
-
-      "${pkgs.python310Packages.ruff-lsp}/bin/ruff-lsp" "$@"
-    '';
-
-  poetryPython = pkgs.writeScriptBin "poetry-python"
-    ''
-      #!${pkgs.stdenv.shell}
-      set -eo pipefail
-
-      "${pkgs.poetry}/bin/poetry" run python "$@"
-    '';
+  };
 in
 {
   nixpkgs.overlays = [
@@ -63,10 +60,7 @@ in
         pylsp-rope
         yapf
       ]))
-    poetryPylsp
-    poetryPyrightLangserver
-    poetryRuffLsp
-    poetryPython
+    poet
     dotnet-sdk_7
     omnisharp-roslyn
     nodejs_20

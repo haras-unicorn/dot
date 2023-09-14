@@ -25,7 +25,6 @@ in
     pywal
     swww
     shwal
-    walapp
   ];
 
   wayland.windowManager.hyprland.extraConfig = ''
