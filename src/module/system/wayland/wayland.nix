@@ -12,6 +12,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    wl-clipboard
     wev
     gtklock
     # TODO: these no worky
