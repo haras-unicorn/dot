@@ -7,7 +7,7 @@
 }
 
 #waybar {
-  background: rgba(0, 0, 0, 0);
+  /* background: rgba(0, 0, 0, 0); */
   color: #eeeeef;
   font-size: 14px;
   font-family: "Hack Nerd Font";
@@ -17,8 +17,7 @@
   padding: 0 5px;
   color: #eeeeef;
 }
-/* Fix: active workspace doesn't show up */
-/* #workspaces button.focused { */
+
 #workspaces button.active {
   color: #fa5aa4;
 }

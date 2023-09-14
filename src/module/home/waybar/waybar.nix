@@ -34,6 +34,5 @@ in
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.waybar}/bin/waybar
-    exec = ${waybar-reload}/bin/waybar-reload
   '';
 }
