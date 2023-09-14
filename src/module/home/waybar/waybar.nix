@@ -3,10 +3,11 @@
 let
   waybar-reload = pkgs.writeShellApplication {
     name = "waybar-reload";
-    runtimeInputs = [ pkgs.coreutils-full pkgs.waybar ];
+    runtimeInputs = [ pkgs.coreutils-full ];
     text = ''
-      pkill -x waybar || true
-      waybar >/dev/null 2>&1 & disown
+      # NOTE: matching exactly because we don't want to kill the script
+      pkill -x ${pkgs.waybar}/bin/waybar || true
+      ${pkgs.waybar}/bin/waybar >/dev/null 2>&1 & disown
     '';
   };
 in
