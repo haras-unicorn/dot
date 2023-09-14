@@ -5,6 +5,9 @@ let
     name = "waybar-reload";
     runtimeInputs = [ pkgs.waybar ];
     text = ''
+      if [[ -x nohup ]]; then
+        exit 1
+      fi
       pkill waybar || true
       nohup waybar >/dev/null 2>&1 &
     '';
