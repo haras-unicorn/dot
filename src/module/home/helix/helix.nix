@@ -14,6 +14,7 @@ let
     name = "poetry-pyright-langserver";
     runtimeInputs = [ pkgs.poetry pkgs.nodePackages.pyright ];
     text = ''
+      # shellcheck disable=SC1091
       source "$(poetry env info --path)/bin/activate"
       pyright-langserver "$@"
     '';
