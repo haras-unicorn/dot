@@ -3,11 +3,8 @@
 let
   waybar-reload = pkgs.writeShellApplication {
     name = "waybar-reload";
-    runtimeInputs = [ pkgs.coreutils pkgs.waybar ];
+    runtimeInputs = [ pkgs.coreutils-full pkgs.waybar ];
     text = ''
-      if [[ $(type -P nohup) ]]; then
-        exit 1
-      fi
       pkill waybar || true
       nohup waybar >/dev/null 2>&1 &
     '';
