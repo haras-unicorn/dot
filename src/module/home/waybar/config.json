@@ -6,18 +6,18 @@
     "clock",
     "hyprland/workspaces",
     "custom/updates",
-    "tray",
-    ],
+    "tray"
+  ],
   "modules-center": [
     "hyprland/window",
-    ],
+  ],
   "modules-right": [
     "network",
     "temperature",
     "memory",
     "cpu",
     "pulseaudio",
-    "custom/powermenu",
+    "custom/powermenu"
   ],
   "tray": {
     "icon-size": 24,
@@ -61,7 +61,7 @@
     "interface": "enp34s0",
     "tooltip-format-ethernet": "{ifname} ",
     "interval": 2,
-    "format": " {bandwidthDownBits}  {bandwidthUpBits}",
+    "format": " {bandwidthDownBits}  {bandwidthUpBits}"
   },
   "temperature": {
     "format": "{icon} {temperatureC}°C",
@@ -80,13 +80,12 @@
   "custom/powermenu": {
     "format": "",
     "tooltip": false,
-    "on-click": "exec wlogout -p layer-shell",
+    "on-click": "exec wlogout -p layer-shell"
   },
   "custom/updates": {
     "format": "<span color=\"#61afef\"></span> {}",
     "tooltip": false,
     "interval": 3600,
-    "exec": "exec $HOME/.config/waybar/checkupdate.sh"
   },
   "pulseaudio": {
     "format": "{volume}% {icon}",
