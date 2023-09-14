@@ -5,6 +5,14 @@ let
     name = "waybar-reload";
     runtimeInputs = [ pkgs.coreutils-full pkgs.waybar ];
     text = ''
+      set -eE -o functrace
+      failure() {
+        local lineno=$1
+        local msg=$2
+        echo "Failed at $lineno: $msg"
+      }
+      trap 'failure $${LINENO} "$BASH_COMMAND"' ERR
+
       pkill waybar || true
       waybar >/dev/null 2>&1 & disown
     '';

@@ -52,7 +52,7 @@
   },
   "network": {
     "tooltip-format-ethernet": "{ifname} ",
-    "interval": 2,
+    "interval": 1,
     "format": " {bandwidthDownBits}  {bandwidthUpBits}"
   },
   "temperature": {
