@@ -5,7 +5,7 @@
     (pkgs.writeShellApplication {
       name = "waybar-reload";
       text = ''
-        pkill waybar
+        pkill waybar || true
         nohup waybar &
       '';
     })
