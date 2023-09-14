@@ -7,7 +7,7 @@
 }
 
 #waybar {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0);
   color: #eeeeef;
   font-size: 14px;
   font-family: "Hack Nerd Font";
@@ -34,7 +34,7 @@
 #network {
   padding: 4px 8px;
   background-color: #303643;
-  border-radius: 30px;
+  border-radius: 8px;
   margin: 6px 4px;
 }
 
