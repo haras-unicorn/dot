@@ -91,7 +91,7 @@
     "on-click": "pavucontrol"
   },
   "clock": {
-    "format": "{%H:%M:%S}",
+    "format": "{:%H:%M:%S}",
     "interval": 1,
     "tooltip": true,
     "tooltip-format": "{:%d %B %H:%M:%S}"
