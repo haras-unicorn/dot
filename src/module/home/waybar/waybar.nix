@@ -5,9 +5,15 @@ let
     name = "waybar-reload";
     runtimeInputs = [ pkgs.coreutils-full ];
     text = ''
-      # NOTE: matching exactly because we don't want to kill the script
-      pkill -x ${pkgs.waybar}/bin/waybar || true
-      ${pkgs.waybar}/bin/waybar >/dev/null 2>&1 & disown
+      # NOTE: only kill those that don't match this script
+      pids=($(pgrep -f waybar))
+      for pid in "''${pids[@]}"; do
+        if [[ $pid != $$ ]]; then
+          kill "$pid"
+        fi
+      done
+
+      waybar >/dev/null 2>&1 & disown
     '';
   };
 in
