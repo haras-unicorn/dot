@@ -16,9 +16,14 @@
 
   home.packages = with pkgs; [
     emote
-    (ferdium.overrideAttrs (oldAttrs: {
-      commandLineArgs = oldAttrs.commandLineArgs + " --ozone-platform-hint=auto";
-    }))
+    (pkgs.symlinkJoin {
+      name = "ferdium";
+      paths = [ pkgs.ferdium ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/ferdium --append-flags --ozone-platform-hint=auto
+      '';
+    })
     libreoffice-fresh
     vlc
     shotwell
