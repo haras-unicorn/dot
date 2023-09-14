@@ -5,11 +5,8 @@ let
     name = "waybar-reload";
     runtimeInputs = [ pkgs.coreutils-full pkgs.waybar ];
     text = ''
-      if [[ $(type -P waybar) ]]; then
-        exit 1
-      fi
       pkill waybar || true
-      nohup waybar >/dev/null 2>&1 &
+      nohup ${pkgs.waybar}/bin/waybar >/dev/null 2>&1 &
     '';
   };
 in
