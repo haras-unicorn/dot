@@ -16,9 +16,9 @@
 
   home.packages = with pkgs; [
     emote
-    (ferdium.overrideAttrs {
-      commandLineArgs = "--ozone-platform-hint=auto";
-    })
+    (ferdium.overrideAttrs (oldAttrs: {
+      commandLineArgs = oldAttrs.commandLineArgs + " --ozone-platform-hint=auto";
+    }))
     libreoffice-fresh
     vlc
     shotwell
