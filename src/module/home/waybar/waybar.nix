@@ -4,6 +4,7 @@
   home.packages = [
     (pkgs.writeShellApplication {
       name = "waybar-reload";
+      runtimeInputs = [ pkgs.waybar ];
       text = ''
         pkill waybar || true
         nohup waybar >/dev/null 2>&1 &
