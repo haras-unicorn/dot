@@ -1,8 +1,8 @@
 { hardware, pkgs, config, ... }:
 
 let
-  waybar-reload = pkgs.writeShellApplication {
-    name = "waybar-reload";
+  waybare = pkgs.writeShellApplication {
+    name = "waybare";
     runtimeInputs = [ pkgs.coreutils-full ];
     text = ''
       # NOTE: only kill those that don't match this script
@@ -19,7 +19,7 @@ let
 in
 {
   home.packages = [
-    waybar-reload
+    waybare
   ];
 
   programs.waybar.enable = true;
@@ -40,12 +40,13 @@ in
     #!${pkgs.stdenv.shell}
 
     cp "$1/colors-waybar.css" "${config.xdg.configHome}/waybar/colors.css"
+    ${waybare}/bin/waybare
   '';
   xdg.configFile."walapp/waybar".executable = true;
 
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.waybar}/bin/waybar
-    exec = ${waybar-reload}/bin/waybar-reload
+    exec = ${waybare}/bin/waybare
   '';
 }
