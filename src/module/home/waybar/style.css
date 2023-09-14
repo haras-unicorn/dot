@@ -1,3 +1,5 @@
+@import "colors.css"
+
 * {
   border: none;
   border-radius: 0;
@@ -7,7 +9,7 @@
 }
 
 #waybar {
-  background: rgba(0, 0, 0, 0);
+  background: var(--transparent);
   color: #eeeeef;
   font-size: 14px;
   font-family: "Hack Nerd Font";
@@ -30,11 +32,10 @@
 #clock,
 #window,
 #pulseaudio,
-#custom-updates,
 #network {
+  border-radius: 8px;
   padding: 4px 8px;
   background-color: #303643;
-  border-radius: 8px;
   margin: 6px 4px;
 }
 
