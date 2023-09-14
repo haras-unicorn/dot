@@ -6,7 +6,7 @@ let
     runtimeInputs = [ pkgs.coreutils-full ];
     text = ''
       # NOTE: only kill those that don't match this script
-      pids=($(pgrep -f waybar))
+      IFS="\n" read -r -a pids <<< "$(pgrep -f waybar)"
       for pid in "''${pids[@]}"; do
         if [[ $pid != "$$" ]]; then
           kill "$pid"
