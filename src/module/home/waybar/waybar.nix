@@ -6,7 +6,7 @@
       name = "waybar-reload";
       text = ''
         pkill waybar || true
-        nohup waybar &
+        nohup waybar >/dev/null 2>&1 &
       '';
     })
   ];
