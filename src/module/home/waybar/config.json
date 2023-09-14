@@ -30,7 +30,6 @@
         "nvim (.*)": "<span color=\"#57A143\"></span>  $1",
         "nvim": "<span color=\"#57A143\">  Neovim</span> ",
         "ranger(.*)": "<span color=\"#ffffff\"></span>  $1",
-        //"kitty (.*)": "<span color=\"#ffffff\"></span>  $1",
         "Search(.*)": "<span color=\"#a855f7\"></span>  Search$1",
     },
     "separate-outputs": false
@@ -106,7 +105,6 @@
     "on-click": "pavucontrol"
   },
   "clock": {
-    //"format": "<span color=\"#56b6c2\"></span> {:%H:%M}",
     "format": "{:%H:%M}",
     "interval": 60,
     "tooltip": true,
