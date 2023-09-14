@@ -7,9 +7,6 @@
       runtimeInputs = [ pkgs.which pkgs.waybar ];
       text = ''
         pkill waybar || true
-        echo "here!!!"
-        which waybar
-        echo "here!!!"
         nohup waybar >/dev/null 2>&1 &
       '';
     })
@@ -18,6 +15,7 @@
   programs.waybar.settings = [
     {
       output = hardware.mainMonitor;
+      network = { interface = hardware.networkInterface; };
     }
     (builtins.fromJSON (builtins.readFile ./config.json))
   ];

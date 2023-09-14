@@ -31,5 +31,6 @@
     unrar
     sd
     htop
+    lm_sensors
   ];
 }

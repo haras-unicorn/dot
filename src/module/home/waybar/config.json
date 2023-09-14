@@ -4,9 +4,9 @@
   "margin-bottom": 0,
   "modules-left": [
     "clock",
+    "tray",
     "hyprland/workspaces",
-    "custom/updates",
-    "tray"
+    "hyprland/submap"
   ],
   "modules-center": [
     "hyprland/window"
@@ -25,13 +25,6 @@
   },
   "hyprland/window": {
     "format": " {}",
-    "rewrite": {
-        "(\\d\\. )?(.*) - Chromium": "<span color=\"#4285F4\"></span>  $2 ",
-        "nvim (.*)": "<span color=\"#57A143\"></span>  $1",
-        "nvim": "<span color=\"#57A143\">  Neovim</span> ",
-        "ranger(.*)": "<span color=\"#ffffff\"></span>  $1",
-        "Search(.*)": "<span color=\"#a855f7\"></span>  Search$1"
-    },
     "separate-outputs": false
   },
   "hyprland/submap": {
@@ -58,7 +51,6 @@
     }
   },
   "network": {
-    "interface": "enp34s0",
     "tooltip-format-ethernet": "{ifname} ",
     "interval": 2,
     "format": " {bandwidthDownBits}  {bandwidthUpBits}"
@@ -81,11 +73,6 @@
     "format": "",
     "tooltip": false,
     "on-click": "exec wlogout -p layer-shell"
-  },
-  "custom/updates": {
-    "format": "<span color=\"#61afef\"></span> {}",
-    "tooltip": false,
-    "interval": 3600
   },
   "pulseaudio": {
     "format": "{volume}% {icon}",
