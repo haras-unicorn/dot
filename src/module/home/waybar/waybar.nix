@@ -11,7 +11,7 @@ let
         local msg=$2
         echo "Failed at $lineno: $msg"
       }
-      trap 'failure $${LINENO} "$BASH_COMMAND"' ERR
+      trap 'failure ''${LINENO} "$BASH_COMMAND"' ERR
 
       pkill waybar || true
       waybar >/dev/null 2>&1 & disown
