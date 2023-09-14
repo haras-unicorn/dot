@@ -4,8 +4,9 @@ let
   swww-reload =
     pkgs.writeShellApplication {
       name = "swww-reload";
+      runtimeInputs = [ pkgs.swww ];
       text = ''
-        ${pkgs.swww}/bin/swww img "$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
+        swww img "$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
       '';
     };
 in
