@@ -66,7 +66,7 @@
     "tooltip": "false"
   },
   "cpu": {
-    "format": " {usage}%",
+    "format": "  {usage}%",
     "tooltip": "false"
   },
   "custom/powermenu": {
@@ -91,9 +91,9 @@
     "on-click": "pavucontrol"
   },
   "clock": {
-    "format": "{:%H:%M}",
-    "interval": 60,
+    "format": "{%H:%M:%S}",
+    "interval": 1,
     "tooltip": true,
-    "tooltip-format": "{:%d %B %H:%M}"
+    "tooltip-format": "{:%d %B %H:%M:%S}"
   }
 }
