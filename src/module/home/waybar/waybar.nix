@@ -7,6 +7,7 @@
       runtimeInputs = [ pkgs.waybar ];
       text = ''
         pkill waybar || true
+        echo "$(which waybar)"
         nohup waybar >/dev/null 2>&1 &
       '';
     })
