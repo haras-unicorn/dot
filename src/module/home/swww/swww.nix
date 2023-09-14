@@ -3,7 +3,7 @@
 let
   walapp = pkgs.writeShellApplication {
     name = "walapp";
-    runtimeInputs = [ pkgs.coreutils-full ];
+    runtimeInputs = [ pkgs.debianutils ];
     text = ''
       run-parts --arg="${config.xdg.cacheHome}/wal/" "${config.xdg.configHome}/walapp"
     '';
