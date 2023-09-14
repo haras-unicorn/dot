@@ -37,6 +37,8 @@ in
   '';
 
   xdg.configFile."walapp/waybar".text = ''
+    #!${pkgs.stdenv.shell}
+
     cp "$1/colors-waybar.css" "${config.xdg.configHome}/waybar/colors.css"
   '';
   xdg.configFile."walapp/waybar".executable = true;
