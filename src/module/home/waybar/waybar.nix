@@ -1,6 +1,15 @@
-{ hardware, ... }:
+{ hardware, pkgs, ... }:
 
 {
+  home.packages = [
+    (pkgs.writeShellApplication {
+      name = "waybar-reload";
+      text = ''
+        pkill waybar
+        nohup waybar &
+      '';
+    })
+  ];
   programs.waybar.enable = true;
   programs.waybar.settings = [
     {
@@ -12,5 +21,6 @@
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = waybar
+    exec = waybar-reload
   '';
 }
