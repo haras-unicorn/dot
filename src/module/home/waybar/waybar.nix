@@ -35,10 +35,10 @@ in
     ${builtins.readFile ./style.css}
   '';
 
-  xdg.configFile."colorap/waybar".text = ''
+  xdg.configFile."walapp/waybar".text = ''
     cp "$1/colors-waybar.css" "${config.xdg.configHome}/waybar/colors.css"
   '';
-  xdg.configFile."colorap/waybar".executable = true;
+  xdg.configFile."walapp/waybar".executable = true;
 
 
   wayland.windowManager.hyprland.extraConfig = ''
