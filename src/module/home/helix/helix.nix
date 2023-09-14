@@ -5,6 +5,7 @@ let
   #   name = "poetry-pylsp";
   #   runtimeInputs = [ pkgs.poetry pkgs.python310Packages.python-lsp-server ];
   #   text = ''
+  #     # shellcheck disable=SC1091
   #     source "$(poetry env info --path)/bin/activate"
   #     pylsp "$@"
   #   '';
@@ -24,6 +25,7 @@ let
   #   name = "poetry-ruff-lsp";
   #   runtimeInputs = [ pkgs.poetry pkgs.python310Packages.ruff-lsp ];
   #   text = ''
+  #     # shellcheck disable=SC1091
   #     source "$(poetry env info --path)/bin/activate"
   #     ruff-lsp "$@"
   #   '';
