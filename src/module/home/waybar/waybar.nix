@@ -2,20 +2,13 @@
 
 {
   programs.waybar.enable = true;
-  programs.waybar.settings = {
-    mainBar = {
-      layer = "top";
-      position = "top";
-      height = 32;
-      output = [ hardware.mainMonitor ];
-      modules-left = [ "sway/mode" "sway/workspaces" "wlr/taskbar" ];
-      modules-right = [ "tray" ];
-      "sway/workspaces" = {
-        disable-scroll = true;
-        all-outputs = true;
-      };
-    };
-  };
+  programs.waybar.settings = [
+    {
+      output = hardware.mainMonitor;
+    }
+    (builtins.fromJSON (builtins.readFile ./config.json))
+  ];
+  programs.waybar.style = builtins.readFile ./style.css;
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = waybar
