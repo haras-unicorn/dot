@@ -4,7 +4,7 @@
   home.packages = [
     (pkgs.writeShellApplication {
       name = "waybar-reload";
-      runtimeInputs = [ pkgs.waybar ];
+      runtimeInputs = [ pkgs.which pkgs.waybar ];
       text = ''
         pkill waybar || true
         which waybar
