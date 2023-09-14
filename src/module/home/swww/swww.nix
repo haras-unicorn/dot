@@ -1,24 +1,26 @@
 { self, pkgs, ... }:
 
 let
-  swww-img = pkgs.writeShellScriptBin "swww-img" ''
-    ${pkgs.swww}/bin/swww img "$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
-  '';
+  swww-reload =
+    pkgs.writeShellApplication {
+      name = "swww-reload";
+      text = ''
+        ${pkgs.swww}/bin/swww img "$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
+      '';
+    };
 in
 {
   home.packages = with pkgs; [
     swww
-    swww-img
+    swww-reload
   ];
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.swww}/bin/swww init
-    exec = ${swww-img}/bin/swww-img
+    exec = ${swww-reload}/bin/swww-reload
 
     misc {
       disable_hyprland_logo = true
     }
-
-    bind = super, tab, exec, ${swww-img}/bin/swww-img
   '';
 }

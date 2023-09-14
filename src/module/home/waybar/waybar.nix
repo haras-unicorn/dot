@@ -1,15 +1,19 @@
 { hardware, pkgs, ... }:
 
+let
+  waybar-reload = pkgs.writeShellApplication {
+    name = "waybar-reload";
+    text = ''
+      pkill waybar || true
+      nohup ${pkgs.waybar}/bin/waybar >/dev/null 2>&1 &
+    '';
+  };
+in
 {
   home.packages = [
-    (pkgs.writeShellApplication {
-      name = "waybar-reload";
-      text = ''
-        pkill waybar || true
-        nohup ${pkgs.waybar}/bin/waybar >/dev/null 2>&1 &
-      '';
-    })
+    waybar-reload
   ];
+
   programs.waybar.enable = true;
   programs.waybar.settings = [
     {
@@ -21,7 +25,7 @@
   programs.waybar.style = builtins.readFile ./style.css;
 
   wayland.windowManager.hyprland.extraConfig = ''
-    exec-once = waybar
-    exec = waybar-reload
+    exec-once = ${pkgs.waybar}/bin/waybar
+    exec = ${waybar-reload}/bin/waybar-reload
   '';
 }
