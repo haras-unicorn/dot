@@ -18,10 +18,6 @@ let
   };
 in
 {
-  home.packages = [
-    waybare
-  ];
-
   programs.waybar.enable = true;
   programs.waybar.settings = [
     {
