@@ -14,7 +14,7 @@ let
       name = "shwal";
       runtimeInputs = [ pkgs.coreutils-full pkgs.swww pkgs.pywal colorap ];
       text = ''
-        image = "$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
+        image="$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
         swww img "$image"
         wal -steq -i "$image" -o colorap
       '';
