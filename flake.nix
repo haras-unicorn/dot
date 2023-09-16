@@ -19,7 +19,7 @@
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
 
-    lule-src.url = "github:warpwm/lule";
+    lule-src.url = "github:haras-unicorn/lule";
     lule-src.flake = false;
   };
 
