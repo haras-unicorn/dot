@@ -26,7 +26,7 @@
     })
     libreoffice-fresh
     vlc
-    shotwell
+    nomacs
     pinta
   ];
 
