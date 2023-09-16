@@ -59,13 +59,13 @@
       "locked": {
         "lastModified": 1612822800,
         "narHash": "sha256-scBbkRmceQjwA263KdB8/yzftzF8xD1SkQ0FQ3N5twM=",
-        "owner": "warpwm",
+        "owner": "haras-unicorn",
         "repo": "lule",
         "rev": "dd429596aa32895bd19ba814951ba1fda65275c3",
         "type": "github"
       },
       "original": {
-        "owner": "warpwm",
+        "owner": "haras-unicorn",
         "repo": "lule",
         "type": "github"
       }
