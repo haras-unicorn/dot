@@ -31,6 +31,7 @@
     , nixos-wsl
     , nixos-hardware
     , sweet-theme
+    , lule-src
     , ...
     }:
     let
@@ -63,6 +64,7 @@
                 nixos-hardware = nixos-hardware;
                 sweet-theme = sweet-theme;
                 hardware = meta.hardware;
+                lule-src = lule-src;
               };
             in
             nixosConfigurations // {
