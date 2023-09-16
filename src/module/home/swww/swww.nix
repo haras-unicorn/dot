@@ -5,6 +5,7 @@ let
     pname = "lule";
     version = "0.1";
     src = lule-src;
+    cargoLock = "${lule-src}/Cargo.lock";
   };
 
   walapp = pkgs.writeShellApplication {
