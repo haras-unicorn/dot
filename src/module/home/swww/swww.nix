@@ -29,7 +29,7 @@ let
 in
 {
   home.packages = with pkgs; [
-    lule
+    # lule
     pywal
     swww
     shwal
