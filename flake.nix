@@ -18,6 +18,9 @@
 
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
+
+    lule-src.url = "github:warpwm/lule";
+    lule-src.flake = false;
   };
 
   outputs =

@@ -1,6 +1,12 @@
-{ self, pkgs, config, ... }:
+{ self, pkgs, config, lule-src, ... }:
 
 let
+  lule = pkgs.rustPlatform.buildRustPackage {
+    pname = "lule";
+    version = "0.1";
+    src = lule-src;
+  };
+
   walapp = pkgs.writeShellApplication {
     name = "walapp";
     runtimeInputs = [ pkgs.coreutils-full pkgs.debianutils ];
@@ -22,6 +28,7 @@ let
 in
 {
   home.packages = with pkgs; [
+    lule
     pywal
     swww
     shwal

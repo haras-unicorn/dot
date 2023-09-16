@@ -54,6 +54,22 @@
         "type": "github"
       }
     },
+    "lule-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1612822800,
+        "narHash": "sha256-scBbkRmceQjwA263KdB8/yzftzF8xD1SkQ0FQ3N5twM=",
+        "owner": "warpwm",
+        "repo": "lule",
+        "rev": "dd429596aa32895bd19ba814951ba1fda65275c3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "warpwm",
+        "repo": "lule",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1694432324,
@@ -127,6 +143,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "lule-src": "lule-src",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
