@@ -6,6 +6,8 @@
     "${self}/src/module/hardware/nvidia-gpu/nvidia-gpu.nix"
   ];
 
+  hardware.enableAllFirmware = true;
+
   boot.initrd.availableKernelModules = [
     "nvme"
     "xhci_pci"
