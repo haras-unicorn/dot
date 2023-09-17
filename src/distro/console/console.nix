@@ -32,5 +32,6 @@
     sd
     htop
     lm_sensors
+    pastel
   ];
 }
