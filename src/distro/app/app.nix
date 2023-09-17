@@ -28,6 +28,7 @@
     vlc
     nomacs
     pinta
+    feh
   ];
 
   services.udiskie.enable = true;
