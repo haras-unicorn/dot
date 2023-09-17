@@ -33,5 +33,7 @@
     htop
     lm_sensors
     pastel
+    jq
+    yq
   ];
 }

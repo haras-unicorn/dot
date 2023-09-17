@@ -18,9 +18,6 @@
 
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
-
-    lule-src.url = "github:haras-unicorn/lule";
-    lule-src.flake = false;
   };
 
   outputs =
@@ -31,7 +28,6 @@
     , nixos-wsl
     , nixos-hardware
     , sweet-theme
-    , lule-src
     , ...
     }:
     let
@@ -64,7 +60,6 @@
                 nixos-hardware = nixos-hardware;
                 sweet-theme = sweet-theme;
                 hardware = meta.hardware;
-                lule-src = lule-src;
               };
             in
             nixosConfigurations // {

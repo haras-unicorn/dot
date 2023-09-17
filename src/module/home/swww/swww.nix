@@ -1,13 +1,6 @@
-{ self, pkgs, config, lule-src, ... }:
+{ self, pkgs, config, ... }:
 
 let
-  # lule = pkgs.rustPlatform.buildRustPackage {
-  #   pname = "lule";
-  #   version = "0.1";
-  #   src = lule-src;
-  #   cargoLock.lockFile = "${lule-src}/Cargo.lock";
-  # };
-
   walapp = pkgs.writeShellApplication {
     name = "walapp";
     runtimeInputs = [ pkgs.coreutils-full pkgs.debianutils ];
