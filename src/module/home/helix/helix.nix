@@ -179,7 +179,7 @@ in
         # TODO: https://github.com/dotnet/sdk/issues/30546
         # auto-format = true;
         # formatter = { command = "${csharpier}/bin/dotnet-csharpier"; };
-        language-server = { command = "omnisharp"; args = [ "-lsp" ]; timeout = 10000; };
+        language-server = { command = "${pkgs.omnisharp-roslyn}/bin/OmniSharp"; args = [ "-lsp" ]; timeout = 10000; };
       }
     ];
   };
