@@ -30,8 +30,13 @@ let
     fi
 
     # TODO: use flake from webui-nix without copying and cd
-    export FLAKE_ROOT="${config.xdg.dataHome}/automatic1111-webui-nix";
-    nix develop --command "${sdui-wrapped}/bin/sdui-wrapped" 
+    cp \
+      "${config.xdg.dataHome}/automatic1111-webui-nix"/flake.* \
+      "${config.xdg.dataHome}/stable-diffusion-webui"
+    wd="$(pwd)"
+    cd "${config.xdg.dataHome}/stable-diffusion-webui"
+    nix develop --command "${sdui-wrapped}/bin/sdui-wrapped"
+    cd "$wd"
   '';
 in
 {
