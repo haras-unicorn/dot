@@ -11,7 +11,7 @@
     win-virtio
     win-spice
     lazydocker
-    docker-cli
+    docker-client
     arion
   ];
 
