@@ -172,8 +172,8 @@ in
       statusline = {
         left = [
           "spinner"
-          "workspace-diagnostics"
           "diagnostics"
+          "workspace-diagnostics"
         ];
         center = [ ];
         right = [
