@@ -68,6 +68,7 @@ in
     omnisharp-roslyn
     nodejs_20
     bun
+    nodePackages.yarn
     nodePackages.typescript-language-server
     nodePackages.bash-language-server
     nodePackages.yaml-language-server
