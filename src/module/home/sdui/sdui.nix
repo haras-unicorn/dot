@@ -39,7 +39,6 @@ let
     wd="$(pwd)"
     cd "${config.xdg.dataHome}/stable-diffusion-webui"
     git add .
-    git commit -m "flake" || true;
 
     nix develop --command "${sdui-wrapped}/bin/sdui-wrapped"
     cd "$wd"
