@@ -44,7 +44,7 @@ let
       pname = "csharpier";
       nugetName = "CSharpier";
       version = "0.25.0";
-      nugetSha256 = "5A2901D6ADA3D18260B9C6DFE2133C95D74B9EEF6AE0E5DC334C8454D1477DF4";
+      nugetSha256 = "sha256-7yRDI7vdLTXv0XuUHKUdsIJsqzmw3cidWjmbZ5g5Vvg=";
       meta = with pkgs.lib; {
         homepage = "https://github.com/belav/csharpier";
         changelog = "https://github.com/belav/csharpier/blob/main/CHANGELOG.md";
