@@ -66,6 +66,7 @@ in
     poet
     dotnet-sdk_7
     omnisharp-roslyn
+    netcoredbg
     nodejs_20
     bun
     nodePackages.yarn
