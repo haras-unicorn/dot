@@ -11,6 +11,7 @@
     win-virtio
     win-spice
     lazydocker
+    arion
   ];
 
   services.qemuGuest.enable = true;
@@ -24,6 +25,10 @@
   virtualisation.docker.enable = true;
   virtualisation.docker.rootless.enable = true;
   virtualisation.docker.rootless.setSocketVariable = true;
+
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerSocket.enable = true;
+  virtualisation.podman.defaultNetwork.dnsname.enable = true;
 
   services.cockpit.enable = true;
   services.packagekit.enable = true;
