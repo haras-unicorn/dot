@@ -45,6 +45,8 @@ let
       nugetName = "CSharpier";
       version = "0.25.0";
       nugetSha256 = "sha256-7yRDI7vdLTXv0XuUHKUdsIJsqzmw3cidWjmbZ5g5Vvg=";
+      dotnet-sdk = pkgs.dotnet-sdk_6;
+      dotnet-runtime = pkgs.dotnet-sdk_6;
       meta = with pkgs.lib; {
         homepage = "https://github.com/belav/csharpier";
         changelog = "https://github.com/belav/csharpier/blob/main/CHANGELOG.md";
