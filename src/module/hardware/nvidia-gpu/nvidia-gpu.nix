@@ -18,4 +18,6 @@
   programs.corectrl.gpuOverclock.enable = true;
 
   programs.hyprland.enableNvidiaPatches = true;
+
+  virtualisation.docker.enableNvidia = true;
 }
