@@ -41,7 +41,7 @@ let
 
   csharpier =
     pkgs.buildDotnetGlobalTool {
-      pname = "csharpier";
+      pname = "dotnet-csharpier";
       nugetName = "CSharpier";
       version = "0.25.0";
       nugetSha256 = "sha256-7yRDI7vdLTXv0XuUHKUdsIJsqzmw3cidWjmbZ5g5Vvg=";
