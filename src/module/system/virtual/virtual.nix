@@ -12,6 +12,7 @@
     win-spice
     lazydocker
     docker-client
+    docker-compose
     arion
   ];
 
