@@ -38,6 +38,20 @@ let
       poetry run python "$@"
     '';
   };
+
+  csharpier =
+    pkgs.buildDotnetGlobalTool {
+      pname = "csharpier";
+      nugetName = "CSharpier";
+      version = "0.25.0";
+      nugetSha256 = "5A2901D6ADA3D18260B9C6DFE2133C95D74B9EEF6AE0E5DC334C8454D1477DF4";
+      meta = with pkgs.lib; {
+        homepage = "https://github.com/belav/csharpier";
+        changelog = "https://github.com/belav/csharpier/blob/main/CHANGELOG.md";
+        license = licenses.mit;
+        platforms = platforms.linux;
+      };
+    };
 in
 {
   nixpkgs.overlays = [
@@ -67,6 +81,7 @@ in
     dotnet-sdk_7
     omnisharp-roslyn
     netcoredbg
+    csharpier
     nodejs_20
     bun
     nodePackages.yarn
@@ -155,6 +170,12 @@ in
           args = [ "--stdio" ];
         };
         config = { };
+      }
+      {
+        name = "c-sharp";
+        auto-format = true;
+        formatter = { command = "${csharpier}/bin/csharpier"; };
+        language-server = { command = "omnisharp"; args = [ "-lsp" ]; timeout = 10000; };
       }
     ];
   };

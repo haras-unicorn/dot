@@ -35,5 +35,6 @@
     pastel
     jq
     yq
+    mpv
   ];
 }
