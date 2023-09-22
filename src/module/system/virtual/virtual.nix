@@ -28,7 +28,7 @@
 
   virtualisation.podman.enable = true;
   virtualisation.podman.dockerSocket.enable = true;
-  virtualisation.podman.defaultNetwork.dnsname.enable = true;
+  virtualisation.podman.defaultNetwork.setting.dns_enabled = true;
 
   services.cockpit.enable = true;
   services.packagekit.enable = true;
