@@ -71,6 +71,7 @@ in
     bun
     nodePackages.yarn
     nodePackages.typescript-language-server
+    nodePackages.vscode-langservers-extracted
     nodePackages.bash-language-server
     nodePackages.yaml-language-server
     nodePackages.dockerfile-language-server-nodejs
