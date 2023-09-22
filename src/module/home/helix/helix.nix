@@ -59,6 +59,7 @@ in
   nixpkgs.overlays = [
     (final: prev: {
       nodejs = prev.nodejs_20;
+      dotnet-sdk = prev.dotnet-sdk_7;
     })
   ];
   home.packages = with pkgs; [
@@ -80,11 +81,11 @@ in
         yapf
       ]))
     poet
-    dotnet-sdk_7
+    dotnet-sdk
     omnisharp-roslyn
     netcoredbg
     csharpier
-    nodejs_20
+    nodejs
     bun
     nodePackages.yarn
     nodePackages.typescript-language-server
