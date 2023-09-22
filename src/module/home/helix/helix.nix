@@ -177,7 +177,7 @@ in
       {
         name = "c-sharp";
         auto-format = true;
-        formatter = { command = "${csharpier}/bin/csharpier"; };
+        formatter = { command = "${csharpier}/bin/dotnet-csharpier"; };
         language-server = { command = "omnisharp"; args = [ "-lsp" ]; timeout = 10000; };
       }
     ];
