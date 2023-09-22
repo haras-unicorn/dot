@@ -30,6 +30,7 @@
     nomacs
     pinta
     feh
+    dbeaver
   ];
 
   services.udiskie.enable = true;
