@@ -20,4 +20,5 @@
   programs.hyprland.enableNvidiaPatches = true;
 
   virtualisation.docker.enableNvidia = true;
+  virtualisation.podman.enableNvidia = true;
 }
