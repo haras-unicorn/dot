@@ -2,9 +2,19 @@
 
 let
   sdui-wrapped = pkgs.writeShellScriptBin "sdui-wrapped" ''
-    export COMMANDLINE_ARGS="--listen --enable-insecure-extension-access --xformers --opt-sdp-no-mem-attention --no-half-vae --update-all-extensions";
-    export TORCH_COMMAND="pip install torch==2.0.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117";
-    export NO_TCMALLOC="True";
+    args="--listen"
+    args="$args --enable-insecure-extension-access"
+    args="$args --xformers"
+    args="$args --opt-sdp-no-mem-attention"
+    args="$args --no-half-vae"
+    args="$args --update-all-extensions"
+    args="$args --skip-torch-cuda-test"
+    export COMMANDLINE_ARGS="$args"
+
+    torchv="2.0.1+cu117"
+    torchurl="https://download.pytorch.org/whl/cu117"
+    export TORCH_COMMAND="pip install torch==$trochv --extra-index-url $torchurl"
+    export NO_TCMALLOC="True"
 
     if [[ ! -x "${config.xdg.dataHome}/stable-diffusion-webui/webui.sh" ]]; then
       printf "Stable Diffusion WebUI script not present\n.Exiting...\n"
