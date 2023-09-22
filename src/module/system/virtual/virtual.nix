@@ -11,6 +11,7 @@
     win-virtio
     win-spice
     lazydocker
+    docker-cli
     arion
   ];
 
@@ -22,12 +23,7 @@
   virtualisation.libvirtd.qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
   virtualisation.libvirtd.qemu.swtpm.enable = true;
 
-  # virtualisation.docker.enable = true;
-  # virtualisation.docker.rootless.enable = true;
-  # virtualisation.docker.rootless.setSocketVariable = true;
-
   virtualisation.podman.enable = true;
-  virtualisation.podman.dockerCompat = true;
   virtualisation.podman.dockerSocket.enable = true;
   virtualisation.podman.autoPrune.enable = true;
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
