@@ -16,6 +16,7 @@
 
   home.packages = with pkgs; [
     emote
+    # NOTE: outlook - Self Hosted at https://outlook.office.com/mail/
     (pkgs.symlinkJoin {
       name = "ferdium";
       paths = [ pkgs.ferdium ];
