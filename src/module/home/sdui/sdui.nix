@@ -11,8 +11,8 @@ let
     export COMMANDLINE_ARGS="$args"
     echo "$COMMANDLINE_ARGS"
 
-    torchv="2.0.1+cu117"
-    torchurl="https://download.pytorch.org/whl/cu117"
+    torchv="2.0.1+cu118"
+    torchurl="https://download.pytorch.org/whl/cu118"
     export TORCH_COMMAND="pip install torch==$torchv --extra-index-url $torchurl"
     echo "$TORCH_COMMAND"
 
