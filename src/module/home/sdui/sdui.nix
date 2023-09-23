@@ -3,10 +3,7 @@
 let
   sdui-wrapped = pkgs.writeShellScriptBin "sdui-wrapped" ''
     args="--listen"
-    args="$args --precision full"
     args="$args --no-half-vae"
-    args="$args --no-half"
-    args="$args --skip-torch-cuda-test"
     args="$args --xformers"
     args="$args --opt-sdp-no-mem-attention"
     args="$args --enable-insecure-extension-access"
