@@ -45,6 +45,9 @@ let
     cp \
       "${config.xdg.dataHome}/automatic1111-webui-nix"/*.nix \
       "${config.xdg.dataHome}/stable-diffusion-webui"
+    cp \
+      "${config.xdg.dataHome}/automatic1111-webui-nix"/flake.lock \
+      "${config.xdg.dataHome}/stable-diffusion-webui"
     wd="$(pwd)"
     cd "${config.xdg.dataHome}/stable-diffusion-webui"
     nix flake lock
