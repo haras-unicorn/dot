@@ -98,6 +98,9 @@
                         # home-manager.useGlobalPkgs = true;
                         home-manager.useUserPackages = true;
                         home-manager.extraSpecialArgs = specialArgs;
+                        home-manager.sharedModules = [
+                          lulezojne.defaultModules.home-manager
+                        ];
                         home-manager.users."${username}" =
                           ({ ... }:
                             {
@@ -108,7 +111,6 @@
                               home.homeDirectory = "/home/${username}";
                               home.stateVersion = "23.11";
                               imports = [
-                                lulezojne.defaultModules.home-manager
                                 "${hosts}/${host}/home.nix"
                               ];
                             });
