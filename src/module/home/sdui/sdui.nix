@@ -14,7 +14,7 @@ let
 
     torchv="2.0.1+cu117"
     torchurl="https://download.pytorch.org/whl/cu117"
-    export TORCH_COMMAND="pip install torch==$trochv --extra-index-url $torchurl"
+    export TORCH_COMMAND="pip install torch==$torchv --extra-index-url $torchurl"
     echo "$TORCH_COMMAND"
 
     export NO_TCMALLOC="True"
