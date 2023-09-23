@@ -3,12 +3,14 @@
 let
   sdui-wrapped = pkgs.writeShellScriptBin "sdui-wrapped" ''
     args="--listen"
-    args="$args --enable-insecure-extension-access"
+    args="$args --precision full"
+    args="$args --no-half-vae"
+    args="$args --no-half"
+    args="$args --skip-torch-cuda-test"
     args="$args --xformers"
     args="$args --opt-sdp-no-mem-attention"
-    args="$args --no-half-vae"
+    args="$args --enable-insecure-extension-access"
     args="$args --update-all-extensions"
-    args="$args --skip-torch-cuda-test"
     export COMMANDLINE_ARGS="$args"
     echo "$COMMANDLINE_ARGS"
 
