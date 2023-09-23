@@ -38,6 +38,7 @@ in
       {
         template = ''
           @define-color background {{ rgba (set-alpha ansi.main.black 0.3) }};
+          @define-color magenta {{ hex ansi.main.magenta }};
         '';
         "in" = "${config.xdg.configHome}/waybar/colors.css";
       }

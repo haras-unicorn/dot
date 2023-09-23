@@ -14,7 +14,7 @@
 
 #workspaces button {
   padding: 0 5px;
-  color: #eeeeef;
+  color: @magenta;
 }
 
 #workspaces button.active {
