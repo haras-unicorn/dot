@@ -50,7 +50,6 @@ let
       "${config.xdg.dataHome}/stable-diffusion-webui"
     wd="$(pwd)"
     cd "${config.xdg.dataHome}/stable-diffusion-webui"
-    nix flake lock
     git add .
 
     nix develop --command "${sdui-wrapped}/bin/sdui-wrapped"
