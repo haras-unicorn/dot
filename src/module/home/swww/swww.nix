@@ -27,18 +27,6 @@ in
   ];
 
   programs.lulezojne.enable = true;
-  programs.lulezojne.config = {
-    plop = [
-      {
-        template = ''
-          {
-            "red": "{{ ansi.main.red }}"
-          }
-        '';
-        "in" = "~/.config/lulezojne/tmp.json";
-      }
-    ];
-  };
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.swww}/bin/swww init
