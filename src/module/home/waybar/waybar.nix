@@ -27,19 +27,23 @@ in
     (builtins.fromJSON (builtins.readFile ./config.json))
   ];
   programs.waybar.style = ''
-    @import "colors.css";
+    @import "${config.xdg.configHome}/waybar/colors.css";
 
     ${builtins.readFile ./style.css}
   '';
 
-  xdg.configFile."walapp/waybar".text = ''
-    #!${pkgs.stdenv.shell}
-
-    cp "$1/colors-waybar.css" "${config.xdg.configHome}/waybar/colors.css"
-    ${waybare}/bin/waybare
-  '';
+  xdg.configFile."walapp/waybar".source = "${waybare}/bin/waybare";
   xdg.configFile."walapp/waybar".executable = true;
-
+  programs.lulezojne.config = {
+    plop = [
+      {
+        template = ''
+          @define-color background {{ rgba (set-alpha ansi.main.black 0.3) }};
+        '';
+        "in" = "${config.xdg.configHome}/waybar/colors.css";
+      }
+    ];
+  };
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.waybar}/bin/waybar
