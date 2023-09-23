@@ -11,6 +11,7 @@
     "${self}/src/module/home/eww/eww.nix"
     "${self}/src/module/home/obs-studio/obs-studio.nix"
     "${self}/src/module/home/grim/grim.nix"
+    "${self}/src/module/home/lulezojne/lulezojne.nix"
     "${self}/src/module/home/brightnessctl/brightnessctl.nix"
     "${self}/src/module/home/playerctl/playerctl.nix"
   ];

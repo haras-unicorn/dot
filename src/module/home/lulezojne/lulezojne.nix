@@ -1,0 +1,5 @@
+{ ... }:
+
+{
+  programs.lulezojne.enable = true;
+}
