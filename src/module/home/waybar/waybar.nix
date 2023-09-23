@@ -3,7 +3,6 @@
 let
   waybare = pkgs.writeShellApplication {
     name = "waybare";
-    runtimeInputs = [ pkgs.coreutils-full ];
     text = ''
       # NOTE: only kill those that don't match this script
       IFS=$'\n' read -r -a pids <<< "$(pgrep -f waybar)"
