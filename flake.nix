@@ -99,7 +99,7 @@
                         home-manager.useUserPackages = true;
                         home-manager.extraSpecialArgs = specialArgs;
                         home-manager.sharedModules = [
-                          lulezojne.nixosModules.home-manager
+                          lulezojne.nixosModules.default
                         ];
                         home-manager.users."${username}" =
                           ({ ... }:
