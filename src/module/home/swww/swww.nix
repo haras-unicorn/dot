@@ -16,17 +16,17 @@ let
       text = ''
         image="$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
         swww img "$image"
-        wal -steq -i "$image" -o walapp
+        lulezojne plop "$image"
       '';
     };
 in
 {
   home.packages = with pkgs; [
-    # lule
-    pywal
     swww
     shwal
   ];
+
+  programs.lulezojne.enable = true;
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.swww}/bin/swww init
