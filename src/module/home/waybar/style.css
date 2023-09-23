@@ -13,12 +13,12 @@
 }
 
 #workspaces button {
-  padding: 0 5px;
-  color: @magenta;
+  padding-inline: 5px;
+  color: @foreground;
 }
 
 #workspaces button.active {
-  color: #fa5aa4;
+  color: @magenta;
 }
 
 #custom-powermenu,
@@ -30,9 +30,9 @@
 #window,
 #pulseaudio,
 #network {
+  background-color: @black;
   border-radius: 8px;
   padding: 4px 8px;
-  background-color: #303643;
   margin: 6px 4px;
 }
 
@@ -41,48 +41,38 @@
 }
 
 #tray {
-  margin-left: 4px;
-}
-
-#custom-updates {
-  color: #1788e4;
+  margin-inline: 4px;
 }
 
 #custom-powermenu {
-  color: #e06c75;
+  color: @red;
   padding-right: 11px;
   margin-right: 8px;
 }
 
-#scratchpad {
-  color: #cffafe;
-  padding-right: 4px;
-  padding-left: 4px;
-}
-
 #pulseaudio {
-  color: #0fb9b1;
+  color: @green;
   padding-right: 14px;
 }
 
 #cpu {
-  color: #61afef;
+  color: @cyan;
 }
 
 #temperature {
-  color: #98c379;
+  color: @yellow;
 }
 
 #memory {
-  color: #e5c07b;
+  color: @blue;
 }
 
 #network {
-  color: #c678dd;
+  color: @magenta;
   min-width: 200px;
 }
 
 #clock {
-  color: #fff;
+  color: @white;
   margin-left: 8px;
 }
