@@ -44,11 +44,11 @@ in
           @define-color black {{ rgba (set-alpha ansi.main.black 0.7) }};
           @define-color white {{ hex ansi.main.white }};
 
-          @define-color red {{ hex ansi.main.red }}
-          @define-color green {{ hex ansi.main.green }}
-          @define-color blue {{ hex ansi.main.blue }}
-          @define-color cyan {{ hex ansi.main.cyan }}
-          @define-color yellow {{ hex ansi.main.yellow }}
+          @define-color red {{ hex ansi.main.red }};
+          @define-color green {{ hex ansi.main.green }};
+          @define-color blue {{ hex ansi.main.blue }};
+          @define-color cyan {{ hex ansi.main.cyan }};
+          @define-color yellow {{ hex ansi.main.yellow }};
           @define-color magenta {{ hex ansi.main.magenta }};
         '';
         "in" = "${config.xdg.configHome}/waybar/colors.css";
