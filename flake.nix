@@ -18,6 +18,9 @@
 
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
+
+    lulezojne.url = "github:haras-unicorn/lulezojne";
+    lulezojne.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -28,6 +31,7 @@
     , nixos-wsl
     , nixos-hardware
     , sweet-theme
+    , lulezojne
     , ...
     }:
     let
@@ -95,7 +99,7 @@
                         home-manager.useUserPackages = true;
                         home-manager.extraSpecialArgs = specialArgs;
                         home-manager.users."${username}" =
-                          ({ ... } @specialArgs:
+                          ({ ... }:
                             {
                               programs.home-manager.enable = true;
                               nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
@@ -103,7 +107,11 @@
                               home.username = "${username}";
                               home.homeDirectory = "/home/${username}";
                               home.stateVersion = "23.11";
-                            } // ((import "${hosts}/${host}/home.nix") specialArgs));
+                              imports = [
+                                lulezojne.defaultModules.home-manager
+                                "${hosts}/${host}/home.nix"
+                              ];
+                            });
                       }
                     ] else [ ])
                     ++ (if (builtins.pathExists "${hosts}/${host}/secrets.nix") then [
