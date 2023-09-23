@@ -8,7 +8,6 @@ let
     args="$args --opt-sdp-no-mem-attention"
     args="$args --no-half-vae"
     args="$args --update-all-extensions"
-    args="$args --skip-torch-cuda-test"
     export COMMANDLINE_ARGS="$args"
     echo "$COMMANDLINE_ARGS"
 
