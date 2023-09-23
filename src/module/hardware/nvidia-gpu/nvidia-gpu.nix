@@ -13,6 +13,7 @@
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.nvidiaSettings = true;
 
   programs.corectrl.enable = true;
   programs.corectrl.gpuOverclock.enable = true;
