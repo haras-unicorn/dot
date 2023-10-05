@@ -6,6 +6,7 @@
   "redhat.telemetry.enabled": false,
   "workbench.settings.editor": "json",
   "git.enabled": false,
+  "workbench.colorTheme": "Material Theme Palenight High Contrast",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.colorTheme": "Community Material Theme Palenight High Contrast",
   "editor.fontSize": 16,
