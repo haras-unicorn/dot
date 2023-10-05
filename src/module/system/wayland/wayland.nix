@@ -6,12 +6,12 @@
 
 {
   environment.sessionVariables = {
-    # TODO: ferdium not working
     NIXOS_OZONE_WL = "1";
     WLR_NO_HARDWARE_CURSORS = "1";
   };
 
   environment.systemPackages = with pkgs; [
+    libsForQt5.qt5ct
     egl-wayland
     wl-clipboard
     wev
