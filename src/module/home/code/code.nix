@@ -2,14 +2,6 @@
 
 {
   programs.vscode.enable = true;
-  # programs.vscode.package = (pkgs.symlinkJoin {
-  #   name = "code";
-  #   paths = [ pkgs.vscode ];
-  #   buildInputs = [ pkgs.makeWrapper ];
-  #   postBuild = ''
-  #     wrapProgram $out/bin/code --append-flags --ozone-platform-hint=auto
-  #   '';
-  # });
   programs.vscode.enableExtensionUpdateCheck = false;
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;
@@ -29,7 +21,7 @@
     editorconfig.editorconfig
     # eeyore.yapf -> NEED for python
     # emilast.LogFileHighlighter
-    # Equinusocio.vsc-community-material-theme -> zhuangtongfa.material-theme
+    zhuangtongfa.material-theme
     esbenp.prettier-vscode
     # formulahendry.dotnet-test-explorer -> i would like to have this a LOT
     foxundermoon.shell-format
