@@ -13,7 +13,7 @@
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.extraPackages = with pkgs; [
-    # TODO: nvidia-vaapi-driver
+    nvidia-vaapi-driver
     vaapiVdpau
     libvdpau-va-gl
   ];
@@ -33,6 +33,7 @@
   virtualisation.podman.enableNvidia = true;
 
   environment.systemPackages = with pkgs; [
+    libva
     vdpauinfo
     libva-utils
   ];
