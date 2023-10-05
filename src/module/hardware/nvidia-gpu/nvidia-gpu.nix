@@ -25,4 +25,9 @@
 
   virtualisation.docker.enableNvidia = true;
   virtualisation.podman.enableNvidia = true;
+
+  environment.systemPackages = with pkgs; [
+    vdpauinfo
+    libva-utils
+  ];
 }
