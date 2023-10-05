@@ -13,11 +13,13 @@
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.opengl.extraPackages = with pkgs; [
-    nvidia-vaapi-driver
+    # TODO: nvidia-vaapi-driver
     vaapiVdpau
+    libvdpau-va-gl
   ];
   hardware.opengl.extraPackages32 = with pkgs.driversi686Linux; [
     vaapiVdpau
+    libvdpau-va-gl
   ];
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.nvidiaSettings = true;

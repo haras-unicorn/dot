@@ -12,6 +12,7 @@
   };
 
   environment.systemPackages = with pkgs; [
+    egl-wayland
     wl-clipboard
     wev
     gtklock
