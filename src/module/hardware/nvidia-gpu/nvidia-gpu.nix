@@ -23,6 +23,7 @@
   ];
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.nvidiaSettings = true;
+  hardware.nvidia.open = true;
 
   programs.corectrl.enable = true;
   programs.corectrl.gpuOverclock.enable = true;
