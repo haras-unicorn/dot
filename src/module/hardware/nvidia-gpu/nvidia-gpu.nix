@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   boot.initrd.availableKernelModules = [
@@ -12,6 +12,9 @@
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
+  hardware.opengl.extraPackages = with pkgs; [
+    nvidia-vaapi-driver
+  ];
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.nvidiaSettings = true;
 
