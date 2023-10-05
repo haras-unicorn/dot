@@ -38,5 +38,6 @@
   environment.variables = {
     LIBVA_DRIVER_NAME = "nvidia";
     VDPAU_DRIVER = "nvidia";
+    NVD_BACKEND = "direct";
   };
 }
