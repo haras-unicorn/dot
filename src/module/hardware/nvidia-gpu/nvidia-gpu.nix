@@ -30,4 +30,9 @@
     vdpauinfo
     libva-utils
   ];
+
+  environment.variables = {
+    LIBVA_DRIVER_NAME = "nvidia";
+    VDPAU_DRIVER = "nvidia";
+  };
 }
