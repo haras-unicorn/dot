@@ -8,7 +8,8 @@
       paths = [ pkgs.ferdium ];
       buildInputs = [ pkgs.makeWrapper ];
       postBuild = ''
-        wrapProgram $out/bin/ferdium --append-flags --ozone-platform-hint=auto
+        wrapProgram $out/bin/ferdium \
+          --append-flags --ozone-platform-hint=auto
       '';
     })
   ];
