@@ -13,4 +13,8 @@
       '';
     })
   ];
+
+  wayland.windowManager.hyprland.extraConfig = ''
+    exec-once = ferdium
+  '';
 }
