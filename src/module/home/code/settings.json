@@ -1,5 +1,4 @@
 {
-  // intro
   "security.workspace.trust.untrustedFiles": "open",
   "telemetry.telemetryLevel": "off",
   "dotnetAcquisitionExtension.enableTelemetry": false,
@@ -7,7 +6,6 @@
   "redhat.telemetry.enabled": false,
   "workbench.settings.editor": "json",
   "git.enabled": false,
-  // appearance
   "workbench.iconTheme": "material-icon-theme",
   "workbench.colorTheme": "Community Material Theme Palenight High Contrast",
   "editor.fontSize": 16,
@@ -21,7 +19,6 @@
   "zenMode.hideTabs": false,
   "editor.minimap.enabled": false,
   "workbench.panel.defaultLocation": "right",
-  // ergonomics
   "explorer.confirmDragAndDrop": false,
   "search.useIgnoreFiles": false,
   "editor.inlineSuggest.enabled": true,
@@ -36,10 +33,8 @@
     "source.addMissingImports": true,
     "source.removeUnusedImports": true
   },
-  // remote
   "remote.SSH.configFile": "~/AppData/Roaming/code_ssh_config",
   "search.followSymlinks": false,
-  // saving
   "files.hotExit": "onExitAndWindowClose",
   "files.autoSave": "onFocusChange",
   "task.saveBeforeRun": "always",
@@ -47,7 +42,6 @@
   "testing.saveBeforeTest": true,
   "files.enableTrash": true,
   "explorer.confirmDelete": false,
-  // file format
   "files.insertFinalNewline": true,
   "files.encoding": "utf8",
   "files.eol": "\n",
@@ -61,7 +55,6 @@
   "editor.wordWrap": "off",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  // vim
   "vim.leader": "<space>",
   "vim.foldfix": true,
   "vim.hlsearch": true,
@@ -179,8 +172,6 @@
       ]
     }
   ],
-  // helix
-  // terminal
   "terminal.integrated.profiles.windows": {
     "Nushell": {
       "path": "C:\\Program Files\\nu\\bin\\nu.exe"
@@ -212,7 +203,6 @@
     "debugConsole.sourceForeground": "#ffffff"
   },
   "debug.terminal.clearBeforeReusing": true,
-  // language specific
   "github.copilot.enable": {
     "*": true,
     "yaml": true,
