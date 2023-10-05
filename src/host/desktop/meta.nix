@@ -1,5 +1,5 @@
 {
-  groups = [ "libvirtd" "docker" "podman" ];
+  groups = [ "libvirtd" "docker" "podman" "video" ];
   hardware = {
     mainMonitor = "DP-1";
     monitors = [ "DP-1" ];
