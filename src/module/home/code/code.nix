@@ -8,10 +8,9 @@
   programs.vscode.keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
   programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json));
   programs.vscode.extensions = with pkgs.vscode-extensions; [
-    # arcanis.vscode-zipfs -> NEED
+    # arcanis.vscode-zipfs -> NEED - maybe not if i use bun?
     bbenoist.nix
     # bmalehorn.shell-syntax
-    # ChakrounAnas.turbo-console-log
     codezombiech.gitignore
     charliermarsh.ruff
     # csharpier.csharpier-vscode -> NEED or omnisharp?
@@ -30,10 +29,7 @@
     graphql.vscode-graphql
     graphql.vscode-graphql-syntax
     jock.svg
-    # letrieu.expand-region
-    # logerfo.sln-support
     # meganrogge.template-string-converter -> i would like to have this a LOT
-    mikestead.dotenv
     ms-azuretools.vscode-docker
     ms-dotnettools.csharp
     # ms-dotnettools.vscode-dotnet-runtime -> check if need?
@@ -51,7 +47,6 @@
     rust-lang.rust-analyzer
     # selcukermaya.se-csproj-extensions
     shd101wyy.markdown-preview-enhanced
-    # silesky.toggle-boolean
     # sissel.shopify-liquid -> i would like this a LOT for orchard core
     styled-components.vscode-styled-components
     # stylelint.vscode-stylelint -> NEED

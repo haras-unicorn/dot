@@ -4,21 +4,6 @@
     "command": "workbench.action.toggleZenMode"
   },
   {
-    "key": "ctrl+=",
-    "command": "expand_region",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "ctrl+-",
-    "command": "undo_expand_region",
-    "when": "editorTextFocus && editorHasSelection"
-  },
-  {
-    "key": "ctrl+i",
-    "command": "turboConsoleLog.displayLogMessage",
-    "when": "editorTextFocus"
-  },
-  {
     "key": "ctrl+e",
     "command": "workbench.action.toggleSidebarVisibility"
   },
