@@ -21,7 +21,7 @@
     editorconfig.editorconfig
     # eeyore.yapf -> NEED for python
     # emilast.LogFileHighlighter
-    zhuangtongfa.material-theme
+    equinusocio.vsc-material-theme
     esbenp.prettier-vscode
     # formulahendry.dotnet-test-explorer -> i would like to have this a LOT
     foxundermoon.shell-format
