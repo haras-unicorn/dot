@@ -12,19 +12,12 @@
     "${self}/src/module/home/syncthing/syncthing.nix"
     "${self}/src/module/home/keepassxc/keepassxc.nix"
     "${self}/src/module/home/sdui/sdui.nix"
+    "${self}/src/module/home/ferdium/ferdium.nix"
+    "${self}/src/module/home/code/code.nix"
   ];
 
   home.packages = with pkgs; [
     emote
-    # NOTE: outlook - Self Hosted at https://outlook.office.com/mail/
-    (pkgs.symlinkJoin {
-      name = "ferdium";
-      paths = [ pkgs.ferdium ];
-      buildInputs = [ pkgs.makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/ferdium --append-flags --ozone-platform-hint=auto
-      '';
-    })
     libreoffice-fresh
     vlc
     nomacs

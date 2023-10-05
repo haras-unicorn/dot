@@ -1,0 +1,245 @@
+{
+  // intro
+  "security.workspace.trust.untrustedFiles": "open",
+  "telemetry.telemetryLevel": "off",
+  "dotnetAcquisitionExtension.enableTelemetry": false,
+  "dotnet-test-explorer.enableTelemetry": false,
+  "redhat.telemetry.enabled": false,
+  "workbench.settings.editor": "json",
+  "git.enabled": false,
+  // appearance
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.colorTheme": "Community Material Theme Palenight High Contrast",
+  "editor.fontSize": 16,
+  "editor.fontFamily": "\"JetBrainsMono Nerd Font\",Consolas",
+  "editor.fontLigatures": true,
+  "debug.console.fontSize": 16,
+  "debug.console.fontFamily": "\"JetBrainsMono Nerd Font\",Consolas",
+  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.fontFamily": "\"JetBrainsMono Nerd Font\",Consolas",
+  "editor.lineNumbers": "off",
+  "zenMode.hideTabs": false,
+  "editor.minimap.enabled": false,
+  "workbench.panel.defaultLocation": "right",
+  // ergonomics
+  "explorer.confirmDragAndDrop": false,
+  "search.useIgnoreFiles": false,
+  "editor.inlineSuggest.enabled": true,
+  "workbench.startupEditor": "readme",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "window.zoomLevel": 1,
+  "editor.stickyScroll.enabled": true,
+  "editor.linkedEditing": true,
+  "editor.suggest.insertMode": "replace",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.addMissingImports": true,
+    "source.removeUnusedImports": true
+  },
+  // remote
+  "remote.SSH.configFile": "~/AppData/Roaming/code_ssh_config",
+  "search.followSymlinks": false,
+  // saving
+  "files.hotExit": "onExitAndWindowClose",
+  "files.autoSave": "onFocusChange",
+  "task.saveBeforeRun": "always",
+  "debug.saveBeforeStart": "nonUntitledEditorsInActiveGroup",
+  "testing.saveBeforeTest": true,
+  "files.enableTrash": true,
+  "explorer.confirmDelete": false,
+  // file format
+  "files.insertFinalNewline": true,
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "editor.rulers": [
+    {
+      "column": 80,
+      "color": "#CCCCDD"
+    }
+  ],
+  "editor.tabSize": 2,
+  "editor.wordWrap": "off",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  // vim
+  "vim.leader": "<space>",
+  "vim.foldfix": true,
+  "vim.hlsearch": true,
+  "vim.useSystemClipboard": true,
+  "vim.highlightedyank.enable": true,
+  "vim.sneak": true,
+  "vim.textwidth": 80,
+  "vim.insertModeKeyBindingsNonRecursive": [
+    {
+      "before": [
+        "j",
+        "k"
+      ],
+      "after": [
+        "<Esc>",
+        "workbench.action.files.save"
+      ]
+    }
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": [
+        "<leader>",
+        "f"
+      ],
+      "commands": [
+        "workbench.action.quickOpen"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "k"
+      ],
+      "commands": [
+        "editor.action.showHover"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "c",
+        "a"
+      ],
+      "commands": [
+        "editor.action.quickFix"
+      ]
+    },
+    {
+      "before": [
+        "[",
+        "d"
+      ],
+      "commands": [
+        "editor.action.marker.prev"
+      ]
+    },
+    {
+      "before": [
+        "]",
+        "d"
+      ],
+      "commands": [
+        "editor.action.marker.next"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "s",
+        "d"
+      ],
+      "commands": [
+        "workbench.action.splitEditorDown"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "s",
+        "l"
+      ],
+      "commands": [
+        "workbench.action.splitEditorLeft"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "s",
+        "u"
+      ],
+      "commands": [
+        "workbench.action.splitEditorUp"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "s",
+        "r"
+      ],
+      "commands": [
+        "workbench.action.splitEditorRight"
+      ]
+    }
+  ],
+  "vim.commandLineModeKeyBindingsNonRecursive": [
+    {
+      "before": [
+        "dbg"
+      ],
+      "commands": [
+        "workbench.action.debug.start"
+      ]
+    }
+  ],
+  // helix
+  // terminal
+  "terminal.integrated.profiles.windows": {
+    "Nushell": {
+      "path": "C:\\Program Files\\nu\\bin\\nu.exe"
+    },
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell"
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
+    },
+    "Git Bash": {
+      "source": "Git Bash"
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.explorerKind": "external",
+  "terminal.external.windowsExec": "alacritty",
+  "terminal.integrated.gpuAcceleration": "on",
+  "workbench.colorCustomizations": {
+    "debugConsole.errorForeground": "#ff0000",
+    "debugConsole.infoForeground": "#00ff00",
+    "debugConsole.warningForeground": "#ffff00",
+    "debugConsole.sourceForeground": "#ffffff"
+  },
+  "debug.terminal.clearBeforeReusing": true,
+  // language specific
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": false,
+    "markdown": true
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[csharp]": {
+    "editor.defaultFormatter": "csharpier.csharpier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.preferences.importModuleSpecifier": "project-relative",
+  "powershell.promptToUpdatePowerShell": false,
+  "remote.SSH.remotePlatform": {
+    "pidgeon": "linux"
+  }
+}
