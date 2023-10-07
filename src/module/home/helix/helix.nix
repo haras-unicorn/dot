@@ -104,6 +104,7 @@ in
     cargo-edit
     shfmt
     marksman
+    taplo
   ];
 
   wayland.windowManager.hyprland.extraConfig = ''
