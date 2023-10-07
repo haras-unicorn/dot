@@ -48,4 +48,6 @@
 
   programs.starship.enableNushellIntegration = true;
   programs.zoxide.enableNushellIntegration = true;
+
+  xds.configFile."fastfetch/config.jsonc".source = ./fastfetch.jsonc;
 }
