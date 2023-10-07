@@ -1,6 +1,10 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 
 {
+  home.packages = with pkgs; [
+    fastfetch
+  ];
+
   programs.direnv.enable = true;
   programs.direnv.enableNushellIntegration = true;
   programs.direnv.nix-direnv.enable = true;
@@ -34,6 +38,8 @@
         }]
       }
     }
+
+    fastfetch
   '';
   programs.nushell.environmentVariables = {
     PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
