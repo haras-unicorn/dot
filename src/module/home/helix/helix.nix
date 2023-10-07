@@ -182,6 +182,10 @@ in
         # formatter = { command = "${csharpier}/bin/dotnet-csharpier"; };
         language-server = { command = "${pkgs.omnisharp-roslyn}/bin/OmniSharp"; args = [ "-lsp" ]; timeout = 10000; };
       }
+      {
+        name = "toml";
+        auto-format = true;
+      }
     ];
   };
   programs.helix.settings = {
