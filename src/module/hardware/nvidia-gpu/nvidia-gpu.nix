@@ -46,6 +46,6 @@
     VDPAU_DRIVER = "nvidia";
     NVD_BACKEND = "direct";
     # GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
   };
 }
