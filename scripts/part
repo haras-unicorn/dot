@@ -3,30 +3,8 @@ set -eo pipefail
 
 DEVICE=$1
 if [ ! -b "$DEVICE" ]; then
-  printf "Please enter a valid block device\n"
-  exit 1
-fi
-
-rm -rf /opt
-
-mkdir /opt
-git clone https://gitlab.com/hrle/dotfiles-nixos /opt/dotfiles
-HOST=$2
-if [ ! -d "/opt/dotfiles/src/host/$HOST" ]; then
-  printf "Please enter a valid host\n"
-  exit 1
-fi
-
-printf "Installing %s on %s\n" "$HOST" "$DEVICE"
-
-if grep -q "$DEVICE" /proc/mounts; then
-  umount -Rl /mnt
-  sleep 1s
-
-  if grep -q "$DEVICE" /proc/mounts; then
-    printf "Failed to unmount %s\n" "$DEVICE"
-    exit 1
-  fi
+	printf "Please enter a valid block device\n"
+	exit 1
 fi
 
 parted --script "$DEVICE" mktable gpt
@@ -47,12 +25,9 @@ blockdev --rereadpt "$DEVICE"
 mount /dev/disk/by-partlabel/nixroot /mnt
 mkdir /mnt/boot
 mount /dev/disk/by-partlabel/nixboot /mnt/boot
+mkdir /mnt/var
 fallocate -l 4G /mnt/var/swap
 chmod 600 /mnt/var/swap
 mkswap /mnt/var/swap
 swapon /mnt/var/swap
 mount | grep "$DEVICE"
-
-nixos-install --root /mnt --flake "/opt/dotfiles#$HOST"
-mkdir /mnt/opt
-mv /opt/dotfiles /mnt/opt/dotfiles
