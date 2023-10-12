@@ -11,7 +11,6 @@
     "${self}/src/module/home/kitty/kitty.nix"
     "${self}/src/module/home/syncthing/syncthing.nix"
     "${self}/src/module/home/keepassxc/keepassxc.nix"
-    "${self}/src/module/home/sdui/sdui.nix"
     "${self}/src/module/home/ferdium/ferdium.nix"
     "${self}/src/module/home/code/code.nix"
   ];
