@@ -1,5 +1,21 @@
-{ pkgs, ... }:
+{ pkgs, nixified-ai, ... }:
 
+let
+  invokeai = pkgs.makeShellApplication {
+    name = "invokeai";
+    runtimeInputs = [ ];
+    text = ''
+      nix run ${nixified-ai}#invokeai-nvidia
+    '';
+  };
+  koboldai = pkgs.makeShellApplication {
+    name = "koboldai";
+    runtimeInputs = [ ];
+    text = ''
+      nix run ${nixified-ai}#koboldai-nvidia
+    '';
+  };
+in
 {
   boot.initrd.availableKernelModules = [
     "nvidia"
@@ -38,6 +54,8 @@
     libvdpau
     vdpauinfo
     libva-utils
+    invokeai
+    koboldai
   ];
 
   environment.variables = {

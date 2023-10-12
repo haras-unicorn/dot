@@ -35,6 +35,7 @@
     , nixos-hardware
     , sweet-theme
     , lulezojne
+    , nixified-ai
     , ...
     }:
     let
@@ -67,6 +68,7 @@
                 nixos-hardware = nixos-hardware;
                 sweet-theme = sweet-theme;
                 hardware = meta.hardware;
+                nixified-ai = nixified-ai;
               };
             in
             nixosConfigurations // {
