@@ -1,14 +1,14 @@
 { pkgs, nixified-ai, ... }:
 
 let
-  invokeai = pkgs.makeShellApplication {
+  invokeai = pkgs.writeShellApplication {
     name = "invokeai";
     runtimeInputs = [ ];
     text = ''
       nix run ${nixified-ai}#invokeai-nvidia
     '';
   };
-  koboldai = pkgs.makeShellApplication {
+  koboldai = pkgs.writeShellApplication {
     name = "koboldai";
     runtimeInputs = [ ];
     text = ''
