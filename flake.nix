@@ -21,6 +21,9 @@
 
     lulezojne.url = "github:haras-unicorn/lulezojne";
     lulezojne.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixified-ai.url = "github:nixified-ai/flake";
+    nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
