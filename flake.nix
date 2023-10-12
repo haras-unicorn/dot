@@ -96,7 +96,7 @@
                           "https://hyprland.cachix.org"
                           "https://ai.cachix.org/"
                         ];
-                        nis.settings.trusted-substituters = [
+                        nix.settings.trusted-substituters = [
                           "https://cache.nixos.org/"
                           "https://haras.cachix.org/"
                         ];
