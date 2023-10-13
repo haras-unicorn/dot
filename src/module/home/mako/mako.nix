@@ -2,7 +2,7 @@
 
 let
   mako-walapp = pkgs.writeShellApplication {
-    name = "makore";
+    name = "mako-walapp";
     text = ''
       ${config.services.mako.package}/bin/makoctl reload || true
     '';
