@@ -215,11 +215,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1697230319,
-        "narHash": "sha256-/yJmAc7UfIqbZTBICruhu5ZR4vlEAtcajSXyr546Pxk=",
+        "lastModified": 1697230864,
+        "narHash": "sha256-/riBA+eYcpdcZlFmH4rL9jbw5Clr9IXZvYFl53PDKnw=",
         "owner": "haras-unicorn",
         "repo": "lulezojne",
-        "rev": "7f5367bee64e33a11156964dce71fcc9f0835b8a",
+        "rev": "7dd6eb36d32150b015b497559353ea622850f897",
         "type": "github"
       },
       "original": {
