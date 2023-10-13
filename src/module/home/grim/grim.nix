@@ -5,14 +5,15 @@ let
     name = "screenshot";
     runtimeInputs = [ pkgs.grim pkgs.wl-clipboard ];
     text = ''
+      format="type"
       dir="${config.xdg.userDirs.pictures}/screenshots"
-      file="$dir/$(date -Iseconds).png"
+      file="$dir/$(date -Iseconds).$type"
       if [[ ! -d "$dir" ]]
       then
         mkdir -p "$dir"
       fi
 
-      grim -t png "$file.png"
+      grim -t "$type" "$file"
       wl-copy < "$file"
     '';
   };
