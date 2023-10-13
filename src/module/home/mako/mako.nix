@@ -11,7 +11,6 @@
   programs.lulezojne.config.plop = [
     {
       template = ''
-        font="JetBrainsMono" 16
         background-color={{ hexa (set-alpha ansi.main.black 0.5) }}
         text-color={{ hex ansi.main.white }}
         border-color={{ hex ansi.main.yellow }}
