@@ -31,23 +31,9 @@
       }
 
       hooks: {
-        pre_prompt: [{ ||
-          let direnv = (direnv export json | from json | default {})
-          if ($direnv | is-empty) {
-              return
-          }
-          $direnv
-          | items {|key, value|
-             {
-                key: $key
-                value: (if $key in $env.ENV_CONVERSIONS {
-                  do ($env.ENV_CONVERSIONS | get $key | get from_string) $value
-                } else {
-                    $value
-                })
-              }
-          } | transpose -ird | load-env
-        }]      
+        env_change: {
+          PWD: { || direnv export json | from json | default {} | load-env }
+        }
       }
     }
 
