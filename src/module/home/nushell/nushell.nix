@@ -39,7 +39,7 @@
       }
     }
 
-    fastfetch
+    # fastfetch
   '';
   programs.nushell.environmentVariables = {
     PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
