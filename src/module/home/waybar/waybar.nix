@@ -1,8 +1,8 @@
 { hardware, pkgs, config, ... }:
 
 let
-  waybare = pkgs.writeShellApplication {
-    name = "waybare";
+  waybar-walapp = pkgs.writeShellApplication {
+    name = "waybar-walapp";
     text = ''
       # NOTE: only kill those that don't match this script
       IFS=$'\n' read -r -a pids <<< "$(pgrep -f waybar)"
@@ -31,7 +31,7 @@ in
     ${builtins.readFile ./style.css}
   '';
 
-  xdg.configFile."walapp/waybar".source = "${waybare}/bin/waybare";
+  xdg.configFile."walapp/waybar".source = "${waybar-walapp}/bin/waybar-walapp";
   xdg.configFile."walapp/waybar".executable = true;
 
   programs.lulezojne.config = {
@@ -52,6 +52,7 @@ in
           @define-color magenta {{ hex ansi.main.magenta }};
         '';
         "in" = "${config.xdg.configHome}/waybar/colors.css";
+        "then" = "${waybar-walapp}/bin/waybar-walapp";
       }
     ];
   };
