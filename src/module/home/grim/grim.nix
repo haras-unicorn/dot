@@ -5,7 +5,7 @@ let
     name = "screenshot";
     runtimeInputs = [ pkgs.grim pkgs.wl-clipboard ];
     text = ''
-      format="type"
+      type="png"
       dir="${config.xdg.userDirs.pictures}/screenshots"
       file="$dir/$(date -Iseconds).$type"
       if [[ ! -d "$dir" ]]
