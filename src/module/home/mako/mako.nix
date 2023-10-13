@@ -18,12 +18,14 @@
         progress-color={{ hex ansi.main.green }}
       '';
       "in" = "${config.xdg.configHome}/mako/config";
-      "then" = "${pkgs.writeShellApplication {
-        name = "mako-lulezojne";
-        text = ''
-          ${config.services.mako.package}/bin/makoctl reload
-        '';
-      }}/bin/mako-lulezojne";
+      "then" = {
+        command = "${pkgs.writeShellApplication {
+          name = "mako-lulezojne";
+          text = ''
+            ${config.services.mako.package}/bin/makoctl reload
+          '';
+        }}/bin/mako-lulezojne";
+      };
     }
   ];
 }

@@ -17,7 +17,7 @@
         swww img "$image"
         lulezojne plop "$image"
       '';
-    }}/bin/wallpaper
+    }}/bin/swww-lulezojne
 
     misc {
       disable_hyprland_logo = true
