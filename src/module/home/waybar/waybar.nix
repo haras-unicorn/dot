@@ -1,21 +1,5 @@
 { hardware, pkgs, config, ... }:
 
-let
-  waybar-walapp = pkgs.writeShellApplication {
-    name = "waybar-walapp";
-    text = ''
-      # NOTE: only kill those that don't match this script
-      IFS=$'\n' read -r -a pids <<< "$(pgrep -f waybar)"
-      for pid in "''${pids[@]}"; do
-        if [[ $pid != "$$" ]]; then
-          kill "$pid"
-        fi
-      done
-
-      waybar >/dev/null 2>&1 & disown
-    '';
-  };
-in
 {
   programs.waybar.enable = true;
   programs.waybar.settings = [
@@ -30,9 +14,6 @@ in
 
     ${builtins.readFile ./style.css}
   '';
-
-  xdg.configFile."walapp/waybar".source = "${waybar-walapp}/bin/waybar-walapp";
-  xdg.configFile."walapp/waybar".executable = true;
 
   programs.lulezojne.config = {
     plop = [
@@ -52,7 +33,22 @@ in
           @define-color magenta {{ hex ansi.main.magenta }};
         '';
         "in" = "${config.xdg.configHome}/waybar/colors.css";
-        "then" = "${waybar-walapp}/bin/waybar-walapp";
+        "then" = {
+          command = "${pkgs.writeShellApplication {
+            name = "waybar-lulezojne";
+            text = ''
+              # NOTE: only kill those that don't match this script
+              IFS=$'\n' read -r -a pids <<< "$(pgrep -f waybar)"
+              for pid in "''${pids[@]}"; do
+                if [[ $pid != "$$" ]]; then
+                  kill "$pid"
+                fi
+              done
+
+              waybar >/dev/null 2>&1 & disown
+            '';
+          }}/bin/waybar-lulezojne";
+        };
       }
     ];
   };
