@@ -14,7 +14,7 @@ let
       fi
 
       grim -t "$type" "$file"
-      wl-copy < "$file"
+      wl-copy -t "image/$type" < "$file"
     '';
   };
 in
