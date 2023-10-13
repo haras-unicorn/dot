@@ -12,6 +12,6 @@
   xdg.configFile."wofi/keepmenu.rasi".source = ./keepmenu.rasi;
 
   wayland.windowManager.hyprland.extraConfig = ''
-    bind = super, return, exec, wofi --show drun
+    bind = super, return, exec, ${pkgs.wofi}/bin/wofi --show drun
   '';
 }
