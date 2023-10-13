@@ -6,13 +6,13 @@ let
     runtimeInputs = [ pkgs.grim pkgs.wl-clipboard ];
     text = ''
       dir="${config.xdg.userDirs.pictures}/screenshots"
-      file="$dir/$(date -Iseconds)"
+      file="$dir/$(date -Iseconds).png"
       if [[ ! -d "$dir" ]]
       then
         mkdir -p "$dir"
       fi
 
-      grim "$file"
+      grim -t png "$file.png"
       wl-copy < "$file"
     '';
   };
