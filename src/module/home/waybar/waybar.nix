@@ -9,6 +9,9 @@
       tray = {
         icon-size = 14;
       };
+      temperature = {
+        hwmon-path = hardware.hwmon;
+      };
     }
     (builtins.fromJSON (builtins.readFile ./config.json))
   ];
