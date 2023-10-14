@@ -55,7 +55,7 @@
   margin-right: 8px;
 }
 
-#custom-powermenu button.focused {
+#custom-powermenu button:hover {
   background-color: @foreground;
   color: @red;
 }
