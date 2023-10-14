@@ -10,8 +10,8 @@
   ],
   "modules-right": [
     "network",
-    "temperature",
     "pulseaudio",
+    "temperature",
     "memory",
     "cpu",
     "custom/powermenu"
