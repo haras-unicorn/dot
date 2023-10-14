@@ -3,7 +3,8 @@
 {
   programs.waybar.enable = true;
   programs.waybar.settings = [
-    ((builtins.fromJSON (builtins.readFile ./config.json)) //
+    (pkgs.lib.attrsets.recursiveUpdate
+      (builtins.fromJSON (builtins.readFile ./config.json))
       {
         output = hardware.mainMonitor;
         network = { interface = hardware.networkInterface; };
