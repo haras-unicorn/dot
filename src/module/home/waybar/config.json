@@ -14,7 +14,7 @@
     "pulseaudio",
     "memory",
     "cpu",
-    "custom/powermenu"
+    "powermenu"
   ],
   "tray": {
     "icon-size": 16,
@@ -70,7 +70,7 @@
     "format": "󰻠 {usage}%",
     "tooltip": "false"
   },
-  "custom/powermenu": {
+  "powermenu": {
     "format": "⏻",
     "tooltip": false,
     "on-click": "exec wlogout -p layer-shell"

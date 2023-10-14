@@ -21,7 +21,7 @@
   color: @yellow;
 }
 
-#custom-powermenu,
+#powermenu,
 #cpu,
 #temperature,
 #memory,
@@ -36,16 +36,17 @@
   margin: 6px 4px;
 }
 
-#window {
-  color: @foreground;
-}
-
 #tray {
+  background-color: @background;
   margin-right: 4px;
   margin-left: 4px;
 }
 
-#custom-powermenu {
+#window {
+  color: @foreground;
+}
+
+#powermenu {
   color: @red;
   padding-right: 11px;
   margin-right: 8px;
