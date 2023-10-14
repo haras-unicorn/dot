@@ -57,7 +57,7 @@
 
 #custom-powermenu:hover {
   background-color: @foreground;
-  color @red;
+  color: @red;
 }
 
 #pulseaudio {
