@@ -19,7 +19,7 @@
 }
 
 #workspaces button.active {
-  color: @magenta;
+  color: @yellow;
 }
 
 #custom-powermenu,
@@ -31,7 +31,7 @@
 #window,
 #pulseaudio,
 #network {
-  background-color: @black;
+  background-color: @background;
   border-radius: 8px;
   padding: 4px 8px;
   margin: 6px 4px;

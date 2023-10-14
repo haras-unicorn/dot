@@ -19,11 +19,11 @@
     plop = [
       {
         template = ''
-          @define-color background {{ rgba (set-alpha ansi.main.black 0.3) }};
+          @define-color background {{ rgba (set-alpha ansi.main.black 0.7) }};
           @define-color foreground {{ hex ansi.main.white }};
 
-          @define-color black {{ rgba (set-alpha ansi.main.black 0.5) }};
-          @define-color white {{ rgba (set-alpha ansi.main.white 0.5) }};
+          @define-color black {{ rgba ansi.main.black }};
+          @define-color white {{ rgba ansi.main.white }};
 
           @define-color red {{ hex ansi.main.bright_red }};
           @define-color green {{ hex ansi.main.bright_green }};
