@@ -45,7 +45,6 @@
 }
 
 #workspaces button:hover {
-  cursor: pointer;
   background-color: @foreground;
   color: @magenta;
 }
