@@ -21,7 +21,7 @@
   color: @yellow;
 }
 
-#workspaces button.hover {
+#workspaces button:hover {
   background-color: @background;
 }
 
