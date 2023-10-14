@@ -25,12 +25,12 @@
           @define-color black {{ rgba (set-alpha ansi.main.black 0.5) }};
           @define-color white {{ rgba (set-alpha ansi.main.white 0.5) }};
 
-          @define-color red {{ hex ansi.main.brightRed }};
-          @define-color green {{ hex ansi.main.brightGreen }};
-          @define-color blue {{ hex ansi.main.brightBlue }};
-          @define-color cyan {{ hex ansi.main.brightCyan }};
-          @define-color yellow {{ hex ansi.main.brightYellow }};
-          @define-color magenta {{ hex ansi.main.brightMagenta }};
+          @define-color red {{ hex ansi.main.bright_red }};
+          @define-color green {{ hex ansi.main.bright_green }};
+          @define-color blue {{ hex ansi.main.bright_blue }};
+          @define-color cyan {{ hex ansi.main.bright_cyan }};
+          @define-color yellow {{ hex ansi.main.bright_yellow }};
+          @define-color magenta {{ hex ansi.main.bright_magenta }};
         '';
         "in" = "${config.xdg.configHome}/waybar/colors.css";
         "then" = {
