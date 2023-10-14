@@ -8,9 +8,6 @@
     "hyprland/submap",
     "hyprland/workspaces"
   ],
-  "modules-center": [
-    "hyprland/window"
-  ],
   "modules-right": [
     "network",
     "temperature",
