@@ -21,6 +21,7 @@
   color: @yellow;
 }
 
+#tray,
 #powermenu,
 #cpu,
 #temperature,
@@ -34,12 +35,6 @@
   border-radius: 8px;
   padding: 4px 8px;
   margin: 6px 4px;
-}
-
-#tray {
-  background-color: @background;
-  margin-right: 4px;
-  margin-left: 4px;
 }
 
 #window {

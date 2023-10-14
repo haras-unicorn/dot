@@ -7,7 +7,7 @@
       output = hardware.mainMonitor;
       network = { interface = hardware.networkInterface; };
       tray = {
-        icon-size = 16;
+        icon-size = 14;
       };
     }
     (builtins.fromJSON (builtins.readFile ./config.json))
@@ -16,7 +16,7 @@
     @import "${config.xdg.configHome}/waybar/colors.css";
 
     #waybar {
-      font-size: 16px;
+      font-size: 14px;
     }
 
     ${builtins.readFile ./style.css}
