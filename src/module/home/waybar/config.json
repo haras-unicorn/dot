@@ -53,6 +53,7 @@
   },
   "temperature": {
     "format": "{icon} {temperatureC}°C",
+    "interval": 1,
     "critical-threshold": 80,
     "format-icons": [
       "",
@@ -62,11 +63,13 @@
   },
   "memory": {
     "format": "󰍛 {}%",
-    "tooltip": "false"
+    "tooltip": "false",
+    "interval": 1
   },
   "cpu": {
     "format": "󰻠 {usage}%",
-    "tooltip": "false"
+    "tooltip": "false",
+    "interval": 1
   },
   "custom/powermenu": {
     "format": "⏻",
