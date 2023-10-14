@@ -3,17 +3,17 @@
 {
   programs.waybar.enable = true;
   programs.waybar.settings = [
-    {
-      output = hardware.mainMonitor;
-      network = { interface = hardware.networkInterface; };
-      tray = {
-        icon-size = 14;
-      };
-      temperature = {
-        hwmon-path = hardware.hwmon;
-      };
-    }
-    (builtins.fromJSON (builtins.readFile ./config.json))
+    ((builtins.fromJSON (builtins.readFile ./config.json)) //
+      {
+        output = hardware.mainMonitor;
+        network = { interface = hardware.networkInterface; };
+        tray = {
+          icon-size = 14;
+        };
+        temperature = {
+          hwmon-path = hardware.hwmon;
+        };
+      })
   ];
   programs.waybar.style = ''
     @import "${config.xdg.configHome}/waybar/colors.css";
