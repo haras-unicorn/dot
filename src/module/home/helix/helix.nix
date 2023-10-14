@@ -124,7 +124,7 @@ in
     language = [
       {
         name = "nix";
-        auto-format = true;
+        # auto-format = true;
         formatter = { command = "nixpkgs-fmt"; };
       }
       {
