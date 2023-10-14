@@ -11,18 +11,8 @@
   font-family: "Hack Nerd Font";
 }
 
-#workspaces button {
-  padding-right: 5px;
-  padding-left: 5px;
+#window {
   color: @foreground;
-}
-
-#workspaces button.active {
-  color: @yellow;
-}
-
-#workspaces button:hover {
-  background-color: @background;
 }
 
 #tray,
@@ -41,39 +31,58 @@
   margin: 6px 4px;
 }
 
-#window {
+#workspaces button {
+  padding-right: 5px;
+  padding-left: 5px;
   color: @foreground;
 }
 
+#workspaces button.active {
+  color: @bright-yellow;
+}
+
+#workspaces button:hover {
+  background-color: @background;
+}
+
+#workspaces label:hover {
+  color: @bright-magenta;
+}
+
 #custom-powermenu {
-  color: @red;
+  color: @bright-red;
   padding-right: 11px;
   margin-right: 8px;
 }
 
 #pulseaudio {
-  color: @green;
+  color: @bright-green;
   padding-right: 14px;
 }
 
+#pulseaudio:hover {
+  background-color: @foreground;
+  color: @green;
+}
+
 #cpu {
-  color: @cyan;
+  color: @bright-cyan;
 }
 
 #temperature {
-  color: @yellow;
+  color: @bright-yellow;
 }
 
 #memory {
-  color: @cyan;
+  color: @bright-cyan;
 }
 
 #network {
-  color: @magenta;
+  color: @bright-magenta;
   min-width: 200px;
 }
 
 #clock {
-  color: @foreground;
+  color: @bright-foreground;
   margin-left: 8px;
 }
