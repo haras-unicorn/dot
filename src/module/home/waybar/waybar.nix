@@ -6,11 +6,18 @@
     {
       output = hardware.mainMonitor;
       network = { interface = hardware.networkInterface; };
+      tray = {
+        icon-size = 14;
+      };
     }
     (builtins.fromJSON (builtins.readFile ./config.json))
   ];
   programs.waybar.style = ''
     @import "${config.xdg.configHome}/waybar/colors.css";
+
+    #waybar {
+      font-size: 14px;
+    }
 
     ${builtins.readFile ./style.css}
   '';
