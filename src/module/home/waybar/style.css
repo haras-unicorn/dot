@@ -45,11 +45,8 @@
 }
 
 #workspaces button:hover {
-  background-color: @background;
-}
-
-#workspaces span:hover {
-  color: @bright-magenta;
+  background-color: @foreground;
+  color: @magenta;
 }
 
 #custom-powermenu {
