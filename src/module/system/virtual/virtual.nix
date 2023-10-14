@@ -1,4 +1,8 @@
-{ pkgs, config, hardware, ... }:
+{ pkgs
+, config
+  # , hardware
+, ...
+}:
 
 {
   environment.systemPackages = with pkgs; [
@@ -45,6 +49,6 @@
   programs.steam.enable = true;
 
   # FIXME: https://github.com/NixOS/nixpkgs/issues/127404
-  virtualisation.xen.enable = true;
-  virtualisation.xen.domain0MemorySize = (hardware.ram * 3 / 4) / 1024;
+  # virtualisation.xen.enable = true;
+  # virtualisation.xen.domain0MemorySize = (hardware.ram * 3 / 4) / 1024;
 }
