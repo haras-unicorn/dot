@@ -7,6 +7,7 @@
 }
 
 #waybar {
+  background-color: rgba(0, 0, 0, 0);
   font-size: 14px;
   font-family: "Hack Nerd Font";
 }
