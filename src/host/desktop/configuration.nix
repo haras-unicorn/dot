@@ -1,4 +1,4 @@
-{ self, pkgs, ... }:
+{ self, ... }:
 
 {
   imports = [
@@ -6,6 +6,8 @@
 
     "${self}/src/module/system/grub/grub.nix"
     "${self}/src/module/system/plymouth/plymouth.nix"
+
+    "${self}/src/module/system/zen/zen.nix"
 
     "${self}/src/module/system/location/location.nix"
     "${self}/src/module/system/network/network.nix"
@@ -23,16 +25,7 @@
     "${self}/src/module/system/windows/windows.nix"
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_zen;
-  services.ananicy.enable = true;
-  services.earlyoom.enable = true;
-
-  # TODO: per user
-  services.transmission.enable = true;
-  services.transmission.openPeerPorts = true;
-
-  environment.systemPackages = with pkgs; [
-    helix
-    git
-  ];
+  # TODO: per user?
+  # services.transmission.enable = true;
+  # services.transmission.openPeerPorts = true;
 }
