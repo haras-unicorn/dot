@@ -32,8 +32,11 @@
 }
 
 #workspaces button {
-  padding-right: 5px;
-  padding-left: 5px;
+  padding-right: 4px;
+  padding-left: 4px;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-radius: 50%;
   color: @foreground;
 }
 
