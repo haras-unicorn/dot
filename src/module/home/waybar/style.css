@@ -45,7 +45,7 @@
   background-color: @background;
 }
 
-#workspaces label:hover {
+#workspaces span:hover {
   color: @bright-magenta;
 }
 
