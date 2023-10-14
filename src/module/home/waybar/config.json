@@ -14,9 +14,9 @@
   "modules-right": [
     "network",
     "temperature",
+    "pulseaudio",
     "memory",
     "cpu",
-    "pulseaudio",
     "custom/powermenu"
   ],
   "tray": {
@@ -59,7 +59,11 @@
     "format": "{icon} {temperatureC}°C",
     "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
     "critical-threshold": 80,
-    "format-icons": ["", "", ""]
+    "format-icons": [
+      "",
+      "",
+      ""
+    ]
   },
   "memory": {
     "format": "󰍛 {}%",
@@ -79,13 +83,16 @@
     "format-bluetooth": "{volume}% {icon}",
     "format-muted": "󰝟",
     "format-icons": {
-        "headphone": "󰋋",
-        "hands-free": "󰕹",
-        "headset": "󰋎",
-        "phone": "󰏲",
-        "portable": "",
-        "car": "󰄋",
-        "default": ["󰕿", "󰕾"]
+      "headphone": "󰋋",
+      "hands-free": "󰕹",
+      "headset": "󰋎",
+      "phone": "󰏲",
+      "portable": "",
+      "car": "󰄋",
+      "default": [
+        "󰕿",
+        "󰕾"
+      ]
     },
     "scroll-step": 1,
     "on-click": "pavucontrol"
