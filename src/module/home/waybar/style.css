@@ -44,7 +44,7 @@
   color: @bright-yellow;
 }
 
-#workspaces button.focused {
+#workspaces button:hover {
   background-color: @foreground;
   color: @magenta;
 }
@@ -55,7 +55,7 @@
   margin-right: 8px;
 }
 
-#custom-powermenu button:focused {
+#custom-powermenu button.focused {
   background-color: @foreground;
   color: @red;
 }
