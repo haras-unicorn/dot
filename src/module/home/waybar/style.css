@@ -55,7 +55,7 @@
   margin-right: 8px;
 }
 
-#custom-powermenu:hover {
+#custom-powermenu button:hover {
   background-color: @foreground;
   color: @red;
 }
