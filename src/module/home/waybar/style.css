@@ -37,6 +37,8 @@
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 50%;
+  width: 24px;
+  height: 24px;
   color: @foreground;
 }
 
@@ -45,6 +47,7 @@
 }
 
 #workspaces button:hover {
+  cursor: pointer;
   background-color: @foreground;
   color: @magenta;
 }
