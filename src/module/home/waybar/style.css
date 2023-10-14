@@ -17,7 +17,7 @@
   color: @foreground;
 }
 
-#workspaces button.active {
+#workspaces button:active {
   color: @yellow;
 }
 
