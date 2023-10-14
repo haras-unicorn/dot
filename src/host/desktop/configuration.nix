@@ -7,6 +7,7 @@
     "${self}/src/module/system/grub/grub.nix"
     "${self}/src/module/system/plymouth/plymouth.nix"
 
+    "${self}/src/module/system/xen/xen.nix"
     "${self}/src/module/system/zen/zen.nix"
 
     "${self}/src/module/system/location/location.nix"

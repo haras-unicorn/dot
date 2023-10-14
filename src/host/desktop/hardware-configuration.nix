@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, hardware, ... }:
 
 {
   imports = [
@@ -30,7 +30,7 @@
   swapDevices = [
     {
       device = "/var/swap";
-      size = 32 * 1024;
+      size = hardware.ram * 1024;
     }
   ];
 }

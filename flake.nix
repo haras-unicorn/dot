@@ -55,8 +55,6 @@
                   username = username;
                   groups = [ ];
                   shell = "nushell";
-                  # ip address
-                  # hyprctl monitors
                   hardware = { };
                 } // (if builtins.pathExists "${hosts}/${host}/meta.nix"
                 then builtins.import "${hosts}/${host}/meta.nix"
