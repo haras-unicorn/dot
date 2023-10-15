@@ -12,9 +12,9 @@
     {
       template = ''
         background-color={{ hexa (set-alpha ansi.main.black 0.5) }}
-        text-color={{ hex ansi.main.white }}
-        border-color={{ hex ansi.main.yellow }}
-        progress-color={{ hex ansi.main.green }}
+        text-color={{ hex ansi.main.bright_white }}
+        border-color={{ hex ansi.main.bright_yellow }}
+        progress-color={{ hex ansi.main.bright_green }}
       '';
       "in" = "${config.xdg.configHome}/mako/config";
       "then" = {
