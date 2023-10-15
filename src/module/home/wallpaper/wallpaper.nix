@@ -25,7 +25,6 @@ in
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.swww}/bin/swww init
-    exec = ${wallpaper}/bin/wallpaper
 
     misc {
       disable_hyprland_logo = true
