@@ -29,7 +29,7 @@
       '';
       "in" = "${config.xdg.configHome}/kitty/colors.conf";
       "then" = {
-        comand = "pkill";
+        command = "pkill";
         args = [ "--signal" "SIGUSR1" "kitty" ];
       };
     }
