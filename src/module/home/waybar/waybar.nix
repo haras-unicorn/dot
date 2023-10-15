@@ -52,20 +52,8 @@
         '';
         "in" = "${config.xdg.configHome}/waybar/colors.css";
         "then" = {
-          command = "${pkgs.writeShellApplication {
-            name = "waybar-lulezojne";
-            text = ''
-              # NOTE: only kill those that don't match this script
-              IFS=$'\n' read -r -a pids <<< "$(pgrep -f waybar)"
-              for pid in "''${pids[@]}"; do
-                if [[ $pid != "$$" ]]; then
-                  kill "$pid"
-                fi
-              done
-
-              waybar >/dev/null 2>&1 & disown
-            '';
-          }}/bin/waybar-lulezojne";
+          command = "pkill";
+          args = [ "--signal" "SIGUSR2" "waybar" ];
         };
       }
     ];
