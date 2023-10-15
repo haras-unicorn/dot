@@ -5,10 +5,10 @@ let
     name = "wallpaper";
     runtimeInputs = [ pkgs.swww ];
     text = ''
-      if [[ "$1x" == "x" ]]; then
+      if [[ "''${1-x}" == "x" ]]; then
         image="$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
       else
-        image="$1"
+        image="''${1-x}"
       fi
       swww img "$image" || true
       lulezojne plop "$image" || true
