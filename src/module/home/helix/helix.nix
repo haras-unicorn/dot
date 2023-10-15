@@ -299,27 +299,11 @@ in
         "ui.linenr.selected" = "grey2"
         "ui.statusline" = { fg = "fg" }
         "ui.statusline.inactive" = { fg = "grey0", bg = "bg1" }
-        "ui.statusline.normal" = {
-         fg = "bg0",
-         bg = "statusline1",
-         modifiers = [ "bold" ] 
-        }
-        "ui.statusline.insert" = {
-          fg = "bg0",
-          bg = "statusline2",
-          modifiers = [ "bold" ]
-        }
-        "ui.statusline.select" = {
-          fg = "bg0",
-          bg = "blue",
-          modifiers = ["bold"]
-        }
+        "ui.statusline.normal" = { fg = "bg0", bg = "statusline1", modifiers = [ "bold" ] }
+        "ui.statusline.insert" = { fg = "bg0", bg = "statusline2", modifiers = [ "bold" ] }
+        "ui.statusline.select" = { fg = "bg0", bg = "blue", modifiers = ["bold"] }
         "ui.bufferline" = { fg = "grey2", bg = "bg3" }
-        "ui.bufferline.active" = {
-          fg = "bg0",
-          bg = "statusline1",
-          modifiers = [ "bold" ]
-        }
+        "ui.bufferline.active" = { fg = "bg0", bg = "statusline1", modifiers = [ "bold" ] }
         "ui.popup" = { fg = "grey2", bg = "bg2" }
         "ui.window" = { fg = "bg4", bg = "bg_dim" }
         "ui.help" = { fg = "fg", bg = "bg2" }
