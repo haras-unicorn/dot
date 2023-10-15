@@ -236,7 +236,7 @@ in
         "constant.builtin.boolean" = "purple"
         "constant.numeric" = "purple"
         "constant.character.escape" = "green"
-        "string" = "aqua"
+        "string" = "cyan"
         "string.regexp" = "green"
         "string.special" = "yellow"
         "comment" = { fg = "grey1", modifiers = ["italic"] }
@@ -279,7 +279,7 @@ in
         "markup.link.text" = "purple"
         "markup.quote" = "grey1"
         "markup.raw.inline" = "green"
-        "markup.raw.block" = "aqua"
+        "markup.raw.block" = "cyan"
 
         "diff.plus" = "green"
         "diff.delta" = "blue"
@@ -344,17 +344,17 @@ in
 
         fg = "{{ hex ansi.main.bright_white }}"
 
-        red = "{{ hex ansi.main.bright_red }}"
-        orange = "{{ hex ansi.main.yellow }}"
-        yellow = "{{ hex ansi.main.bright_yellow }}"
-        green = "{{ hex ansi.main.bright_green }}"
-        aqua = "{{ hex ansi.main.bright_cyan }}"
-        blue = "{{ hex ansi.main.bright_blue }}"
-        purple = "{{ hex ansi.main.bright_magenta }}"
+        red = "{{ hex (set-lightness ansi.main.bright_red 0.8) }}"
+        green = "{{ hex (set-lightness ansi.main.bright_green 0.8) }}"
+        blue = "{{ hex (set-lightness ansi.main.bright_blue 0.8) }}"
+        orange = "{{ hex (set-lightness ansi.main.yellow 0.8) }}"
+        yellow = "{{ hex (set-lightness ansi.main.bright_yellow 0.8) }}"
+        cyan = "{{ hex (set-lightness ansi.main.bright_cyan 0.8) }}"
+        purple = "{{ hex (set-lightness ansi.main.bright_magenta 0.8) }}"
 
-        grey0 = "{{ hex ansi.grayscale.8 }}"
-        grey1 = "{{ hex ansi.grayscale.16 }}"
-        grey2 = "{{ hex ansi.grayscale.24 }}"
+        grey0 = "{{ hex ansi.grayscale.12 }}"
+        grey1 = "{{ hex ansi.grayscale.22 }}"
+        grey2 = "{{ hex ansi.grayscale.28 }}"
 
         statusline1 = "#a7c080"
         statusline2 = "#d3c6aa"
