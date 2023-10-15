@@ -10,7 +10,7 @@
   programs.lulezojne.config.plop = [
     {
       template = ''
-        background_opacity 0.6
+        background_opacity 0.5
 
         foreground {{ hex (set-lightness ansi.main.bright_white 0.9) }}
         background {{ hex (set-lightness ansi.main.black 0.1) }}
