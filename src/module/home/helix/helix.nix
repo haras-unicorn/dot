@@ -368,9 +368,9 @@ in
         blue = "{{ hex ansi.main.bright_blue }}"
         purple = "{{ hex ansi.main.bright_magenta }}"
 
-        grey0 = "{{ hex ansi.grayscale[8] }}"
-        grey1 = "{{ hex ansi.grayscale[16] }}"
-        grey2 = "{{ hex ansi.grayscale[24] }}"
+        grey0 = "{{ hex (ansi.grayscale[8]) }}"
+        grey1 = "{{ hex (ansi.grayscale[16]) }}"
+        grey2 = "{{ hex (ansi.grayscale[24]) }}"
 
         statusline1 = "#a7c080"
         statusline2 = "#d3c6aa"
