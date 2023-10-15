@@ -1,27 +1,27 @@
 { self, pkgs, ... }:
 
 let
-  swww-lulezojne = pkgs.writeShellApplication {
-    name = "swww-lulezojne";
+  wallpaper = pkgs.writeShellApplication {
+    name = "wallpaper";
     runtimeInputs = [ pkgs.swww ];
     text = ''
       image="$(find "${self}/assets/wallpapers" -type f | shuf -n 1)"
-      swww img "$image"
-      lulezojne plop "$image"
+      swww img "$image" || true
+      lulezojne plop "$image" || true
     '';
   };
 in
 {
   home.packages = with pkgs; [
     swww
-    swww-lulezojne
+    wallpaper
   ];
 
   programs.lulezojne.enable = true;
 
   wayland.windowManager.hyprland.extraConfig = ''
     exec-once = ${pkgs.swww}/bin/swww init
-    exec = ${swww-lulezojne}/bin/swww-lulezojne
+    exec = ${wallpaper}/bin/wallpaper
 
     misc {
       disable_hyprland_logo = true
