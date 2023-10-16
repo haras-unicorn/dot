@@ -13,5 +13,6 @@
     "${self}/src/module/home/grim/grim.nix"
     "${self}/src/module/home/brightnessctl/brightnessctl.nix"
     "${self}/src/module/home/playerctl/playerctl.nix"
+    "${self}/src/module/home/miraclecast/miraclecast.nix"
   ];
 }
