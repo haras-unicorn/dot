@@ -1,9 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   home.packages = with pkgs; [
     fastfetch
     mommy
+    vivid
   ];
 
   programs.nushell.enable = true;
@@ -31,4 +32,15 @@
   programs.zoxide.enableNushellIntegration = true;
 
   xdg.configFile."fastfetch/config.jsonc".source = ./fastfetch.json;
+
+  programs.lulezojne.config.plop = [
+    {
+      template = builtins.readFile ./ls-colors.yml.hbs;
+      "in" = "${config.xdg.configHome}/vivid/themes/lulezojne.yml";
+      "then" = {
+        command = "echo";
+        args = [ "Ye!" ];
+      };
+    }
+  ];
 }
