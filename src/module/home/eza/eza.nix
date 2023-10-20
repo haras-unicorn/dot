@@ -15,5 +15,7 @@
     "--icons"
     "--group"
     "--header"
+    "--icons"
+    "--git"
   ];
 }
