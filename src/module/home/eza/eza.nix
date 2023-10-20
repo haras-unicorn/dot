@@ -1,13 +1,7 @@
 { pkgs, config, ... }:
 
 {
-  programs.nushell.shellAliases = {
-    la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
-    tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
-  };
-
   programs.eza.enable = true;
-
   programs.eza.extraOptions = [
     "--all"
     "--long"
@@ -19,4 +13,11 @@
     "--icons"
     "--git"
   ];
+
+  # TODO: remove when https://github.com/nix-community/home-manager/pull/4590
+  programs.nushell.shellAliases = {
+    la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
+    tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
+  };
+
 }
