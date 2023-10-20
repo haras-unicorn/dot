@@ -1,10 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
-    fastfetch
     mommy
-    vivid
   ];
 
   programs.nushell.enable = true;
@@ -13,7 +11,6 @@
     PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
     PROMPT_INDICATOR_VI_NORMAL = "' '";
     PROMPT_COMMAND_RIGHT = "{ || ${pkgs.mommy}/bin/mommy -1 -s $env.LAST_EXIT_CODE }";
-    LS_COLORS = "(vivid generate lulezojne | str trim)";
   };
 
   programs.nushell.shellAliases = {
@@ -23,22 +20,13 @@
     yas = "yes";
   };
 
-  programs.nushell.configFile.source = ./config.nu;
+  programs.nushell.configFile.text = ''
+    ${builtins.readFile ./config.nu}
+  '';
 
   programs.direnv.enable = true;
-  programs.direnv.enableNushellIntegration = true;
   programs.direnv.nix-direnv.enable = true;
-
-  programs.starship.enableNushellIntegration = true;
-  programs.zoxide.enableNushellIntegration = true;
+  programs.direnv.enableNushellIntegration = true;
 
   xdg.configFile."fastfetch/config.jsonc".source = ./fastfetch.json;
-
-  # TODO: https://github.com/sharkdp/vivid/issues/116
-  programs.lulezojne.config.plop = [
-    {
-      template = builtins.readFile ./ls-colors.yml.hbs;
-      "in" = "${config.xdg.configHome}/vivid/themes/lulezojne.yml";
-    }
-  ];
 }

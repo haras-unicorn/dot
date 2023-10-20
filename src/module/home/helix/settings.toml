@@ -1,0 +1,17 @@
+theme = "lulezojne"
+
+[editor]
+true-color = true
+scrolloff = 999
+auto-save = true
+rulers = []
+gutters = ["diagnostics", "spacer", "diff"]
+file-picker = { hidden = false }
+
+[statusline]
+left = ["spinner", "diagnostics", "workspace-diagnostics"]
+center = []
+right = ["file-base-name", "position"]
+
+lsp = { display-inlay-hints = true }
+cursor-shape = { normal = "block", insert = "bar", select = "underline" }

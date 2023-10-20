@@ -2,5 +2,7 @@
 
 {
   programs.starship.enable = true;
-  xdg.configFile."starship.toml".source = ./starship.toml;
+  programs.starship.settings = builtins.fromTOML (builtins.readFile ./starship.toml);
+
+  programs.starship.enableNushellIntegration = true;
 }

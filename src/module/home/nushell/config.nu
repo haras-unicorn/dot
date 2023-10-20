@@ -11,5 +11,3 @@ $env.config = {
     mode: with_love
   }
 }
-
-# fastfetch
