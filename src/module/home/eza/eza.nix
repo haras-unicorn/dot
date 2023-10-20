@@ -9,7 +9,7 @@
   programs.eza.enable = true;
   programs.eza.extraOptions = [
     "--all"
-    "--list"
+    "--long"
     "--color=always"
     "--group-directories-first"
     "--icons"
