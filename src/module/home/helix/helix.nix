@@ -108,16 +108,18 @@ in
   ];
 
   wayland.windowManager.hyprland.extraConfig = ''
-    env = VISUAL, hx
-    env = EDITOR, hx
+    env = VISUAL, ${pkgs.helix}/bin/hx
+    env = EDITOR, ${pkgs.helix}/bin/hx
   '';
 
-  programs.nushell.extraEnv = ''
-    $env.VISUAL = hx;
-    $env.EDITOR = hx;
-    
-    alias sis = hx;
-  '';
+  programs.nushell.environmentVariables = {
+    VISUAL = "${pkgs.helix}/bin/hx";
+    EDITOR = "${pkgs.helix}/bin/hx";
+  };
+
+  programs.nushell.shellAliases = {
+    sis = "${pkgs.helix}/bin/hx";
+  };
 
   programs.helix.enable = true;
   programs.helix.languages = {

@@ -1,9 +1,9 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
-  programs.nushell.extraEnv = ''
-    alias la = exa;
-  '';
+  programs.nushell.shellAliases = {
+    la = "${pkgs.eza}/bin/eza";
+  };
 
   programs.eza.enable = true;
   programs.eza.extraOptions = [

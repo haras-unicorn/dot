@@ -5,14 +5,10 @@
     delta
   ];
 
-  # home.shellAliases = {
-  #   bruh = "git";
-  #   lg = "lazygit";
-  # };
-  programs.nushell.extraEnv = ''
-    alias rawdog = git;
-    alias bruh = lazygit;
-  '';
+  programs.nushell.shellAliases = {
+    rawdog = "${pkgs.git}/bin/git";
+    bruh = "${pkgs.lazygit}/bin/lazygit";
+  };
 
   programs.git.enable = true;
   programs.git.delta.enable = true;
@@ -26,7 +22,7 @@
     push.followTags = true;
     rerere.enabled = true;
     merge.tool = "meld";
-    "mergetool \"meld\"".cmd = ''meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
+    "mergetool \"meld\"".cmd = ''${pkgs.meld}/bin/meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
     color.ui = "auto";
   };
 
@@ -38,7 +34,7 @@
       showIcons = true;
       paging = {
         colorArg = "always";
-        pager = "delta --dark --paging=never";
+        pager = "${pkgs.delta}/bin/delta --dark --paging=never";
       };
     };
   };

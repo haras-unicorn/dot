@@ -6,10 +6,6 @@
     mommy
   ];
 
-  programs.direnv.enable = true;
-  programs.direnv.enableNushellIntegration = true;
-  programs.direnv.nix-direnv.enable = true;
-
   programs.nushell.enable = true;
 
   programs.nushell.environmentVariables = {
@@ -18,7 +14,18 @@
     PROMPT_COMMAND_RIGHT = "{ || mommy -1 -s $env.LAST_EXIT_CODE }";
   };
 
-  programs.nushell.extraConfig = builtins.readFile ./config.nu;
+  programs.nushell.shellAliases = {
+    pls = "sudo";
+    rm = "rm -i";
+    mv = "mv -i";
+    yas = "yes";
+  };
+
+  programs.nushell.configFile.source = ./config.nu;
+
+  programs.direnv.enable = true;
+  programs.direnv.enableNushellIntegration = true;
+  programs.direnv.nix-direnv.enable = true;
 
   programs.starship.enableNushellIntegration = true;
   programs.zoxide.enableNushellIntegration = true;

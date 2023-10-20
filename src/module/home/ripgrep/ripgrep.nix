@@ -1,9 +1,9 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
-  programs.nushell.extraEnv = ''
-    alias grep = rg;
-  '';
+  programs.nushell.shellAliases = {
+    grep = "${pkgs.ripgrep}/bin/rg";
+  };
 
   programs.ripgrep.enable = true;
   programs.ripgrep.arguments = [
