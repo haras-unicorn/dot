@@ -2,15 +2,11 @@
 
 {
   programs.nushell.shellAliases = {
-    la = "${pkgs.eza}/bin/eza";
-    tree = "${pkgs.eza}/bin/eza --tree";
+    la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
+    tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
   };
 
   programs.eza.enable = true;
-
-  programs.nushell.shellAliases = {
-    eza = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
-  };
 
   programs.eza.extraOptions = [
     "--all"
