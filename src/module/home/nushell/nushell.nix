@@ -16,10 +16,7 @@
     $env.PATH = $"${config.home.homeDirectory}/bin:($env.PATH)"
     $env.PATH = $"bin:($env.PATH)"
 
-    alias pls = sudo;
-    alias rm = rm -i;
-    alias mv = mv -i;
-    alias yas = yes;
+    $env.PROMPT_COMMAND_RIGHT = {|| mommy -1 -s $env.LAST_EXIT_CODE }
   '';
   programs.nushell.extraConfig = ''
     $env.config = {
@@ -42,7 +39,10 @@
       }
     }
 
-    $env.PROMPT_COMMAND_RIGHT = {|| mommy -1 -s $env.LAST_EXIT_CODE }
+    alias pls = sudo;
+    alias rm = rm -i;
+    alias mv = mv -i;
+    alias yas = yes;
 
     # fastfetch
   '';
