@@ -11,6 +11,7 @@
     "${self}/src/module/home/vivid/vivid.nix"
     "${self}/src/module/home/fastfetch/fastfetch.nix"
     "${self}/src/module/home/mommy/mommy.nix"
+    "${self}/src/module/home/direnv/direnv.nix"
     "${self}/src/module/home/starship/starship.nix"
     "${self}/src/module/home/zoxide/zoxide.nix"
     "${self}/src/module/home/bat/bat.nix"

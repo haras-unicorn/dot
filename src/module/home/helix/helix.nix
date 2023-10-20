@@ -192,6 +192,7 @@ in
       }
     ];
   };
+
   programs.helix.settings = builtins.fromTOML (builtins.readFile ./settings.toml);
 
   programs.lulezojne.config.plop = [
