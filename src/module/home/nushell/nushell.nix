@@ -11,7 +11,7 @@
   programs.nushell.environmentVariables = {
     PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
     PROMPT_INDICATOR_VI_NORMAL = "' '";
-    PROMPT_COMMAND_RIGHT = "{ || mommy -1 -s $env.LAST_EXIT_CODE }";
+    PROMPT_COMMAND_RIGHT = "{ || ${pkgs.mommy}/bin/mommy -1 -s $env.LAST_EXIT_CODE }";
   };
 
   programs.nushell.shellAliases = {
