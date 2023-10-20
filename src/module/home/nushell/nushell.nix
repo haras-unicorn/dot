@@ -3,6 +3,7 @@
 {
   home.packages = with pkgs; [
     fastfetch
+    mommy
   ];
 
   programs.direnv.enable = true;
@@ -35,7 +36,13 @@
           PWD: { || direnv export json | from json | default {} | load-env }
         }
       }
+
+      table: {
+        mode: with_love
+      }
     }
+
+    $env.PROMPT_COMMAND_RIGHT = {|| mommy -1 -s $env.LAST_EXIT_CODE }
 
     # fastfetch
   '';
