@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   programs.nushell.shellAliases = {
@@ -7,6 +7,11 @@
   };
 
   programs.eza.enable = true;
+
+  programs.nushell.shellAliases = {
+    eza = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
+  };
+
   programs.eza.extraOptions = [
     "--all"
     "--long"

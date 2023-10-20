@@ -114,7 +114,7 @@
 
                         networking.hostName = meta.hostname;
 
-                        system.stateVersion = "23.11";
+                        system.stateVersion = "23.05";
                       })
                       "${hosts}/${host}/hardware-configuration.nix"
                       "${hosts}/${host}/configuration.nix"
@@ -145,7 +145,7 @@
                               xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
                               home.username = "${username}";
                               home.homeDirectory = "/home/${username}";
-                              home.stateVersion = "23.11";
+                              home.stateVersion = "23.05";
                               imports = [
                                 "${hosts}/${host}/home.nix"
                               ];
