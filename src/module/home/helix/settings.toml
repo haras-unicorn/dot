@@ -7,11 +7,14 @@ auto-save = true
 rulers = []
 gutters = ["diagnostics", "spacer", "diff"]
 file-picker = { hidden = false }
+lsp = { display-inlay-hints = true }
 
-[statusline]
+[editor.statusline]
 left = ["spinner", "diagnostics", "workspace-diagnostics"]
 center = []
 right = ["file-base-name", "position"]
 
-lsp = { display-inlay-hints = true }
-cursor-shape = { normal = "block", insert = "bar", select = "underline" }
+[editor.cursor-shape]
+normal = "block"
+insert = "bar"
+select = "underline"
