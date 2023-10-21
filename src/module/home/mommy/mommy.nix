@@ -5,7 +5,8 @@
     mommy
   ];
 
-  programs.nushell.environmentVariables = {
-    PROMPT_COMMAND_RIGHT = "{ || ${pkgs.mommy}/bin/mommy -1 -s $env.LAST_EXIT_CODE }";
-  };
+  # TODO: fix
+  programs.nushell.loginFile.text = ''
+    $env.PROMPT_COMMAND_RIGHT = { || ${pkgs.mommy}/bin/mommy -1 -s $env.LAST_EXIT_CODE }
+  '';
 }
