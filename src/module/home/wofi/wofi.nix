@@ -11,7 +11,7 @@
 
   xdg.configFile."keepmenu/config.ini".text = ''
     [dmenu]
-    dmenu_command = ${pkgs.wofi}/bin/wofi
+    dmenu_command = ${pkgs.wofi}/bin/wofi --prompt "Be careful!"
     pinentry = ${pkgs."${gnupg.package}"}/bin/${gnupg.bin}
     title_path = False
 
@@ -26,6 +26,10 @@
   '';
 
   programs.wofi.enable = true;
+
+  programs.wofi.settings = {
+    allow_markup = true;
+  };
 
   programs.wofi.style = ''
     @import "${config.xdg.configHome}/wofi/colors.css";
@@ -62,7 +66,7 @@
   ];
 
   wayland.windowManager.hyprland.extraConfig = ''
-    bind = super, return, exec, ${pkgs.wofi}/bin/wofi --show drun
-    bind = super, k, exec, ${pkgs.keepmenu}/bin/keepmenu
+    bind = super, return, exec, ${pkgs.wofi}/bin/wofi --show drun --prompt "Yes, darling?"
+    bind = super, p, exec, ${pkgs.keepmenu}/bin/keepmenu
   '';
 }

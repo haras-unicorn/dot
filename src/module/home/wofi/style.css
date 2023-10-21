@@ -1,0 +1,81 @@
+/* TODO: font */
+
+* {
+  font-family: 'JetBrains Mono Nerd Font', monospace;
+  font-size: 14px;
+}
+
+window {
+  margin: 0px;
+  padding: 10px;
+  border: 3px solid @bright-green;
+  border-radius: 7px;
+  background-color: @background;
+  animation: slideIn 0.5s ease-in-out both;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+#inner-box {
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  background-color: @background;
+  animation: fadeIn 0.5s ease-in-out both;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+#outer-box {
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  background-color: @background;
+}
+
+#scroll {
+  margin: 0px;
+  padding: 10px;
+  border: none;
+}
+
+#input {
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  color: @bright-yellow;
+  background-color: @background;
+  animation: fadeIn 0.5s ease-in-out both;
+}
+
+#text {
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  color: @bright-cyan;
+  animation: fadeIn 0.5s ease-in-out both;
+}
+
+#entry:selected {
+  background-color: @bright-magenta;
+}
+
+#entry:selected #text {
+  color: @background;
+}
