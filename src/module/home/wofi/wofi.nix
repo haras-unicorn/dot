@@ -1,6 +1,10 @@
 { pkgs, config, ... }:
 
 {
+  home.packages = with pkgs; [
+    keepmenu
+  ];
+
   programs.wofi.enable = true;
 
   wayland.windowManager.hyprland.extraConfig = ''
