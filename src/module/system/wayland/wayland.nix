@@ -18,7 +18,6 @@
     egl-wayland
     wl-clipboard
     wev
-    gtklock
     # TODO: these no worky
     # sweet
     # beauty-line-icon-theme

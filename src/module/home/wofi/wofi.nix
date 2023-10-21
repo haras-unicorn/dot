@@ -3,13 +3,27 @@
 {
   home.packages = with pkgs; [
     keepmenu
+    pinentry-gtk2
+    wtype
   ];
 
-  programs.wofi.enable = true;
+  xdg.configFile."keepmenu/config.ini".text = ''
+    [dmenu]
+    dmenu_command = ${pkgs.wofi}/bin/wofi
+    pinentry = ${pkgs.pinentry-gtk2}/bin/pinentry-gtk-2
+    title_path = False
 
-  wayland.windowManager.hyprland.extraConfig = ''
-    bind = super, return, exec, ${pkgs.wofi}/bin/wofi --show drun
+    [dmenu_passphrase]
+    obscure = True
+
+    [database]
+    database_1 = ~/sync/personal/security/keys.kdbx
+    type_library = wtype
+    pw_cache_period_min = 1
+    autotype_default = {USERNAME}{TAB}{PASSWORD}
   '';
+
+  programs.wofi.enable = true;
 
   programs.wofi.style = ''
     @import "${config.xdg.configHome}/wofi/colors.css";
@@ -44,4 +58,9 @@
       "in" = "${config.xdg.configHome}/wofi/colors.css";
     }
   ];
+
+  wayland.windowManager.hyprland.extraConfig = ''
+    bind = super, return, exec, ${pkgs.wofi}/bin/wofi --show drun
+    bind = super, k, exec, ${pkgs.keepmenu}/bin/keepmenu
+  '';
 }
