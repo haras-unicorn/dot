@@ -1,0 +1,32 @@
+* {
+  background-image: none;
+}
+
+window {
+  background-color: @background;
+}
+
+button {
+  background-color: @black;
+  color: @yellow;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 8px;
+  border-color: @cyan;
+  margin: 4px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25%;
+}
+
+
+button:focus,
+button:active,
+button:hover {
+  border-color: @magenta;
+  outline-style: none;
+}
+
+label {
+  color: @foreground;
+}
