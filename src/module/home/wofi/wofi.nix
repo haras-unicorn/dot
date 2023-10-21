@@ -1,5 +1,7 @@
 { pkgs, config, gnupg, ... }:
 
+# TODO: db location?
+
 {
   home.packages = with pkgs; [
     keepmenu
