@@ -1,17 +1,12 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
     mommy
   ];
 
-  # TODO: better starship integration - this makes sure mommy is set after starship sets its things
+  # TODO: somehow make sure this gets added in after starship?
   programs.nushell.extraConfig = ''
-    if not MOMMY_SOURCE in $env {
-      $env.MOMMY_SOURCE = true
-      source "${config.xdg.configHome}/nushell/config.nu"
-      $env.PROMPT_COMMAND_RIGHT = { || ${pkgs.mommy}/bin/mommy -1 -s $env.LAST_EXIT_CODE }
-      exit 0
-    }
+    $env.PROMPT_COMMAND_RIGHT = { || ${pkgs.mommy}/bin/mommy -1 -s $env.LAST_EXIT_CODE }
   '';
 }
