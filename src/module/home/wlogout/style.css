@@ -17,14 +17,16 @@ button {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 25%;
+  outline-style: none;
 }
 
-
-button:focus,
-button:active,
 button:hover {
   border-color: @magenta;
-  outline-style: none;
+}
+
+button:active,
+button:focus {
+  border-color: @red;
 }
 
 label {
