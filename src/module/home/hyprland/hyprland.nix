@@ -1,4 +1,4 @@
-{ hardware, ... }:
+{ hardware, config, ... }:
 
 {
   wayland.windowManager.hyprland.enable = true;
@@ -9,5 +9,14 @@
     monitor = ${hardware.mainMonitor}, highrr, auto, 1
   
     ${builtins.readFile ./hyprland.conf}
+
+    source = ${config.xdg.configHome}/hypr/colors.conf
   '';
+
+  programs.lulezojne.config.plop = [
+    {
+      template = builtins.readFile ./colors.conf;
+      "in" = "${config.xdg.configHome}/hypr/colors.conf";
+    }
+  ];
 }
