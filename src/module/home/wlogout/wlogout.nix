@@ -83,6 +83,7 @@
         @define-color foreground {{ hex ansi.main.bright_white }};
 
         @define-color black {{ rgba ansi.main.black }};
+        @define-color brey {{ rgba ansi.main.bright_black }};
         @define-color white {{ rgba ansi.main.white }};
 
         @define-color red {{ hex ansi.main.red }};

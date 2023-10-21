@@ -7,7 +7,7 @@ window {
 }
 
 button {
-  background-color: @black;
+  background-color: @grey;
   color: @yellow;
   border-style: solid;
   border-width: 2px;
