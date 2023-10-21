@@ -56,6 +56,7 @@
                   groups = [ ];
                   shell = "nushell";
                   hardware = { };
+                  pinentry = { };
                 } // (if builtins.pathExists "${hosts}/${host}/meta.nix"
                 then builtins.import "${hosts}/${host}/meta.nix"
                 else { });
@@ -66,6 +67,7 @@
                 nixos-hardware = nixos-hardware;
                 sweet-theme = sweet-theme;
                 hardware = meta.hardware;
+                gnupg = meta.gnupg;
                 nixified-ai = nixified-ai;
               };
             in

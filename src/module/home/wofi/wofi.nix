@@ -1,16 +1,16 @@
-{ pkgs, config, ... }:
+{ pkgs, config, gnupg, ... }:
 
 {
   home.packages = with pkgs; [
     keepmenu
-    pinentry-gtk2
     wtype
+    pkgs."${gnupg.package}"
   ];
 
   xdg.configFile."keepmenu/config.ini".text = ''
     [dmenu]
     dmenu_command = ${pkgs.wofi}/bin/wofi
-    pinentry = ${pkgs.pinentry-gtk2}/bin/pinentry-gtk-2
+    pinentry = ${pkgs."${gnupg.package}"}/bin/${gnupg.bin}
     title_path = False
 
     [dmenu_passphrase]

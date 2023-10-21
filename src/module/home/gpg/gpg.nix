@@ -1,11 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, gnupg, ... }:
 
 {
-  home.packages = with pkgs; [
-    pinentry
+  home.packages = [
+    pkgs."${gnupg.package}"
   ];
 
   programs.gpg.enable = true;
   services.gpg-agent.enable = true;
-  services.gpg-agent.pinentryFlavor = "tty";
+  services.gpg-agent.pinentryFlavor = "${gnupg.flavor}";
 }

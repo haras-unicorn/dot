@@ -7,4 +7,9 @@
     networkInterface = "enp27s0";
     hwmon = "/sys/class/hwmon/hwmon1/temp1_input";
   };
+  gnupg = {
+    flavor = "gtk2";
+    package = "pinentry-gtk2";
+    bin = "pinentry-gtk-2";
+  };
 }
