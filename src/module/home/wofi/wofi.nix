@@ -17,7 +17,7 @@
     obscure = True
 
     [database]
-    database_1 = ~/sync/personal/security/keys.kdbx
+    database_1 = ~/sync/security/keys.kdbx
     type_library = wtype
     pw_cache_period_min = 1
     autotype_default = {USERNAME}{TAB}{PASSWORD}
