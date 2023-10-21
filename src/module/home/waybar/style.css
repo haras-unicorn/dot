@@ -88,6 +88,6 @@
 }
 
 #clock {
-  color: @bright-foreground;
+  color: @bright-cyan;
   margin-left: 8px;
 }
