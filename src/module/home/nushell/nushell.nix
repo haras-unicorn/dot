@@ -15,7 +15,5 @@
     yas = "yes";
   };
 
-  programs.nushell.configFile.text = ''
-    ${builtins.readFile ./config.nu}
-  '';
+  programs.nushell.configFile.source = ./config.nu;
 }
