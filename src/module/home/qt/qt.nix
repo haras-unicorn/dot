@@ -1,6 +1,10 @@
 { pkgs, sweet-theme, ... }:
 
 {
+  home.packages = with pkgs; [
+    lxappearance
+  ];
+
   qt.enable = true;
   qt.platformTheme = "kde";
   qt.style.name = "kvantum";
