@@ -1,10 +1,6 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    lxappearance
-  ];
-
   gtk.enable = true;
   gtk.theme.name = "Sweet-Dark";
   gtk.theme.package = pkgs.sweet;
