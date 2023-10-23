@@ -3,7 +3,7 @@
 # NOTE: https://github.com/musnix/musnix
 
 {
-  boot.kernelPackages = pkgs.linux-rt_latest;
+  boot.kernelPackages = pkgs.linuxPackages-rt_latest;
   boot.kernel.sysctl = { "vm.swappiness" = 10; };
   boot.kernelParams = [ "threadirq" ];
   boot.postBootCommands = ''
