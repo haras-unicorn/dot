@@ -13,6 +13,7 @@
     "${self}/src/module/home/keepassxc/keepassxc.nix"
     "${self}/src/module/home/ferdium/ferdium.nix"
     "${self}/src/module/home/code/code.nix"
+    "${self}/src/module/home/lmms/lmms.nix"
   ];
 
   home.packages = with pkgs; [
