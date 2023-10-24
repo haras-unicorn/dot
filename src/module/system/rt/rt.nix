@@ -4,7 +4,7 @@
 
 {
   # FIXME: Failed PREEMPT_RT sanity check. Bailing out!
-  boot.kernelPackages = pkgs.linuxPackages-zen;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernel.sysctl = { "vm.swappiness" = 10; };
   boot.kernelParams = [ "threadirq" ];
   boot.postBootCommands = ''
