@@ -3,7 +3,8 @@
 # NOTE: https://github.com/musnix/musnix
 
 {
-  boot.kernelPackages = pkgs.linuxPackages-rt_latest;
+  # FIXME: Failed PREEMPT_RT sanity check. Bailing out!
+  boot.kernelPackages = pkgs.linuxPackages-zen;
   boot.kernel.sysctl = { "vm.swappiness" = 10; };
   boot.kernelParams = [ "threadirq" ];
   boot.postBootCommands = ''
