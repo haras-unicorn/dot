@@ -15,4 +15,12 @@
     "${self}/src/module/home/playerctl/playerctl.nix"
     "${self}/src/module/home/miraclecast/miraclecast.nix"
   ];
+
+  # NOTE: needed for tray items to work properly
+  systemd.user.targets.tray = {
+    Unit = {
+      Description = "Home Manager System Tray";
+      Requires = [ "graphical-session-pre.target" ];
+    };
+  };
 }
