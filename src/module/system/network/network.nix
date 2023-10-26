@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   networking.nftables.enable = true;
@@ -9,5 +9,10 @@
     8384 # syncthing
     5000 # aspnetcore http
     5001 # aspnetcore https
+  ];
+
+  environment.systemPackages = with pkgs; [
+    openconnect_openssl
+    networkmanager-openconnect
   ];
 }
