@@ -18,5 +18,6 @@
     openconnect_openssl
     networkmanager-openconnect
     openfortivpn
+    networkmanager-fortisslvpn
   ];
 }
