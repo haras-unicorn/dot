@@ -15,5 +15,6 @@
     ppp
     openconnect_openssl
     networkmanager-openconnect
+    openfortivpn
   ];
 }
