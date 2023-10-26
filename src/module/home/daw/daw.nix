@@ -18,5 +18,6 @@
     zynaddsubfx
     yoshimi
     helm
+    geonkick
   ];
 }
