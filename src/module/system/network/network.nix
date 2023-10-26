@@ -11,6 +11,8 @@
     5001 # aspnetcore https
   ];
 
+  # NOTE: https://github.com/adrienverge/openfortivpn/issues/1076
+  environment.etc."ppp/options".text = "ipcp-accept-remote";
   environment.systemPackages = with pkgs; [
     ppp
     openconnect_openssl
