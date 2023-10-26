@@ -12,6 +12,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    ppp
     openconnect_openssl
     networkmanager-openconnect
   ];
