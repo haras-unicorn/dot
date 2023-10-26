@@ -24,6 +24,7 @@
     pinta
     feh
     dbeaver
+    angryipscanner
   ];
 
   services.udiskie.enable = true;
