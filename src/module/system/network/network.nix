@@ -12,7 +12,10 @@
   ];
 
   # NOTE: https://github.com/adrienverge/openfortivpn/issues/1076
-  environment.etc."ppp/options".text = "ipcp-accept-remote";
+  environment.etc."ppp/options".text = ''
+    ipcp-accept-remote
+    usepeerdns
+  '';
   environment.systemPackages = with pkgs; [
     ppp
     openconnect_openssl
