@@ -19,5 +19,6 @@
     yoshimi
     helm
     geonkick
+    avldrums-lv2
   ];
 }
