@@ -11,10 +11,9 @@
     5001 # aspnetcore https
   ];
 
-  # NOTE: https://github.com/adrienverge/openfortivpn/issues/1076
+  # NOTE: https://github.com/NixOS/nixpkgs/issues/231038
   environment.etc."ppp/options".text = ''
     ipcp-accept-remote
-    usepeerdns
   '';
   environment.systemPackages = with pkgs; [
     ppp
