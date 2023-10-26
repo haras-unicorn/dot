@@ -14,6 +14,7 @@
     "${self}/src/module/home/brightnessctl/brightnessctl.nix"
     "${self}/src/module/home/playerctl/playerctl.nix"
     "${self}/src/module/home/miraclecast/miraclecast.nix"
+    "${self}/src/module/home/xdg/xdg.nix"
   ];
 
   # NOTE: needed for tray items to work properly
