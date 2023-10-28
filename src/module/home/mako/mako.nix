@@ -11,7 +11,7 @@
   programs.lulezojne.config.plop = [
     {
       template = ''
-        background-color={{ hexa (set-alpha ansi.main.black 0.5) }}
+        background-color={{ hexa ansi.main.black }}
         text-color={{ hex ansi.main.bright_white }}
         border-color={{ hex ansi.main.bright_yellow }}
         progress-color={{ hex ansi.main.bright_green }}
