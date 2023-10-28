@@ -20,5 +20,7 @@
     helm
     geonkick
     wolf-shaper
+    aether-lv2
+    dragonfly-reverb
   ];
 }
