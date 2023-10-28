@@ -11,6 +11,19 @@
   programs.lulezojne.config.plop = [
     {
       template = ''
+        font=JetBrainsMono Nerd Font 16
+        width=512
+        height=256
+
+        margin=32
+        padding=4
+        border-size=2
+        border-radius=4
+        icons=1
+        max-icon-size=128
+        default-timeout=10000
+        anchor=top-center
+
         background-color={{ hexa ansi.main.black }}
         text-color={{ hex ansi.main.bright_white }}
         border-color={{ hex ansi.main.bright_yellow }}
