@@ -16,13 +16,13 @@
         height=256
 
         margin=32
-        padding=4
+        padding=8
         border-size=2
         border-radius=4
         icons=1
         max-icon-size=128
         default-timeout=10000
-        anchor=top-center
+        anchor=bottom-right
 
         background-color={{ hexa ansi.main.black }}
         text-color={{ hex ansi.main.bright_white }}
