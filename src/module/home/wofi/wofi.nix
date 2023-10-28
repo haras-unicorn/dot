@@ -68,5 +68,7 @@
   wayland.windowManager.hyprland.extraConfig = ''
     bind = super, return, exec, ${pkgs.wofi}/bin/wofi --show drun --prompt "Yes, darling?"
     bind = super, p, exec, ${pkgs.keepmenu}/bin/keepmenu
+    bind = super shift, p, exec, ${pkgs.keepmenu}/bin/keepmenu -a "{PASSWORD}"
+    bind = super alt, p, exec, ${pkgs.keepmenu}/bin/keepmenu -a "{TOTP}"
   '';
 }
