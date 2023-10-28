@@ -40,11 +40,11 @@
   programs.lulezojne.config.plop = [
     {
       template = ''
-        @define-color background {{ rgba (set-alpha ansi.main.black 0.7) }};
+        @define-color background {{ rgba ansi.main.black }};
         @define-color foreground {{ hex ansi.main.bright_white }};
 
         @define-color black {{ rgba ansi.main.black }};
-        @define-color brey {{ rgba ansi.main.bright_black }};
+        @define-color gray {{ rgba ansi.main.bright_black }};
         @define-color white {{ rgba ansi.main.white }};
 
         @define-color red {{ hex ansi.main.red }};

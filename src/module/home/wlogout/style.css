@@ -1,5 +1,11 @@
 * {
-  background-image: none;
+  font-family: 'JetBrains Mono Nerd Font', monospace;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0);
+  color: @foreground;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 window {
@@ -7,28 +13,18 @@ window {
 }
 
 button {
-  background-color: @grey;
-  color: @yellow;
-  border-style: solid;
-  border-width: 2px;
+  background-color: @black;
   border-radius: 8px;
-  border-color: @cyan;
   margin: 4px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 25%;
-  outline-style: none;
 }
 
 button:hover {
-  border-color: @magenta;
+  background-color: @magenta;
 }
 
-button:active,
-button:focus {
-  border-color: @red;
-}
-
-label {
-  color: @foreground;
+button:hover label {
+  color: @bright-cyan;
 }

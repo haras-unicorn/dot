@@ -1,35 +1,11 @@
-/* TODO: font */
-
 * {
   font-family: 'JetBrains Mono Nerd Font', monospace;
-  font-size: 14px;
-}
-
-window {
-  margin: 0px;
-  padding: 10px;
-  border: 3px solid @bright-green;
-  border-radius: 7px;
-  background-color: @background;
-  animation: slideIn 0.5s ease-in-out both;
-}
-
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-#inner-box {
-  margin: 5px;
-  padding: 10px;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0);
+  color: @foreground;
   border: none;
-  background-color: @background;
-  animation: fadeIn 0.5s ease-in-out both;
+  margin: 0;
+  padding: 0;
 }
 
 @keyframes fadeIn {
@@ -42,40 +18,42 @@ window {
   }
 }
 
-#outer-box {
-  margin: 5px;
-  padding: 10px;
-  border: none;
+window {
   background-color: @background;
+  padding: 8px;
+  border: 2px solid @bright-green;
+  border-radius: 8px;
+  animation: slideIn 0.5s ease-in-out both;
+}
+
+#inner-box {
+  padding: 4px;
+  border-radius: 8px;
+  animation: slideIn 0.5s ease-in-out both;
+}
+
+#outer-box {
+  padding: 4px;
+  border-radius: 8px;
 }
 
 #scroll {
-  margin: 0px;
-  padding: 10px;
-  border: none;
+  padding: 8px;
 }
 
 #input {
-  margin: 5px;
-  padding: 10px;
-  border: none;
-  color: @bright-yellow;
-  background-color: @background;
+  padding: 4px;
+  margin-left: 8px;
   animation: fadeIn 0.5s ease-in-out both;
 }
 
 #text {
-  margin: 5px;
-  padding: 10px;
+  padding: 4px;
+  margin-left: 8px;
   border: none;
-  color: @bright-cyan;
   animation: fadeIn 0.5s ease-in-out both;
 }
 
-#entry:selected {
-  background-color: @bright-magenta;
-}
-
 #entry:selected #text {
-  color: @background;
+  color: @bright-cyan;
 }
