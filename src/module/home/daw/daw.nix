@@ -19,6 +19,6 @@
     yoshimi
     helm
     geonkick
-    avldrums-lv2
+    wolf-shaper
   ];
 }
