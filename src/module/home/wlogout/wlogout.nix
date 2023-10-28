@@ -50,27 +50,27 @@
     @import "${config.xdg.configHome}/wlogout/colors.css";
 
     #lock {
-      background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"));
+      background-image: image(url("${./lock.png}"));
     }
 
     #logout {
-      background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"));
+      background-image: image(url("${./logout.png}"));
     }
 
     #suspend {
-      background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"));
+      background-image: image(url("${./suspend.png}"));
     }
 
     #hibernate {
-      background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/hibernate.png"));
+      background-image: image(url("${./hibernate.png}"));
     }
 
     #shutdown {
-      background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"));
+      background-image: image(url("${./shutdown.png}"));
     }
 
     #reboot {
-      background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"));
+      background-image: image(url("${./reboot.png}"));
     }
 
     ${builtins.readFile ./style.css}
