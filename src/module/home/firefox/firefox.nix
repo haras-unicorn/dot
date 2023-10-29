@@ -17,7 +17,7 @@
   programs.firefox.profiles = {
     personal = {
       id = 0;
-      name = "Personal";
+      name = "personal";
       isDefault = true;
       extensions = with config.nur.repos.rycee.firefox-addons; [
         ublock-origin
@@ -53,7 +53,7 @@
     };
   };
 
-  xdg.configFile.".mozilla/firefox/personal/user.js".text = ''
+  home.file.".mozilla/firefox/personal/user.js".text = ''
     ${builtins.readFile "${userjs}/user.js"}
 
     ${builtins.readFile ./user.js}
