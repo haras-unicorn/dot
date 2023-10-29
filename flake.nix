@@ -80,7 +80,7 @@
                     system = meta.system;
                     specialArgs = specialArgs;
                     modules = [
-                      { nixpkgs.overlays = [ nur.overlay ]; }
+                      nur.nixosModules.nur
                       ({ pkgs, ... }: {
                         nix.package = pkgs.nixFlakes;
                         nix.extraOptions = "experimental-features = nix-command flakes";
