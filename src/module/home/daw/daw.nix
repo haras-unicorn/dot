@@ -18,6 +18,7 @@
     zynaddsubfx
     yoshimi
     helm
+    vital
     geonkick
     wolf-shaper
     dragonfly-reverb
