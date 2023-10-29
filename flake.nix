@@ -151,7 +151,7 @@
                                     exit 1
                                   fi
 
-                                  sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${host}"
+                                  sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${host}" "$@"
                                 '';
                               };
                             in

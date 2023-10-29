@@ -1,4 +1,4 @@
-{ self, pkgs, shell, ... }:
+{ self, pkgs, ... }:
 
 {
   imports = [
@@ -21,7 +21,7 @@
     "${self}/src/module/home/mommy/mommy.nix"
     "${self}/src/module/home/vivid/vivid.nix"
 
-    "${self}/src/module/home/${shell}/${shell}.nix"
+    "${self}/src/module/home/nushell/nushell.nix"
 
     "${self}/src/module/home/helix/helix.nix"
   ];
