@@ -66,7 +66,6 @@
                 nixos-hardware = nixos-hardware;
                 sweet-theme = sweet-theme;
                 hardware = meta.hardware;
-                shell = meta.shell;
                 gnupg = meta.gnupg;
                 nixified-ai = nixified-ai;
               };
