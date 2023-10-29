@@ -47,6 +47,7 @@
     jq
     yq
     nvtop
+    glxinfo
   ];
 
   home.shellAliases = {
