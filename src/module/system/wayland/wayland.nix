@@ -1,5 +1,5 @@
 { pkgs
-, self
+  # , self
   # , sweet-theme
 , ...
 }:
@@ -34,21 +34,29 @@
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true;
 
-  programs.regreet.enable = true;
-  programs.regreet.settings = {
-    background = {
-      path = "${self}/assets/greeter.png";
-      fit = "Cover";
-    };
-    GTK = {
-      application_prefer_dark_theme = true;
-      # TODO: these no worky
-      # theme_name = "Sweet-Dark";
-      # font_name = "JetBrainsMono Nerd Font";
-      # icon_theme_name = "BeautyLine";
-      # cursor_theme_name = "Numix-Cursor";
+  services.greetd.enable = true;
+  services.greetd.settings = {
+    default_session = {
+      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd Hyprland";
     };
   };
+
+  # NOTE: fails with vulkan driver
+  # programs.regreet.enable = true;
+  # programs.regreet.settings = {
+  #   background = {
+  #     path = "${self}/assets/greeter.png";
+  #     fit = "Cover";
+  #   };
+  #   GTK = {
+  #     application_prefer_dark_theme = true;
+  #     # TODO: these no worky
+  #     # theme_name = "Sweet-Dark";
+  #     # font_name = "JetBrainsMono Nerd Font";
+  #     # icon_theme_name = "BeautyLine";
+  #     # cursor_theme_name = "Numix-Cursor";
+  #   };
+  # };
 
   # NOTE: says it requires xserver
   # services.xserver.displayManager.sddm.enable = true;
