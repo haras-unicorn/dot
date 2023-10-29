@@ -15,6 +15,7 @@
     # "${self}/src/module/home/brave/brave.nix"
     # "${self}/src/module/home/chromium/chromium.nix"
     "${self}/src/module/home/vivaldi/vivaldi.nix"
+    "${self}/src/module/home/librewolf/librewolf.nix"
 
     "${self}/src/module/home/syncthing/syncthing.nix"
     "${self}/src/module/home/keepassxc/keepassxc.nix"
