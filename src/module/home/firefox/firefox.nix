@@ -11,10 +11,10 @@
 
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox-bin;
-  programs.firefox.profilex = {
+  programs.firefox.profiles = {
     personal = {
       id = 0;
-      name = "Default";
+      name = "Personal";
       isDefault = true;
       extensions = with config.nur.repos.rycee.firefox-addons; [
         ublock-origin
