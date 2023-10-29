@@ -1,29 +1,32 @@
 { pkgs, ... }:
 
-let
-  brave = pkgs.symlinkJoin {
-    name = "brave";
-    paths = [ pkgs.brave ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/brave \
-        --append-flags --use-gl=egl \
-        --append-flags --ozone-platform-hint=auto \
-        --append-flags --enable-features=VaapiVideoDecoder \
-        --append-flags --disable-features=UseChromeOSDirectVideoDecoder \
-        --append-flags --enable-flag=ignore-gpu-blocklist \
-        --append-flags --enable-flag=enable-gpu-rasterization \
-        --append-flags --enable-flag=enable-zero-copy
-    '';
-  };
-in
 {
-  home.packages = [
-    brave
+  programs.chromium.enable = true;
+  programs.chromium.package = pkgs.brave;
+  programs.chromium.commandLineArgs = [
+    "--use-gl=egl"
+    "--enable-features=UseOzonePlatform"
+    "--ozone-platform=wayland"
+    "--enable-features=VaapiVideoDecoder"
+    "--disable-features=UseChromeOSDirectVideoDecoder"
+    "--enable-flag=ignore-gpu-blocklist"
+    "--enable-flag=enable-gpu-rasterization"
+    "--enable-flag=enable-zero-copy"
+  ];
+  programs.chromium.dictionaries = with pkgs; [
+    hunspellDictsChromium.en_US
+  ];
+  programs.chromium.extensions = [
+    # dark reader
+    { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
+    # vimium c
+    { id = "hfjbmagddngcpeloejdejnfgbamkjaeg"; }
+    # vimium c new tab
+    { id = "cglpcedifkgalfdklahhcchnjepcckfn"; }
   ];
 
   wayland.windowManager.hyprland.extraConfig = ''
     env = BROWSER, brave
-    bind = super, w, exec, ${brave}/bin/brave 
+    bind = super, w, exec, ${pkgs.brave}/bin/brave
   '';
 }

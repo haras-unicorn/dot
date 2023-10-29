@@ -2,7 +2,7 @@
 
 {
   programs.chromium.enable = true;
-  programs.chromium.package = pkgs.vivaldi;
+  programs.chromium.package = pkgs.ungoogled-chromium;
   programs.chromium.commandLineArgs = [
     "--use-gl=egl"
     "--enable-features=UseOzonePlatform"
@@ -17,6 +17,8 @@
     hunspellDictsChromium.en_US
   ];
   programs.chromium.extensions = [
+    # ublock origin
+    { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
     # dark reader
     { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
     # vimium c
@@ -26,7 +28,7 @@
   ];
 
   wayland.windowManager.hyprland.extraConfig = ''
-    env = BROWSER, vivaldi
-    bind = super, w, exec, ${pkgs.vivaldi}/bin/vivaldi
+    env = BROWSER, chromium
+    bind = super, w, exec, ${pkgs.ungoogled-chromium}/bin/chromium
   '';
 }
