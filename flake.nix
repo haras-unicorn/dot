@@ -26,6 +26,9 @@
     nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
 
     nur.url = "github:nix-community/NUR";
+
+    userjs.url = "github:arkenfox/user.js";
+    userjs.flake = false;
   };
 
   outputs =
@@ -39,6 +42,7 @@
     , lulezojne
     , nixified-ai
     , nur
+    , userjs
     , ...
     }:
     let
@@ -71,6 +75,7 @@
                 hardware = meta.hardware;
                 gnupg = meta.gnupg;
                 nixified-ai = nixified-ai;
+                userjs = userjs;
               };
             in
             nixosConfigurations // {

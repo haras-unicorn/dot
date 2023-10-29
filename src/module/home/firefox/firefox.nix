@@ -1,4 +1,6 @@
-{ pkgs, config, ... }:
+{ pkgs, config, userjs, ... }:
+
+# NOTE: https://github.com/arkenfox/user.js/wiki
 
 {
   home.sessionVariables = {
@@ -11,6 +13,7 @@
 
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox-bin;
+
   programs.firefox.profiles = {
     personal = {
       id = 0;
@@ -19,7 +22,7 @@
       extensions = with config.nur.repos.rycee.firefox-addons; [
         ublock-origin
         darkreader
-        bypass-paywalls-clean
+        vimium-ff
       ];
       search = {
         default = "Google";
@@ -38,7 +41,6 @@
             icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
             definedAliases = [ "@np" ];
           };
-
           "NixOS Wiki" = {
             urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
             iconUpdateURL = "https://nixos.wiki/favicon.png";
@@ -49,4 +51,8 @@
       };
     };
   };
+
+  xdg.configFile.".mozilla/firefox/personal/user.js".text = ''
+    ${builtins.readFile "${userjs}/user.js"}
+  '';
 }
