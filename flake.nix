@@ -24,6 +24,8 @@
 
     nixified-ai.url = "github:nixified-ai/flake";
     nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
+
+    nur.url = "github:nix-community/NUR";
   };
 
   outputs =
@@ -36,6 +38,7 @@
     , sweet-theme
     , lulezojne
     , nixified-ai
+    , nur
     , ...
     }:
     let
@@ -77,6 +80,7 @@
                     system = meta.system;
                     specialArgs = specialArgs;
                     modules = [
+                      { nixpkgs.overlays = [ nur.overlay ]; }
                       ({ pkgs, ... }: {
                         nix.package = pkgs.nixFlakes;
                         nix.extraOptions = "experimental-features = nix-command flakes";
@@ -120,6 +124,22 @@
                       "${hosts}/${host}/hardware-configuration.nix"
                       "${hosts}/${host}/configuration.nix"
                     ]
+                    ++ (if (builtins.pathExists "${hosts}/${host}/secrets.nix") then [
+                      sops-nix.nixosModules.sops
+                      {
+                        sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+                        sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+                        sops.age.generateKey = true;
+                      }
+                      "${hosts}/${host}/secrets.nix"
+                    ] else [ ])
+                    ++ (if meta.wsl then [
+                      nixos-wsl.nixosModules.wsl
+                      {
+                        wsl.enable = true;
+                        wsl.defaultUser = "${meta.username}";
+                      }
+                    ] else [ ])
                     ++ (if (builtins.pathExists "${hosts}/${host}/home.nix") then [
                       ({ pkgs, ... }: {
                         users.users."${username}" = {
@@ -167,22 +187,6 @@
                                 "${hosts}/${host}/home.nix"
                               ];
                             });
-                      }
-                    ] else [ ])
-                    ++ (if (builtins.pathExists "${hosts}/${host}/secrets.nix") then [
-                      sops-nix.nixosModules.sops
-                      {
-                        sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-                        sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-                        sops.age.generateKey = true;
-                      }
-                      "${hosts}/${host}/secrets.nix"
-                    ] else [ ])
-                    ++ (if meta.wsl then [
-                      nixos-wsl.nixosModules.wsl
-                      {
-                        wsl.enable = true;
-                        wsl.defaultUser = "${meta.username}";
                       }
                     ] else [ ]);
                   };
