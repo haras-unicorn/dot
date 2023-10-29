@@ -429,7 +429,8 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nur": "nur",
         "sops-nix": "sops-nix",
-        "sweet-theme": "sweet-theme"
+        "sweet-theme": "sweet-theme",
+        "userjs": "userjs"
       }
     },
     "sops-nix": {
@@ -499,6 +500,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "userjs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1697641173,
+        "narHash": "sha256-YuGEgJ4bSwvlfSgsUR2s6r1L3ZCdD8pvyU+pY4q+DMk=",
+        "owner": "arkenfox",
+        "repo": "user.js",
+        "rev": "35e8def0b1e5ecf1198e7efe41cfe6aa0415b320",
+        "type": "github"
+      },
+      "original": {
+        "owner": "arkenfox",
+        "repo": "user.js",
         "type": "github"
       }
     },

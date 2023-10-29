@@ -22,7 +22,7 @@
       extensions = with config.nur.repos.rycee.firefox-addons; [
         ublock-origin
         darkreader
-        vimium-ff
+        vimium
       ];
       search = {
         default = "Google";
