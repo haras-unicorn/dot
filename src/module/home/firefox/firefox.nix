@@ -54,5 +54,7 @@
 
   xdg.configFile.".mozilla/firefox/personal/user.js".text = ''
     ${builtins.readFile "${userjs}/user.js"}
+
+    ${builtins.readFile ./user.js}
   '';
 }
