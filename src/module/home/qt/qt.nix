@@ -19,7 +19,7 @@
   '';
 
   wayland.windowManager.hyprland.extraConfig = ''
-    env = QT_QPA_PLATFORM,wayland
-    env = QT_STYLE_OVERRIDE,kvantum
+    env = QT_QPA_PLATFORM, wayland
+    env = QT_STYLE_OVERRIDE, kvantum
   '';
 }

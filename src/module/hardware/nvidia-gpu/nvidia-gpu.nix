@@ -1,4 +1,4 @@
-{ pkgs, nixified-ai, ... }:
+{ pkgs, config, nixified-ai, ... }:
 
 let
   invokeai = pkgs.writeShellApplication {
@@ -40,6 +40,7 @@ in
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.nvidiaSettings = true;
   hardware.nvidia.open = true;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.vulkan_beta;
 
   programs.corectrl.enable = true;
   programs.corectrl.gpuOverclock.enable = true;
@@ -63,6 +64,8 @@ in
     VDPAU_DRIVER = "nvidia";
     NVD_BACKEND = "direct";
     GBM_BACKEND = "nvidia-drm";
+    WLR_RENDERER = "vulkan";
+    ENABLE_VKBASALT = "1";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     __GL_GSYNC_ALLOWED = "1";
     __GL_VRR_ALLOWED = "1";

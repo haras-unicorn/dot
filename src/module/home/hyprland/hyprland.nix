@@ -20,6 +20,9 @@ in
   wayland.windowManager.hyprland.enableNvidiaPatches = true;
   wayland.windowManager.hyprland.xwayland.enable = true;
   wayland.windowManager.hyprland.extraConfig = ''
+    env = XDG_CURRENT_DESKTOP, Hyprland
+    env = XDG_SESSION_DESKTOP, Hyprland
+
     monitor = , preferred, auto, 1
     monitor = ${hardware.mainMonitor}, highrr, auto, 1
   
