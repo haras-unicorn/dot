@@ -27,5 +27,6 @@
     synthv1
     padthv1
     drumkv1
+    talentedhack
   ];
 }
