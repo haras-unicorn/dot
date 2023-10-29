@@ -59,7 +59,7 @@ in
     koboldai
   ];
 
-  environment.variables = {
+  environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "nvidia";
     VDPAU_DRIVER = "nvidia";
     NVD_BACKEND = "direct";
