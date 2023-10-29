@@ -10,11 +10,10 @@
     # TODO: wayland ...
     # "${self}/src/module/home/cursor/cursor.nix"
 
-    # TODO: wayland/gpu flags in appropriate places
-    # NOTE: problem is that gpu and wayland/x11 are system wide
+    # TODO: wayland ...
     # "${self}/src/module/home/brave/brave.nix"
     # "${self}/src/module/home/chromium/chromium.nix"
-    "${self}/src/module/home/vivaldi/vivaldi.nix"
+    # "${self}/src/module/home/vivaldi/vivaldi.nix"
 
     # "${self}/src/module/home/librewolf/librewolf.nix"
     "${self}/src/module/home/firefox/firefox.nix"
