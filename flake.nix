@@ -131,7 +131,7 @@
                       })
                       home-manager.nixosModules.home-manager
                       {
-                        # NOTE: it seems docs recommend this but i need it disabled cuz nodejs
+                        # TODO: remove when migrate the dev stuff to repos
                         # home-manager.useGlobalPkgs = true;
                         home-manager.useUserPackages = true;
                         home-manager.extraSpecialArgs = specialArgs;
@@ -139,7 +139,22 @@
                           lulezojne.homeManagerModules.default
                         ];
                         home-manager.users."${username}" =
-                          ({ ... }:
+                          ({ pkgs, ... }:
+                            let
+                              # TODO: figure out a cleaner way to do this
+                              rebuild = pkgs.writeShellApplication {
+                                name = "rebuild";
+                                runtimeInputs = [ ];
+                                text = ''
+                                  if [[ ! -d "/home/${username}/src/dot" ]]; then
+                                    echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
+                                    exit 1
+                                  fi
+
+                                  sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${host}"
+                                '';
+                              };
+                            in
                             {
                               programs.home-manager.enable = true;
                               nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
@@ -147,6 +162,7 @@
                               home.username = "${username}";
                               home.homeDirectory = "/home/${username}";
                               home.stateVersion = "23.11";
+                              home.packages = [ rebuild ];
                               imports = [
                                 "${hosts}/${host}/home.nix"
                               ];
