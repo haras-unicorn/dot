@@ -19,12 +19,9 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    grim
-    screenshot
-  ];
-
   wayland.windowManager.hyprland.extraConfig = ''
     bind = , Print, exec, ${screenshot}/bin/screenshot
   '';
+
+  home.packages = with pkgs; [ grim screenshot ];
 }

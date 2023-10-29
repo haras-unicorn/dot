@@ -1,29 +1,9 @@
 { hardware, pkgs, config, ... }:
 
 {
-  programs.waybar.enable = true;
-  programs.waybar.settings = [
-    (pkgs.lib.attrsets.recursiveUpdate
-      (builtins.fromJSON (builtins.readFile ./config.json))
-      {
-        output = hardware.mainMonitor;
-        network = { interface = hardware.networkInterface; };
-        tray = {
-          icon-size = 14;
-        };
-        temperature = {
-          hwmon-path = hardware.hwmon;
-        };
-      })
-  ];
-  programs.waybar.style = ''
-    @import "${config.xdg.configHome}/waybar/colors.css";
-
-    #waybar {
-      font-size: 14px;
-    }
-
-    ${builtins.readFile ./style.css}
+  # TODO: systemd
+  wayland.windowManager.hyprland.extraConfig = ''
+    exec-once = ${pkgs.waybar}/bin/waybar
   '';
 
   programs.lulezojne.config = {
@@ -59,7 +39,28 @@
     ];
   };
 
-  wayland.windowManager.hyprland.extraConfig = ''
-    exec-once = ${pkgs.waybar}/bin/waybar
+  programs.waybar.enable = true;
+  programs.waybar.settings = [
+    (pkgs.lib.attrsets.recursiveUpdate
+      (builtins.fromJSON (builtins.readFile ./config.json))
+      {
+        output = hardware.mainMonitor;
+        network = { interface = hardware.networkInterface; };
+        tray = {
+          icon-size = 14;
+        };
+        temperature = {
+          hwmon-path = hardware.hwmon;
+        };
+      })
+  ];
+  programs.waybar.style = ''
+    @import "${config.xdg.configHome}/waybar/colors.css";
+
+    #waybar {
+      font-size: 14px;
+    }
+
+    ${builtins.readFile ./style.css}
   '';
 }

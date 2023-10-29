@@ -1,12 +1,20 @@
 { pkgs, ... }:
 
 {
+  home.sessionVariables = {
+    BROWSER = "${pkgs.vivaldi}/bin/vivaldi";
+  };
+
+  wayland.windowManager.hyprland.extraConfig = ''
+    bind = super, w, exec, ${pkgs.vivaldi}/bin/vivaldi
+  '';
+
   programs.chromium.enable = true;
   programs.chromium.package = pkgs.vivaldi;
   programs.chromium.commandLineArgs = [
-    "--use-gl=egl"
     "--enable-features=UseOzonePlatform"
     "--ozone-platform=wayland"
+    "--use-gl=egl"
     "--enable-features=VaapiVideoDecoder"
     "--disable-features=UseChromeOSDirectVideoDecoder"
     "--enable-flag=ignore-gpu-blocklist"
@@ -24,9 +32,4 @@
     # vimium c new tab
     { id = "cglpcedifkgalfdklahhcchnjepcckfn"; }
   ];
-
-  wayland.windowManager.hyprland.extraConfig = ''
-    env = BROWSER, vivaldi
-    bind = super, w, exec, ${pkgs.vivaldi}/bin/vivaldi
-  '';
 }

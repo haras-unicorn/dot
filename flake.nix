@@ -54,7 +54,6 @@
                   hostname = "${host}-${username}";
                   username = username;
                   groups = [ ];
-                  shell = "nushell";
                   hardware = { };
                   pinentry = { };
                 } // (if builtins.pathExists "${hosts}/${host}/meta.nix"
@@ -67,6 +66,7 @@
                 nixos-hardware = nixos-hardware;
                 sweet-theme = sweet-theme;
                 hardware = meta.hardware;
+                shell = meta.shell;
                 gnupg = meta.gnupg;
                 nixified-ai = nixified-ai;
               };
@@ -127,7 +127,7 @@
                           isNormalUser = true;
                           initialPassword = username;
                           extraGroups = [ "wheel" ] ++ meta.groups;
-                          shell = pkgs."${meta.shell}";
+                          shell = pkgs.bashInteractiveFHS;
                         };
                       })
                       home-manager.nixosModules.home-manager

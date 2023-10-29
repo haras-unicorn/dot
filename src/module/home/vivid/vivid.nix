@@ -5,11 +5,11 @@
     vivid
   ];
 
-  programs.nushell.environmentVariables = {
+  home.sessionVariables = {
     LS_COLORS = "(vivid generate lulezojne | str trim)";
   };
 
-  # TODO: https://github.com/sharkdp/vivid/issues/116
+  # TODO: then option when https://github.com/sharkdp/vivid/issues/116
   programs.lulezojne.config.plop = [
     {
       template = builtins.readFile ./lulezojne.yml.hbs;

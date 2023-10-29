@@ -4,14 +4,10 @@
   programs.bat.enable = true;
   programs.bat.config = { style = "header,rule,snip,changes"; };
 
-  wayland.windowManager.hyprland.extraConfig = ''
-    env = PAGER, ${pkgs.bat}/bin/bat
-  '';
-
-  programs.nushell.environmentVariables = {
+  home.sessionVariables = {
     PAGER = "${pkgs.bat}/bin/bat";
   };
-  programs.nushell.shellAliases = {
+  home.shellAliases = {
     cat = "${pkgs.bat}/bin/bat";
   };
 }

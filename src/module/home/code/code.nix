@@ -1,7 +1,15 @@
 { pkgs, ... }:
 
 {
+  home.sessionVariables = {
+    VISUAL = "${pkgs.vscodium-fhs}/bin/codium";
+  };
+  home.shellAliases = {
+    code = "${pkgs.vscodium-fhs}/bin/codium";
+  };
+
   programs.vscode.enable = true;
+  programs.vscode.package = pkgs.vscodium-fhs;
   programs.vscode.enableExtensionUpdateCheck = false;
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;

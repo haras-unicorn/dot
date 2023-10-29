@@ -2,25 +2,6 @@
 
 Configurations for my NixOS systems.
 
-## Install
-
-```bash
-curl -s 'https://gitlab.com/Hrle/dotfiles-nixos/-/raw/{revision(main)}/scripts/install.sh' | \
-  sudo bash -s '{device(/dev/sda)}' '{host(virtualbox)}'
-```
-
-## Updating
-
-```sh
-nixos-rebuild {switch/boot} --flake '/opt/dotfiles#{host(virtualbox)}'
-```
-
-## Imaging
-
-```sh
-nix build .#nixosConfigurations.raspberry-pi.config.system.build.sdImage
-```
-
 ## Virtualisation
 
 ### NVIDIA Virtio
@@ -56,75 +37,3 @@ To enable secure boot add this to the `os` section:
 ```xml
 <smm state="on"/>
 ```
-
-## Known issues
-
-### Transmission folders
-
-This errors into "failed to setup mount namespacing".
-
-```nix
-services.transmission.settings.download-dir = "${config.services.transmission.home}/downloads";
-services.transmission.settings.incomplete-dir = "${config.services.transmission.home}/.incomplete";
-services.transmission.settings.watch-dir = "${config.services.transmission.home}/torrents";
-services.transmission.settings.watch-dir-enabled = true;
-````
-
-## Ideal state (or TODO)
-
-- [ ] either:
-  - [ ] proper Windows 11 VM
-    - [ ] check that Windows 11 VM is appropriate for visual studio and apps that are bad on linux
-    - [ ] more ram for Windows 11 VM
-  - [ ] if Windows 11 VM is not an option use dual-boot on NVME (probably the way forward)
-    - [ ] set up secure boot on nixos
-    - [ ] set up tpm on nixos 
-- [ ] use https://github.com/nix-community/nixago
-- [ ] figure out direnv
-- [ ] xdg.mimeApps configure default applications
-- [ ] xdg.userDirs
-- [ ] xresources theme
-- [ ] xsession.windowManager and not thorough system configuration
-- [ ] theme switching? (idea: matrix of `<host>-<theme>`)
-- [ ] secure boot
-- [ ] tpm 2 once i get a CPU that supports it
-- [ ] rEFInd (maybe once NixOS officially supports it)
-- [ ] better plymouth? (right now it flashes several times when i boot)
-- [ ] wayland
-- [ ] hyprland
-- [ ] swww
-- [ ] eww
-- [ ] sddm wayland?
-- [ ] something more minimal than xfce ? (idk how this will work even with wayland)
-- [ ] save brave settings here or different browser? (qutebrowser rendering and adblock sucks tbh)
-- [ ] use vault once i get my hands on a personal cloud
-- [ ] replace syncthing with centralized storage and a server once i get a personal cloud (either raspberry pi + vpn or a cloud vm)
-
-### Cloud
-
-- [ ] vpn server or ipv6
-- [ ] vault
-- [ ] storage
-- [ ] calendar
-- [ ] mail
-- [ ] matrix
-- [ ] mastodon
-- [ ] ocr document storage
-- [ ] home assistant
-
-### Helix
-
-- [ ] check if rust formats
-- [ ] csharpier
-- [ ] fix langservers-extracted package?
-
-### VS Code
-
-- [ ] settings
-
-#### Extensions
-
-- [ ] csharpier
-- [ ] black
-- [ ] dockerfile
-- [ ] marksman

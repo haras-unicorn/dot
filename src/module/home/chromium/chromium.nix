@@ -1,6 +1,14 @@
 { pkgs, ... }:
 
 {
+  home.sessionVariables = {
+    BROWSER = "${pkgs.ungoogled-chromium}/bin/chromium";
+  };
+
+  wayland.windowManager.hyprland.extraConfig = ''
+    bind = super, w, exec, ${pkgs.ungoogled-chromium}/bin/chromium
+  '';
+
   programs.chromium.enable = true;
   programs.chromium.package = pkgs.ungoogled-chromium;
   programs.chromium.commandLineArgs = [
@@ -26,9 +34,4 @@
     # vimium c new tab
     { id = "cglpcedifkgalfdklahhcchnjepcckfn"; }
   ];
-
-  wayland.windowManager.hyprland.extraConfig = ''
-    env = BROWSER, chromium
-    bind = super, w, exec, ${pkgs.ungoogled-chromium}/bin/chromium
-  '';
 }

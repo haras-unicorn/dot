@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 
 {
   programs.kitty.enable = true;
@@ -40,8 +40,4 @@
       };
     }
   ];
-
-  wayland.windowManager.hyprland.extraConfig = ''
-    bind = super, t, exec, ${pkgs.kitty}/bin/kitty
-  '';
 }

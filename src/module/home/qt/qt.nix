@@ -1,9 +1,16 @@
 { pkgs, sweet-theme, ... }:
 
+# TODO: lulezojne
+
 {
   home.packages = with pkgs; [
     lxappearance
   ];
+
+  home.sessionVariables = {
+    QT_QPA_PLATFORM = "wayland";
+    QT_STYLE_OVERRIDE = "kvantum";
+  };
 
   qt.enable = true;
   qt.platformTheme = "kde";
@@ -16,10 +23,5 @@
   xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
     [General]
     theme=Sweet
-  '';
-
-  wayland.windowManager.hyprland.extraConfig = ''
-    env = QT_QPA_PLATFORM, wayland
-    env = QT_STYLE_OVERRIDE, kvantum
   '';
 }

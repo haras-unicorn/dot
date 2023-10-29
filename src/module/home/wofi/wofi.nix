@@ -1,7 +1,5 @@
 { pkgs, config, gnupg, ... }:
 
-# TODO: db location?
-
 {
   home.packages = with pkgs; [
     keepmenu
@@ -9,6 +7,7 @@
     pkgs."${gnupg.package}"
   ];
 
+  # NOTE: ln -s <db location> <home>/.keepmenu.kdbx
   xdg.configFile."keepmenu/config.ini".text = ''
     [dmenu]
     dmenu_command = ${pkgs.wofi}/bin/wofi --prompt "Be careful!"
@@ -19,7 +18,7 @@
     obscure = True
 
     [database]
-    database_1 = ~/sync/security/keys.kdbx
+    database_1 = ~/.keepmenu.kdbx
     type_library = wtype
     pw_cache_period_min = 1
     autotype_default = {USERNAME}{TAB}{PASSWORD}

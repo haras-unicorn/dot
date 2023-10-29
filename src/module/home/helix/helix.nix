@@ -109,19 +109,24 @@ in
     taplo
   ];
 
-  wayland.windowManager.hyprland.extraConfig = ''
-    env = VISUAL, ${pkgs.helix}/bin/hx
-    env = EDITOR, ${pkgs.helix}/bin/hx
-  '';
-
-  programs.nushell.environmentVariables = {
-    VISUAL = "${pkgs.helix}/bin/hx";
+  home.sessionVariables = {
     EDITOR = "${pkgs.helix}/bin/hx";
   };
 
-  programs.nushell.shellAliases = {
+  home.shellAliases = {
     sis = "${pkgs.helix}/bin/hx";
   };
+
+  programs.lulezojne.config.plop = [
+    {
+      template = builtins.readFile ./lulezojne.toml;
+      "in" = "${config.xdg.configHome}/helix/themes/lulezojne.toml";
+      "then" = {
+        command = "pkill";
+        args = [ "--signal" "SIGUSR1" "hx" ];
+      };
+    }
+  ];
 
   programs.helix.enable = true;
   programs.helix.languages = {
@@ -194,15 +199,4 @@ in
   };
 
   programs.helix.settings = builtins.fromTOML (builtins.readFile ./settings.toml);
-
-  programs.lulezojne.config.plop = [
-    {
-      template = builtins.readFile ./lulezojne.toml;
-      "in" = "${config.xdg.configHome}/helix/themes/lulezojne.toml";
-      "then" = {
-        command = "pkill";
-        args = [ "--signal" "SIGUSR1" "hx" ];
-      };
-    }
-  ];
 }

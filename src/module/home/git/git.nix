@@ -5,7 +5,7 @@
     delta
   ];
 
-  programs.nushell.shellAliases = {
+  home.shellAliases = {
     rawdog = "${pkgs.git}/bin/git";
     bruh = "${pkgs.lazygit}/bin/lazygit";
   };

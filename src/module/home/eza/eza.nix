@@ -15,9 +15,8 @@
   ];
 
   # TODO: remove when https://github.com/nix-community/home-manager/pull/4590
-  programs.nushell.shellAliases = {
+  home.shellAliases = {
     la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
     tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
   };
-
 }

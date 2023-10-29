@@ -4,6 +4,8 @@
 , ...
 }:
 
+# TODO: figure out how to bind without referencing hyprland
+
 {
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
@@ -37,7 +39,7 @@
   services.greetd.enable = true;
   services.greetd.settings = {
     default_session = {
-      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd Hyprland";
+      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/Hyprland";
     };
   };
 

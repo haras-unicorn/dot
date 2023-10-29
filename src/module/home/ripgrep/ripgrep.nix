@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  programs.nushell.shellAliases = {
+  home.shellAliases = {
     grep = "${pkgs.ripgrep}/bin/rg";
   };
 
