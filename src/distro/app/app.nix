@@ -6,7 +6,7 @@
     # "${self}/src/module/home/cursor/cursor.nix"
     "${self}/src/module/home/gtk/gtk.nix"
     "${self}/src/module/home/qt/qt.nix"
-    "${self}/src/module/home/brave/brave.nix"
+    # "${self}/src/module/home/brave/brave.nix"
     "${self}/src/module/home/vivaldi/vivaldi.nix"
     "${self}/src/module/home/spotify/spotify.nix"
     "${self}/src/module/home/kitty/kitty.nix"
