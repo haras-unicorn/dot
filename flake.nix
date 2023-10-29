@@ -158,7 +158,8 @@
                         home-manager.sharedModules = [
                           lulezojne.homeManagerModules.default
                         ];
-                        home-manager.users."${username}" =
+                        home-manager.users."${username}" = [
+                          nur.hmModules.nur
                           ({ pkgs, ... }:
                             let
                               # TODO: figure out a cleaner way to do this
@@ -186,7 +187,8 @@
                               imports = [
                                 "${hosts}/${host}/home.nix"
                               ];
-                            });
+                            })
+                        ];
                       }
                     ] else [ ]);
                   };
