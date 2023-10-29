@@ -55,6 +55,7 @@ in
     libvdpau
     vdpauinfo
     libva-utils
+    vulkan-tools
     invokeai
     koboldai
   ];
