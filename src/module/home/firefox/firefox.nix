@@ -22,6 +22,7 @@
       extensions = with config.nur.repos.rycee.firefox-addons; [
         ublock-origin
         darkreader
+        # TODO: fix https://github.com/philc/vimium/issues/3641
         vimium
       ];
 
