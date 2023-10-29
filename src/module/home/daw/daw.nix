@@ -22,5 +22,10 @@
     wolf-shaper
     dragonfly-reverb
     zam-plugins
+    qsampler
+    samplv1
+    synthv1
+    padthv1
+    drumkv1
   ];
 }
