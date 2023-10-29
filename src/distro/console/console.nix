@@ -40,5 +40,6 @@
     jq
     yq
     mpv
+    nvtop
   ];
 }
