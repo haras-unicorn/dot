@@ -75,6 +75,7 @@ builtins.foldl'
           system.stateVersion = "23.11";
         })
         # TODO: fix infinite recursion?
+        # NOTE: im guessing because the option declaration from wsl depends on option definition here
         # ({ config, ... }: {
         #   imports =
         #     if config.dot.wsl then [
