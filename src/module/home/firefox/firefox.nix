@@ -1,6 +1,7 @@
 { pkgs, config, userjs, ... }:
 
 # NOTE: https://github.com/arkenfox/user.js/wiki
+# NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
 
 {
   home.sessionVariables = {
@@ -24,9 +25,10 @@
         darkreader
         # TODO: fix https://github.com/philc/vimium/issues/3641
         vimium
+        i-dont-care-about-cookies
       ];
 
-      # TODO: fix firefox making this unbreedable
+      # TODO: fix firefox overwritingthis
       # search = {
       #   default = "Google";
       #   engines = {
@@ -53,6 +55,8 @@
       # };
     };
   };
+
+  # TODO: fix not keeping logins
 
   home.file.".mozilla/firefox/personal/user.js".text = ''
     ${builtins.readFile "${userjs}/user.js"}
