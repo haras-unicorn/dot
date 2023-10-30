@@ -15,8 +15,8 @@ in
   options =
     {
       term.sessionVariables = mkOption {
-        default = { };
         type = with types; lazyAttrsOf (oneOf [ str path int float ]);
+        default = { };
         example = { EDITOR = "hx"; };
         description = ''
           Environment variables to set with kitty.
