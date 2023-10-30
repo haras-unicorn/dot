@@ -74,6 +74,7 @@ builtins.foldl'
 
           system.stateVersion = "23.11";
         })
+        # TODO: fix infinite recursion?
         # ({ config, ... }: {
         #   imports =
         #     if config.dot.wsl then [
