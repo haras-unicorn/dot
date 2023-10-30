@@ -151,7 +151,7 @@
                           isNormalUser = true;
                           initialPassword = username;
                           extraGroups = [ "wheel" ] ++ meta.groups;
-                          shell = pkgs.bashInteractiveFHS;
+                          shell = pkgs.bash;
                         };
                       })
                       home-manager.nixosModules.home-manager
