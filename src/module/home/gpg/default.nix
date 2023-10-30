@@ -1,11 +1,11 @@
-{ pkgs, gnupg, ... }:
+{ pkgs, config, ... }:
 
 {
   home.packages = [
-    pkgs."${gnupg.pkg}"
+    pkgs."${config.dot.gpg.pkg}"
   ];
 
   programs.gpg.enable = true;
   services.gpg-agent.enable = true;
-  services.gpg-agent.pinentryFlavor = "${gnupg.flavor}";
+  services.gpg-agent.pinentryFlavor = "${config.dot.gpg.flavor}";
 }

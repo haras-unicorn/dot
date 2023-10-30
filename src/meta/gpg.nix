@@ -4,7 +4,7 @@
 
 with lib;
 {
-  options.dot.gnupg = {
+  options.dot.gpg = {
     pkg = mkOption {
       type = with types; str;
       default = "pinentry";
