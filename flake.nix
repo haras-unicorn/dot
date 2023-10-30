@@ -32,9 +32,9 @@
 
   outputs = { self, ... } @ inputs:
     let
-      outputs = "${self}/src/output";
+      outputs = ./src/output;
       outputNames = (builtins.attrNames (builtins.readDir outputs));
-      outputModules = builtins.map
+      outputModules = builtins.trace outputNames builtins.map
         (name: {
           inherit name;
           mkFrom = import "${outputs}/${name}";

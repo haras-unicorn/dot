@@ -3,8 +3,10 @@
 let
   username = "haras";
 
-  hosts = self + "/src/host";
-  hostNames = (builtins.attrNames (builtins.readDir hosts));
+  ye = import ./ye;
+
+  host = self + "/src/host";
+  hostNames = (builtins.attrNames (builtins.readDir host));
   systems = flake-utils.defaultSystems;
   configs = nixpkgs.lib.cartesianProductOfSets {
     system = systems;
@@ -30,7 +32,7 @@ builtins.foldl'
   (nixosConfigurations: config:
   let
     configName = "${config.hostName}-${config.system}";
-    configModules = import "${hosts}/${config.hostName}";
+    configModules = import "${host}/${config.hostName}";
     metaConfigModule = if builtins.hasAttr "meta" configModules then configModules.meta else { };
     systemConfigModule = if builtins.hasAttr "system" configModules then configModules.system else { };
     hasUserConfigModule = builtins.hasAttr "user" configModules;
