@@ -7,7 +7,7 @@
     lxappearance
   ];
 
-  systemd.user.sessionVariables = {
+  home.sessionVariables = {
     QT_QPA_PLATFORM = "wayland";
     QT_STYLE_OVERRIDE = "kvantum";
   };

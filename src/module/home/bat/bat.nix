@@ -4,7 +4,7 @@
   programs.bat.enable = true;
   programs.bat.config = { style = "header,rule,snip,changes"; };
 
-  systemd.user.sessionVariables = {
+  home.sessionVariables = {
     PAGER = "${pkgs.bat}/bin/bat";
   };
   home.shellAliases = {

@@ -3,7 +3,7 @@
 # TODO: fix attempting to compile
 
 {
-  systemd.user.sessionVariables = {
+  home.sessionVariables = {
     BROWSER = "${pkgs.ungoogled-chromium}/bin/chromium";
   };
 

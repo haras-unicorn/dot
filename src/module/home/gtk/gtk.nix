@@ -3,7 +3,7 @@
 # TODO: lulezojne
 
 {
-  systemd.user.sessionVariables = {
+  home.sessionVariables = {
     GTK_USE_PORTAL = 1;
   };
 

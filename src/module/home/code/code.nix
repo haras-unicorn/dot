@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  systemd.user.sessionVariables = {
+  home.sessionVariables = {
     VISUAL = "${pkgs.vscodium-fhs}/bin/codium";
   };
   home.shellAliases = {
