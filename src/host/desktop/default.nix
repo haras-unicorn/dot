@@ -7,7 +7,7 @@
       visual = { pkg = "codium-fhs"; bin = "codium"; module = "code"; };
       term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
       browser = { pkg = "firefox"; bin = "firefox"; module = "firefox"; };
-      gnupg = { flavor = "gtk2"; package = "pinentry-gtk2"; bin = "pinentry-gtk-2"; };
+      gpg = { flavor = "gtk2"; package = "pinentry-gtk2"; bin = "pinentry-gtk-2"; };
       hardware = {
         ram = 32;
         mainMonitor = "DP-1";
