@@ -34,12 +34,12 @@
     let
       outputs = ./src/output;
       outputNames = (builtins.attrNames (builtins.readDir outputs));
-      outputModules = builtins.trace outputNames builtins.map
+      outputModules = builtins.map
         (name: {
           inherit name;
           mkFrom = import "${outputs}/${name}";
         })
         outputNames;
     in
-    builtins.foldl' (outputs: output: outputs // { "${output.name}" = output.mkFrom inputs; }) { } outputModules;
+    builtins.trace outputModules builtins.foldl' (outputs: output: outputs // { "${output.name}" = output.mkFrom inputs; }) { } outputModules;
 }

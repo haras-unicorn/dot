@@ -3,8 +3,6 @@
 let
   username = "haras";
 
-  ye = import ./ye;
-
   host = self + "/src/host";
   hostNames = (builtins.attrNames (builtins.readDir host));
   systems = flake-utils.lib.defaultSystems;
