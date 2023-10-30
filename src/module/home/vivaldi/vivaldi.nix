@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.sessionVariables = {
+  de.sessionVariables = {
     BROWSER = "${pkgs.vivaldi}/bin/vivaldi";
   };
 

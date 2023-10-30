@@ -5,7 +5,7 @@
     vivid
   ];
 
-  home.sessionVariables = {
+  de.sessionVariables = {
     LS_COLORS = "(vivid generate lulezojne | str trim)";
   };
 

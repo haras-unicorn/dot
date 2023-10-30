@@ -7,7 +7,7 @@
     lxappearance
   ];
 
-  home.sessionVariables = {
+  de.sessionVariables = {
     QT_QPA_PLATFORM = "wayland";
     QT_STYLE_OVERRIDE = "kvantum";
   };

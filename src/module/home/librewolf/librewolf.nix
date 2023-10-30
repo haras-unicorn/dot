@@ -3,7 +3,7 @@
 # TODO: fix attempting to compile
 
 {
-  home.sessionVariables = {
+  de.sessionVariables = {
     BROWSER = "${pkgs.librewolf}/bin/librewolf";
   };
 

@@ -1,5 +1,21 @@
 {
   groups = [ "libvirtd" "docker" "podman" "video" "audio" ];
+  shell = {
+    pkg = "nushell";
+    bin = "nu";
+  };
+  editor = {
+    pkg = "helix";
+    bin = "hx";
+  };
+  visual = {
+    pkg = "codium-fhs";
+    bin = "codium";
+  };
+  browser = {
+    pkg = "firefox";
+    bin = "firefox";
+  };
   hardware = {
     ram = 32;
     mainMonitor = "DP-1";

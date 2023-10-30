@@ -1,9 +1,10 @@
 { pkgs, ... }:
 
 {
-  home.sessionVariables = {
+  de.sessionVariables = {
     VISUAL = "${pkgs.vscodium-fhs}/bin/codium";
   };
+
   home.shellAliases = {
     code = "${pkgs.vscodium-fhs}/bin/codium";
   };

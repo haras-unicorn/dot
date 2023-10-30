@@ -64,6 +64,7 @@ in
       dotnet-sdk = prev.dotnet-sdk_7;
     })
   ];
+
   home.packages = with pkgs; [
     nil
     nixpkgs-fmt
@@ -109,7 +110,7 @@ in
     taplo
   ];
 
-  home.sessionVariables = {
+  de.sessionVariables = {
     EDITOR = "${pkgs.helix}/bin/hx";
   };
 
