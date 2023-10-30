@@ -1,30 +1,22 @@
-{ self, flake-utils, nixpkgs, nur, nixos-wsl, sops-nix, home-manager, lulezojne, ... } @ inputs:
+{ flake-utils, nixpkgs, nur, nixos-wsl, sops-nix, home-manager, lulezojne, ... } @ inputs:
 
 let
-  username = "haras";
+  meta = ../src/meta;
+  metaModuleNames = (builtins.attrNames (builtins.readDir meta));
+  metaModules = builtins.map (name: "${meta}/${name}") metaModuleNames;
 
-  host = self + "/src/host";
-  hostNames = (builtins.attrNames (builtins.readDir host));
+  username = "haras";
   systems = flake-utils.lib.defaultSystems;
+
+  host = ../src/host;
+  hostNames = (builtins.attrNames (builtins.readDir host));
+
   configs = nixpkgs.lib.cartesianProductOfSets {
     system = systems;
     hostName = hostNames;
   };
 
-  meta = self + "/src/meta";
-  metaModuleNames =
-    (builtins.attrNames
-      (builtins.readDir meta));
-  metaModules = builtins.map (name: "${meta}/${name}") metaModuleNames;
-
-  specialArgs = {
-    self = inputs.self;
-    nixos-wsl = inputs.nixos-wsl;
-    nixos-hardware = inputs.nixos-hardware;
-    sweet-theme = inputs.sweet-theme;
-    nixified-ai = inputs.nixified-ai;
-    userjs = inputs.userjs;
-  };
+  specialArgs = inputs;
 in
 builtins.foldl'
   (nixosConfigurations: config:
@@ -42,7 +34,7 @@ builtins.foldl'
       specialArgs = specialArgs;
       modules = metaModules ++ [
         nur.nixosModules.nur
-        ({ pkgs, ... }: {
+        ({ self, pkgs, ... }: {
           nix.package = pkgs.nixFlakes;
           nix.extraOptions = "experimental-features = nix-command flakes";
 
@@ -122,7 +114,7 @@ builtins.foldl'
               metaConfigModule
             ];
             home-manager.users."${username}" =
-              ({ pkgs, ... }:
+              ({ self, pkgs, ... }:
                 let
                   # TODO: figure out a cleaner way to do this
                   rebuild = pkgs.writeShellApplication {
