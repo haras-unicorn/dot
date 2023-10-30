@@ -2,7 +2,7 @@
 
 {
   home.packages = [
-    pkgs."${gnupg.package}"
+    pkgs."${gnupg.pkg}"
   ];
 
   programs.gpg.enable = true;

@@ -4,14 +4,14 @@
   home.packages = with pkgs; [
     keepmenu
     wtype
-    pkgs."${gnupg.package}"
+    pkgs."${gnupg.pkg}"
   ];
 
   # NOTE: ln -s <db location> <home>/.keepmenu.kdbx
   xdg.configFile."keepmenu/config.ini".text = ''
     [dmenu]
     dmenu_command = ${pkgs.wofi}/bin/wofi --prompt "Be careful!"
-    pinentry = ${pkgs."${gnupg.package}"}/bin/${gnupg.bin}
+    pinentry = ${pkgs."${gnupg.pkg}"}/bin/${gnupg.bin}
     title_path = False
 
     [dmenu_passphrase]
