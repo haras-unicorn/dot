@@ -23,8 +23,7 @@
       extensions = with config.nur.repos.rycee.firefox-addons; [
         ublock-origin
         darkreader
-        # TODO: fix https://github.com/philc/vimium/issues/3641
-        vimium
+        vimium-c
         i-dont-care-about-cookies
       ];
 
@@ -61,6 +60,6 @@
   home.file.".mozilla/firefox/personal/user.js".text = ''
     ${builtins.readFile "${userjs}/user.js"}
 
-    ${builtins.readFile ./user.js}
+    ${builtins.readFile ./user-overrides.js}
   '';
 }
