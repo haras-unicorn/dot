@@ -10,20 +10,22 @@ with lib;
       default = [ ];
       example = [ "libvirtd" "docker" "podman" "video" "audio" ];
     };
-    shell.pkg = mkOption {
-      type = with types; str;
-      default = "bash";
-      example = "nushell";
-    };
-    shell.bin = mkOption {
-      type = with types; str;
-      default = "bash";
-      example = "nu";
-    };
-    shell.module = mkOption {
-      type = with types; str;
-      default = "bash";
-      example = "nushell";
+    shell = {
+      pkg = mkOption {
+        type = with types; str;
+        default = "bash";
+        example = "nushell";
+      };
+      bin = mkOption {
+        type = with types; str;
+        default = "bash";
+        example = "nu";
+      };
+      module = mkOption {
+        type = with types; str;
+        default = "bash";
+        example = "nushell";
+      };
     };
   };
 

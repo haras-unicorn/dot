@@ -5,17 +5,17 @@
 with lib;
 {
   options.dot.editor = {
-    editor.pkg = mkOption {
+    pkg = mkOption {
       type = with types; str;
       default = "vim";
       example = "helix";
     };
-    editor.bin = mkOption {
+    bin = mkOption {
       type = with types; str;
       default = "vim";
       example = "hx";
     };
-    editor.module = mkOption {
+    module = mkOption {
       type = with types; str;
       default = "vim";
       example = "helix";

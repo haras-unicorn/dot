@@ -4,21 +4,21 @@
 
 with lib;
 {
-  options.dot.browser = {
-    browser.pkg = mkOption {
+  options.dot.term = {
+    pkg = mkOption {
       type = with types; str;
-      default = "firefox";
-      example = "vivaldi";
+      default = "kitty";
+      example = "alacritty";
     };
-    browser.bin = mkOption {
+    bin = mkOption {
       type = with types; str;
-      default = "firefox";
-      example = "vivaldi";
+      default = "kitty";
+      example = "alacritty";
     };
-    browser.module = mkOption {
+    module = mkOption {
       type = with types; str;
-      default = "firefox";
-      example = "vivaldi";
+      default = "kitty";
+      example = "alacritty";
     };
   };
 

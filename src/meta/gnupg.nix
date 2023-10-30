@@ -5,17 +5,17 @@
 with lib;
 {
   options.dot.gnupg = {
-    gnupg.pkg = mkOption {
+    pkg = mkOption {
       type = with types; str;
       default = "pinentry";
       example = "pinentry-gtk2";
     };
-    gnupg.bin = mkOption {
+    bin = mkOption {
       type = with types; str;
       default = "pinentry-tty";
       example = "pinentry-gtk-2";
     };
-    gnupg.flavor = mkOption {
+    flavor = mkOption {
       type = with types; str;
       default = "tty";
       example = "gtk2";

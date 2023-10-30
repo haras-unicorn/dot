@@ -74,24 +74,22 @@ builtins.foldl'
 
           system.stateVersion = "23.11";
         })
-        ({ config, ... }: {
-          imports =
-            if config.dot.wsl then [
-              nixos-wsl.nixosModules.wsl
-            ] else [ ];
-
-          wsl.defaultUser = "${username}";
-        })
-        ({ config, ... }: {
-          imports =
-            if config.dot.secrets then [
-              sops-nix.nixosModules.sops
-            ] else [ ];
-
-          sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-          sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-          sops.age.generateKey = true;
-        })
+        # ({ config, ... }: {
+        #   imports =
+        #     if config.dot.wsl then [
+        #       nixos-wsl.nixosModules.wsl
+        #     ] else [ ];
+        #   wsl.defaultUser = "${username}";
+        # })
+        # ({ config, ... }: {
+        #   imports =
+        #     if config.dot.secrets then [
+        #       sops-nix.nixosModules.sops
+        #     ] else [ ];
+        #   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+        #   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+        #   sops.age.generateKey = true;
+        # })
         metaConfigModule
         systemConfigModule
         ({ pkgs, config, ... }:

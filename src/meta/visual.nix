@@ -5,17 +5,17 @@
 with lib;
 {
   options.dot.visual = {
-    visual.pkg = mkOption {
+    pkg = mkOption {
       type = with types; str;
       default = "vscode";
       example = "vscodium";
     };
-    visual.bin = mkOption {
+    bin = mkOption {
       type = with types; str;
       default = "code";
       example = "codium";
     };
-    visual.module = mkOption {
+    module = mkOption {
       type = with types; str;
       default = "code";
       example = "code";

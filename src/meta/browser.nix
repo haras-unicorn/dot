@@ -5,17 +5,17 @@
 with lib;
 {
   options.dot.browser = {
-    browser.pkg = mkOption {
+    pkg = mkOption {
       type = with types; str;
       default = "firefox";
       example = "vivaldi";
     };
-    browser.bin = mkOption {
+    bin = mkOption {
       type = with types; str;
       default = "firefox";
       example = "vivaldi";
     };
-    browser.module = mkOption {
+    module = mkOption {
       type = with types; str;
       default = "firefox";
       example = "vivaldi";
