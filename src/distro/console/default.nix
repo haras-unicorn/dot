@@ -2,28 +2,30 @@
 
 {
   imports = [
-    "${self}/src/module/home/gpg/gpg.nix"
-    "${self}/src/module/home/ssh/ssh.nix"
+    "${self}/src/module/home/gpg"
+    "${self}/src/module/home/ssh"
 
-    "${self}/src/module/home/git/git.nix"
+    "${self}/src/module/home/git"
 
-    "${self}/src/module/home/lf/lf.nix"
+    "${self}/src/module/home/lf"
 
-    "${self}/src/module/home/bat/bat.nix"
-    "${self}/src/module/home/ripgrep/ripgrep.nix"
-    "${self}/src/module/home/eza/eza.nix"
+    "${self}/src/module/home/bat"
+    "${self}/src/module/home/ripgrep"
+    "${self}/src/module/home/eza"
 
-    "${self}/src/module/home/direnv/direnv.nix"
-    "${self}/src/module/home/starship/starship.nix"
-    "${self}/src/module/home/zoxide/zoxide.nix"
+    "${self}/src/module/home/direnv"
+    "${self}/src/module/home/starship"
+    "${self}/src/module/home/zoxide"
 
-    # "${self}/src/module/home/fastfetch/fastfetch.nix"
-    "${self}/src/module/home/mommy/mommy.nix"
-    "${self}/src/module/home/vivid/vivid.nix"
+    # TODO: looks ugly
+    # "${self}/src/module/home/fastfetch"
+    # TODO: doesn't work
+    # "${self}/src/module/home/mommy"
+    "${self}/src/module/home/vivid"
 
-    "${self}/src/module/home/nushell/nushell.nix"
+    "${self}/src/module/home/nushell"
 
-    "${self}/src/module/home/helix/helix.nix"
+    "${self}/src/module/home/helix"
   ];
 
   home.packages = with pkgs; [

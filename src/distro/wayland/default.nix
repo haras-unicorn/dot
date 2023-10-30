@@ -2,28 +2,28 @@
 
 {
   imports = [
-    "${self}/src/module/home/xdg/xdg.nix"
+    "${self}/src/module/home/xdg"
 
-    "${self}/src/module/home/brightnessctl/brightnessctl.nix"
-    "${self}/src/module/home/playerctl/playerctl.nix"
+    "${self}/src/module/home/brightnessctl"
+    "${self}/src/module/home/playerctl"
 
-    "${self}/src/module/home/hyprland/hyprland.nix"
+    "${self}/src/module/home/hyprland"
 
-    "${self}/src/module/home/waybar/waybar.nix"
-    "${self}/src/module/home/wlogout/wlogout.nix"
-    "${self}/src/module/home/mako/mako.nix"
-    "${self}/src/module/home/wofi/wofi.nix"
-    "${self}/src/module/home/wallpaper/wallpaper.nix"
-    "${self}/src/module/home/eww/eww.nix"
+    "${self}/src/module/home/waybar"
+    "${self}/src/module/home/wlogout"
+    "${self}/src/module/home/mako"
+    "${self}/src/module/home/wofi"
+    "${self}/src/module/home/wallpaper"
+    "${self}/src/module/home/eww"
 
-    "${self}/src/module/home/obs-studio/obs-studio.nix"
-    "${self}/src/module/home/grim/grim.nix"
-    "${self}/src/module/home/miraclecast/miraclecast.nix"
+    "${self}/src/module/home/obs-studio"
+    "${self}/src/module/home/grim"
+    "${self}/src/module/home/miraclecast"
 
-    "${self}/src/module/home/gtk/gtk.nix"
-    "${self}/src/module/home/qt/qt.nix"
+    "${self}/src/module/home/gtk"
+    "${self}/src/module/home/qt"
 
-    "${self}/src/module/home/emote/emote.nix"
+    "${self}/src/module/home/emote"
   ];
 
   # NOTE: needed for tray items to work properly

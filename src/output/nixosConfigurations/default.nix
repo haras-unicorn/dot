@@ -1,14 +1,14 @@
-{ flake-utils, nixpkgs, nur, nixos-wsl, sops-nix, home-manager, lulezojne, ... } @ inputs:
+{ self, flake-utils, nixpkgs, nur, nixos-wsl, sops-nix, home-manager, lulezojne, ... } @ inputs:
 
 let
-  meta = ../src/meta;
+  meta = self + "/src/meta";
   metaModuleNames = (builtins.attrNames (builtins.readDir meta));
   metaModules = builtins.map (name: "${meta}/${name}") metaModuleNames;
 
   username = "haras";
   systems = flake-utils.lib.defaultSystems;
 
-  host = ../src/host;
+  host = self + "/src/host";
   hostNames = (builtins.attrNames (builtins.readDir host));
 
   configs = nixpkgs.lib.cartesianProductOfSets {

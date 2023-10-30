@@ -8,26 +8,27 @@
 
   imports = [
     # TODO: wayland ...
-    # "${self}/src/module/home/cursor/cursor.nix"
+    # "${self}/src/module/home/cursor"
 
     # TODO: wayland ...
-    # "${self}/src/module/home/brave/brave.nix"
-    # "${self}/src/module/home/chromium/chromium.nix"
-    # "${self}/src/module/home/vivaldi/vivaldi.nix"
+    # "${self}/src/module/home/brave"
+    # "${self}/src/module/home/chromium"
+    # "${self}/src/module/home/vivaldi"
 
-    # "${self}/src/module/home/librewolf/librewolf.nix"
-    "${self}/src/module/home/firefox/firefox.nix"
+    # TODO: recompilation ...
+    # "${self}/src/module/home/librewolf"
+    "${self}/src/module/home/firefox"
 
-    "${self}/src/module/home/syncthing/syncthing.nix"
-    "${self}/src/module/home/keepassxc/keepassxc.nix"
-    "${self}/src/module/home/ferdium/ferdium.nix"
+    "${self}/src/module/home/syncthing"
+    "${self}/src/module/home/keepassxc"
+    "${self}/src/module/home/ferdium"
 
-    "${self}/src/module/home/spotify/spotify.nix"
+    "${self}/src/module/home/spotify"
 
-    "${self}/src/module/home/kitty/kitty.nix"
-    "${self}/src/module/home/code/code.nix"
+    "${self}/src/module/home/kitty"
+    "${self}/src/module/home/code"
 
-    "${self}/src/module/home/daw/daw.nix"
+    "${self}/src/module/home/daw"
   ];
 
   home.packages = with pkgs; [

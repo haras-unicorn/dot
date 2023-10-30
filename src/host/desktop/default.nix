@@ -21,31 +21,31 @@
 
   system = { self, config, ... }: {
     imports = [
-      "${self}/src/module/hardware/amd-cpu/amd-cpu.nix"
-      "${self}/src/module/hardware/nvidia-gpu/nvidia-gpu.nix"
+      "${self}/src/module/hardware/amd-cpu"
+      "${self}/src/module/hardware/nvidia-gpu"
 
-      "${self}/src/module/system/sudo/sudo.nix"
+      "${self}/src/module/system/sudo"
 
-      "${self}/src/module/system/grub/grub.nix"
-      "${self}/src/module/system/plymouth/plymouth.nix"
+      "${self}/src/module/system/grub"
+      "${self}/src/module/system/plymouth"
 
-      "${self}/src/module/system/rt/rt.nix"
+      "${self}/src/module/system/rt"
 
-      "${self}/src/module/system/location/location.nix"
-      "${self}/src/module/system/network/network.nix"
+      "${self}/src/module/system/location"
+      "${self}/src/module/system/network"
 
-      "${self}/src/module/system/ssh/ssh.nix"
-      "${self}/src/module/system/keyring/keyring.nix"
-      "${self}/src/module/system/polkit/polkit.nix"
+      "${self}/src/module/system/ssh"
+      "${self}/src/module/system/keyring"
+      "${self}/src/module/system/polkit"
 
-      "${self}/src/module/system/pipewire/pipewire.nix"
+      "${self}/src/module/system/pipewire"
 
-      "${self}/src/module/system/fonts/fonts.nix"
-      # "${self}/src/module/system/xserver/xserver.nix"
-      "${self}/src/module/system/wayland/wayland.nix"
+      "${self}/src/module/system/fonts"
+      # "${self}/src/module/system/xserver"
+      "${self}/src/module/system/wayland"
 
-      "${self}/src/module/system/virtual/virtual.nix"
-      "${self}/src/module/system/windows/windows.nix"
+      "${self}/src/module/system/virtual"
+      "${self}/src/module/system/windows"
     ];
 
     hardware.enableAllFirmware = true;
@@ -83,12 +83,9 @@
 
   user = { self, ... }: {
     imports = [
-      "${self}/src/distro/console/console.nix"
-
-      # "${self}/src/distro/de-legacy/de-legacy.nix"
-      "${self}/src/distro/de/de.nix"
-
-      "${self}/src/distro/app/app.nix"
+      "${self}/src/distro/console"
+      "${self}/src/distro/wayland"
+      "${self}/src/distro/app"
     ];
   };
 }
