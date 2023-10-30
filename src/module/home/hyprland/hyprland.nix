@@ -16,7 +16,7 @@ in
 {
   home.packages = [ layout ];
 
-  home.sessionVariables = {
+  systemd.user.sessionVariables = {
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_DESKTOP = "Hyprland";
   };

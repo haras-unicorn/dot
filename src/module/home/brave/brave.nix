@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.sessionVariables = {
+  systemd.user.sessionVariables = {
     BROWSER = "${pkgs.brave}/bin/brave";
   };
 

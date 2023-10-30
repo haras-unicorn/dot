@@ -5,7 +5,7 @@
     vivid
   ];
 
-  home.sessionVariables = {
+  systemd.user.sessionVariables = {
     LS_COLORS = "(vivid generate lulezojne | str trim)";
   };
 

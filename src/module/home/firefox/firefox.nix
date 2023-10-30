@@ -4,7 +4,7 @@
 # NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
 
 {
-  home.sessionVariables = {
+  systemd.user.sessionVariables = {
     BROWSER = "${pkgs.firefox-bin}/bin/firefox";
   };
 

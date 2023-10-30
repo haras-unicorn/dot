@@ -109,7 +109,7 @@ in
     taplo
   ];
 
-  home.sessionVariables = {
+  systemd.user.sessionVariables = {
     EDITOR = "${pkgs.helix}/bin/hx";
   };
 

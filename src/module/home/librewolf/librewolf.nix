@@ -3,7 +3,7 @@
 # TODO: fix attempting to compile
 
 {
-  home.sessionVariables = {
+  systemd.user.sessionVariables = {
     BROWSER = "${pkgs.librewolf}/bin/librewolf";
   };
 
