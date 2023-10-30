@@ -41,5 +41,8 @@
         })
         outputNames;
     in
-    builtins.foldl' (outputs: output: outputs // { "${output.name}" = output.mkFrom inputs; }) { } outputModules;
+    builtins.foldl'
+      (outputs: output: outputs // { "${output.name}" = output.mkFrom inputs; })
+      { }
+      outputModules;
 }
