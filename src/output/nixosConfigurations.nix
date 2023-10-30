@@ -30,7 +30,7 @@ builtins.foldl'
   (nixosConfigurations: config:
   let
     configName = "${config.hostName}-${config.system}";
-    configModules = import "${hosts}/${config.hostName}/${config.hostName}";
+    configModules = import "${hosts}/${config.hostName}";
     metaConfigModule = if builtins.hasAttr "meta" configModules then configModules.meta else { };
     systemConfigModule = if builtins.hasAttr "system" configModules then configModules.system else { };
     hasUserConfigModule = builtins.hasAttr "user" configModules;

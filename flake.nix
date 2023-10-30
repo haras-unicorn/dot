@@ -32,14 +32,14 @@
 
   outputs = { self, ... } @ inputs:
     let
-      lib = "${self}/src/lib";
-      libNames = (builtins.attrNames (builtins.readDir lib));
-      libModules = builtins.map
+      outputs = "${self}/src/output";
+      outputNames = (builtins.attrNames (builtins.readDir outputs));
+      outputModules = builtins.map
         (name: {
           inherit name;
-          mk = import "${lib}/${name}";
+          mkFrom = import "${outputs}/${name}";
         })
-        libNames;
+        outputNames;
     in
-    builtins.foldl' (outputs: module: outputs // { "${module.name}" = module.mk inputs; }) { } libModules;
+    builtins.foldl' (outputs: output: outputs // { "${output.name}" = output.mkFrom inputs; }) { } outputModules;
 }
