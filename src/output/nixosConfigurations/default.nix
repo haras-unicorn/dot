@@ -7,7 +7,7 @@ let
 
   host = self + "/src/host";
   hostNames = (builtins.attrNames (builtins.readDir host));
-  systems = flake-utils.defaultSystems;
+  systems = flake-utils.lib.defaultSystems;
   configs = nixpkgs.lib.cartesianProductOfSets {
     system = systems;
     hostName = hostNames;
