@@ -7,14 +7,14 @@ let
   vars = builtins.foldl'
     (vars: next: "${vars}\n${next}")
     ""
-    (builtins.mapAttrs
-      (name: value: "env ${name}=${value}")
-      cfg.sessionVariables);
+    (builtins.map
+      (name: "env ${name}=${cfg.sessionVariables[name]}")
+      (builtins.attrNames cfg.sessionVariables));
 in
 {
-  options =
+  options.term =
     {
-      term.sessionVariables = mkOption {
+      sessionVariables = mkOption {
         type = with types; lazyAttrsOf (oneOf [ str path int float ]);
         default = { };
         example = { EDITOR = "hx"; };
