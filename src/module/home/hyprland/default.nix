@@ -24,9 +24,9 @@ let
       cfg.sessionVariables);
 in
 {
-  options =
+  options.de =
     {
-      de.sessionVariables = mkOption {
+      sessionVariables = mkOption {
         type = with types; lazyAttrsOf (oneOf [ str path int float ]);
         default = { };
         example = { EDITOR = "hx"; };
