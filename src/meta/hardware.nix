@@ -36,7 +36,7 @@ with lib;
       description = "ls /sys/class/hwmon";
       example = "/sys/class/hwmon/hwmon1/temp1_input";
     };
-    soudcardPciId = mkOption {
+    soundcardPciId = mkOption {
       type = with types; str;
       description = "lspci | grep -i audio";
       example = "2b:00.3";

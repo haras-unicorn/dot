@@ -1,4 +1,4 @@
-{ pkgs, hardware, config, ... }:
+{ pkgs, config, ... }:
 
 with pkgs.lib;
 let
@@ -44,7 +44,7 @@ in
       wayland.windowManager.hyprland.xwayland.enable = true;
       wayland.windowManager.hyprland.extraConfig = ''
         monitor = , preferred, auto, 1
-        monitor = ${hardware.mainMonitor}, highrr, auto, 1
+        monitor = ${config.dot.hardware.mainMonitor}, highrr, auto, 1
   
         ${builtins.readFile ./hyprland.conf}
 

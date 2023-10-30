@@ -1,4 +1,14 @@
-{ self, flake-utils, nixpkgs, nur, nixos-wsl, sops-nix, home-manager, lulezojne, ... } @ inputs:
+{ self
+, flake-utils
+, nixpkgs
+, nur
+  # TODO: fix infinite recursion?
+  # , nixos-wsl
+  # , sops-nix
+, home-manager
+, lulezojne
+, ...
+} @ inputs:
 
 let
   meta = self + "/src/meta";
@@ -107,10 +117,9 @@ builtins.foldl'
             };
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = specialArgs;
-            home-manager.sharedModules = [
+            home-manager.sharedModules = metaModules ++ [
               nur.hmModules.nur
               lulezojne.homeManagerModules.default
-              metaModules
               metaConfigModule
             ];
             home-manager.users."${username}" =

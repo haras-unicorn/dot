@@ -7,13 +7,13 @@
       visual = { pkg = "codium-fhs"; bin = "codium"; module = "code"; };
       term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
       browser = { pkg = "firefox"; bin = "firefox"; module = "firefox"; };
-      gpg = { flavor = "gtk2"; package = "pinentry-gtk2"; bin = "pinentry-gtk-2"; };
+      gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
       hardware = {
         ram = 32;
         mainMonitor = "DP-1";
         monitors = [ "DP-1" ];
         networkInterface = "enp27s0";
-        hwmon = "/sys/class/hwmon/hwmon1/temp1_input";
+        cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
         soundcardPciId = "2b:00.3";
       };
     };
