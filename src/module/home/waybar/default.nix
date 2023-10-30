@@ -1,5 +1,8 @@
-{ hardware, pkgs, config, ... }:
+{ pkgs, config, ... }:
 
+let
+  hardware = config.dot.hardware;
+in
 {
   # TODO: systemd
   wayland.windowManager.hyprland.extraConfig = ''
@@ -50,7 +53,7 @@
           icon-size = 14;
         };
         temperature = {
-          hwmon-path = hardware.hwmon;
+          hwmon-path = hardware.cpuHwmon;
         };
       })
   ];

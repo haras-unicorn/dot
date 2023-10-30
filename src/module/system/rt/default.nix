@@ -1,7 +1,10 @@
-{ pkgs, hardware, ... }:
+{ pkgs, config, ... }:
 
 # NOTE: https://github.com/musnix/musnix
 
+let
+  hardware = config.dot.hardware;
+in
 {
   # FIXME: Failed PREEMPT_RT sanity check. Bailing out!
   boot.kernelPackages = pkgs.linuxPackages_zen;

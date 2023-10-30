@@ -1,4 +1,4 @@
-{ config, pkgs, shell, editor, ... }:
+{ pkgs, config, ... }:
 
 with pkgs.lib;
 let
@@ -8,8 +8,11 @@ let
     (vars: next: "${vars}\n${next}")
     ""
     (builtins.map
-      (name: "env ${name}=${cfg.sessionVariables[name]}")
+      (name: "env ${name}=${builtins.toString cfg.sessionVariables."${name}"}")
       (builtins.attrNames cfg.sessionVariables));
+
+  shell = config.dot.user.shell;
+  editor = config.dot.editor;
 in
 {
   options.term =
