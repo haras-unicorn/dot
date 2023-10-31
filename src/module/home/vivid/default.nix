@@ -1,11 +1,8 @@
 { pkgs, config, ... }:
 
 {
-  home.packages = with pkgs; [
-    vivid
-  ];
-
-  de.sessionVariables = {
+  # TODO: make it work with hyprland?
+  programs.nushell.environmentVariables = {
     LS_COLORS = "(vivid generate lulezojne | str trim)";
   };
 
@@ -15,5 +12,9 @@
       template = builtins.readFile ./lulezojne.yml.hbs;
       "in" = "${config.xdg.configHome}/vivid/themes/lulezojne.yml";
     }
+  ];
+
+  home.packages = with pkgs; [
+    vivid
   ];
 }

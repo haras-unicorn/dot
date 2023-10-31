@@ -36,6 +36,7 @@
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true;
 
+  # TODO: uncouple from hyprland
   services.greetd.enable = true;
   services.greetd.settings = {
     default_session = {
