@@ -26,6 +26,8 @@
     "${self}/src/module/home/nushell"
 
     "${self}/src/module/home/helix"
+
+    "${self}/src/module/home/open-interpreter"
   ];
 
   home.packages = with pkgs; [
