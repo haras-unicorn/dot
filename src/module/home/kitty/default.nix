@@ -55,9 +55,9 @@ in
             color4     {{ hex (set-lightness ansi.main.blue 0.7) }}
             color5     {{ hex (set-lightness ansi.main.magenta 0.7) }}
             color6     {{ hex (set-lightness ansi.main.cyan 0.7) }}
-            color7     {{ hex ansi.main.white }}
+            color7     {{ hex (set-lightness ansi.main.white 0.7) }}
 
-            color8     {{ hex ansi.main.bright_black }}
+            color8     {{ hex (set-lightness ansi.main.bright_black 0.5) }}
             color9     {{ hex (set-lightness ansi.main.bright_red 0.9) }}
             color10    {{ hex (set-lightness ansi.main.bright_green 0.9) }}
             color11    {{ hex (set-lightness ansi.main.bright_yellow 0.9) }}
