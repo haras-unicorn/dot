@@ -6,8 +6,8 @@ let
     runtimeInputs = [ pkgs.aichat ];
     text = ''
       cat <<EOF >${config.xdg.configHome}/aichat/config.yaml
-        api_key: $(cat ${config.home.homeDirectory}/.openai/api.key)
-        ${builtins.readFile ./config.yaml}
+      api_key: $(cat ${config.home.homeDirectory}/.openai/api.key)
+      ${builtins.readFile ./config.yaml}
       EOF
       chmod 600 ${config.xdg.configHome}/aichat/config.yaml
 
