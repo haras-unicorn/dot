@@ -11,7 +11,7 @@ let
         temperature: 1.0     # GPT temperature, between 0 and 2
         save: true           # Whether to save the message
         highlight: true      # Set false to turn highlight
-        light_theme: true    # Whether to use a light theme
+        light_theme: false   # Whether to use a light theme
         wrap: 80             # Specify the text-wrapping mode (no, auto, <max-width>)
         wrap_code: true      # Whether wrap code block
         auto_copy: false     # Automatically copy the last output to the clipboard
