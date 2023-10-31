@@ -52,7 +52,6 @@
     yq
     nvtop
     glxinfo
-    aichat
   ];
 
   home.shellAliases = {
