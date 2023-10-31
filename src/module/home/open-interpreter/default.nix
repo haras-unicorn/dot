@@ -5,7 +5,7 @@ let
     name = "interpreter";
     runtimeInputs = [ pkgs.open-interpreter ];
     text = ''
-      interpreter --api-key "$(cat ~/.openai/api.key)"
+      interpreter -ak "$(cat ~/.openai/api.key)"
     '';
   };
 in
