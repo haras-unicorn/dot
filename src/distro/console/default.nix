@@ -28,6 +28,7 @@
     "${self}/src/module/home/helix"
 
     "${self}/src/module/home/open-interpreter"
+    "${self}/src/module/home/aichat"
   ];
 
   home.packages = with pkgs; [
