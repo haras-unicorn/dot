@@ -12,7 +12,7 @@
         ram = 32;
         mainMonitor = "DP-1";
         monitors = [ "DP-1" ];
-        networkInterface = "enp27s0";
+        networkInterface = "enp37s0";
         cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
         soundcardPciId = "2b:00.3";
       };
