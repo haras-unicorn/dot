@@ -50,7 +50,6 @@
     yq
     nvtop
     glxinfo
-    open-interpreter
     aichat
   ];
 
