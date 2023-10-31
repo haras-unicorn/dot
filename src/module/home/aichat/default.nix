@@ -17,6 +17,7 @@ let
         auto_copy: false     # Automatically copy the last output to the clipboard
         keybindings: vi      # REPL keybindings. values: emacs, vi
       EOF
+      chmod 600 ${config.xdg.configHome}/aichat/config.yaml
 
       aichat "$@"
     '';
