@@ -40,7 +40,6 @@
     pinta
     dbeaver
     angryipscanner
-    freetube
   ];
 
   services.udiskie.enable = true;
