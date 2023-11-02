@@ -27,7 +27,8 @@
     wev
     # TODO: find wayland alternative
     # wlprop requires sway
-    xorg.xprop
+    # xorg.xprop
+    # use hyprctl clients for now
     # TODO: these no worky
     # sweet
     # beauty-line-icon-theme
