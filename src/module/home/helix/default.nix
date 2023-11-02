@@ -108,6 +108,7 @@ in
     shfmt
     marksman
     taplo
+    graphviz
     dot-language-server
   ];
 
