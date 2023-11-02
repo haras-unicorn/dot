@@ -108,6 +108,7 @@ in
     shfmt
     marksman
     taplo
+    dot-language-server
   ];
 
   de.sessionVariables = {
