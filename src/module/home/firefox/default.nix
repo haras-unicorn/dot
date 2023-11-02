@@ -12,6 +12,10 @@
     bind = super, w, exec, ${pkgs.firefox-bin}/bin/firefox
   '';
 
+  home.packages = with pkgs; [
+    ffmpeg_6-full
+  ];
+
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox-bin;
 
