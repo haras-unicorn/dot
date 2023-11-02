@@ -96,6 +96,7 @@ in
     nodePackages.bash-language-server
     nodePackages.yaml-language-server
     nodePackages.dockerfile-language-server-nodejs
+    nodePackages.prettier
     cargo
     llvmPackages.clangNoLibcxx
     llvmPackages.lldb
@@ -206,7 +207,7 @@ in
         name = "markdown";
         auto-format = true;
         formatter = {
-          command = "${pkgs.prettier}/bin/prettier";
+          command = "${pkgs.nodePackages.prettier}/bin/prettier";
           args = [ ];
         };
       }
