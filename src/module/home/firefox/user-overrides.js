@@ -22,3 +22,6 @@ user_pref("privacy.clearOnShutdown.offlineApps", false);
 
 // use download directory
 user_pref("browser.download.useDownloadDir", true);
+
+// make canvas work
+user_pref("webgl.disabled", false)
