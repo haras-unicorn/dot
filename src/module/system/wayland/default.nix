@@ -25,6 +25,7 @@
     egl-wayland
     wl-clipboard
     wev
+    xprop
     # TODO: these no worky
     # sweet
     # beauty-line-icon-theme
