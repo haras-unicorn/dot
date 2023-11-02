@@ -208,7 +208,7 @@ in
         auto-format = true;
         formatter = {
           command = "${pkgs.nodePackages.prettier}/bin/prettier";
-          args = [ ];
+          args = [ "--parser" "markdown" ];
         };
       }
     ];
