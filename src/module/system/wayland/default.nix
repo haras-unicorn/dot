@@ -25,7 +25,9 @@
     egl-wayland
     wl-clipboard
     wev
-    xprop
+    # TODO: find wayland alternative
+    # wlprop requires sway
+    xorg.xprop
     # TODO: these no worky
     # sweet
     # beauty-line-icon-theme
