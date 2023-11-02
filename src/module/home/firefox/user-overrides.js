@@ -19,3 +19,6 @@ user_pref("browser.search.suggest.enabled", true);
 // remember logins
 user_pref("privacy.clearOnShutdown.cookies", false);
 user_pref("privacy.clearOnShutdown.offlineApps", false);
+
+// use download directory
+user_pref("browser.download.useDownloadDir", true);
