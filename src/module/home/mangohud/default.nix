@@ -1,5 +1,8 @@
 { ... }:
+
 {
+  de.sessionVariables = { MANGOHUD = 1; };
+
   programs.mangohud.enable = true;
   programs.mangohud.enableSessionWide = true;
 
