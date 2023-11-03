@@ -2,7 +2,8 @@
 
 {
   services.syncthing.enable = true;
-  services.syncthing.tray.enable = true;
+  # TODO: fix tray is not available on boot
+  # services.syncthing.tray.enable = true;
 
   xdg.desktopEntries = {
     syncthing = {

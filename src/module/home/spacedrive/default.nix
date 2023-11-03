@@ -15,7 +15,7 @@ let
     MimeType=inode/directory
   '';
   mime = {
-    "inode/directory" = "${desktopEntry}";
+    "inode/directory" = "${config.xdg.dataHome}/applications/spacedrive.desktop";
   };
 in
 {
