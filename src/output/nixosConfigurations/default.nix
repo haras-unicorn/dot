@@ -115,6 +115,7 @@ builtins.foldl'
               extraGroups = [ "wheel" ] ++ config.dot.user.groups;
               shell = pkgs."${config.dot.user.shell.pkg}";
             };
+            services.locate.localuser = "${username}";
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = specialArgs;
             home-manager.sharedModules = metaModules ++ [
