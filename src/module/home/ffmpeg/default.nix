@@ -9,7 +9,7 @@ let
     text = ''
       ffmpeg \
         -i "$1" \
-        -filter:v "crop=1920:1080:(ow-1920)/2:(oh-1080)/2" \
+        -filter:v "crop=1920:1080:(iw-1920)/2:(ih-1080)/2" \
         -ss "$2" \
         -t "$3" \
         -c:v h264_nvenc \
@@ -23,7 +23,7 @@ let
     text = ''
       ffmpeg \
         -i "$1" \
-        -filter:v "crop=1280:720:(ow-1280)/2:(oh-720)/2" \
+        -filter:v "crop=1280:720:(iw-1280)/2:(ih-720)/2" \
         -ss "$2" \
         -t "$3" \
         -c:v h264_nvenc \
