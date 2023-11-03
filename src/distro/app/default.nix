@@ -25,14 +25,14 @@
 
     "${self}/src/module/home/ffmpeg"
 
-    "${self}/src/module/home/spacedrive"
+    # "${self}/src/module/home/spacedrive"
     "${self}/src/module/home/vlc"
 
     "${self}/src/module/home/spotify"
 
     "${self}/src/module/home/kitty"
     "${self}/src/module/home/code"
-    "${self}/src/module/home/lapce"
+    # "${self}/src/module/home/lapce"
 
     "${self}/src/module/home/daw"
   ];
