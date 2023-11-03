@@ -1,12 +1,11 @@
 { pkgs, ... }:
 
 # TODO: lowercase directories + check that all programs work with that
-# TODO: mimeapps
 
 {
   home.packages = with pkgs; [
     xdg-user-dirs
-    xdg-open
+    xdg-utils
   ];
 
   xdg.userDirs.createDirectories = true;
