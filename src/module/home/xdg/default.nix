@@ -12,17 +12,17 @@
   xdg.userDirs.enable = true;
   xdg.userDirs.createDirectories = true;
 
-  xdg.desktop = "${config.home.homeDirectory}/desktop";
-  xdg.download = "${config.home.homeDirectory}/download";
+  xdg.userDirs.desktop = "${config.home.homeDirectory}/desktop";
+  xdg.userDirs.download = "${config.home.homeDirectory}/download";
 
-  xdg.music = "${config.home.homeDirectory}/music";
-  xdg.pictures = "${config.home.homeDirectory}/pictures";
-  xdg.videos = "${config.home.homeDirectory}/videos";
+  xdg.userDirs.music = "${config.home.homeDirectory}/music";
+  xdg.userDirs.pictures = "${config.home.homeDirectory}/pictures";
+  xdg.userDirs.videos = "${config.home.homeDirectory}/videos";
 
-  xdg.templates = "${config.home.homeDirectory}/templates";
-  xdg.documents = "${config.home.homeDirectory}/documents";
+  xdg.userDirs.templates = "${config.home.homeDirectory}/templates";
+  xdg.userDirs.documents = "${config.home.homeDirectory}/documents";
 
-  xdg.publicShare = "${config.home.homeDirectory}/public";
+  xdg.userDirs.publicShare = "${config.home.homeDirectory}/public";
 
   xdg.mime.enable = true;
   xdg.mimeApps.enable = true;
