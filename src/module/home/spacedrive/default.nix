@@ -6,7 +6,7 @@ let
   desktopEntry = pkgs.writeText "spacedrive.desktop" ''
     [Desktop Entry]
     Categories=Application;Filesystem
-    Exec=${config.nur.repos.mikaelfangel-nur.spacedrive}/bin/spacedrive
+    Exec=${config.nur.repos.mikaelfangel-nur.spacedrive}/bin/spacedrive %U
     GenericName=Files
     Name=Spacedrive
     Terminal=false
