@@ -1,7 +1,7 @@
 {
   meta = {
     dot = {
-      user.groups = [ "libvirtd" "docker" "podman" "video" "audio" ];
+      user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
       user.shell = { pkg = "nushell"; bin = "nu"; };
       editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
       visual = { pkg = "codium-fhs"; bin = "codium"; module = "code"; };
