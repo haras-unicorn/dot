@@ -12,7 +12,7 @@ let
     Terminal=false
     Type=Application
     Version=1.4  
-    MimeType=inode/directory;
+    MimeType=inode/directory
   '';
 in
 {
