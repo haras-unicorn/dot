@@ -7,7 +7,7 @@
 
     "${self}/src/module/home/git"
 
-    "${self}/src/module/home/lf"
+    "${self}/src/module/home/yazi"
 
     "${self}/src/module/home/bat"
     "${self}/src/module/home/ripgrep"

@@ -23,21 +23,23 @@
     "${self}/src/module/home/keepassxc"
     "${self}/src/module/home/ferdium"
 
+    "${self}/src/module/home/ffmpeg"
+
+    "${self}/src/module/home/spacedrive"
+
     "${self}/src/module/home/spotify"
 
     "${self}/src/module/home/kitty"
     "${self}/src/module/home/code"
 
     "${self}/src/module/home/daw"
-
-    "${self}/src/module/home/ffmpeg"
   ];
 
   home.packages = with pkgs; [
     feh
     mpv
-    libreoffice-fresh
     vlc
+    libreoffice-fresh
     nomacs
     pinta
     dbeaver
