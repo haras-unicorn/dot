@@ -9,4 +9,5 @@
   ];
 
   xdg.userDirs.createDirectories = true;
+  xdg.mimeApps.enable = true;
 }
