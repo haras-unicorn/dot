@@ -6,6 +6,7 @@
   home.packages = with pkgs; [
     xdg-user-dirs
     xdg-utils
+    shared-mime-info
   ];
 
   xdg.userDirs.createDirectories = true;
