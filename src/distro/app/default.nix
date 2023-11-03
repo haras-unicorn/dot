@@ -31,6 +31,7 @@
 
     "${self}/src/module/home/kitty"
     "${self}/src/module/home/code"
+    "${self}/src/module/home/lapce"
 
     "${self}/src/module/home/daw"
   ];
