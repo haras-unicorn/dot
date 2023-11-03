@@ -29,6 +29,8 @@
     "${self}/src/module/home/code"
 
     "${self}/src/module/home/daw"
+
+    "${self}/src/module/home/ffmpeg"
   ];
 
   home.packages = with pkgs; [
