@@ -48,6 +48,7 @@
     };
   };
 
+  # TODO: test this doesn't break anything
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
     xdg-desktop-portal-kde
