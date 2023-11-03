@@ -4,7 +4,7 @@
 
 let
   cut-1080p = pkgs.writeShellApplication {
-    name = "cut";
+    name = "ffmpeg-cut-1080p";
     runtimeInputs = [ pkgs.ffmpeg_6-full ];
     text = ''
       ffmpeg \
@@ -18,7 +18,7 @@ let
   };
 
   cut-720p = pkgs.writeShellApplication {
-    name = "cut";
+    name = "ffmpeg-cut-720p";
     runtimeInputs = [ pkgs.ffmpeg_6-full ];
     text = ''
       ffmpeg \
