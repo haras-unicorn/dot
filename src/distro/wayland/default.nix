@@ -23,7 +23,9 @@
     "${self}/src/module/home/gtk"
     "${self}/src/module/home/qt"
 
-    "${self}/src/module/home/emote"
+    # TODO: use when more stable and faster
+    # "${self}/src/module/home/spacedrive"
+    "${self}/src/module/home/pcmanfm"
   ];
 
   # NOTE: needed for tray items to work properly

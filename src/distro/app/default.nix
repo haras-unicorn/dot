@@ -14,7 +14,6 @@
     # "${self}/src/module/home/brave"
     # "${self}/src/module/home/chromium"
     # "${self}/src/module/home/vivaldi"
-
     # TODO: recompilation ...
     # "${self}/src/module/home/librewolf"
     "${self}/src/module/home/firefox"
@@ -24,17 +23,15 @@
     "${self}/src/module/home/ferdium"
 
     "${self}/src/module/home/ffmpeg"
-
-    # "${self}/src/module/home/spacedrive"
     "${self}/src/module/home/vlc"
-
     "${self}/src/module/home/spotify"
+    "${self}/src/module/home/daw"
 
     "${self}/src/module/home/kitty"
     "${self}/src/module/home/code"
     # "${self}/src/module/home/lapce"
 
-    "${self}/src/module/home/daw"
+    "${self}/src/module/home/emote"
   ];
 
   home.packages = with pkgs; [
