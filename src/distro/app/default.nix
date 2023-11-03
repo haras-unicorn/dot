@@ -26,6 +26,7 @@
     "${self}/src/module/home/ffmpeg"
 
     "${self}/src/module/home/spacedrive"
+    "${self}/src/module/home/vlc"
 
     "${self}/src/module/home/spotify"
 
@@ -39,7 +40,6 @@
   home.packages = with pkgs; [
     feh
     mpv
-    vlc
     libreoffice-fresh
     nomacs
     pinta
