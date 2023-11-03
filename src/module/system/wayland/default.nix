@@ -48,6 +48,11 @@
     };
   };
 
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-kde
+  ];
+
   # NOTE: fails with vulkan driver
   # programs.regreet.enable = true;
   # programs.regreet.settings = {
