@@ -49,6 +49,7 @@
       "${self}/src/module/system/windows"
 
       "${self}/src/module/system/locate"
+      "${self}/src/module/system/gvfs"
     ];
 
     hardware.enableAllFirmware = true;
