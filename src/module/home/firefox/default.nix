@@ -1,5 +1,7 @@
 { pkgs, config, userjs, ... }:
 
+# TODO: ensure ffmpeg?
+
 # NOTE: https://github.com/arkenfox/user.js/wiki
 # NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
 
