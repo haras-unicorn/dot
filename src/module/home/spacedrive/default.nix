@@ -15,6 +15,7 @@ let
     MimeType=inode/directory
   '';
   mime = {
+    # NOTE: like this because xdg has a problem with /nix/store hashes in filenames?
     "inode/directory" = "${config.xdg.dataHome}/applications/spacedrive.desktop";
   };
 in
