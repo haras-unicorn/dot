@@ -12,15 +12,14 @@ let
     Terminal=false
     Type=Application
     Version=1.4  
+    MimeType=inode/directory;
   '';
-  mime = {
-    "inode/directory" = "${desktopEntry}";
-  };
 in
 {
   home.packages = [ config.nur.repos.mikaelfangel-nur.spacedrive ];
 
   xdg.dataFile."applications/spacedrive.desktop".source = desktopEntry;
-  xdg.mimeApps.associations.added = mime;
-  xdg.mimeApps.associations.default = mime;
+  xdg.mimeApps.defaultApplications = {
+    "inode/directory" = "${desktopEntry}";
+  };
 }
