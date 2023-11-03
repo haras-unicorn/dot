@@ -51,10 +51,9 @@
     };
   };
 
-  # TODO: test this doesn't break anything
+  xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
-    xdg-desktop-portal-kde
   ];
 
   # NOTE: fails with vulkan driver
