@@ -3,7 +3,7 @@
 # TODO: codec from hardware
 
 let
-  cut-1080p = pkgs.writeShellApplication {
+  ffmpeg-cut-1080p = pkgs.writeShellApplication {
     name = "ffmpeg-cut-1080p";
     runtimeInputs = [ pkgs.ffmpeg_6-full ];
     text = ''
@@ -17,7 +17,7 @@ let
     '';
   };
 
-  cut-720p = pkgs.writeShellApplication {
+  ffmpeg-cut-720p = pkgs.writeShellApplication {
     name = "ffmpeg-cut-720p";
     runtimeInputs = [ pkgs.ffmpeg_6-full ];
     text = ''
@@ -33,8 +33,8 @@ let
 in
 {
   home.packages = with pkgs; [
-    cut-1080p
-    cut-720p
+    ffmpeg-cut-1080p
+    ffmpeg-cut-720p
     ffmpeg_6-full
   ];
 }
