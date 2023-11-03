@@ -35,12 +35,15 @@
     # numix-cursor-theme
     # (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
+
+  # TODO: uncouple from wayland/hyprland
   security.pam.services.gtklock = { };
 
+  # TODO: uncouple from wayland/hyprland
   programs.hyprland.enable = true;
   programs.hyprland.xwayland.enable = true;
 
-  # TODO: uncouple from hyprland
+  # TODO: uncouple from wayland/hyprland
   services.greetd.enable = true;
   services.greetd.settings = {
     default_session = {
