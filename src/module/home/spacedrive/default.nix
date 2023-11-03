@@ -2,6 +2,11 @@
 
 # TODO: https://github.com/NixOS/nixpkgs/issues/170254
 
+# NOTE: to remove:
+# - documents/.spacedrive
+# - .local/share/spacedrive
+# - .cache/spacedrive
+
 let
   desktopEntry = pkgs.writeText "spacedrive.desktop" ''
     [Desktop Entry]
