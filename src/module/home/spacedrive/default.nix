@@ -3,5 +3,5 @@
 # TODO: https://github.com/NixOS/nixpkgs/issues/170254
 
 {
-  home.packages = [ config.nur.repos.mikaelfangel-nur.pkgs.sp.spacedrive ];
+  home.packages = [ config.nur.repos.mikaelfangel-nur.spacedrive ];
 }
