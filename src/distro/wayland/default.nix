@@ -19,15 +19,18 @@
     "${self}/src/module/home/obs-studio"
     "${self}/src/module/home/grim"
     "${self}/src/module/home/miraclecast"
+    "${self}/src/module/home/gstreamer"
 
     "${self}/src/module/home/gtk"
     "${self}/src/module/home/qt"
 
+    "${self}/src/module/home/mangohud"
+    "${self}/src/module/home/emote"
+    "${self}/src/module/home/alarm"
+
     # TODO: use when more stable and faster
     # "${self}/src/module/home/spacedrive"
     "${self}/src/module/home/pcmanfm"
-
-    "${self}/src/module/home/mangohud"
   ];
 
   # NOTE: needed for tray items to work properly
