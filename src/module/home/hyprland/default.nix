@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 
+# TODO: window rules into modules
+
 with pkgs.lib;
 let
   cfg = config.de;
