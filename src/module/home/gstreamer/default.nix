@@ -7,5 +7,6 @@
     gst-libav
     gst-plugins-base
     gst-plugins-good
+    gst-plugins-ugly
   ];
 }
