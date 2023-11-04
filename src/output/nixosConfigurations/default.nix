@@ -141,7 +141,7 @@ builtins.foldl'
 
                   # TODO: figure out a cleaner way to do this
                   rebuild-wip = pkgs.writeShellApplication {
-                    name = "rebuild";
+                    name = "rebuild-wip";
                     runtimeInputs = [ ];
                     text = ''
                       if [[ ! -d "/home/${username}/src/dot" ]]; then
