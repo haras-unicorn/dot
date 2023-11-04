@@ -138,6 +138,24 @@ builtins.foldl'
                       sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
                     '';
                   };
+
+                  # TODO: figure out a cleaner way to do this
+                  rebuild-wip = pkgs.writeShellApplication {
+                    name = "rebuild";
+                    runtimeInputs = [ ];
+                    text = ''
+                      if [[ ! -d "/home/${username}/src/dot" ]]; then
+                        echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
+                        exit 1
+                      fi
+
+                      cd "/home/${username}/src/dot"
+                      git add .
+                      git commit -m "WIP"
+                      git push
+                      sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
+                    '';
+                  };
                 in
                 {
                   imports = [
@@ -150,7 +168,7 @@ builtins.foldl'
                   home.username = "${username}";
                   home.homeDirectory = "/home/${username}";
                   home.stateVersion = "23.11";
-                  home.packages = [ rebuild ];
+                  home.packages = [ rebuild rebuild-wip ];
                 });
           }
           else { }
