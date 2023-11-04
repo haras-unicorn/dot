@@ -4,7 +4,7 @@ let
   run = pkgs.writeShellApplication {
     name = "run";
     text = ''
-      nohup "$@" >&/dev/null
+      "$@" &>/dev/null & disown %-
     '';
   };
 in
