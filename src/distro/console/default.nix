@@ -1,5 +1,13 @@
 { self, pkgs, ... }:
 
+let
+  run = pkgs.writeShellApplication {
+    name = "run";
+    text = ''
+      nohup "$@" >&/dev/null
+    '';
+  };
+in
 {
   imports = [
     "${self}/src/module/home/gpg"
@@ -32,6 +40,7 @@
   ];
 
   home.packages = with pkgs; [
+    run
     man-pages
     man-pages-posix
     pciutils
