@@ -32,6 +32,7 @@
     # "${self}/src/module/home/lapce"
 
     "${self}/src/module/home/emote"
+    "${self}/src/module/home/alarm"
   ];
 
   home.packages = with pkgs; [
