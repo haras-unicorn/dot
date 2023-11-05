@@ -4,6 +4,8 @@
 , ...
 }:
 
+# FIXME: xen on efi https://github.com/NixOS/nixpkgs/issues/127404
+
 {
   environment.systemPackages = with pkgs; [
     wineWowPackages.stable
@@ -48,7 +50,6 @@
 
   programs.steam.enable = true;
 
-  # FIXME: https://github.com/NixOS/nixpkgs/issues/127404
   # virtualisation.xen.enable = true;
   # virtualisation.xen.domain0MemorySize = (hardware.ram * 3 / 4) / 1024;
 }

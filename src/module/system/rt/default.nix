@@ -1,12 +1,13 @@
 { pkgs, config, ... }:
 
+# FIXME: when using rt kernel: Failed PREEMPT_RT sanity check. Bailing out!
+
 # NOTE: https://github.com/musnix/musnix
 
 let
   hardware = config.dot.hardware;
 in
 {
-  # FIXME: Failed PREEMPT_RT sanity check. Bailing out!
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernel.sysctl = { "vm.swappiness" = 10; };
   boot.kernelParams = [ "threadirq" ];
@@ -52,9 +53,4 @@ in
     KERNEL=="rtc0", GROUP="audio"
     KERNEL=="hpet", GROUP="audio"
   '';
-
-  environment.systemPackages = with pkgs; [
-    helix
-    git
-  ];
 }
