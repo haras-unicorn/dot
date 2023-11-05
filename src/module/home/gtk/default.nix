@@ -26,7 +26,7 @@ in
 
   home.packages = with pkgs; [
     lxappearance
-    "${config.dot.font.sans.pkg}"
+    pkgs."${config.dot.font.sans.pkg}"
     sweet
     beauty-line-icon-theme
   ];
