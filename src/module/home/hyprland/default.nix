@@ -31,7 +31,7 @@ let
   binds = strings.concatStringsSep
     "\n"
     (builtins.map
-      (bind: "bind = ${strings.concatStringsSep " " bind.mods}, ${bind.key}, ${bind.command}")
+      (bind: "bind = ${strings.concatStringsSep " " bind.mods}, ${bind.key}, exec, ${bind.command}")
       cfg.keybinds);
 in
 {
