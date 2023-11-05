@@ -10,6 +10,7 @@ let
       (name: ''$env.${name} = $"(${builtins.toString cfg.sessionVariables."${name}"})"'')
       (builtins.attrNames cfg.sessionVariables));
 
+
   aliases = strings.concatStringsSep
     "\n"
     (builtins.map
