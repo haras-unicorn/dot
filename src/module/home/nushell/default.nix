@@ -1,12 +1,60 @@
-{ ... }:
+{ lib, ... }:
 
+with lib;
+let
+  cfg = config.shell;
+
+  vars = strings.intersperse
+    "\n"
+    (builtins.map
+      (name: ''$env.${name} = $"(${builtins.toString cfg.sessionVariables."${name}"})"'')
+      (builtins.attrNames cfg.sessionVariables));
+
+  startup = string.intersperse
+    "\n"
+    (builtins.map
+      (command: "${builtins.toString command}")
+      cfg.sessionStartup);
+in
 {
-  programs.nushell.enable = true;
+  options.shell = {
+    sessionVariables = mkOption {
+      type = with types; lazyAttrsOf (oneOf [ str path int float ]);
+      default = { };
+      example = { EDITOR = "hx"; };
+      description = ''
+        Environment variables to set on session start with Nushell.
+      '';
+    };
 
-  programs.nushell.environmentVariables = {
-    PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
-    PROMPT_INDICATOR_VI_NORMAL = "' '";
+    sessionStartup = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+      example = [ "fastfetch" ];
+      description = ''
+        Commands to execute on session start with Nushell.
+      '';
+    };
   };
 
-  programs.nushell.configFile.source = ./config.nu;
+  config = {
+    programs.nushell.enable = true;
+
+    programs.nushell.environmentVariables = {
+      PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
+      PROMPT_INDICATOR_VI_NORMAL = "' '";
+    };
+
+    programs.nushell.envFile.text = ''
+      ${builtins.readFile ./env.nu}
+
+      ${vars}
+    '';
+
+    programs.nushell.configFile.text = ''
+      ${builtins.readFile ./config.nu}
+
+      ${startup}
+    '';
+  };
 }

@@ -1,8 +1,15 @@
 { pkgs, ... }:
 
+# TODO: fix not actually typing stuff in
+
 {
-  # TODO: fix not actually typing stuff in
-  wayland.windowManager.hyprland.extraConfig = ''
-    bind = super, e, exec, ${pkgs.emote}/bin/emote
-  '';
+  de.keybinds = [
+    {
+      mods = [ "super" ];
+      key = "e";
+      command = "${pkgs.emote}/bin/emote";
+    }
+  ];
+
+  home.packages = with pkgs; [ emote ];
 }

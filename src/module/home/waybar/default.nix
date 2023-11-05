@@ -56,6 +56,7 @@ in
         };
       })
   ];
+
   programs.waybar.style = ''
     @import "${config.xdg.configHome}/waybar/colors.css";
 

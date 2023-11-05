@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# TODO: codec from hardware
+# TODO: codec from hardware?
 
 let
   ffmpeg-cut-1080p = pkgs.writeShellApplication {

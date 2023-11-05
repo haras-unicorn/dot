@@ -1,4 +1,8 @@
-{ self, pkgs, config, ... }:
+{ self
+, pkgs
+  # , config
+, ...
+}:
 
 {
   home.packages = with pkgs; [

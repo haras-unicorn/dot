@@ -1,11 +1,7 @@
 { pkgs, ... }:
 
-{
-  # TODO: bind
-  wayland.windowManager.hyprland.extraConfig = ''
-  '';
+# TODO: bind
 
-  home.packages = with pkgs; [
-    brightnessctl
-  ];
+{
+  home.packages = with pkgs; [ brightnessctl ];
 }

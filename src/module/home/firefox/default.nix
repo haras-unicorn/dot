@@ -1,18 +1,12 @@
-{ pkgs, config, userjs, ... }:
-
-# TODO: ensure ffmpeg?
+{ self, pkgs, config, userjs, ... }:
 
 # NOTE: https://github.com/arkenfox/user.js/wiki
 # NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
 
 {
-  de.sessionVariables = {
-    BROWSER = "${pkgs.firefox-bin}/bin/firefox";
-  };
-
-  wayland.windowManager.hyprland.extraConfig = ''
-    bind = super, w, exec, ${pkgs.firefox-bin}/bin/firefox
-  '';
+  imports = [
+    "${self}/src/module/home/ffmpeg"
+  ];
 
   programs.firefox.enable = true;
   programs.firefox.package = pkgs.firefox-bin;
@@ -56,8 +50,6 @@
       # };
     };
   };
-
-  # TODO: fix not keeping logins
 
   home.file.".mozilla/firefox/personal/user.js".text = ''
     ${builtins.readFile "${userjs}/user.js"}

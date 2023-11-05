@@ -4,14 +4,6 @@
 # TODO: wayland...
 
 {
-  de.sessionVariables = {
-    BROWSER = "${pkgs.ungoogled-chromium}/bin/chromium";
-  };
-
-  wayland.windowManager.hyprland.extraConfig = ''
-    bind = super, w, exec, ${pkgs.ungoogled-chromium}/bin/chromium
-  '';
-
   programs.chromium.enable = true;
   programs.chromium.package = pkgs.ungoogled-chromium;
   programs.chromium.dictionaries = with pkgs; [

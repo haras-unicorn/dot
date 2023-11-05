@@ -6,7 +6,6 @@
   services.locate.interval = "hourly";
   services.locate.localuser = null;
 
-  # TODO: add more
   services.locate.pruneNames = [
     ".bzr"
     ".cache"

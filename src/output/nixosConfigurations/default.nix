@@ -9,6 +9,12 @@
 , ...
 } @ inputs:
 
+# TODO: enable modules to do most/a lot of this stuff through meta
+# because u have insanely specific options like the spotify thing
+# which is really annoying
+# also maybe this is actually the best way to do it but i should
+# at least try making it better
+
 let
   meta = self + "/src/meta";
   metaModuleNames = (builtins.attrNames (builtins.readDir meta));
@@ -30,9 +36,12 @@ in
 builtins.foldl'
   (nixosConfigurations: config:
   let
-    configName = "${config.hostName}-${config.system}";
+    hostName = config.hostName;
+    system = config.system;
+    configName = "${hostName}-${system}";
     configModules = import "${host}/${config.hostName}";
     metaConfigModule = if builtins.hasAttr "meta" configModules then configModules.meta else { };
+    hardwareConfigModule = if builtins.hasAttr "hardware" configModules then configModules.hardware else { };
     systemConfigModule = if builtins.hasAttr "system" configModules then configModules.system else { };
     hasUserConfigModule = builtins.hasAttr "user" configModules;
     userConfigModule = if hasUserConfigModule then configModules.user else { };
@@ -79,7 +88,7 @@ builtins.foldl'
 
           nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
 
-          networking.hostName = "${username}-${config.hostName}";
+          networking.hostName = "${username}-${hostName}";
 
           system.stateVersion = "23.11";
         })
@@ -95,6 +104,7 @@ builtins.foldl'
           sops.age.generateKey = true;
         })
         metaConfigModule
+        hardwareConfigModule
         systemConfigModule
         ({ pkgs, config, ... }:
           if hasUserConfigModule then {
@@ -113,55 +123,53 @@ builtins.foldl'
               nur.hmModules.nur
               lulezojne.homeManagerModules.default
               metaConfigModule
+              userConfigModule
             ];
-            home-manager.users."${username}" =
-              ({ self, pkgs, ... }:
-                let
-                  # TODO: figure out a cleaner way to do this
-                  rebuild = pkgs.writeShellApplication {
-                    name = "rebuild";
-                    runtimeInputs = [ ];
-                    text = ''
-                      if [[ ! -d "/home/${username}/src/dot" ]]; then
-                        echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
-                        exit 1
-                      fi
+            home-manager.users."${username}" = ({ self, pkgs, ... }:
+              let
+                # TODO: figure out a cleaner way to do this
+                rebuild = pkgs.writeShellApplication {
+                  name = "rebuild";
+                  runtimeInputs = [ ];
+                  text = ''
+                    if [[ ! -d "/home/${username}/src/dot" ]]; then
+                      echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
+                      exit 1
+                    fi
 
-                      sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
-                    '';
-                  };
+                    sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
+                  '';
+                };
 
-                  # TODO: figure out a cleaner way to do this
-                  rebuild-wip = pkgs.writeShellApplication {
-                    name = "rebuild-wip";
-                    runtimeInputs = [ ];
-                    text = ''
-                      if [[ ! -d "/home/${username}/src/dot" ]]; then
-                        echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
-                        exit 1
-                      fi
+                # TODO: figure out a cleaner way to do this
+                rebuild-wip = pkgs.writeShellApplication {
+                  name = "rebuild-wip";
+                  runtimeInputs = [ ];
+                  text = ''
+                    if [[ ! -d "/home/${username}/src/dot" ]]; then
+                      echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
+                      exit 1
+                    fi
 
-                      cd "/home/${username}/src/dot"
-                      git add .
-                      git commit -m "WIP"
-                      git push
-                      sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
-                    '';
-                  };
-                in
-                {
-                  imports = [
-                    userConfigModule
-                  ];
+                    cd "/home/${username}/src/dot"
+                    git add .
+                    git commit -m "WIP"
+                    git push
+                    sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
+                  '';
+                };
+              in
+              {
+                programs.home-manager.enable = true;
+                nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
+                xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
+                home.username = "${username}";
+                home.homeDirectory = "/home/${username}";
+                home.stateVersion = "23.11";
+                home.packages = [ rebuild rebuild-wip ];
 
-                  programs.home-manager.enable = true;
-                  nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
-                  xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
-                  home.username = "${username}";
-                  home.homeDirectory = "/home/${username}";
-                  home.stateVersion = "23.11";
-                  home.packages = [ rebuild rebuild-wip ];
-                });
+                services.spotifyd.settings.global.device_name = "${username}-${hostName}";
+              });
           }
           else { }
         )

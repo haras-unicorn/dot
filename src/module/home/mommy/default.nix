@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# TODO: doesn't work
+# TODO: doesn't work - check note below
 
 {
   home.packages = with pkgs; [

@@ -1,12 +1,11 @@
 { pkgs, config, ... }:
 
 {
-  # TODO: make it work with hyprland?
-  programs.nushell.environmentVariables = {
-    LS_COLORS = "(vivid generate lulezojne | str trim)";
+  shell.sessionVariables = {
+    LS_COLORS = "vivid generate lulezojne";
   };
 
-  # TODO: then option when https://github.com/sharkdp/vivid/issues/116
+  # TODO: try then https://unix.stackexchange.com/a/38212
   programs.lulezojne.config.plop = [
     {
       template = builtins.readFile ./lulezojne.yml.hbs;

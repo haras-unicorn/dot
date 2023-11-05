@@ -1,7 +1,6 @@
 {
   meta = {
     dot = {
-      # TODO: check that all are respected
       user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
       user.shell = { pkg = "nushell"; bin = "nu"; };
       editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
@@ -20,38 +19,7 @@
     };
   };
 
-  system = { self, config, ... }: {
-    imports = [
-      "${self}/src/module/hardware/amd-cpu"
-      "${self}/src/module/hardware/nvidia-gpu"
-
-      "${self}/src/module/system/sudo"
-
-      "${self}/src/module/system/grub"
-      "${self}/src/module/system/plymouth"
-
-      "${self}/src/module/system/rt"
-
-      "${self}/src/module/system/location"
-      "${self}/src/module/system/network"
-
-      "${self}/src/module/system/ssh"
-      "${self}/src/module/system/keyring"
-      "${self}/src/module/system/polkit"
-
-      "${self}/src/module/system/pipewire"
-
-      "${self}/src/module/system/fonts"
-      # "${self}/src/module/system/xserver"
-      "${self}/src/module/system/wayland"
-
-      "${self}/src/module/system/virtual"
-      "${self}/src/module/system/windows"
-
-      "${self}/src/module/system/locate"
-      "${self}/src/module/system/gvfs"
-    ];
-
+  hardware = { config, ... }: {
     hardware.enableAllFirmware = true;
 
     boot.initrd.availableKernelModules = [
@@ -79,10 +47,39 @@
         size = config.dot.hardware.ram * 1024;
       }
     ];
+  };
 
-    # TODO: per user?
-    # services.transmission.enable = true;
-    # services.transmission.openPeerPorts = true;
+  system = { self, ... }: {
+    imports = [
+      "${self}/src/module/hardware/amd-cpu"
+      "${self}/src/module/hardware/nvidia-gpu"
+
+      "${self}/src/module/system/sudo"
+
+      "${self}/src/module/system/grub"
+      "${self}/src/module/system/plymouth"
+
+      "${self}/src/module/system/rt"
+
+      "${self}/src/module/system/location"
+      "${self}/src/module/system/network"
+
+      "${self}/src/module/system/ssh"
+      "${self}/src/module/system/keyring"
+      "${self}/src/module/system/polkit"
+
+      "${self}/src/module/system/pipewire"
+
+      "${self}/src/module/system/fonts"
+      "${self}/src/module/system/wayland"
+
+      "${self}/src/module/system/virtual"
+      "${self}/src/module/system/windows"
+
+      "${self}/src/module/system/locate"
+      "${self}/src/module/system/gvfs"
+      "${self}/src/module/system/transmission"
+    ];
   };
 
   user = { self, ... }: {

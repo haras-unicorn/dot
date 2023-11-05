@@ -36,13 +36,8 @@ from libqtile.widget.backlight import Backlight
 nvidia_bus_id = os.environ.get("NVIDIA_BUS_ID", None)
 net_interface_id = os.environ.get("NET_INTERFACE", None)
 cpu_sensor_tag = os.environ.get("CPU_SENSOR_TAG", None)
-display_brightness_device = os.environ.get(
-    "DISPLAY_BRIGHTNESS_DEVICE", None
-)
-keyboard_brightness_device = os.environ.get(
-    "KEYBOARD_BRIGHTNESS_DEVICE", None
-)
-
+display_brightness_device = os.environ.get("DISPLAY_BRIGHTNESS_DEVICE", None)
+keyboard_brightness_device = os.environ.get("KEYBOARD_BRIGHTNESS_DEVICE", None)
 
 # Locations
 
@@ -64,7 +59,6 @@ wallpaper_dir = os.path.join(assets_dir, "wallpapers")
 wallpaper_loc = os.path.join(wallpaper_dir, "magical-forest.jpg")
 lock_wallpaper_loc = os.path.join(wallpaper_dir, "cat-roof-city-neon.jpg")
 
-
 # Special keys
 
 super_mod = "mod4"
@@ -75,7 +69,6 @@ enter = "Return"
 escape = "Escape"
 tab = "Tab"
 print_screen = "Print"
-
 
 # Misc
 
@@ -164,7 +157,6 @@ widget_defaults = {
     "rounded": False,
 }
 
-
 # Lazy
 
 
@@ -181,9 +173,10 @@ def restart_qtile(_qtile: Qtile):
 @lazy.function
 def kill(_qtile: Qtile):
     if not _qtile.current_window:
-        os.system("xfce4-session-logout")   
+        os.system("xfce4-session-logout")
 
     _qtile.current_window.cmd_kill()
+
 
 @lazy.function
 def random_wallpaper(_: Qtile):
@@ -214,6 +207,7 @@ def decrease_keyboard_brightness(_: Qtile):
 
 
 def make_goto_group(new_group_name: str):
+
     @lazy.function
     def goto_group(_qtile: Qtile):
         if new_group_name == _qtile.current_group.name:
@@ -225,6 +219,7 @@ def make_goto_group(new_group_name: str):
 
 
 def make_goto_group_with_current_window(new_group_name: str):
+
     @lazy.function
     def goto_group_with_current_window(_qtile: Qtile):
         if new_group_name == _qtile.current_group.name:
@@ -240,6 +235,7 @@ def make_goto_group_with_current_window(new_group_name: str):
 
 
 def make_swap_group_content(new_group_name: str):
+
     @lazy.function
     def swap_group_content(_qtile: Qtile):
         current_group = _qtile.current_group
@@ -328,10 +324,8 @@ groups = [
         name=group_names[i],
         label=group_labels[i],
         layout="monadtall",
-    )
-    for i in range(len(group_names))
+    ) for i in range(len(group_names))
 ]
-
 
 # Layouts
 
@@ -369,7 +363,6 @@ layouts = [
     MonadTall(**layout_theme),
     Bsp(**layout_theme),
 ]
-
 
 # Screens
 
@@ -434,62 +427,46 @@ screens = [
                     text="|",
                     foreground=colors["blue"],
                 ),
-                CapsNumLockIndicator(
-                    foreground=colors["green"],
-                ),
+                CapsNumLockIndicator(foreground=colors["green"], ),
                 Chord(foreground=colors["yellow"]),
                 Spacer(length=bar.STRETCH),
-                # TODO: configure laptop things
-                *(
-                    [
-                        Battery(
-                            foreground=colors["green"],
-                        ),
-                        Backlight(
-                            foreground=colors["green"],
-                            backlight_name=display_brightness_device,
-                        ),
-                        TextBox(
-                            text="|",
-                            foreground=colors["blue"],
-                        ),
-                    ]
-                    if display_brightness_device is not None
-                    else []
-                ),
-                *(
-                    [
-                        Net(
-                            interface=[net_interface_id],
-                            format="{down:>8}↓{up:>8}↑",
-                            foreground=colors["cyan"],
-                            mouse_callbacks={
-                                "Button1": show_net_config,
-                            },
-                        ),
-                        TextBox(
-                            text="|",
-                            foreground=colors["blue"],
-                        ),
-                    ]
-                    if net_interface_id is not None
-                    else []
-                ),
+                # configure laptop things
+                *([
+                    Battery(foreground=colors["green"], ),
+                    Backlight(
+                        foreground=colors["green"],
+                        backlight_name=display_brightness_device,
+                    ),
+                    TextBox(
+                        text="|",
+                        foreground=colors["blue"],
+                    ),
+                ] if display_brightness_device is not None else []),
+                *([
+                    Net(
+                        interface=[net_interface_id],
+                        format="{down:>8}↓{up:>8}↑",
+                        foreground=colors["cyan"],
+                        mouse_callbacks={
+                            "Button1": show_net_config,
+                        },
+                    ),
+                    TextBox(
+                        text="|",
+                        foreground=colors["blue"],
+                    ),
+                ] if net_interface_id is not None else []),
                 TextBox(text="Temp", foreground=colors["foreground"]),
-                *(
-                    [
-                        NvidiaSensors(
-                            gpu_bus_id=nvidia_bus_id,
-                            format="[GPU: {temp}°C]",
-                            foreground=colors["yellow"],
-                            mouse_callbacks={
-                                "Button1": show_nvidia_temp,
-                            },
-                        ),
-                    ]
-                    if nvidia_bus_id is not None
-                    else []
-                ),
+                *([
+                    NvidiaSensors(
+                        gpu_bus_id=nvidia_bus_id,
+                        format="[GPU: {temp}°C]",
+                        foreground=colors["yellow"],
+                        mouse_callbacks={
+                            "Button1": show_nvidia_temp,
+                        },
+                    ),
+                ] if nvidia_bus_id is not None else []),
                 ThermalSensor(
                     fmt="[CPU: {}]",
                     foreground=colors["yellow"],
@@ -503,23 +480,19 @@ screens = [
                     foreground=colors["blue"],
                 ),
                 TextBox(text="Perf", foreground=colors["foreground"]),
-                *(
-                    [
-                        NvidiaSensors(
-                            gpu_bus_id=nvidia_bus_id,
-                            format="[GPU: {perf}]",
-                            foreground=colors["green"],
-                            mouse_callbacks={
-                                "Button1": show_gpu_config,
-                            },
-                        ),
-                    ]
-                    if nvidia_bus_id is not None
-                    else []
-                ),
+                *([
+                    NvidiaSensors(
+                        gpu_bus_id=nvidia_bus_id,
+                        format="[GPU: {perf}]",
+                        foreground=colors["green"],
+                        mouse_callbacks={
+                            "Button1": show_gpu_config,
+                        },
+                    ),
+                ] if nvidia_bus_id is not None else []),
                 CPU(
-                    format="[CPU:{freq_current: 1.1f}GHz "
-                    + "{load_percent: 2.1f}%]",
+                    format="[CPU:{freq_current: 1.1f}GHz " +
+                    "{load_percent: 2.1f}%]",
                     foreground=colors["red"],
                     mouse_callbacks={
                         "Button1": show_cpu_config,
@@ -530,8 +503,8 @@ screens = [
                     foreground=colors["blue"],
                 ),
                 Memory(
-                    format="Mem: {MemPercent: 2.0f}% "
-                    + "Swap: {SwapPercent: 2.0f}%",
+                    format="Mem: {MemPercent: 2.0f}% " +
+                    "Swap: {SwapPercent: 2.0f}%",
                     measure_mem="G",
                     mouse_callbacks={
                         "Button1": show_process_list,
@@ -544,7 +517,6 @@ screens = [
         ),
     ),
 ]
-
 
 # Mouse
 
@@ -767,22 +739,19 @@ keys = [
 ]
 
 for group_name in visible_group_names:
-    keys.extend(
-        [
-            Key([super_mod], group_name, make_goto_group(group_name)),
-            Key(
-                [super_mod, shift],
-                group_name,
-                make_goto_group_with_current_window(group_name),
-            ),
-            Key(
-                [super_mod, control, shift],
-                group_name,
-                make_swap_group_content(group_name),
-            ),
-        ]
-    )
-
+    keys.extend([
+        Key([super_mod], group_name, make_goto_group(group_name)),
+        Key(
+            [super_mod, shift],
+            group_name,
+            make_goto_group_with_current_window(group_name),
+        ),
+        Key(
+            [super_mod, control, shift],
+            group_name,
+            make_swap_group_content(group_name),
+        ),
+    ])
 
 # Hooks
 
@@ -798,6 +767,5 @@ def set_floating(window: Window):
         return False
 
     float_rules: List[Match] = floating_layout.float_rules
-    return functools.reduce(
-        lambda s, x: s or x.compare(window), float_rules, False
-    )
+    return functools.reduce(lambda s, x: s or x.compare(window), float_rules,
+                            False)

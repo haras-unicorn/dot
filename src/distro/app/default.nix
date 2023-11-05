@@ -3,9 +3,27 @@
 let
   term = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
   shell = "${pkgs."${config.dot.user.shell.pkg}"}/bin/${config.dot.user.shell.bin}";
+  browser = "${pkgs."${config.dot.browser.pkg}"}/bin/${config.dot.browser.bin}";
+  visual = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
 in
 {
-  wayland.windowManager.hyprland.extraConfig = "bind = super, t, exec, ${term} ${shell}";
+  de.keybinds = [
+    {
+      mods = [ "super" ];
+      key = "t";
+      command = "${term} ${shell}";
+    }
+    {
+      mods = [ "super" ];
+      key = "w";
+      command = "${browser}";
+    }
+  ];
+
+  de.sessionVariables = {
+    VISUAL = "${visual}";
+    BROWSER = "${browser}";
+  };
 
   services.udiskie.enable = true;
   services.network-manager-applet.enable = true;

@@ -1,9 +1,7 @@
 { ... }:
 
-{
-  # TODO: bind
-  wayland.windowManager.hyprland.extraConfig = ''
-  '';
+# TODO: keybinds
 
+{
   services.playerctld.enable = true;
 }

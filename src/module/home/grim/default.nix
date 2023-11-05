@@ -19,9 +19,13 @@ let
   };
 in
 {
-  wayland.windowManager.hyprland.extraConfig = ''
-    bind = , Print, exec, ${screenshot}/bin/screenshot
-  '';
+  de.keybinds = [
+    {
+      mods = [ ];
+      key = "Print";
+      command = "${screenshot}/bin/screenshot";
+    }
+  ];
 
   home.packages = with pkgs; [ grim screenshot ];
 }
