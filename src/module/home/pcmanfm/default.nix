@@ -6,7 +6,7 @@ let
   };
 in
 {
-  home.packages = with pkgs; [ pcmanfm ];
+  home.packages = with pkgs; [ pcmanfm xarchiver ];
 
   xdg.mimeApps.associations.added = mime;
   xdg.mimeApps.defaultApplications = mime;

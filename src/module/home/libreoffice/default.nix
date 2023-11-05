@@ -16,7 +16,6 @@ let
     "application/vnd.openxmlformats-officedocument.presentationml.presentation" = impress;
     "application/rtf" = writer;
     "application/vnd.visio" = draw;
-
   };
 in
 {
