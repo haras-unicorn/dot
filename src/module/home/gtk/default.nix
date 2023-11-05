@@ -24,10 +24,11 @@ in
     GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
   };
 
-  home.packages = [
-    pkgs."${config.dot.font.sans.pkg}"
-    pkgs.sweet
-    pkgs.beauty-line-icon-theme
+  home.packages = with pkgs; [
+    lxappearance
+    "${config.dot.font.sans.pkg}"
+    sweet
+    beauty-line-icon-theme
   ];
 
   xdg.configFile."gtk-2.0/settings.ini".text = ini2;
