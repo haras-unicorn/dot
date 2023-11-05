@@ -18,10 +18,9 @@ let
   };
 in
 {
-  # TODO: systemd
-  wayland.windowManager.hyprland.extraConfig = ''
-    exec-once = ${pkgs.swww}/bin/swww init
-  '';
+  de.sessionStartup = [
+    "${pkgs.swww}/bin/swww init"
+  ];
 
   home.packages = with pkgs; [
     swww

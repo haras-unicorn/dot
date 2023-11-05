@@ -1,10 +1,9 @@
 { pkgs, ... }:
 
 {
-  # TODO: systemd
-  wayland.windowManager.hyprland.extraConfig = ''
-    exec-once = ${pkgs.keepassxc}/bin/keepassxc
-  '';
+  de.sessionStartup = [
+    "${pkgs.keepassxc}/bin/keepassxc"
+  ];
 
   home.packages = with pkgs; [
     keepassxc

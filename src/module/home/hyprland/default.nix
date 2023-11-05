@@ -24,6 +24,13 @@ let
     (builtins.map
       (name: "env = ${name}, ${builtins.toString cfg.sessionVariables."${name}"}")
       (builtins.attrNames cfg.sessionVariables));
+
+  startup = builtins.foldl'
+    (vars: next: "${vars}\n${next}")
+    ""
+    (builtins.map
+      (command: "exec-once = ${builtins.toString command}")
+      cfg.sessionStartup);
 in
 {
   options.de =
@@ -33,7 +40,16 @@ in
         default = { };
         example = { EDITOR = "hx"; };
         description = ''
-          Environment variables to set with hyprland.
+          Environment variables to set on session start with Hyprland.
+        '';
+      };
+
+      sessionStartup = mkOption {
+        type = with types; listOf str;
+        default = [ ];
+        example = [ "keepassxc" ];
+        description = ''
+          Commands to execute on session start with Hyprland.
         '';
       };
     };
@@ -58,6 +74,8 @@ in
         env = XDG_SESSION_DESKTOP, Hyprland
 
         ${vars}
+
+        ${startup}
       '';
 
       programs.lulezojne.config.plop = [

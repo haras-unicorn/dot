@@ -1,10 +1,11 @@
 { pkgs, ... }:
 
+# TODO: figure out why the sound doesn't work
+
 {
-  # TODO: systemd
-  wayland.windowManager.hyprland.extraConfig = ''
-    exec-once = ${pkgs.alarm-clock-applet}/bin/alarm-clock-applet
-  '';
+  de.sessionStartup = [
+    "${pkgs.alarm-clock-applet}/bin/alarm-clock-applet"
+  ];
 
   home.packages = with pkgs; [ alarm-clock-applet ];
 } 

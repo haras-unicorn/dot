@@ -4,10 +4,9 @@ let
   hardware = config.dot.hardware;
 in
 {
-  # TODO: systemd
-  wayland.windowManager.hyprland.extraConfig = ''
-    exec-once = ${pkgs.waybar}/bin/waybar
-  '';
+  de.sessionStartup = [
+    "${pkgs.waybar}/bin/waybar"
+  ];
 
   programs.lulezojne.config = {
     plop = [

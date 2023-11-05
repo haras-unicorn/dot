@@ -1,12 +1,11 @@
 { pkgs, ... }:
 
-# TODO: https://github.com/elkowar/eww/pull/743
+# TODO: use instead of waybar after https://github.com/elkowar/eww/pull/743
 
 {
-  # TODO: systemd
-  wayland.windowManager.hyprland.extraConfig = ''
-    exec-once = ${pkgs.eww-wayland}/bin/eww daemon
-  '';
+  de.sessionStartup = [
+    "${pkgs.eww-wayland}/bin/eww daemon"
+  ];
 
   programs.eww.enable = true;
   programs.eww.package = pkgs.eww-wayland;

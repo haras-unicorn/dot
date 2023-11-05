@@ -15,10 +15,9 @@ let
   };
 in
 {
-  # TODO: systemd
-  wayland.windowManager.hyprland.extraConfig = ''
-    exec-once = ${ferdium}/bin/ferdium
-  '';
+  de.sessionStartup = [
+    "${ferdium}/bin/ferdium"
+  ];
 
   home.packages = [
     ferdium
