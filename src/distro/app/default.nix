@@ -25,9 +25,6 @@ in
     BROWSER = "${browser}";
   };
 
-  services.udiskie.enable = true;
-  services.network-manager-applet.enable = true;
-
   home.packages = with pkgs; [
     feh
     mpv
@@ -47,6 +44,8 @@ in
     "${self}/src/module/home/vlc"
     "${self}/src/module/home/spotify"
     "${self}/src/module/home/daw"
+    "${self}/src/module/home/udiskie"
+    "${self}/src/module/home/nm-applet"
 
     # TODO: fix infinite recursion
     # "${self}/src/module/home/${config.dot.term.module}"
