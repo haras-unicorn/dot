@@ -32,7 +32,12 @@
     };
   };
 
-  hardware = { config, ... }: {
+  hardware = { self, config, ... }: {
+    imports = [
+      "${self}/src/module/hardware/amd-cpu"
+      "${self}/src/module/hardware/nvidia-gpu"
+    ];
+
     hardware.enableAllFirmware = true;
 
     boot.initrd.availableKernelModules = [
@@ -64,25 +69,19 @@
 
   system = { self, ... }: {
     imports = [
-      "${self}/src/module/hardware/amd-cpu"
-      "${self}/src/module/hardware/nvidia-gpu"
-
-      "${self}/src/module/system/sudo"
-
       "${self}/src/module/system/grub"
       "${self}/src/module/system/plymouth"
-
       "${self}/src/module/system/rt"
 
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
 
+      "${self}/src/module/system/sudo"
       "${self}/src/module/system/ssh"
       "${self}/src/module/system/keyring"
       "${self}/src/module/system/polkit"
 
       "${self}/src/module/system/pipewire"
-
       "${self}/src/module/system/fonts"
       "${self}/src/module/system/wayland"
 

@@ -1,10 +1,10 @@
 { pkgs
 , config
-  # , hardware
 , ...
 }:
 
 # FIXME: xen on efi https://github.com/NixOS/nixpkgs/issues/127404
+# it should be a kernel module and not here
 
 # TODO: retroarch and cartridges
 
@@ -51,7 +51,4 @@
   services.packagekit.enable = true;
 
   programs.steam.enable = true;
-
-  # virtualisation.xen.enable = true;
-  # virtualisation.xen.domain0MemorySize = (hardware.ram * 3 / 4) / 1024;
 }
