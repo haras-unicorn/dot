@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# FIXME: integrate with hardware (especially nvtop)
+
 {
   home.packages = with pkgs; [
     lm_sensors
