@@ -2,8 +2,6 @@
 
 {
   fonts.fontDir.enable = true;
-  fonts.fontconfig.enable = true;
-
   fonts.packages = [
     pkgs."${config.dot.font.sans.pkg}"
     pkgs."${config.dot.font.serif.pkg}"
@@ -13,8 +11,9 @@
   fonts.enableDefaultPackages = true;
   fonts.enableGhostscriptFonts = true;
 
-  fonts.defaultFonts.sansSerif = [ config.dot.font.sans.name ];
-  fonts.defaultFonts.serif = [ config.dot.font.serif.name ];
-  fonts.defaultFonts.emoji = [ config.dot.font.emoji.name ];
-  fonts.defaultFonts.monospace = [ config.dot.font.nerd.name ];
+  fonts.fontconfig.enable = true;
+  fonts.fontconfig.defaultFonts.sansSerif = [ config.dot.font.sans.name ];
+  fonts.fontconfig.defaultFonts.serif = [ config.dot.font.serif.name ];
+  fonts.fontconfig.defaultFonts.emoji = [ config.dot.font.emoji.name ];
+  fonts.fontconfig.defaultFonts.monospace = [ config.dot.font.nerd.name ];
 }
