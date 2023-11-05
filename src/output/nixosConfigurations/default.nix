@@ -81,12 +81,12 @@ builtins.foldl'
 
           system.stateVersion = "23.11";
         })
-        ({ lib, config, nixos-wsl, ... }: {
-          imports = lib.mkIf config.dot.wsl [ nixos-wsl.nixosModules.wsl ];
+        ({ lib, config, nixos-wsl, ... }: lib.mkIf config.dot.wsl {
+          imports = [ nixos-wsl.nixosModules.wsl ];
           wsl.defaultUser = "${username}";
         })
-        ({ lib, config, sops-nix, ... }: {
-          imports = lib.mkIf config.dot.secrets [ sops-nix.nixosModules.sops ];
+        ({ lib, config, sops-nix, ... }: lib.mkIf config.dot.secrets {
+          imports = [ sops-nix.nixosModules.sops ];
           sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
           sops.age.keyFile = "/var/lib/sops-nix/key.txt";
           sops.age.generateKey = true;
