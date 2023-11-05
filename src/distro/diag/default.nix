@@ -14,5 +14,6 @@
     hwinfo
     htop
     nvtop
+    tokei
   ];
 }
