@@ -16,6 +16,9 @@ let
     "text/css" = visualDesktop;
     "application/javascript" = visualDesktop;
     "application/json" = visualDesktop;
+    "application/x-sh" = visualDesktop;
+    "application/xhtml+xml" = visualDesktop;
+    "application/xml" = visualDesktop;
   };
 
   mime = browserMime // visualMime;
