@@ -1,9 +1,9 @@
 { pkgs, ... }:
 
 let
-  desktop = "${pkgs.libsForQt5.okular}/share/applications/okularApplication_pdf.desktop";
+  pdf = "${pkgs.libsForQt5.okular}/share/applications/okularApplication_pdf.desktop";
   mime = {
-    "application/pdf" = desktop;
+    "application/pdf" = pdf;
   };
 in
 {
