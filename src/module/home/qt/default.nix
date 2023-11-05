@@ -14,7 +14,6 @@
   home.packages = with pkgs; [
     libsForQt5.plasma-integration
     libsForQt5.systemsettings
-    qtstyleplugin-kvantum-qt4
     libsForQt5.qtstyleplugin-kvantum
     qt6Packages.qtstyleplugin-kvantum
   ];
