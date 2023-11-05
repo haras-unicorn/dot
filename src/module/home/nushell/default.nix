@@ -4,13 +4,13 @@ with lib;
 let
   cfg = config.shell;
 
-  vars = strings.intersperse
+  vars = strings.concatStringsSep
     "\n"
     (builtins.map
       (name: ''$env.${name} = $"(${builtins.toString cfg.sessionVariables."${name}"})"'')
       (builtins.attrNames cfg.sessionVariables));
 
-  startup = string.intersperse
+  startup = string.concatStringsSep
     "\n"
     (builtins.map
       (command: "${builtins.toString command}")

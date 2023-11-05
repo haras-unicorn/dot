@@ -16,22 +16,22 @@ let
     '';
   };
 
-  vars = strings.intersperse
+  vars = strings.concatStringsSep
     "\n"
     (builtins.map
       (name: "env = ${name}, ${builtins.toString cfg.sessionVariables."${name}"}")
       (builtins.attrNames cfg.sessionVariables));
 
-  startup = string.intersperse
+  startup = string.concatStringsSep
     "\n"
     (builtins.map
       (command: "exec-once = ${builtins.toString command}")
       cfg.sessionStartup);
 
-  binds = strings.intersperse
+  binds = strings.concatStringsSep
     "\n"
     (builtins.map
-      (bind: "bind = ${strings.intersperse " " bind.mods}, ${bind.key}, ${bind.command}")
+      (bind: "bind = ${strings.concatStringsSep " " bind.mods}, ${bind.key}, ${bind.command}")
       cfg.keybinds);
 in
 {
@@ -90,7 +90,9 @@ in
       env = XDG_SESSION_DESKTOP, Hyprland
 
       ${vars}
+
       ${startup}
+
       ${binds}
     '';
 
