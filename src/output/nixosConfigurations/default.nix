@@ -83,13 +83,19 @@ builtins.foldl'
         })
         ({ lib, config, nixos-wsl, ... }: lib.mkIf config.dot.wsl {
           imports = [ nixos-wsl.nixosModules.wsl ];
-          wsl.defaultUser = "${username}";
+          options = { };
+          config = {
+            wsl.defaultUser = "${username}";
+          };
         })
         ({ lib, config, sops-nix, ... }: lib.mkIf config.dot.secrets {
           imports = [ sops-nix.nixosModules.sops ];
-          sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-          sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-          sops.age.generateKey = true;
+          options = { };
+          config = {
+            sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+            sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+            sops.age.generateKey = true;
+          };
         })
         metaConfigModule
         systemConfigModule
