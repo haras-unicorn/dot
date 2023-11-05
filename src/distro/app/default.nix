@@ -30,8 +30,12 @@ in
     "${self}/src/module/home/spotify"
     "${self}/src/module/home/daw"
 
-    "${self}/src/module/home/${config.term.module}"
-    "${self}/src/module/home/${config.visual.module}"
-    "${self}/src/module/home/${config.browser.module}"
+    # TODO: fix infinite recursion
+    # "${self}/src/module/home/${config.term.module}"
+    # "${self}/src/module/home/${config.visual.module}"
+    # "${self}/src/module/home/${config.browser.module}"
+    "${self}/src/module/home/kitty"
+    "${self}/src/module/home/code"
+    "${self}/src/module/home/firefox"
   ];
 }
