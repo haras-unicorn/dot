@@ -4,7 +4,7 @@
       user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
       user.shell = { pkg = "nushell"; bin = "nu"; };
       editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-      visual = { pkg = "codium-fhs"; bin = "codium"; module = "code"; };
+      visual = { pkg = "vscodium-fhs"; bin = "codium"; module = "code"; };
       term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
       browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
       gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
