@@ -49,7 +49,7 @@ in
         output = hardware.mainMonitor;
         network = { interface = hardware.networkInterface; };
         tray = {
-          icon-size = 16;
+          icon-size = config.dot.font.size.medium;
         };
         temperature = {
           hwmon-path = hardware.cpuHwmon;

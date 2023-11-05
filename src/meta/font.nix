@@ -28,7 +28,7 @@ in
     emoji = mkFontOption "emoji" "Noto Color Emoji" "noto-fonts-emoji";
     extra = mkOption {
       type = with types; listOf str;
-      default = [ "" ];
+      default = [ ];
 
     };
     size = {
