@@ -11,7 +11,8 @@ in
   home.packages = with pkgs; [
     file
     zip
-    rar
+    unzip
+    unrar
     p7zip
     pastel
     jq
