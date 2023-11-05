@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.term;
 
-  vars = string.concatStringsSep
+  vars = strings.concatStringsSep
     "\n"
     (builtins.map
       (name: "env ${name}=${builtins.toString cfg.sessionVariables."${name}"}")

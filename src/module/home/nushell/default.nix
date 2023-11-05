@@ -10,7 +10,7 @@ let
       (name: ''$env.${name} = $"(${builtins.toString cfg.sessionVariables."${name}"})"'')
       (builtins.attrNames cfg.sessionVariables));
 
-  startup = string.concatStringsSep
+  startup = strings.concatStringsSep
     "\n"
     (builtins.map
       (command: "${builtins.toString command}")
