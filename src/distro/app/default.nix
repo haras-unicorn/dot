@@ -5,6 +5,20 @@ let
   shell = "${pkgs."${config.dot.user.shell.pkg}"}/bin/${config.dot.user.shell.bin}";
   browser = "${pkgs."${config.dot.browser.pkg}"}/bin/${config.dot.browser.bin}";
   visual = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
+
+  browserDesktop = "${pkgs."${config.dot.browser.pkg}"}/share/applications/${config.dot.browser.bin}.desktop";
+  browserMime = {
+    "text/html" = browserDesktop;
+  };
+
+  visualDesktop = "${pkgs."${config.dot.visual.pkg}"}/share/applications/${config.dot.visual.bin}.desktop";
+  visualMime = {
+    "text/css" = visualDesktop;
+    "application/javascript" = visualDesktop;
+    "application/json" = visualDesktop;
+  };
+
+  mime = browserMime // visualMime;
 in
 {
   de.keybinds = [
@@ -25,10 +39,12 @@ in
     BROWSER = "${browser}";
   };
 
+  xdg.mimeApps.associations.added = mime;
+  xdg.mimeApps.defaultApplications = mime;
+
   home.packages = with pkgs; [
     feh
     mpv
-    libreoffice-fresh
     nomacs
     pinta
     dbeaver
