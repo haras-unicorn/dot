@@ -4,6 +4,8 @@
 , nur
 , home-manager
 , lulezojne
+, nixos-wsl
+, sops-nix
 , ...
 } @ inputs:
 
@@ -81,21 +83,16 @@ builtins.foldl'
 
           system.stateVersion = "23.11";
         })
-        ({ lib, config, nixos-wsl, ... }: lib.mkIf config.dot.wsl {
-          imports = [ nixos-wsl.nixosModules.wsl ];
-          options = { };
-          config = {
-            wsl.defaultUser = "${username}";
-          };
+        nixos-wsl.nixosModules.wsl # NOTE: anabled with wsl.enable
+        ({ lib, config, ... }: lib.mkIf config.dot.wsl {
+          wsl.enable = true;
+          wsl.defaultUser = "${username}";
         })
+        sops-nix.nixosModules.sops # NOTE: enabled when at least one secret is added
         ({ lib, config, sops-nix, ... }: lib.mkIf config.dot.secrets {
-          imports = [ sops-nix.nixosModules.sops ];
-          options = { };
-          config = {
-            sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-            sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-            sops.age.generateKey = true;
-          };
+          sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+          sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+          sops.age.generateKey = true;
         })
         metaConfigModule
         systemConfigModule
