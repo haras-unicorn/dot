@@ -6,20 +6,20 @@
 
 let
   ini2 = ''
-    gtk-font-name = "${config.dot.font.sans.name}"
+    gtk-font-name = "${config.dot.font.sans.name}" 16
     gtk-icon-theme-name = "BeautyLine"
     gtk-theme-name = "Sweet-Dark"
   '';
   ini3 = ''
     [Settings]
-    gtk-font-name=${config.dot.font.sans.name}
-    gtk-icon-theme-name=BeautyLine
-    gtk-theme-name=Sweet-Dark
+    gtk-font-name = ${config.dot.font.sans.name} 16
+    gtk-icon-theme-name = BeautyLine
+    gtk-theme-name = Sweet-Dark
   '';
   ini4 = ini3;
 
   dconf = {
-    font-name = "${config.dot.font.sans.name}";
+    font-name = ''"${config.dot.font.sans.name}" 16'';
     gtk-theme = "Sweet-Dark";
     icon-theme = "BeautyLine";
   };
