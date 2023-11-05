@@ -6,7 +6,7 @@
     mako
   ];
 
-  de.startupSession = [ "${pkgs.mako}/bin/mako" ];
+  de.sessionStartup = [ "${pkgs.mako}/bin/mako" ];
 
   programs.lulezojne.config.plop = [
     {
