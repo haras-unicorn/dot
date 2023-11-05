@@ -6,7 +6,7 @@
 
 # FIXME: xen on efi https://github.com/NixOS/nixpkgs/issues/127404
 
-# TODO: retroarch
+# TODO: retroarch and cartridges
 
 {
   environment.systemPackages = with pkgs; [
