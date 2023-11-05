@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: looks ugly
+
 {
   home.packages = with pkgs; [
     fastfetch

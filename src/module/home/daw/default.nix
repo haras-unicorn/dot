@@ -2,7 +2,6 @@
 
 {
   home.packages = with pkgs; [
-    lmms
     ardour
     zrythm
     audacity

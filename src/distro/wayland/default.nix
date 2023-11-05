@@ -28,9 +28,9 @@
     "${self}/src/module/home/emote"
     "${self}/src/module/home/alarm"
 
-    # TODO: use when more stable and faster
-    # "${self}/src/module/home/spacedrive"
     "${self}/src/module/home/pcmanfm"
+
+    # "${self}/src/module/home/spacedrive"
   ];
 
   # NOTE: needed for tray items to work properly

@@ -1,6 +1,8 @@
 { pkgs, config, ... }:
 
-# TODO: https://github.com/NixOS/nixpkgs/issues/170254
+# TODO: use when more usable and stable
+
+# NOTE: https://github.com/NixOS/nixpkgs/issues/170254
 # configure and all when better
 
 # NOTE: to remove:

@@ -1,36 +1,14 @@
-{ self, pkgs, ... }:
+{ self, pkgs, config, ... }:
 
+let
+  term = "${pkgs."${config.term.pkg}"}/bin/${config.term.bin}";
+  shell = "${pkgs."${config.user.shell.pkg}"}/bin/${config.user.shell.bin}";
+in
 {
-  # TODO: nushell may not be our preferred shell :/
-  wayland.windowManager.hyprland.extraConfig = ''
-    bind = super, t, exec, ${pkgs.kitty}/bin/kitty ${pkgs.nushell}/bin/nu
-  '';
+  wayland.windowManager.hyprland.extraConfig = "bind = super, t, exec, ${term} ${shell}";
 
-  imports = [
-    # TODO: wayland ...
-    # "${self}/src/module/home/cursor"
-
-    # TODO: wayland ...
-    # "${self}/src/module/home/brave"
-    # "${self}/src/module/home/chromium"
-    # "${self}/src/module/home/vivaldi"
-    # TODO: recompilation ...
-    # "${self}/src/module/home/librewolf"
-    "${self}/src/module/home/firefox"
-
-    "${self}/src/module/home/syncthing"
-    "${self}/src/module/home/keepassxc"
-    "${self}/src/module/home/ferdium"
-
-    "${self}/src/module/home/ffmpeg"
-    "${self}/src/module/home/vlc"
-    "${self}/src/module/home/spotify"
-    "${self}/src/module/home/daw"
-
-    "${self}/src/module/home/kitty"
-    "${self}/src/module/home/code"
-    # "${self}/src/module/home/lapce"
-  ];
+  services.udiskie.enable = true;
+  services.network-manager-applet.enable = true;
 
   home.packages = with pkgs; [
     feh
@@ -42,6 +20,18 @@
     angryipscanner
   ];
 
-  services.udiskie.enable = true;
-  services.network-manager-applet.enable = true;
+  imports = [
+    "${self}/src/module/home/syncthing"
+    "${self}/src/module/home/keepassxc"
+    "${self}/src/module/home/ferdium"
+
+    "${self}/src/module/home/ffmpeg"
+    "${self}/src/module/home/vlc"
+    "${self}/src/module/home/spotify"
+    "${self}/src/module/home/daw"
+
+    "${self}/src/module/home/${config.term.module}"
+    "${self}/src/module/home/${config.visual.module}"
+    "${self}/src/module/home/${config.browser.module}"
+  ];
 }

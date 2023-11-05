@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: wayland...
+
 {
   home.pointerCursor = {
     package = pkgs.numix-cursor-theme;

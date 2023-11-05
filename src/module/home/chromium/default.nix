@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 # TODO: fix attempting to compile
+# TODO: wayland...
 
 {
   de.sessionVariables = {

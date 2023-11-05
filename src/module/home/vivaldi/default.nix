@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: wayland...
+
 {
   de.sessionVariables = {
     BROWSER = "${pkgs.vivaldi}/bin/vivaldi";

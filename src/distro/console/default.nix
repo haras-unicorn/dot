@@ -1,73 +1,29 @@
-{ self, pkgs, ... }:
+{ self, pkgs, config, ... }:
 
-let
-  run = pkgs.writeShellApplication {
-    name = "run";
-    text = ''
-      "$@" &>/dev/null & disown %-
-    '';
-  };
-in
 {
+  home.packages = with pkgs; [
+    file
+    unzip
+    unrar
+    pastel
+    jq
+    yq
+  ];
+
   imports = [
     "${self}/src/module/home/gpg"
     "${self}/src/module/home/ssh"
 
-    "${self}/src/module/home/git"
-
-    "${self}/src/module/home/yazi"
-
-    "${self}/src/module/home/bat"
-    "${self}/src/module/home/ripgrep"
-    "${self}/src/module/home/eza"
-
     "${self}/src/module/home/direnv"
     "${self}/src/module/home/starship"
     "${self}/src/module/home/zoxide"
+    "${self}/src/module/home/${config.user.shell.module}"
 
-    # TODO: looks ugly
-    # "${self}/src/module/home/fastfetch"
-    # TODO: doesn't work
-    # "${self}/src/module/home/mommy"
-    "${self}/src/module/home/vivid"
-
-    "${self}/src/module/home/nushell"
-
-    "${self}/src/module/home/helix"
+    "${self}/src/module/home/yazi"
+    "${self}/src/module/home/git"
+    "${self}/src/module/home/${config.editor.module}"
 
     "${self}/src/module/home/open-interpreter"
     "${self}/src/module/home/aichat"
   ];
-
-  home.packages = with pkgs; [
-    run
-    man-pages
-    man-pages-posix
-    pciutils
-    lsof
-    dmidecode
-    inxi
-    hwinfo
-    ncdu
-    fd
-    file
-    duf
-    unzip
-    unrar
-    sd
-    htop
-    lm_sensors
-    pastel
-    jq
-    yq
-    nvtop
-    glxinfo
-  ];
-
-  home.shellAliases = {
-    pls = "sudo";
-    rm = "rm -i";
-    mv = "mv -i";
-    yas = "yes";
-  };
 }
