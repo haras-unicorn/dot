@@ -45,7 +45,6 @@ in
   home.packages = with pkgs; [
     feh
     mpv
-    nomacs
     pinta
     dbeaver
     angryipscanner
@@ -62,6 +61,8 @@ in
     "${self}/src/module/home/daw"
     "${self}/src/module/home/udiskie"
     "${self}/src/module/home/nm-applet"
+    "${self}/src/module/home/libreoffice"
+    "${self}/src/module/home/nomacs"
 
     # TODO: fix infinite recursion
     # "${self}/src/module/home/${config.dot.term.module}"
