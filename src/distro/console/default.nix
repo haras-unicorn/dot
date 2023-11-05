@@ -10,8 +10,11 @@ in
 {
   home.packages = with pkgs; [
     file
+    zip
     unzip
+    rar
     unrar
+    p7zip
     pastel
     jq
     yq
