@@ -2,9 +2,6 @@
 , flake-utils
 , nixpkgs
 , nur
-  # TODO: fix infinite recursion?
-  # , nixos-wsl
-  # , sops-nix
 , home-manager
 , lulezojne
 , ...
@@ -84,24 +81,16 @@ builtins.foldl'
 
           system.stateVersion = "23.11";
         })
-        # TODO: fix infinite recursion?
-        # NOTE: im guessing because the option declaration from wsl depends on option definition here
-        # ({ config, ... }: {
-        #   imports =
-        #     if config.dot.wsl then [
-        #       nixos-wsl.nixosModules.wsl
-        #     ] else [ ];
-        #   wsl.defaultUser = "${username}";
-        # })
-        # ({ config, ... }: {
-        #   imports =
-        #     if config.dot.secrets then [
-        #       sops-nix.nixosModules.sops
-        #     ] else [ ];
-        #   sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-        #   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-        #   sops.age.generateKey = true;
-        # })
+        ({ lib, config, nixos-wsl, ... }: {
+          imports = lib.mkIf config.dot.wsl [ nixos-wsl.nixosModules.wsl ];
+          wsl.defaultUser = "${username}";
+        })
+        ({ lib, config, sops-nix, ... }: {
+          imports = lib.mkIf config.dot.secrets [ sops-nix.nixosModules.sops ];
+          sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+          sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+          sops.age.generateKey = true;
+        })
         metaConfigModule
         systemConfigModule
         ({ pkgs, config, ... }:

@@ -1,7 +1,5 @@
 { lib, ... }:
 
-# TODO: couple shell options
-
 with lib;
 {
   options.dot.user = {
