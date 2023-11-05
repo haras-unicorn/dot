@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.shellAliases = {
+  shell.aliases = {
     sed = "${pkgs.sd}/bin/sd";
   };
 

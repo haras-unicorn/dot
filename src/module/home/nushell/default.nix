@@ -10,6 +10,12 @@ let
       (name: ''$env.${name} = $"(${builtins.toString cfg.sessionVariables."${name}"})"'')
       (builtins.attrNames cfg.sessionVariables));
 
+  aliases = strings.concatStringsSep
+    "\n"
+    (builtins.map
+      (name: ''alias ${name} = ${builtins.toString cfg.aliases."${name}"}'')
+      (builtins.attrNames cfg.aliases));
+
   startup = strings.concatStringsSep
     "\n"
     (builtins.map
@@ -24,6 +30,15 @@ in
       example = { EDITOR = "hx"; };
       description = ''
         Environment variables to set on session start with Nushell.
+      '';
+    };
+
+    aliases = mkOption {
+      type = with types; lazyAttrsOf str;
+      default = { };
+      example = { rm = "rm -i"; };
+      description = ''
+        Aliases to use in Nushell.
       '';
     };
 
@@ -53,6 +68,8 @@ in
 
     programs.nushell.configFile.text = ''
       ${builtins.readFile ./config.nu}
+
+      ${aliases}
 
       ${startup}
     '';

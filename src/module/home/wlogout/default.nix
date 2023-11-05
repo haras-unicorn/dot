@@ -49,6 +49,10 @@
   programs.wlogout.style = ''
     @import "${config.xdg.configHome}/wlogout/colors.css";
 
+    * {
+      font-family: '${config.dot.font.sans.name}';
+    }
+
     #lock {
       background-image: image(url("${./lock.png}"));
     }

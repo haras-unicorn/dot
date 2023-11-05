@@ -1,9 +1,12 @@
 { self
 , pkgs
-  # , config
+, config
 , ...
 }:
 
+let
+  editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
+in
 {
   home.packages = with pkgs; [
     file
@@ -13,6 +16,14 @@
     jq
     yq
   ];
+
+  de.sessionVariables = {
+    EDITOR = editor;
+  };
+
+  shell.aliases = {
+    sis = editor;
+  };
 
   imports = [
     "${self}/src/module/home/gpg"

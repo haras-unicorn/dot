@@ -60,8 +60,8 @@ in
   programs.waybar.style = ''
     @import "${config.xdg.configHome}/waybar/colors.css";
 
-    #waybar {
-      font-size: 14px;
+    * {
+      font-family: '${config.dot.font.sans.name}';
     }
 
     ${builtins.readFile ./style.css}

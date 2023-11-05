@@ -12,6 +12,7 @@ let
 
   shell = config.dot.user.shell;
   editor = config.dot.editor;
+  font = config.dot.font;
 in
 {
   options.term = {
@@ -63,6 +64,11 @@ in
     programs.kitty.enable = true;
     programs.kitty.extraConfig = ''
       ${builtins.readFile ./kitty.conf}
+
+      font_family      ${font.nerd.name}
+      bold_font        ${font.nerd.name}
+      italic_font      ${font.nerd.name}
+      bold_italic_font ${font.nerd.name}
 
       include colors.conf
 

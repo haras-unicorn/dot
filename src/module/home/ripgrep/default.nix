@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.shellAliases = {
+  shell.aliases = {
     grep = "${pkgs.ripgrep}/bin/rg";
   };
 

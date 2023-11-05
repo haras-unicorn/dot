@@ -113,14 +113,6 @@ in
     dot-language-server
   ];
 
-  de.sessionVariables = {
-    EDITOR = "${pkgs.helix}/bin/hx";
-  };
-
-  home.shellAliases = {
-    sis = "${pkgs.helix}/bin/hx";
-  };
-
   programs.lulezojne.config.plop = [
     {
       template = builtins.readFile ./lulezojne.toml;

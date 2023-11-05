@@ -1,11 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   de.sessionVariables = {
     VISUAL = "${pkgs.vscodium-fhs}/bin/codium";
   };
 
-  home.shellAliases = {
+  shell.aliases = {
     code = "${pkgs.vscodium-fhs}/bin/codium";
   };
 
@@ -15,7 +15,11 @@
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;
   programs.vscode.keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
-  programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json));
+  programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {
+    "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';
+    "debug.console.fontFamily" = ''"${config.dot.font.nerd.name}"'';
+    "terminal.integrated.fontFamily" = ''"${config.dot.font.nerd.name}"'';
+  };
   programs.vscode.extensions = with pkgs.vscode-extensions; [
     # arcanis.vscode-zipfs -> NEED - maybe not if i use bun?
     bbenoist.nix

@@ -84,6 +84,10 @@
   programs.wofi.style = ''
     @import "${config.xdg.configHome}/wofi/colors.css";
 
+    * {
+      font-family: '${config.dot.font.sans.name}';
+    }
+
     ${builtins.readFile ./style.css}
   '';
 }

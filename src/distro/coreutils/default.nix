@@ -9,7 +9,7 @@ let
   };
 in
 {
-  home.shellAliases = {
+  shell.aliases = {
     pls = "sudo";
     rm = "rm -i";
     mv = "mv -i";

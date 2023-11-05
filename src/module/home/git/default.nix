@@ -5,7 +5,7 @@
     delta
   ];
 
-  home.shellAliases = {
+  shell.aliases = {
     rawdog = "${pkgs.git}/bin/git";
     bruh = "${pkgs.lazygit}/bin/lazygit";
   };

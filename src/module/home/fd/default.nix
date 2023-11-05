@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.shellAliases = {
+  shell.aliases = {
     find = "${pkgs.fd}/bin/fd";
   };
 
