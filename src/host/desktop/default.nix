@@ -1,13 +1,8 @@
+# TODO: configuration.nix - gnu, gtk
+
 {
   meta = {
     dot = {
-      user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
-      user.shell = { pkg = "nushell"; bin = "nu"; };
-      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-      visual = { pkg = "vscodium-fhs"; bin = "codium"; module = "code"; };
-      term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
-      browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
-      gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
       hardware = {
         ram = 32;
         mainMonitor = "DP-1";
@@ -16,6 +11,20 @@
         cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
         soundcardPciId = "2b:00.3";
       };
+
+      user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
+      user.shell = { pkg = "nushell"; bin = "nu"; };
+
+      font.serif = { name = "Noto Serif"; pkg = "noto-fonts"; };
+      font.sans = { name = "Noto Sans"; pkg = "noto-fonts"; };
+      font.emoji = { name = "Noto Color Emoji"; pkg = "noto-fonts-emoji"; };
+      font.nerd = { name = "JetBrainsMono Nerd Font"; pkg = "JetBrainsMono"; };
+
+      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
+      visual = { pkg = "vscodium-fhs"; bin = "codium"; module = "code"; };
+      term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
+      browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
+      gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
     };
   };
 

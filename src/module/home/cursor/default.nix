@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 # TODO: wayland...
+# TODO: meta
 
 {
   home.pointerCursor = {

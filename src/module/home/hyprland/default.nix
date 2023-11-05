@@ -71,6 +71,16 @@ in
     };
   };
   config = {
+    programs.lulezojne.config.plop = [
+      {
+        template = builtins.readFile ./colors.conf;
+        "in" = "${config.xdg.configHome}/hypr/colors.conf";
+      }
+    ];
+
+    home.sessionVariables = cfg.sessionVariables;
+    systemd.user.sessionVariables = cfg.sessionVariables;
+
     home.packages = [ layout ];
 
     wayland.windowManager.hyprland.enable = true;
@@ -95,13 +105,6 @@ in
 
       ${binds}
     '';
-
-    programs.lulezojne.config.plop = [
-      {
-        template = builtins.readFile ./colors.conf;
-        "in" = "${config.xdg.configHome}/hypr/colors.conf";
-      }
-    ];
   };
 }
 
