@@ -5,7 +5,7 @@
 # TODO: cursor theme?
 
 let
-  font = ''"${config.dot.font.sans.name}" 14'';
+  font = ''"${config.dot.font.sans.name}" 13'';
   ini2 = ''
     gtk-font-name = ${font}
     gtk-icon-theme-name = "BeautyLine"
