@@ -49,7 +49,7 @@ in
         output = hardware.mainMonitor;
         network = { interface = hardware.networkInterface; };
         tray = {
-          icon-size = config.dot.font.size.medium;
+          icon-size = config.dot.font.size.large;
         };
         temperature = {
           hwmon-path = hardware.cpuHwmon;
@@ -62,7 +62,7 @@ in
 
     * {
       font-family: '${config.dot.font.sans.name}';
-      font-size: ${builtins.toString config.dot.font.size.medium}px;
+      font-size: ${builtins.toString config.dot.font.size.large}px;
     }
 
     ${builtins.readFile ./style.css}
