@@ -86,6 +86,7 @@
 
     * {
       font-family: '${config.dot.font.sans.name}';
+      font-size: 16px;
     }
 
     ${builtins.readFile ./style.css}

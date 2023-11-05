@@ -11,7 +11,7 @@
   programs.lulezojne.config.plop = [
     {
       template = ''
-        font=${config.dot.font.sans.name} 16
+        font="${config.dot.font.sans.name}" 16
         width=512
         height=256
 
@@ -31,12 +31,8 @@
       '';
       "in" = "${config.xdg.configHome}/mako/config";
       "then" = {
-        command = "${pkgs.writeShellApplication {
-          name = "mako-lulezojne";
-          text = ''
-            ${config.services.mako.package}/bin/makoctl reload
-          '';
-        }}/bin/mako-lulezojne";
+        command = "${config.services.mako.package}/bin/makoctl";
+        args = [ "reload" ];
       };
     }
   ];
