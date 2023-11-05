@@ -17,6 +17,12 @@ let
     gtk-theme-name=Sweet-Dark
   '';
   ini4 = ini3;
+
+  dconf = {
+    font-name = "${config.dot.font.sans.name}";
+    gtk-theme = "Sweet-Dark";
+    icon-theme = "BeautyLine";
+  };
 in
 {
   de.sessionVariables = {
@@ -34,4 +40,6 @@ in
   xdg.configFile."gtk-2.0/settings.ini".text = ini2;
   xdg.configFile."gtk-3.0/settings.ini".text = ini3;
   xdg.configFile."gtk-4.0/settings.ini".text = ini4;
+
+  dconf.settings."org/gnome/desktop/interface" = dconf;
 }
