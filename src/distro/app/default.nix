@@ -1,8 +1,8 @@
 { self, pkgs, config, ... }:
 
 let
-  term = "${pkgs."${config.term.pkg}"}/bin/${config.term.bin}";
-  shell = "${pkgs."${config.user.shell.pkg}"}/bin/${config.user.shell.bin}";
+  term = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
+  shell = "${pkgs."${config.dot.user.shell.pkg}"}/bin/${config.dot.user.shell.bin}";
 in
 {
   wayland.windowManager.hyprland.extraConfig = "bind = super, t, exec, ${term} ${shell}";
@@ -31,9 +31,9 @@ in
     "${self}/src/module/home/daw"
 
     # TODO: fix infinite recursion
-    # "${self}/src/module/home/${config.term.module}"
-    # "${self}/src/module/home/${config.visual.module}"
-    # "${self}/src/module/home/${config.browser.module}"
+    # "${self}/src/module/home/${config.dot.term.module}"
+    # "${self}/src/module/home/${config.dot.visual.module}"
+    # "${self}/src/module/home/${config.dot.browser.module}"
     "${self}/src/module/home/kitty"
     "${self}/src/module/home/code"
     "${self}/src/module/home/firefox"
