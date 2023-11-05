@@ -66,6 +66,7 @@ in
     "${self}/src/module/home/nm-applet"
     "${self}/src/module/home/libreoffice"
     "${self}/src/module/home/nomacs"
+    "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
 
     # TODO: fix infinite recursion
