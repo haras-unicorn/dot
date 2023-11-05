@@ -11,7 +11,7 @@
   programs.lulezojne.config.plop = [
     {
       template = ''
-        font="${config.dot.font.sans.name}" 16
+        font="${config.dot.font.sans.name}" ${config.dot.font.size.large}
         width=512
         height=256
 

@@ -1,5 +1,6 @@
 { pkgs, sweet-theme, ... }:
 
+# TODO: font and font size
 # TODO: lulezojne
 # TODO: icon theme?
 # TODO: cursor theme?

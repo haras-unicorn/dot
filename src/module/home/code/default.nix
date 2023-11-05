@@ -19,6 +19,9 @@
     "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';
     "debug.console.fontFamily" = ''"${config.dot.font.nerd.name}"'';
     "terminal.integrated.fontFamily" = ''"${config.dot.font.nerd.name}"'';
+    "editor.fontSize" = "${config.dot.font.size.medium}";
+    "debug.console.fontSize" = "${config.dot.font.size.small}";
+    "terminal.integrated.fontSize" = "${config.dot.font.size.small}";
   };
   programs.vscode.extensions = with pkgs.vscode-extensions; [
     # arcanis.vscode-zipfs -> NEED - maybe not if i use bun?

@@ -26,8 +26,11 @@
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
 
-    userjs.url = "github:arkenfox/user.js";
-    userjs.flake = false;
+    arkenfox-userjs.url = "github:arkenfox/user.js";
+    arkenfox-userjs.flake = false;
+
+    slick-fox.url = "github:Etesam913/slick-fox";
+    slick-fox.flake = false;
   };
 
   outputs = { self, ... } @ inputs:
