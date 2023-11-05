@@ -3,10 +3,10 @@
 {
   home.packages = with pkgs; [
     libnotify
+    mako
   ];
 
-  services.mako.enable = true;
-  xdg.configFile."mako/config".enable = false;
+  de.startupSession = [ "${pkgs.mako}/bin/mako" ];
 
   programs.lulezojne.config.plop = [
     {
@@ -31,7 +31,7 @@
       '';
       "in" = "${config.xdg.configHome}/mako/config";
       "then" = {
-        command = "${config.services.mako.package}/bin/makoctl";
+        command = "${pkgs.mako}/bin/makoctl";
         args = [ "reload" ];
       };
     }
