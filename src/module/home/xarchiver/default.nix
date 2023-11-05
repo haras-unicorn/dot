@@ -3,7 +3,6 @@
 let
   desktop = "${pkgs.xarchiver}/share/applications/xarchiver.desktop";
   mime = {
-    "inode/directory" = desktop;
     "application/x-bzip" = desktop;
     "application/x-bzip2" = desktop;
     "application/gzip" = desktop;
@@ -17,9 +16,7 @@ in
   home.packages = with pkgs; [
     p7zip
     zip
-    unzip
     rar
-    unrar
     xarchiver
   ];
 
