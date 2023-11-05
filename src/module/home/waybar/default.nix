@@ -61,7 +61,7 @@ in
     @import "${config.xdg.configHome}/waybar/colors.css";
 
     * {
-      font-family: '${config.dot.font.nerd.name}';
+      font-family: '${config.dot.font.sans.name}';
       font-size: 16px;
     }
 

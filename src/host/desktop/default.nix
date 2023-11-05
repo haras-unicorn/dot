@@ -15,10 +15,13 @@
       user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
       user.shell = { pkg = "nushell"; bin = "nu"; };
 
-      font.serif = { name = "Noto Serif"; pkg = "noto-fonts"; };
-      font.sans = { name = "Noto Sans"; pkg = "noto-fonts"; };
-      font.emoji = { name = "Noto Color Emoji"; pkg = "noto-fonts-emoji"; };
       font.nerd = { name = "JetBrainsMono Nerd Font"; pkg = "JetBrainsMono"; };
+      font.mono = { name = "Roboto Mono"; pkg = "roboto-mono"; };
+      font.slab = { name = "Roboto Slab"; pkg = "roboto-slab"; };
+      font.sans = { name = "Roboto"; pkg = "roboto"; };
+      font.serif = { name = "Roboto Serif"; pkg = "roboto-serif"; };
+      font.script = { name = "Eunomia"; pkg = "dotcolon-fonts"; };
+      font.emoji = { name = "Noto Color Emoji"; pkg = "noto-fonts-emoji"; };
 
       editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
       visual = { pkg = "vscodium-fhs"; bin = "codium"; module = "code"; };

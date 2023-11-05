@@ -1,6 +1,7 @@
 { lib, ... }:
 
 # TODO: font sizes?
+# TODO: default, exmples and all
 
 with lib;
 let
@@ -15,10 +16,17 @@ let
 in
 {
   options.dot.font = {
+    nerd = mkFontOption "nerd";
+    mono = mkFontOption "mono";
+    slab = mkFontOption "slab";
     sans = mkFontOption "sans";
     serif = mkFontOption "serif";
-    nerd = mkFontOption "nerd";
+    script = mkFontOption "script";
     emoji = mkFontOption "emoji";
+    extra = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+    };
   };
 
   config = { };
