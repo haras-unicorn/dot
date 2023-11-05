@@ -49,7 +49,7 @@ in
         output = hardware.mainMonitor;
         network = { interface = hardware.networkInterface; };
         tray = {
-          icon-size = 14;
+          icon-size = 16;
         };
         temperature = {
           hwmon-path = hardware.cpuHwmon;
@@ -61,7 +61,8 @@ in
     @import "${config.xdg.configHome}/waybar/colors.css";
 
     * {
-      font-family: '${config.dot.font.sans.name}';
+      font-family: '${config.dot.font.nerd.name}';
+      font-size: 16px;
     }
 
     ${builtins.readFile ./style.css}

@@ -1,5 +1,7 @@
 { lib, ... }:
 
+# TODO: font sizes?
+
 with lib;
 let
   mkFontOption = type: {
