@@ -69,7 +69,7 @@ in
       bold_font        ${font.nerd.name}
       italic_font      ${font.nerd.name}
       bold_italic_font ${font.nerd.name}
-      font_size        ${font.size.medium}
+      font_size        ${builtins.toString font.size.medium}
 
       include colors.conf
 

@@ -62,7 +62,7 @@ in
 
     * {
       font-family: '${config.dot.font.sans.name}';
-      font-size: ${config.dot.font.size.medium}px;
+      font-size: ${builtins.toString config.dot.font.size.medium}px;
     }
 
     ${builtins.readFile ./style.css}

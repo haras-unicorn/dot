@@ -86,7 +86,7 @@
 
     * {
       font-family: '${config.dot.font.sans.name}';
-      font-size: ${config.dot.font.size.large}px;
+      font-size: ${builtins.toString config.dot.font.size.large}px;
     }
 
     ${builtins.readFile ./style.css}
