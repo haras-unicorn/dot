@@ -97,7 +97,6 @@
   user = { self, ... }: {
     imports = [
       "${self}/src/distro/coreutils"
-      "${self}/src/distro/info"
       "${self}/src/distro/diag"
       "${self}/src/distro/console"
       "${self}/src/distro/wayland"
