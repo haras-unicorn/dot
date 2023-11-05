@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 
+# FIXME: check if has keyring?
+
 {
   home.packages = with pkgs; [
     spotify-tui
@@ -13,7 +15,6 @@
   };
   services.spotifyd.settings.global = {
     username = "ftsedf157kfova8yuzoq1dfax";
-    # TODO: check if has keyring?
     # secret-tool store --label=spotifyd application rust-keyring service spotifyd username ftsedf157kfova8yuzoq1dfax
     use_keyring = true;
     use_mpris = true;

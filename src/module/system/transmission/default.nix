@@ -1,6 +1,6 @@
 { ... }:
 
-# TODO: per user?
+# FIXME: per user?
 
 {
   services.transmission.enable = true;

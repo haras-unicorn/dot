@@ -1,5 +1,7 @@
 { self, pkgs, config, slick-fox, arkenfox-userjs, ... }:
 
+# FIXME: hardware acceleration through hardware
+
 # TODO: duckduckgo
 # note that last time it was overwriting it
 

@@ -4,7 +4,7 @@
 , ...
 }:
 
-# TODO: uncouple hyprland/greetd/gtklock?
+# FIXME: uncouple hyprland/greetd/gtklock?
 
 {
   environment.sessionVariables = {

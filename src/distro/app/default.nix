@@ -1,5 +1,7 @@
 { self, pkgs, config, ... }:
 
+# FIXME: fix infinite recursion
+
 let
   term = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
   shell = "${pkgs."${config.dot.user.shell.pkg}"}/bin/${config.dot.user.shell.bin}";
@@ -69,7 +71,6 @@ in
     "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
 
-    # TODO: fix infinite recursion
     # "${self}/src/module/home/${config.dot.term.module}"
     # "${self}/src/module/home/${config.dot.visual.module}"
     # "${self}/src/module/home/${config.dot.browser.module}"

@@ -23,7 +23,6 @@ user_pref("privacy.clearOnShutdown.offlineApps", false);
 // use download directory
 user_pref("browser.download.useDownloadDir", true);
 
-// TODO: through hardware?
 // hardware acceleration
 user_pref("webgl.disabled", false);
 user_pref("gfx.webrender.all", true);

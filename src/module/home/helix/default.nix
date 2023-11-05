@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 
-# TODO: remove language configs and move to repos
+# FIXME: remove language configs and move to repos
 
 let
   # poetryPylsp = pkgs.writeShellApplication {

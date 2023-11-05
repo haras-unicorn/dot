@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# TODO: fix not actually typing stuff in
+# FIXME: fix not actually typing stuff in
 
 {
   de.keybinds = [
