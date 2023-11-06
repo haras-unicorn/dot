@@ -2,7 +2,7 @@
 
 let
   screenshot = pkgs.writeShellApplication {
-    name = "screenshot-select";
+    name = "screenshot";
     runtimeInputs = [ pkgs.grim pkgs.slurp pkgs.tesseract4 pkgs.wl-clipboard ];
     text = ''
       type="png"
