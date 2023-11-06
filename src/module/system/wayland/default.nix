@@ -33,6 +33,8 @@
     xdg-desktop-portal-gtk
   ];
 
+  xdg.sounds.enable = true;
+
   programs.dconf.enable = true;
 
   programs.hyprland.enable = true;
