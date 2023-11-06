@@ -6,6 +6,9 @@
 
 # FIXME: uncouple hyprland/greetd/gtklock/portals?
 
+# FIXME: links not opening https://github.com/hyprwm/Hyprland/issues/3258
+# tried the portals.conf in user but didn't work
+
 {
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";

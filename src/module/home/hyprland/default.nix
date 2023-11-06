@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-# FIXME: uncouple portals
-
 with lib;
 let
   cfg = config.de;
@@ -84,10 +82,6 @@ in
     systemd.user.sessionVariables = cfg.sessionVariables;
 
     home.packages = [ layout ];
-    xdg.configFile."xdg-desktop-portal/portals.conf".text = ''
-      [preferred]
-      default=hyprland;gtk
-    '';
 
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.enableNvidiaPatches = true;
