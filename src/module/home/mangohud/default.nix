@@ -1,5 +1,7 @@
 { ... }:
 
+# FIXME: not actually visible
+
 {
   de.sessionVariables = { MANGOHUD = 1; };
 

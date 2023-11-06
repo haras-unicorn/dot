@@ -19,6 +19,7 @@ in
     pastel
     jq
     yq
+    pandoc
   ];
 
   de.sessionVariables = {

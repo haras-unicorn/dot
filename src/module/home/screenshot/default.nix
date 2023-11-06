@@ -15,13 +15,14 @@ let
         mkdir -p "$dir"
       fi
 
+      # shellcheck disable=SC2199
       if [[ "$@" == *"--region"* ]]; then
         grim -g "$(slurp)" -t "$type" "$image"
       else
         grim -t "$type" "$image"
       fi
 
-      
+      # shellcheck disable=SC2199
       if [[ "$@" == *"--ocr"* ]]; then
         tesseract "$image" "$text"
         wl-copy -t "text/plain" < "$text"

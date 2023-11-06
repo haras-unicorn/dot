@@ -17,7 +17,7 @@
     "${self}/src/module/home/eww"
 
     "${self}/src/module/home/obs-studio"
-    "${self}/src/module/home/grim"
+    "${self}/src/module/home/screenshot"
     "${self}/src/module/home/miraclecast"
     "${self}/src/module/home/gstreamer"
 
