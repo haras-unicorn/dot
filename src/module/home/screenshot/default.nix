@@ -26,7 +26,7 @@ let
       if [[ "$@" == *"--ocr"* ]]; then
         # NOTE: tesseract adds the .txt extension
         tesseract "$image" "$dir/$name"
-        trimmed="$(cat "$text.txt" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')";
+        trimmed="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' < "$text")";
         echo "$trimmed" | wl-copy -t "text/plain"
       else
         wl-copy -t "image/$type" < "$image"
