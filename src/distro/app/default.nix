@@ -11,7 +11,10 @@ let
   browserDesktop = "${pkgs."${config.dot.browser.pkg}"}/share/applications/${config.dot.browser.bin}.desktop";
   browserMime = {
     "text/html" = browserDesktop;
+    "x-scheme-handler/http" = browserDesktop;
+    "x-scheme-handler/https" = browserDesktop;
   };
+
 
   visualDesktop = "${pkgs."${config.dot.visual.pkg}"}/share/applications/${config.dot.visual.bin}.desktop";
   visualMime = {
