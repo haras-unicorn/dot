@@ -2,36 +2,32 @@
 
 let
   screenshot = pkgs.writeShellApplication {
-    name = "screenshot";
-    runtimeInputs = [ pkgs.grim pkgs.wl-clipboard ];
-    text = ''
-      type="png"
-      dir="${config.xdg.userDirs.pictures}/screenshots"
-      file="$dir/$(date -Iseconds).$type"
-      if [[ ! -d "$dir" ]]
-      then
-        mkdir -p "$dir"
-      fi
-
-      grim -t "$type" "$file"
-      wl-copy -t "image/$type" < "$file"
-    '';
-  };
-
-  screenshot-select = pkgs.writeShellApplication {
     name = "screenshot-select";
-    runtimeInputs = [ pkgs.grim pkgs.slurp pkgs.wl-clipboard ];
+    runtimeInputs = [ pkgs.grim pkgs.slurp pkgs.tesseract4 pkgs.wl-clipboard ];
     text = ''
       type="png"
       dir="${config.xdg.userDirs.pictures}/screenshots"
-      file="$dir/$(date -Iseconds).$type"
+      name="$(date -Iseconds)"
+      image="$dir/$name.$type"
+      text="$dir/$name.txt"
       if [[ ! -d "$dir" ]]
       then
         mkdir -p "$dir"
       fi
 
-      grim -g "$(slurp)" -t "$type" "$file"
-      wl-copy -t "image/$type" < "$file"
+      if [[ "$@" == *"--region"* ]]; then
+        grim -g "$(slurp)" -t "$type" "$image"
+      else
+        grim -t "$type" "$image"
+      fi
+
+      
+      if [[ "$@" == *"--ocr"* ]]; then
+        tesseract "$image" "$text"
+        wl-copy -t "text/plain" < "$text"
+      else
+        wl-copy -t "image/$type" < "$image"
+      fi
     '';
   };
 in
@@ -45,9 +41,14 @@ in
     {
       mods = [ "shift" ];
       key = "Print";
-      command = "${screenshot-select}/bin/screenshot-select";
+      command = "${screenshot}/bin/screenshot --region";
+    }
+    {
+      mods = [ "control" ];
+      key = "Print";
+      command = "${screenshot}/bin/screenshot --region --ocr";
     }
   ];
 
-  home.packages = with pkgs; [ grim slurp screenshot screenshot-select ];
+  home.packages = with pkgs; [ grim slurp tesseract4 screenshot ];
 }
