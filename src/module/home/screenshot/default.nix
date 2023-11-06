@@ -24,8 +24,10 @@ let
 
       # shellcheck disable=SC2199
       if [[ "$@" == *"--ocr"* ]]; then
-        tesseract "$image" "$text"
-        wl-copy -t "text/plain" < "$text"
+        # NOTE: tesseract adds the .txt extension
+        tesseract "$image" "$dir/$name"
+        trimmed="$(cat "$text.txt" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')";
+        echo "$trimmed" | wl-copy -t "text/plain"
       else
         wl-copy -t "image/$type" < "$image"
       fi
