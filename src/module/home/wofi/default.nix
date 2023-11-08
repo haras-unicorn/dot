@@ -5,7 +5,7 @@
     {
       mods = [ "super" ];
       key = "return";
-      command = ''${pkgs.wofi}/bin/wofi --show drun --prompt "Yes, darling?"'';
+      command = ''${pkgs.wofi}/bin/wofi --show drun --prompt "Hello!"'';
     }
     {
       mods = [ "super" ];

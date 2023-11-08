@@ -66,7 +66,6 @@ in
     "${self}/src/module/home/ffmpeg"
     "${self}/src/module/home/vlc"
     "${self}/src/module/home/spotify"
-    "${self}/src/module/home/daw"
     "${self}/src/module/home/udiskie"
     "${self}/src/module/home/nm-applet"
     "${self}/src/module/home/libreoffice"

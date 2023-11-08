@@ -6,12 +6,9 @@
 # FIXME: xen on efi https://github.com/NixOS/nixpkgs/issues/127404
 # it should be a kernel module and not here
 
-# TODO: retroarch and cartridges
-
 {
   environment.systemPackages = with pkgs; [
     wineWowPackages.stable
-    lutris
     virt-manager
     spice
     spice-vdagent
@@ -49,6 +46,4 @@
 
   services.cockpit.enable = true;
   services.packagekit.enable = true;
-
-  programs.steam.enable = true;
 }

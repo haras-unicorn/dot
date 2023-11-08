@@ -41,6 +41,12 @@ with lib;
       description = "lspci | grep -i audio";
       example = "2b:00.3";
     };
+    nvidiaDriver = mkOption {
+      type = with types; str;
+      description = "https://nixos.wiki/wiki/Nvidia";
+      default = "vulkan_beta";
+      example = "legacy_470";
+    }
   };
 
   config = { };

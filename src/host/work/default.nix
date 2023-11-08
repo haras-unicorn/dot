@@ -4,12 +4,13 @@
   meta = {
     dot = {
       hardware = {
-        ram = 32;
+        ram = 16;
         mainMonitor = "DP-1";
         monitors = [ "DP-1" ];
         networkInterface = "enp37s0";
         cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
         soundcardPciId = "2b:00.3";
+        nvidiaDriver = "legacy_470";
       };
 
       user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
@@ -71,7 +72,7 @@
     imports = [
       "${self}/src/module/system/grub"
       "${self}/src/module/system/plymouth"
-      "${self}/src/module/system/rt"
+      "${self}/src/module/system/zen"
 
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
@@ -86,7 +87,6 @@
       "${self}/src/module/system/wayland"
 
       "${self}/src/module/system/virtual"
-      "${self}/src/module/system/gaming"
       "${self}/src/module/system/windows"
 
       "${self}/src/module/system/locate"
@@ -102,7 +102,6 @@
       "${self}/src/distro/console"
       "${self}/src/distro/wayland"
       "${self}/src/distro/app"
-      "${self}/src/distro/daw"
     ];
   };
 }
