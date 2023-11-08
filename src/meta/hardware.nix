@@ -46,7 +46,7 @@ with lib;
       description = "https://nixos.wiki/wiki/Nvidia";
       default = "vulkan_beta";
       example = "legacy_470";
-    }
+    };
   };
 
   config = { };
