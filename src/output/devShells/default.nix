@@ -1,16 +1,16 @@
-{ self, nixpkgs, flake-utils, ... }:
+{ nixpkgs, flake-utils, ... }:
 
-let
-{
-  systems = flake-utils.defaultSystems; 
-}
-in
 builtins.foldl'
   (devShells: system:
-  devShells // {
-    "${system}".default = nixpkgs.mkShell {
-      packages = with nixpkgs; [ nil nixpkgs-fmt ];
+  devShells // (
+    let
+      pkgs = nixpkgs.legacyPackages."${system}";
+    in
+    {
+      "${system}".default = pkgs.mkShell {
+        packages = with pkgs; [ nil nixpkgs-fmt ];
+      };
     }
-  })
-  { }
-  systems
+  ))
+  ({ })
+  (flake-utils.lib.defaultSystems)

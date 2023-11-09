@@ -3,6 +3,6 @@ nil = { command = "nil" }
 
 [[language]]
 name = "nix"
-auto-formatt = true
+auto-format = true
 formatter = { command = "nixpkgs-fmt" }
 language-servers = [ "nil" ]
