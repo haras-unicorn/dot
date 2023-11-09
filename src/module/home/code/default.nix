@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 
+# FIXME: add needed extensions to nixpkgs
+
 {
   de.sessionVariables = {
     VISUAL = "${pkgs.vscodium-fhs}/bin/codium";
