@@ -3,8 +3,7 @@
 , ...
 }:
 
-# FIXME: xen on efi https://github.com/NixOS/nixpkgs/issues/127404
-# it should be a kernel module and not here
+# FIXME: podman OCI runtime error
 
 {
   environment.systemPackages = with pkgs; [
@@ -18,7 +17,7 @@
     lazydocker
     docker-client
     docker-compose
-    podman-desktop
+    # podman-desktop
     arion
   ];
 
@@ -39,11 +38,16 @@
     };
   };
 
-  virtualisation.podman.enable = true;
-  virtualisation.podman.dockerSocket.enable = true;
-  virtualisation.podman.autoPrune.enable = true;
-  virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
-  virtualisation.oci-containers.backend = "podman";
+  # virtualisation.podman.enable = true;
+  # virtualisation.podman.dockerSocket.enable = true;
+  # virtualisation.podman.autoPrune.enable = true;
+  # virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
+  # virtualisation.oci-containers.backend = "podman";
+
+  virtualisation.docker.enable = true;
+  virtualisation.docker.autoPrune.enable = true;
+  virtualisation.docker.rootless.enable = true;
+  virtualisation.docker.rootless.setSocketVariable = true;
 
   services.cockpit.enable = true;
   services.packagekit.enable = true;
