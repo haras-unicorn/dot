@@ -233,7 +233,7 @@ disabled = false
 
 [package]
 symbol = "󰏗 "
-format = " [$symbol$version]($style)"
+format = "[$symbol$version]($style) "
 
 [directory]
 style = "bold blue"
