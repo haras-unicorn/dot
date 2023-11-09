@@ -4,6 +4,7 @@
 }:
 
 # FIXME: podman OCI runtime error
+# TODO: use podman when starship support
 
 {
   environment.systemPackages = with pkgs; [
