@@ -43,6 +43,7 @@
   virtualisation.podman.dockerSocket.enable = true;
   virtualisation.podman.autoPrune.enable = true;
   virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
+  virtualisation.oci-containers.backend = "podman";
 
   services.cockpit.enable = true;
   services.packagekit.enable = true;
