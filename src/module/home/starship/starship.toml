@@ -33,9 +33,9 @@ $line_break\
 
 [│](bold cyan) \
 
-[in](italic dimmed white) $directory$vcsh\
+[in](italic dimmed white) $directory\
 
-$package \
+$package\
 [\\[](bold bright-cyan) \
 $helm\
 $cmake\
@@ -78,8 +78,8 @@ $line_break\
 [╰─](bold dimmed cyan)\
 """
 
-scan_timeout = 500
-command_timeout = 500
+scan_timeout = 1000
+command_timeout = 3000
 add_newline = true
 
 [username]
@@ -233,20 +233,21 @@ disabled = false
 
 [package]
 symbol = "󰏗 "
-format ="[$symbol$version]($style)"
+format = " [$symbol$version]($style)"
 
 [directory]
 style = "bold blue"
+read_only = " "
 truncation_length = 3
 truncate_to_repo = true
 
 [git_branch]
-format = "[on](italic dimmed white) [$symbol $branch]($style)"
+format = " [on](italic dimmed white) [$symbol $branch]($style)"
 style = "bold blue"
 symbol = ""
 
 [hg_branch]
-format = "[on](italic dimmed white) [$symbol $branch]($style)"
+format = " [on](italic dimmed white) [$symbol $branch]($style)"
 style = "bold blue"
 symbol = ""
 
