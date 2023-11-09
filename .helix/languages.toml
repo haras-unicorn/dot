@@ -1,0 +1,8 @@
+[language-server]
+nil = { command = "nil" }
+
+[[language]]
+name = "nix"
+auto-formatt = true
+formatter = { command = "nixpkgs-fmt" }
+language-servers = [ "nil" ]
