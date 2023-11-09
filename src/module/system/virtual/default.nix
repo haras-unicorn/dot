@@ -17,7 +17,6 @@
     lazydocker
     docker-client
     docker-compose
-    # podman-desktop
     arion
   ];
 
