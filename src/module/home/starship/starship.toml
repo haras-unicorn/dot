@@ -242,12 +242,12 @@ truncation_length = 3
 truncate_to_repo = true
 
 [git_branch]
-format = " [on](italic dimmed white) [$symbol $branch]($style)"
+format = "[on](italic dimmed white) [$symbol $branch]($style)"
 style = "bold blue"
 symbol = ""
 
 [hg_branch]
-format = " [on](italic dimmed white) [$symbol $branch]($style)"
+format = "[on](italic dimmed white) [$symbol $branch]($style)"
 style = "bold blue"
 symbol = ""
 
