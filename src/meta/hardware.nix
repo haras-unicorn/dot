@@ -53,6 +53,18 @@ with lib;
       default = true;
       example = false;
     };
+    screenBrightnessDevice = mkOption {
+      type = with types; nullOr str;
+      description = "brightnessctl --list";
+      default = null;
+      example = null;
+    };
+    keyboardBrightnessDevice = mkOption {
+      type = with types; nullOr str;
+      description = "brightnessctl --list";
+      default = null;
+      example = null;
+    };
   };
 
   config = { };

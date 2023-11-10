@@ -1,7 +1,5 @@
 { pkgs, ... }:
 
-# TODO: keybinds
-
 {
   de.keybinds = [
     {
