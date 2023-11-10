@@ -1,7 +1,5 @@
 { self, ... }:
 
-# via xdg?
-
 {
   services.random-background.enable = true;
   services.random-background.imageDirectory = "%h/.local/share/wallpapers";
