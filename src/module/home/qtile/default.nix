@@ -1,11 +1,60 @@
 { pkgs, lib, config, ... }:
 
-# TODO: actual de options
+# TODO: map bind mods
+# TODO: switch-layout command
 # TODO: lulezojne
+# TODO: logout button (xfce4-session-logout)?
+# TODO: resize submap
+# TODO: float rules (make it a config thing here)
+# TODO: hardware vars
+# TODO: location vars
+# TODO: fonts
+# TODO: callbacks for widgets??
 
 with lib;
 let
   cfg = config.de;
+
+  reload-de = pkgs.writeShellApplication {
+    name = "reload-de";
+    runtimeInputs = [ pkgs.qtile ];
+    text = ''
+      qtile cmd-obj -o cmd -f restart
+    '';
+  };
+
+  startup = strings.concatStringsSep
+    "\n"
+    (builtins.map
+      (command: ''
+        @hook.subscribe.startup_once
+        def startup_once():
+            lazy.spawn("${builtins.toString command}")
+
+      '')
+      cfg.sessionStartup);
+
+  vars = strings.concatStringsSep
+    "\n"
+    (builtins.map
+      (name: ''
+        os.environ["${name}"] = "${builtins.toString cfg.sessionVariables."${name}"}"
+      '')
+      (builtins.attrNames cfg.sessionVariables));
+
+  binds = strings.concatStringsSep
+    "\n"
+    (builtins.map
+      (bind: ''
+        keys.append(
+            Key(
+                ["${strings.concatStringsSep ''", "'' bind.mods}"],
+                "${bind.key}",
+                lazy.spawn("${bind.command}")
+            )
+        )
+      '')
+      cfg.keybinds);
 in
 {
   options.de = {
@@ -47,10 +96,17 @@ in
   config = {
     home.packages = with pkgs; [
       qtile
+      reload-de
     ];
 
     xdg.configFile."qtile/config.py".text = ''
       ${builtins.readFile ./config.py}
+
+      ${startup}
+
+      ${vars}
+
+      ${binds}
     '';
   };
 }

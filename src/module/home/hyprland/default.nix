@@ -4,8 +4,8 @@ with lib;
 let
   cfg = config.de;
 
-  layout = pkgs.writeShellApplication {
-    name = "layout";
+  switch-layout = pkgs.writeShellApplication {
+    name = "switch-layout";
     runtimeInputs = [ pkgs.hyprland ];
     text = ''
       hyprctl devices | \
@@ -13,6 +13,14 @@ let
         grep -Pva "Keyboard at" | \
         grep -Pva "power" | \
         xargs -IR hyprctl switchxkblayout R next
+    '';
+  };
+
+  reload-de = pkgs.writeShellApplication {
+    name = "reload-de";
+    runtimeInputs = [ pkgs.qtile ];
+    text = ''
+      qtile cmd-obj -o cmd -f restart
     '';
   };
 
@@ -81,7 +89,7 @@ in
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 
-    home.packages = [ layout ];
+    home.packages = [ switch-layout reload-de ];
 
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.enableNvidiaPatches = true;

@@ -172,9 +172,6 @@ def restart_qtile(_qtile: Qtile):
 
 @lazy.function
 def kill(_qtile: Qtile):
-    if not _qtile.current_window:
-        os.system("xfce4-session-logout")
-
     _qtile.current_window.cmd_kill()
 
 
@@ -327,8 +324,6 @@ groups = [
     ) for i in range(len(group_names))
 ]
 
-# Layouts
-
 floating_layout: Floating = Floating(
     float_rules=[
         *Floating.default_float_rules,
@@ -359,25 +354,12 @@ layout_theme = {
     "border_normal": colors["dimMagenta"],
 }
 
-layouts = [
-    MonadTall(**layout_theme),
-    Bsp(**layout_theme),
-]
-
-# Screens
+layouts = [ MonadTall(**layout_theme) ]
 
 screens = [
     Screen(
         top=bar.Bar(
             widgets=[
-                CurrentLayoutIcon(
-                    scale=0.7,
-                    background=colors["cyan"],
-                ),
-                CurrentLayout(
-                    fmt=" {:<10}",
-                    foreground=colors["cyan"],
-                ),
                 GroupBox(
                     visible_groups=visible_group_names,
                     this_current_screen_border=colors["yellow"],
@@ -528,31 +510,20 @@ mouse = [
         start=lazy.window.get_position(),
     ),
     Drag(
-        [super_mod, control],
+        [super_mod, shift],
         "Button1",
         lazy.window.set_size_floating(),
         start=lazy.window.get_size(),
     ),
-    Click([super_mod], "Button3", lazy.window.bring_to_front()),
-    Click([super_mod, control], "Button3", lazy.window.toggle_floating()),
-    Click([super_mod, shift], "Button3", lazy.window.toggle_fullscreen()),
 ]
 
-# Keymap
-
 keys = [
-    # Windows
-    # layout
     Key([super_mod, shift], "f", lazy.window.toggle_fullscreen()),
-    Key([super_mod, control], "f", lazy.window.toggle_floating()),
-    Key([super_mod], "n", lazy.layout.normalize()),
-    Key([super_mod, control], "space", lazy.next_layout()),
-    # focus
+    Key([super_mod], "f", lazy.window.toggle_floating()),
     Key([super_mod], "k", lazy.layout.up()),
     Key([super_mod], "j", lazy.layout.down()),
     Key([super_mod], "h", lazy.layout.left()),
     Key([super_mod], "l", lazy.layout.right()),
-    # resize
     Key(
         [super_mod, control],
         "l",
@@ -583,159 +554,16 @@ keys = [
         lazy.layout.shrink(),
         lazy.layout.increase_nmaster(),
     ),
-    # move
     Key([super_mod, shift], "k", lazy.layout.shuffle_up()),
     Key([super_mod, shift], "j", lazy.layout.shuffle_down()),
     Key([super_mod, shift], "h", lazy.layout.shuffle_left()),
     Key([super_mod, shift], "l", lazy.layout.shuffle_right()),
-    Key([super_mod], tab, lazy.screen.next_group()),
-    Key([super_mod, shift], tab, lazy.screen.prev_group()),
-    # lifecycle
-    Key([super_mod], escape, kill, desc="Kill"),
-    Key([super_mod, control], escape, lock, desc="Lock"),
-    Key([super_mod, shift], escape, restart_qtile, desc="Restart Qtile"),
-    # keyboard
+    Key([super_mod], escape, kill),
     Key(
         [super_mod],
         "space",
         lazy.widget["keyboardlayout"].next_keyboard(),
-        desc="Layout",
     ),
-    # volume
-    Key(
-        [],
-        "XF86AudioPlay",
-        lazy.spawn("playerctl play-pause"),
-    ),
-    Key(
-        [],
-        "XF86AudioPause",
-        lazy.spawn("playerctl play-pause"),
-    ),
-    Key(
-        [],
-        "XF86AudioMute",
-        lazy.spawn("playerctl volume 0.0"),
-    ),
-    Key(
-        [],
-        "XF86AudioLowerVolume",
-        lazy.spawn("playerctl volume 0.05 -"),
-    ),
-    Key(
-        [],
-        "XF86AudioRaiseVolume",
-        lazy.spawn("playerctl volume 0.05 +"),
-    ),
-    # brightness
-    Key(
-        [],
-        "XF86MonBrightnessUp",
-        increase_display_brightness,
-        desc="Display brightness +",
-    ),
-    Key(
-        [],
-        "XF86MonBrightnessDown",
-        decrease_display_brightness,
-        desc="Display brightness -",
-    ),
-    Key(
-        [shift],
-        "XF86MonBrightnessUp",
-        increase_keyboard_brightness,
-        desc="Keyboard brightness +",
-    ),
-    Key(
-        [shift],
-        "XF86MonBrightnessDown",
-        decrease_keyboard_brightness,
-        desc="Keyboard brightness -",
-    ),
-    # config
-    # Key(
-    #     [super_mod, control],
-    #     "c",
-    #     lazy.spawn(
-    #         f"gen-keybinding-img -o '{keymap_dir}' -c '{qtile_config_loc}'"
-    #     ),
-    #     lazy.spawn(f"feh '{keymap_dir}'"),
-    #     desc="Keymap",
-    # ),
-    # apps
-    Key(
-        [super_mod],
-        enter,
-        lazy.spawn(
-            f"rofi -show drun -modi run,drun,window -config {rofi_launcher_loc}"
-        ),
-        desc="Launch",
-    ),
-    # screenshot
-    Key(
-        [super_mod],
-        print_screen,
-        lazy.spawn("flameshot full -p " + screenshot_dir),
-        desc="Screenshot",
-    ),
-    Key(
-        [super_mod, control],
-        print_screen,
-        lazy.spawn("flameshot gui -p " + screenshot_dir),
-        desc="Screenshot",
-    ),
-    # shortcuts
-    Key(
-        [super_mod],
-        "v",
-        lazy.spawn("pavucontrol"),
-        desc="Volume",
-    ),
-    Key(
-        [super_mod],
-        "f",
-        lazy.spawn("thunar"),
-        desc="File manager",
-    ),
-    Key(
-        [super_mod],
-        "p",
-        lazy.spawn("keepmenu -a '{USERNAME}{TAB}{PASSWORD}'"),
-        desc="Fill credentials",
-    ),
-    Key(
-        [super_mod, control],
-        "p",
-        lazy.spawn("keepmenu -a '{PASSWORD}'"),
-        desc="Fill password",
-    ),
-    Key(
-        [super_mod, shift],
-        "p",
-        lazy.spawn("keepmenu -a '{USERNAME}'"),
-        desc="Fill username",
-    ),
-    Key(
-        [super_mod, alt],
-        "p",
-        lazy.spawn("keepmenu -a '{TOTP}'"),
-        desc="Fill totp",
-    ),
-    Key([super_mod, shift], "p", lazy.spawn("keepassxc"), desc="Passwords"),
-    Key([super_mod], "t", lazy.spawn("kitty"), desc="Terminal"),
-    Key([super_mod], "e", lazy.spawn("emote"), desc="Emotes"),
-    Key([super_mod], "w", lazy.spawn("brave"), desc="Browse"),
-    Key(
-        [super_mod, control],
-        "w",
-        lazy.spawn("brave --incognito"),
-        desc="Incognito",
-    ),
-    Key([super_mod, shift], "w", lazy.spawn("brave --tor"), desc="Tor"),
-    Key([super_mod], "m", lazy.spawn("ferdium"), desc="Communication"),
-    Key([super_mod], "s", lazy.spawn(terminal_wrap("spt")), desc="Spotify"),
-    # extras
-    Key([super_mod, alt], "r", random_wallpaper, desc="Randomize wallpaper"),
 ]
 
 for group_name in visible_group_names:
@@ -752,14 +580,6 @@ for group_name in visible_group_names:
             make_swap_group_content(group_name),
         ),
     ])
-
-# Hooks
-
-
-@hook.subscribe.startup_once
-def startup_once():
-    lazy.spawn("betterlockscreen --update " + lock_wallpaper_loc)
-
 
 @hook.subscribe.client_new
 def set_floating(window: Window):
