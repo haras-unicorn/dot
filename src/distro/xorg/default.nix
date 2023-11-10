@@ -12,7 +12,7 @@
     "${self}/src/module/home/dunst"
     "${self}/src/module/home/rofi"
     "${self}/src/module/home/redshift"
-    "${self}/src/module/home/random-background"
+    "${self}/src/module/home/feh-lulezojne"
 
     "${self}/src/module/home/obs-studio"
     "${self}/src/module/home/miraclecast"
