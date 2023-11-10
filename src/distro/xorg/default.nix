@@ -13,8 +13,10 @@
     "${self}/src/module/home/rofi"
     "${self}/src/module/home/redshift"
     "${self}/src/module/home/feh-lulezojne"
+    "${self}/src/module/home/betterlockscreen"
 
     "${self}/src/module/home/obs-studio"
+    "${self}/src/module/home/flameshot"
     "${self}/src/module/home/miraclecast"
     "${self}/src/module/home/gstreamer"
 
@@ -27,7 +29,4 @@
 
     "${self}/src/module/home/pcmanfm"
   ];
-
-  services.flameshot.enable = true;
-  services.betterlockscreen.enable = true;
 }
