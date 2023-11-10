@@ -10,7 +10,8 @@
         networkInterface = "enp37s0";
         cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
         soundcardPciId = "2b:00.3";
-        nvidiaDriver = "legacy_470";
+        nvidiaDriver.version = "legacy_470";
+        nvidiaDriver.open = false;
       };
 
       user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
@@ -72,7 +73,7 @@
     imports = [
       "${self}/src/module/system/grub"
       "${self}/src/module/system/plymouth"
-      "${self}/src/module/system/mainline"
+      "${self}/src/module/system/zen"
 
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"

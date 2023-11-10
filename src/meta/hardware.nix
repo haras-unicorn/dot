@@ -41,11 +41,17 @@ with lib;
       description = "lspci | grep -i audio";
       example = "2b:00.3";
     };
-    nvidiaDriver = mkOption {
+    nvidiaDriver.version = mkOption {
       type = with types; str;
       description = "https://nixos.wiki/wiki/Nvidia";
       default = "vulkan_beta";
       example = "legacy_470";
+    };
+    nvidiaDriver.open = mkOption {
+      type = with types; bool;
+      description = "https://nixos.wiki/wiki/Nvidia";
+      default = true;
+      example = false;
     };
   };
 
