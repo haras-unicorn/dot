@@ -85,7 +85,7 @@
 
       "${self}/src/module/system/pipewire"
       "${self}/src/module/system/fonts"
-      "${self}/src/module/system/wayland"
+      "${self}/src/module/system/xserver"
 
       "${self}/src/module/system/virtual"
       "${self}/src/module/system/windows"
@@ -101,7 +101,7 @@
       "${self}/src/distro/coreutils"
       "${self}/src/distro/diag"
       "${self}/src/distro/console"
-      "${self}/src/distro/wayland"
+      "${self}/src/distro/xorg"
       "${self}/src/distro/app"
     ];
   };
