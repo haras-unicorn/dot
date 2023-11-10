@@ -4,6 +4,7 @@
 # TODO: lulezojne
 # TODO: icon theme?
 # TODO: cursor theme?
+# TODO: fix triggering compilation of qtwebengine
 
 {
   de.sessionVariables = {
