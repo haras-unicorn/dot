@@ -1,5 +1,7 @@
 { pkgs, lib, config, ... }:
 
+# TODO: actual de options
+# TODO: lulezojne
 
 with lib;
 let
@@ -47,6 +49,8 @@ in
       qtile
     ];
 
-    xdg.configFile."qtile/config.py".source = ./config.py;
+    xdg.configFile."qtile/config.py".text = ''
+      ${builtins.readFile ./config.py}
+    '';
   };
 }

@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: lulezojne
+
 {
   home.packages = with pkgs; [
     libnotify

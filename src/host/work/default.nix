@@ -5,11 +5,11 @@
     dot = {
       hardware = {
         ram = 16;
-        mainMonitor = "DP-1";
-        monitors = [ "DP-1" ];
-        networkInterface = "enp37s0";
+        mainMonitor = "DVI-D-0";
+        monitors = [ "DVI-D-0" "HDMI-0" ];
+        networkInterface = "enp3s0";
         cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
-        soundcardPciId = "2b:00.3";
+        soundcardPciId = "08:00.3";
         nvidiaDriver.version = "legacy_470";
         nvidiaDriver.open = false;
       };
