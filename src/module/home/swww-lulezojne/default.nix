@@ -1,7 +1,5 @@
 { self, pkgs, ... }:
 
-# TODO: somehow check if it was ever ran and run it for the first time
-
 let
   wallpaper = pkgs.writeShellApplication {
     name = "wallpaper";

@@ -13,7 +13,7 @@
     "${self}/src/module/home/wlogout"
     "${self}/src/module/home/mako"
     "${self}/src/module/home/wofi"
-    "${self}/src/module/home/wallpaper"
+    "${self}/src/module/home/swww-lulezojne"
     "${self}/src/module/home/eww"
 
     "${self}/src/module/home/obs-studio"
