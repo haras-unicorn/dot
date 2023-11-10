@@ -13,10 +13,13 @@
   };
 
   home.packages = with pkgs; [
-    libsForQt5.plasma-integration
-    libsForQt5.systemsettings
-    libsForQt5.qtstyleplugin-kvantum
-    qt6Packages.qtstyleplugin-kvantum
+    # kde
+    # libsForQt5.plasma-integration
+    # libsForQt5.systemsettings
+
+    # kvantum
+    # libsForQt5.qtstyleplugin-kvantum
+    # qt6Packages.qtstyleplugin-kvantum
   ];
 
   xdg.configFile."Kvantum/Sweet".source = "${sweet-theme}/kde/Kvantum/Sweet";
