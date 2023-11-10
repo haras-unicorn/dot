@@ -102,7 +102,7 @@ in
 
       source = ${config.xdg.configHome}/hypr/colors.conf
 
-      bind = super, Space, exec, ${layout}/bin/layout
+      bind = super, Space, exec, ${switch-layout}/bin/layout
 
       env = XDG_CURRENT_DESKTOP, Hyprland
       env = XDG_SESSION_DESKTOP, Hyprland
