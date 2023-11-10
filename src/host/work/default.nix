@@ -10,7 +10,7 @@
         networkInterface = "enp37s0";
         cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
         soundcardPciId = "2b:00.3";
-        nvidiaDriver = "legacy_390";
+        nvidiaDriver = "legacy_470";
       };
 
       user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
