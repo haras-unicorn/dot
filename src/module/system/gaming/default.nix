@@ -2,6 +2,8 @@
 , ...
 }:
 
+# TODO: build lutris packages here
+
 {
   environment.systemPackages = with pkgs; [
     wineWowPackages.stable

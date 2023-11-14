@@ -1,5 +1,7 @@
 { self, ... }:
 
+# TODO: https://github.com/kando-menu/kando
+
 {
   imports = [
     "${self}/src/module/home/xdg"
