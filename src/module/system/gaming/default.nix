@@ -2,7 +2,7 @@
 , ...
 }:
 
-# TODO: build lutris packages here
+# TODO: build lutris packages from yml here with `lutris --install`
 
 {
   environment.systemPackages = with pkgs; [
