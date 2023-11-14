@@ -1,5 +1,6 @@
 { pkgs, ... }:
 
+# TODO: fix screen capture from wayland 
 # TODO: check out the systemPackages
 
 {
