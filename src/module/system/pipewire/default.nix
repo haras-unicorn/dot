@@ -1,8 +1,15 @@
 { pkgs, ... }:
 
+# TODO: check out the systemPackages
+
 {
   environment.systemPackages = with pkgs; [
     pavucontrol
+    pwvucontrol
+    easyeffects
+    jamesdsp
+    sonobus
+    soundux
   ];
 
   sound.enable = true;

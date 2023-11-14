@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: check if pipewire plugin is here
+
 {
   home.packages = with pkgs.gst_all_1; [
     gstreamer

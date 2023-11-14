@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: https://github.com/mzuther/Squeezer
+
 {
   home.packages = with pkgs; [
     ardour
@@ -7,6 +9,8 @@
     audacity
     carla
     yabridge
+    supercollider
+    helio-workstation
 
     distrho
     lsp-plugins

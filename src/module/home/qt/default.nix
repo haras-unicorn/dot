@@ -1,4 +1,7 @@
-{ pkgs, sweet-theme, ... }:
+{ sweet-theme
+  # ,  pkgs
+, ...
+}:
 
 # TODO: font and font size
 # TODO: lulezojne
