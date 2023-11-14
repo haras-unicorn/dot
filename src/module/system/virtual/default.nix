@@ -9,6 +9,7 @@
 {
   environment.systemPackages = with pkgs; [
     wineWowPackages.stable
+    winetricks
     virt-manager
     spice
     spice-vdagent

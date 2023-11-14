@@ -10,6 +10,8 @@
     lutris
     retroarch
     cartridges
+    winetricks
+    protontricks
   ];
 
   programs.steam.enable = true;
