@@ -1,16 +1,15 @@
 { pkgs
-, config
 , ...
 }:
-
-# TODO: retroarch and cartridges
 
 {
   environment.systemPackages = with pkgs; [
     wineWowPackages.stable
-    lutris
     virglrenderer
     win-virtio
+    lutris
+    retroarch
+    cartridges
   ];
 
   programs.steam.enable = true;
