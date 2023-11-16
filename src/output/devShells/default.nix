@@ -19,6 +19,7 @@ builtins.foldl'
           shellcheck
 
           # Misc
+          just
           nodePackages.prettier
           nodePackages.yaml-language-server
           nodePackages.vscode-json-languageserver

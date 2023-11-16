@@ -1,10 +1,10 @@
-#!/uxr/bin/env bash
+#!/usr/bin/env bash
 set -eo pipefail
 
 DEVICE=$1
 if [ ! -b "$DEVICE" ]; then
-	printf "Please enter a valid block device\n"
-	exit 1
+  printf "Please enter a valid block device\n"
+  exit 1
 fi
 
 parted --script "$DEVICE" mktable gpt
