@@ -56,6 +56,7 @@ in
     pinta
     dbeaver
     angryipscanner
+    via
   ];
 
   imports = [
