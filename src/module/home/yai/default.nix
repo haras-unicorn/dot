@@ -12,14 +12,14 @@ let
   mkYai = name: model: mode: role:
     pkgs.writeShellApplication {
       name = "${name}";
-      runtimeInputs = [ pkgs.aichat ];
+      runtimeInputs = [ pkgs.yai ];
       text = ''
-        cat <<EOF >${config.xdg.configHome}/aichat/config.yaml
+        cat <<EOF >${config.xdg.configHome}/yai.json
         ${mkConfig model mode role}
         EOF
-        chmod 600 ${config.xdg.configHome}/aichat/config.yaml
+        chmod 600 ${config.xdg.configHome}/yai.json
 
-        aichat --model ${model} "$@"
+        yai "$@"
       '';
     };
 
@@ -28,6 +28,4 @@ let
 in
 {
   home.packages = [ yai3 yai4 ];
-
-  xdg.configFile."aichat/roles.yaml".source = ./roles.yaml;
 }
