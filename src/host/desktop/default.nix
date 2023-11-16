@@ -68,6 +68,7 @@
   };
 
   system = { self, ... }: {
+    programs.nix-ld.enable = true;
     imports = [
       "${self}/src/module/system/grub"
       "${self}/src/module/system/plymouth"
