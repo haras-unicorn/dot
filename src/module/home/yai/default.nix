@@ -6,6 +6,7 @@ let
       (builtins.fromJSON ((builtins.readFile ./config.jsonc)) // {
         openai_key = "$(cat ${config.home.homeDirectory}/.openai/api.key)";
         openai_model = model;
+        user_default_prompt_mode = mode;
         user_preferences = role;
       });
 
@@ -23,8 +24,8 @@ let
       '';
     };
 
-  yai3 = mkYai "yai3" "chat" "gpt-3.5-turbo-1106" "";
-  yai4 = mkYai "yai4" "chat" "gpt-4-1106-preview" "";
+  yai3 = mkYai "yai3" "gpt-3.5-turbo-1106" "chat" "";
+  yai4 = mkYai "yai4" "gpt-4-1106-preview" "chat" "";
 in
 {
   home.packages = [ yai3 yai4 ];
