@@ -7,7 +7,7 @@ user_pref("browser.toolbars.bookmarks.visibility", "never");
 // dumbass icon
 user_pref("extensions.pocket.enabled", false);
 
-// disable the would you like to save the login credentials prompt 
+// disable the would you like to save the login credentials prompt
 user_pref("signon.rememberSignons", false);
 
 // keep history

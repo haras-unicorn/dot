@@ -104,7 +104,7 @@ disabled = false
 format = "[$indicator]($style)"
 fish_indicator = "󰈺 "
 bash_indicator = " "
-style ="10 bold"
+style = "10 bold"
 disabled = false
 
 [shlvl]
@@ -116,7 +116,7 @@ style = "dimmed yellow"
 disabled = false
 
 [aws]
-format ="[$symbol($profile )(\\($region\\) )(\\[$duration\\])]($style) "
+format = "[$symbol($profile )(\\($region\\) )(\\[$duration\\])]($style) "
 symbol = " "
 
 [azure]
@@ -271,4 +271,3 @@ error_symbol = "[ ](bold bright-red)"
 
 [[battery.display]]
 threshold = 20
-

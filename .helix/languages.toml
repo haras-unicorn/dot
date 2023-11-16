@@ -4,13 +4,15 @@ bash-language-server = { command = "bash-language-server", args = ["start"] }
 taplo = { command = "taplo", args = ["lsp", "stdio"] }
 yaml-language-server = { command = "yaml-language-server", args = ["--stdio"] }
 marksman = { command = "marksman", args = ["server"] }
-vscode-json-languageserver = { command = "vscode-json-language-server", args = ["--stdio"], config = { json = { validate = { enable = true } } } }
+vscode-json-languageserver = { command = "vscode-json-language-server", args = [
+  "--stdio",
+], config = { provideFormatter = false, json = { validate = { enable = true } } } }
 
 [[language]]
 name = "nix"
 auto-format = true
 formatter = { command = "nixpkgs-fmt" }
-language-servers = [ "nil" ]
+language-servers = ["nil"]
 
 [[language]]
 name = "bash"
@@ -26,32 +28,17 @@ language-servers = ["taplo"]
 [[language]]
 name = "yaml"
 auto-format = true
-formatter = { command = "prettier", args = [
-  "--parser",
-  "yaml",
-  "--prose-wrap",
-  "always",
-] }
+formatter = { command = "prettier", args = ["--parser", "yaml"] }
 language-servers = ["yaml-language-server"]
 
 [[language]]
 name = "json"
 auto-format = true
-formatter = { command = "prettier", args = [
-  "--parser",
-  "yaml",
-  "--prose-wrap",
-  "always",
-] }
+formatter = { command = "prettier", args = ["--parser", "yaml"] }
 language-servers = ["vscode-json-languageserver"]
 
 [[language]]
 name = "markdown"
 auto-format = true
-formatter = { command = "prettier", args = [
-  "--parser",
-  "markdown",
-  "--prose-wrap",
-  "always",
-] }
+formatter = { command = "prettier", args = ["--parser", "markdown"] }
 language-servers = ["marksman"]
