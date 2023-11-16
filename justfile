@@ -1,9 +1,10 @@
 scripts := absolute_path('scripts')
+root := absolute_path('')
 
 format:
-	prettier --write .
-	shfmt --write .
+	prettier --write {{root}}
+	shfmt --write {{root}}
 
 lint:
 	shellcheck {{scripts}}/*
-	prettier --check .
+	prettier --check {{root}}
