@@ -41,8 +41,7 @@ in
     "${self}/src/module/home/yazi"
     "${self}/src/module/home/git"
 
-    "${self}/src/module/home/open-interpreter"
-    "${self}/src/module/home/aichat"
+    "${self}/src/module/home/yai"
 
     # "${self}/src/module/home/${config.dot.user.shell.module}"
     # "${self}/src/module/home/${config.dot.editor.module}"

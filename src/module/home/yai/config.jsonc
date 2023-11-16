@@ -1,0 +1,4 @@
+{
+  "openai_temperature": 0.2,
+  "openai_max_tokens": 1000
+}

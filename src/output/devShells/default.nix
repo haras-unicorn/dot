@@ -8,7 +8,23 @@ builtins.foldl'
     in
     {
       "${system}".default = pkgs.mkShell {
-        packages = with pkgs; [ nil nixpkgs-fmt ];
+        packages = with pkgs; [
+          # Nix
+          nil
+          nixpkgs-fmt
+
+          # Shell
+          nodePackages.bash-language-server
+          shfmt
+          shellcheck
+
+          # Misc
+          nodePackages.prettier
+          nodePackages.yaml-language-server
+          nodePackages.vscode-json-languageserver
+          marksman
+          taplo
+        ];
       };
     }
   ))
