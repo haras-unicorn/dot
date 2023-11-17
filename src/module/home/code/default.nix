@@ -12,7 +12,7 @@
   programs.vscode.package = pkgs."${config.dot.visual.pkg}";
   programs.vscode.enableExtensionUpdateCheck = false;
   programs.vscode.enableUpdateCheck = false;
-  programs.vscode.mutableExtensionsDir = true; # NOTE: some extensions need this
+  programs.vscode.mutableExtensionsDir = false;
   programs.vscode.keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
   programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {
     "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';
