@@ -24,12 +24,11 @@
   "editor.stickyScroll.enabled": true,
   "editor.linkedEditing": true,
   "editor.suggest.insertMode": "replace",
-  "editor.codeActionsOnSave":
-    {
-      "source.organizeImports": true,
-      "source.addMissingImports": true,
-      "source.removeUnusedImports": true,
-    },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+    "source.addMissingImports": true,
+    "source.removeUnusedImports": true
+  },
   "remote.SSH.configFile": "~/AppData/Roaming/code_ssh_config",
   "search.followSymlinks": false,
   "files.hotExit": "onExitAndWindowClose",
@@ -54,57 +53,59 @@
   "vim.highlightedyank.enable": true,
   "vim.sneak": true,
   "vim.textwidth": 80,
-  "vim.insertModeKeyBindingsNonRecursive":
-    [
-      {
-        "before": ["j", "k"],
-        "after": ["<Esc>", "workbench.action.files.save"],
-      },
-    ],
-  "vim.normalModeKeyBindingsNonRecursive":
-    [
-      {
-        "before": ["<leader>", "f"],
-        "commands": ["workbench.action.quickOpen"],
-      },
-      { "before": ["<leader>", "k"], "commands": ["editor.action.showHover"] },
-      {
-        "before": ["<leader>", "c", "a"],
-        "commands": ["editor.action.quickFix"],
-      },
-      { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
-      { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
-      {
-        "before": ["<leader>", "s", "d"],
-        "commands": ["workbench.action.splitEditorDown"],
-      },
-      {
-        "before": ["<leader>", "s", "l"],
-        "commands": ["workbench.action.splitEditorLeft"],
-      },
-      {
-        "before": ["<leader>", "s", "u"],
-        "commands": ["workbench.action.splitEditorUp"],
-      },
-      {
-        "before": ["<leader>", "s", "r"],
-        "commands": ["workbench.action.splitEditorRight"],
-      },
-    ],
-  "vim.commandLineModeKeyBindingsNonRecursive":
-    [{ "before": ["dbg"], "commands": ["workbench.action.debug.start"] }],
+  "vim.insertModeKeyBindingsNonRecursive": [
+    {
+      "before": ["j", "k"],
+      "after": ["<Esc>", "workbench.action.files.save"]
+    }
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "f"],
+      "commands": ["workbench.action.quickOpen"]
+    },
+    { "before": ["<leader>", "k"], "commands": ["editor.action.showHover"] },
+    {
+      "before": ["<leader>", "c", "a"],
+      "commands": ["editor.action.quickFix"]
+    },
+    { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
+    { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
+    {
+      "before": ["<leader>", "s", "d"],
+      "commands": ["workbench.action.splitEditorDown"]
+    },
+    {
+      "before": ["<leader>", "s", "l"],
+      "commands": ["workbench.action.splitEditorLeft"]
+    },
+    {
+      "before": ["<leader>", "s", "u"],
+      "commands": ["workbench.action.splitEditorUp"]
+    },
+    {
+      "before": ["<leader>", "s", "r"],
+      "commands": ["workbench.action.splitEditorRight"]
+    }
+  ],
+  "vim.commandLineModeKeyBindingsNonRecursive": [
+    { "before": ["dbg"], "commands": ["workbench.action.debug.start"] }
+  ],
   "terminal.explorerKind": "external",
   "terminal.integrated.gpuAcceleration": "on",
-  "workbench.colorCustomizations":
-    {
-      "debugConsole.errorForeground": "#ff0000",
-      "debugConsole.infoForeground": "#00ff00",
-      "debugConsole.warningForeground": "#ffff00",
-      "debugConsole.sourceForeground": "#ffffff",
-    },
+  "workbench.colorCustomizations": {
+    "debugConsole.errorForeground": "#ff0000",
+    "debugConsole.infoForeground": "#00ff00",
+    "debugConsole.warningForeground": "#ffff00",
+    "debugConsole.sourceForeground": "#ffffff"
+  },
   "debug.terminal.clearBeforeReusing": true,
-  "github.copilot.enable":
-    { "*": true, "yaml": true, "plaintext": false, "markdown": true },
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": false,
+    "markdown": true
+  },
   "[shellscript]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
   "[dotenv]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
   "[ignore]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
@@ -115,5 +116,5 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.preferences.importModuleSpecifier": "project-relative",
   "powershell.promptToUpdatePowerShell": false,
-  "remote.SSH.remotePlatform": { "pidgeon": "linux" },
+  "remote.SSH.remotePlatform": { "pidgeon": "linux" }
 }
