@@ -114,7 +114,7 @@ builtins.foldl'
             users.users."${username}" = {
               isNormalUser = true;
               initialPassword = username;
-              extraGroups = [ "wheel" ] ++ config.dot.user.groups;
+              extraGroups = [ "wheel" ] ++ config.dot.groups;
               shell = pkgs."${config.dot.shell.pkg}";
             };
             home-manager.useUserPackages = true;
