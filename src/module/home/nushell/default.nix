@@ -1,5 +1,7 @@
 { lib, config, ... }:
 
+# TODO: add dot prefix
+
 with lib;
 let
   cfg = config.shell;

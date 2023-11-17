@@ -1,5 +1,6 @@
 { pkgs, lib, config, ... }:
 
+# TODO: add dot prefix
 # TODO: map bind mods
 # TODO: switch-layout command
 # TODO: lulezojne

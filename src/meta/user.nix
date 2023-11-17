@@ -1,5 +1,7 @@
 { lib, ... }:
 
+# TODO: remove user prefix
+
 with lib;
 {
   options.dot.user = {
