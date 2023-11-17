@@ -22,6 +22,18 @@
     "editor.fontSize" = "${builtins.toString (config.dot.font.size.medium + 1)}";
     "debug.console.fontSize" = "${builtins.toString (config.dot.font.size.small + 1)}";
     "terminal.integrated.fontSize" = "${builtins.toString (config.dot.font.size.small + 1)}";
+    "terminal.external.linuxExec" = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
+    "terminal.integrated.profiles.linux" = {
+      "${config.dot.shell.module}" = {
+        "path" = "${pkgs."${config.dot.shell.pkg}"}/bin/${config.dot.shell.bin}";
+      };
+      "bash" = {
+        "path" = "${pkgs.bash}/bin/bash";
+        "icon" = "terminal-bash";
+      };
+    };
+    "terminal.integrated.defaultProfile.linux" = "${config.dot.shell.module}";
+    "terminal.integrated.automationProfile.linux" = "bash";
   };
   programs.vscode.extensions = with pkgs.vscode-extensions; [
     # arcanis.vscode-zipfs -> NEED - maybe not if i use bun?
