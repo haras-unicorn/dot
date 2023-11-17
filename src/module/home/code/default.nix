@@ -3,16 +3,8 @@
 # FIXME: add needed extensions to nixpkgs
 
 {
-  de.sessionVariables = {
-    VISUAL = "${pkgs.vscodium}/bin/codium";
-  };
-
-  shell.aliases = {
-    code = "${pkgs.vscodium}/bin/codium";
-  };
-
   programs.vscode.enable = true;
-  programs.vscode.package = pkgs.vscodium;
+  programs.vscode.package = pkgs."${config.dot.visual.pkg}";
   programs.vscode.enableExtensionUpdateCheck = false;
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;
