@@ -33,7 +33,9 @@
       };
     };
     "terminal.integrated.defaultProfile.linux" = "${config.dot.shell.module}";
-    "terminal.integrated.automationProfile.linux" = "bash";
+    "terminal.integrated.automationProfile.linux" = {
+      "path" = "${pkgs.bash}/bin/bash";
+    };
   };
   programs.vscode.extensions = with pkgs.vscode-extensions; [
     # arcanis.vscode-zipfs -> NEED - maybe not if i use bun?
