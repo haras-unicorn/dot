@@ -24,15 +24,15 @@
     "terminal.integrated.fontSize" = "${builtins.toString (config.dot.font.size.small + 1)}";
     "terminal.external.linuxExec" = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
     "terminal.integrated.profiles.linux" = {
-      "${config.dot.user.shell.module}" = {
-        "path" = "${pkgs."${config.dot.user.shell.pkg}"}/bin/${config.dot.user.shell.bin}";
+      "${config.dot.shell.module}" = {
+        "path" = "${pkgs."${config.dot.shell.pkg}"}/bin/${config.dot.shell.bin}";
       };
       "bash" = {
         "path" = "${pkgs.bash}/bin/bash";
         "icon" = "terminal-bash";
       };
     };
-    "terminal.integrated.defaultProfile.linux" = "${config.dot.user.shell.module}";
+    "terminal.integrated.defaultProfile.linux" = "${config.dot.shell.module}";
     "terminal.integrated.automationProfile.linux" = "bash";
   };
   programs.vscode.extensions = with pkgs.vscode-extensions; [

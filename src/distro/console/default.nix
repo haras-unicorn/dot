@@ -43,7 +43,7 @@ in
 
     "${self}/src/module/home/yai"
 
-    # "${self}/src/module/home/${config.dot.user.shell.module}"
+    # "${self}/src/module/home/${config.dot.shell.module}"
     # "${self}/src/module/home/${config.dot.editor.module}"
     "${self}/src/module/home/nushell"
     "${self}/src/module/home/helix"

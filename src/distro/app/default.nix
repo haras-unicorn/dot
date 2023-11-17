@@ -4,7 +4,7 @@
 
 let
   term = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
-  shell = "${pkgs."${config.dot.user.shell.pkg}"}/bin/${config.dot.user.shell.bin}";
+  shell = "${pkgs."${config.dot.shell.pkg}"}/bin/${config.dot.shell.bin}";
   browser = "${pkgs."${config.dot.browser.pkg}"}/bin/${config.dot.browser.bin}";
   visual = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
 

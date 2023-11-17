@@ -12,7 +12,7 @@ let
       (name: "env ${name}=${builtins.toString cfg.sessionVariables."${name}"}")
       (builtins.attrNames cfg.sessionVariables));
 
-  shell = config.dot.user.shell;
+  shell = config.dot.shell;
   editor = config.dot.editor;
   font = config.dot.font;
 in

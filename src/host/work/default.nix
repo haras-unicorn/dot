@@ -14,8 +14,13 @@
         nvidiaDriver.open = false;
       };
 
-      user.groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
-      user.shell = { pkg = "nushell"; bin = "nu"; };
+      groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
+      shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
+      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
+      visual = { pkg = "vscodium-fhs"; bin = "codium"; module = "code"; };
+      term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
+      browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
+      gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
 
       font.nerd = { name = "JetBrainsMono Nerd Font"; pkg = "JetBrainsMono"; };
       font.mono = { name = "Roboto Mono"; pkg = "roboto-mono"; };
@@ -25,12 +30,6 @@
       font.script = { name = "Eunomia"; pkg = "dotcolon-fonts"; };
       font.emoji = { name = "Noto Color Emoji"; pkg = "noto-fonts-emoji"; };
       font.size = { small = 12; medium = 13; large = 16; };
-
-      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-      visual = { pkg = "vscodium-fhs"; bin = "codium"; module = "code"; };
-      term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
-      browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
-      gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
     };
   };
 
