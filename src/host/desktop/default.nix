@@ -22,7 +22,7 @@
       font.serif = { name = "Roboto Serif"; pkg = "roboto-serif"; };
       font.script = { name = "Eunomia"; pkg = "dotcolon-fonts"; };
       font.emoji = { name = "Noto Color Emoji"; pkg = "noto-fonts-emoji"; };
-      font.size = { small = 12; medium = 13; large = 16; };
+      font.size = { small = 12; medium = 14; large = 16; };
 
       editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
       visual = { pkg = "vscode"; bin = "code"; module = "code"; };
