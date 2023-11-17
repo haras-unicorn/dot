@@ -3,6 +3,10 @@
 # FIXME: add needed extensions to nixpkgs
 
 {
+  shell.aliases = {
+    code = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
+  };
+
   programs.vscode.enable = true;
   programs.vscode.package = pkgs."${config.dot.visual.pkg}";
   programs.vscode.enableExtensionUpdateCheck = false;
