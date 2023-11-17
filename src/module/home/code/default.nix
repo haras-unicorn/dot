@@ -4,15 +4,15 @@
 
 {
   de.sessionVariables = {
-    VISUAL = "${pkgs.vscodium-fhs}/bin/codium";
+    VISUAL = "${pkgs.vscodium}/bin/codium";
   };
 
   shell.aliases = {
-    code = "${pkgs.vscodium-fhs}/bin/codium";
+    code = "${pkgs.vscodium}/bin/codium";
   };
 
   programs.vscode.enable = true;
-  programs.vscode.package = pkgs.vscodium-fhs;
+  programs.vscode.package = pkgs.vscodium;
   programs.vscode.enableExtensionUpdateCheck = false;
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;
