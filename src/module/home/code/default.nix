@@ -76,5 +76,6 @@
     vadimcn.vscode-lldb
     vscodevim.vim
     # wayou.vscode-todo-highlight
+    skellock.just
   ];
 }
