@@ -4,6 +4,8 @@
 
 # TODO: build lutris packages from yml here with `lutris --install`
 
+# NOTE: https://github.com/lutris/docs/blob/master/HowToEsync.md
+
 {
   environment.systemPackages = with pkgs; [
     wineWowPackages.stable
