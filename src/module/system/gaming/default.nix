@@ -18,6 +18,8 @@
 
   programs.steam.enable = true;
 
+
+  users.groups.gaming = { };
   security.pam.loginLimits = [
     {
       domain = "@gaming";
