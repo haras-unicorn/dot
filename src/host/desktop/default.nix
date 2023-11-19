@@ -12,7 +12,7 @@
         soundcardPciId = "2b:00.3";
       };
 
-      groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
+      groups = [ "libvirtd" "docker" "podman" "video" "audio" "gaming" "mlocate" ];
       shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
       editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
       visual = { pkg = "vscode"; bin = "code"; module = "code"; };

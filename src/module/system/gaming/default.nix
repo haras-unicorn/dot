@@ -17,4 +17,13 @@
   ];
 
   programs.steam.enable = true;
+
+  security.pam.loginLimits = [
+    {
+      domain = "@gaming";
+      item = "nofile";
+      type = "hard";
+      value = "524288";
+    }
+  ];
 }
