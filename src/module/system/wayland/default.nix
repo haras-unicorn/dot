@@ -28,6 +28,7 @@
     egl-wayland
     wl-clipboard
     wev
+    xwaylandvideobridge
   ];
 
   xdg.portal.enable = true;
