@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, pkgs, config, ... }:
 
 # TODO: add dot prefix
 # TODO: programs.bash.package ?
