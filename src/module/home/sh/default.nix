@@ -29,7 +29,6 @@ in
 
   programs.bash.initExtra = ''
     ${vars}
-    PS2='󰞷 '
 
     ${aliases}
 
