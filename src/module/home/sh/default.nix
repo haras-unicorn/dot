@@ -29,7 +29,7 @@ in
 
   programs.bash.initExtra = ''
     ${vars}
-    PS9='󰞷 '
+    PS2='󰞷 '
 
     ${aliases}
 
