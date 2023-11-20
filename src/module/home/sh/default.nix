@@ -29,9 +29,11 @@ in
 
   programs.bash.initExtra = ''
     ${vars}
+    PS9='󰞷 '
 
     ${aliases}
 
     ${startup}
   '';
 }
+
