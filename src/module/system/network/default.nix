@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: package https://github.com/theinvisible/openfortigui
+
 {
   networking.nftables.enable = true;
   networking.firewall.enable = true;
