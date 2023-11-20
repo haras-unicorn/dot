@@ -1,6 +1,7 @@
 { lib, config, ... }:
 
 # TODO: add dot prefix
+# TODO: programs.bash.package ?
 
 with lib;
 let
@@ -25,6 +26,8 @@ let
       cfg.sessionStartup);
 in
 {
+  home.packages = with pkgs; [ bashInteractiveFHS ];
+
   programs.bash.enable = true;
 
   programs.bash.initExtra = ''
