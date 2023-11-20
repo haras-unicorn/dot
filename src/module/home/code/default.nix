@@ -91,5 +91,6 @@
     vscodevim.vim
     # wayou.vscode-todo-highlight
     skellock.just
+    ms-vscode.hexeditor
   ];
 }
