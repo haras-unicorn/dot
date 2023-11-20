@@ -28,13 +28,13 @@
         "path" = "${pkgs."${config.dot.shell.pkg}"}/bin/${config.dot.shell.bin}";
       };
       "bash" = {
-        "path" = "${pkgs.bash}/bin/bash";
+        "path" = "${pkgs.bashInteractiveFHS}/bin/bash";
         "icon" = "terminal-bash";
       };
     };
     "terminal.integrated.defaultProfile.linux" = "${config.dot.shell.module}";
     "terminal.integrated.automationProfile.linux" = {
-      "path" = "${pkgs.bash}/bin/bash";
+      "path" = "${pkgs.bashInteractiveFHS}/bin/bash";
     };
   };
   programs.vscode.extensions = with pkgs.vscode-extensions; [
