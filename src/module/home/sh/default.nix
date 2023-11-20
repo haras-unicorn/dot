@@ -9,13 +9,13 @@ let
   vars = strings.concatStringsSep
     "\n"
     (builtins.map
-      (name: ''export ${name} = "$(${builtins.toString cfg.sessionVariables."${name}"})"'')
+      (name: ''export ${name}="$(${builtins.toString cfg.sessionVariables."${name}"})"'')
       (builtins.attrNames cfg.sessionVariables));
 
   aliases = strings.concatStringsSep
     "\n"
     (builtins.map
-      (name: ''alias ${name} = ${builtins.toString cfg.aliases."${name}"}'')
+      (name: ''alias ${name}="${builtins.toString cfg.aliases."${name}"}"'')
       (builtins.attrNames cfg.aliases));
 
   startup = strings.concatStringsSep
