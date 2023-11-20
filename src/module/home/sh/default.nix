@@ -26,8 +26,6 @@ let
       cfg.sessionStartup);
 in
 {
-  home.packages = with pkgs; [ bashInteractiveFHS ];
-
   programs.bash.enable = true;
 
   programs.bash.initExtra = ''
