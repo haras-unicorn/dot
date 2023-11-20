@@ -31,6 +31,8 @@ in
   };
 
   imports = [
+    "${self}/src/module/home/sh"
+
     "${self}/src/module/home/gpg"
     "${self}/src/module/home/ssh"
 
