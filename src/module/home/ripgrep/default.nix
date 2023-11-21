@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: colors (see man rg)
+
 {
   shell.aliases = {
     grep = "${pkgs.ripgrep}/bin/rg";
@@ -9,7 +11,6 @@
   programs.ripgrep.arguments = [
     "--max-columns=100"
     "--max-columns-preview"
-    "--colors=auto"
     "--smart-case"
   ];
 }
