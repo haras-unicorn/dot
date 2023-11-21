@@ -20,6 +20,7 @@ in
     jq
     yq
     pandoc
+    parted
   ];
 
   de.sessionVariables = {
