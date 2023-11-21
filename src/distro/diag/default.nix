@@ -14,5 +14,6 @@
     htop # NOTE: CPU process manager
     tokei # NOTE: count lines of code
     dog # NOTE: dns client
+    upower # NOTE: battery power
   ];
 }
