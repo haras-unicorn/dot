@@ -9,6 +9,7 @@
 , ...
 } @ inputs:
 
+# TODO: secure boot (https://nixos.wiki/wiki/Secure_Boot)
 # TODO: home encryption and zfs (https://www.reddit.com/r/NixOS/comments/tzksw4/mount_an_encrypted_zfs_datastore_on_login/)
 # TODO: hashed password
 # TODO: make all modules have hardware/system/user parts
