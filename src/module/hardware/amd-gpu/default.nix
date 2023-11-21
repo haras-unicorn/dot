@@ -30,10 +30,10 @@ in
   environment.systemPackages = with pkgs; [
     libva
     libvdpau
-    vdpauinfo
-    libva-utils
-    vulkan-tools
-    glxinfo
+    vdpauinfo # NOTE: vdpauinfo
+    libva-utils # NOTE: vainfo
+    vulkan-tools # NOTE: vulkaninfo
+    glxinfo # NOTE: glxinfo and eglinfo
     invokeai
   ];
 
