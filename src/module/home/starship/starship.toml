@@ -270,7 +270,6 @@ vicmd_symbol = "[ ](bold green)"
 error_symbol = "[ ](bold bright-red)"
 
 [battery]
-symbol = "󰂃"
 format = " [$symbol$percentage]($style)"
 
 [[battery.display]]
