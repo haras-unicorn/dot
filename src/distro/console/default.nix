@@ -21,6 +21,7 @@ in
     yq
     pandoc
     parted
+    eva
   ];
 
   de.sessionVariables = {
