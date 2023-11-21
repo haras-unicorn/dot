@@ -7,7 +7,6 @@
     lm_sensors
     dua
     duf
-    dust
     vulkan-tools
     glxinfo
     pciutils
