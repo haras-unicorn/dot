@@ -6,6 +6,8 @@
 
 # FIXME: fix infinite recursion
 
+# TODO: doas or please sudo alternative
+
 let
   editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
 in
@@ -22,6 +24,10 @@ in
     pastel # NOTE: color manipulation
     eva # NOTE: math
     xh # NOTE: requests
+    rnr # NOTE: recursive renaming
+    hyprfine # NOTE: cli benchmarking
+    tealdeer # NOTE: tldr <some-command> to learn basics
+    fastmod # NOTE: large scale code refactoring
   ];
 
   de.sessionVariables = {
