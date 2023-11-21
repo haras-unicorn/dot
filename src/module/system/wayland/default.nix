@@ -9,6 +9,8 @@
 # FIXME: links not opening https://github.com/hyprwm/Hyprland/issues/3258
 # tried the portals.conf in user but didn't work
 
+# FIXME: https://github.com/NVIDIA/open-gpu-kernel-modules/issues/467#issuecomment-1544340511
+
 {
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
