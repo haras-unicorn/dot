@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: make the volume stuff work
+
 {
   de.keybinds = [
     {
