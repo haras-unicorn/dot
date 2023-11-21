@@ -57,6 +57,7 @@ in
     dbeaver
     angryipscanner
     via
+    gparted
   ];
 
   imports = [
