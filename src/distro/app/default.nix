@@ -51,12 +51,12 @@ in
   xdg.mimeApps.defaultApplications = mime;
 
   home.packages = with pkgs; [
-    feh
-    mpv
-    pinta
-    dbeaver
-    angryipscanner
-    via
+    feh # NOTE: image viewer
+    mpv # NOTE: video viewer
+    pinta # NOTE: image manipulation
+    dbeaver # NOTE: db viewer
+    angryipscanner # NOTE: network scanner
+    via # NOTE: keyboard configurator
   ];
 
   imports = [
