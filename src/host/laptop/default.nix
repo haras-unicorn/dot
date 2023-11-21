@@ -6,6 +6,7 @@
     hardware.networkInterface = "wlp1s0";
     hardware.cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";
     hardware.soundcardPciId = "03:00.1";
+    hardware.screenBrightnessDevice = "amdgpu_bl0";
 
     groups = [ "libvirtd" "docker" "podman" "video" "audio" "gaming" "mlocate" ];
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
