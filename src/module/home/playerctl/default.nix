@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# TODO: make the volume stuff work
+# TODO: make the volume stuff work (maybe wpctl?)
 
 {
   de.keybinds = [
