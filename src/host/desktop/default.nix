@@ -4,7 +4,7 @@
     hardware.mainMonitor = "DP-1";
     hardware.monitors = [ "DP-1" ];
     hardware.networkInterface = "enp37s0";
-    hardware.cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
+    hardware.cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
     hardware.soundcardPciId = "2b:00.3";
 
     groups = [ "libvirtd" "docker" "podman" "video" "audio" "gaming" "mlocate" ];
