@@ -1,11 +1,11 @@
 {
   meta.dot = {
     hardware.ram = 16;
-    hardware.mainMonitor = "DP-1";
-    hardware.monitors = [ "DP-1" ];
-    hardware.networkInterface = "enp37s0";
-    hardware.cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
-    hardware.soundcardPciId = "2b:00.3";
+    hardware.mainMonitor = "eDP-1";
+    hardware.monitors = [ "eDP-1" ];
+    hardware.networkInterface = "wlp1s0";
+    hardware.cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";
+    hardware.soundcardPciId = "03:00.1";
 
     groups = [ "libvirtd" "docker" "podman" "video" "audio" "gaming" "mlocate" ];
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
