@@ -29,6 +29,5 @@ in
     "${self}/src/module/home/sd"
     "${self}/src/module/home/fd"
     "${self}/src/module/home/eza"
-    "${self}/src/module/home/duf"
   ];
 }

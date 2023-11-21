@@ -5,7 +5,9 @@
 {
   home.packages = with pkgs; [
     lm_sensors
-    ncdu
+    dua
+    duf
+    dust
     vulkan-tools
     glxinfo
     pciutils
@@ -16,5 +18,6 @@
     htop
     nvtop
     tokei
+    dog
   ];
 }
