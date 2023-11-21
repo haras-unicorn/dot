@@ -1,18 +1,16 @@
 {
   meta.dot = {
     hardware.ram = 16;
-    hardware.mainMonitor = "DVI-D-0";
-    hardware.monitors = [ "DVI-D-0" "HDMI-0" ];
-    hardware.networkInterface = "enp3s0";
+    hardware.mainMonitor = "DP-1";
+    hardware.monitors = [ "DP-1" ];
+    hardware.networkInterface = "enp37s0";
     hardware.cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
-    hardware.soundcardPciId = "08:00.3";
-    hardware.nvidiaDriver.version = "legacy_470";
-    hardware.nvidiaDriver.open = false;
+    hardware.soundcardPciId = "2b:00.3";
 
-    groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
+    groups = [ "libvirtd" "docker" "podman" "video" "audio" "gaming" "mlocate" ];
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
     editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-    visual = { pkg = "vscodium-fhs"; bin = "codium"; module = "code"; };
+    visual = { pkg = "vscode"; bin = "code"; module = "code"; };
     term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
     browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
     gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
@@ -30,10 +28,11 @@
   hardware = { self, config, ... }: {
     imports = [
       "${self}/src/module/hardware/amd-cpu"
-      "${self}/src/module/hardware/nvidia-gpu"
     ];
 
     hardware.enableAllFirmware = true;
+
+    boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
     boot.initrd.availableKernelModules = [
       "nvme"
@@ -75,17 +74,16 @@
       "${self}/src/module/system/ssh"
       "${self}/src/module/system/keyring"
       "${self}/src/module/system/polkit"
+      "${self}/src/module/system/locate"
 
       "${self}/src/module/system/pipewire"
       "${self}/src/module/system/fonts"
-      "${self}/src/module/system/xserver"
+      "${self}/src/module/system/wayland"
+      "${self}/src/module/system/gvfs"
+      "${self}/src/module/system/transmission"
 
       "${self}/src/module/system/virtual"
       "${self}/src/module/system/windows"
-
-      "${self}/src/module/system/locate"
-      "${self}/src/module/system/gvfs"
-      "${self}/src/module/system/transmission"
     ];
   };
 
@@ -94,7 +92,7 @@
       "${self}/src/distro/coreutils"
       "${self}/src/distro/diag"
       "${self}/src/distro/console"
-      "${self}/src/distro/xorg"
+      "${self}/src/distro/wayland"
       "${self}/src/distro/app"
     ];
   };
