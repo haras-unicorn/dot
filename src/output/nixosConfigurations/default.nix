@@ -11,6 +11,9 @@
 
 # TODO: home encryption
 # TODO: hashed password
+# TODO: make all modules have hardware/system/user parts
+# TODO: remove allowUnfree from config?
+# TODO: try grub alternatives
 
 let
   meta = self + "/src/meta";

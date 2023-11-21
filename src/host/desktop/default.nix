@@ -1,34 +1,28 @@
-# TODO: configuration.nix - gnu, gtk
-
 {
-  meta = {
-    dot = {
-      hardware = {
-        ram = 32;
-        mainMonitor = "DP-1";
-        monitors = [ "DP-1" ];
-        networkInterface = "enp37s0";
-        cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
-        soundcardPciId = "2b:00.3";
-      };
+  meta.dot = {
+    hardware.ram = 32;
+    hardware.mainMonitor = "DP-1";
+    hardware.monitors = [ "DP-1" ];
+    hardware.networkInterface = "enp37s0";
+    hardware.cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
+    hardware.soundcardPciId = "2b:00.3";
 
-      groups = [ "libvirtd" "docker" "podman" "video" "audio" "gaming" "mlocate" ];
-      shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
-      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-      visual = { pkg = "vscode"; bin = "code"; module = "code"; };
-      term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
-      browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
-      gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
+    groups = [ "libvirtd" "docker" "podman" "video" "audio" "gaming" "mlocate" ];
+    shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
+    editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
+    visual = { pkg = "vscode"; bin = "code"; module = "code"; };
+    term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
+    browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
+    gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
 
-      font.nerd = { name = "JetBrainsMono Nerd Font"; pkg = "JetBrainsMono"; };
-      font.mono = { name = "Roboto Mono"; pkg = "roboto-mono"; };
-      font.slab = { name = "Roboto Slab"; pkg = "roboto-slab"; };
-      font.sans = { name = "Roboto"; pkg = "roboto"; };
-      font.serif = { name = "Roboto Serif"; pkg = "roboto-serif"; };
-      font.script = { name = "Eunomia"; pkg = "dotcolon-fonts"; };
-      font.emoji = { name = "Noto Color Emoji"; pkg = "noto-fonts-emoji"; };
-      font.size = { small = 12; medium = 13; large = 16; };
-    };
+    font.nerd = { name = "JetBrainsMono Nerd Font"; pkg = "JetBrainsMono"; };
+    font.mono = { name = "Roboto Mono"; pkg = "roboto-mono"; };
+    font.slab = { name = "Roboto Slab"; pkg = "roboto-slab"; };
+    font.sans = { name = "Roboto"; pkg = "roboto"; };
+    font.serif = { name = "Roboto Serif"; pkg = "roboto-serif"; };
+    font.script = { name = "Eunomia"; pkg = "dotcolon-fonts"; };
+    font.emoji = { name = "Noto Color Emoji"; pkg = "noto-fonts-emoji"; };
+    font.size = { small = 12; medium = 13; large = 16; };
   };
 
   hardware = { self, config, ... }: {
@@ -38,6 +32,8 @@
     ];
 
     hardware.enableAllFirmware = true;
+
+    boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
     boot.initrd.availableKernelModules = [
       "nvme"
@@ -67,7 +63,6 @@
   };
 
   system = { self, ... }: {
-    programs.nix-ld.enable = true;
     imports = [
       "${self}/src/module/system/grub"
       "${self}/src/module/system/plymouth"
@@ -80,18 +75,17 @@
       "${self}/src/module/system/ssh"
       "${self}/src/module/system/keyring"
       "${self}/src/module/system/polkit"
+      "${self}/src/module/system/locate"
 
       "${self}/src/module/system/pipewire"
       "${self}/src/module/system/fonts"
       "${self}/src/module/system/wayland"
+      "${self}/src/module/system/gvfs"
+      "${self}/src/module/system/transmission"
 
       "${self}/src/module/system/virtual"
       "${self}/src/module/system/gaming"
       "${self}/src/module/system/windows"
-
-      "${self}/src/module/system/locate"
-      "${self}/src/module/system/gvfs"
-      "${self}/src/module/system/transmission"
     ];
   };
 

@@ -6,8 +6,6 @@
 
 # FIXME: fix infinite recursion
 
-# TODO: doas or please sudo alternative
-
 let
   editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
 in

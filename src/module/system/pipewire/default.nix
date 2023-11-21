@@ -2,6 +2,7 @@
 
 # TODO: fix screen capture from wayland 
 # TODO: check out the systemPackages
+# TODO: packages in user
 
 {
   environment.systemPackages = with pkgs; [
