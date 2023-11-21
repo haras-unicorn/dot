@@ -4,9 +4,15 @@ bash-language-server = { command = "bash-language-server", args = ["start"] }
 taplo = { command = "taplo", args = ["lsp", "stdio"] }
 yaml-language-server = { command = "yaml-language-server", args = ["--stdio"] }
 marksman = { command = "marksman", args = ["server"] }
-vscode-json-languageserver = { command = "vscode-json-language-server", args = [
-  "--stdio",
-], config = { provideFormatter = false, json = { validate = { enable = true } } } }
+
+[language-server.vscode-json-language-server]
+command = "vscode-json-language-server"
+args = ["--stdio"]
+
+[language-server.vscode-json-language-server.config]
+provideFormatter = true
+format = { enable = true }
+json = { validate = { enable = true } }
 
 [[language]]
 name = "nix"
@@ -34,8 +40,8 @@ language-servers = ["yaml-language-server"]
 [[language]]
 name = "json"
 auto-format = true
-formatter = { command = "prettier", args = ["--parser", "yaml"] }
-language-servers = ["vscode-json-languageserver"]
+formatter = { command = "prettier", args = ["--parser", "json"] }
+language-servers = ["vscode-json-language-server"]
 
 [[language]]
 name = "markdown"
