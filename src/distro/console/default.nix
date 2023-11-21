@@ -25,7 +25,7 @@ in
     eva # NOTE: math
     xh # NOTE: requests
     rnr # NOTE: recursive renaming
-    hyprfine # NOTE: cli benchmarking
+    hyperfine # NOTE: cli benchmarking
     tealdeer # NOTE: tldr <some-command> to learn basics
     fastmod # NOTE: large scale code refactoring
   ];
