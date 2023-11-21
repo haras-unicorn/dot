@@ -9,11 +9,8 @@
 , ...
 } @ inputs:
 
-# TODO: enable modules to do most/a lot of this stuff through meta
-# because u have insanely specific options like the spotify thing
-# which is really annoying
-# also maybe this is actually the best way to do it but i should
-# at least try making it better
+# TODO: home encryption
+# TODO: initial hashed password
 
 let
   meta = self + "/src/meta";
@@ -90,6 +87,9 @@ builtins.foldl'
 
           networking.hostName = "${username}-${hostName}";
 
+          environment.shells = [ "${pkgs.bashInteractiveFHS}/bin/bash" ];
+          users.defaultUserShell = "${pkgs.bashInteractiveFHS}/bin/bash";
+
           system.stateVersion = "23.11";
         })
         nixos-wsl.nixosModules.wsl # NOTE: anabled with wsl.enable
@@ -112,10 +112,12 @@ builtins.foldl'
               home-manager.nixosModules.home-manager
             ];
             users.users."${username}" = {
+              home = "/home/${username}";
+              createHome = true;
               isNormalUser = true;
               initialPassword = username;
               extraGroups = [ "wheel" ] ++ config.dot.groups;
-              shell = pkgs."${config.dot.shell.pkg}";
+              useDefaultShell = true;
             };
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = specialArgs;
