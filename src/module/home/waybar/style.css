@@ -36,6 +36,11 @@
   color: @bright-yellow;
 }
 
+#battery {
+  color: @bright-red;
+  padding-right: 12px;
+}
+
 #custom-powermenu {
   color: @bright-red;
   padding-right: 11px;
