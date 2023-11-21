@@ -1,28 +1,28 @@
 { pkgs, config, ... }:
 
-# TODO: shift keyboard brightness and non shift monitor brightness
+# TODO: subkey
 
 {
   de.keybinds = (if !(builtins.isNull config.dot.hardware.screenBrightnessDevice) then [
     {
-      mods = [ ];
-      key = "XF86MonBrightnessUp";
+      mods = [ "super" "shift" ];
+      key = "b";
       command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.hardware.screenBrightnessDevice}' set +2%'';
     }
     {
-      mods = [ ];
-      key = "XF86MonBrightnessDown";
+      mods = [ "super" ];
+      key = "b";
       command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.hardware.screenBrightnessDevice}' set 2%-'';
     }
   ] else [ ]) ++ (if !(builtins.isNull config.dot.hardware.keyboardBrightnessDevice) then [
     {
-      mods = [ "shift" ];
-      key = "XF86MonBrightnessUp";
+      mods = [ "super" "control" "shift" ];
+      key = "b";
       command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.hardware.keyboardBrightnessDevice}' set +2%'';
     }
     {
-      mods = [ "shift" ];
-      key = "XF86MonBrightnessDown";
+      mods = [ "super" "control" ];
+      key = "b";
       command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.hardware.keyboardBrightnessDevice}' set 2%-'';
     }
   ] else [ ]);
