@@ -11,17 +11,17 @@ let
 in
 {
   home.packages = with pkgs; [
-    file
-    zip
-    unzip
-    unrar
-    p7zip
-    pastel
-    jq
-    yq
-    pandoc
-    parted
-    eva
+    file # NOTE: get file info
+    zip # NOTE: zip stuff
+    unzip # NOTE: unzip stuff
+    unrar # NOTE: unrar stuff
+    p7zip # NOTE: 7zip stuff
+    parted # NOTE: partition manager
+    pandoc # NOTE: document converter
+    dasel # NOTE: json, yaml, toml, csv, etc manipulation
+    pastel # NOTE: color manipulation
+    eva # NOTE: math
+    xh # NOTE: requests
   ];
 
   de.sessionVariables = {
