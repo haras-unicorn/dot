@@ -9,7 +9,7 @@
 , ...
 } @ inputs:
 
-# TODO: home encryption
+# TODO: home encryption and zfs
 # TODO: hashed password
 # TODO: make all modules have hardware/system/user parts
 # TODO: remove allowUnfree from config?
