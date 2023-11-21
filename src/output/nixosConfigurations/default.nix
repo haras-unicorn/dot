@@ -10,7 +10,7 @@
 } @ inputs:
 
 # TODO: home encryption
-# TODO: initial hashed password
+# TODO: hashed password
 
 let
   meta = self + "/src/meta";
