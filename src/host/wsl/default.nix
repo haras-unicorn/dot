@@ -1,5 +1,6 @@
 {
   meta.dot = {
+    wsl = true;
     groups = [ "mlocate" "video" "audio" ];
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
     editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
