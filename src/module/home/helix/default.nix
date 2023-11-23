@@ -1,11 +1,6 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 
 {
-  home.packages = with pkgs; [
-    direnv
-    nix-direnv
-  ];
-
   programs.lulezojne.config.plop = [
     {
       template = builtins.readFile ./lulezojne.toml;
