@@ -7,6 +7,13 @@ let
       "$@" &>/dev/null & disown %-
     '';
   };
+
+  loop = pkgs.writeShellApplication {
+    name = "loop";
+    text = ''
+      while true; do "$@"; done
+    '';
+  };
 in
 {
   shell.aliases = {
@@ -18,6 +25,7 @@ in
 
   home.packages = with pkgs; [
     run
+    loop
     man-pages
     man-pages-posix
   ];
