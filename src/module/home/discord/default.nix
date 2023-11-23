@@ -2,12 +2,12 @@
 
 let
   # TODO: like with chromium?
-  webcord = pkgs.symlinkJoin {
-    name = "webcord";
-    paths = [ pkgs.webcord ];
+  discord = pkgs.symlinkJoin {
+    name = "discord";
+    paths = [ pkgs.discord ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
-      wrapProgram $out/bin/webcord \
+      wrapProgram $out/bin/discord \
         --append-flags --enable-features=WebRTCPipeWireCapturer \
         --append-flags --enable-features=UseOzonePlatform \
         --append-flags --ozone-platform-hint=auto
@@ -16,10 +16,10 @@ let
 in
 {
   de.sessionStartup = [
-    "${webcord}/bin/webcord"
+    "${discord}/bin/discord"
   ];
 
   home.packages = [
-    webcord
+    discord
   ];
 }

@@ -73,7 +73,7 @@ in
     "${self}/src/module/home/nomacs"
     "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
-    "${self}/src/module/home/webcord"
+    "${self}/src/module/home/discord"
 
     # "${self}/src/module/home/${config.dot.term.module}"
     # "${self}/src/module/home/${config.dot.visual.module}"
