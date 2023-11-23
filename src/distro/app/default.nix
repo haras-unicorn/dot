@@ -57,7 +57,6 @@ in
     dbeaver # NOTE: db viewer
     angryipscanner # NOTE: network scanner
     via # NOTE: keyboard configurator
-    webcord # NOTE: hardened discord
   ];
 
   imports = [
@@ -74,6 +73,7 @@ in
     "${self}/src/module/home/nomacs"
     "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
+    "${self}/src/module/home/webcord"
 
     # "${self}/src/module/home/${config.dot.term.module}"
     # "${self}/src/module/home/${config.dot.visual.module}"
