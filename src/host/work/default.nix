@@ -60,6 +60,8 @@
         size = config.dot.hardware.ram * 1024;
       }
     ];
+
+    services.fstrim.enable = true;
   };
 
   system = { self, ... }: {

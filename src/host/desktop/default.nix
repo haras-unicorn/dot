@@ -60,6 +60,8 @@
         size = config.dot.hardware.ram * 1024;
       }
     ];
+
+    services.fstrim.enable = true;
   };
 
   system = { self, ... }: {
@@ -70,6 +72,7 @@
 
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
+      "${self}/src/module/system/smartmontools"
 
       "${self}/src/module/system/sudo"
       "${self}/src/module/system/ssh"
