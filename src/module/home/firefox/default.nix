@@ -5,7 +5,6 @@
 # TODO: duckduckgo
 # note that last time it was overwriting it
 
-# TODO: netflix
 # TODO: openai login
 
 # NOTE: https://github.com/arkenfox/user.js/wiki

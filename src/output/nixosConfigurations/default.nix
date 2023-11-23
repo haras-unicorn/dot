@@ -173,8 +173,6 @@ builtins.foldl'
                 home.homeDirectory = "/home/${username}";
                 home.stateVersion = "23.11";
                 home.packages = [ rebuild rebuild-wip ];
-
-                services.spotifyd.settings.global.device_name = "${username}-${hostName}";
               });
           }
           else { }
