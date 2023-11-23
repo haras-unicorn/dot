@@ -1,6 +1,8 @@
 { ... }:
 
+# TODO: configure notifications/monitoring
+# TODO: collectd + postgre + timescaledb + graphana stack
+
 {
-  services.smartmontools.enable = true;
-  services.smartmontools.smartd.enable = true;
+  services.smartd.enable = true;
 }
