@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# TODO: fix attempting to compile
+# TODO: https://github.com/NixOS/nixpkgs/issues/158449
 # TODO: wayland...
 
 {
