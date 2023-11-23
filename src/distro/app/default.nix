@@ -74,6 +74,7 @@ in
     "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
     "${self}/src/module/home/discord"
+    "${self}/src/module/home/chromium"
 
     # "${self}/src/module/home/${config.dot.term.module}"
     # "${self}/src/module/home/${config.dot.visual.module}"
