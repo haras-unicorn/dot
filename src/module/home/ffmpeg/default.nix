@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# FIXME: codec from hardware?
+# FIXME: codec from hardware
 
 let
   ffmpeg-cut-1080p = pkgs.writeShellApplication {
