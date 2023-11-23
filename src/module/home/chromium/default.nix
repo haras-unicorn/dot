@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 # TODO: https://github.com/NixOS/nixpkgs/issues/158449
-# TODO: wayland...
+# TODO: hardware acceleration
 
 {
   programs.chromium.enable = true;

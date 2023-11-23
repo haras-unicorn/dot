@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# TODO: wayland...
+# TODO: hardware acceleration
 
 {
   programs.chromium.enable = true;

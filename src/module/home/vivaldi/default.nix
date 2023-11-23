@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# TODO: wayland...
+# TODO: hardware acceleration
 
 {
   programs.chromium.enable = true;
@@ -9,6 +9,8 @@
     hunspellDictsChromium.en_US
   ];
   programs.chromium.extensions = [
+    # ublock origin
+    { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
     # dark reader
     { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
     # vimium c
