@@ -8,8 +8,8 @@ let
     '';
   };
 
-  loop = pkgs.writeShellApplication {
-    name = "loop";
+  repeat = pkgs.writeShellApplication {
+    name = "repeat";
     text = ''
       while true; do "$@"; done
     '';
@@ -25,7 +25,7 @@ in
 
   home.packages = with pkgs; [
     run
-    loop
+    repeat
     man-pages
     man-pages-posix
   ];
