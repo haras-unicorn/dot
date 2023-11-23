@@ -57,6 +57,7 @@ in
     dbeaver # NOTE: db viewer
     angryipscanner # NOTE: network scanner
     via # NOTE: keyboard configurator
+    webcord # NOTE: hardened discord
   ];
 
   imports = [
