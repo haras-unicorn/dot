@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 # TODO: package https://github.com/theinvisible/openfortigui
+# TODO: into appropriate locations for ports
 
 {
   networking.nftables.enable = true;
