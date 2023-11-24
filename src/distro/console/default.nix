@@ -26,6 +26,7 @@ in
     hyperfine # NOTE: cli benchmarking
     tealdeer # NOTE: tldr <some-command> to learn basics
     fastmod # NOTE: large scale code refactoring
+    feedgnuplot # NOTE: plot data on the command line
   ];
 
   de.sessionVariables = {
