@@ -24,8 +24,9 @@ in
     xh # NOTE: requests
     rnr # NOTE: recursive renaming
     hyperfine # NOTE: cli benchmarking
-    tealdeer # NOTE: tldr <some-command> to learn basics
+    tealdeer # NOTE: tldr to learn basics of commands
     fastmod # NOTE: large scale code refactoring
+    usql # NOTE: connect to any db
   ];
 
   de.sessionVariables = {
