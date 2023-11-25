@@ -77,7 +77,6 @@
       "${self}/src/module/system/vpn"
 
       "${self}/src/module/system/sudo"
-      "${self}/src/module/system/ssh"
       "${self}/src/module/system/keyring"
       "${self}/src/module/system/polkit"
       "${self}/src/module/system/locate"

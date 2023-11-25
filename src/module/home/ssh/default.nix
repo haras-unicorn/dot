@@ -2,5 +2,5 @@
 
 {
   programs.ssh.enable = true;
-  programs.ssh.startAgent = true;
+  services.ssh-agent.enable = true;
 }
