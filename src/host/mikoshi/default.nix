@@ -1,3 +1,5 @@
+# TODO: grub and ssh in modules
+
 {
   meta.dot = {
     hardware.ram = 1;
@@ -57,7 +59,7 @@
 
     boot.loader.grub.device = "/dev/vda";
 
-    users.users.mikoshi.openssh.authorizedKeys.keys = [
+    users.users.haras.openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIldtUTZ5a9w3gKUkEvX0IF7OE03tEBK7e5gZTvWyjfc"
     ];
   };
