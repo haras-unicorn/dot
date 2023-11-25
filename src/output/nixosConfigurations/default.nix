@@ -93,6 +93,7 @@ builtins.foldl'
 
           environment.shells = [ "${pkgs.bashInteractiveFHS}/bin/bash" ];
           users.defaultUserShell = "${pkgs.bashInteractiveFHS}/bin/bash";
+          users.mutableUsers = false;
 
           system.stateVersion = "23.11";
         })
