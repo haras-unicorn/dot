@@ -7,13 +7,15 @@
     hardware.cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
     hardware.soundcardPciId = "2b:00.3";
 
+    location.timeZone = "Europe/Zagreb";
     groups = [ "libvirtd" "docker" "podman" "video" "audio" "gaming" "mlocate" ];
+
+    gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
     editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
     visual = { pkg = "vscode"; bin = "code"; module = "code"; };
     term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
     browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
-    gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
 
     font.nerd = { name = "JetBrainsMono Nerd Font"; pkg = "JetBrainsMono"; };
     font.mono = { name = "Roboto Mono"; pkg = "roboto-mono"; };
@@ -72,6 +74,7 @@
 
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
+      "${self}/src/module/system/vpn"
       "${self}/src/module/system/smartmontools"
 
       "${self}/src/module/system/sudo"
@@ -89,6 +92,10 @@
       "${self}/src/module/system/virtual"
       "${self}/src/module/system/gaming"
       "${self}/src/module/system/windows"
+    ];
+
+    networking.firewall.allowedTCPPorts = [
+      8384 # syncthing
     ];
   };
 

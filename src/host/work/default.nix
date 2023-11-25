@@ -9,13 +9,15 @@
     hardware.nvidiaDriver.version = "legacy_470";
     hardware.nvidiaDriver.open = false;
 
+    location.timeZone = "Europe/Zagreb";
     groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
+
+    gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
     editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
     visual = { pkg = "vscodium-fhs"; bin = "codium"; module = "code"; };
     term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
     browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
-    gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
 
     font.nerd = { name = "JetBrainsMono Nerd Font"; pkg = "JetBrainsMono"; };
     font.mono = { name = "Roboto Mono"; pkg = "roboto-mono"; };
@@ -72,6 +74,7 @@
 
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
+      "${self}/src/module/system/vpn"
 
       "${self}/src/module/system/sudo"
       "${self}/src/module/system/ssh"
@@ -88,6 +91,10 @@
       "${self}/src/module/system/locate"
       "${self}/src/module/system/gvfs"
       "${self}/src/module/system/transmission"
+    ];
+
+    networking.firewall.allowedTCPPorts = [
+      8384 # syncthing
     ];
   };
 
