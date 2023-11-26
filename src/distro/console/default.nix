@@ -6,6 +6,8 @@
 
 # FIXME: fix infinite recursion
 
+# TODO: https://github.com/mitsuhiko/systemfd
+
 let
   editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
 in
@@ -26,6 +28,7 @@ in
     hyperfine # NOTE: cli benchmarking
     fastmod # NOTE: large scale code refactoring
     usql # NOTE: connect to any db
+    watchexec # NOTE: run something when files change
   ];
 
   de.sessionVariables = {
