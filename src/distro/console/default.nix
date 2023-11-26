@@ -22,7 +22,7 @@ in
     pandoc # NOTE: document converter
     dasel # NOTE: json, yaml, toml, csv, etc manipulation
     pastel # NOTE: color manipulation
-    fend # NOTE: math
+    kalker # NOTE: math
     xh # NOTE: requests
     rnr # NOTE: recursive renaming
     hyperfine # NOTE: cli benchmarking
