@@ -24,7 +24,6 @@ in
     xh # NOTE: requests
     rnr # NOTE: recursive renaming
     hyperfine # NOTE: cli benchmarking
-    tealdeer # NOTE: tldr to learn basics of commands
     fastmod # NOTE: large scale code refactoring
     usql # NOTE: connect to any db
   ];
@@ -51,6 +50,7 @@ in
     "${self}/src/module/home/git"
 
     "${self}/src/module/home/yai"
+    "${self}/src/module/home/tealdeer"
 
     # "${self}/src/module/home/${config.dot.shell.module}"
     # "${self}/src/module/home/${config.dot.editor.module}"
