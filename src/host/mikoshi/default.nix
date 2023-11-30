@@ -6,7 +6,7 @@
     hardware.networkInterface = "ens3";
     groups = [ "mlocate" ];
     location.timeZone = "Etc/UTC";
-    shell = { pg = "nushell"; bin = "nu"; module = "nushell"; };
+    shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
     editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
     gpg = { pkg = "pinentry"; bin = "pinentry-tty"; flavor = "tty"; };
   };
