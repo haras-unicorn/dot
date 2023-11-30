@@ -41,10 +41,6 @@
         size = config.dot.hardware.ram * 1024;
       }
     ];
-
-    services.fstrim.enable = true;
-
-    boot.loader.grub.device = "/dev/vda";
   };
 
   system = { self, ... }: {
@@ -58,6 +54,8 @@
       "${self}/src/module/system/sshd"
       "${self}/src/module/system/locate"
     ];
+
+    services.fstrim.enable = true;
 
     boot.loader.grub.device = "/dev/vda";
 
