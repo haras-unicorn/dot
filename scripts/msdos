@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+DEVICE=$1
+if [ ! -b "$DEVICE" ]; then
+  printf "Please enter a valid block device\n"
+  exit 1
+fi
+
+parted --script "$DEVICE" mktable gpt
+parted --script "$DEVICE" mkpart primary fat32 0% 8GB
+parted --script "$DEVICE" toggle 1 esp
+parted --script "$DEVICE" mkpart primary ext4 8GB 100%
+sleep 3s
+mkfs.fat -F 32 /dev/vda1
+mkfs.ext4 /dev/vda2
+parted --script "$DEVICE" print
+
+sleep 3s
+mount /dev/vda2 /mnt
+mkdir /mnt/boot
+mount /dev/vda1 /mnt/boot
+mkdir /mnt/var
+fallocate -l 4G /mnt/var/swap
+chmod 600 /mnt/var/swap
+mkswap /mnt/var/swap
+swapon /mnt/var/swap
+mount | grep "$DEVICE"
