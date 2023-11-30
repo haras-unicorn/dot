@@ -43,6 +43,8 @@
     ];
 
     services.fstrim.enable = true;
+
+    boot.loader.grub.device = "/dev/vda";
   };
 
   system = { self, ... }: {
