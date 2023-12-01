@@ -46,15 +46,28 @@ let
   binds = strings.concatStringsSep
     "\n"
     (builtins.map
-      (bind: ''
-        keys.append(
-            Key(
-                ["${strings.concatStringsSep ''", "'' bind.mods}"],
-                "${bind.key}",
-                lazy.spawn("${bind.command}")
-            )
-        )
-      '')
+      (bind:
+        let
+          mods = builtins.map
+            (mod:
+              if mod == "super" then
+                "mod4"
+              else
+                if mod == "alt" then
+                  "mod1"
+                else
+                  mod)
+            bind.mods;
+        in
+        ''
+          keys.append(
+              Key(
+                  ["${strings.concatStringsSep ''", "'' mods}"],
+                  "${bind.key}",
+                  lazy.spawn("${bind.command}")
+              )
+          )
+        '')
       cfg.keybinds);
 in
 {
