@@ -58,11 +58,17 @@ let
                 else
                   mod)
             bind.mods;
+
+          modString =
+            if (builtins.length mods) == 0 then
+              ""
+            else
+              ''"${strings.concatStringsSep ''", "'' mods}"'';
         in
         ''
           keys.append(
               Key(
-                  ["${strings.concatStringsSep ''", "'' mods}"],
+                  [${modString}],
                   "${bind.key}",
                   lazy.spawn("${bind.command}")
               )
