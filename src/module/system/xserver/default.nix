@@ -20,9 +20,8 @@
   environment.systemPackages = with pkgs; [
     libsForQt5.qt5ct
     xclip
-    # NOTE: for sddm theme
-    libsForQt5.qt5.qtgraphicaleffects
-    libsForQt5.plasma-framework
+    libsForQt5.qt5.qtgraphicaleffects # NOTE: for sddm theme
+    libsForQt5.plasma-framework # NOTE: for sddm theme
   ];
 
   services.xserver.enable = true;
@@ -35,6 +34,7 @@
   xdg.portal.xdgOpenUsePortal = true;
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
+    libsForQt5.xdg-desktop-portal-kde
   ];
 
   xdg.sounds.enable = true;

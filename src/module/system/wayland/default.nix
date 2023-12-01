@@ -1,6 +1,7 @@
 { pkgs
   # , self
   # , sweet-theme
+, config
 , ...
 }:
 
@@ -37,8 +38,17 @@
   xdg.portal.enable = true;
   xdg.portal.xdgOpenUsePortal = true;
   xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-wlr
+    libsForQt5.xdg-desktop-portal-kde
     xdg-desktop-portal-gtk
   ];
+  xdg.portal.wlr.enable = true;
+  xdg.portal.wlr.settings = {
+    output_name = config.dot.hardware.mainMonitor;
+    max_fps = 60;
+    chooser_type = "simple";
+    chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
+  };
 
   xdg.sounds.enable = true;
 
