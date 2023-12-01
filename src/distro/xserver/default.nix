@@ -29,4 +29,12 @@
 
     "${self}/src/module/home/pcmanfm"
   ];
+
+  # NOTE: needed for tray items to work properly
+  systemd.user.targets.tray = {
+    Unit = {
+      Description = "Home Manager System Tray";
+      Requires = [ "graphical-session-pre.target" ];
+    };
+  };
 }
