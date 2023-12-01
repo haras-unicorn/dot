@@ -12,17 +12,17 @@
     {
       mods = [ "super" ];
       key = "p";
-      command = ''${pkgs.keepmenu}/bin/keepmenu'';
+      command = "${pkgs.keepmenu}/bin/keepmenu";
     }
     {
       mods = [ "super" "shift" ];
       key = "p";
-      command = ''${pkgs.keepmenu}/bin/keepmenu -a "{PASSWORD}"'';
+      command = "${pkgs.keepmenu}/bin/keepmenu -a '{PASSWORD}'";
     }
     {
       mods = [ "super" "alt" ];
       key = "p";
-      command = ''${pkgs.keepmenu}/bin/keepmenu -a "{TOTP}"'';
+      command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
     }
   ];
 
