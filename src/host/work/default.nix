@@ -102,7 +102,7 @@
       "${self}/src/distro/coreutils"
       "${self}/src/distro/diag"
       "${self}/src/distro/console"
-      "${self}/src/distro/xorg"
+      "${self}/src/distro/xserver"
       "${self}/src/distro/app"
     ];
   };

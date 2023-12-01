@@ -1,5 +1,7 @@
 { pkgs, sweet-theme, ... }:
 
+# TODO: remove xfce - see wayland implementation
+
 {
   environment.systemPackages = with pkgs; [
     xclip
