@@ -111,9 +111,9 @@ in
     xdg.configFile."qtile/config.py".text = ''
       ${builtins.readFile ./config.py}
 
-      widget_defaults["font"] = "${config.dot.font.sans.name}"
-      widget_defaults["fontsize"] = "${config.dot.font.size.medium}"
-      widget_defaults["icon_size"] = "${config.dot.font.size.medium}"
+      widget_defaults["font"] = "${builtins.toString config.dot.font.sans.name}"
+      widget_defaults["fontsize"] = ${builtins.toString config.dot.font.size.medium}
+      widget_defaults["icon_size"] = ${builtins.toString config.dot.font.size.medium}
 
       ${startup}
 
