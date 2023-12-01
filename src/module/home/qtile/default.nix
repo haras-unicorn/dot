@@ -1,12 +1,10 @@
 { pkgs, lib, config, ... }:
 
-# TODO: add dot prefix
-# TODO: map bind mods
 # TODO: switch-layout command
-# TODO: lulezojne
-# TODO: logout button (xfce4-session-logout)?
-# TODO: resize submap
 # TODO: float rules (make it a config thing here)
+# TODO: logout button (xfce4-session-logout)?
+# TODO: lulezojne
+# TODO: resize submap
 # TODO: hardware vars
 # TODO: location vars
 # TODO: fonts
@@ -113,7 +111,9 @@ in
     xdg.configFile."qtile/config.py".text = ''
       ${builtins.readFile ./config.py}
 
-      widget_defaults.font = "${config.dot.font.sans.name}"
+      widget_defaults["font"] = "${config.dot.font.sans.name}"
+      widget_defaults["fontsize"] = "${config.dot.font.size.medium}"
+      widget_defaults["icon_size"] = "${config.dot.font.size.medium}"
 
       ${startup}
 
