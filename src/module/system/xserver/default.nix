@@ -46,7 +46,7 @@
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.sddm.autoNumlock = true;
   services.xserver.displayManager.sddm.theme = "${sweet-theme}/kde/sddm";
-  services.xserver.displayManager.defaultSession = "qtile";
+  services.xserver.displayManager.defaultSession = "none+qtile";
 
   security.pam.services.sddm.enableGnomeKeyring = true;
 
