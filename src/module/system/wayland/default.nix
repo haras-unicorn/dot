@@ -52,6 +52,7 @@ in
 
     wev
 
+    wl-clipboard
     copy
     paste
   ];

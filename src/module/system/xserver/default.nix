@@ -39,6 +39,7 @@ in
     libsForQt5.qt5.qtgraphicaleffects # NOTE: for sddm theme
     libsForQt5.plasma-framework # NOTE: for sddm theme
 
+    xclip
     copy
     paste
   ];
