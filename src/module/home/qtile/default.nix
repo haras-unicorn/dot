@@ -16,14 +16,6 @@ with lib;
 let
   cfg = config.de;
 
-  reload-de = pkgs.writeShellApplication {
-    name = "reload-de";
-    runtimeInputs = [ pkgs.qtile ];
-    text = ''
-      qtile cmd-obj -o cmd -f restart
-    '';
-  };
-
   startup = strings.concatStringsSep
     "\n"
     (builtins.map
@@ -116,11 +108,12 @@ in
   config = {
     home.packages = with pkgs; [
       qtile
-      reload-de
     ];
 
     xdg.configFile."qtile/config.py".text = ''
       ${builtins.readFile ./config.py}
+
+      widget_defaults.font = "${config.dot.font.sans.name}"
 
       ${startup}
 

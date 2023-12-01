@@ -18,14 +18,6 @@ let
     '';
   };
 
-  reload-de = pkgs.writeShellApplication {
-    name = "reload-de";
-    runtimeInputs = [ pkgs.qtile ];
-    text = ''
-      qtile cmd-obj -o cmd -f restart
-    '';
-  };
-
   vars = strings.concatStringsSep
     "\n"
     (builtins.map
