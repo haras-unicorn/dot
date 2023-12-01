@@ -12,6 +12,23 @@
 
 # FIXME: https://github.com/NVIDIA/open-gpu-kernel-modules/issues/467#issuecomment-1544340511
 
+let
+  copy = pkgs.writeShellApplication {
+    name = "copy";
+    runtimeInputs = [ pkgs.wl-clipboard ];
+    text = ''
+      wl-copy "$@"
+    '';
+  };
+
+  paste = pkgs.writeShellApplication {
+    name = "copy";
+    runtimeInputs = [ pkgs.wl-clipboard ];
+    text = ''
+      wl-paste "$@"
+    '';
+  };
+in
 {
   environment.sessionVariables = {
     QT_QPA_PLATFORM = "wayland";
@@ -26,13 +43,17 @@
   };
 
   environment.systemPackages = with pkgs; [
+    egl-wayland
+    xwaylandvideobridge
+
     libsForQt5.qt5ct
     qt6.qtwayland
     libsForQt5.qt5.qtwayland
-    egl-wayland
-    wl-clipboard
+
     wev
-    xwaylandvideobridge
+
+    copy
+    paste
   ];
 
   xdg.portal.enable = true;

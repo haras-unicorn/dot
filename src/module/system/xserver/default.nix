@@ -4,6 +4,23 @@
 
 # FIXME: uncouple sddm/qtile?
 
+let
+  copy = pkgs.writeShellApplication {
+    name = "copy";
+    runtimeInputs = [ pkgs.xclip ];
+    text = ''
+      xclip -sel clip "$@"
+    '';
+  };
+
+  paste = pkgs.writeShellApplication {
+    name = "copy";
+    runtimeInputs = [ pkgs.xclip ];
+    text = ''
+      xclip -o -sel clip "$@"
+    '';
+  };
+in
 {
   environment.sessionVariables = {
     QT_QPA_PLATFORM = "xcb";
@@ -19,9 +36,11 @@
 
   environment.systemPackages = with pkgs; [
     libsForQt5.qt5ct
-    xclip
     libsForQt5.qt5.qtgraphicaleffects # NOTE: for sddm theme
     libsForQt5.plasma-framework # NOTE: for sddm theme
+
+    copy
+    paste
   ];
 
   services.xserver.enable = true;
