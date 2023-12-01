@@ -10,7 +10,7 @@ let
   };
 in
 {
-  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+  boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
