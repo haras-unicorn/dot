@@ -11,7 +11,6 @@
 
 {
   de.sessionVariables = {
-    QT_QPA_PLATFORM = "wayland";
     QT_QPA_PLATFORMTHEME = "kde";
     QT_STYLE_OVERRIDE = "kvantum";
   };
