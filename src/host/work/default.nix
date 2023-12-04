@@ -10,7 +10,15 @@
     hardware.nvidiaDriver.open = false;
 
     location.timeZone = "Europe/Zagreb";
-    groups = [ "libvirtd" "docker" "podman" "video" "audio" "mlocate" ];
+    groups = [
+      "libvirtd"
+      "docker"
+      "podman"
+      "development"
+      "video"
+      "audio"
+      "mlocate"
+    ];
 
     gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
@@ -71,6 +79,7 @@
       "${self}/src/module/system/grub"
       "${self}/src/module/system/plymouth"
       "${self}/src/module/system/zen"
+      "${self}/src/module/system/development"
 
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"

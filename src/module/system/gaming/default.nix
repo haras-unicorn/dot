@@ -23,11 +23,7 @@
   users.groups.gaming = { };
 
   security.pam.loginLimits = [
-    {
-      domain = "@gaming";
-      item = "nofile";
-      type = "hard";
-      value = "524288";
-    }
+    { domain = "@gaming"; item = "nofile"; type = "hard"; value = "524288"; }
+    { domain = "@gaming"; item = "nofile"; type = "soft"; value = "524288"; }
   ];
 }

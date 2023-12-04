@@ -8,7 +8,16 @@
     hardware.soundcardPciId = "2b:00.3";
 
     location.timeZone = "Europe/Zagreb";
-    groups = [ "libvirtd" "docker" "podman" "video" "audio" "gaming" "mlocate" ];
+    groups = [
+      "libvirtd"
+      "docker"
+      "podman"
+      "development"
+      "mlocate"
+      "video"
+      "audio"
+      "gaming"
+    ];
 
     gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
@@ -71,6 +80,7 @@
       "${self}/src/module/system/grub"
       "${self}/src/module/system/plymouth"
       "${self}/src/module/system/rt"
+      "${self}/src/module/system/development"
 
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
@@ -85,6 +95,7 @@
       "${self}/src/module/system/pipewire"
       "${self}/src/module/system/fonts"
       "${self}/src/module/system/wayland"
+      "${self}/src/module/system/audio"
       "${self}/src/module/system/gvfs"
       "${self}/src/module/system/transmission"
 
