@@ -83,7 +83,7 @@ in
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 
-    home.packages = [ switch-layout reload-de ];
+    home.packages = [ switch-layout ];
 
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.enableNvidiaPatches = true;
