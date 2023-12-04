@@ -21,6 +21,7 @@ in
     parted # NOTE: partition manager
     pandoc # NOTE: document converter
     dasel # NOTE: json, yaml, toml, csv, etc manipulation
+    jq # NOTE: popular json query language
     pastel # NOTE: color manipulation
     kalker # NOTE: math
     xh # NOTE: requests
