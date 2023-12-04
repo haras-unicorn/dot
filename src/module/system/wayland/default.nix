@@ -65,7 +65,7 @@ in
     xdg-desktop-portal-gtk
   ];
   xdg.portal.wlr.enable = true;
-  xdg.portal.wlr.settings = {
+  xdg.portal.wlr.settings.screencast = {
     output_name = config.dot.hardware.mainMonitor;
     max_fps = 60;
     chooser_type = "simple";
