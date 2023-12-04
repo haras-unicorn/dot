@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 # FIXME: when using rt kernel: Failed PREEMPT_RT sanity check. Bailing out!
 
