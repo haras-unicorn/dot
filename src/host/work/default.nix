@@ -23,7 +23,7 @@
     gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
     editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-    visual = { pkg = "vscodium-fhs"; bin = "codium"; module = "code"; };
+    visual = { pkg = "vscode"; bin = "code"; module = "code"; };
     term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
     browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
 
