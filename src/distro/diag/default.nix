@@ -16,6 +16,6 @@
     dog # NOTE: dns client
     upower # NOTE: battery power
     tshark # NOTE: wireshark in terminal
-    nethog # NOTE: network load
+    nethogs # NOTE: network load
   ];
 }
