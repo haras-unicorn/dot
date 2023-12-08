@@ -41,9 +41,8 @@
     imports = [
       "${self}/src/module/hardware/amd-cpu"
       "${self}/src/module/hardware/nvidia-gpu"
+      "${self}/src/module/hardware/firmware"
     ];
-
-    hardware.enableAllFirmware = true;
 
     boot.initrd.availableKernelModules = [
       "nvme"

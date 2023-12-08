@@ -39,9 +39,8 @@
   hardware = { self, config, ... }: {
     imports = [
       "${self}/src/module/hardware/amd-cpu"
+      "${self}/src/module/hardware/firmware"
     ];
-
-    hardware.enableAllFirmware = true;
 
     boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
