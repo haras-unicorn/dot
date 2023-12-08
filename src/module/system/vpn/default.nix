@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# FIXME: hamachi: Failed to start Network Manager Wait Online
+
 # TODO: package https://github.com/theinvisible/openfortigui
 
 {
