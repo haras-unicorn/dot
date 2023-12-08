@@ -43,7 +43,6 @@
     # bmalehorn.shell-syntax
     codezombiech.gitignore
     charliermarsh.ruff
-    # csharpier.csharpier-vscode -> NEED or omnisharp?
     # ctcuff.font-preview
     # DavidWang.ini-for-vscode
     dbaeumer.vscode-eslint

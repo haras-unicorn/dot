@@ -109,12 +109,16 @@
   "[shellscript]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
   "[dotenv]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
   "[ignore]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
-  "[csharp]": { "editor.defaultFormatter": "csharpier.csharpier-vscode" },
+  "[csharp]": { "editor.defaultFormatter": "ms-dotnettools.csharp" },
   "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "typescript.preferences.importModuleSpecifier": "project-relative",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "javascript.preferences.importModuleSpecifier": "project-relative",
   "powershell.promptToUpdatePowerShell": false,
-  "debug.onTaskErrors": "abort"
+  "debug.onTaskErrors": "abort",
+  "omnisharp.useModernNet": true,
+  "omnisharp.useEditorFormattingSettings": true,
+  "omnisharp.enableImportCompletion": true,
+  "omnisharp.enableAsyncCompletion": true
 }
