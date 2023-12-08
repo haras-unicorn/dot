@@ -58,6 +58,7 @@ in
   ];
 
   xdg.portal.enable = true;
+  xdg.portal.config.common.default = "*";
   xdg.portal.xdgOpenUsePortal = true;
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-wlr
