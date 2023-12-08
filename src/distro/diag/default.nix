@@ -15,5 +15,7 @@
     tokei # NOTE: count lines of code
     dog # NOTE: dns client
     upower # NOTE: battery power
+    tshark # NOTE: wireshark in terminal
+    nethog # NOTE: network load
   ];
 }
