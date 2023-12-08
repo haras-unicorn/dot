@@ -4,9 +4,9 @@
 
 {
   # NOTE: https://github.com/NixOS/nixpkgs/issues/231038
-  # environment.etc."ppp/options".text = ''
-  #   ipcp-accept-remote
-  # '';
+  environment.etc."ppp/options".text = ''
+    ipcp-accept-remote
+  '';
 
   environment.systemPackages = with pkgs; [
     ppp
