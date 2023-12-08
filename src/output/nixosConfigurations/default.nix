@@ -95,7 +95,7 @@ builtins.foldl'
           users.defaultUserShell = "${pkgs.bashInteractiveFHS}/bin/bash";
           users.mutableUsers = false;
 
-          system.stateVersion = "23.11";
+          system.stateVersion = "24.05";
         })
         nixos-wsl.nixosModules.wsl # NOTE: anabled with wsl.enable
         ({ lib, config, ... }: lib.mkIf config.dot.wsl {
@@ -172,7 +172,7 @@ builtins.foldl'
                 xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
                 home.username = "${username}";
                 home.homeDirectory = "/home/${username}";
-                home.stateVersion = "23.11";
+                home.stateVersion = "24.05";
                 home.packages = [ rebuild rebuild-wip ];
               });
           }
