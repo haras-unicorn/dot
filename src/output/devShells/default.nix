@@ -29,6 +29,9 @@ builtins.foldl'
           just
           openssl
           openvpn
+          openssh
+          age
+          sops
         ];
       };
     }

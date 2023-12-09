@@ -1,2 +1,45 @@
 #!/usr/bin/env bash
 set -eo pipefail
+
+AGE_KEY_FILES="$1"
+if [[ "$AGE_KEY_FILES" == "" ]]; then
+  printf "Please enter valid age key files\n"
+  exit 1
+fi
+
+SECRETS_DIR="$2"
+if [[ ! -d "$SECRETS_DIR" ]]; then
+  printf "Please enter a valid secrets directory\n"
+  exit 1
+fi
+
+indent() {
+  local text
+  local amount
+
+  text="$1"
+  amount="$2"
+
+  printf "%b" "$text" |
+    sed -z "s/\\n/,/g;s/,/\\n$(printf "%${amount}s" "")/g"
+}
+
+SECRETS=""
+for secret_file in "$SECRETS_DIR"/*; do
+  if [[ -f "$secret_file" ]]; then
+    secret_name=${secret_file##*/}
+    SECRETS+="$(
+      cat <<EOF
+$secret_name:
+  $(indent "$(cat "$secret_file")" 2)
+EOF
+    )"
+  fi
+done
+echo "$SECRETS" >"$SECRETS_DIR/secrets.sops.yaml"
+
+sops --encrypt \
+  --age "$AGE_KEY_FILES" \
+  "$SECRETS_DIR/secrets.sops.yaml" >"$SECRETS_DIR/secrets.sops.enc.yaml"
+mkclient "client.sops.yaml"
+mkclient "client.sops.enc.yaml"
