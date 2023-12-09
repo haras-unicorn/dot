@@ -5,4 +5,5 @@
   services.openssh.allowSFTP = true;
   services.openssh.PermitRootLogin = "no";
   services.openssh.PasswordAuthentication = false;
+  services.openssh.KbdInteractiveAuthentication = false;
 }

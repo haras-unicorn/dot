@@ -40,7 +40,7 @@
     ];
   };
 
-  system = { self, ... }: {
+  system = { self, userName, ... }: {
     imports = [
       "${self}/src/module/system/hardened"
 
@@ -56,25 +56,27 @@
 
     boot.loader.grub.device = "/dev/vda";
 
-    users.users.haras.openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIldtUTZ5a9w3gKUkEvX0IF7OE03tEBK7e5gZTvWyjfc"
+    users.users."${userName}".openssh.authorizedKeys.keys = [
+      /etc/ssh/.ssh/authorized.pub
     ];
+    sops.secrets."authorized.ssh.pub".path = "/home/${userName}/.ssh/authorized.pub";
+    sops.secrets."authorized.ssh.pub".owner = "haras";
+    sops.secrets."authorized.ssh.pub".group = "haras";
+    sops.secrets."authorized.ssh.pub".mode = "0600";
 
     services.openvpn.servers.mikoshi.config = ''
       port 1194
       proto udp
       dev tun
 
-      ca /etc/openvpn/ca.crt
-      cert /etc/openvpn/server.crt
-      key /etc/openvpn/server.key
-      dh /etc/openvpn/dh.pem
-      tls-auth /etc/openvpn/ta.key 0
+      ca /etc/openvpn/root.ssl.crt
+      cert /etc/openvpn/server.ssl.crt
+      key /etc/openvpn/server.ssl.key
+      dh /etc/openvpn/server.dhparam.pem
+      tls-auth /etc/openvpn/server.ta.key 0
 
       server 10.8.0.0 255.255.255.0
       ifconfig-pool-persist ipp.txt
-      # push "redirect-gateway def1" # redirect everything through the vpn
-      push "dhcp-option DNS 8.8.8.8"
       keepalive 10 120
 
       cipher AES-256-CBC
@@ -87,6 +89,26 @@
       log-append /var/log/openvpn/openvpn.log
       verb 3
     '';
+    sops.secrets."root.ssl.crt".path = "/etc/openvpn/root.ssl.crt";
+    sops.secrets."root.ssl.crt".owner = "nobody";
+    sops.secrets."root.ssl.crt".group = "nogroup";
+    sops.secrets."root.ssl.crt".mode = "0600";
+    sops.secrets."server.ssl.crt".path = "/etc/openvpn/server.ssl.crt";
+    sops.secrets."server.ssl.crt".owner = "nobody";
+    sops.secrets."server.ssl.crt".group = "nogroup";
+    sops.secrets."server.ssl.crt".mode = "0600";
+    sops.secrets."server.ssl.key".path = "/etc/openvpn/server.ssl.key";
+    sops.secrets."server.ssl.key".owner = "nobody";
+    sops.secrets."server.ssl.key".group = "nogroup";
+    sops.secrets."server.ssl.key".mode = "0600";
+    sops.secrets."server.dhparam.pem".path = "/etc/openvpn/server.dhparam.pem";
+    sops.secrets."server.dhparam.pem".owner = "nobody";
+    sops.secrets."server.dhparam.pem".group = "nogroup";
+    sops.secrets."server.dhparam.pem".mode = "0600";
+    sops.secrets."server.ta.key".path = "/etc/openvpn/server.ta.key";
+    sops.secrets."server.ta.key".owner = "nobody";
+    sops.secrets."server.ta.key".group = "nogroup";
+    sops.secrets."server.ta.key".mode = "0600";
   };
 
   user = { self, ... }: {

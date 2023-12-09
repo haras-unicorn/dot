@@ -13,15 +13,16 @@
 # TODO: home encryption and zfs (https://www.reddit.com/r/NixOS/comments/tzksw4/mount_an_encrypted_zfs_datastore_on_login/)
 # TODO: hashed password
 # TODO: make all modules have hardware/system/user parts
-# TODO: remove allowUnfree from config?
-# TODO: try grub alternatives
 
 let
   meta = self + "/src/meta";
   metaModuleNames = (builtins.attrNames (builtins.readDir meta));
   metaModules = builtins.map (name: "${meta}/${name}") metaModuleNames;
 
-  username = "haras";
+  userName = "haras";
+  vpnHost = "mikoshi";
+  vpnDomain = "haras-unicorn.xyz";
+
   systems = flake-utils.lib.defaultSystems;
 
   host = self + "/src/host";
@@ -31,8 +32,6 @@ let
     system = systems;
     hostName = hostNames;
   };
-
-  specialArgs = inputs;
 in
 builtins.foldl'
   (nixosConfigurations: config:
@@ -46,6 +45,12 @@ builtins.foldl'
     systemConfigModule = if builtins.hasAttr "system" configModules then configModules.system else { };
     hasUserConfigModule = builtins.hasAttr "user" configModules;
     userConfigModule = if hasUserConfigModule then configModules.user else { };
+    specialArgs = inputs // {
+      inherit hostName;
+      inherit userName;
+      inherit vpnHost;
+      inherit vpnDomain;
+    };
   in
   nixosConfigurations // {
     "${configName}" = nixpkgs.lib.nixosSystem {
@@ -89,7 +94,7 @@ builtins.foldl'
 
           nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
 
-          networking.hostName = "${username}-${hostName}";
+          networking.hostName = "${hostName}";
 
           environment.shells = [ "${pkgs.bashInteractiveFHS}/bin/bash" ];
           users.defaultUserShell = "${pkgs.bashInteractiveFHS}/bin/bash";
@@ -100,7 +105,7 @@ builtins.foldl'
         nixos-wsl.nixosModules.wsl # NOTE: anabled with wsl.enable
         ({ lib, config, ... }: lib.mkIf config.dot.wsl {
           wsl.enable = true;
-          wsl.defaultUser = "${username}";
+          wsl.defaultUser = "${userName}";
         })
         sops-nix.nixosModules.sops # NOTE: enabled when at least one secret is added
         ({ lib, config, sops-nix, ... }: lib.mkIf config.dot.secrets {
@@ -115,11 +120,11 @@ builtins.foldl'
             imports = [
               home-manager.nixosModules.home-manager
             ];
-            users.users."${username}" = {
-              home = "/home/${username}";
+            users.users."${userName}" = {
+              home = "/home/${userName}";
               createHome = true;
               isNormalUser = true;
-              initialPassword = username;
+              initialPassword = userName;
               extraGroups = [ "wheel" ] ++ config.dot.groups;
               useDefaultShell = true;
             };
@@ -132,7 +137,7 @@ builtins.foldl'
               metaConfigModule
               userConfigModule
             ];
-            home-manager.users."${username}" =
+            home-manager.users."${userName}" =
               ({ self, pkgs, ... }:
                 let
                   # TODO: figure out a cleaner way to do this
@@ -140,12 +145,12 @@ builtins.foldl'
                     name = "rebuild";
                     runtimeInputs = [ ];
                     text = ''
-                      if [[ ! -d "/home/${username}/src/dot" ]]; then
-                        echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
+                      if [[ ! -d "/home/${userName}/src/dot" ]]; then
+                        echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
                         exit 1
                       fi
 
-                      sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
+                      sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${configName}" "$@"
                     '';
                   };
 
@@ -154,16 +159,16 @@ builtins.foldl'
                     name = "rebuild-wip";
                     runtimeInputs = [ ];
                     text = ''
-                      if [[ ! -d "/home/${username}/src/dot" ]]; then
-                        echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
+                      if [[ ! -d "/home/${userName}/src/dot" ]]; then
+                        echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
                         exit 1
                       fi
 
-                      cd "/home/${username}/src/dot"
+                      cd "/home/${userName}/src/dot"
                       git add .
                       git commit -m "WIP"
                       git push
-                      sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
+                      sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${configName}" "$@"
                     '';
                   };
                 in
@@ -171,12 +176,12 @@ builtins.foldl'
                   programs.home-manager.enable = true;
                   nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
                   xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
-                  home.username = "${username}";
-                  home.homeDirectory = "/home/${username}";
+                  home.username = "${userName}";
+                  home.homeDirectory = "/home/${userName}";
                   home.stateVersion = "24.05";
                   home.packages = [ rebuild rebuild-wip ];
-                  sops.defaultSopsFile = "/home/${username}/.sops/secrets.sops.enc.yaml";
-                  sops.age.keyFile = "/home/${username}/.sops/secrets.age";
+                  sops.defaultSopsFile = "/home/${userName}/.sops/secrets.sops.enc.yaml";
+                  sops.age.keyFile = "/home/${userName}/.sops/secrets.age";
                 });
           }
           else

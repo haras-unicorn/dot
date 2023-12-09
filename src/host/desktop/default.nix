@@ -106,6 +106,26 @@
     networking.firewall.allowedTCPPorts = [
       8384 # syncthing
     ];
+
+    services.openvpn.servers.mikoshi.config = ''
+      client
+      dev tun
+      proto udp
+      remote haras-unicorn.xyz 1194
+      resolv-retry infinite # If connection to the server is lost, keep trying to resolve indefinitely.
+      nobind # Do not bind to local address and port.
+      ca ca.crt # The certificate authority (CA) certificate file.
+      cert client.crt # The client certificate file, signed by the CA.
+      key client.key # The client private key file.
+      tls-auth ta.key 1 # The TLS key for HMAC signature verification (the second argument '1' indicates client).
+      cipher AES-256-CBC # Encryption cipher - should match the server's setting.
+      auth SHA256 # HMAC digest algorithm - should match the server's setting.
+      remote-cert-tls server # Ensure the remote cert is from the server.
+      verb 3 # Log verbosity level.
+      script-security 2
+      up /etc/openvpn/update-resolv-conf
+      down /etc/openvpn/update-resolv-conf
+    '';
   };
 
   user = { self, ... }: {
