@@ -104,9 +104,8 @@ builtins.foldl'
         })
         sops-nix.nixosModules.sops # NOTE: enabled when at least one secret is added
         ({ lib, config, sops-nix, ... }: lib.mkIf config.dot.secrets {
-          sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-          sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-          sops.age.generateKey = true;
+          sops.defaultSopsFile = "/root/.sops/secrets.sops.enc.yaml";
+          sops.age.keyFile = "/root/.sops/secrets.age";
         })
         metaConfigModule
         hardwareConfigModule
@@ -129,54 +128,59 @@ builtins.foldl'
             home-manager.sharedModules = metaModules ++ [
               nur.hmModules.nur
               lulezojne.homeManagerModules.default
+              sops-nix.homeManagerModules.sops
               metaConfigModule
               userConfigModule
             ];
-            home-manager.users."${username}" = ({ self, pkgs, ... }:
-              let
-                # TODO: figure out a cleaner way to do this
-                rebuild = pkgs.writeShellApplication {
-                  name = "rebuild";
-                  runtimeInputs = [ ];
-                  text = ''
-                    if [[ ! -d "/home/${username}/src/dot" ]]; then
-                      echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
-                      exit 1
-                    fi
+            home-manager.users."${username}" =
+              ({ self, pkgs, ... }:
+                let
+                  # TODO: figure out a cleaner way to do this
+                  rebuild = pkgs.writeShellApplication {
+                    name = "rebuild";
+                    runtimeInputs = [ ];
+                    text = ''
+                      if [[ ! -d "/home/${username}/src/dot" ]]; then
+                        echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
+                        exit 1
+                      fi
 
-                    sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
-                  '';
-                };
+                      sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
+                    '';
+                  };
 
-                # TODO: figure out a cleaner way to do this
-                rebuild-wip = pkgs.writeShellApplication {
-                  name = "rebuild-wip";
-                  runtimeInputs = [ ];
-                  text = ''
-                    if [[ ! -d "/home/${username}/src/dot" ]]; then
-                      echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
-                      exit 1
-                    fi
+                  # TODO: figure out a cleaner way to do this
+                  rebuild-wip = pkgs.writeShellApplication {
+                    name = "rebuild-wip";
+                    runtimeInputs = [ ];
+                    text = ''
+                      if [[ ! -d "/home/${username}/src/dot" ]]; then
+                        echo "Please clone/link your dotfiles flake into '/home/${username}/src/dot'"
+                        exit 1
+                      fi
 
-                    cd "/home/${username}/src/dot"
-                    git add .
-                    git commit -m "WIP"
-                    git push
-                    sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
-                  '';
-                };
-              in
-              {
-                programs.home-manager.enable = true;
-                nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
-                xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
-                home.username = "${username}";
-                home.homeDirectory = "/home/${username}";
-                home.stateVersion = "24.05";
-                home.packages = [ rebuild rebuild-wip ];
-              });
+                      cd "/home/${username}/src/dot"
+                      git add .
+                      git commit -m "WIP"
+                      git push
+                      sudo nixos-rebuild switch --flake "/home/${username}/src/dot#${configName}" "$@"
+                    '';
+                  };
+                in
+                {
+                  programs.home-manager.enable = true;
+                  nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
+                  xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
+                  home.username = "${username}";
+                  home.homeDirectory = "/home/${username}";
+                  home.stateVersion = "24.05";
+                  home.packages = [ rebuild rebuild-wip ];
+                  sops.defaultSopsFile = "/home/${username}/.sops/secrets.sops.enc.yaml";
+                  sops.age.keyFile = "/home/${username}/.sops/secrets.age";
+                });
           }
-          else { }
+          else
+            { }
         )
       ];
     };

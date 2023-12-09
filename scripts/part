@@ -7,6 +7,12 @@ if [ ! -b "$DEVICE" ]; then
   exit 1
 fi
 
+SYSTEM_SOPS_FILE=$2
+SYSTEM_SOPS_KEY=$3
+HOME_SOPS_USERNAME=$4
+HOME_SOPS_FILE=$5
+HOME_SOPS_KEY=$6
+
 parted --script "$DEVICE" mktable gpt
 parted --script "$DEVICE" mkpart primary fat32 0% 8GB
 parted --script "$DEVICE" name 1 nixboot
@@ -28,3 +34,31 @@ chmod 600 /mnt/var/swap
 mkswap /mnt/var/swap
 swapon /mnt/var/swap
 mount | grep "$DEVICE"
+
+if [[ "$SYSTEM_SOPS_FILE" != "" && "$SYSTEM_SOPS_KEY" != "" ]]; then
+  mkdir -p "/mnt/root/.sops"
+  chmod 700 "/mnt/root"
+  chown root:root "/mnt/root"
+  chmod 700 "/mnt/root/.sops"
+  chown root:root "/mnt/root/.sops"
+  cp "$SYSTEM_SOPS_FILE" "/mnt/root/.sops/secrets.sops.enc.yaml"
+  chmod 600 "/mnt/root/.sops/secrets.sops.enc.yaml"
+  chown root:root "/mnt/root/.sops/secrets.sops.enc.yaml"
+  cp "$SYSTEM_SOPS_KEY" "/mnt/root/.sops/secrets.age"
+  chmod 600 "/mnt/root/.sops/secrets.age"
+  chown root:root "/mnt/root/.sops/secrets.age"
+fi
+
+if [[ "$HOME_SOPS_FILE" != "" && "$HOME_SOPS_KEY" != "" && "$HOME_SOPS_USERNAME" != "" ]]; then
+  mkdir -p "/home/$HOME_SOPS_USERNAME/.sops"
+  chmod 700 "/home/$HOME_SOPS_USERNAME"
+  chown "$HOME_SOPS_USERNAME:users" "/home/$HOME_SOPS_USERNAME"
+  chmod 700 "/home/$HOME_SOPS_USERNAME/.sops"
+  chown "$HOME_SOPS_USERNAME:users" "/home/$HOME_SOPS_USERNAME/.sops"
+  cp "$HOME_SOPS_FILE" "/home/$HOME_SOPS_USERNAME/.sops/secrets.sops.enc.yaml"
+  chmod 600 "/home/$HOME_SOPS_USERNAME/.sops/secrets.sops.enc.yaml"
+  chown "$HOME_SOPS_USERNAME:users" "/home/$HOME_SOPS_USERNAME/.sops/secrets.sops.enc.yaml"
+  cp "$HOME_SOPS_KEY" "/home/$HOME_SOPS_USERNAME/.sops/secrets.age"
+  chmod 600 "/home/$HOME_SOPS_USERNAME/.sops/secrets.age"
+  chown "$HOME_SOPS_USERNAME:users" "/home/$HOME_SOPS_USERNAME/.sops/secrets.sops.enc.yaml"
+fi

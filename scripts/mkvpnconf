@@ -1,0 +1,257 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+ensure() {
+  local path
+
+  path="$1"
+
+  if [[ -d "$path" ]]; then
+    rm -rf "$path"
+  fi
+
+  mkdir -p "$path"
+}
+
+SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$(dirname "$SCRIPTS")" && pwd)"
+SECRETS="$ROOT/secrets"
+mkdir -p "$SECRETS"
+SERVER_SECRETS="$SECRETS/server"
+mkdir -p "$SERVER_SECRETS"
+CLIENT_SECRETS="$SECRETS/client"
+ensure "$CLIENT_SECRETS"
+
+ID="$(openssl rand -hex 16)"
+NOW="$(date --utc -Iseconds)"
+ID_SECRETS="$SECRETS/$NOW-$ID"
+if [[ -d "$ID_SECRETS" ]]; then
+  printf "Client secrets already exist! Please try again..."
+  exit 1
+fi
+mkdir -p "$ID_SECRETS"
+printf "%s" "$ID" >"$ID_SECRETS/client.id.pub"
+cp "$ID_SECRETS/client.id.pub" "$CLIENT_SECRETS/client.id.pub"
+
+mkserver() {
+  local name
+
+  name="$1"
+
+  if [[ ! -f "$SERVER_SECRETS/name" ]]; then
+    cp "$ID_SECRETS/$name" "$SERVER_SECRETS/$name"
+  else
+    cp -f "$SERVER_SECRETS/$name" "$ID_SECRETS/$name"
+  fi
+}
+
+mkclient() {
+  local name
+
+  name="$1"
+
+  cp "$ID_SECRETS/$name" "$CLIENT_SECRETS/$name"
+}
+
+mkid() {
+  local name
+
+  name="$1"
+
+  # NOTE: if you do it raw it adds a newline
+  printf "%s" "$(openssl rand -base64 32)" >"$ID_SECRETS/$name.id.pub"
+}
+
+mkpass() {
+  local name
+
+  name="$1"
+
+  # NOTE: if you do it raw it adds a newline
+  passwd="$(openssl rand -base64 32)"
+  printf "%s" "$passwd" >"$ID_SECRETS/$name.pass"
+  chmod 400 "$ID_SECRETS/$name.pass"
+  printf "%s" "$(echo "$passwd" | mkpasswd --stdin)" >"$ID_SECRETS/$name.pass.pub"
+}
+
+mkage() {
+  local path
+
+  name="$1"
+
+  age-keygen -o "$ID_SECRETS/$name.age" 2>&1 |
+    awk '{ print $3 }' >"$ID_SECRETS/$name.age.pub"
+  chmod 400 "$ID_SECRETS/$name.age"
+}
+
+mkssh() {
+  local name
+  local comment
+
+  if [[ "$2" == "" ]]; then
+    name="$1"
+
+    ssh-keygen -q -a 100 -t ed25519 -N "" \
+      -f "$ID_SECRETS/$name.ssh"
+  else
+    name="$1"
+    comment="$2"
+
+    ssh-keygen -q -a 100 -t ed25519 -N "" \
+      -C "$comment" \
+      -f "$ID_SECRETS/$name.ssh"
+  fi
+
+  chmod 400 "$ID_SECRETS/$name.ssh"
+}
+
+mkssl() {
+  local name
+  local ca
+  local subj
+
+  if [[ "$3" == "" ]]; then
+    name="$1"
+    subj="$2"
+
+    openssl genpkey -algorithm ED25519 \
+      -out "$SECRETS/$name.ssl.key" >/dev/null 2>&1
+    openssl req -x509 \
+      -key "$SECRETS/$name.ssl.key" \
+      -out "$SECRETS/$name.ssl.crt" \
+      -subj "/CN=$subj" \
+      -days 3650 >/dev/null 2>&1
+  else
+    name="$1"
+    ca="$2"
+    subj="$3"
+
+    openssl genpkey -algorithm ED25519 \
+      -out "$ID_SECRETS/$name.ssl.key" >/dev/null 2>&1
+    openssl req -new \
+      -key "$ID_SECRETS/$name.ssl.key" \
+      -out "$ID_SECRETS/$name.ssl.csr" \
+      -subj "/CN=$subj" >/dev/null 2>&1
+    openssl x509 -req \
+      -in "$ID_SECRETS/$name.ssl.csr" \
+      -CA "$ca.ssl.crt" \
+      -CAkey "$ca.ssl.key" \
+      -CAcreateserial \
+      -out "$ID_SECRETS/$name.ssl.crt" \
+      -days 3650 >/dev/null 2>&1
+  fi
+
+  chmod 400 "$ID_SECRETS/$name.ssl.key"
+}
+
+mkparam() {
+  local name
+
+  name="$1"
+
+  openssl dhparam -out "$ID_SECRETS/$name.dhparam.pem"
+}
+
+mktakey() {
+  local name
+
+  name="$1"
+
+  openvpn --genkey --secret "$ID_SECRETS/$name.ta.key"
+}
+
+indent() {
+  local text
+  local amount
+
+  text="$1"
+  amount="$2"
+
+  printf "%b" "$text" |
+    sed -z "s/\\n/,/g;s/,/\\n$(printf "%${amount}s" "")/g"
+}
+
+mkage "secrets"
+mkserver "secrets.age"
+mkserver "secrets.age.pub"
+
+mkssl "root-ca" "Mikoshi Root CA"
+mkserver "root-ca.ssl.key"
+mkserver "root-ca.ssl.crt"
+
+mkage "mikoshi"
+mkserver "mikoshi.age"
+mkserver "mikoshi.age.pub"
+
+mkssh "mikoshi"
+mkserver "mikoshi.ssh"
+mkserver "mikoshi.ssh.pub"
+
+mkssl "mikoshi" "$ID_SECRETS/root.ssl" "Mikoshi Cert"
+mkserver "mikoshi.ssl.key"
+mkserver "mikoshi.ssl.csr"
+mkserver "mikoshi.ssl.crt"
+
+mkparam "mikoshi"
+mkserver "mikoshi.dhparam.pem"
+
+mktakey "mikoshi"
+mkserver "mikoshi.ta.key"
+
+mkage "client"
+mkclient "client.age"
+mkclient "client.age.pub"
+
+mkpass "client"
+mkclient "client.pass.pub"
+
+mkssl "client" "$ID_SECRETS/root.ssl" "Client-$ID Cert"
+mkserver "client.ssl.key"
+mkserver "client.ssl.csr"
+mkserver "client.ssl.crt"
+
+cat >"$ID_SECRETS/mikoshi.sops.yaml" <<EOF
+root-ca.ssl.crt: |
+  $(indent "$(cat "$ID_SECRETS/root-ca.ssl.crt")" 2)
+mikoshi.ssh.pub: |
+  $(indent "$(cat "$ID_SECRETS/mikoshi.ssh.pub")" 2)
+mikoshi.ssl.key: |
+  $(indent "$(cat "$ID_SECRETS/mikoshi.ssl.key")" 2)
+mikoshi.ssl.crt: |
+  $(indent "$(cat "$ID_SECRETS/mikoshi.ssl.crt")" 2)
+mikoshi.ta.key: |
+  $(indent "$(cat "$ID_SECRETS/mikoshi.ta.key")" 2)
+mikoshi.dhparam.pem: |
+  $(indent "$(cat "$ID_SECRETS/mikoshi.dhparam.pem")" 2)
+EOF
+sops --encrypt \
+  --age "$(
+    printf "%s,%s" \
+      "$(cat "$ID_SECRETS/secrets.age.pub")" \
+      "$(cat "$ID_SECRETS/mikoshi.age.pub")"
+  )" \
+  "$ID_SECRETS/mikoshi.sops.yaml" >"$ID_SECRETS/mikoshi.sops.enc.yaml"
+mkserver "mikoshi.sops.yaml"
+mkserver "mikoshi.sops.enc.yaml"
+
+cat >"$ID_SECRETS/client.sops.yaml" <<EOF
+root-ca.ssl.crt: |
+  $(indent "$(cat "$ID_SECRETS/root-ca.ssl.crt")" 2)
+client.id.pub: |
+  $(indent "$(cat "$ID_SECRETS/client.id.pub")" 2)
+client.ssl.key: |
+  $(indent "$(cat "$ID_SECRETS/client.ssl.key")" 2)
+client.ssl.crt: |
+  $(indent "$(cat "$ID_SECRETS/client.ssl.crt")" 2)
+client.ta.key: |
+  $(indent "$(cat "$ID_SECRETS/client.ta.key")" 2)
+EOF
+sops --encrypt \
+  --age "$(
+    printf "%s,%s" \
+      "$(cat "$ID_SECRETS/secrets.age.pub")" \
+      "$(cat "$ID_SECRETS/client.age.pub")"
+  )" \
+  "$ID_SECRETS/client.sops.yaml" >"$ID_SECRETS/client.sops.enc.yaml"
+mkclient "client.sops.yaml"
+mkclient "client.sops.enc.yaml"

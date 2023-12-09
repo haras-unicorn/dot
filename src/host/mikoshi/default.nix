@@ -1,5 +1,3 @@
-# TODO: grub and ssh in modules
-
 {
   meta.dot = {
     hardware.ram = 1;
