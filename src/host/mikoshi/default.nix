@@ -50,17 +50,45 @@
       "${self}/src/module/system/network"
 
       "${self}/src/module/system/sudo"
-      "${self}/src/module/system/sshd"
       "${self}/src/module/system/locate"
-    ];
 
-    services.fstrim.enable = true;
+      "${self}/src/module/system/openssh"
+      "${self}/src/module/system/openvpn"
+    ];
 
     boot.loader.grub.device = "/dev/vda";
 
     users.users.haras.openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIldtUTZ5a9w3gKUkEvX0IF7OE03tEBK7e5gZTvWyjfc"
     ];
+
+    services.openvpn.servers.mikoshi.config = ''
+      port 1194
+      proto udp
+      dev tun
+
+      ca /etc/openvpn/ca.crt
+      cert /etc/openvpn/server.crt
+      key /etc/openvpn/server.key
+      dh /etc/openvpn/dh.pem
+      tls-auth /etc/openvpn/ta.key 0
+
+      server 10.8.0.0 255.255.255.0
+      ifconfig-pool-persist ipp.txt
+      # push "redirect-gateway def1" # redirect everything through the vpn
+      push "dhcp-option DNS 8.8.8.8"
+      keepalive 10 120
+
+      cipher AES-256-CBC
+      auth SHA256
+
+      user nobody
+      group nogroup
+
+      status /var/log/openvpn/status.log
+      log-append /var/log/openvpn/openvpn.log
+      verb 3
+    '';
   };
 
   user = { self, ... }: {
