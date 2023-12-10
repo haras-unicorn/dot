@@ -38,7 +38,7 @@ done
 
 SECRETS=""
 for secret_file in "$SECRETS_DIR"/*; do
-  if [[ -f "$secret_file" && ! "$secret_file" =~ .*(\.sops(\.enc)?\.yaml|.age) ]]; then
+  if [[ -f "$secret_file" && ! "$secret_file" =~ .*(\.sops(\.enc)?\.yaml|.age|.id) ]]; then
     secret_name=${secret_file##*/}
     if [[ "$SECRETS" == "" ]]; then
       SECRETS+="$(

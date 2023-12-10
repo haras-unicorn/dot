@@ -12,17 +12,17 @@ lint:
 part *args:
 	"{{scripts}}"/part {{args}}
 
-mkvpnsecrets *args:
-	"{{scripts}}"/mkvpnsecrets {{args}}
-
-mksshsecrets *args:
-	"{{scripts}}"/mksshsecrets {{args}}
-
 mkpasssecrets *args:
 	"{{scripts}}"/mkpasssecrets {{args}}
 
 mksopssecrets *args:
 	"{{scripts}}"/mksopssecrets {{args}}
+
+mksshsecrets *args:
+	"{{scripts}}"/mksshsecrets {{args}}
+
+mkvpnsecrets *args:
+	"{{scripts}}"/mkvpnsecrets {{args}}
 
 mksops *args:
 	"{{scripts}}"/mksops {{args}}
