@@ -15,5 +15,14 @@ part *args:
 mkvpnsecrets *args:
 	"{{scripts}}"/mkvpnsecrets {{args}}
 
+mksshsecrets *args:
+	"{{scripts}}"/mksshsecrets {{args}}
+
+mkpasssecrets *args:
+	"{{scripts}}"/mkpasssecrets {{args}}
+
+mksopssecrets *args:
+	"{{scripts}}"/mksopssecrets {{args}}
+
 mksops *args:
 	"{{scripts}}"/mksops {{args}}
