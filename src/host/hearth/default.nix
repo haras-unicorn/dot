@@ -106,47 +106,6 @@
     networking.firewall.allowedTCPPorts = [
       8384 # syncthing
     ];
-
-    services.openvpn.servers."${vpnHost}".config = ''
-      client
-      dev tun
-      proto udp
-
-      ca /etc/openvpn/${vpnHost}/root-ca.ssl.crt
-      cert /etc/openvpn/${vpnHost}/client.ssl.crt
-      key /etc/openvpn/${vpnHost}/client.ssl.key
-      tls-auth /etc/openvpn/${vpnHost}/client.ta.key 1
-
-      remote ${vpnDomain} 1194
-      resolv-retry infinite
-      nobind
-
-      cipher AES-256-CBC
-      auth SHA256
-      remote-cert-tls server
-
-      script-security 2
-      up /etc/openvpn/update-resolv-conf
-      down /etc/openvpn/update-resolv-conf
-
-      verb 3
-    '';
-    sops.secrets."root.ssl.crt".path = "/etc/openvpn/root.ssl.crt";
-    sops.secrets."root.ssl.crt".owner = "nobody";
-    sops.secrets."root.ssl.crt".group = "nogroup";
-    sops.secrets."root.ssl.crt".mode = "0600";
-    sops.secrets."server.ssl.crt".path = "/etc/openvpn/server.ssl.crt";
-    sops.secrets."server.ssl.crt".owner = "nobody";
-    sops.secrets."server.ssl.crt".group = "nogroup";
-    sops.secrets."server.ssl.crt".mode = "0600";
-    sops.secrets."server.ssl.key".path = "/etc/openvpn/server.ssl.key";
-    sops.secrets."server.ssl.key".owner = "nobody";
-    sops.secrets."server.ssl.key".group = "nogroup";
-    sops.secrets."server.ssl.key".mode = "0600";
-    sops.secrets."server.ta.key".path = "/etc/openvpn/server.ta.key";
-    sops.secrets."server.ta.key".owner = "nobody";
-    sops.secrets."server.ta.key".group = "nogroup";
-    sops.secrets."server.ta.key".mode = "0600";
   };
 
   user = { self, ... }: {
