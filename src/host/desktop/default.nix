@@ -74,7 +74,7 @@
     services.fstrim.enable = true;
   };
 
-  system = { self, ... }: {
+  system = { self, vpnHost, vpnDomain, ... }: {
     imports = [
       "${self}/src/module/system/grub"
       "${self}/src/module/system/plymouth"
@@ -107,25 +107,46 @@
       8384 # syncthing
     ];
 
-    services.openvpn.servers.mikoshi.config = ''
+    services.openvpn.servers."${vpnHost}".config = ''
       client
       dev tun
       proto udp
-      remote haras-unicorn.xyz 1194
-      resolv-retry infinite # If connection to the server is lost, keep trying to resolve indefinitely.
-      nobind # Do not bind to local address and port.
-      ca ca.crt # The certificate authority (CA) certificate file.
-      cert client.crt # The client certificate file, signed by the CA.
-      key client.key # The client private key file.
-      tls-auth ta.key 1 # The TLS key for HMAC signature verification (the second argument '1' indicates client).
-      cipher AES-256-CBC # Encryption cipher - should match the server's setting.
-      auth SHA256 # HMAC digest algorithm - should match the server's setting.
-      remote-cert-tls server # Ensure the remote cert is from the server.
-      verb 3 # Log verbosity level.
+
+      ca /etc/openvpn/${vpnHost}/root-ca.ssl.crt
+      cert /etc/openvpn/${vpnHost}/client.ssl.crt
+      key /etc/openvpn/${vpnHost}/client.ssl.key
+      tls-auth /etc/openvpn/${vpnHost}/client.ta.key 1
+
+      remote ${vpnDomain} 1194
+      resolv-retry infinite
+      nobind
+
+      cipher AES-256-CBC
+      auth SHA256
+      remote-cert-tls server
+
       script-security 2
       up /etc/openvpn/update-resolv-conf
       down /etc/openvpn/update-resolv-conf
+
+      verb 3
     '';
+    sops.secrets."root.ssl.crt".path = "/etc/openvpn/root.ssl.crt";
+    sops.secrets."root.ssl.crt".owner = "nobody";
+    sops.secrets."root.ssl.crt".group = "nogroup";
+    sops.secrets."root.ssl.crt".mode = "0600";
+    sops.secrets."server.ssl.crt".path = "/etc/openvpn/server.ssl.crt";
+    sops.secrets."server.ssl.crt".owner = "nobody";
+    sops.secrets."server.ssl.crt".group = "nogroup";
+    sops.secrets."server.ssl.crt".mode = "0600";
+    sops.secrets."server.ssl.key".path = "/etc/openvpn/server.ssl.key";
+    sops.secrets."server.ssl.key".owner = "nobody";
+    sops.secrets."server.ssl.key".group = "nogroup";
+    sops.secrets."server.ssl.key".mode = "0600";
+    sops.secrets."server.ta.key".path = "/etc/openvpn/server.ta.key";
+    sops.secrets."server.ta.key".owner = "nobody";
+    sops.secrets."server.ta.key".group = "nogroup";
+    sops.secrets."server.ta.key".mode = "0600";
   };
 
   user = { self, ... }: {

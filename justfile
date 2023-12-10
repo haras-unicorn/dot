@@ -8,3 +8,12 @@ format:
 lint:
 	shellcheck {{scripts}}/*
 	prettier --check {{root}}
+
+part *args:
+	"{{scripts}}"/part {{args}}
+
+mkvpnsecrets *args:
+	"{{scripts}}"/mkvpnsecrets {{args}}
+
+mksops *args:
+	"{{scripts}}"/mksops {{args}}
