@@ -1,5 +1,7 @@
 { lib, config, ... }:
 
+# TODO: authorized list of objects with host, user, key file
+
 with lib;
 let
   cfg = config.dot.openssh;
