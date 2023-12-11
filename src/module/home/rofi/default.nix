@@ -32,7 +32,7 @@
   # NOTE: ln -s <db location> <home>/.keepmenu.kdbx
   xdg.configFile."keepmenu/config.ini".text = ''
     [dmenu]
-    dmenu_command = ${pkgs.rofi}/bin/rofi
+    dmenu_command = ${pkgs.rofi}/bin/rofi -config ${config.xdg.configHome}/rofi/keepmenu.rasi
     pinentry = ${pkgs."${config.dot.gpg.pkg}"}/bin/${config.dot.gpg.bin}
     title_path = False
 
