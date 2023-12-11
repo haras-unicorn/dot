@@ -29,7 +29,22 @@
   home.packages = with pkgs; [
     keepmenu
   ];
-  xdg.configFile."keepmenu/config.ini".source = ./config.ini;
+  # NOTE: ln -s <db location> <home>/.keepmenu.kdbx
+  xdg.configFile."keepmenu/config.ini".text = ''
+    [dmenu]
+    dmenu_command = ${pkgs.rofi}/bin/rofi
+    pinentry = ${pkgs."${config.dot.gpg.pkg}"}/bin/${config.dot.gpg.bin}
+    title_path = False
+
+    [dmenu_passphrase]
+    obscure = True
+
+    [database]
+    database_1 = ~/.keepmenu.kdbx
+    type_library = wtype
+    pw_cache_period_min = 1
+    autotype_default = {USERNAME}{TAB}{PASSWORD}
+  '';
 
   programs.rofi.enable = true;
   xdg.configFile."rofi/launcher.rasi".source = ./launcher.rasi;
