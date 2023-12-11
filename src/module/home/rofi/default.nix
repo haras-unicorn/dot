@@ -41,7 +41,6 @@
 
     [database]
     database_1 = ~/.keepmenu.kdbx
-    type_library = wtype
     pw_cache_period_min = 1
     autotype_default = {USERNAME}{TAB}{PASSWORD}
   '';
