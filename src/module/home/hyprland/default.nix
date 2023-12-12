@@ -6,8 +6,8 @@ with lib;
 let
   cfg = config.de;
 
-  switch-layout = pkgs.writeShellApplication {
-    name = "switch-layout";
+  layout = pkgs.writeShellApplication {
+    name = "layout";
     runtimeInputs = [ pkgs.hyprland ];
     text = ''
       hyprctl devices | \
@@ -83,8 +83,6 @@ in
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 
-    home.packages = [ switch-layout ];
-
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.enableNvidiaPatches = true;
     wayland.windowManager.hyprland.xwayland.enable = true;
@@ -96,7 +94,7 @@ in
 
       source = ${config.xdg.configHome}/hypr/colors.conf
 
-      bind = super, Space, exec, ${switch-layout}/bin/layout
+      bind = super, space, exec, ${layout}/bin/layout
 
       env = XDG_CURRENT_DESKTOP, Hyprland
       env = XDG_SESSION_DESKTOP, Hyprland

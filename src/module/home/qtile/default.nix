@@ -1,6 +1,6 @@
 { pkgs, lib, config, ... }:
 
-# TODO: switch-layout command
+# TODO: layout command
 # TODO: float rules (make it a config thing here)
 # TODO: logout button (xfce4-session-logout)?
 # TODO: lulezojne
