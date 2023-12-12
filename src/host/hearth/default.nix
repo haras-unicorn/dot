@@ -84,6 +84,7 @@
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
       "${self}/src/module/system/vpn"
+      "${self}/src/module/system/openvpn"
       "${self}/src/module/system/smartmontools"
 
       "${self}/src/module/system/sudo"
@@ -106,6 +107,10 @@
     networking.firewall.allowedTCPPorts = [
       8384 # syncthing
     ];
+
+    # dot.openvpn.client.enable = true;
+    # dot.openvpn.server.host = vpnHost;
+    # dot.openvpn.server.domain = vpnDomain;
   };
 
   user = { self, ... }: {
