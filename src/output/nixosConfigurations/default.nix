@@ -108,7 +108,7 @@ builtins.foldl'
           wsl.defaultUser = "${userName}";
         })
         sops-nix.nixosModules.sops # NOTE: enabled when at least one secret is added
-        ({ lib, config, sops-nix, ... }: lib.mkIf config.dot.secrets {
+        ({ lib, config, sops-nix, ... }: {
           sops.defaultSopsFile = "/root/.sops/secrets.sops.enc.yaml";
           sops.age.keyFile = "/root/.sops/secrets.age";
         })
