@@ -112,7 +112,7 @@ in
         ca /etc/openvpn/${cfg.server.host}/root-ca.ssl.crt
         cert /etc/openvpn/${cfg.server.host}/client.ssl.crt
         key /etc/openvpn/${cfg.server.host}/client.ssl.key
-        tls-auth /etc/openvpn/${cfg.server.host}/client.ta.key 1
+        tls-auth /etc/openvpn/${cfg.server.host}/server.ta.key 1
 
         resolv-retry infinite
         nobind
@@ -139,10 +139,10 @@ in
       sops.secrets."client.ssl.key".owner = "nobody";
       sops.secrets."client.ssl.key".group = "nogroup";
       sops.secrets."client.ssl.key".mode = "0600";
-      sops.secrets."client.ta.key".path = "/etc/openvpn/${cfg.server.host}/client.ta.key";
-      sops.secrets."client.ta.key".owner = "nobody";
-      sops.secrets."client.ta.key".group = "nogroup";
-      sops.secrets."client.ta.key".mode = "0600";
+      sops.secrets."server.ta.key".path = "/etc/openvpn/${cfg.server.host}/server.ta.key";
+      sops.secrets."server.ta.key".owner = "nobody";
+      sops.secrets."server.ta.key".group = "nogroup";
+      sops.secrets."server.ta.key".mode = "0600";
     })
   ];
 }
