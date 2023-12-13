@@ -127,10 +127,10 @@ in
 
         verb 3
       '';
-      sops.secrets."root.ssl.crt".path = "/etc/openvpn/${cfg.server.host}/root.ssl.crt";
-      sops.secrets."root.ssl.crt".owner = "nobody";
-      sops.secrets."root.ssl.crt".group = "nogroup";
-      sops.secrets."root.ssl.crt".mode = "0600";
+      sops.secrets."root-ca.ssl.crt".path = "/etc/openvpn/${cfg.server.host}/root-ca.ssl.crt";
+      sops.secrets."root-ca.ssl.crt".owner = "nobody";
+      sops.secrets."root-ca.ssl.crt".group = "nogroup";
+      sops.secrets."root-ca.ssl.crt".mode = "0600";
       sops.secrets."client.ssl.crt".path = "/etc/openvpn/${cfg.server.host}/client.ssl.crt";
       sops.secrets."client.ssl.crt".owner = "nobody";
       sops.secrets."client.ssl.crt".group = "nogroup";
