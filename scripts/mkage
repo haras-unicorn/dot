@@ -23,7 +23,7 @@ fi
 mkdir -p "$SECRETS"
 ID="$(openssl rand -hex 16)"
 NOW="$(date --utc -Iseconds)"
-ID_SECRETS="$SECRETS/vpn/$NOW-$ID"
+ID_SECRETS="$SECRETS/age/$NOW-$ID"
 if [[ -d "$ID_SECRETS" ]]; then
   printf "Sops secrets already exist! Please try again..."
   exit 1
