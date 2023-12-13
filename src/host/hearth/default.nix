@@ -84,7 +84,7 @@
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
       "${self}/src/module/system/vpn"
-      "${self}/src/module/system/openvpn"
+      "${self}/src/module/system/openvpn-client"
       "${self}/src/module/system/smartmontools"
 
       "${self}/src/module/system/sudo"
@@ -109,8 +109,8 @@
     ];
 
     # dot.openvpn.client.enable = true;
-    # dot.openvpn.server.host = vpnHost;
-    # dot.openvpn.server.domain = vpnDomain;
+    # dot.openvpn.client.host = vpnHost;
+    # dot.openvpn.client.domain = vpnDomain;
   };
 
   user = { self, ... }: {

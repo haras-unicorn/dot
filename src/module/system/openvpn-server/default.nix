@@ -94,6 +94,5 @@ in
       '';
     })
     ({ })
-    (builtins.attrNames cfg.server.clients))
-  );
+    (builtins.attrNames cfg.server.clients)));
 }

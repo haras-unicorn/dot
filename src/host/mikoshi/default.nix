@@ -51,7 +51,7 @@
       "${self}/src/module/system/locate"
 
       "${self}/src/module/system/openssh"
-      "${self}/src/module/system/openvpn"
+      "${self}/src/module/system/openvpn-server"
     ];
 
     boot.loader.grub.device = "/dev/vda";
