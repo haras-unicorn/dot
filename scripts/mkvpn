@@ -152,6 +152,7 @@ mkserver "server.dhparam.pem"
 
 mktakey "server"
 mkserver "server.ta.key"
+mkclient "server.ta.key"
 
 mkssl "client" "$ROOT_SECRETS/root-ca" "$CLIENT"
 mkclient "client.ssl.key"
