@@ -7,19 +7,22 @@ if [[ ! -d "$SECRETS" ]]; then
   exit 1
 fi
 
-HOST="$2"
-if [[ "$HOST" == "" ]]; then
-  printf "Please enter a valid host\n"
+REMOTE="$2"
+if [[ "$REMOTE" == "" ]]; then
+  printf "Please enter a valid remote\n"
   exit 1
 fi
 
-if [[ "$3" == "" ]]; then
-  NAME="$2"
-  COMMENT="$2"
-else
-  NAME="$2-$3"
-  COMMENT="$2@$3"
-  HOST="$3"
+USER="$3"
+if [[ "$USER" == "" ]]; then
+  printf "Please enter a valid user\n"
+  exit 1
+fi
+
+HOST="$4"
+if [[ "$HOST" == "" ]]; then
+  printf "Please enter a valid host\n"
+  exit 1
 fi
 
 mkdir -p "$SECRETS"
@@ -32,20 +35,20 @@ if [[ -d "$ID_SECRETS" ]]; then
 fi
 mkdir -p "$ID_SECRETS"
 
-HOST_SECRETS="$SECRETS/$HOST"
-mkdir -p "$HOST_SECRETS"
-printf "%s" "$ID" >"$HOST_SECRETS/ssh.id"
+REMOTE_SECRETS="$SECRETS/$REMOTE"
+mkdir -p "$REMOTE_SECRETS"
+printf "%s" "$ID" >"$REMOTE_SECRETS/ssh.id"
 
-mkhost() {
+mkremote() {
   local name
 
   name="$1"
 
-  if [[ -f "$HOST_SECRETS/$name" ]]; then
+  if [[ -f "$REMOTE_SECRETS/$name" ]]; then
     return
   fi
 
-  cp "$ID_SECRETS/$name" "$HOST_SECRETS/$name"
+  cp "$ID_SECRETS/$name" "$REMOTE_SECRETS/$name"
 }
 
 mkssh() {
@@ -69,6 +72,6 @@ mkssh() {
   chmod 400 "$ID_SECRETS/$name.ssh"
 }
 
-mkssh "$NAME" "$COMMENT"
-mkhost "$NAME.ssh"
-mkhost "$NAME.ssh.pub"
+mkssh "$USER-$HOST" "$USER@$HOST"
+mkremote "$USER-$HOST.ssh"
+mkremote "$USER-$HOST.ssh.pub"
