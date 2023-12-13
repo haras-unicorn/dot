@@ -108,9 +108,9 @@
       8384 # syncthing
     ];
 
-    dot.openvpn.client.enable = true;
-    dot.openvpn.server.host = vpnHost;
-    dot.openvpn.server.domain = vpnDomain;
+    # dot.openvpn.client.enable = true;
+    # dot.openvpn.server.host = vpnHost;
+    # dot.openvpn.server.domain = vpnDomain;
   };
 
   user = { self, ... }: {
