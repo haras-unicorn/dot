@@ -8,6 +8,13 @@ let
       nix run ${nixified-ai}#invokeai-nvidia
     '';
   };
+  textgen = pkgs.writeShellApplication {
+    name = "textgen";
+    runtimeInputs = [ ];
+    text = ''
+      nix run ${nixified-ai}#textgen-nvidia
+    '';
+  };
 in
 {
   boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
@@ -36,6 +43,7 @@ in
     glxinfo # NOTE: glxinfo and eglinfo
     nvtop
     invokeai
+    textgen
   ];
 
   environment.sessionVariables = {
