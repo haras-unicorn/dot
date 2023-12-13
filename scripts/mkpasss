@@ -57,5 +57,5 @@ mkpass() {
   printf "%s" "$(echo "$passwd" | mkpasswd --stdin)" >"$ID_SECRETS/$name.pass.pub"
 }
 
-mkpass "pass-$USER"
-mkhost "pass-$USER.pass.pub"
+mkpass "$USER"
+mkhost "$USER.pass.pub"

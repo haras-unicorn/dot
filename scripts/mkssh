@@ -69,6 +69,6 @@ mkssh() {
   chmod 400 "$ID_SECRETS/$name.ssh"
 }
 
-mkssh "openssh-authorized-$NAME" "$COMMENT"
-mkhost "openssh-authorized-$NAME.ssh"
-mkhost "openssh-authorized-$NAME.ssh.pub"
+mkssh "$NAME" "$COMMENT"
+mkhost "$NAME.ssh"
+mkhost "$NAME.ssh.pub"

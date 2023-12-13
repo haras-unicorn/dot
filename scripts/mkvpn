@@ -136,24 +136,24 @@ mktakey() {
   openvpn --genkey --secret "$ID_SECRETS/$name.ta.key" >/dev/null 2>&1
 }
 
-mkssl "openvpn-root-ca" "root"
-mkroot "openvpn-root-ca.ssl.key"
-mkroot "openvpn-root-ca.ssl.crt"
-mkserver "openvpn-root-ca.ssl.key"
-mkserver "openvpn-root-ca.ssl.crt"
-mkclient "openvpn-root-ca.ssl.crt"
+mkssl "root-ca" "root"
+mkroot "root-ca.ssl.key"
+mkroot "root-ca.ssl.crt"
+mkserver "root-ca.ssl.key"
+mkserver "root-ca.ssl.crt"
+mkclient "root-ca.ssl.crt"
 
-mkssl "openvpn-server" "$ROOT_SECRETS/openvpn-root-ca" "$SERVER"
-mkserver "openvpn-server.ssl.key"
-mkserver "openvpn-server.ssl.crt"
+mkssl "server" "$ROOT_SECRETS/root-ca" "$SERVER"
+mkserver "server.ssl.key"
+mkserver "server.ssl.crt"
 
-mkparam "openvpn-server"
-mkserver "openvpn-server.dhparam.pem"
+mkparam "server"
+mkserver "server.dhparam.pem"
 
-mktakey "openvpn-server"
-mkserver "openvpn-server.ta.key"
+mktakey "server"
+mkserver "server.ta.key"
 
-mkssl "openvpn-client" "$ROOT_SECRETS/openvpn-root-ca" "$CLIENT"
-mkclient "openvpn-client.ssl.key"
-mkclient "openvpn-client.ssl.csr"
-mkclient "openvpn-client.ssl.crt"
+mkssl "client" "$ROOT_SECRETS/root-ca" "$CLIENT"
+mkclient "client.ssl.key"
+mkclient "client.ssl.csr"
+mkclient "client.ssl.crt"

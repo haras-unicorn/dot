@@ -25,14 +25,14 @@ ID="$(openssl rand -hex 16)"
 NOW="$(date --utc -Iseconds)"
 ID_SECRETS="$SECRETS/age/$NOW-$ID"
 if [[ -d "$ID_SECRETS" ]]; then
-  printf "Sops secrets already exist! Please try again..."
+  printf "Age secrets already exist! Please try again..."
   exit 1
 fi
 mkdir -p "$ID_SECRETS"
 
 HOST_SECRETS="$SECRETS/$HOST"
 mkdir -p "$HOST_SECRETS"
-printf "%s" "$ID" >"$HOST_SECRETS/sops.id"
+printf "%s" "$ID" >"$HOST_SECRETS/age.id"
 
 mkserver() {
   local name
@@ -56,6 +56,6 @@ mkage() {
   chmod 400 "$ID_SECRETS/$name.age"
 }
 
-mkage "sops-$NAME"
-mkserver "sops-$NAME.age"
-mkserver "sops-$NAME.age.pub"
+mkage "$NAME"
+mkserver "$NAME.age"
+mkserver "$NAME.age.pub"
