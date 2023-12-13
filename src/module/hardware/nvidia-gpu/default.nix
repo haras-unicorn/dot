@@ -5,14 +5,14 @@ let
     name = "invokeai";
     runtimeInputs = [ ];
     text = ''
-      nix run ${nixified-ai}#invokeai-nvidia
+      nix run ${nixified-ai}#invokeai-nvidia "$@"
     '';
   };
   textgen = pkgs.writeShellApplication {
     name = "textgen";
     runtimeInputs = [ ];
     text = ''
-      nix run ${nixified-ai}#textgen-nvidia
+      nix run ${nixified-ai}#textgen-nvidia "$@"
     '';
   };
 in
