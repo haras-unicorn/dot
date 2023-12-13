@@ -73,10 +73,10 @@ in
         status /var/log/openvpn/status.log
         log-append /var/log/openvpn/openvpn.log
       '';
-      sops.secrets."root.ssl.crt".path = "/etc/openvpn/${cfg.server.host}/root.ssl.crt";
-      sops.secrets."root.ssl.crt".owner = "nobody";
-      sops.secrets."root.ssl.crt".group = "nogroup";
-      sops.secrets."root.ssl.crt".mode = "0600";
+      sops.secrets."root-ca.ssl.crt".path = "/etc/openvpn/${cfg.server.host}/root-ca.ssl.crt";
+      sops.secrets."root-ca.ssl.crt".owner = "nobody";
+      sops.secrets."root-ca.ssl.crt".group = "nogroup";
+      sops.secrets."root-ca.ssl.crt".mode = "0600";
       sops.secrets."server.ssl.crt".path = "/etc/openvpn/${cfg.server.host}/server.ssl.crt";
       sops.secrets."server.ssl.crt".owner = "nobody";
       sops.secrets."server.ssl.crt".group = "nogroup";
