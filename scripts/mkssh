@@ -72,6 +72,6 @@ mkssh() {
   chmod 400 "$ID_SECRETS/$name.ssh"
 }
 
-mkssh "$USER-$HOST" "$USER@$HOST"
+mkssh "$USER-$HOST" "$HOST"
 mkremote "$USER-$HOST.ssh"
 mkremote "$USER-$HOST.ssh.pub"
