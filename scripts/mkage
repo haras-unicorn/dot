@@ -14,9 +14,9 @@ if [[ "$HOST" == "" ]]; then
 fi
 
 if [[ "$3" == "" ]]; then
-  NAME="$2"
+  NAME="secrets"
 else
-  NAME="$2-$3"
+  NAME="$2"
   HOST="$3"
 fi
 

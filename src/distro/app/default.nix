@@ -2,6 +2,8 @@
 
 # FIXME: fix infinite recursion
 
+# TODO: firmware tui as part of diag
+
 let
   term = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
   shell = "${pkgs."${config.dot.shell.pkg}"}/bin/${config.dot.shell.bin}";
@@ -51,6 +53,7 @@ in
   xdg.mimeApps.defaultApplications = mime;
 
   home.packages = with pkgs; [
+    gnome-firmware # NOTE: view firmware 
     feh # NOTE: image viewer
     mpv # NOTE: video viewer
     pinta # NOTE: image manipulation
