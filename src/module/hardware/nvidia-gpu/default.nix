@@ -1,12 +1,12 @@
 { pkgs
 , config
   # , nixified-ai
-, gpt4all
+  # , gpt4all
 , ...
 }:
 
 # FIXME: system for ai from flake
-# FIXME: nixified-ai getting rebuilt and not using gpu
+# FIXME: ai getting rebuilt and not using gpu
 
 {
   boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
@@ -36,7 +36,7 @@
     nvtop
     # nixified-ai.packages.x86_64-linux.textgen-nvidia
     # nixified-ai.packages.x86_64-linux.invokeai-nvidia
-    gpt4all.packages.x86_64-linux.gpt4all-chat
+    # gpt4all.packages.x86_64-linux.gpt4all-chat
   ];
 
   environment.sessionVariables = {
