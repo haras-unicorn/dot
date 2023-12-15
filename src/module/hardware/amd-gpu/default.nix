@@ -1,14 +1,5 @@
 { pkgs, nixified-ai, ... }:
 
-let
-  invokeai = pkgs.writeShellApplication {
-    name = "invokeai";
-    runtimeInputs = [ ];
-    text = ''
-      nix run ${nixified-ai}#invokeai-amd
-    '';
-  };
-in
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
 
@@ -34,7 +25,8 @@ in
     libva-utils # NOTE: vainfo
     vulkan-tools # NOTE: vulkaninfo
     glxinfo # NOTE: glxinfo and eglinfo
-    invokeai
+    nixified-ai.packages.invokeai-amd
+    gpt4all.packages.x86_64-linux.gpt4all-chat
   ];
 
   environment.sessionVariables = {

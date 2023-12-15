@@ -1,22 +1,5 @@
-{ pkgs, config, nixified-ai, ... }:
+{ pkgs, config, nixified-ai, gpt4all, ... }:
 
-let
-  invokeai = pkgs.writeShellApplication {
-    name = "invokeai";
-    runtimeInputs = [ ];
-    text = ''
-      nix run ${nixified-ai}#invokeai-nvidia "$@"
-    '';
-  };
-  textgen = pkgs.writeShellApplication {
-    name = "textgen";
-    runtimeInputs = [ ];
-    text = ''
-      cd ~/.textgen/state
-      nix run ${nixified-ai}#textgen-nvidia "$@"
-    '';
-  };
-in
 {
   boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
@@ -43,8 +26,9 @@ in
     vulkan-tools # NOTE: vulkaninfo
     glxinfo # NOTE: glxinfo and eglinfo
     nvtop
-    invokeai
-    textgen
+    nixified-ai.packages.textgen-nvidia
+    nixified-ai.packages.invokeai-nvidia
+    gpt4all.packages.x86_64-linux.gpt4all-chat
   ];
 
   environment.sessionVariables = {

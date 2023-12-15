@@ -31,6 +31,9 @@
 
     slick-fox.url = "github:Etesam913/slick-fox";
     slick-fox.flake = false;
+
+    gpt4all.url = "github:polygon/gpt4all-nix";
+    gpt4all.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, ... } @ inputs:
