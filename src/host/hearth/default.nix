@@ -91,7 +91,6 @@
       "${self}/src/module/system/keyring"
       "${self}/src/module/system/polkit"
       "${self}/src/module/system/locate"
-      "${self}/src/module/system/nix-ld"
 
       "${self}/src/module/system/pipewire"
       "${self}/src/module/system/fonts"
