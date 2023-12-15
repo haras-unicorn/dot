@@ -12,6 +12,7 @@ let
     name = "textgen";
     runtimeInputs = [ ];
     text = ''
+      cd ~/.textgen/state
       nix run ${nixified-ai}#textgen-nvidia "$@"
     '';
   };
