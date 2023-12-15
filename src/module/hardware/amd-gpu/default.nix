@@ -1,5 +1,7 @@
 { pkgs, nixified-ai, ... }:
 
+# FIXME: system for ai
+
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
 
@@ -25,7 +27,7 @@
     libva-utils # NOTE: vainfo
     vulkan-tools # NOTE: vulkaninfo
     glxinfo # NOTE: glxinfo and eglinfo
-    nixified-ai.packages.invokeai-amd
+    nixified-ai.packages.x86_64-linux.invokeai-amd
     gpt4all.packages.x86_64-linux.gpt4all-chat
   ];
 

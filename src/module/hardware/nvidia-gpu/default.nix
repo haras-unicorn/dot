@@ -1,5 +1,7 @@
 { pkgs, config, nixified-ai, gpt4all, ... }:
 
+# FIXME: system for ai
+
 {
   boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
@@ -26,8 +28,8 @@
     vulkan-tools # NOTE: vulkaninfo
     glxinfo # NOTE: glxinfo and eglinfo
     nvtop
-    nixified-ai.packages.textgen-nvidia
-    nixified-ai.packages.invokeai-nvidia
+    nixified-ai.packages.x86_64-linux.textgen-nvidia
+    nixified-ai.packages.x86_64-linux.invokeai-nvidia
     gpt4all.packages.x86_64-linux.gpt4all-chat
   ];
 
