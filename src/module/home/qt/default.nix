@@ -1,5 +1,5 @@
 { sweet-theme
-  # ,  pkgs
+, pkgs
 , ...
 }:
 
@@ -7,7 +7,6 @@
 # TODO: lulezojne
 # TODO: icon theme?
 # TODO: cursor theme?
-# TODO: fix triggering compilation of qtwebengine
 
 {
   de.sessionVariables = {
@@ -15,15 +14,15 @@
     QT_STYLE_OVERRIDE = "kvantum";
   };
 
-  # home.packages = with pkgs; [
-  #   # kde
-  #   libsForQt5.plasma-integration
-  #   libsForQt5.systemsettings
+  home.packages = with pkgs; [
+    # kde
+    libsForQt5.plasma-integration
+    libsForQt5.systemsettings
 
-  #   # kvantum
-  #   libsForQt5.qtstyleplugin-kvantum
-  #   qt6Packages.qtstyleplugin-kvantum
-  # ];
+    # kvantum
+    libsForQt5.qtstyleplugin-kvantum
+    qt6Packages.qtstyleplugin-kvantum
+  ];
 
   xdg.configFile."Kvantum/Sweet".source = "${sweet-theme}/kde/Kvantum/Sweet";
   xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
