@@ -21,6 +21,7 @@
     lulezojne.inputs.nixpkgs.follows = "nixpkgs";
 
     nixified-ai.url = "github:nixified-ai/flake";
+    # NOTE: leave its own nixpkgs to use binary cache
     # nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
 
     gpt4all.url = "github:polygon/gpt4all-nix";
