@@ -1,6 +1,11 @@
-{ pkgs, nixified-ai, ... }:
+{ pkgs
+  # , nixified-ai
+, gpt4all
+, ...
+}:
 
-# FIXME: system for ai
+# FIXME: system for ai from flake
+# FIXME: nixified-ai getting rebuilt and not using gpu
 
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
