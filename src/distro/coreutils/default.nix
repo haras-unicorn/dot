@@ -1,5 +1,7 @@
 { self, pkgs, ... }:
 
+# FIXME: bat cache
+
 let
   run = pkgs.writeShellApplication {
     name = "run";
@@ -32,7 +34,7 @@ in
 
   imports = [
     "${self}/src/module/home/vivid"
-    "${self}/src/module/home/bat"
+    # "${self}/src/module/home/bat"
     "${self}/src/module/home/ripgrep"
     "${self}/src/module/home/sd"
     "${self}/src/module/home/fd"
