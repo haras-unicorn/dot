@@ -23,6 +23,9 @@
     nixified-ai.url = "github:nixified-ai/flake";
     nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
 
+    gpt4all.url = "github:polygon/gpt4all-nix";
+    gpt4all.inputs.nixpkgs.follows = "nixpkgs";
+
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
 
@@ -31,9 +34,6 @@
 
     slick-fox.url = "github:Etesam913/slick-fox";
     slick-fox.flake = false;
-
-    gpt4all.url = "github:polygon/gpt4all-nix";
-    gpt4all.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, ... } @ inputs:
