@@ -1,6 +1,7 @@
 { pkgs, config, nixified-ai, gpt4all, ... }:
 
-# FIXME: system for ai
+# FIXME: system for ai from flake
+# FIXME: ai getting rebuilt and not using gpu
 
 {
   boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
