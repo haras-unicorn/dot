@@ -1,5 +1,5 @@
 { pkgs
-, self
+  # , self
 , ...
 }:
 
@@ -9,9 +9,9 @@
 # NOTE: https://github.com/lutris/docs/blob/master/HowToEsync.md
 
 {
-  imports = [
-    "${self}/src/module/system/nix-ld"
-  ];
+  # imports = [
+  #   "${self}/src/module/system/nix-ld"
+  # ];
 
   environment.systemPackages = with pkgs; [
     wineWowPackages.waylandFull
@@ -23,10 +23,9 @@
     winetricks
     protontricks
 
-    # NOTE: common game dependencies
-    mono
-    gnome.zenity
-    fuse
+    mono # NOTE: ascension wow
+    gnome.zenity # NOTE: ascension wow
+    appimage-run # NOTE: ascension wow
   ];
 
   programs.steam.enable = true;
