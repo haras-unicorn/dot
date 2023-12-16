@@ -9,7 +9,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    wineWowPackages.stable
+    wineWowPackages.waylandFull
     virglrenderer
     win-virtio
     lutris
