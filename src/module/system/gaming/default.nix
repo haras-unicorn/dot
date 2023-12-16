@@ -16,6 +16,8 @@
     cartridges
     winetricks
     protontricks
+    mono
+    gnome.zenity
   ];
 
   programs.steam.enable = true;
