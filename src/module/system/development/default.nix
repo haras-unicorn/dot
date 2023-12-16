@@ -1,5 +1,7 @@
 { ... }:
 
+# TODO: fix clashing nofile limits
+
 {
   users.groups.development = { };
 
@@ -8,7 +10,7 @@
   };
 
   security.pam.loginLimits = [
-    { domain = "@development"; item = "nofile"; type = "hard"; value = "65535"; }
-    { domain = "@development"; item = "nofile"; type = "soft"; value = "65535"; }
+    { domain = "@development"; item = "nofile"; type = "hard"; value = "524288"; }
+    { domain = "@development"; item = "nofile"; type = "soft"; value = "524288"; }
   ];
 }

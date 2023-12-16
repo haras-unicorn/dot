@@ -2,7 +2,8 @@
 , ...
 }:
 
-# TODO: build lutris packages from yml here with `lutris --install`
+# FIXME: build lutris packages from yml here with `lutris --install`
+# TODO: fix clashing nofile limits
 
 # NOTE: https://github.com/lutris/docs/blob/master/HowToEsync.md
 
