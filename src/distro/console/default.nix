@@ -31,6 +31,7 @@ in
     fastmod # NOTE: large scale code refactoring
     usql # NOTE: connect to any db
     watchexec # NOTE: run something when files change
+    wget # NOTE: download things but often needed for other programs
   ];
 
   de.sessionVariables = {
