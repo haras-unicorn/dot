@@ -50,7 +50,6 @@ in
       })
       )
       ({ })
-      builtins.attrNames
-      cfg.authorizations)
+      (builtins.attrNames cfg.authorizations))
     );
 }
