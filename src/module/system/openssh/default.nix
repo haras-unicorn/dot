@@ -29,30 +29,30 @@ in
       services.openssh.settings.PasswordAuthentication = false;
       services.openssh.settings.KbdInteractiveAuthentication = false;
     }
-    // (attrsets.concatMapAttrs
-      (user: hosts:
-        (lists.foldl'
-          (result: host: result
-            // ({
-            sops.secrets."${user}-${host}.ssh.pub".path = "${config.users.users."${user}".home}" + /.ssh/${host}.authorized.ssh.pub;
-            sops.secrets."${user}-${host}.ssh.pub".owner = "${user}";
-            sops.secrets."${user}-${host}.ssh.pub".group = "users";
-            sops.secrets."${user}-${host}.ssh.pub".mode = "0600";
-          })
-          )
-          ({ })
-          (hosts))
-        // ({
-          system.activationScripts."openssh-${user}-authorized-keys" = {
-            text = ''
-              cat /home/${user}/.ssh/*.authorized.ssh.pub > /home/${user}/.ssh/authorized_keys
-              chown ${user}:users /home/${user}/.ssh/authorized_keys
-              chmod 600 /home/${user}/.ssh/authorized_keys
-            '';
-            deps = [ ];
-          };
-        })
-      )
-      (cfg.authorizations))
+      # // (attrsets.concatMapAttrs
+      #   (user: hosts:
+      #     (lists.foldl'
+      #       (result: host: result
+      #         // ({
+      #         sops.secrets."${user}-${host}.ssh.pub".path = "${config.users.users."${user}".home}" + /.ssh/${host}.authorized.ssh.pub;
+      #         sops.secrets."${user}-${host}.ssh.pub".owner = "${user}";
+      #         sops.secrets."${user}-${host}.ssh.pub".group = "users";
+      #         sops.secrets."${user}-${host}.ssh.pub".mode = "0600";
+      #       })
+      #       )
+      #       ({ })
+      #       (hosts))
+      #     // ({
+      #       system.activationScripts."openssh-${user}-authorized-keys" = {
+      #         text = ''
+      #           cat /home/${user}/.ssh/*.authorized.ssh.pub > /home/${user}/.ssh/authorized_keys
+      #           chown ${user}:users /home/${user}/.ssh/authorized_keys
+      #           chmod 600 /home/${user}/.ssh/authorized_keys
+      #         '';
+      #         deps = [ ];
+      #       };
+      #     })
+      #   )
+      #   (cfg.authorizations))
     );
 }
