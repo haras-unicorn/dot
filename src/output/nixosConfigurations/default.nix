@@ -107,7 +107,7 @@ builtins.foldl'
         })
         sops-nix.nixosModules.sops # NOTE: enabled when at least one secret is added
         ({ lib, config, sops-nix, ... }: {
-          sops.defaultSopsFile = "/root/.sops/secrets.sops.enc.yaml";
+          sops.defaultSopsFile = "${self}/src/host/${host}/secrets.sops.enc.yaml";
           sops.age.keyFile = "/root/.sops/secrets.age";
         })
         metaConfigModule
@@ -178,7 +178,7 @@ builtins.foldl'
                   home.homeDirectory = "/home/${userName}";
                   home.stateVersion = "24.05";
                   home.packages = [ rebuild rebuild-wip ];
-                  sops.defaultSopsFile = "/home/${userName}/.sops/secrets.sops.enc.yaml";
+                  sops.defaultSopsFile = "${self}/src/host/${hostName}/${userName}.sops.enc.yaml";
                   sops.age.keyFile = "/home/${userName}/.sops/secrets.age";
                 });
           }
