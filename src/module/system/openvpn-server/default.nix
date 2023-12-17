@@ -87,12 +87,14 @@ in
     sops.secrets."server.dhparam.pem".owner = "nobody";
     sops.secrets."server.dhparam.pem".group = "nogroup";
     sops.secrets."server.dhparam.pem".mode = "0600";
-  } // (builtins.foldl'
-    (clients: client: clients // {
-      environment.etc."/etc/openvpn/${cfg.host}/clients/${client}" = ''
-        ifconfig-push ${subnet}.${cfg.clients."${client}"} ${mask}
-      '';
-    })
-    ({ })
-    (builtins.attrNames cfg.clients)));
+  }
+    # // (builtins.foldl'
+    #   (clients: client: clients // {
+    #     environment.etc."/etc/openvpn/${cfg.host}/clients/${client}" = ''
+    #       ifconfig-push ${subnet}.${cfg.clients."${client}"} ${mask}
+    #     '';
+    #   })
+    #   ({ })
+    #   (builtins.attrNames cfg.clients))
+  );
 }
