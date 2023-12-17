@@ -29,7 +29,8 @@ in
       '';
     };
     clients = mkOption {
-      type = with types; nullOr (lazyAttrsOf str);
+      type = with types; lazyAttrsOf str;
+      default = { };
       example = {
         client1 = "1";
       };

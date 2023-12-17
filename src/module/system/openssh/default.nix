@@ -10,7 +10,8 @@ in
   options.dot.openssh = {
     enable = mkEnableOption "OpenSSH server";
     authorizations = mkOption {
-      type = with types; attrsOf (listOf str);
+      type = with types; lazyAttrsOf (listOf str);
+      default = { };
       example = {
         user1 = [ "host1" ];
       };
