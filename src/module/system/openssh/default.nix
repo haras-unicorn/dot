@@ -23,7 +23,6 @@ in
     services.openssh.allowSFTP = true;
     services.openssh.PermitRootLogin = "no";
     services.openssh.PasswordAuthentication = false;
-    services.openssh.KbdInteractiveAuthentication = false;
 
     users.users."${cfg.userName}".openssh.authorizedKeys.keys = [
       ("${config.users.users."${cfg.userName}".homeDirectory}" + /.ssh/authorized.pub)
