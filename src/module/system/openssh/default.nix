@@ -26,7 +26,7 @@ in
     services.openssh.settings.KbdInteractiveAuthentication = false;
 
     users.users."${cfg.userName}".openssh.authorizedKeys.keys = [
-      ("${config.users.users."${cfg.userName}".homeDirectory}" + /.ssh/authorized.pub)
+      ("${config.users.users."${cfg.userName}".home}" + /.ssh/authorized.pub)
     ];
     sops.secrets."authorized.ssh.pub".path = "${config.users.users."${cfg.userName}".homeDirectory}" + /.ssh/authorized.pub;
     sops.secrets."authorized.ssh.pub".owner = "${cfg.userName}";
