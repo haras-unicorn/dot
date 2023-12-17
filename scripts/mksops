@@ -43,7 +43,7 @@ for secret_file in "$SECRETS_DIR"/*; do
     if [[ "$SECRETS" == "" ]]; then
       SECRETS+="$(
         cat <<EOF
-$secret_name:
+$secret_name: |
   $(indent "$(cat "$secret_file")" 2)
 EOF
       )"
@@ -51,7 +51,7 @@ EOF
       SECRETS+="$(
         cat <<EOF
 
-$secret_name:
+$secret_name: |
   $(indent "$(cat "$secret_file")" 2)
 EOF
       )"
