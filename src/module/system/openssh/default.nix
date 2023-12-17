@@ -9,28 +9,48 @@ in
 {
   options.dot.openssh = {
     enable = mkEnableOption "OpenSSH server";
-    userName = mkOption {
-      type = types.str;
-      example = "haras";
+    authorizations = mkOption {
+      type = with types; attrsOf (listOf str);
+      example = {
+        haras = [ "hearth" ];
+      };
       description = mdDoc ''
-        OpsnSSH login user name.
+        OpenSSH authorized keys specification
       '';
     };
   };
 
-  config = mkIf cfg.enable {
-    services.openssh.enable = true;
-    services.openssh.allowSFTP = true;
-    services.openssh.settings.PermitRootLogin = "no";
-    services.openssh.settings.PasswordAuthentication = false;
-    services.openssh.settings.KbdInteractiveAuthentication = false;
-
-    users.users."${cfg.userName}".openssh.authorizedKeys.keys = [
-      ("${config.users.users."${cfg.userName}".home}" + /.ssh/authorized.pub)
-    ];
-    sops.secrets."authorized.ssh.pub".path = "${config.users.users."${cfg.userName}".homeDirectory}" + /.ssh/authorized.pub;
-    sops.secrets."authorized.ssh.pub".owner = "${cfg.userName}";
-    sops.secrets."authorized.ssh.pub".group = "users";
-    sops.secrets."authorized.ssh.pub".mode = "0600";
-  };
+  config = mkIf cfg.enable
+    ({
+      services.openssh.enable = true;
+      services.openssh.allowSFTP = true;
+      services.openssh.settings.PermitRootLogin = "no";
+      services.openssh.settings.PasswordAuthentication = false;
+      services.openssh.settings.KbdInteractiveAuthentication = false;
+    }
+    // (builtins.foldl'
+      (result: user: result
+        // (builtins.map
+        (host: {
+          sops.secrets."${user}-${host}.ssh.pub".path = "${config.users.users."${user}".home}" + /.ssh/${host}.authorized.ssh.pub;
+          sops.secrets."${user}-${host}.ssh.pub".owner = "${user}";
+          sops.secrets."${user}-${host}.ssh.pub".group = "users";
+          sops.secrets."${user}-${host}.ssh.pub".mode = "0600";
+        })
+        (cfg.authorizations."${user}"))
+        // ({
+        system.activationScripts."openssh-${user}-authorized-keys" = {
+          text = ''
+            cat /home/${user}/.ssh/*.authorized.ssh.pub > /home/${user}/.ssh/authorized_keys
+            chown ${user}:users /home/${user}/.ssh/authorized_keys
+            chmod 600 /home/${user}/.ssh/authorized_keys
+          '';
+          deps = [ ];
+        };
+      })
+      )
+      ({ })
+      builtins.attrNames
+      cfg.authorizations)
+    );
 }

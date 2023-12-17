@@ -57,7 +57,9 @@
     boot.loader.grub.device = "/dev/vda";
 
     dot.openssh.enable = true;
-    dot.openssh.userName = userName;
+    dot.openssh.authorizations = {
+      haras = [ "hearth" ];
+    };
 
     dot.openvpn.server.enable = true;
     dot.openvpn.server.host = hostName;
