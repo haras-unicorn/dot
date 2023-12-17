@@ -28,9 +28,9 @@ in
       services.openssh.settings.PasswordAuthentication = false;
       services.openssh.settings.KbdInteractiveAuthentication = false;
     }
-    // (builtins.foldl'
+    // (lists.foldl'
       (result: user: result
-        // (builtins.map
+        // (lists.forEach
         (host: {
           sops.secrets."${user}-${host}.ssh.pub".path = "${config.users.users."${user}".home}" + /.ssh/${host}.authorized.ssh.pub;
           sops.secrets."${user}-${host}.ssh.pub".owner = "${user}";
@@ -50,6 +50,6 @@ in
       })
       )
       ({ })
-      (builtins.attrNames cfg.authorizations))
+      (attrsets.attrNames cfg.authorizations))
     );
 }
