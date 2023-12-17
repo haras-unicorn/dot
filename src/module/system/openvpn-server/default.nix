@@ -88,13 +88,13 @@ in
     sops.secrets."server.dhparam.pem".group = "nogroup";
     sops.secrets."server.dhparam.pem".mode = "0600";
   }
-    # // (builtins.foldl'
-    #   (clients: client: clients // {
-    #     environment.etc."/etc/openvpn/${cfg.host}/clients/${client}" = ''
-    #       ifconfig-push ${subnet}.${cfg.clients."${client}"} ${mask}
-    #     '';
-    #   })
-    #   ({ })
-    #   (builtins.attrNames cfg.clients))
+  // (lists.foldl'
+    (clients: client: clients // {
+      environment.etc."/etc/openvpn/${cfg.host}/clients/${client}" = ''
+        ifconfig-push ${subnet}.${cfg.clients."${client}"} ${mask}
+      '';
+    })
+    ({ })
+    (attrsets.attrNames cfg.clients))
   );
 }
