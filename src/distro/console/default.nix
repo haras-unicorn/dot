@@ -12,6 +12,10 @@ let
   editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
 in
 {
+  shell.aliases = {
+    sis = editor;
+  };
+
   home.packages = with pkgs; [
     cmatrix # NOTE: matrix in console
     file # NOTE: get file info
@@ -33,14 +37,6 @@ in
     watchexec # NOTE: run something when files change
     wget # NOTE: download things but often needed for other programs
   ];
-
-  de.sessionVariables = {
-    EDITOR = editor;
-  };
-
-  shell.aliases = {
-    sis = editor;
-  };
 
   imports = [
     "${self}/src/module/home/sh"

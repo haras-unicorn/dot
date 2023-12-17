@@ -9,6 +9,7 @@ let
   shell = "${pkgs."${config.dot.shell.pkg}"}/bin/${config.dot.shell.bin}";
   browser = "${pkgs."${config.dot.browser.pkg}"}/bin/${config.dot.browser.bin}";
   visual = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
+  editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
 
   browserDesktop = "${pkgs."${config.dot.browser.pkg}"}/share/applications/${config.dot.browser.bin}.desktop";
   browserMime = {
@@ -47,6 +48,7 @@ in
   de.sessionVariables = {
     VISUAL = "${visual}";
     BROWSER = "${browser}";
+    EDITOR = editor;
   };
 
   xdg.mimeApps.associations.added = mime;
