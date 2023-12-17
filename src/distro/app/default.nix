@@ -1,6 +1,7 @@
 { self, pkgs, config, ... }:
 
 # FIXME: fix infinite recursion
+# FIXME: weak dependency on desktop?
 
 # TODO: firmware tui as part of diag
 
