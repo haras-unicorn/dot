@@ -89,15 +89,12 @@ in
     sops.secrets."server.dhparam.pem".group = "nogroup";
     sops.secrets."server.dhparam.pem".mode = "0600";
   }
-  // (builtins.foldl'
-    (result: client: result
-      // ({
+  // (attrsets.concatMapAttrs
+    (client: ip: {
       environment.etc."/etc/openvpn/${cfg.host}/clients/${client}" = ''
-        ifconfig-push ${subnet}.${cfg.clients."${client}"} ${mask}
+        ifconfig-push ${subnet}.${ip} ${mask}
       '';
     })
-    )
-    ({ })
-    (builtins.attrNames cfg.clients))
+    (cfg.clients))
   );
 }
