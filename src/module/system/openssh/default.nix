@@ -12,7 +12,7 @@ in
     authorizations = mkOption {
       type = with types; attrsOf (listOf str);
       example = {
-        haras = [ "hearth" ];
+        user1 = [ "host1" ];
       };
       description = mdDoc ''
         OpenSSH authorized keys specification
