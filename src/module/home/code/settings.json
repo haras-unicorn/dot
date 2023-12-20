@@ -121,5 +121,6 @@
   "omnisharp.useModernNet": true,
   "omnisharp.useEditorFormattingSettings": true,
   "omnisharp.enableImportCompletion": true,
-  "omnisharp.enableAsyncCompletion": true
+  "omnisharp.enableAsyncCompletion": true,
+  "debug.focusWindowOnBreak": false
 }
