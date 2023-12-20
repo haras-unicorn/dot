@@ -110,6 +110,7 @@
   "[dotenv]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
   "[ignore]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
   "[csharp]": { "editor.defaultFormatter": "ms-dotnettools.csharp" },
+  "[aspnetcorerazor]": { "editor.defaultFormatter": "ms-dotnettools.csharp" },
   "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "typescript.preferences.importModuleSpecifier": "project-relative",
