@@ -16,7 +16,7 @@ if [[ "$TABLE" != "gpt" && "$TABLE" != "msdos" ]]; then
 fi
 
 SYSTEM_SOPS_KEY=$3
-if [[ ! -f "$SYSTEM_SOPS_KEY" || "$SYSTEM_SOPS_KEY" != "" ]]; then
+if [[ ! -f "$SYSTEM_SOPS_KEY" && "$SYSTEM_SOPS_KEY" != "" ]]; then
   printf "Please enter a valid system sops key\n"
   exit 1
 fi
