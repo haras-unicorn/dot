@@ -2,16 +2,22 @@
 set -eo pipefail
 
 DEVICE=$1
-if [ ! -b "$DEVICE" ]; then
+if [[ ! -b "$DEVICE" ]]; then
   printf "Please enter a valid block device\n"
   exit 1
 fi
 
-SYSTEM_SOPS_KEY=$2
-HOME_SOPS_USERNAME=$3
-HOME_SOPS_KEY=$4
+TABLE=$2
+if [[ "$TABLE" != "gpt" && "$TABLE" != "msdos" ]]; then
+  printf "Please enter a partition table format\n"
+  exit 1
+fi
 
-parted --script "$DEVICE" mktable gpt
+SYSTEM_SOPS_KEY=$3
+HOME_SOPS_USERNAME=$4
+HOME_SOPS_KEY=$5
+
+parted --script "$DEVICE" mktable "$TABLE"
 parted --script "$DEVICE" mkpart primary fat32 0% 8GB
 parted --script "$DEVICE" name 1 nixboot
 parted --script "$DEVICE" toggle 1 esp
