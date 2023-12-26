@@ -51,6 +51,9 @@ swapon /mnt/var/swap
 sleep 3s
 
 if [[ "$SYSTEM_SOPS_KEY" != "" ]]; then
+  sudo ssh-keygen -a 100 -t rsa -N "" -f /mnt/etc/ssh/ssh_host_rsa_key &>/dev/null
+  sudo ssh-keygen -a 100 -t ed25519 -N "" -f /mnt/etc/ssh/ssh_host_ed25519_key &>/dev/null
+
   mkdir -p "/mnt/root/.sops"
 
   chmod 700 "/mnt/root"
