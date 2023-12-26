@@ -4,9 +4,17 @@ Configurations for my NixOS systems.
 
 ## Install on VPS
 
+Add your SSH keys:
+
 ```sh
 mkdir -p ~/.ssh
 curl -s https://github.com/<username>.keys >> ~/.ssh/authorized_keys
+```
+
+Login via SSH. Once logged in, partition, and install:
+
+```sh
+bash <(curl -s https://raw.githubusercontent.com/<user>/<repo>/main/scripts/part)
 ```
 
 ## Virtualisation
