@@ -4,17 +4,24 @@ Configurations for my NixOS systems.
 
 ## Install on VPS
 
-Add your SSH keys:
+Add your SSH keys on online console:
 
 ```sh
 mkdir -p ~/.ssh
-curl -s https://github.com/<username>.keys >> ~/.ssh/authorized_keys
+curl -s https://github.com/<user>.keys >> ~/.ssh/authorized_keys
+```
+
+Copy secrets via scp:
+
+```sh
+scp <path> nixos@<domain>:~/secrets.age
 ```
 
 Login via SSH. Once logged in, partition, and install:
 
 ```sh
-bash <(curl -s https://raw.githubusercontent.com/<user>/<repo>/main/scripts/part)
+curl -s https://gitlab.com/<username>/<repo>/-/raw/main/scripts/part | sudo bash -s <args...>
+sudo nixos-install --flake gitlab:<username>/<repo>#<host>-<system>
 ```
 
 ## Virtualisation
