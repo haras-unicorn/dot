@@ -28,19 +28,19 @@ parted --script "$DEVICE" mklabel "$TABLE"
 parted --script "$DEVICE" mkpart primary fat32 0% 1GB
 parted --script "$DEVICE" toggle 1 esp
 parted --script "$DEVICE" mkpart primary ext4 1GB 100%
-fatlabel "${DEVICE}1" nixboot
-e2label "${DEVICE}2" nixroot
+fatlabel "${DEVICE}1" NIXBOOT
+e2label "${DEVICE}2" NIXROOT
 sleep 3s
 parted --script "$DEVICE" print
 
-mkfs.fat -F 32 /dev/disk/by-partlabel/nixboot
-mkfs.ext4 /dev/disk/by-partlabel/nixroot
+mkfs.fat -F 32 /dev/disk/by-partlabel/NIXBOOT
+mkfs.ext4 /dev/disk/by-partlabel/NIXROOT
 sleep 3s
 parted --script "$DEVICE" print
 
-mount /dev/disk/by-partlabel/nixroot /mnt
+mount /dev/disk/by-partlabel/NIXROOT /mnt
 mkdir /mnt/boot
-mount /dev/disk/by-partlabel/nixboot /mnt/boot
+mount /dev/disk/by-partlabel/NIXBOOT /mnt/boot
 sleep 3s
 mount | grep "$DEVICE"
 
