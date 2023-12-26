@@ -20,7 +20,7 @@ scp <path> nixos@<domain>:~/secrets.age
 Login via SSH. Once logged in, partition, install:
 
 ```sh
-curl -s https://gitlab.com/<username>/<repo>/-/raw/main/scripts/part | sudo bash -s <args...>
+curl -s https://gitlab.com/<username>/<repo>/-/raw/main/scripts/part | sudo bash -s <device> ~/secrets.age
 sudo nixos-install --flake gitlab:<username>/<repo>#<host>-<system>
 ```
 
