@@ -17,7 +17,7 @@ Copy secrets via scp. On the local machine:
 scp <path> nixos@<domain>:~/secrets.age
 ```
 
-Login via SSH. Once logged in, partition, install:
+Login via SSH. Once logged in, partition and install. For GitLab:
 
 ```sh
 curl -s https://gitlab.com/<username>/<repo>/-/raw/main/scripts/part | sudo bash -s <device> ~/secrets.age
