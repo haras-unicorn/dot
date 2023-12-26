@@ -9,14 +9,6 @@ let
   auth = "SHA256";
   subnet = "10.8.0";
   mask = "255.255.255.0";
-
-  clients = attrsets.concatMapAttrs
-    (client: ip: {
-      environment.etc."/etc/openvpn/${cfg.host}/clients/${client}" = ''
-        ifconfig-push ${subnet}.${ip} ${mask}
-      '';
-    })
-    cfg.clients;
 in
 {
   options.dot.openvpn.server = {
@@ -49,7 +41,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable (clients // {
+  config = mkIf cfg.enable {
     services.openvpn.servers."${cfg.host}".config = ''
       server ${subnet}.0 ${mask}
       port ${port}
@@ -96,5 +88,13 @@ in
     sops.secrets."server.dhparam.pem".owner = "nobody";
     sops.secrets."server.dhparam.pem".group = "nogroup";
     sops.secrets."server.dhparam.pem".mode = "0600";
-  });
+
+    environment.etc = attrsets.concatMapAttrs
+      (client: ip: {
+        "/etc/openvpn/${cfg.host}/clients/${client}" = ''
+          ifconfig-push ${subnet}.${ip} ${mask}
+        '';
+      })
+      cfg.clients;
+  };
 }
