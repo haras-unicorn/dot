@@ -2,6 +2,13 @@
 
 Configurations for my NixOS systems.
 
+## Install on VPS
+
+```sh
+mkdir -p ~/.ssh
+curl -s https://github.com/<username>.keys >> ~/.ssh/authorized_keys
+```
+
 ## Virtualisation
 
 ### NVIDIA Virtio
