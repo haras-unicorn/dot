@@ -31,13 +31,13 @@ parted --script "$DEVICE" mkpart primary ext4 1GB 100%
 sleep 3s
 parted --script "$DEVICE" print
 
-fatlabel "${DEVICE}1" NIXBOOT
-e2label "${DEVICE}2" NIXROOT
+mkfs.fat -F 32 "${DEVICE}1"
+mkfs.ext4 "${DEVICE}2"
 sleep 3s
 parted --script "$DEVICE" print
 
-mkfs.fat -F 32 /dev/disk/by-partlabel/NIXBOOT
-mkfs.ext4 /dev/disk/by-partlabel/NIXROOT
+fatlabel "${DEVICE}1" NIXBOOT
+e2label "${DEVICE}2" NIXROOT
 sleep 3s
 parted --script "$DEVICE" print
 
