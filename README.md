@@ -2,7 +2,7 @@
 
 Configurations for my NixOS systems.
 
-## Install on VPS
+## Install on VPS via custom ISO
 
 Add your SSH keys on online console:
 
