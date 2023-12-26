@@ -53,6 +53,7 @@ chmod 600 /mnt/var/swap
 mkswap /mnt/var/swap
 swapon /mnt/var/swap
 sleep 3s
+lsblk --fs
 
 if [[ "$SYSTEM_SOPS_KEY" != "" ]]; then
   # NOTE: https://github.com/Mic92/sops-nix/issues/24
