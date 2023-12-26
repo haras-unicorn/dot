@@ -41,9 +41,9 @@ e2label "${DEVICE}2" NIXROOT
 sleep 3s
 parted --script "$DEVICE" print
 
-mount /dev/disk/by-partlabel/NIXROOT /mnt
+mount /dev/disk/by-label/NIXROOT /mnt
 mkdir /mnt/boot
-mount /dev/disk/by-partlabel/NIXBOOT /mnt/boot
+mount /dev/disk/by-label/NIXBOOT /mnt/boot
 sleep 3s
 mount | grep "$DEVICE"
 
