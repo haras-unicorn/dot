@@ -29,7 +29,9 @@ parted --script "$DEVICE" mkpart primary fat32 0% 1GB
 parted --script "$DEVICE" toggle 1 esp
 parted --script "$DEVICE" mkpart primary ext4 1GB 100%
 fatlabel "${DEVICE}1" NIXBOOT
+printf here
 e2label "${DEVICE}2" NIXROOT
+printf aa
 sleep 3s
 parted --script "$DEVICE" print
 
