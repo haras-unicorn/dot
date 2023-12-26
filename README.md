@@ -11,13 +11,13 @@ mkdir -p ~/.ssh
 curl -s https://github.com/<user>.keys >> ~/.ssh/authorized_keys
 ```
 
-Copy secrets via scp:
+Copy secrets via scp. On the local machine:
 
 ```sh
 scp <path> nixos@<domain>:~/secrets.age
 ```
 
-Login via SSH. Once logged in, partition, and install:
+Login via SSH. Once logged in, partition, install:
 
 ```sh
 curl -s https://gitlab.com/<username>/<repo>/-/raw/main/scripts/part | sudo bash -s <args...>
