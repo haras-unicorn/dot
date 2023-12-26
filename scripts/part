@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+# TODO: home sops validation
+
 DEVICE=$1
 if [[ ! -b "$DEVICE" ]]; then
   printf "Please enter a valid block device\n"
@@ -14,6 +16,11 @@ if [[ "$TABLE" != "gpt" && "$TABLE" != "msdos" ]]; then
 fi
 
 SYSTEM_SOPS_KEY=$3
+if [[ ! -f "$SYSTEM_SOPS_KEY" || "$SYSTEM_SOPS_KEY" != "" ]]; then
+  printf "Please enter a valid system sops key\n"
+  exit 1
+fi
+
 HOME_SOPS_USERNAME=$4
 HOME_SOPS_KEY=$5
 
