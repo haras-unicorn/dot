@@ -28,23 +28,23 @@ parted --script "$DEVICE" mklabel "$TABLE"
 parted --script "$DEVICE" mkpart primary fat32 0% 1GB
 parted --script "$DEVICE" toggle 1 esp
 parted --script "$DEVICE" mkpart primary ext4 1GB 100%
-sleep 3s
+sleep 5s
 parted --script "$DEVICE" print
 
 mkfs.fat -F 32 "${DEVICE}1"
 mkfs.ext4 "${DEVICE}2"
-sleep 3s
+sleep 5s
 parted --script "$DEVICE" print
 
 fatlabel "${DEVICE}1" NIXBOOT
 e2label "${DEVICE}2" NIXROOT
-sleep 3s
+sleep 5s
 parted --script "$DEVICE" print
 
 mount /dev/disk/by-label/NIXROOT /mnt
 mkdir /mnt/boot
 mount /dev/disk/by-label/NIXBOOT /mnt/boot
-sleep 3s
+sleep 5s
 mount | grep "$DEVICE"
 
 mkdir /mnt/var
@@ -52,7 +52,7 @@ fallocate -l 4G /mnt/var/swap
 chmod 600 /mnt/var/swap
 mkswap /mnt/var/swap
 swapon /mnt/var/swap
-sleep 3s
+sleep 5s
 lsblk --fs
 
 if [[ "$SYSTEM_SOPS_KEY" != "" ]]; then
