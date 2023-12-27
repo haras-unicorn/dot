@@ -97,6 +97,7 @@
 
       "${self}/src/module/system/virtual"
       "${self}/src/module/system/windows"
+      "${self}/src/module/system/gaming"
     ];
 
     networking.firewall.allowedTCPPorts = [
