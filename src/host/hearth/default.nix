@@ -55,13 +55,13 @@
       "sr_mod"
     ];
 
-    fileSystems."/" = {
-      device = "/dev/disk/by-partlabel/nixroot";
-      fsType = "ext4";
-    };
     fileSystems."/boot" = {
-      device = "/dev/disk/by-partlabel/nixboot";
+      device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
+    };
+    fileSystems."/" = {
+      device = "/dev/disk/by-label/NIXROOT";
+      fsType = "ext4";
     };
 
     swapDevices = [
