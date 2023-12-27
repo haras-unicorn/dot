@@ -2,6 +2,7 @@
 set -eo pipefail
 
 # TODO: sops validation
+# TODO: nvme labels
 
 DEVICE=$1
 if [[ ! -b "$DEVICE" ]]; then
