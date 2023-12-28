@@ -43,7 +43,7 @@ CLIENT_SECRETS="$SECRETS/$CLIENT"
 mkdir -p "$CLIENT_SECRETS"
 printf "%s" "$ID" >"$CLIENT_SECRETS/vpn.id"
 
-mkroot() {
+idroot() {
   local name
 
   name="$1"
@@ -55,7 +55,7 @@ mkroot() {
   cp "$ID_SECRETS/$name" "$ROOT_SECRETS/$name"
 }
 
-mkserver() {
+idserver() {
   local name
 
   name="$1"
@@ -67,7 +67,7 @@ mkserver() {
   cp "$ID_SECRETS/$name" "$SERVER_SECRETS/$name"
 }
 
-mkclient() {
+idclient() {
   local name
 
   name="$1"
@@ -77,6 +77,22 @@ mkclient() {
   fi
 
   cp "$ID_SECRETS/$name" "$CLIENT_SECRETS/$name"
+}
+
+rootserver() {
+  local name
+
+  name="$1"
+
+  cp "$ROOT_SECRETS/$name" "$SERVER_SECRETS/$name"
+}
+
+rootclient() {
+  local name
+
+  name="$1"
+
+  cp "$ROOT_SECRETS/$name" "$CLIENT_SECRETS/$name"
 }
 
 mkssl() {
@@ -137,24 +153,25 @@ mktakey() {
 }
 
 mkssl "root-ca" "root"
-mkroot "root-ca.ssl.key"
-mkroot "root-ca.ssl.crt"
-mkserver "root-ca.ssl.key"
-mkserver "root-ca.ssl.crt"
-mkclient "root-ca.ssl.crt"
+idroot "root-ca.ssl.key"
+idroot "root-ca.ssl.crt"
+rootserver "root-ca.ssl.key"
+rootserver "root-ca.ssl.crt"
+rootclient "root-ca.ssl.crt"
 
 mkssl "server" "$ROOT_SECRETS/root-ca" "$SERVER"
-mkserver "server.ssl.key"
-mkserver "server.ssl.crt"
+idserver "server.ssl.key"
+idserver "server.ssl.crt"
 
 mkparam "server"
-mkserver "server.dhparam.pem"
+idserver "server.dhparam.pem"
 
 mktakey "server"
-mkserver "server.ta.key"
-mkclient "server.ta.key"
+idtroot "server.ta.key"
+rootserver "server.ta.key"
+rootclient "server.ta.key"
 
 mkssl "client" "$ROOT_SECRETS/root-ca" "$CLIENT"
-mkclient "client.ssl.key"
-mkclient "client.ssl.csr"
-mkclient "client.ssl.crt"
+idclient "client.ssl.key"
+idclient "client.ssl.csr"
+idclient "client.ssl.crt"
