@@ -18,6 +18,9 @@
     boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
     boot.initrd.availableKernelModules = [
+      "vfat"
+      "fat"
+      "ext4"
       "nvme"
       "ahci"
       "sd_mod"
