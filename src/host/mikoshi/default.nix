@@ -58,7 +58,7 @@
 
     dot.openssh.enable = true;
     dot.openssh.authorizations = {
-      haras = [ "hearth" ];
+      haras = [ "hearth" "workbug" ];
     };
 
     dot.openvpn.server.enable = true;
