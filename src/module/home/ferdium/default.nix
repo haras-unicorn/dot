@@ -1,9 +1,10 @@
 { pkgs, ... }:
 
 # NOTE: outlook - Self Hosted at https://outlook.office.com/mail/
+# TODO: like with chromium?
+# TODO: hardware related stuff elsewhere
 
 let
-  # TODO: like with chromium?
   ferdium = pkgs.symlinkJoin {
     name = "ferdium";
     paths = [ pkgs.ferdium ];
