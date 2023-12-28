@@ -15,10 +15,13 @@
       "${self}/src/module/hardware/firmware"
     ];
 
-    boot.initrd.availableKernelModules = [
+    boot.initrd.kernelModules = [
       "vfat"
       "fat"
       "ext4"
+    ];
+
+    boot.initrd.availableKernelModules = [
       "nvme"
       "ahci"
       "sd_mod"
