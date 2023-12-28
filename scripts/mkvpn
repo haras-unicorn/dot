@@ -84,7 +84,7 @@ rootserver() {
 
   name="$1"
 
-  cp "$ROOT_SECRETS/$name" "$SERVER_SECRETS/$name"
+  cp -f "$ROOT_SECRETS/$name" "$SERVER_SECRETS/$name"
 }
 
 rootclient() {
@@ -92,7 +92,7 @@ rootclient() {
 
   name="$1"
 
-  cp "$ROOT_SECRETS/$name" "$CLIENT_SECRETS/$name"
+  cp -f "$ROOT_SECRETS/$name" "$CLIENT_SECRETS/$name"
 }
 
 mkssl() {
@@ -167,7 +167,7 @@ mkparam "server"
 idserver "server.dhparam.pem"
 
 mktakey "server"
-idtroot "server.ta.key"
+idroot "server.ta.key"
 rootserver "server.ta.key"
 rootclient "server.ta.key"
 
