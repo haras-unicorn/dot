@@ -15,8 +15,6 @@
       "${self}/src/module/hardware/firmware"
     ];
 
-    boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
     boot.initrd.availableKernelModules = [
       "vfat"
       "fat"
