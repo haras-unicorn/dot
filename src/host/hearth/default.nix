@@ -56,11 +56,11 @@
     ];
 
     fileSystems."/boot" = {
-      device = "/dev/disk/by-label/NIXBOOT";
+      device = "/dev/disk/by-partlabel/nixboot";
       fsType = "vfat";
     };
     fileSystems."/" = {
-      device = "/dev/disk/by-label/NIXROOT";
+      device = "/dev/disk/by-partlabel/nixroot";
       fsType = "ext4";
     };
 
