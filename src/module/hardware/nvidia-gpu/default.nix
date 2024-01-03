@@ -56,8 +56,6 @@
   hardware.nvidia.open = config.dot.hardware.nvidiaDriver.open;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${config.dot.hardware.nvidiaDriver.version}";
 
-  programs.hyprland.enableNvidiaPatches = true;
-
   virtualisation.docker.enableNvidia = true;
   virtualisation.podman.enableNvidia = true;
 }
