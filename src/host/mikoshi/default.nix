@@ -28,7 +28,7 @@
       "vfat"
     ];
 
-    boot.initrd.postDeviceCommands = "udevadm settle";
+    # boot.initrd.postDeviceCommands = "udevadm settle";
 
     fileSystems."/boot" = {
       device = "/dev/disk/by-label/NIXBOOT";

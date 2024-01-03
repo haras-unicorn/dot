@@ -59,7 +59,7 @@
       "vfat"
     ];
 
-    boot.initrd.postDeviceCommands = "udevadm settle";
+    # boot.initrd.postDeviceCommands = "udevadm settle";
 
     fileSystems."/" = {
       device = "/dev/disk/by-partlabel/nixroot";
