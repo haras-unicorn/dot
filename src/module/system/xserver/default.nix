@@ -4,6 +4,8 @@
 
 # FIXME: uncouple sddm/qtile?
 
+# FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
+
 let
   copy = pkgs.writeShellApplication {
     name = "copy";

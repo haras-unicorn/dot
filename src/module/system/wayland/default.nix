@@ -7,8 +7,7 @@
 
 # FIXME: uncouple hyprland/greetd/gtklock/portals?
 
-# FIXME: links not opening https://github.com/hyprwm/Hyprland/issues/3258
-# tried the portals.conf in user but didn't work
+# FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
 
 # FIXME: https://github.com/NVIDIA/open-gpu-kernel-modules/issues/467#issuecomment-1544340511
 
