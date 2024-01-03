@@ -20,7 +20,7 @@
       "mlocate"
     ];
 
-    gpg = { pkg = "pinentry-gtk2"; bin = "pinentry-gtk-2"; flavor = "gtk2"; };
+    gpg = { pkg = "pinentry-qt"; bin = "pinentry-qt"; flavor = "qt"; };
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
     editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
     visual = { pkg = "vscode"; bin = "code"; module = "code"; };

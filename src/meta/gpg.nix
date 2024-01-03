@@ -6,17 +6,17 @@ with lib;
     pkg = mkOption {
       type = with types; str;
       default = "pinentry";
-      example = "pinentry-gtk2";
+      example = "pinentry-qt";
     };
     bin = mkOption {
       type = with types; str;
       default = "pinentry-tty";
-      example = "pinentry-gtk-2";
+      example = "pinentry-qt";
     };
     flavor = mkOption {
       type = with types; str;
       default = "tty";
-      example = "gtk2";
+      example = "qt";
     };
   };
 
