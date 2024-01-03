@@ -42,7 +42,7 @@
     bbenoist.nix
     # bmalehorn.shell-syntax
     codezombiech.gitignore
-    charliermarsh.ruff
+    # charliermarsh.ruff
     # ctcuff.font-preview
     # DavidWang.ini-for-vscode
     dbaeumer.vscode-eslint
