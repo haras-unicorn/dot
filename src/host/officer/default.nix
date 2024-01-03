@@ -54,6 +54,13 @@
       "sr_mod"
     ];
 
+    boot.initrd.kernelModules = [
+      "ext4"
+      "vfat"
+    ];
+
+    boot.initrd.postDeviceCommands = "udevadm settle";
+
     fileSystems."/" = {
       device = "/dev/disk/by-partlabel/nixroot";
       fsType = "ext4";

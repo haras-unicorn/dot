@@ -17,16 +17,18 @@
       "${self}/src/module/hardware/firmware"
     ];
 
-    boot.initrd.kernelModules = [
-      "vfat"
-      "ext4"
-    ];
-
     boot.initrd.availableKernelModules = [
       "nvme"
       "ahci"
       "sd_mod"
     ];
+
+    boot.initrd.kernelModules = [
+      "ext4"
+      "vfat"
+    ];
+
+    boot.initrd.postDeviceCommands = "udevadm settle";
 
     fileSystems."/boot" = {
       device = "/dev/disk/by-label/NIXBOOT";
