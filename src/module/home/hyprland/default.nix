@@ -84,7 +84,6 @@ in
     systemd.user.sessionVariables = cfg.sessionVariables;
 
     wayland.windowManager.hyprland.enable = true;
-    wayland.windowManager.hyprland.enableNvidiaPatches = true;
     wayland.windowManager.hyprland.xwayland.enable = true;
     wayland.windowManager.hyprland.extraConfig = ''
       monitor = , preferred, auto, 1
