@@ -10,7 +10,7 @@
 
 {
   de.sessionVariables = {
-    QT_QPA_PLATFORMTHEME = "kde";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
     QT_STYLE_OVERRIDE = "kvantum";
   };
 
