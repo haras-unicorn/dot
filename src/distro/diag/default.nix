@@ -17,5 +17,6 @@
     upower # NOTE: battery power
     tshark # NOTE: wireshark in terminal
     nethogs # NOTE: network load
+    smartmontools # NOTE: ssd usage stats
   ];
 }
