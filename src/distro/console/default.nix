@@ -58,5 +58,6 @@ in
     # "${self}/src/module/home/${config.dot.editor.module}"
     "${self}/src/module/home/nushell"
     "${self}/src/module/home/helix"
+    "${self}/src/module/home/jetbrains"
   ];
 }
