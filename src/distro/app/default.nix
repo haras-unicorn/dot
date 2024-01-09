@@ -84,6 +84,7 @@ in
 
     "${self}/src/module/home/chromium" # NOTE: for dev
     "${self}/src/module/home/librewolf" # NOTE: for dev
+    # "${self}/src/module/home/jetbrains"
 
     # "${self}/src/module/home/${config.dot.term.module}"
     # "${self}/src/module/home/${config.dot.visual.module}"
