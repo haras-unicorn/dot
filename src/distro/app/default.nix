@@ -65,7 +65,6 @@ in
     via # NOTE: keyboard configurator
     spotify # NOTE: music streaming
     netflix # NOTE: video streaming
-    gparted # NOTE: graphical partitioning tool
   ];
 
   imports = [
