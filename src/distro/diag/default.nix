@@ -18,5 +18,6 @@
     tshark # NOTE: wireshark in terminal
     nethogs # NOTE: network load
     smartmontools # NOTE: ssd usage stats
+    f3 # NOTE: flash memory benchmarkingy
   ];
 }
