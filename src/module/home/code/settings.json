@@ -94,7 +94,7 @@
   "terminal.explorerKind": "external",
   "terminal.integrated.gpuAcceleration": "on",
   "workbench.colorCustomizations": {
-    "debugConsole.errorForeground": "#ee0000",
+    "debugConsole.errorForeground": "#ff0000",
     "debugConsole.infoForeground": "#00ff00",
     "debugConsole.warningForeground": "#ffff00",
     "debugConsole.sourceForeground": "#ffffff"
