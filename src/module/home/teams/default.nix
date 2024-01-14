@@ -7,8 +7,7 @@ let
     paths = [ pkgs.teams-for-linux ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
-      wrapProgram $out/bin/teams \
-        --argv0 teams-for-linux \
+      wrapProgram $out/bin/teams-for-linux \
         --append-flags --enable-features=WebRTCPipeWireCapturer \
         --append-flags --enable-features=UseOzonePlatform \
         --append-flags --ozone-platform-hint=auto
