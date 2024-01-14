@@ -4,7 +4,7 @@ let
   # TODO: like with chromium?
   teams = pkgs.symlinkJoin {
     name = "teams";
-    paths = [ pkgs.teams ];
+    paths = [ pkgs.teams-for-linux ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/teams \
