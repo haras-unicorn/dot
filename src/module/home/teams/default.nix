@@ -8,6 +8,7 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/teams-for-linux \
+        --argv0 teams \
         --append-flags --enable-features=WebRTCPipeWireCapturer \
         --append-flags --enable-features=UseOzonePlatform \
         --append-flags --ozone-platform-hint=auto
@@ -16,7 +17,7 @@ let
 in
 {
   de.sessionStartup = [
-    "${teams}/bin/teams"
+    "${teams}/bin/teams-for-linux"
   ];
 
   home.packages = [
