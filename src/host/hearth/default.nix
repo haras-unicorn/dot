@@ -91,7 +91,7 @@
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
       "${self}/src/module/system/vpn"
-      "${self}/src/module/system/openvpn-client"
+      # "${self}/src/module/system/openvpn-client"
       "${self}/src/module/system/smartmontools"
 
       "${self}/src/module/system/sudo"
