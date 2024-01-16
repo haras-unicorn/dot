@@ -81,7 +81,7 @@ in
     "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
     "${self}/src/module/home/discord"
-    "${self}/src/module/home/teams"
+    # "${self}/src/module/home/teams"
 
     "${self}/src/module/home/chromium" # NOTE: for dev
     "${self}/src/module/home/librewolf" # NOTE: for dev

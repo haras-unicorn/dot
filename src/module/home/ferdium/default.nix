@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# FIXME: webrtc so i dont need desktop apps
+
 # NOTE: outlook - Self Hosted at https://outlook.office.com/mail/
 # TODO: like with chromium?
 # TODO: hardware related stuff elsewhere
