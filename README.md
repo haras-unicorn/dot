@@ -2,6 +2,10 @@
 
 Configurations for my NixOS systems.
 
+## Gabi brilliant ideas
+
+- [ ] eww widget that toggles info like cpu, memory and stuff
+
 ## Install on VPS via custom ISO
 
 Add your SSH keys on online console:
