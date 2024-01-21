@@ -24,6 +24,7 @@ builtins.foldl'
           nodePackages.vscode-json-languageserver
           marksman
           taplo
+          html-tidy
 
           # Tools
           just

@@ -48,3 +48,8 @@ name = "markdown"
 auto-format = true
 formatter = { command = "prettier", args = ["--parser", "markdown"] }
 language-servers = ["marksman"]
+
+[[language]]
+name = "xml"
+auto-format = true
+formatter = { command = "tidy", args = ["-xml", "-i"] }

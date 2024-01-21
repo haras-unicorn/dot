@@ -32,7 +32,7 @@ in
     plop = [
       {
         template = ''
-          @define-color background {{ hex ansi.main.black }};
+          @define-color background {{ rgba (set-alpha ansi.main.black 0.7) }};
           @define-color foreground {{ hex ansi.main.white }};
 
           @define-color black {{ rgba ansi.main.black }};
