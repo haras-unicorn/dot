@@ -1,8 +1,9 @@
-(defwindow sysinfo
+(
+  defwindow sysinfo
   :monitor 0
   :geometry (geometry
-    :x "8px"
-    :y "8px"
+    :x "16px"
+    :y "16px"
     :width "256px"
     :height "256px"
     :anchor "top right")
@@ -10,4 +11,27 @@
   :reserve (struts :distance "40px" :side "top")
   :windowtype "dock"
   :wm-ignore false
-  "${objectlength(EWW_TEMPS)}")
+  (
+    box
+    :orientation "vertical"
+    :space-evenly false
+    :spacing 2
+    (
+      label
+      :text "CPU ${round(EWW_CPU.avg, 2)}%"
+    )
+    (
+      label
+      :text "TEMP ${round(EWW_TEMPS.K10TEMP_TCTL, 2)}°C"
+    )
+    (
+      ; FIXME: these speeds are very weird
+      label
+      :text "NET ${round(EWW_NET.wlp1s0.NET_DOWN / 1000 / 1000, 2)} ${round(EWW_NET.wlp1s0.NET_UP / 1000 / 1000, 2)}"
+    )
+    (
+      label
+      :text "BATT ${round(EWW_BATTERY.total_avg, 2)}%"
+    )
+  )
+)
