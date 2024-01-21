@@ -67,6 +67,7 @@ in
     netflix # NOTE: video streaming
     gimp # NOTE: image manipulation
     pencil # NOTE: UI/UX prototyping
+    inkscape # NOTE: vector graphics design
   ];
 
   imports = [
