@@ -19,6 +19,11 @@ in
     }
   ];
 
-  programs.eww.enable = true;
-  programs.eww.package = pkg;
+  home.packages = [
+    pkg
+  ];
+
+  # programs.eww.enable = true;
+  # programs.eww.package = pkg;
+  # programs.eww.configDir = ./config;
 }
