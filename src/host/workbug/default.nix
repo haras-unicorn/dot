@@ -62,11 +62,11 @@
     # boot.initrd.postDeviceCommands = "udevadm settle";
 
     fileSystems."/" = {
-      device = "/dev/disk/by-partlabel/nixroot";
+      device = "/dev/disk/by-label/NIXROOT";
       fsType = "ext4";
     };
     fileSystems."/boot" = {
-      device = "/dev/disk/by-partlabel/nixboot";
+      device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
     };
 
