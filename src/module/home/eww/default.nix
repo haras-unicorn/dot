@@ -4,17 +4,18 @@
 
 let
   pkg = pkgs.eww-wayland;
+  bin = "${pkg}/bin/eww";
 in
 {
   de.sessionStartup = [
-    "${pkg}/bin/eww daemon"
+    "${bin} daemon"
   ];
 
   de.keybinds = [
     {
       mods = [ "super" ];
       key = "s";
-      command = "${pkg}/bin/eww open top-bar";
+      command = "${bin} open top-bar";
     }
   ];
 
