@@ -66,7 +66,7 @@ in
     spotify # NOTE: music streaming
     netflix # NOTE: video streaming
     gimp # NOTE: image manipulation
-    pencil # NOTE: UI/UX prototyping
+    # pencil # NOTE: UI/UX prototyping
     inkscape # NOTE: vector graphics design
   ];
 
