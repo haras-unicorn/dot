@@ -1,5 +1,6 @@
 (
   defwindow sysinfo
+  :class window
   :monitor 0
   :geometry (geometry
     :x "16px"

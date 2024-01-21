@@ -1,9 +1,21 @@
 @import "colors.css";
 
 * {
-  background-color: @background;
-  color: @bright-white;
   border: none;
   margin: 0;
   padding: 0;
+  background-color: @background;
+  color: @bright-white;
+  border-color: @bright-green;
+}
+
+.layout {
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 8px;
+}
+
+.layout > * {
+  margin: 4px;  
+  margin-top: 12px;
 }
