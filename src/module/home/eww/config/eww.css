@@ -1,0 +1,9 @@
+@import "colors.css";
+
+* {
+  background-color: @background;
+  color: @bright-white;
+  border: none;
+  margin: 0;
+  padding: 0;
+}

@@ -65,6 +65,8 @@ in
     via # NOTE: keyboard configurator
     spotify # NOTE: music streaming
     netflix # NOTE: video streaming
+    gimp # NOTE: image manipulation
+    pencil # NOTE: UI/UX prototyping
   ];
 
   imports = [
