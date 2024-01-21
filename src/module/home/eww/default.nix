@@ -15,7 +15,7 @@ in
     {
       mods = [ "super" ];
       key = "s";
-      command = "${bin} open sysinfo";
+      command = "${bin} open --toggle sysinfo";
     }
   ];
 

@@ -1,10 +1,3 @@
-(defvar sysinfo-visible false)
-
-(defpoll cpu :interval "1s"
-              :initial "initial-value"  ; optional, defaults to poll at startup
-              :run-while sysinfo-visible   ; optional, defaults to 'true'
-  `date +%H:%M:%S`)
-
 (defwindow sysinfo
   :monitor 0
   :geometry (geometry
@@ -17,4 +10,4 @@
   :reserve (struts :distance "40px" :side "top")
   :windowtype "dock"
   :wm-ignore false
-  "${EWW_TEMPS}")
+  "${objectlength(EWW_TEMPS)}")
