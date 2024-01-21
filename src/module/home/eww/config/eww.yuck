@@ -5,7 +5,7 @@
               :run-while sysinfo-visible   ; optional, defaults to 'true'
   `date +%H:%M:%S`)
 
-(defwindow top-bar
+(defwindow sysinfo
   :monitor 0
   :geometry (geometry
     :x "8px"
@@ -17,4 +17,4 @@
   :reserve (struts :distance "40px" :side "top")
   :windowtype "dock"
   :wm-ignore false
-  "${round(EWW_CPU.avg, 2)}%")
+  "${EWW_TEMPS}")

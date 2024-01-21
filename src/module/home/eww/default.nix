@@ -15,7 +15,7 @@ in
     {
       mods = [ "super" ];
       key = "s";
-      command = "${bin} open top-bar";
+      command = "${bin} open sysinfo";
     }
   ];
 
