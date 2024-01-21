@@ -19,5 +19,6 @@
     nethogs # NOTE: network load
     smartmontools # NOTE: ssd usage stats
     f3 # NOTE: flash memory benchmarkingy
+    iostat # NOTE: /proc/stat info
   ];
 }

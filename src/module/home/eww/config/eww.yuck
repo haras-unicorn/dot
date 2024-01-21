@@ -1,3 +1,10 @@
+(defvar sysinfo-visible false)
+
+(defpoll cpu :interval "1s"
+              :initial "initial-value"  ; optional, defaults to poll at startup
+              :run-while sysinfo-visible   ; optional, defaults to 'true'
+  `date +%H:%M:%S`)
+
 (defwindow top-bar
   :monitor 0
   :geometry (geometry
