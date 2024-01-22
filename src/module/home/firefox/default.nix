@@ -51,7 +51,7 @@
   home.file.".mozilla/firefox/personal/user.js".text = ''
     ${builtins.readFile "${arkenfox-userjs}/user.js"}
 
-    ${builtins.rebuiltins.readFile "${materialfox}/user.js"}
+    ${builtins.readFile "${materialfox}/user.js"}
 
     ${builtins.readFile ./user-overrides.js}
   '';
