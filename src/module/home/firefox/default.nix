@@ -39,14 +39,11 @@
     };
   };
 
-  home.file.".mozilla/firefox/personal/chrome/userChrome.css".text = ''
-    ${
-      # builtins.readFile "${slick-fox}/userChrome.css"
-      builtins.readFile "${materialfox}/chrome/userChrome.css"
-    }
-
-    ${builtins.readFile ./user-overrides.css}
-  '';
+  home.file.".mozilla/firefox/personal/chrome".source = "${materialfox}/chrome";
+  # home.file.".mozilla/firefox/personal/chrome/userChrome.css".text = ''
+  #   ${builtins.readFile "${slick-fox}/userChrome.css"}
+  #   ${builtins.readFile ./user-overrides.css}
+  # '';
 
   home.file.".mozilla/firefox/personal/user.js".text = ''
     ${builtins.readFile "${arkenfox-userjs}/user.js"}
