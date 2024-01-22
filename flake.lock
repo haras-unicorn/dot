@@ -213,6 +213,22 @@
         "type": "github"
       }
     },
+    "materialfox": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1651795274,
+        "narHash": "sha256-une3WS6mprqga8FuNRlZV0a3Vmq7UhL1Gzy4JvdRov4=",
+        "owner": "muckSponge",
+        "repo": "MaterialFox",
+        "rev": "8b1a7b10da0751a1f63e51eac428ba1eb1094b5f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "muckSponge",
+        "repo": "MaterialFox",
+        "type": "github"
+      }
+    },
     "nixified-ai": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -325,6 +341,7 @@
         "gpt4all": "gpt4all",
         "home-manager": "home-manager",
         "lulezojne": "lulezojne",
+        "materialfox": "materialfox",
         "nixified-ai": "nixified-ai",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",

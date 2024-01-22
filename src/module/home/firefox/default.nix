@@ -1,4 +1,11 @@
-{ self, pkgs, config, slick-fox, arkenfox-userjs, ... }:
+{ self
+, pkgs
+, config
+, materialfox
+  # , slick-fox
+, arkenfox-userjs
+, ...
+}:
 
 # FIXME: hardware acceleration through hardware meta
 
@@ -33,13 +40,18 @@
   };
 
   home.file.".mozilla/firefox/personal/chrome/userChrome.css".text = ''
-    ${builtins.readFile "${slick-fox}/userChrome.css"}
+    ${
+      # builtins.readFile "${slick-fox}/userChrome.css"
+      builtins.readFile "${materialfox}/chrome/userChrome.css"
+    }
 
     ${builtins.readFile ./user-overrides.css}
   '';
 
   home.file.".mozilla/firefox/personal/user.js".text = ''
     ${builtins.readFile "${arkenfox-userjs}/user.js"}
+
+    ${builtins.rebuiltins.readFile "${materialfox}/user.js"}
 
     ${builtins.readFile ./user-overrides.js}
   '';

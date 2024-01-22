@@ -34,6 +34,9 @@
 
     slick-fox.url = "github:Etesam913/slick-fox";
     slick-fox.flake = false;
+
+    materialfox.url = "github:muckSponge/MaterialFox";
+    materialfox.flake = false;
   };
 
   outputs = { self, ... } @ inputs:
