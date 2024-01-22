@@ -32,11 +32,8 @@
     arkenfox-userjs.url = "github:arkenfox/user.js";
     arkenfox-userjs.flake = false;
 
-    slick-fox.url = "github:Etesam913/slick-fox";
-    slick-fox.flake = false;
-
-    materialfox.url = "github:muckSponge/MaterialFox";
-    materialfox.flake = false;
+    firefox-gx.url = "github:Godiesc/firefox-gx/refs/tags/v.8.8";
+    firefox-gx.flake = false;
   };
 
   outputs = { self, ... } @ inputs:

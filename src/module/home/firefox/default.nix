@@ -1,8 +1,7 @@
 { self
 , pkgs
 , config
-, materialfox
-  # , slick-fox
+, firefox-gx
 , arkenfox-userjs
 , ...
 }:
@@ -39,16 +38,10 @@
     };
   };
 
-  home.file.".mozilla/firefox/personal/chrome".source = "${materialfox}/chrome";
-  # home.file.".mozilla/firefox/personal/chrome/userChrome.css".text = ''
-  #   ${builtins.readFile "${slick-fox}/userChrome.css"}
-  #   ${builtins.readFile ./user-overrides.css}
-  # '';
+  home.file.".mozilla/firefox/personal/chrome".source = "${firefox-gx}/chrome";
 
   home.file.".mozilla/firefox/personal/user.js".text = ''
     ${builtins.readFile "${arkenfox-userjs}/user.js"}
-
-    ${builtins.readFile "${materialfox}/user.js"}
 
     ${builtins.readFile ./user-overrides.js}
   '';

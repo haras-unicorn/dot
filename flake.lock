@@ -16,6 +16,23 @@
         "type": "github"
       }
     },
+    "firefox-gx": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1704666512,
+        "narHash": "sha256-NGmKm5bnoEPg31be67xyWDVdKmlFKoxrDQFsz/TRjU4=",
+        "owner": "Godiesc",
+        "repo": "firefox-gx",
+        "rev": "cdb49c49c01c4ea7472a8082f85e631a17d32b0f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Godiesc",
+        "ref": "refs/tags/v.8.8",
+        "repo": "firefox-gx",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -34,7 +51,10 @@
     },
     "flake-parts": {
       "inputs": {
-        "nixpkgs-lib": ["nixified-ai", "nixpkgs"]
+        "nixpkgs-lib": [
+          "nixified-ai",
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1698882062,
@@ -52,7 +72,11 @@
     },
     "flake-parts_2": {
       "inputs": {
-        "nixpkgs-lib": ["nixified-ai", "hercules-ci-effects", "nixpkgs"]
+        "nixpkgs-lib": [
+          "nixified-ai",
+          "hercules-ci-effects",
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1696343447,
@@ -106,7 +130,9 @@
     "gpt4all": {
       "inputs": {
         "gpt4all": "gpt4all_2",
-        "nixpkgs": ["nixpkgs"]
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1703858104,
@@ -143,7 +169,10 @@
     "hercules-ci-effects": {
       "inputs": {
         "flake-parts": "flake-parts_2",
-        "nixpkgs": ["nixified-ai", "nixpkgs"]
+        "nixpkgs": [
+          "nixified-ai",
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1699381651,
@@ -161,7 +190,9 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"]
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1704276313,
@@ -196,7 +227,9 @@
     },
     "lulezojne": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
         "utils": "utils"
       },
       "locked": {
@@ -213,28 +246,14 @@
         "type": "github"
       }
     },
-    "materialfox": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1651795274,
-        "narHash": "sha256-une3WS6mprqga8FuNRlZV0a3Vmq7UhL1Gzy4JvdRov4=",
-        "owner": "muckSponge",
-        "repo": "MaterialFox",
-        "rev": "8b1a7b10da0751a1f63e51eac428ba1eb1094b5f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "muckSponge",
-        "repo": "MaterialFox",
-        "type": "github"
-      }
-    },
     "nixified-ai": {
       "inputs": {
         "flake-parts": "flake-parts",
         "hercules-ci-effects": "hercules-ci-effects",
         "invokeai-src": "invokeai-src",
-        "nixpkgs": ["nixpkgs"],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
         "textgen-src": "textgen-src"
       },
       "locked": {
@@ -271,7 +290,9 @@
       "inputs": {
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils_2",
-        "nixpkgs": ["nixpkgs"]
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1704191803,
@@ -337,42 +358,29 @@
     "root": {
       "inputs": {
         "arkenfox-userjs": "arkenfox-userjs",
+        "firefox-gx": "firefox-gx",
         "flake-utils": "flake-utils",
         "gpt4all": "gpt4all",
         "home-manager": "home-manager",
         "lulezojne": "lulezojne",
-        "materialfox": "materialfox",
         "nixified-ai": "nixified-ai",
         "nixos-hardware": "nixos-hardware",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
         "nur": "nur",
-        "slick-fox": "slick-fox",
         "sops-nix": "sops-nix",
         "sweet-theme": "sweet-theme"
       }
     },
-    "slick-fox": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1631470947,
-        "narHash": "sha256-wybvqL6ZCq3EwwSmw+F5CymxMkeS0iXgUa6j6z2DRwc=",
-        "owner": "Etesam913",
-        "repo": "slick-fox",
-        "rev": "5eef84f75a8d992b4621fedde51ce0ace5ba94d2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Etesam913",
-        "repo": "slick-fox",
-        "type": "github"
-      }
-    },
     "sops-nix": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"],
-        "nixpkgs-stable": ["nixpkgs-stable"]
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "nixpkgs-stable": [
+          "nixpkgs-stable"
+        ]
       },
       "locked": {
         "lastModified": 1703991717,
