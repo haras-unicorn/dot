@@ -43,6 +43,7 @@ in
 
     "${self}/src/module/home/gpg"
     "${self}/src/module/home/ssh"
+    "${self}/src/module/home/cloud"
 
     "${self}/src/module/home/direnv"
     "${self}/src/module/home/starship"
