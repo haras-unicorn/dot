@@ -5,5 +5,5 @@
     azure-cli
   ];
 
-  home.file.".azure/config".source = ./azure-config.toml;
+  home.file.".azure/config".source = ./azure-config;
 }

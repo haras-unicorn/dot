@@ -1,3 +1,6 @@
+[core]
+collect_telemetry = false
+
 [cloud]
 name = AzureCloud
 
