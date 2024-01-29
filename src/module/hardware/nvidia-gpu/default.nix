@@ -35,7 +35,7 @@
     glxinfo # NOTE: glxinfo and eglinfo
     nvtop
     # nixified-ai.packages.x86_64-linux.textgen-nvidia
-    # nixified-ai.packages.x86_64-linux.invokeai-nvidia
+    nixified-ai.packages.x86_64-linux.invokeai-nvidia
     # gpt4all.packages.x86_64-linux.gpt4all-chat
   ];
 
