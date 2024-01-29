@@ -46,6 +46,7 @@ builtins.foldl'
     hasUserConfigModule = builtins.hasAttr "user" configModules;
     userConfigModule = if hasUserConfigModule then configModules.user else { };
     specialArgs = inputs // {
+      inherit system;
       inherit hostName;
       inherit userName;
       inherit vpnHost;
