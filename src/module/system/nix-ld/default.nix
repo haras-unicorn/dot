@@ -1,10 +1,16 @@
-{ nix-alien, nix-autobahn, system, ... }:
+{ pkgs
+, system
+, nix-alien
+, nix-autobahn
+, ...
+}:
 
 {
   programs.nix-ld.enable = true;
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     nix-alien.packages."${system}".nix-alien
     nix-autobahn.packages."${system}".nix-autobahn
+    steam-run
   ];
 }

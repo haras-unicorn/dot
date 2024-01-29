@@ -109,7 +109,7 @@
       "${self}/src/module/system/virtual"
       "${self}/src/module/system/gaming"
       "${self}/src/module/system/windows"
-      "${self}/src/module/system/nix-ld"
+      # "${self}/src/module/system/nix-ld"
     ];
 
     networking.firewall.allowedTCPPorts = [
