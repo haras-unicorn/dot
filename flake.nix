@@ -10,6 +10,9 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-alien.url = "github:thiagokokada/nix-alien";
+    nix-alien.inputs.flake-utils.follows = "flake-utils";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
