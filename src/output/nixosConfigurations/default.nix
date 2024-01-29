@@ -68,6 +68,13 @@ builtins.foldl'
           nix.gc.options = "--delete-older-than 30d";
           nix.settings.auto-optimise-store = true;
 
+          nix.settings.substituters = [
+            "https://cache.nixos.org"
+            "https://nix-community.cachix.org"
+            "https://haras.cachix.org"
+            "https://hyprland.cachix.org"
+            "https://ai.cachix.org"
+          ];
           nix.settings.trusted-substituters = [
             "https://cache.nixos.org"
             "https://nix-community.cachix.org"
