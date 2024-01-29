@@ -3,16 +3,10 @@
 , ...
 }:
 
-# FIXME: build lutris packages from yml here with `lutris --install`
+# TODO: build lutris packages from yml here with `lutris --install`
 # TODO: fix clashing nofile limits
 
-# NOTE: https://github.com/lutris/docs/blob/master/HowToEsync.md
-
 {
-  # imports = [
-  #   "${self}/src/module/system/nix-ld"
-  # ];
-
   environment.systemPackages = with pkgs; [
     wineWowPackages.waylandFull
     virglrenderer
