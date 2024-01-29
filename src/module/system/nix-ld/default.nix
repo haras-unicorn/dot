@@ -4,6 +4,6 @@
   programs.nix-ld.enable = true;
 
   environment.systemPackages = [
-    nix-alien.packages.nix-alien
+    nix-alien.packages.default
   ];
 }
