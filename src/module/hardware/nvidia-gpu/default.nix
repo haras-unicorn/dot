@@ -1,6 +1,6 @@
 { pkgs
 , config
-  # , nixified-ai
+, nixified-ai
   # , gpt4all
 , ...
 }:
