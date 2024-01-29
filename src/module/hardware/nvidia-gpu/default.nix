@@ -1,17 +1,22 @@
 { pkgs
+, system
 , config
 , nixified-ai
   # , gpt4all
 , ...
 }:
 
-# FIXME: system for ai from flake
 # FIXME: ai getting rebuilt and not using gpu
 
 {
   boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.nvidiaSettings = true;
+  hardware.nvidia.open = config.dot.hardware.nvidiaDriver.open;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${config.dot.hardware.nvidiaDriver.version}";
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
@@ -26,6 +31,7 @@
 
   programs.corectrl.enable = true;
   programs.corectrl.gpuOverclock.enable = true;
+
   environment.systemPackages = with pkgs; [
     libva
     libvdpau
@@ -34,9 +40,9 @@
     vulkan-tools # NOTE: vulkaninfo
     glxinfo # NOTE: glxinfo and eglinfo
     nvtop
-    # nixified-ai.packages.x86_64-linux.textgen-nvidia
-    nixified-ai.packages.x86_64-linux.invokeai-nvidia
-    # gpt4all.packages.x86_64-linux.gpt4all-chat
+    # nixified-ai.packages."${system}".textgen-nvidia
+    nixified-ai.packages."${system}".invokeai-nvidia
+    # gpt4all.packages."${system}".gpt4all-chat
   ];
 
   environment.sessionVariables = {
@@ -50,11 +56,6 @@
     __GL_GSYNC_ALLOWED = "1"; # NOTE: nvidia g-sync
     __GL_VRR_ALLOWED = "1"; # NOTE: nvidia g-sync
   };
-
-  hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.nvidiaSettings = true;
-  hardware.nvidia.open = config.dot.hardware.nvidiaDriver.open;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${config.dot.hardware.nvidiaDriver.version}";
 
   virtualisation.docker.enableNvidia = true;
   virtualisation.podman.enableNvidia = true;
