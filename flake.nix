@@ -29,7 +29,6 @@
     lulezojne.inputs.nixpkgs.follows = "nixpkgs";
 
     nixified-ai.url = "github:nixified-ai/flake";
-    nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
 
     gpt4all.url = "github:polygon/gpt4all-nix";
     gpt4all.inputs.nixpkgs.follows = "nixpkgs";
