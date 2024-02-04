@@ -4,6 +4,7 @@
 # FIXME: weak dependency on desktop?
 
 # TODO: firmware tui as part of diag
+# TODO: https://github.com/NixOS/nixpkgs/issues/232266
 
 let
   term = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
@@ -66,7 +67,6 @@ in
     spotify # NOTE: music streaming
     netflix # NOTE: video streaming
     gimp # NOTE: image manipulation
-    # pencil # NOTE: UI/UX prototyping
     inkscape # NOTE: vector graphics design
   ];
 
