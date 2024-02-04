@@ -96,7 +96,6 @@ builtins.foldl'
           ];
           nix.settings.trusted-users = [
             "root"
-            "@wheel"
           ];
 
           nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
