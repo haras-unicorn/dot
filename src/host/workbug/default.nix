@@ -59,8 +59,6 @@
       "vfat"
     ];
 
-    # boot.initrd.postDeviceCommands = "udevadm settle";
-
     fileSystems."/" = {
       device = "/dev/disk/by-label/NIXROOT";
       fsType = "ext4";
