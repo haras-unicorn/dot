@@ -60,13 +60,13 @@
       "vfat"
     ];
 
-    fileSystems."/boot" = {
-      device = "/dev/disk/by-partlabel/nixboot";
-      fsType = "vfat";
-    };
     fileSystems."/" = {
-      device = "/dev/disk/by-partlabel/nixroot";
+      device = "/dev/disk/by-label/NIXROOT";
       fsType = "ext4";
+    };
+    fileSystems."/boot" = {
+      device = "/dev/disk/by-label/NIXBOOT";
+      fsType = "vfat";
     };
 
     swapDevices = [
