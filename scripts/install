@@ -44,24 +44,20 @@ parted --script "$DEVICE" mklabel "$TABLE"
 parted --script "$DEVICE" mkpart primary fat32 0% 1GB
 parted --script "$DEVICE" toggle 1 esp
 parted --script "$DEVICE" mkpart primary ext4 1GB 100%
-sleep 10s
 parted --script "$DEVICE" print
 
 mkfs.fat -F 32 "$BOOT"
 mkfs.ext4 "$ROOT"
-sleep 10s
 parted --script "$DEVICE" print
 
 fatlabel "$BOOT" NIXBOOT
 e2label "$ROOT" NIXROOT
-sleep 10s
 parted --script "$DEVICE" print
 ls -la /dev/disk/by-label
 
 mount /dev/disk/by-label/NIXROOT /mnt
 mkdir /mnt/boot
 mount /dev/disk/by-label/NIXBOOT /mnt/boot
-sleep 10s
 mount | grep "$DEVICE"
 
 mkdir /mnt/var
@@ -69,7 +65,6 @@ fallocate -l 4G /mnt/var/swap
 chmod 600 /mnt/var/swap
 mkswap /mnt/var/swap
 swapon /mnt/var/swap
-sleep 10s
 lsblk --fs
 
 if [[ -f "$SELF/src/host/$HOST/secrets.sops.enc.yaml" ]]; then
