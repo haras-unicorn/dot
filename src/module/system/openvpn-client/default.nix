@@ -48,8 +48,6 @@ in
       remote-cert-tls server
 
       script-security 2
-      up /etc/openvpn/update-resolv-conf
-      down /etc/openvpn/update-resolv-conf
 
       verb 3
     '';
