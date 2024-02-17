@@ -53,7 +53,7 @@ in
     networking.firewall.allowedTCPPorts = [ port ];
     services.openvpn.servers."${cfg.host}".config = ''
       server ${subnet}.0 ${mask}
-      port ${builtin.toString port}
+      port ${builtins.toString port}
       proto ${protocol}
       dev ${dev}
 
