@@ -6,75 +6,75 @@ echo "$@"
 # TODO: sops validation
 # TODO: nvme labels
 
-# DEVICE=$1
-# if [[ ! -b "$DEVICE" ]]; then
-#   printf "Please enter a valid block device\n"
-#   exit 1
-# fi
+DEVICE=$1
+if [[ ! -b "$DEVICE" ]]; then
+  printf "Please enter a valid block device\n"
+  exit 1
+fi
 
-# TABLE=$2
-# if [[ "$TABLE" != "gpt" && "$TABLE" != "msdos" ]]; then
-#   printf "Please enter a partition table format\n"
-#   exit 1
-# fi
+TABLE=$2
+if [[ "$TABLE" != "gpt" && "$TABLE" != "msdos" ]]; then
+  printf "Please enter a partition table format\n"
+  exit 1
+fi
 
-# HOST=$3
-# if [[ ! -f "$HOST" && "$HOST" != "" ]]; then
-#   printf "Please enter a valid system sops key\n"
-#   exit 1
-# fi
+HOST=$3
+if [[ "$HOST" == "" ]]; then
+  printf "Please enter a valid host\n"
+  exit 1
+fi
 
-# parted --script "$DEVICE" mklabel "$TABLE"
-# parted --script "$DEVICE" mkpart primary fat32 0% 1GB
-# parted --script "$DEVICE" toggle 1 esp
-# parted --script "$DEVICE" mkpart primary ext4 1GB 100%
-# sleep 5s
-# parted --script "$DEVICE" print
+parted --script "$DEVICE" mklabel "$TABLE"
+parted --script "$DEVICE" mkpart primary fat32 0% 1GB
+parted --script "$DEVICE" toggle 1 esp
+parted --script "$DEVICE" mkpart primary ext4 1GB 100%
+sleep 5s
+parted --script "$DEVICE" print
 
-# mkfs.fat -F 32 "${DEVICE}1"
-# mkfs.ext4 "${DEVICE}2"
-# sleep 5s
-# parted --script "$DEVICE" print
+mkfs.fat -F 32 "${DEVICE}1"
+mkfs.ext4 "${DEVICE}2"
+sleep 5s
+parted --script "$DEVICE" print
 
-# fatlabel "${DEVICE}1" NIXBOOT
-# e2label "${DEVICE}2" NIXROOT
-# sleep 5s
-# parted --script "$DEVICE" print
+fatlabel "${DEVICE}1" NIXBOOT
+e2label "${DEVICE}2" NIXROOT
+sleep 5s
+parted --script "$DEVICE" print
 
-# mount /dev/disk/by-label/NIXROOT /mnt
-# mkdir /mnt/boot
-# mount /dev/disk/by-label/NIXBOOT /mnt/boot
-# sleep 5s
-# mount | grep "$DEVICE"
+mount /dev/disk/by-label/NIXROOT /mnt
+mkdir /mnt/boot
+mount /dev/disk/by-label/NIXBOOT /mnt/boot
+sleep 5s
+mount | grep "$DEVICE"
 
-# mkdir /mnt/var
-# fallocate -l 4G /mnt/var/swap
-# chmod 600 /mnt/var/swap
-# mkswap /mnt/var/swap
-# swapon /mnt/var/swap
-# sleep 5s
-# lsblk --fs
+mkdir /mnt/var
+fallocate -l 4G /mnt/var/swap
+chmod 600 /mnt/var/swap
+mkswap /mnt/var/swap
+swapon /mnt/var/swap
+sleep 5s
+lsblk --fs
 
-# if [[ "$HOST/$SYSTEM_SOPS_KEY" != "" ]]; then
-#   mkdir -p /mnt/etc/ssh
-#   chown root:root /mnt/etc
-#   chmod 755 /mnt/etc
-#   chown root:root /mnt/etc/ssh
-#   chmod 755 /mnt/etc/ssh
+if [[ ! -f "$SELF/src/host/$HOST/secrets.sops.enc.yaml" ]]; then
+  mkdir -p /mnt/etc/ssh
+  chown root:root /mnt/etc
+  chmod 755 /mnt/etc
+  chown root:root /mnt/etc/ssh
+  chmod 755 /mnt/etc/ssh
 
-#   # NOTE: https://github.com/Mic92/sops-nix/issues/24
-#   ssh-keygen -a 100 -t rsa -N "" -f /mnt/etc/ssh/ssh_host_rsa_key &>/dev/null
-#   ssh-keygen -a 100 -t ed25519 -N "" -f /mnt/etc/ssh/ssh_host_ed25519_key &>/dev/null
+  # NOTE: https://github.com/Mic92/sops-nix/issues/24
+  ssh-keygen -a 100 -t rsa -N "" -f /mnt/etc/ssh/ssh_host_rsa_key &>/dev/null
+  ssh-keygen -a 100 -t ed25519 -N "" -f /mnt/etc/ssh/ssh_host_ed25519_key &>/dev/null
 
-#   mkdir -p "/mnt/root/.sops"
+  mkdir -p "/mnt/root/.sops"
 
-#   chown root:root "/mnt/root"
-#   chmod 700 "/mnt/root"
+  chown root:root "/mnt/root"
+  chmod 700 "/mnt/root"
 
-#   chown root:root "/mnt/root/.sops"
-#   chmod 700 "/mnt/root/.sops"
+  chown root:root "/mnt/root/.sops"
+  chmod 700 "/mnt/root/.sops"
 
-#   cp "$SYSTEM_SOPS_KEY" "/mnt/root/.sops/secrets.age"
-#   chown root:root "/mnt/root/.sops/secrets.age"
-#   chmod 600 "/mnt/root/.sops/secrets.age"
-# fi
+  cp "$SELF/src/host/$HOST/secrets.sops.enc.yaml" "/mnt/root/.sops/secrets.age"
+  chown root:root "/mnt/root/.sops/secrets.age"
+  chmod 600 "/mnt/root/.sops/secrets.age"
+fi
