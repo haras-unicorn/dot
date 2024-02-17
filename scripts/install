@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-# TODO: sops validation
-# TODO: nvme labels
-
 if [[ "$SELF" == "" ]]; then
   printf "SELF should not be null\n"
   exit 1
