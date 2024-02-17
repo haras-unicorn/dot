@@ -62,7 +62,7 @@ until mount /dev/disk/by-label/NIXBOOT /mnt/boot; do
   printf "Waiting for NIXBOOT to come up...\n"
   sleep 1s
 done
-mount | grep "$DEVICE"
+mount | grep "/dev/disk/by-label/NIX.*"
 
 mkdir /mnt/var
 fallocate -l 4G /mnt/var/swap
