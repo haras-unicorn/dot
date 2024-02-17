@@ -54,10 +54,12 @@ e2label "$ROOT" NIXROOT
 ls -la /dev/disk/by-label
 
 until mount /dev/disk/by-label/NIXROOT /mnt; do
+  printf "Waiting for NIXROOT to come up...\n"
   sleep 1s
 done
 mkdir /mnt/boot
 until mount /dev/disk/by-label/NIXBOOT /mnt/boot; do
+  printf "Waiting for NIXBOOT to come up...\n"
   sleep 1s
 done
 mount | grep "$DEVICE"
