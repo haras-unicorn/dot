@@ -36,6 +36,7 @@ in
     usql # NOTE: connect to any db
     watchexec # NOTE: run something when files change
     wget # NOTE: download things but often needed for other programs
+    nmap # NOTE: network discovery
   ];
 
   imports = [
