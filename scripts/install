@@ -96,6 +96,5 @@ else
 fi
 chown root:root "/mnt/root/.sops/secrets.age"
 chmod 600 "/mnt/root/.sops/secrets.age"
-printf "Secrets:\n"
 
 nixos-install --flake "$SELF#$HOST-$SYSTEM"
