@@ -7,16 +7,20 @@
 let
   configs = flake-utils.lib.defaultSystems;
 
-  wrap = path: name: system: inputs: nixpkgs.legacyPackages.${system}.writeShellApplication {
-    name = name;
-    runtimeInputs = inputs;
-    text = ''
-      export SELF="${self}"
-      export SYSTEM="${system}"
+  wrap = path: name: system: inputs:
+    let
+      app = nixpkgs.legacyPackages.${system}.writeShellApplication {
+        name = name;
+        runtimeInputs = inputs;
+        text = ''
+          export SELF="${self}"
+          export SYSTEM="${system}"
 
-      "${path}" "$@"
-    '';
-  };
+          "${path}" "$@"
+        '';
+      };
+    in
+    "${app}/name";
 in
 builtins.foldl'
   (apps: system: apps // {
