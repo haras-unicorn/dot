@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-echo "$@"
-
 # TODO: sops validation
 # TODO: nvme labels
 
@@ -36,17 +34,17 @@ parted --script "$DEVICE" mklabel "$TABLE"
 parted --script "$DEVICE" mkpart primary fat32 0% 1GB
 parted --script "$DEVICE" toggle 1 esp
 parted --script "$DEVICE" mkpart primary ext4 1GB 100%
-sleep 5s
+sleep 10s
 parted --script "$DEVICE" print
 
 mkfs.fat -F 32 "$BOOT"
 mkfs.ext4 "$ROOT"
-sleep 5s
+sleep 10s
 parted --script "$DEVICE" print
 
 fatlabel "$BOOT" NIXBOOT
 e2label "$ROOT" NIXROOT
-sleep 5s
+sleep 10s
 parted --script "$DEVICE" print
 
 mount /dev/disk/by-label/NIXROOT /mnt
