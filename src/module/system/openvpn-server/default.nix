@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.dot.openvpn.server;
   port = "1194";
-  protocol = "udp";
+  protocol = "tcp";
   cipher = "AES-256-CBC";
   auth = "SHA256";
   subnet = "10.8.0";
@@ -51,7 +51,7 @@ in
       ca /etc/openvpn/${cfg.host}/root-ca.ssl.crt
       cert /etc/openvpn/${cfg.host}/server.ssl.crt
       key /etc/openvpn/${cfg.host}/server.ssl.key
-      tls-auth /etc/openvpn/${cfg.host}/server.ta.key 0
+      # tls-auth /etc/openvpn/${cfg.host}/server.ta.key 0
       dh /etc/openvpn/${cfg.host}/server.dhparam.pem
 
       ifconfig-pool-persist /etc/openvpn/${cfg.host}/ipp.txt
