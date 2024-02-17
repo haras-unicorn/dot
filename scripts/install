@@ -9,8 +9,8 @@ if [[ "$SELF" == "" ]]; then
   exit 1
 fi
 
-if [[ "$HOST" == "" ]]; then
-  printf "HOST should not be null\n"
+if [[ "$SYSTEM" == "" ]]; then
+  printf "SYSTEM should not be null\n"
   exit 1
 fi
 
