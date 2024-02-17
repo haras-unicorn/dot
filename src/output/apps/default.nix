@@ -1,10 +1,11 @@
 { self
 , flake-utils
+, ...
 }:
 
 flake-utils.eachDefaultSystem (system: {
-  apps."${system}".part = {
+  apps."${system}".default = {
     type = "app";
-    program = "${self}/scripts/part";
+    program = "${self}/scripts/install";
   };
 })
