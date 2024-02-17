@@ -196,5 +196,5 @@ builtins.foldl'
       ];
     };
   })
-{ }
+  ({ })
   configs

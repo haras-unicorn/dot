@@ -61,7 +61,7 @@ ls -la /dev/disk/by-label
 mount /dev/disk/by-label/NIXROOT /mnt
 mkdir /mnt/boot
 mount /dev/disk/by-label/NIXBOOT /mnt/boot
-sleep 5s
+sleep 10s
 mount | grep "$DEVICE"
 
 mkdir /mnt/var
@@ -69,10 +69,10 @@ fallocate -l 4G /mnt/var/swap
 chmod 600 /mnt/var/swap
 mkswap /mnt/var/swap
 swapon /mnt/var/swap
-sleep 5s
+sleep 10s
 lsblk --fs
 
-if [[ ! -f "$SELF/src/host/$HOST/secrets.sops.enc.yaml" ]]; then
+if [[ -f "$SELF/src/host/$HOST/secrets.sops.enc.yaml" ]]; then
   mkdir -p /mnt/etc/ssh
   chown root:root /mnt/etc
   chmod 755 /mnt/etc
