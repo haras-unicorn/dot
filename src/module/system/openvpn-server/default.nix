@@ -91,7 +91,7 @@ in
 
     environment.etc = attrsets.concatMapAttrs
       (client: ip: {
-        "/etc/openvpn/${cfg.host}/clients/${client}".text = ''
+        "/openvpn/${cfg.host}/clients/${client}".text = ''
           ifconfig-push ${subnet}.${ip} ${mask}
         '';
       })
