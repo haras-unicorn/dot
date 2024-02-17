@@ -46,7 +46,7 @@ in
 
       cipher ${cipher}
       auth ${auth}
-      remote-cert-tls server
+      # remote-cert-tls server
 
       script-security 2
 
