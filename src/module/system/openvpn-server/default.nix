@@ -9,6 +9,7 @@ let
   auth = "SHA256";
   subnet = "10.8.0";
   mask = "255.255.255.0";
+  dev = "tun0";
 in
 {
   options.dot.openvpn.server = {
@@ -42,16 +43,24 @@ in
   };
 
   config = mkIf cfg.enable {
+    networking.nat = {
+      enable = true;
+      externalInterface = config.dot.hardware.networkInterface;
+      internalInterfaces = [ dev ];
+    };
+    networking.firewall.trustedInterfaces = [ dev ];
+    networking.firewall.allowedUDPPorts = [ port ];
+    networking.firewall.allowedTCPPorts = [ port ];
     services.openvpn.servers."${cfg.host}".config = ''
       server ${subnet}.0 ${mask}
       port ${port}
       proto ${protocol}
-      dev tun
+      dev ${dev}
 
       ca /etc/openvpn/${cfg.host}/root-ca.ssl.crt
       cert /etc/openvpn/${cfg.host}/server.ssl.crt
       key /etc/openvpn/${cfg.host}/server.ssl.key
-      # tls-auth /etc/openvpn/${cfg.host}/server.ta.key 0
+      tls-auth /etc/openvpn/${cfg.host}/server.ta.key 0
       dh /etc/openvpn/${cfg.host}/server.dhparam.pem
 
       ifconfig-pool-persist /etc/openvpn/${cfg.host}/ipp.txt
