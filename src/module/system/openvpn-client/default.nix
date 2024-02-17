@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.dot.openvpn.client;
   port = 1194;
-  protocol = "tcp";
+  protocol = "udp";
   cipher = "AES-256-CBC";
   auth = "SHA256";
   dev = "tun0";
@@ -39,7 +39,7 @@ in
       ca /etc/openvpn/${cfg.host}/root-ca.ssl.crt
       cert /etc/openvpn/${cfg.host}/client.ssl.crt
       key /etc/openvpn/${cfg.host}/client.ssl.key
-      tls-auth /etc/openvpn/${cfg.host}/server.ta.key 1
+      # tls-auth /etc/openvpn/${cfg.host}/server.ta.key 1
 
       resolv-retry infinite
       nobind
