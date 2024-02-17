@@ -7,11 +7,12 @@
 let
   configs = flake-utils.lib.defaultSystems;
 
-  wrap = path: name: inputs: nixpkgs.writeShellApplication {
+  wrap = path: name: system: inputs: nixpkgs.writeShellApplication {
     name = name;
     runtimeInputs = inputs;
     text = ''
       export SELF="${self}"
+      export SYSTEM="${system}"
 
       "${path}" "$@"
     '';
@@ -21,7 +22,7 @@ builtins.foldl'
   (apps: system: apps // {
     "${system}".default = {
       type = "app";
-      program = wrap "${self}/scripts/install" "install" [ ];
+      program = wrap "${self}/scripts/install" "install" system [ ];
     };
   })
   ({ })

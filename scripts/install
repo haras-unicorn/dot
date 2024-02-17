@@ -24,6 +24,14 @@ if [[ "$HOST" == "" ]]; then
   exit 1
 fi
 
+if [[ $DEVICE == /dev/nvme* ]]; then
+  BOOT="${DEVICE}p1"
+  ROOT="${DEVICE}p2"
+else
+  BOOT="${DEVICE}1"
+  ROOT="${DEVICE}2"
+fi
+
 parted --script "$DEVICE" mklabel "$TABLE"
 parted --script "$DEVICE" mkpart primary fat32 0% 1GB
 parted --script "$DEVICE" toggle 1 esp
@@ -31,13 +39,13 @@ parted --script "$DEVICE" mkpart primary ext4 1GB 100%
 sleep 5s
 parted --script "$DEVICE" print
 
-mkfs.fat -F 32 "${DEVICE}1"
-mkfs.ext4 "${DEVICE}2"
+mkfs.fat -F 32 "$BOOT"
+mkfs.ext4 "$ROOT"
 sleep 5s
 parted --script "$DEVICE" print
 
-fatlabel "${DEVICE}1" NIXBOOT
-e2label "${DEVICE}2" NIXROOT
+fatlabel "$BOOT" NIXBOOT
+e2label "$ROOT" NIXROOT
 sleep 5s
 parted --script "$DEVICE" print
 
@@ -78,3 +86,5 @@ if [[ ! -f "$SELF/src/host/$HOST/secrets.sops.enc.yaml" ]]; then
   chown root:root "/mnt/root/.sops/secrets.age"
   chmod 600 "/mnt/root/.sops/secrets.age"
 fi
+
+nixos-install --flake "$SELF#$HOST-$SYSTEM"
