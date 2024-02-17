@@ -64,7 +64,7 @@ in
       user nobody
       group nogroup
 
-      verb 3
+      verb 4
       status /var/log/openvpn/status.log
       log-append /var/log/openvpn/openvpn.log
     '';

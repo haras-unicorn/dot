@@ -58,7 +58,7 @@ in
 
       script-security 2
 
-      verb 3
+      verb 4
     '';
     sops.secrets."root-ca.ssl.crt".path = "/etc/openvpn/${cfg.host}/root-ca.ssl.crt";
     sops.secrets."root-ca.ssl.crt".owner = "nobody";
