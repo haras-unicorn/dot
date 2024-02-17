@@ -1,6 +1,6 @@
 { lib, config, ... }:
 
-# TODO: authorized list of objects with host, user, key file
+# FIXME: fix the ssh key thing
 
 with lib;
 let
