@@ -16,14 +16,11 @@ if [[ "$TABLE" != "gpt" && "$TABLE" != "msdos" ]]; then
   exit 1
 fi
 
-SYSTEM_SOPS_KEY=$3
-# if [[ ! -f "$SYSTEM_SOPS_KEY" && "$SYSTEM_SOPS_KEY" != "" ]]; then
-#   printf "Please enter a valid system sops key\n"
-#   exit 1
-# fi
-
-HOME_SOPS_USERNAME=$4
-HOME_SOPS_KEY=$5
+HOST=$3
+if [[ ! -f "$HOST" && "$HOST" != "" ]]; then
+  printf "Please enter a valid system sops key\n"
+  exit 1
+fi
 
 parted --script "$DEVICE" mklabel "$TABLE"
 parted --script "$DEVICE" mkpart primary fat32 0% 1GB
@@ -78,18 +75,4 @@ if [[ "$SYSTEM_SOPS_KEY" != "" ]]; then
   cp "$SYSTEM_SOPS_KEY" "/mnt/root/.sops/secrets.age"
   chown root:root "/mnt/root/.sops/secrets.age"
   chmod 600 "/mnt/root/.sops/secrets.age"
-fi
-
-if [[ "$HOME_SOPS_KEY" != "" && "$HOME_SOPS_USERNAME" != "" ]]; then
-  mkdir -p "/home/$HOME_SOPS_USERNAME/.sops"
-
-  chown "$HOME_SOPS_USERNAME:users" "/home/$HOME_SOPS_USERNAME"
-  chmod 700 "/home/$HOME_SOPS_USERNAME"
-
-  chown "$HOME_SOPS_USERNAME:users" "/home/$HOME_SOPS_USERNAME/.sops"
-  chmod 700 "/home/$HOME_SOPS_USERNAME/.sops"
-
-  cp "$HOME_SOPS_KEY" "/home/$HOME_SOPS_USERNAME/.sops/secrets.age"
-  chown "$HOME_SOPS_USERNAME:users" "/home/$HOME_SOPS_USERNAME/.sops/secrets.age"
-  chmod 600 "/home/$HOME_SOPS_USERNAME/.sops/secrets.age"
 fi
