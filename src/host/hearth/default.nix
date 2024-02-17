@@ -44,7 +44,6 @@
     ];
 
     boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
     boot.initrd.availableKernelModules = [
       "nvme"
       "xhci_pci"
@@ -54,7 +53,6 @@
       "sd_mod"
       "sr_mod"
     ];
-
     boot.initrd.kernelModules = [
       "ext4"
       "vfat"
@@ -68,6 +66,7 @@
       device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
     };
+    services.fstrim.enable = true;
 
     swapDevices = [
       {
@@ -75,8 +74,6 @@
         size = config.dot.hardware.ram * 1024;
       }
     ];
-
-    services.fstrim.enable = true;
   };
 
   system = { self, vpnHost, vpnDomain, ... }: {

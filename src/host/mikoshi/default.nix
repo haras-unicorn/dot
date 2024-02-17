@@ -15,6 +15,8 @@
       "${self}/src/module/hardware/firmware"
     ];
 
+    virtualisation.hypervGuest.enable = true;
+
     boot.initrd.availableKernelModules = [
       "ata_piix"
       "uhci_hcd"
@@ -22,13 +24,10 @@
       "sr_mod"
       "virtio_blk"
     ];
-
     boot.initrd.kernelModules = [
       "ext4"
       "vfat"
     ];
-
-    virtualisation.hypervGuest.enable = true;
 
     fileSystems."/" = {
       device = "/dev/disk/by-label/NIXROOT";
