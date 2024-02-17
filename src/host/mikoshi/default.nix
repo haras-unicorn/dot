@@ -23,6 +23,7 @@
       "usbhid"
       "sd_mod"
       "sr_mod"
+      "virtio-scsi"
     ];
 
     boot.initrd.kernelModules = [
