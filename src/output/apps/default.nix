@@ -8,7 +8,7 @@ let
 in
 builtins.foldl'
   (apps: system: apps // {
-    apps."${system}".default = {
+    "${system}".default = {
       type = "app";
       program = "${self}/scripts/install";
     };
