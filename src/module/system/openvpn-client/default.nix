@@ -38,7 +38,7 @@ in
       ca /etc/openvpn/${cfg.host}/root-ca.ssl.crt
       cert /etc/openvpn/${cfg.host}/client.ssl.crt
       key /etc/openvpn/${cfg.host}/client.ssl.key
-      tls-auth /etc/openvpn/${cfg.host}/server.ta.key 1
+      # tls-auth /etc/openvpn/${cfg.host}/server.ta.key 1
 
       resolv-retry infinite
       nobind
