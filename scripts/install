@@ -53,15 +53,19 @@ fatlabel "$BOOT" NIXBOOT
 e2label "$ROOT" NIXROOT
 ls -la /dev/disk/by-label
 
+set +e
 until mount /dev/disk/by-label/NIXROOT /mnt; do
   printf "Waiting for NIXROOT to come up...\n"
   sleep 1s
 done
+set -e
 mkdir /mnt/boot
+set +e
 until mount /dev/disk/by-label/NIXBOOT /mnt/boot; do
   printf "Waiting for NIXBOOT to come up...\n"
   sleep 1s
 done
+set -e
 mount | grep "/dev/disk/by-label/NIX.*"
 
 mkdir /mnt/var
