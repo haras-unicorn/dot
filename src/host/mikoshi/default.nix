@@ -1,5 +1,3 @@
-# TODO: figure out booting by-label
-
 {
   meta.dot = {
     hardware.ram = 1;
