@@ -7,7 +7,7 @@
 let
   configs = flake-utils.lib.defaultSystems;
 
-  wrap = path: name: system: inputs: nixpkgs.lib.writeShellApplication {
+  wrap = path: name: system: inputs: nixpkgs.legacyPackages.${system}.writeShellApplication {
     name = name;
     runtimeInputs = inputs;
     text = ''
