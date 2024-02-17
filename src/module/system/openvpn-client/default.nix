@@ -3,10 +3,11 @@
 with lib;
 let
   cfg = config.dot.openvpn.client;
-  port = "1194";
+  port = 1194;
   protocol = "udp";
   cipher = "AES-256-CBC";
   auth = "SHA256";
+  dev = "tun0";
 in
 {
   options.dot.openvpn.client = {
@@ -29,16 +30,23 @@ in
   };
 
   config = mkIf cfg.enable {
+    networking.nat = {
+      enable = true;
+      externalInterface = config.dot.hardware.networkInterface;
+      internalInterfaces = [ dev ];
+    };
+    networking.firewall.trustedInterfaces = [ dev ];
+    networking.firewall.allowedUDPPorts = [ port ];
     services.openvpn.servers."${cfg.host}".config = ''
       client
-      remote ${cfg.domain} ${port}
+      remote ${cfg.domain} ${builtins.toString port}
       proto ${protocol}
-      dev tun
+      dev ${dev}
 
       ca /etc/openvpn/${cfg.host}/root-ca.ssl.crt
       cert /etc/openvpn/${cfg.host}/client.ssl.crt
       key /etc/openvpn/${cfg.host}/client.ssl.key
-      # tls-auth /etc/openvpn/${cfg.host}/server.ta.key 1
+      tls-auth /etc/openvpn/${cfg.host}/server.ta.key 1
 
       resolv-retry infinite
       nobind
