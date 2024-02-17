@@ -70,9 +70,9 @@
     dot.openvpn.server.enable = true;
     dot.openvpn.server.host = hostName;
     dot.openvpn.server.clients = {
-      "hearth" = "1";
-      "workbug" = "2";
-      "officer" = "3";
+      "hearth" = "101";
+      "workbug" = "102";
+      "officer" = "103";
     };
   };
 
