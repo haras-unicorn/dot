@@ -47,11 +47,9 @@ parted --script "$DEVICE" toggle 1 esp
 parted --script "$DEVICE" mkpart primary ext4 1GB 100%
 mkfs.fat -F 32 "$BOOT"
 mkfs.ext4 "$ROOT"
-parted --script "$DEVICE" print
 
 fatlabel "$BOOT" NIXBOOT
 e2label "$ROOT" NIXROOT
-ls -la /dev/disk/by-label
 
 set +e
 until mount /dev/disk/by-label/NIXROOT /mnt; do
@@ -72,7 +70,6 @@ fallocate -l 4G /mnt/var/swap
 chmod 600 /mnt/var/swap
 mkswap /mnt/var/swap
 swapon /mnt/var/swap
-lsblk --fs
 
 mkdir -p /mnt/etc/ssh
 chown root:root /mnt/etc
@@ -100,6 +97,5 @@ fi
 chown root:root "/mnt/root/.sops/secrets.age"
 chmod 600 "/mnt/root/.sops/secrets.age"
 printf "Secrets:\n"
-cat /mnt/root/.sops/secrets.age
 
 nixos-install --flake "$SELF#$HOST-$SYSTEM"
