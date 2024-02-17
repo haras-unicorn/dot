@@ -3,7 +3,7 @@
 , ...
 }:
 
-flake-utils.eachDefaultSystem (system: {
+flake-utils.lib.eachDefaultSystem (system: {
   apps."${system}".default = {
     type = "app";
     program = "${self}/scripts/install";
