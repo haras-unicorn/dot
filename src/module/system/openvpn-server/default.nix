@@ -3,7 +3,7 @@
 with lib;
 let
   cfg = config.dot.openvpn.server;
-  port = "1194";
+  port = 1194;
   protocol = "tcp";
   cipher = "AES-256-CBC";
   auth = "SHA256";
@@ -53,7 +53,7 @@ in
     networking.firewall.allowedTCPPorts = [ port ];
     services.openvpn.servers."${cfg.host}".config = ''
       server ${subnet}.0 ${mask}
-      port ${port}
+      port ${builtin.toString port}
       proto ${protocol}
       dev ${dev}
 
