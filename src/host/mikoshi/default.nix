@@ -16,20 +16,19 @@
     ];
 
     boot.initrd.availableKernelModules = [
-      "nvme"
-      "xhci_pci"
-      "ahci"
-      "usb_storage"
-      "usbhid"
-      "sd_mod"
+      "ata_piix"
+      "uhci_hcd"
+      "virtio_pci"
       "sr_mod"
-      "virtio-scsi"
+      "virtio_blk"
     ];
 
     boot.initrd.kernelModules = [
       "ext4"
       "vfat"
     ];
+
+    virtualisation.hypervGuest.enable = true;
 
     fileSystems."/" = {
       device = "/dev/disk/by-label/NIXROOT";
