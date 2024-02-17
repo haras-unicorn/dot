@@ -4,6 +4,16 @@ set -eo pipefail
 # TODO: sops validation
 # TODO: nvme labels
 
+if [[ "$SELF" == "" ]]; then
+  printf "SELF should not be null\n"
+  exit 1
+fi
+
+if [[ "$HOST" == "" ]]; then
+  printf "HOST should not be null\n"
+  exit 1
+fi
+
 DEVICE=$1
 if [[ ! -b "$DEVICE" ]]; then
   printf "Please enter a valid block device\n"
@@ -46,6 +56,7 @@ fatlabel "$BOOT" NIXBOOT
 e2label "$ROOT" NIXROOT
 sleep 10s
 parted --script "$DEVICE" print
+ls -la /dev/disk/by-label
 
 mount /dev/disk/by-label/NIXROOT /mnt
 mkdir /mnt/boot
