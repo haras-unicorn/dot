@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 
+# FIXME: fontfor not compiling
+
 {
   fonts.fontDir.enable = true;
   fonts.packages = [
@@ -21,7 +23,7 @@
   fonts.fontconfig.defaultFonts.monospace = [ config.dot.font.mono.name ];
 
   environment.systemPackages = with pkgs; [
-    fontfor
+    # fontfor
     fontpreview
   ];
 }
