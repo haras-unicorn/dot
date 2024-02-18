@@ -57,6 +57,7 @@ in
   xdg.mimeApps.defaultApplications = mime;
 
   home.packages = with pkgs; [
+    rpi-imager # NOTE: make images for raspberry pi
     gnome-firmware # NOTE: view firmware 
     feh # NOTE: image viewer
     mpv # NOTE: video viewer
