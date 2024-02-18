@@ -11,7 +11,6 @@
     easyeffects
     jamesdsp
     sonobus
-    soundux
   ];
 
   sound.enable = true;
