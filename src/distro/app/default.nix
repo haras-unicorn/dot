@@ -65,6 +65,7 @@ in
     dbeaver # NOTE: db viewer
     angryipscanner # NOTE: network scanner
     via # NOTE: keyboard configurator
+    polychromatic # NOTE: razer device configurator
     spotify # NOTE: music streaming
     netflix # NOTE: video streaming
     gimp # NOTE: image manipulation
