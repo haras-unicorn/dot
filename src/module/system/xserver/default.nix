@@ -5,6 +5,9 @@
 # FIXME: uncouple sddm/qtile?
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
+# systemctl --user import-environment PATH
+# systemctl --user restart xdg-desktop-portal.service
+# dbus-run-session ...
 
 let
   copy = pkgs.writeShellApplication {
