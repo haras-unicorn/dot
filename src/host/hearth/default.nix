@@ -95,10 +95,15 @@
       "${self}/src/module/system/locate"
 
       "${self}/src/module/system/pipewire"
+      "${self}/src/module/system/audio"
+
       "${self}/src/module/system/fonts"
       "${self}/src/module/system/wayland"
-      "${self}/src/module/system/audio"
+      "${self}/src/module/system/tuigreet"
+      "${self}/src/module/system/hyprland"
+      "${self}/src/module/system/gtklock"
       "${self}/src/module/system/gvfs"
+
       "${self}/src/module/system/transmission"
 
       "${self}/src/module/system/virtual"

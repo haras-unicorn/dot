@@ -6,8 +6,6 @@
 , ...
 }:
 
-# FIXME: uncouple hyprland/greetd/gtklock/portals?
-
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
 # TODO: these commands on hyprland startup and make config for tuigreet/hyprland command
 # systemctl --user import-environment PATH
@@ -37,12 +35,12 @@ let
 in
 {
   options.de = {
-    startup = mkOption {
+    login = mkOption {
       type = types.str;
       default = [ ];
       example = "tuigreet --cmd Hyprland";
       description = ''
-        Session startup command.
+        Login command.
       '';
     };
   };
@@ -95,15 +93,10 @@ in
 
     programs.dconf.enable = true;
 
-    programs.hyprland.enable = true;
-    programs.hyprland.xwayland.enable = true;
-
-    security.pam.services.gtklock = { };
-
     services.greetd.enable = true;
     services.greetd.settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/Hyprland";
+        command = cfg.login;
       };
     };
   };
