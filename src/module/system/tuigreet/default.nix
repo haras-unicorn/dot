@@ -17,10 +17,6 @@ in
   };
 
   config = {
-    environment.systemPackages = with pkgs; [
-      tuigreet
-    ];
-
-    de.login = "${pkgs.tuigreet}/bin/tuigreet --cmd ${cfg.startup}";
+    de.login = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${cfg.startup}";
   };
 }
