@@ -1,8 +1,4 @@
-{ pkgs, sweet-theme, ... }:
-
-# TODO: mirror wayland variables
-
-# FIXME: uncouple sddm/qtile?
+{ pkgs, ... }:
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
 # systemctl --user import-environment PATH
@@ -10,6 +6,7 @@
 # dbus-run-session ...
 
 let
+
   copy = pkgs.writeShellApplication {
     name = "copy";
     runtimeInputs = [ pkgs.xclip ];
@@ -27,6 +24,7 @@ let
   };
 in
 {
+
   environment.sessionVariables = {
     QT_QPA_PLATFORM = "xcb";
     # NIXOS_OZONE_WL = "1";
@@ -41,8 +39,6 @@ in
 
   environment.systemPackages = with pkgs; [
     libsForQt5.qt5ct
-    libsForQt5.qt5.qtgraphicaleffects # NOTE: for sddm theme
-    libsForQt5.plasma-framework # NOTE: for sddm theme
 
     xclip
     copy
@@ -68,17 +64,4 @@ in
   console.useXkbConfig = true;
 
   programs.dconf.enable = true;
-
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.sddm.autoNumlock = true;
-  services.xserver.displayManager.sddm.theme = "${sweet-theme}/kde/sddm";
-  services.xserver.displayManager.defaultSession = "none+qtile";
-
-  security.pam.services.sddm.enableGnomeKeyring = true;
-
-  services.xserver.windowManager.qtile.enable = true;
-  services.xserver.windowManager.qtile.extraPackages =
-    python3Packages: with python3Packages; [
-      psutil
-    ];
 }

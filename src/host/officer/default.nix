@@ -98,6 +98,8 @@
       "${self}/src/module/system/pipewire"
       "${self}/src/module/system/fonts"
       "${self}/src/module/system/xserver"
+      "${self}/src/module/system/sddm"
+      "${self}/src/module/system/qtile"
 
       "${self}/src/module/system/virtual"
       "${self}/src/module/system/windows"
