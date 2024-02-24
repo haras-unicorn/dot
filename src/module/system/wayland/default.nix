@@ -6,10 +6,6 @@
 , ...
 }:
 
-# FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
-# TODO: these commands on hyprland startup and make config for tuigreet/hyprland command
-# systemctl --user import-environment PATH
-# systemctl --user restart xdg-desktop-portal.service
 
 # FIXME: https://github.com/NVIDIA/open-gpu-kernel-modules/issues/467#issuecomment-1544340511
 

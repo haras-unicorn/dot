@@ -1,6 +1,9 @@
 { pkgs, lib, config, ... }:
 
-# TODO: add dot prefix
+# FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
+# WORKAROUND: these commands on de startup
+# systemctl --user import-environment PATH
+# systemctl --user restart xdg-desktop-portal.service
 
 with lib;
 let
@@ -97,6 +100,9 @@ in
 
       env = XDG_CURRENT_DESKTOP, Hyprland
       env = XDG_SESSION_DESKTOP, Hyprland
+
+      exec-once = systemctl --user import-environment PATH
+      exec-once = systemctl --user restart xdg-desktop-portal.service
 
       ${vars}
 

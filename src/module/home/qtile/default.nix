@@ -1,5 +1,10 @@
 { pkgs, lib, config, ... }:
 
+# FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
+# WORKAROUND: these commands on de startup
+# systemctl --user import-environment PATH
+# systemctl --user restart xdg-desktop-portal.service
+
 # TODO: layout command
 # TODO: float rules (make it a config thing here)
 # TODO: logout button (xfce4-session-logout)?
@@ -114,6 +119,11 @@ in
       widget_defaults["font"] = "${builtins.toString config.dot.font.sans.name}"
       widget_defaults["fontsize"] = ${builtins.toString config.dot.font.size.medium}
       widget_defaults["icon_size"] = ${builtins.toString config.dot.font.size.medium}
+
+      @hook.subscribe.startup_once
+      def startup_once():
+          lazy.spawn("systemctl --user import-environment PATH")
+          lazy.spawn("systemctl --user restart xdg-desktop-portal.service")
 
       ${startup}
 
