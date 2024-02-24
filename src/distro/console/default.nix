@@ -37,6 +37,7 @@ in
     watchexec # NOTE: run something when files change
     wget # NOTE: download things but often needed for other programs
     nmap # NOTE: network discovery
+    dhclient # NOTE: DHCP client
   ];
 
   imports = [
