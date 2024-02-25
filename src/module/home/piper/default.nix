@@ -30,7 +30,7 @@ let
       fi
 
       echo "$TEXT" | \
-        piper --model "$MODTEL" --config "$CONFIG" --output-raw | \
+        piper --model "$MODEL" --config "$CONFIG" --output-raw | \
         aplay -r "$SAMPLERATE" -f S16_LE -t raw 
     '';
   };
