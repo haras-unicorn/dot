@@ -92,6 +92,7 @@ in
         domain=${cfg.domain},${subnet}.0/24
         expand-hosts
         local=/${cfg.domain}/
+        interface=${dev}
         ${concatStringsSep
           "\n"
           (mapAttrsToList
@@ -99,7 +100,6 @@ in
               "address=/${name}.mikoshi/${subnet}.${toString ipLastByte}")
             cfg.clients)}
       '';
-      interfaces = [ dev ];
     };
     sops.secrets."root-ca.ssl.crt".path = "/etc/openvpn/${cfg.host}/root-ca.ssl.crt";
     sops.secrets."root-ca.ssl.crt".owner = "nobody";
