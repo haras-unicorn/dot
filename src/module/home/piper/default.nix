@@ -29,9 +29,8 @@ let
         exit 1
       fi
 
-      # shellcheck disable=SC2260
       echo "$TEXT" | \
-        piper --model "$MODEL" --config "$CONFIG" --output-raw &>/dev/null | \
+        piper --model "$MODEL" --config "$CONFIG" --output-raw --quiet | \
         aplay -r "$SAMPLERATE" -f S16_LE -t raw 
     '';
   };
