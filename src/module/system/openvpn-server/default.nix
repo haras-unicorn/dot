@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, hostName, ... }:
 
 with lib;
 let
@@ -49,10 +49,10 @@ in
       internalInterfaces = [ dev ];
     };
     networking.firewall.trustedInterfaces = [ dev ];
-    networking.firewall.allowedUDPPorts = [ port ];
+    networking.firewall.allowedUDPPorts = [ port 53 ];
     networking.firewall.allowedTCPPorts = [ port ];
     services.openvpn.servers."${cfg.host}".config = ''
-      server ${subnet}.0 ${mask}
+      server ${subnet}.1 ${mask}
       port ${builtins.toString port}
       proto ${protocol}
       dev ${dev}
@@ -76,7 +76,31 @@ in
       verb 4
       status /var/log/openvpn/status.log
       log-append /var/log/openvpn/openvpn.log
+
+      push "dhcp-option DOMAIN ${cfg.domain}"
+      push "dhcp-option DNS ${subnet}.1" 
     '';
+    services.dnsmasq = {
+      enable = true;
+      noResolv = true;
+      extraConfig = ''
+        server=8.8.8.8
+        server=8.8.4.4
+        address=/${hostName}.${cfg.domain}/${subnet}.1
+        address=/dns.${cfg.domain}/${subnet}.1
+        address=/vpn.${cfg.domain}/${subnet}.1
+        domain=${cfg.domain},${subnet}.0/24
+        expand-hosts
+        local=/${cfg.domain}/
+        ${concatStringsSep
+          "\n"
+          (mapAttrsToList
+            (name: ipLastByte:
+              "address=/${name}.mikoshi/${subnet}.${toString ipLastByte}")
+            cfg.clients)}
+      '';
+      interfaces = [ dev ];
+    };
     sops.secrets."root-ca.ssl.crt".path = "/etc/openvpn/${cfg.host}/root-ca.ssl.crt";
     sops.secrets."root-ca.ssl.crt".owner = "nobody";
     sops.secrets."root-ca.ssl.crt".group = "nogroup";
