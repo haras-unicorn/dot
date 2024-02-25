@@ -31,7 +31,7 @@ let
 
       echo "$TEXT" | \
         piper --model "$MODEL" --config "$CONFIG" --output-raw --quiet | \
-        aplay -r "$SAMPLERATE" -f S16_LE -t raw 
+        aplay --rate "$SAMPLERATE" --format S16_LE --file-type raw  --quiet
     '';
   };
 in
