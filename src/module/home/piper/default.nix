@@ -18,7 +18,7 @@ let
       fi
 
       SAMPLERATE="$(cat "$CONFIG" | jq .audio.sample_rate)"
-      if [[ $SAMPLERATE !=~ ^[0-9]+$ ]]; then
+      if [[ ! $SAMPLERATE =~ ^[0-9]+$ ]]; then
         printf "The provided model config does not include a sample rate.\n"
         return
       fi
