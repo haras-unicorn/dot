@@ -23,13 +23,7 @@ let
         exit 1
       fi
 
-      TEXT="$2"
-      if [[ "$TEXT" == "" ]]; then
-        printf "I need text to speak.\n"
-        exit 1
-      fi
-
-      echo "$TEXT" | \
+      cat | \
         piper --model "$MODEL" --config "$CONFIG" --output-raw --quiet | \
         aplay --rate "$SAMPLERATE" --format S16_LE --file-type raw  --quiet
     '';
