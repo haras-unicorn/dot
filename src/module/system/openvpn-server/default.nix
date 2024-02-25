@@ -82,7 +82,6 @@ in
     '';
     services.dnsmasq = {
       enable = true;
-      noResolv = true;
       extraConfig = ''
         server=8.8.8.8
         server=8.8.4.4
