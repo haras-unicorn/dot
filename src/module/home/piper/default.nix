@@ -30,6 +30,7 @@ let
       fi
 
       echo "$TEXT" | \
+        # shellcheck disable=SC2260
         piper --model "$MODEL" --config "$CONFIG" --output-raw &>/dev/null | \
         aplay -r "$SAMPLERATE" -f S16_LE -t raw 
     '';
