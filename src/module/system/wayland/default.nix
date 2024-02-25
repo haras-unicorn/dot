@@ -17,7 +17,7 @@ let
     name = "copy";
     runtimeInputs = [ pkgs.wl-clipboard ];
     text = ''
-      wl-copy "$@"
+      cat | wl-copy "$@"
     '';
   };
 
