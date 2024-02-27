@@ -78,7 +78,7 @@ in
       log-append /var/log/openvpn/openvpn.log
 
       push "dhcp-option DOMAIN ${cfg.domain}"
-      push "dhcp-option DNS ${subnet}.1" 
+      push "dhcp-option DNS ${subnet}.1"
     '';
     services.dnsmasq = {
       enable = true;
