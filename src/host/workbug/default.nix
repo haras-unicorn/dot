@@ -78,7 +78,7 @@
     services.fstrim.enable = true;
   };
 
-  system = { self, ... }: {
+  system = { self, vpnHost, vpnDomain, ... }: {
     imports = [
       "${self}/src/module/system/grub"
       "${self}/src/module/system/plymouth"
@@ -88,6 +88,8 @@
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
       "${self}/src/module/system/vpn"
+      "${self}/src/module/system/openvpn-client"
+      "${self}/src/module/system/smartmontools"
 
       "${self}/src/module/system/sudo"
       "${self}/src/module/system/keyring"
@@ -111,6 +113,10 @@
     networking.firewall.allowedTCPPorts = [
       8384 # syncthing
     ];
+
+    dot.openvpn.client.enable = true;
+    dot.openvpn.client.host = vpnHost;
+    dot.openvpn.client.domain = vpnDomain;
   };
 
   user = { self, ... }: {
