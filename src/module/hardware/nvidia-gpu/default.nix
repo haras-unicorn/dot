@@ -1,8 +1,5 @@
 { pkgs
-  # , system
 , config
-  # , nixified-ai
-  # , gpt4all
 , ...
 }:
 
@@ -40,9 +37,6 @@
     vulkan-tools # NOTE: vulkaninfo
     glxinfo # NOTE: glxinfo and eglinfo
     nvtop
-    # nixified-ai.packages."${system}".textgen-nvidia
-    # nixified-ai.packages."${system}".invokeai-nvidia
-    # gpt4all.packages."${system}".gpt4all-chat
   ];
 
   networking.firewall.allowedTCPPorts = [

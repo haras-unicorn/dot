@@ -70,6 +70,7 @@ in
     netflix # NOTE: video streaming
     gimp # NOTE: image manipulation
     inkscape # NOTE: vector graphics design
+    gpt4all # NOTE: run llms locally
   ];
 
   imports = [

@@ -1,6 +1,4 @@
 { pkgs
-  # , nixified-ai
-  # , gpt4all
 , ...
 }:
 
@@ -32,8 +30,6 @@
     libva-utils # NOTE: vainfo
     vulkan-tools # NOTE: vulkaninfo
     glxinfo # NOTE: glxinfo and eglinfo
-    # nixified-ai.packages.x86_64-linux.invokeai-amd
-    # gpt4all.packages.x86_64-linux.gpt4all-chat
   ];
 
   environment.sessionVariables = {
