@@ -28,7 +28,6 @@ in
     dasel # NOTE: json, yaml, toml, csv, etc manipulation
     jq # NOTE: popular json manipulator
     yq # NOTE: json, yaml, toml, csv, etc manipulation
-    csvkit # NOTE: popular csv manipulator
     pastel # NOTE: color manipulation
     kalker # NOTE: math
     xh # NOTE: requests
