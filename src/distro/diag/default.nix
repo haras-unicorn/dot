@@ -20,5 +20,6 @@
     smartmontools # NOTE: ssd usage stats
     f3 # NOTE: flash memory benchmarkingy
     sysstat # NOTE: system usage info
+    nix-index # NOTE: find which package uses which file
   ];
 }
