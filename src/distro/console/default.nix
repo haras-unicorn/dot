@@ -27,7 +27,7 @@ in
     pandoc # NOTE: document converter
     dasel # NOTE: json, yaml, toml, csv, etc manipulation
     jq # NOTE: popular json manipulator
-    yq # NOTE: json, yaml, toml, csv, etc manipulation
+    yq-go # NOTE: json, yaml, toml, csv, etc manipulation
     pastel # NOTE: color manipulation
     kalker # NOTE: math
     xh # NOTE: requests
