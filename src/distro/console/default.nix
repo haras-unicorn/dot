@@ -38,6 +38,7 @@ in
     watchexec # NOTE: run something when files change
     wget # NOTE: download things but often needed for other programs
     nmap # NOTE: network discovery
+    ollama # NOTE: run llms locally
   ];
 
   imports = [
