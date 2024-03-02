@@ -4,7 +4,7 @@
 # TODO: hook up config like with waybar
 
 let
-  pkg = pkgs.eww-wayland;
+  pkg = pkgs.eww;
   bin = "${pkg}/bin/eww";
 in
 {
