@@ -43,8 +43,8 @@ with lib;
     };
     nvidiaDriver.version = mkOption {
       type = with types; str;
-      description = "https://nixos.wiki/wiki/Nvidia";
-      default = "dc";
+      description = "https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix";
+      default = "dc_535";
       example = "legacy_470";
     };
     nvidiaDriver.open = mkOption {
