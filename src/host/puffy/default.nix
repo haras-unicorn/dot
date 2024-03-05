@@ -1,7 +1,7 @@
 {
   meta.dot = {
     hardware.ram = 8;
-    # hardware.networkInterface = "ens3";
+    hardware.networkInterface = "eth0";
     groups = [ "mlocate" ];
     location.timeZone = "Europe/Zagreb";
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
