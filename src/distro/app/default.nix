@@ -1,7 +1,7 @@
 { self, pkgs, config, ... }:
 
 # FIXME: fix infinite recursion
-# FIXME: weak dependency on desktop?
+# FIXME: rpi-imager https://github.com/hyprwm/Hyprland/issues/4614
 
 # TODO: firmware tui as part of diag
 # TODO: https://github.com/NixOS/nixpkgs/issues/232266

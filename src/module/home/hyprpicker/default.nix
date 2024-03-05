@@ -1,4 +1,7 @@
 { pkgs, ... }:
+
+# FIXME: https://github.com/hyprwm/hyprpicker/issues/51
+
 {
   home.packages = [
     pkgs.hyprpicker
