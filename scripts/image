@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-SCRIPTS="(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
+SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$(dirname "$SCRIPTS")" && pwd)"
 
 HOST="$1"
