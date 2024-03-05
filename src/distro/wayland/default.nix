@@ -10,6 +10,7 @@
     "${self}/src/module/home/playerctl"
 
     "${self}/src/module/home/hyprland"
+    "${self}/src/module/home/hyprpicker"
 
     "${self}/src/module/home/waybar"
     "${self}/src/module/home/wlogout"
