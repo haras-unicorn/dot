@@ -73,7 +73,7 @@
     dot.openvpn.server.clients = {
       "hearth" = "101";
       "workbug" = "102";
-      "officer" = "103";
+      "puffy" = "103";
     };
   };
 
