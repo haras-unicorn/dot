@@ -10,7 +10,13 @@ if [[ ! -d "$ROOT/src/host/$HOST" || ! -f "$ROOT/src/host/$HOST/default.nix" ]];
   exit 1
 fi
 
+ARCH="$2"
+if [[ "$ARCH" = "" ]]; then
+  printf "Please enter a valid arch.\n"
+  exit 1
+fi
+
 nix build \
   --extra-experimental-features nix-command \
   --extra-experimental-features flakes \
-  "$ROOT#nixosConfigurations.$HOST.config.system.build.sdImage"
+  "$ROOT#nixosConfigurations.$HOST-$ARCH.config.system.build.sdImage"
