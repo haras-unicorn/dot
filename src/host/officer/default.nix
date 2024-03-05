@@ -18,6 +18,7 @@
       "video"
       "audio"
       "mlocate"
+      "wireshark"
     ];
 
     gpg = { pkg = "pinentry-qt"; bin = "pinentry-qt"; flavor = "qt"; };

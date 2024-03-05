@@ -17,6 +17,7 @@
       "video"
       "audio"
       "gaming"
+      "wireshark"
     ];
 
     gpg = { pkg = "pinentry-qt"; bin = "pinentry-qt"; flavor = "qt"; };
