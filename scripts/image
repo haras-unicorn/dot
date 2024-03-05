@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+SCRIPTS="(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
+ROOT="$(cd "$(dirname "$SCRIPTS")" && pwd)"
+
+HOST="$1"
+if [[ ! -d "$ROOT/src/host/$HOST" || ! -f "$ROOT/src/host/$HOST/default.nix" ]]; then
+  printf "Please enter a valid host.\n"
+  exit 1
+fi
+
+nix build \
+  --extra-experimental-features nix-command \
+  --extra-experimental-features flakes \
+  "$ROOT#nixosConfigurations.$HOST.config.system.build.sdImage"
