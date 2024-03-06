@@ -14,7 +14,10 @@ let
         runtimeInputs = inputs;
         text = ''
           export SELF="${self}"
-          export SYSTEM="${system}"
+
+          if [[ "$SYSTEM" == "" ]]; then
+            export SYSTEM="${system}"
+          fi
 
           "${path}" "$@"
         '';
@@ -24,13 +27,15 @@ let
 in
 builtins.foldl'
   (apps: system: apps // {
-    "${system}".default = {
-      type = "app";
-      program = wrap "${self}/scripts/install" "install" system [ ];
-    };
-    "${system}".image = {
-      type = "app";
-      program = wrap "${self}/scripts/image" "image" system [ ];
+    "${system}" = {
+      default = {
+        type = "app";
+        program = wrap "${self}/scripts/install" "install" system [ ];
+      };
+      image = {
+        type = "app";
+        program = wrap "${self}/scripts/image" "image" system [ ];
+      };
     };
   })
   ({ })
