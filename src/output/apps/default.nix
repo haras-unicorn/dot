@@ -28,6 +28,10 @@ builtins.foldl'
       type = "app";
       program = wrap "${self}/scripts/install" "install" system [ ];
     };
+    "${system}".image = {
+      type = "app";
+      program = wrap "${self}/scripts/image" "image" system [ ];
+    };
   })
   ({ })
   configs

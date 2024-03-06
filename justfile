@@ -27,5 +27,8 @@ mkvpn *args:
 mksops *args:
   "{{scripts}}"/mksops {{args}}
 
+install *args:
+  "{{scripts}}"/install {{args}}
+
 image *args:
   "{{scripts}}"/image {{args}}

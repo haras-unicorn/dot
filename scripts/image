@@ -1,22 +1,23 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT="$(cd "$(dirname "$SCRIPTS")" && pwd)"
-
-HOST="$1"
-if [[ ! -d "$ROOT/src/host/$HOST" || ! -f "$ROOT/src/host/$HOST/default.nix" ]]; then
-  printf "Please enter a valid host.\n"
+if [[ "$SELF" == "" ]]; then
+  printf "SELF should not be null\n"
   exit 1
 fi
 
-ARCH="$2"
-if [[ "$ARCH" = "" ]]; then
-  printf "Please enter a valid arch.\n"
+if [[ "$SYSTEM" == "" ]]; then
+  printf "SYSTEM should not be null\n"
+  exit 1
+fi
+
+HOST="$1"
+if [[ ! -d "$SELF/src/host/$HOST" || ! -f "$SELF/src/host/$HOST/default.nix" ]]; then
+  printf "Please enter a valid host.\n"
   exit 1
 fi
 
 nix build \
   --extra-experimental-features nix-command \
   --extra-experimental-features flakes \
-  "$ROOT#nixosConfigurations.$HOST-$ARCH.config.system.build.sdImage"
+  "$SELF#nixosConfigurations.$HOST-$SYSTEM.config.system.build.sdImage"
