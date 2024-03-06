@@ -15,13 +15,16 @@ let
         text = ''
           export SELF="${self}"
 
-          set +e
+          set +u
           if [[ "$SYSTEM" == "" ]]; then
             export SYSTEM="${system}"
           fi
-          set -e
+          set -u
 
-          printf "Running app '${name}' at '${path}' from '%s' for '%s'.\n" \
+          printf \
+            "Running app '%s' at '%s' from '%s' for '%s'.\n" \
+            "${name}" \
+            "${path}" \
             "$SELF" \
             "$SYSTEM"
 
