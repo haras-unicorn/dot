@@ -15,9 +15,11 @@ let
         text = ''
           export SELF="${self}"
 
+          set +e
           if [[ "$SYSTEM" == "" ]]; then
             export SYSTEM="${system}"
           fi
+          set -e
 
           "${path}" "$@"
         '';
