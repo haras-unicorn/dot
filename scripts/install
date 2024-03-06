@@ -51,7 +51,9 @@ mkfs.ext4 "$ROOT"
 fatlabel "$BOOT" NIXBOOT
 e2label "$ROOT" NIXROOT
 
-mkdir /mnt
+if [ ! -d "/mnt" ]; then
+  mkdir /mnt
+fi
 set +e
 until mount /dev/disk/by-label/NIXROOT /mnt; do
   printf "Waiting for NIXROOT to come up...\n"
