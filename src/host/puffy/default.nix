@@ -28,8 +28,6 @@
 
   system = { self, userName, hostName, vpnHost, vpnDomain, ... }: {
     imports = [
-      "${self}/src/module/system/hardened"
-
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
 
