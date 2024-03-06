@@ -20,7 +20,7 @@ let
         '';
       };
     in
-    "${app}/name";
+    "${app}/${name}";
 in
 builtins.foldl'
   (apps: system: apps // {
