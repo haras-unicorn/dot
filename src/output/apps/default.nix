@@ -21,6 +21,8 @@ let
           fi
           set -e
 
+          printf "Running app '${name}' at '${path}' from '$SELF' for '$SYSTEM'.\n"
+
           "${path}" "$@"
         '';
       };
