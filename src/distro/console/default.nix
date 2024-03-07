@@ -40,6 +40,7 @@ in
     wget # NOTE: download things but often needed for other programs
     nmap # NOTE: network discovery
     ollama # NOTE: run llms locally
+    mdadm # NOTE: RAID management
   ];
 
   imports = [
