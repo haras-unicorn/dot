@@ -20,6 +20,7 @@
     "${self}/src/module/home/eww"
 
     "${self}/src/module/home/obs-studio"
+    "${self}/src/module/home/peek"
     "${self}/src/module/home/grim-slurp-tesseract"
     "${self}/src/module/home/piper"
     "${self}/src/module/home/miraclecast"
