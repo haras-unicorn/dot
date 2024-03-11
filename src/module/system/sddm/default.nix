@@ -1,4 +1,4 @@
-{ pkgs, lib, config, sweet-theme, }:
+{ pkgs, lib, config, sweet-theme, ... }:
 
 with lib;
 let
