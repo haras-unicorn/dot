@@ -104,6 +104,7 @@
 
       "${self}/src/module/system/virtual"
       "${self}/src/module/system/windows"
+      "${self}/src/module/system/nix-ld"
 
       "${self}/src/module/system/locate"
       "${self}/src/module/system/gvfs"
