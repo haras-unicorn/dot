@@ -9,16 +9,23 @@ with lib;
 let
   cfg = config.de;
 
-  layout = pkgs.writeShellApplication {
-    name = "layout";
-    runtimeInputs = [ pkgs.hyprland ];
+  switch-layout = pkgs.writeShellApplication {
+    name = "switch-layout";
+    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
     text = ''
-      hyprctl devices | \
-        grep -Pzo "Keyboard at.*\n.*\n" | \
-        grep -Pva "Keyboard at" | \
-        grep -Pva "power" | \
-        tr -d '\000' | \
+      hyprctl devices -j | \
+        jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
         xargs -IR hyprctl switchxkblayout R next
+    '';
+  };
+
+  current-layout = pkgs.writeShellApplication {
+    name = "current-layout";
+    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
+    text = ''
+      hyprctl devices -j | \
+        jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
+        head -n 1
     '';
   };
 
@@ -87,7 +94,7 @@ in
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 
-    home.packages = [ layout ];
+    home.packages = [ switch-layout current-layout ];
 
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.xwayland.enable = true;
@@ -99,7 +106,7 @@ in
 
       source = ${config.xdg.configHome}/hypr/colors.conf
 
-      bind = super, space, exec, ${layout}/bin/layout
+      bind = super, space, exec, ${switch-layout}/bin/switch-layout
 
       env = XDG_CURRENT_DESKTOP, Hyprland
       env = XDG_SESSION_DESKTOP, Hyprland
