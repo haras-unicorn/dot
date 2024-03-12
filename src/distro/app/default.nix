@@ -2,6 +2,7 @@
 
 # FIXME: fix infinite recursion
 # FIXME: rpi-imager https://github.com/hyprwm/Hyprland/issues/4614
+# FIXME: cuda packages https://nixos.wiki/wiki/CUDA
 
 # TODO: firmware tui as part of diag
 # TODO: https://github.com/NixOS/nixpkgs/issues/232266
