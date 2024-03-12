@@ -9,16 +9,6 @@ with lib;
 let
   cfg = config.de;
 
-  switch-layout = pkgs.writeShellApplication {
-    name = "switch-layout";
-    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
-    text = ''
-      hyprctl devices -j | \
-        jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
-        xargs -IR hyprctl 'switchxkblayout R next &>/dev/null'
-    '';
-  };
-
   current-layout = pkgs.writeShellApplication {
     name = "current-layout";
     runtimeInputs = [ pkgs.hyprland pkgs.jq ];
@@ -26,6 +16,18 @@ let
       hyprctl devices -j | \
         jq -r '.keyboards[] | select(.name | contains("power") | not) | .active_keymap' | \
         head -n 1
+    '';
+  };
+
+  switch-layout = pkgs.writeShellApplication {
+    name = "switch-layout";
+    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
+    text = ''
+      hyprctl devices -j | \
+        jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
+        xargs -IR hyprctl 'switchxkblayout R next &>/dev/null'
+
+      ${current-layout}/bin/current-layout
     '';
   };
 
