@@ -17,6 +17,7 @@ let
         grep -Pzo "Keyboard at.*\n.*\n" | \
         grep -Pva "Keyboard at" | \
         grep -Pva "power" | \
+        tr -d '\000' | \
         xargs -IR hyprctl switchxkblayout R next
     '';
   };
