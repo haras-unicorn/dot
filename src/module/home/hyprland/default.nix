@@ -25,7 +25,7 @@ let
     text = ''
       hyprctl devices -j | \
         jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
-        xargs -IR hyprctl sh -c 'switchxkblayout R next &>/dev/null'
+        xargs -IR sh -c 'hyprctl switchxkblayout R next &>/dev/null'
 
       ${current-layout}/bin/current-layout
     '';
