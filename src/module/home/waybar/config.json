@@ -2,7 +2,13 @@
   "layer": "top",
   "position": "top",
   "margin-bottom": 0,
-  "modules-left": ["clock", "tray", "hyprland/submap", "hyprland/workspaces"],
+  "modules-left": [
+    "clock",
+    "custom/layout",
+    "tray",
+    "hyprland/submap",
+    "hyprland/workspaces"
+  ],
   "modules-right": [
     "network",
     "pulseaudio",
@@ -55,6 +61,12 @@
     "format": "⏻",
     "tooltip": false,
     "on-click": "exec wlogout -p layer-shell"
+  },
+  "custom/layout": {
+    "format": "{} ⌨",
+    "interval": 10,
+    "exec": "current-layout",
+    "on-click": "switch-layout"
   },
   "pulseaudio": {
     "format": "{volume}% {icon}",
