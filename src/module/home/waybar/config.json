@@ -64,7 +64,7 @@
   },
   "custom/layout": {
     "format": "{} ⌨",
-    "interval": 10,
+    "interval": 1,
     "exec": "current-layout",
     "on-click": "switch-layout"
   },
