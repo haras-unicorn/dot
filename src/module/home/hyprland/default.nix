@@ -24,7 +24,7 @@ let
     runtimeInputs = [ pkgs.hyprland pkgs.jq ];
     text = ''
       hyprctl devices -j | \
-        jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
+        jq -r '.keyboards[] | select(.name | contains("power") | not) | .active_keymap' | \
         head -n 1
     '';
   };
