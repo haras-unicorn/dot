@@ -6,7 +6,7 @@
     nixpkgs-stable.url = "github:NixOS/nixpkgs/release-23.11";
     nur.url = "github:nix-community/NUR";
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -26,10 +26,10 @@
     sweet-theme.url = "github:EliverLara/Sweet/nova";
     sweet-theme.flake = false;
 
-    arkenfox-userjs.url = "github:arkenfox/user.js";
+    arkenfox-userjs.url = "github:arkenfox/user.js/refs/tags/v110.0";
     arkenfox-userjs.flake = false;
 
-    firefox-gx.url = "github:Godiesc/firefox-gx/refs/tags/v.8.8";
+    firefox-gx.url = "github:Godiesc/firefox-gx/refs/tags/v.9.0";
     firefox-gx.flake = false;
   };
 

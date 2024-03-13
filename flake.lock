@@ -3,15 +3,16 @@
     "arkenfox-userjs": {
       "flake": false,
       "locked": {
-        "lastModified": 1707077370,
-        "narHash": "sha256-624Giuo1TfeXQGzcGK9ETW86esNFhFZ5a46DCjT6K5I=",
+        "lastModified": 1678591572,
+        "narHash": "sha256-pPJH69y29aV1fc3lrlPl5pMLB5ntem+DcAR3rx3gvDE=",
         "owner": "arkenfox",
         "repo": "user.js",
-        "rev": "33a84b608c8a1f871c6ce9c4d2b932dc57078fae",
+        "rev": "d13f39d9f9c4dae6f7034fe8b4f29e5893a5abdc",
         "type": "github"
       },
       "original": {
         "owner": "arkenfox",
+        "ref": "refs/tags/v110.0",
         "repo": "user.js",
         "type": "github"
       }
@@ -19,16 +20,16 @@
     "firefox-gx": {
       "flake": false,
       "locked": {
-        "lastModified": 1704666512,
-        "narHash": "sha256-NGmKm5bnoEPg31be67xyWDVdKmlFKoxrDQFsz/TRjU4=",
+        "lastModified": 1708376786,
+        "narHash": "sha256-xECzIpSr923mlUc5Pk/y0d2BrXVECow2NaL4p79i+/U=",
         "owner": "Godiesc",
         "repo": "firefox-gx",
-        "rev": "cdb49c49c01c4ea7472a8082f85e631a17d32b0f",
+        "rev": "fd5d51fc9986e854093ff162237281d2fd067e53",
         "type": "github"
       },
       "original": {
         "owner": "Godiesc",
-        "ref": "refs/tags/v.8.8",
+        "ref": "refs/tags/v.9.0",
         "repo": "firefox-gx",
         "type": "github"
       }
@@ -242,7 +243,6 @@
       },
       "original": {
         "owner": "NixOS",
-        "ref": "master",
         "repo": "nixos-hardware",
         "type": "github"
       }
