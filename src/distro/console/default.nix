@@ -40,7 +40,7 @@ in
     wget # NOTE: download things but often needed for other programs
     nmap # NOTE: network discovery
     (ollama.override { acceleration = "cuda"; }) # NOTE: run llms locally
-    llama-cpp # NOTE: run llms locally
+    (llama-cpp.override { cudaSupport = true; }) # NOTE: run llms locally
     mdadm # NOTE: RAID management
   ];
 
