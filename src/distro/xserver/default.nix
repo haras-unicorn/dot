@@ -30,7 +30,7 @@
     "${self}/src/module/home/alarm"
 
     "${self}/src/module/home/pcmanfm"
-    "${self}/src/module/home/spacedrive"
+    # "${self}/src/module/home/spacedrive"
   ];
 
   # NOTE: needed for tray items to work properly
