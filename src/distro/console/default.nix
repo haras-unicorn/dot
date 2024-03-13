@@ -39,8 +39,8 @@ in
     watchexec # NOTE: run something when files change
     wget # NOTE: download things but often needed for other programs
     nmap # NOTE: network discovery
-    (lib.mkIf config.nixpkgs.cudaSupport (ollama.override { acceleration = "cuda"; })) # NOTE: run llms locally
-    (lib.mkIf (! config.nixpkgs.cudaSupport) ollama) # NOTE: run llms locally
+    (lib.mkIf config.nixpkgs.config.cudaSupport (ollama.override { acceleration = "cuda"; })) # NOTE: run llms locally
+    (lib.mkIf (! config.nixpkgs.config.cudaSupport) ollama) # NOTE: run llms locally
     llama-cpp # NOTE: run llms locally
     mdadm # NOTE: RAID management
   ];
