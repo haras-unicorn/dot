@@ -108,7 +108,7 @@ builtins.foldl'
           users.defaultUserShell = "${pkgs.bashInteractiveFHS}/bin/bash";
           users.mutableUsers = false;
 
-          system.stateVersion = "24.05";
+          system.stateVersion = "23.11";
         })
         nixos-wsl.nixosModules.wsl # NOTE: anabled with wsl.enable
         ({ lib, config, ... }: lib.mkIf config.dot.wsl {
@@ -186,7 +186,7 @@ builtins.foldl'
                   programs.home-manager.enable = true;
                   home.username = "${userName}";
                   home.homeDirectory = "/home/${userName}";
-                  home.stateVersion = "24.05";
+                  home.stateVersion = "23.11";
                   home.packages = [ rebuild rebuild-wip ];
                   sops.defaultSopsFile = "${self}/src/host/${hostName}/${userName}.sops.enc.yaml";
                   sops.age.keyFile = "/home/${userName}/.sops/secrets.age";
