@@ -131,7 +131,7 @@ builtins.foldl'
             home-manager.sharedModules = metaModules ++ [
               nur.hmModules.nur
               ({ pkgs, ... }: {
-                nix.package = pkgs.nixFlakes;
+                # nix.package = pkgs.nixFlakes;
                 nix.extraOptions = "experimental-features = nix-command flakes";
                 nix.gc.automatic = true;
                 # nix.gc.dates = "weekly";
