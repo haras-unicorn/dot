@@ -39,10 +39,8 @@
   };
 
   nixpkgs = {
-    nixpkgs.config = {
-      allowUnfree = true;
-      nvidia.acceptLicense = true;
-    };
+    allowUnfree = true;
+    nvidia.acceptLicense = true;
   };
 
   hardware = { self, config, ... }: {

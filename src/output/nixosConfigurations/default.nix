@@ -120,7 +120,7 @@ builtins.foldl'
         metaConfigModule
         hardwareConfigModule
         systemConfigModule
-        nixpkgsConfigModule
+        { nixpkgs.config = nixpkgsConfigModule; }
         ({ pkgs, config, ... }:
           if hasUserConfigModule then {
             imports = [
@@ -141,7 +141,7 @@ builtins.foldl'
               lulezojne.homeManagerModules.default
               sops-nix.homeManagerModules.sops
               metaConfigModule
-              nixpkgsConfigModule
+              { nixpkgs.config = nixpkgsConfigModule; }
               userConfigModule
             ];
             home-manager.users."${userName}" =
@@ -181,7 +181,7 @@ builtins.foldl'
                 in
                 {
                   programs.home-manager.enable = true;
-                  xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
+                  xdg.configFile."nixpkgs/config.nix".source = nixpkgsConfigModule;
                   home.username = "${userName}";
                   home.homeDirectory = "/home/${userName}";
                   home.stateVersion = "24.05";
