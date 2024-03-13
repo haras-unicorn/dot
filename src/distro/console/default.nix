@@ -39,7 +39,7 @@ in
     watchexec # NOTE: run something when files change
     wget # NOTE: download things but often needed for other programs
     nmap # NOTE: network discovery
-    ollama # NOTE: run llms locally
+    (ollama.override { acceleration = "cuda"; }) # NOTE: run llms locally
     mdadm # NOTE: RAID management
   ];
 
