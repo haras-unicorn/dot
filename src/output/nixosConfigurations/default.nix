@@ -141,7 +141,7 @@ builtins.foldl'
               lulezojne.homeManagerModules.default
               sops-nix.homeManagerModules.sops
               metaConfigModule
-              { nixpkgs.config = nixpkgsConfigModule; }
+              # { nixpkgs.config = nixpkgsConfigModule; }
               userConfigModule
             ];
             home-manager.users."${userName}" =
