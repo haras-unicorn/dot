@@ -2,7 +2,6 @@
 
 # FIXME: fix infinite recursion
 # FIXME: rpi-imager https://github.com/hyprwm/Hyprland/issues/4614
-# FIXME: cuda packages https://nixos.wiki/wiki/CUDA
 
 # TODO: firmware tui as part of diag
 # TODO: https://github.com/NixOS/nixpkgs/issues/232266
@@ -34,23 +33,16 @@ let
 
   mime = browserMime // visualMime;
 
-  jan-unwrapped = pkgs.appimageTools.wrapType2 {
+  jan = pkgs.appimageTools.wrapType2 {
     name = "jan";
     src = pkgs.fetchurl {
       url = "https://github.com/janhq/jan/releases/download/v0.4.7/jan-linux-x86_64-0.4.7.AppImage";
       sha256 = "sha256-Mn7rIBEf46JbNof8h3z66TGdGKnb0FGMJc46JncA0KM=";
     };
-    extraPkgs = pkgs: [ ];
-  };
-
-  jan = pkgs.symlinkJoin {
-    name = "jan";
-    paths = [ jan-unwrapped ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/jan \
-        --set LD_LIBRARY_PATH "${pkgs.cudaPackages.cudatoolkit}/lib:${pkgs.cudaPackages.cuda_cudart}/lib:${pkgs.vulkan-headers}/lib:${pkgs.vulkan-loader}/lib:${pkgs.vulkan-tools}lib"
-    '';
+    extraPkgs = pkgs: with pkgs; [
+      cudaPackages.cudatoolkit
+      cudaPackages.cuda_cudart
+    ];
   };
 in
 {
