@@ -38,7 +38,7 @@
   };
 
   nixpkgs = {
-    config.nixpkgs = {
+    nixpkgs.config = {
       allowUnfree = true;
       nvidia.acceptLicense = true;
       cudaSupport = true;
