@@ -49,7 +49,7 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/jan \
-        --set LD_LIBRARY_PATH "${pkgs.cudaPackages.cudatoolkit}/lib"
+        --set LD_LIBRARY_PATH "${pkgs.cudaPackages.cudatoolkit}/lib:${pkgs.cudaPackages.cuda_cudart}/lib"
     '';
   };
 in
