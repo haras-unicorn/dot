@@ -41,7 +41,7 @@ builtins.foldl'
     configName = "${hostName}-${system}";
     configModules = import "${host}/${config.hostName}";
     metaConfigModule = if builtins.hasAttr "meta" configModules then configModules.meta else { };
-    nixpkgsConfigModule = if builtins.hasAttr "nixpkgs" configModules then configModules.system else { };
+    nixpkgsConfigModule = if builtins.hasAttr "nixpkgs" configModules then configModules.nixpkgs else { };
     hardwareConfigModule = if builtins.hasAttr "hardware" configModules then configModules.hardware else { };
     systemConfigModule = if builtins.hasAttr "system" configModules then configModules.system else { };
     hasUserConfigModule = builtins.hasAttr "user" configModules;
