@@ -142,6 +142,7 @@ builtins.foldl'
               sops-nix.homeManagerModules.sops
               metaConfigModule
               # { nixpkgs.config = nixpkgsConfigModule; }
+              { nixpkgs.config.allowUnfree = true; }
               userConfigModule
             ];
             home-manager.users."${userName}" =
