@@ -41,7 +41,7 @@ builtins.foldl'
     configName = "${hostName}-${system}";
     configModules = import "${host}/${config.hostName}";
     metaConfigModule = if builtins.hasAttr "meta" configModules then configModules.meta else { };
-    nixpkgsConfigModule = if builtins.hasAttr "nixpkgs" configModules then configModules.nixpkgs else { };
+    nixpkgsConfigModule = if builtins.hasAttr "nixpkgs" configModules then configModules.nixpkgs else { allowUnfree = true; };
     hardwareConfigModule = if builtins.hasAttr "hardware" configModules then configModules.hardware else { };
     systemConfigModule = if builtins.hasAttr "system" configModules then configModules.system else { };
     hasUserConfigModule = builtins.hasAttr "user" configModules;
@@ -141,8 +141,7 @@ builtins.foldl'
               lulezojne.homeManagerModules.default
               sops-nix.homeManagerModules.sops
               metaConfigModule
-              # { nixpkgs.config = nixpkgsConfigModule; }
-              { nixpkgs.config.allowUnfree = true; }
+              { nixpkgs.config = nixpkgsConfigModule; }
               userConfigModule
             ];
             home-manager.users."${userName}" =
@@ -182,7 +181,6 @@ builtins.foldl'
                 in
                 {
                   programs.home-manager.enable = true;
-                  xdg.configFile."nixpkgs/config.nix".source = nixpkgsConfigModule;
                   home.username = "${userName}";
                   home.homeDirectory = "/home/${userName}";
                   home.stateVersion = "24.05";
