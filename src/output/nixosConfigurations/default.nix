@@ -41,6 +41,7 @@ builtins.foldl'
     configName = "${hostName}-${system}";
     configModules = import "${host}/${config.hostName}";
     metaConfigModule = if builtins.hasAttr "meta" configModules then configModules.meta else { };
+    nixpkgsConfigModule = if builtins.hasAttr "nixpkgs" configModules then configModules.system else { };
     hardwareConfigModule = if builtins.hasAttr "hardware" configModules then configModules.hardware else { };
     systemConfigModule = if builtins.hasAttr "system" configModules then configModules.system else { };
     hasUserConfigModule = builtins.hasAttr "user" configModules;
@@ -98,8 +99,6 @@ builtins.foldl'
             "root"
           ];
 
-          nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
-
           networking.hostName = "${hostName}";
 
           environment.shells = [ "${pkgs.bashInteractiveFHS}/bin/bash" ];
@@ -121,6 +120,7 @@ builtins.foldl'
         metaConfigModule
         hardwareConfigModule
         systemConfigModule
+        nixpkgsConfigModule
         ({ pkgs, config, ... }:
           if hasUserConfigModule then {
             imports = [
@@ -141,6 +141,7 @@ builtins.foldl'
               lulezojne.homeManagerModules.default
               sops-nix.homeManagerModules.sops
               metaConfigModule
+              nixpkgsConfigModule
               userConfigModule
             ];
             home-manager.users."${userName}" =
@@ -180,7 +181,6 @@ builtins.foldl'
                 in
                 {
                   programs.home-manager.enable = true;
-                  nixpkgs.config = import "${self}/src/nixpkgs-config.nix";
                   xdg.configFile."nixpkgs/config.nix".text = "${self}/src/nixpkgs-config.nix";
                   home.username = "${userName}";
                   home.homeDirectory = "/home/${userName}";

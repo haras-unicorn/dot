@@ -38,6 +38,11 @@
     font.size = { small = 12; medium = 13; large = 16; };
   };
 
+  nixpkgs = {
+    allowUnfree = true;
+    nvidia.acceptLicense = true;
+  };
+
   hardware = { self, config, ... }: {
     imports = [
       "${self}/src/module/hardware/amd-cpu"
