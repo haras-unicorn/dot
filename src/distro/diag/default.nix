@@ -20,5 +20,6 @@
     smartmontools # NOTE: ssd usage stats
     f3 # NOTE: flash memory benchmarkingy
     sysstat # NOTE: system usage info
+    sysbench # NOTE: system benchmarking
   ];
 }
