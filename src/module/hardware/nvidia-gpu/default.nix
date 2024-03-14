@@ -3,8 +3,6 @@
 , ...
 }:
 
-# FIXME: ai getting rebuilt and not using gpu
-
 {
   boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
