@@ -13,10 +13,11 @@ builtins.foldl'
           nil
           nixpkgs-fmt
 
-          # Shell
+          # Scripts
           nodePackages.bash-language-server
           shfmt
           shellcheck
+          yapf
 
           # Misc
           nodePackages.prettier

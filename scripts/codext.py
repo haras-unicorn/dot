@@ -154,4 +154,5 @@ with ThreadPoolExecutor(max_workers=4) as executor:
 
 updated_sources = list(futures)
 
-print(json.dump(updated_sources))
+with open(sys.argv[1], "w", encoding="utf-8") as f;
+    json.dump(updated_sources, f, ensure_ascii=False, indent=2)

@@ -35,5 +35,5 @@ image *args:
   "{{scripts}}"/image.sh {{args}}
 
 codext *args:
-  "{{scripts}}"/codext.py "{{root}}/src/module/home/code/extensions.json" > "{{root}}/src/module/home/code/extensions.json"
+  "{{scripts}}"/codext.py "{{root}}/src/module/home/code/extensions.json"
   prettier --write "{{root}}/src/module/home/code/extensions.json"
