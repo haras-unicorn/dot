@@ -68,7 +68,7 @@
     # csharp
     ms-dotnettools.csharp
     ms-dotnettools.vscode-dotnet-runtime
-    ms-dotnettools.csdevkit
+    # ms-dotnettools.csdevkit
     formulahendry.dotnet-test-explorer
     selcukermaya.se-csproj-extensions
 

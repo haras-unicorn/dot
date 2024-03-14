@@ -25,6 +25,7 @@
   "debug.terminal.clearBeforeReusing": true,
   "dotnet-test-explorer.enableTelemetry": false,
   "dotnetAcquisitionExtension.enableTelemetry": false,
+  "dotnet.server.useOmnisharp": true,
   "editor.acceptSuggestionOnCommitCharacter": false,
   "editor.codeActionsOnSave": {
     "source.addMissingImports": "explicit",
