@@ -54,6 +54,7 @@
     eeyore.yapf
     emilast.logfilehighlighter
     # equinusocio.vsc-material-theme
+    akamud.vscode-theme-onedark
     esbenp.prettier-vscode
     formulahendry.dotnet-test-explorer
     foxundermoon.shell-format
