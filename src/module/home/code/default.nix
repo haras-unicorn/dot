@@ -39,6 +39,6 @@
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;
   programs.vscode.extensions = builtins.map
-    (extension: pkgs.vscode-utils.buildVscodeMarketplaceExtension extension)
+    (extension: pkgs.vscode-utils.buildVscodeMarketplaceExtension { mktplcRef = extension; })
     (import ./extensions.nix).extensions;
 }
