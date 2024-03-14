@@ -5,8 +5,6 @@
 
 # FIXME: vscodium doesn't work (on wayland)?
 
-# TODO: add needed extensions to nixpkgs
-
 {
   shell.aliases = {
     code = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
@@ -98,20 +96,4 @@
     vscodevim.vim
     wayou.vscode-todo-highlight
   ];
-
-  # programs.vscode.extensions = builtins.filter
-  #   (extension: extension != null)
-  #   (builtins.map
-  #     (extension:
-  #       if builtins.hasAttr "platforms" extension.src && (! builtins.hasAttr "${system}" extension.src.platforms)
-  #       then null
-  #       else
-  #         (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-  #           vsix = builtins.fetchurl
-  #             (if builtins.hasAttr "platforms" extension.src
-  #             then ({ inherit (extension.src) name; } // extension.src.platforms.${system})
-  #             else extension.src);
-  #           mktplcRef = { inherit (extension) name publisher version; };
-  #         }))
-  #     (builtins.fromJSON (builtins.readFile ./extensions.json)));
 }
