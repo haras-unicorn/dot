@@ -24,16 +24,8 @@ let
       fi
 
       cat | \
-        piper \
-          --model "$MODEL" \
-          --config "$CONFIG" \
-          --output-raw \
-          --quiet | \
-        aplay \
-          --rate "$SAMPLERATE" \
-          --format S16_LE \
-          --file-type raw \
-          --quiet
+        piper --model "$MODEL" --config "$CONFIG" --output-raw --quiet | \
+        aplay --rate "$SAMPLERATE" --format S16_LE --file-type raw --quiet
     '';
   };
 in
