@@ -52,7 +52,7 @@
     editorconfig.editorconfig
     eeyore.yapf
     emilast.logfilehighlighter
-    equinusocio.vsc-material-theme
+    # equinusocio.vsc-material-theme
     esbenp.prettier-vscode
     formulahendry.dotnet-test-explorer
     foxundermoon.shell-format
