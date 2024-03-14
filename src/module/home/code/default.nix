@@ -1,7 +1,8 @@
 { pkgs, config, ... }:
 
-# FIXME: add needed extensions to nixpkgs
 # FIXME: vscodium doesn't work (on wayland)?
+
+# TODO: add needed extensions to nixpkgs
 
 {
   shell.aliases = {
@@ -11,7 +12,6 @@
   programs.vscode.enable = true;
   programs.vscode.package = pkgs."${config.dot.visual.pkg}";
   programs.vscode.keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
-  # NOTE: vscode uses ligher font weight
   programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {
     "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';
     "debug.console.fontFamily" = ''"${config.dot.font.nerd.name}"'';
@@ -35,62 +35,218 @@
     };
   };
 
-  # programs.vscode.enableExtensionUpdateCheck = false;
-  # programs.vscode.enableUpdateCheck = false;
-  # programs.vscode.mutableExtensionsDir = false;
-  # programs.vscode.extensions = with pkgs.vscode-extensions; [
-  #   # arcanis.vscode-zipfs -> NEED - maybe not if i use bun?
-  #   bbenoist.nix
-  #   # bmalehorn.shell-syntax
-  #   codezombiech.gitignore
-  #   # charliermarsh.ruff
-  #   # ctcuff.font-preview
-  #   # DavidWang.ini-for-vscode
-  #   dbaeumer.vscode-eslint
-  #   editorconfig.editorconfig
-  #   # eeyore.yapf -> NEED for python
-  #   # emilast.LogFileHighlighter
-  #   equinusocio.vsc-material-theme
-  #   esbenp.prettier-vscode
-  #   # formulahendry.dotnet-test-explorer -> i would like to have this a LOT
-  #   foxundermoon.shell-format
-  #   # gamunu.vscode-yarn -> check if need
-  #   github.copilot
-  #   graphql.vscode-graphql
-  #   graphql.vscode-graphql-syntax
-  #   jock.svg
-  #   # meganrogge.template-string-converter -> i would like to have this a LOT
-  #   ms-azuretools.vscode-docker
-  #   ms-dotnettools.csharp
-  #   # ms-dotnettools.vscode-dotnet-runtime -> check if need?
-  #   # ms-playwright.playwright -> i would like to have this a LOT
-  #   ms-pyright.pyright
-  #   ms-python.python
-  #   # ms-vscode-remote.remote-containers
-  #   ms-vscode-remote.remote-ssh
-  #   # ms-vscode-remote.remote-ssh-edit
-  #   ms-vscode.powershell
-  #   # ms-vscode.remote-explorer
-  #   naumovs.color-highlight
-  #   pkief.material-icon-theme
-  #   redhat.vscode-yaml
-  #   rust-lang.rust-analyzer
-  #   # selcukermaya.se-csproj-extensions
-  #   shd101wyy.markdown-preview-enhanced
-  #   # sissel.shopify-liquid -> i would like this a LOT for orchard core
-  #   styled-components.vscode-styled-components
-  #   # stylelint.vscode-stylelint -> NEED
-  #   tamasfe.even-better-toml
-  #   thenuprojectcontributors.vscode-nushell-lang
-  #   timonwong.shellcheck
-  #   tomoki1207.pdf
-  #   unifiedjs.vscode-mdx
-  #   # unifiedjs.vscode-remark
-  #   usernamehw.errorlens
-  #   vadimcn.vscode-lldb
-  #   vscodevim.vim
-  #   # wayou.vscode-todo-highlight
-  #   skellock.just
-  #   ms-vscode.hexeditor
-  # ];
+  programs.vscode.enableExtensionUpdateCheck = false;
+  programs.vscode.enableUpdateCheck = false;
+  programs.vscode.mutableExtensionsDir = false;
+  programs.vscode.extensions =
+    with pkgs.vscode-extensions;
+    with pkgs.vscode-utils; [
+      bbenoist.nix
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "vscode-zipfs";
+          publisher = "arcanis";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "shell-syntax";
+          publisher = "bmalehorn";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      codezombiech.gitignore
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "ruff";
+          publisher = "charliermarsh";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "font-preview";
+          publisher = "ctcuff";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "ini-for-vscode";
+          publisher = "DavidWang";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      dbaeumer.vscode-eslint
+      editorconfig.editorconfig
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "yapf";
+          publisher = "eeyore";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "LogFileHighlighter";
+          publisher = "emilast";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      equinusocio.vsc-material-theme
+      esbenp.prettier-vscode
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "dotnet-test-explorer";
+          publisher = "formulahendry";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      foxundermoon.shell-format
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "vscode-yarn";
+          publisher = "gamunu";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      github.copilot
+      graphql.vscode-graphql
+      graphql.vscode-graphql-syntax
+      jock.svg
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "template-string-converter";
+          publisher = "meganrogge";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      ms-azuretools.vscode-docker
+      ms-dotnettools.csharp
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "vscode-dotnet-runtime";
+          publisher = "ms-dotnettools";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "playwright";
+          publisher = "ms-playwright";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      ms-pyright.pyright
+      ms-python.python
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "remote-containers";
+          publisher = "ms-vscode-remote";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "remote-ssh-edit";
+          publisher = "ms-vscode-remote";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "remote-explorer";
+          publisher = "ms-vscode";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      pkief.material-icon-theme
+      redhat.vscode-yaml
+      rust-lang.rust-analyzer
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "se-csproj-extensions";
+          publisher = "selcukermaya";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "shopify-liquid";
+          publisher = "sissel";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      styled-components.vscode-styled-components
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "vscode-stylelint";
+          publisher = "stylelint";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      tamasfe.even-better-toml
+      thenuprojectcontributors.vscode-nushell-lang
+      timonwong.shellcheck
+      tomoki1207.pdf
+      unifiedjs.vscode-mdx
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "vscode-remark";
+          publisher = "unifiedjs";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      vadimcn.vscode-lldb
+      vscodevim.vim
+      (buildVscodeMarketplaceExtension {
+        mktplcRef = {
+          name = "vscode-todo-highlight";
+          publisher = "wayou";
+          version = "";
+          sha256 = "";
+        };
+        meta = { license = lib.licenses.mit; };
+      })
+      ms-vscode.hexeditor
+    ];
 }
