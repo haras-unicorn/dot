@@ -1,5 +1,31 @@
 [
   {
+    "publisher": "ms-dotnettools",
+    "name": "csdevkit",
+    "version": "1.5.4",
+    "src": {
+      "name": "ms-dotnettools-csdevkit-1.5.4.zip",
+      "platforms": {
+        "aarch64-linux": {
+          "url": "https://ms-dotnettools.gallerycdn.vsassets.io/extensions/ms-dotnettools/csdevkit/1.5.4/1710282377648/Microsoft.VisualStudio.Services.VSIXPackage",
+          "sha256": "sha256-8hFjvMP7MZ9tVg+ZWjR7+AmXskfO60X7k4VMtsFycXo="
+        },
+        "aarch64-darwin": {
+          "url": "https://ms-dotnettools.gallerycdn.vsassets.io/extensions/ms-dotnettools/csdevkit/1.5.4/1710282402437/Microsoft.VisualStudio.Services.VSIXPackage",
+          "sha256": "sha256-0zcHZ8NtEXPUBmI3Y37rI4FE8JSM+6h+ngHiGbD1id8="
+        },
+        "x86_64-darwin": {
+          "url": "https://ms-dotnettools.gallerycdn.vsassets.io/extensions/ms-dotnettools/csdevkit/1.5.4/1710282390382/Microsoft.VisualStudio.Services.VSIXPackage",
+          "sha256": "sha256-B1U5Fazk9d3evRJ5cgncelM8UmL+C5VvJRbhdqM1DRg="
+        },
+        "x86_64-linux": {
+          "url": "https://ms-dotnettools.gallerycdn.vsassets.io/extensions/ms-dotnettools/csdevkit/1.5.4/1710282365147/Microsoft.VisualStudio.Services.VSIXPackage",
+          "sha256": "sha256-ngsFtPKoBTz67NB7rVnjcXRWvmB1FKhBd3K7tcAoBwQ="
+        }
+      }
+    }
+  },
+  {
     "publisher": "arcanis",
     "name": "vscode-zipfs",
     "version": "3.0.0",
