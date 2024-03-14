@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
   llama-cpp = pkgs.llama-cpp.override { vulkanSupport = true; };
@@ -8,6 +8,9 @@ let
     runtimeInputs = [ llama-cpp ];
     text = ''
       MODEL="$1"
+      if [[ "$MODEL" == "" ]]; then
+        MODEL="${config.home.homeDirectory}/llama/default";
+      fi
       if [[ ! -f "$MODEL" ]]; then
         printf "I need a model to write.\n"
         exit 1
