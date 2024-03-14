@@ -4,6 +4,7 @@
 }:
 
 # FIXME: vscodium doesn't work (on wayland)?
+# FIXME: make material theme work without error on startup or change theme
 
 {
   shell.aliases = {
