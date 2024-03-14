@@ -7,7 +7,10 @@ let
     text = ''
       MODEL="$1"
       if [[ "$MODEL" == "" ]]; then
-        MODEL="${config.home.homeDirectory}/piper/default";
+        MODEL="${config.home.homeDirectory}/piper/default"
+        if [[ -L "$MODEL" ]]; then
+          MODEL="$(readlink "$MODEL")"
+        fi
       fi
       if [[ ! -f "$MODEL" ]]; then
         printf "I need a model to speak.\n"

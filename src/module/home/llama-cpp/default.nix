@@ -10,6 +10,9 @@ let
       MODEL="$1"
       if [[ "$MODEL" == "" ]]; then
         MODEL="${config.home.homeDirectory}/llama/default";
+        if [[ -L "$MODEL" ]]; then
+          MODEL="$(readlink "$MODEL")"
+        fi
       fi
       if [[ ! -f "$MODEL" ]]; then
         printf "I need a model to write.\n"
