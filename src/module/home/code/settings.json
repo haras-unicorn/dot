@@ -1,78 +1,144 @@
 {
-  "extensions.autoCheckUpdates": true,
-  "update.mode": "none",
-  "security.workspace.trust.untrustedFiles": "open",
-  "telemetry.telemetryLevel": "off",
-  "dotnetAcquisitionExtension.enableTelemetry": false,
+  "[aspnetcorerazor]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "debug.console.fontFamily": "\"JetBrainsMono Nerd Font\"",
+  "debug.console.fontSize": "13",
+  "debug.focusWindowOnBreak": false,
+  "debug.onTaskErrors": "abort",
+  "debug.saveBeforeStart": "nonUntitledEditorsInActiveGroup",
+  "debug.terminal.clearBeforeReusing": true,
   "dotnet-test-explorer.enableTelemetry": false,
-  "redhat.telemetry.enabled": false,
-  "workbench.settings.editor": "json",
-  "git.enabled": false,
-  "workbench.colorTheme": "Material Theme Palenight High Contrast",
-  "workbench.iconTheme": "material-icon-theme",
-  "editor.fontLigatures": true,
-  "editor.lineNumbers": "off",
-  "zenMode.hideTabs": false,
-  "editor.minimap.enabled": false,
-  "workbench.panel.defaultLocation": "right",
-  "explorer.confirmDragAndDrop": false,
-  "search.useIgnoreFiles": false,
-  "editor.inlineSuggest.enabled": true,
-  "workbench.startupEditor": "readme",
+  "dotnetAcquisitionExtension.enableTelemetry": false,
   "editor.acceptSuggestionOnCommitCharacter": false,
-  "window.zoomLevel": 1,
-  "window.titleBarStyle": "custom",
-  "window.commandCenter": false,
-  "editor.stickyScroll.enabled": true,
-  "editor.linkedEditing": true,
-  "editor.suggest.insertMode": "replace",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit",
     "source.addMissingImports": "explicit",
+    "source.organizeImports": "explicit",
     "source.removeUnusedImports": "explicit"
   },
-  "remote.SSH.configFile": "~/AppData/Roaming/code_ssh_config",
-  "search.followSymlinks": false,
-  "files.hotExit": "onExitAndWindowClose",
-  "files.autoSave": "onFocusChange",
-  "task.saveBeforeRun": "always",
-  "debug.saveBeforeStart": "nonUntitledEditorsInActiveGroup",
-  "testing.saveBeforeTest": true,
-  "files.enableTrash": true,
-  "explorer.confirmDelete": false,
-  "files.insertFinalNewline": true,
-  "files.encoding": "utf8",
-  "files.eol": "\n",
-  "editor.rulers": [{ "column": 80, "color": "#CCCCDD" }],
-  "editor.tabSize": 2,
-  "editor.wordWrap": "off",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontFamily": "\"JetBrainsMono Nerd Font\"",
+  "editor.fontLigatures": true,
+  "editor.fontSize": "14",
   "editor.formatOnSave": true,
-  "vim.leader": "<space>",
-  "vim.foldfix": true,
-  "vim.hlsearch": true,
-  "vim.useSystemClipboard": true,
-  "vim.highlightedyank.enable": true,
-  "vim.sneak": true,
-  "vim.textwidth": 80,
-  "vim.insertModeKeyBindingsNonRecursive": [
+  "editor.inlineSuggest.enabled": true,
+  "editor.lineNumbers": "off",
+  "editor.linkedEditing": true,
+  "editor.minimap.enabled": false,
+  "editor.rulers": [
     {
-      "before": ["j", "k"],
-      "after": ["<Esc>", "workbench.action.files.save"]
+      "color": "#CCCCDD",
+      "column": 80
     }
   ],
+  "editor.stickyScroll.enabled": true,
+  "editor.suggest.insertMode": "replace",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "off",
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "extensions.autoCheckUpdates": false,
+  "files.autoSave": "onFocusChange",
+  "files.enableTrash": true,
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.hotExit": "onExitAndWindowClose",
+  "files.insertFinalNewline": true,
+  "git.enabled": false,
+  "github.copilot.enable": {
+    "*": true,
+    "markdown": true,
+    "plaintext": false,
+    "yaml": true
+  },
+  "javascript.preferences.importModuleSpecifier": "project-relative",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "omnisharp.enableAsyncCompletion": true,
+  "omnisharp.enableImportCompletion": true,
+  "omnisharp.useEditorFormattingSettings": true,
+  "omnisharp.useModernNet": true,
+  "powershell.promptToUpdatePowerShell": false,
+  "redhat.telemetry.enabled": false,
+  "remote.SSH.configFile": "~/AppData/Roaming/code_ssh_config",
+  "search.followSymlinks": false,
+  "search.useIgnoreFiles": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "task.saveBeforeRun": "always",
+  "telemetry.telemetryLevel": "off",
+  "terminal.explorerKind": "external",
+  "terminal.external.linuxExec": "/nix/store/c1d0bgq6whz4khqxncmqikpdsxmr1szw-kitty-0.32.2/bin/kitty",
+  "terminal.integrated.automationProfile.linux": {
+    "path": "/nix/store/d4d4r674rzyf2iznb3f2zclld205ci17-bash-interactive-5.2p26/bin/bash"
+  },
+  "terminal.integrated.defaultProfile.linux": "nushell",
+  "terminal.integrated.fontFamily": "\"JetBrainsMono Nerd Font\"",
+  "terminal.integrated.fontSize": "13",
+  "terminal.integrated.gpuAcceleration": "on",
+  "terminal.integrated.profiles.linux": {
+    "bash": {
+      "icon": "terminal-bash",
+      "path": "/nix/store/d4d4r674rzyf2iznb3f2zclld205ci17-bash-interactive-5.2p26/bin/bash"
+    },
+    "nushell": {
+      "path": "/nix/store/3x7rkfqh6z40p9zgv8whbjd9czmbd2z4-nushell-0.91.0/bin/nu"
+    }
+  },
+  "testing.saveBeforeTest": true,
+  "typescript.preferences.importModuleSpecifier": "project-relative",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "update.mode": "none",
+  "vim.commandLineModeKeyBindingsNonRecursive": [
+    {
+      "before": ["dbg"],
+      "commands": ["workbench.action.debug.start"]
+    }
+  ],
+  "vim.foldfix": true,
+  "vim.highlightedyank.enable": true,
+  "vim.hlsearch": true,
+  "vim.insertModeKeyBindingsNonRecursive": [
+    {
+      "after": ["<Esc>", "workbench.action.files.save"],
+      "before": ["j", "k"]
+    }
+  ],
+  "vim.leader": "<space>",
   "vim.normalModeKeyBindingsNonRecursive": [
     {
       "before": ["<leader>", "f"],
       "commands": ["workbench.action.quickOpen"]
     },
-    { "before": ["<leader>", "k"], "commands": ["editor.action.showHover"] },
+    {
+      "before": ["<leader>", "k"],
+      "commands": ["editor.action.showHover"]
+    },
     {
       "before": ["<leader>", "c", "a"],
       "commands": ["editor.action.quickFix"]
     },
-    { "before": ["[", "d"], "commands": ["editor.action.marker.prev"] },
-    { "before": ["]", "d"], "commands": ["editor.action.marker.next"] },
+    {
+      "before": ["[", "d"],
+      "commands": ["editor.action.marker.prev"]
+    },
+    {
+      "before": ["]", "d"],
+      "commands": ["editor.action.marker.next"]
+    },
     {
       "before": ["<leader>", "s", "d"],
       "commands": ["workbench.action.splitEditorDown"]
@@ -90,39 +156,22 @@
       "commands": ["workbench.action.splitEditorRight"]
     }
   ],
-  "vim.commandLineModeKeyBindingsNonRecursive": [
-    { "before": ["dbg"], "commands": ["workbench.action.debug.start"] }
-  ],
-  "terminal.explorerKind": "external",
-  "terminal.integrated.gpuAcceleration": "on",
+  "vim.sneak": true,
+  "vim.textwidth": 80,
+  "vim.useSystemClipboard": true,
+  "window.commandCenter": false,
+  "window.titleBarStyle": "custom",
+  "window.zoomLevel": 1,
   "workbench.colorCustomizations": {
     "debugConsole.errorForeground": "#ff0000",
     "debugConsole.infoForeground": "#00ff00",
-    "debugConsole.warningForeground": "#ffff00",
-    "debugConsole.sourceForeground": "#ffffff"
+    "debugConsole.sourceForeground": "#ffffff",
+    "debugConsole.warningForeground": "#ffff00"
   },
-  "debug.terminal.clearBeforeReusing": true,
-  "github.copilot.enable": {
-    "*": true,
-    "yaml": true,
-    "plaintext": false,
-    "markdown": true
-  },
-  "[shellscript]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
-  "[dotenv]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
-  "[ignore]": { "editor.defaultFormatter": "foxundermoon.shell-format" },
-  "[csharp]": { "editor.defaultFormatter": "ms-dotnettools.csharp" },
-  "[aspnetcorerazor]": { "editor.defaultFormatter": "ms-dotnettools.csharp" },
-  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescript.preferences.importModuleSpecifier": "project-relative",
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "javascript.preferences.importModuleSpecifier": "project-relative",
-  "powershell.promptToUpdatePowerShell": false,
-  "debug.onTaskErrors": "abort",
-  "omnisharp.useModernNet": true,
-  "omnisharp.useEditorFormattingSettings": true,
-  "omnisharp.enableImportCompletion": true,
-  "omnisharp.enableAsyncCompletion": true,
-  "debug.focusWindowOnBreak": false
+  "workbench.colorTheme": "Material Theme Palenight High Contrast",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.panel.defaultLocation": "right",
+  "workbench.settings.editor": "json",
+  "workbench.startupEditor": "readme",
+  "zenMode.hideTabs": false
 }

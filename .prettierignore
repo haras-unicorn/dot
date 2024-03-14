@@ -3,3 +3,4 @@ secrets
 flake.lock
 *.sops.enc.yaml
 *.sops.yaml
+code/settings.json
