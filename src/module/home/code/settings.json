@@ -18,7 +18,7 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "debug.console.fontFamily": "\"JetBrainsMono Nerd Font\"",
-  "debug.console.fontSize": "13",
+  "debug.console.fontSize": 13,
   "debug.focusWindowOnBreak": false,
   "debug.onTaskErrors": "abort",
   "debug.saveBeforeStart": "nonUntitledEditorsInActiveGroup",
@@ -34,7 +34,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.fontFamily": "\"JetBrainsMono Nerd Font\"",
   "editor.fontLigatures": true,
-  "editor.fontSize": "14",
+  "editor.fontSize": 14,
   "editor.formatOnSave": true,
   "editor.inlineSuggest.enabled": true,
   "editor.lineNumbers": "off",
@@ -52,6 +52,7 @@
   "editor.wordWrap": "off",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
+  "extensions.autoCheckUpdates": false,
   "files.autoSave": "onFocusChange",
   "files.enableTrash": true,
   "files.encoding": "utf8",
@@ -68,7 +69,6 @@
   "javascript.preferences.importModuleSpecifier": "project-relative",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "omnisharp.enableAsyncCompletion": true,
-  "omnisharp.enableImportCompletion": true,
   "omnisharp.useEditorFormattingSettings": true,
   "omnisharp.useModernNet": true,
   "powershell.promptToUpdatePowerShell": false,
@@ -86,7 +86,7 @@
   },
   "terminal.integrated.defaultProfile.linux": "nushell",
   "terminal.integrated.fontFamily": "\"JetBrainsMono Nerd Font\"",
-  "terminal.integrated.fontSize": "13",
+  "terminal.integrated.fontSize": 13,
   "terminal.integrated.gpuAcceleration": "on",
   "terminal.integrated.profiles.linux": {
     "bash": {
@@ -100,6 +100,7 @@
   "testing.saveBeforeTest": true,
   "typescript.preferences.importModuleSpecifier": "project-relative",
   "typescript.updateImportsOnFileMove.enabled": "always",
+  "update.mode": "none",
   "vim.commandLineModeKeyBindingsNonRecursive": [
     {
       "before": ["dbg"],
@@ -171,5 +172,5 @@
   "workbench.panel.defaultLocation": "right",
   "workbench.settings.editor": "json",
   "workbench.startupEditor": "readme",
-  "zenMode.hideTabs": false
+  "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true
 }
