@@ -26,7 +26,9 @@ let
         exit 1
       fi
 
-      cat | $command 2>/dev/null | aplay --rate "$samplerate" --format S16_LE --file-type raw --quiet
+      cat | \
+        $command 2>/dev/null | \
+        aplay --rate "$samplerate" --format S16_LE --file-type raw --quiet 2>/dev/null
     '';
   };
 in
