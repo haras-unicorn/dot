@@ -1,7 +1,5 @@
 { pkgs
 , config
-, system
-, nix-vscode-extensions
 , ...
 }:
 
@@ -43,7 +41,7 @@
   programs.vscode.enableExtensionUpdateCheck = false;
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;
-  programs.vscode.extensions = with nix-vscode-extensions.extensions."${system}".vscode-marketplace-release; [
+  programs.vscode.extensions = with pkgs.vscode-marketplace-release; [
     ms-dotnettools.csdevkit
     arcanis.vscode-zipfs
     bbenoist.nix

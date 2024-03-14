@@ -6,6 +6,7 @@
 , lulezojne
 , nixos-wsl
 , sops-nix
+, nix-vscode-extensions
 , ...
 } @ inputs:
 
@@ -112,7 +113,12 @@ builtins.foldl'
         metaConfigModule
         hardwareConfigModule
         systemConfigModule
-        { nixpkgs.config = nixpkgsConfigModule; }
+        {
+          nixpkgs.config = nixpkgsConfigModule;
+          nixpkgs.overlays = [
+            nix-vscode-extensions.overlays.default
+          ];
+        }
         ({ pkgs, config, ... }:
           if hasUserConfigModule then {
             imports = [
@@ -169,7 +175,12 @@ builtins.foldl'
               sops-nix.homeManagerModules.sops
               metaConfigModule
               userConfigModule
-              { nixpkgs.config = nixpkgsConfigModule; }
+              {
+                nixpkgs.config = nixpkgsConfigModule;
+                nixpkgs.overlays = [
+                  nix-vscode-extensions.overlays.default
+                ];
+              }
             ];
             home-manager.users."${userName}" =
               ({ self, pkgs, ... }:
