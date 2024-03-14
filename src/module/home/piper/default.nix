@@ -11,7 +11,7 @@ let
         command+=" $line"
 
         if [[ "$line" == --config* ]]; then
-          config="$${line#--config }"
+          config="''${line#--config }"
         fi
       done < "${config.home.homeDirectory}/speak/options"
       echo "$command"
