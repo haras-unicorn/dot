@@ -52,7 +52,6 @@
     editorconfig.editorconfig
     eeyore.yapf
     emilast.logfilehighlighter
-    # equinusocio.vsc-material-theme
     akamud.vscode-theme-onedark
     esbenp.prettier-vscode
     formulahendry.dotnet-test-explorer
@@ -94,7 +93,6 @@
     unifiedjs.vscode-remark
     usernamehw.errorlens
     vadimcn.vscode-lldb
-    # vscodevim.vim
     jasew.vscode-helix-emulation
     wayou.vscode-todo-highlight
   ];
