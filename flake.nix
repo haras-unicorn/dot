@@ -31,6 +31,9 @@
 
     firefox-gx.url = "github:Godiesc/firefox-gx/refs/tags/v.9.0";
     firefox-gx.flake = false;
+
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, ... } @ inputs:
