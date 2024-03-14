@@ -4,7 +4,6 @@
 }:
 
 # FIXME: vscodium doesn't work (on wayland)?
-# FIXME: make material theme work without error on startup or change theme
 
 {
   shell.aliases = {
@@ -95,7 +94,8 @@
     unifiedjs.vscode-remark
     usernamehw.errorlens
     vadimcn.vscode-lldb
-    vscodevim.vim
+    # vscodevim.vim
+    jasew.vscode-helix-emulation
     wayou.vscode-todo-highlight
   ];
 }
