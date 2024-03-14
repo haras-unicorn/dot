@@ -14,6 +14,7 @@ let
           config="$${line#--config }"
         fi
       done < "${config.home.homeDirectory}/speak/options"
+      echo "$command"
 
       if [[ ! -f "$config" ]]; then 
         printf "The options file doesn't contain a valid config parameter.\n"
