@@ -40,7 +40,7 @@
   nixpkgs = {
     allowUnfree = true;
     nvidia.acceptLicense = true;
-    cudaSupport = true;
+    # cudaSupport = true;
   };
 
   hardware = { self, config, ... }: {

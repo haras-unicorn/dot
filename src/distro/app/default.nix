@@ -32,18 +32,6 @@ let
   };
 
   mime = browserMime // visualMime;
-
-  # jan = pkgs.appimageTools.wrapType2 {
-  #   name = "jan";
-  #   src = pkgs.fetchurl {
-  #     url = "https://github.com/janhq/jan/releases/download/v0.4.7/jan-linux-x86_64-0.4.7.AppImage";
-  #     sha256 = "sha256-Mn7rIBEf46JbNof8h3z66TGdGKnb0FGMJc46JncA0KM=";
-  #   };
-  #   extraPkgs = pkgs: with pkgs; [
-  #     cudaPackages.cudatoolkit
-  #     cudaPackages.cuda_cudart
-  #   ];
-  # };
 in
 {
   de.keybinds = [
@@ -82,8 +70,7 @@ in
     netflix # NOTE: video streaming
     gimp # NOTE: image manipulation
     inkscape # NOTE: vector graphics design
-    # gpt4all # NOTE: run llms locally
-    # jan # NOTE: run llms locally
+    gpt4all # NOTE: run llms locally
   ];
 
   imports = [
@@ -96,7 +83,7 @@ in
     "${self}/src/module/home/udiskie"
     "${self}/src/module/home/nm-applet"
     "${self}/src/module/home/libreoffice"
-    # "${self}/src/module/home/nomacs"
+    "${self}/src/module/home/nomacs"
     "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
     "${self}/src/module/home/discord"
