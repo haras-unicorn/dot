@@ -6,6 +6,12 @@ Configurations for my NixOS systems.
 
 - [ ] eww widget that toggles info like cpu, memory and stuff
 
+## Fix corrupted store
+
+```sh
+nix-store --verify --check-contents --repair
+```
+
 ## Install on VPS via custom ISO
 
 Add your SSH keys on online console:
