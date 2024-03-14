@@ -64,7 +64,7 @@
     # ms-dotnettools.vscode-dotnet-runtime -> check if need?
     # ms-playwright.playwright -> i would like to have this a LOT
     ms-pyright.pyright
-    ms-python.python
+    # ms-python.python
     ms-vscode-remote.remote-containers
     ms-vscode-remote.remote-ssh
     # ms-vscode-remote.remote-ssh-edit
