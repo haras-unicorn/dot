@@ -26,7 +26,6 @@
   "dotnet-test-explorer.enableTelemetry": false,
   "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
   "dotnetAcquisitionExtension.enableTelemetry": false,
-  "dotnet.preferCSharpExtension": false,
   "editor.acceptSuggestionOnCommitCharacter": false,
   "editor.codeActionsOnSave": {
     "source.addMissingImports": "explicit",

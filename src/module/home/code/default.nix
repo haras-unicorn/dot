@@ -66,9 +66,10 @@
     rust-lang.rust-analyzer
 
     # csharp
-    ms-dotnettools.csharp
-    ms-dotnettools.vscode-dotnet-runtime
-    ms-dotnettools.csdevkit
+    # ms-dotnettools.csharp
+    # ms-dotnettools.csdevkit
+    pkgs.vscode-extensions.ms-dotnettools.csharp
+    pkgs.vscode-extensions.ms-dotnettools.vscode-dotnet-runtime
     formulahendry.dotnet-test-explorer
     selcukermaya.se-csproj-extensions
 
