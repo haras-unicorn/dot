@@ -52,7 +52,6 @@
   "editor.wordWrap": "off",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
-  "extensions.autoCheckUpdates": false,
   "files.autoSave": "onFocusChange",
   "files.enableTrash": true,
   "files.encoding": "utf8",
@@ -101,7 +100,6 @@
   "testing.saveBeforeTest": true,
   "typescript.preferences.importModuleSpecifier": "project-relative",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "update.mode": "none",
   "vim.commandLineModeKeyBindingsNonRecursive": [
     {
       "before": ["dbg"],
