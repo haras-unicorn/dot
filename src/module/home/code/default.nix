@@ -4,6 +4,8 @@
 }:
 
 # FIXME: vscodium doesn't work (on wayland)?
+# FIXME: the new csharp extensions just dont work (https://github.com/microsoft/vscode-dotnettools/issues/225)
+# TODO: helix emulation when it gets better
 
 {
   shell.aliases = {
@@ -44,7 +46,8 @@
     github.copilot
     ms-playwright.playwright
     ms-azuretools.vscode-docker
-    jasew.vscode-helix-emulation
+    # jasew.vscode-helix-emulation
+    vscodevim.vim
 
     # ui
     usernamehw.errorlens
