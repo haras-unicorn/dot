@@ -10,7 +10,7 @@ let
       while IFS= read -r line; do
         command+=" $line"
 
-        if [[ "$line" == --config* ]]; then
+        if [[ "$line" ~= --config* ]]; then
           config="$${line#--config }"
         fi
       done < "${config.home.homeDirectory}/speak/options"
