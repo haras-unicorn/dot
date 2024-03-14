@@ -40,7 +40,8 @@
   programs.vscode.mutableExtensionsDir = false;
   programs.vscode.extensions =
     with pkgs.vscode-extensions;
-    with pkgs.vscode-utils; [
+    with pkgs.vscode-utils;
+    with pkgs.lib; [
       bbenoist.nix
       (buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -49,7 +50,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       (buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -58,7 +59,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       codezombiech.gitignore
       (buildVscodeMarketplaceExtension {
@@ -68,7 +69,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       (buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -77,7 +78,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       (buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -86,7 +87,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       dbaeumer.vscode-eslint
       editorconfig.editorconfig
@@ -97,7 +98,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       (buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -106,7 +107,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       equinusocio.vsc-material-theme
       esbenp.prettier-vscode
@@ -117,7 +118,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       foxundermoon.shell-format
       (buildVscodeMarketplaceExtension {
@@ -127,7 +128,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       github.copilot
       graphql.vscode-graphql
@@ -140,7 +141,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       ms-azuretools.vscode-docker
       ms-dotnettools.csharp
@@ -151,7 +152,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       (buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -160,7 +161,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       ms-pyright.pyright
       ms-python.python
@@ -171,7 +172,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       (buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -180,7 +181,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       (buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -189,7 +190,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       pkief.material-icon-theme
       redhat.vscode-yaml
@@ -201,7 +202,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       (buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -210,7 +211,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       styled-components.vscode-styled-components
       (buildVscodeMarketplaceExtension {
@@ -220,7 +221,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       tamasfe.even-better-toml
       thenuprojectcontributors.vscode-nushell-lang
@@ -234,7 +235,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       vadimcn.vscode-lldb
       vscodevim.vim
@@ -245,7 +246,7 @@
           version = "";
           sha256 = "";
         };
-        meta = { license = lib.licenses.mit; };
+        meta = { license = licenses.mit; };
       })
       ms-vscode.hexeditor
     ];
