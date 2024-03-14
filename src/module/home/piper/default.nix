@@ -12,6 +12,7 @@ let
           MODEL="$(readlink "$MODEL")"
         fi
       fi
+      echo "$MODEL"
       if [[ ! -f "$MODEL" ]]; then
         printf "I need a model to speak.\n"
         exit 1
