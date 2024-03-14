@@ -22,6 +22,7 @@ let
         --model "$MODEL" \
         --prompt "$PROMPT" \
         --n-gpu-layers 100 \
+        --n-predict 200 \
         --log-disable
     '';
   };
