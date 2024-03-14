@@ -47,5 +47,5 @@
           else extension.src);
         mktplcRef = { inherit (extension) name publisher version; };
       })
-    (builtins.fromJSON (builtins.readFile ./sources.json));
+    (builtins.fromJSON (builtins.readFile ./extensions.json));
 }
