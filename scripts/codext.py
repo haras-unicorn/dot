@@ -1,9 +1,9 @@
 #! /usr/bin/env nix-shell
 #! nix-shell -i python3 -p python3Packages.beautifulsoup4 python3Packages.requests
+# shellcheck disable=all
 
 import json
 from concurrent.futures import ThreadPoolExecutor
-import os
 import subprocess
 import sys
 from tempfile import NamedTemporaryFile
