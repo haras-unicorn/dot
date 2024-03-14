@@ -1,4 +1,6 @@
 {
+  "extensions.autoCheckUpdates": true,
+  "update.mode": "none",
   "security.workspace.trust.untrustedFiles": "open",
   "telemetry.telemetryLevel": "off",
   "dotnetAcquisitionExtension.enableTelemetry": false,
@@ -25,9 +27,9 @@
   "editor.linkedEditing": true,
   "editor.suggest.insertMode": "replace",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true,
-    "source.addMissingImports": true,
-    "source.removeUnusedImports": true
+    "source.organizeImports": "explicit",
+    "source.addMissingImports": "explicit",
+    "source.removeUnusedImports": "explicit"
   },
   "remote.SSH.configFile": "~/AppData/Roaming/code_ssh_config",
   "search.followSymlinks": false,
