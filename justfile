@@ -4,6 +4,7 @@ root := absolute_path('')
 format:
   shfmt --write {{root}}
   prettier --write {{root}}
+  nixpkgs-fmt {{root}}
 
 lint:
   shellcheck {{scripts}}/*
@@ -32,3 +33,7 @@ install *args:
 
 image *args:
   "{{scripts}}"/image {{args}}
+
+codext *args:
+  "{{scripts}}"/codext {{args}} > "{{root}}/src/module/home/code/extensions.nix"
+  nixpkgs-fmt "{{root}}/src/module/home/code/extensions.nix"
