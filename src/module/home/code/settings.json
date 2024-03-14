@@ -25,7 +25,6 @@
   "debug.terminal.clearBeforeReusing": true,
   "dotnet-test-explorer.enableTelemetry": false,
   "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
-  "dotnet.preferCSharpExtension": true,
   "dotnetAcquisitionExtension.enableTelemetry": false,
   "editor.acceptSuggestionOnCommitCharacter": false,
   "editor.codeActionsOnSave": {
