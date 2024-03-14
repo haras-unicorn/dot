@@ -1,0 +1,218 @@
+[
+  {
+    name: "vscode-zipfs",
+    publisher: "arcanis"
+    },
+    {
+    name: "nix",
+    publisher: "bbenoist"
+    },
+    {
+    name: "shell-syntax",
+    publisher: "bmalehorn"
+    },
+    {
+    name: "ruff",
+    publisher: "charliermarsh"
+    },
+    {
+    name: "gitignore",
+    publisher: "codezombiech"
+    },
+    {
+    name: "font-preview",
+    publisher: "ctcuff"
+    },
+    {
+    name: "ini-for-vscode",
+    publisher: "davidwang"
+    },
+    {
+    name: "vscode-eslint",
+    publisher: "dbaeumer"
+    },
+    {
+    name: "editorconfig",
+    publisher: "editorconfig"
+    },
+    {
+    name: "yapf",
+    publisher: "eeyore"
+    },
+    {
+    name: "logfilehighlighter",
+    publisher: "emilast"
+    },
+    {
+    name: "vsc-material-theme",
+    publisher: "equinusocio"
+    },
+    {
+    name: "prettier-vscode",
+    publisher: "esbenp"
+    },
+    {
+    name: "dotnet-test-explorer",
+    publisher: "formulahendry"
+    },
+    {
+    name: "shell-format",
+    publisher: "foxundermoon"
+    },
+    {
+    name: "vscode-yarn",
+    publisher: "gamunu"
+    },
+    {
+    name: "copilot",
+    publisher: "github"
+    },
+    {
+    name: "vscode-graphql",
+    publisher: "graphql"
+    },
+    {
+    name: "vscode-graphql-syntax",
+    publisher: "graphql"
+    },
+    {
+    name: "svg",
+    publisher: "jock"
+    },
+    {
+    name: "template-string-converter",
+    publisher: "meganrogge"
+    },
+    {
+    name: "vscode-docker",
+    publisher: "ms-azuretools"
+    },
+    {
+    name: "csharp",
+    publisher: "ms-dotnettools"
+    },
+    {
+    name: "vscode-dotnet-runtime",
+    publisher: "ms-dotnettools"
+    },
+    {
+    name: "playwright",
+    publisher: "ms-playwright"
+    },
+    {
+    name: "pyright",
+    publisher: "ms-pyright"
+    },
+    {
+    name: "debugpy",
+    publisher: "ms-python"
+    },
+    {
+    name: "python",
+    publisher: "ms-python"
+    },
+    {
+    name: "remote-containers",
+    publisher: "ms-vscode-remote"
+    },
+    {
+    name: "remote-ssh",
+    publisher: "ms-vscode-remote"
+    },
+    {
+    name: "remote-ssh-edit",
+    publisher: "ms-vscode-remote"
+    },
+    {
+    name: "hexeditor",
+    publisher: "ms-vscode"
+    },
+    {
+    name: "powershell",
+    publisher: "ms-vscode"
+    },
+    {
+    name: "remote-explorer",
+    publisher: "ms-vscode"
+    },
+    {
+    name: "color-highlight",
+    publisher: "naumovs"
+    },
+    {
+    name: "material-icon-theme",
+    publisher: "pkief"
+    },
+    {
+    name: "vscode-yaml",
+    publisher: "redhat"
+    },
+    {
+    name: "rust-analyzer",
+    publisher: "rust-lang"
+    },
+    {
+    name: "se-csproj-extensions",
+    publisher: "selcukermaya"
+    },
+    {
+    name: "markdown-preview-enhanced",
+    publisher: "shd101wyy"
+    },
+    {
+    name: "shopify-liquid",
+    publisher: "sissel"
+    },
+    {
+    name: "just",
+    publisher: "skellock"
+    },
+    {
+    name: "vscode-styled-components",
+    publisher: "styled-components"
+    },
+    {
+    name: "vscode-stylelint",
+    publisher: "stylelint"
+    },
+    {
+    name: "even-better-toml",
+    publisher: "tamasfe"
+    },
+    {
+    name: "vscode-nushell-lang",
+    publisher: "thenuprojectcontributors"
+    },
+    {
+    name: "shellcheck",
+    publisher: "timonwong"
+    },
+    {
+    name: "pdf",
+    publisher: "tomoki1207"
+    },
+    {
+    name: "vscode-mdx",
+    publisher: "unifiedjs"
+    },
+    {
+    name: "vscode-remark",
+    publisher: "unifiedjs"
+    },
+    {
+    name: "errorlens",
+    publisher: "usernamehw"
+    },
+    {
+    name: "vscode-lldb",
+    publisher: "vadimcn"
+    },
+    {
+    name: "vim",
+    publisher: "vscodevim"
+    },
+    {
+    name: "vscode-todo-highlight",
+    publisher: "wayou"
+    }
+    ]
