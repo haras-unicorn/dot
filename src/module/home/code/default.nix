@@ -3,6 +3,7 @@
 # FIXME: add needed extensions to nixpkgs
 # FIXME: vscodium doesn't work (on wayland)?
 # FIXME: python not building with cudaSupport on
+# FIXME: cannot get remote containers?
 
 {
   shell.aliases = {
@@ -66,7 +67,7 @@
     # ms-playwright.playwright -> i would like to have this a LOT
     ms-pyright.pyright
     ms-python.python
-    ms-vscode-remote.remote-containers
+    # ms-vscode-remote.remote-containers
     ms-vscode-remote.remote-ssh
     # ms-vscode-remote.remote-ssh-edit
     ms-vscode.powershell
