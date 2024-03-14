@@ -15,7 +15,7 @@ let
       command="llama --prompt \"$prompt\" --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
-      done < "${config.home.homeDirectory}/write/options"
+      done < "${config.home.homeDirectory}/write/llama.options"
       echo "$command"
 
       $command 2>/dev/null
