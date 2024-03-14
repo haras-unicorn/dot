@@ -63,7 +63,7 @@
     jock.svg
     meganrogge.template-string-converter
     ms-azuretools.vscode-docker
-    # ms-dotnettools.csharp
+    ms-dotnettools.csharp
     # ms-dotnettools.vscode-dotnet-runtime
     ms-playwright.playwright
     ms-pyright.pyright
