@@ -6,7 +6,7 @@ let
     runtimeInputs = [ pkgs.piper-tts pkgs.jq pkgs.alsa-utils ];
     text = ''
       config=""
-      command="piper --prompt \"$prompt\" --output-raw --quiet"
+      command="piper --output-raw --quiet"
       while IFS= read -r line; do
         command+=" $line"
 
