@@ -17,9 +17,9 @@
     "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';
     "debug.console.fontFamily" = ''"${config.dot.font.nerd.name}"'';
     "terminal.integrated.fontFamily" = ''"${config.dot.font.nerd.name}"'';
-    "editor.fontSize" = "${builtins.toString (config.dot.font.size.medium + 1)}";
-    "debug.console.fontSize" = "${builtins.toString (config.dot.font.size.small + 1)}";
-    "terminal.integrated.fontSize" = "${builtins.toString (config.dot.font.size.small + 1)}";
+    "editor.fontSize" = config.dot.font.size.medium + 1;
+    "debug.console.fontSize" = config.dot.font.size.small + 1;
+    "terminal.integrated.fontSize" = config.dot.font.size.small + 1;
     "terminal.external.linuxExec" = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
     "terminal.integrated.profiles.linux" = {
       "${config.dot.shell.module}" = {
