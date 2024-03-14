@@ -12,7 +12,7 @@ let
         printf "I need a prompt to write.\n"
       fi
 
-      command="llama --prompt \"$prompt\" --no-display-prompt --log-disable"
+      command="llama --prompt '$prompt' --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/write/llama.options"
