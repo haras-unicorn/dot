@@ -40,60 +40,83 @@
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;
   programs.vscode.extensions = with pkgs.vscode-marketplace; [
-    ms-dotnettools.csdevkit
-    arcanis.vscode-zipfs
-    bbenoist.nix
-    bmalehorn.shell-syntax
-    charliermarsh.ruff
-    codezombiech.gitignore
-    ctcuff.font-preview
-    davidwang.ini-for-vscode
-    dbaeumer.vscode-eslint
-    editorconfig.editorconfig
-    eeyore.yapf
-    emilast.logfilehighlighter
-    akamud.vscode-theme-onedark
-    esbenp.prettier-vscode
-    formulahendry.dotnet-test-explorer
-    foxundermoon.shell-format
-    gamunu.vscode-yarn
+    # misc
     github.copilot
-    graphql.vscode-graphql
-    graphql.vscode-graphql-syntax
-    jock.svg
-    meganrogge.template-string-converter
-    ms-azuretools.vscode-docker
-    ms-dotnettools.csharp
-    # ms-dotnettools.vscode-dotnet-runtime
     ms-playwright.playwright
-    ms-pyright.pyright
-    ms-python.debugpy
-    ms-python.python
+    ms-azuretools.vscode-docker
+    jasew.vscode-helix-emulation
+
+    # ui
+    usernamehw.errorlens
+    wayou.vscode-todo-highlight
+    naumovs.color-highlight
+
+    # theme
+    akamud.vscode-theme-onedark
+    pkief.material-icon-theme
+
+    # remote
     ms-vscode-remote.remote-containers
     ms-vscode-remote.remote-ssh
     ms-vscode-remote.remote-ssh-edit
-    ms-vscode.hexeditor
-    ms-vscode.powershell
     ms-vscode.remote-explorer
-    naumovs.color-highlight
-    pkief.material-icon-theme
-    redhat.vscode-yaml
+
+    # rust
+    vadimcn.vscode-lldb
     rust-lang.rust-analyzer
+
+    # csharp
+    ms-dotnettools.csharp
+    ms-dotnettools.vscode-dotnet-runtime
+    ms-dotnettools.csdevkit
+    formulahendry.dotnet-test-explorer
     selcukermaya.se-csproj-extensions
-    shd101wyy.markdown-preview-enhanced
+
+    # web
+    gamunu.vscode-yarn
+    arcanis.vscode-zipfs
+    dbaeumer.vscode-eslint
+    graphql.vscode-graphql
+    graphql.vscode-graphql-syntax
+    meganrogge.template-string-converter
     sissel.shopify-liquid
-    skellock.just
     styled-components.vscode-styled-components
     stylelint.vscode-stylelint
-    tamasfe.even-better-toml
+    esbenp.prettier-vscode
+
+    # python
+    charliermarsh.ruff
+    eeyore.yapf
+    ms-pyright.pyright
+    ms-python.debugpy
+    ms-python.python
+
+    # nix
+    bbenoist.nix
+
+    # shell
+    bmalehorn.shell-syntax
+    foxundermoon.shell-format
+    ms-vscode.powershell
     thenuprojectcontributors.vscode-nushell-lang
     timonwong.shellcheck
-    tomoki1207.pdf
+
+    # markdown
+    shd101wyy.markdown-preview-enhanced
     unifiedjs.vscode-mdx
     unifiedjs.vscode-remark
-    usernamehw.errorlens
-    vadimcn.vscode-lldb
-    jasew.vscode-helix-emulation
-    wayou.vscode-todo-highlight
+
+    # data
+    ctcuff.font-preview
+    davidwang.ini-for-vscode
+    codezombiech.gitignore
+    editorconfig.editorconfig
+    emilast.logfilehighlighter
+    jock.svg
+    ms-vscode.hexeditor
+    redhat.vscode-yaml
+    skellock.just
+    tamasfe.even-better-toml
+    tomoki1207.pdf
   ];
 }
