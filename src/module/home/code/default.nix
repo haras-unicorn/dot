@@ -37,7 +37,7 @@
 
   programs.vscode.enableExtensionUpdateCheck = false;
   programs.vscode.enableUpdateCheck = false;
-  programs.vscode.mutableExtensionsDir = true;
+  programs.vscode.mutableExtensionsDir = false;
   programs.vscode.extensions = builtins.map
     (extension: pkgs.vscode-utils.buildVscodeMarketplaceExtension extension)
     (import ./extensions).extensions;
