@@ -44,57 +44,31 @@
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;
   programs.vscode.extensions = with nix-vscode-extensions.extensions."${system}"; [
-
     ms-dotnettools.csdevkit
-
     arcanis.vscode-zipfs
-
     bbenoist.nix
-
     bmalehorn.shell-syntax
-
     charliermarsh.ruff
-
     codezombiech.gitignore
-
     ctcuff.font-preview
-
     davidwang.ini-for-vscode
-
     dbaeumer.vscode-eslint
-
     editorconfig.editorconfig
-
     eeyore.yapf
-
     emilast.logfilehighlighter
-
     equinusocio.vsc-material-theme
-
     esbenp.prettier-vscode
-
     formulahendry.dotnet-test-explorer
-
     foxundermoon.shell-format
-
     gamunu.vscode-yarn
-
     github.copilot
-
     graphql.vscode-graphql
-
     graphql.vscode-graphql-syntax
-
     jock.svg
-
     meganrogge.template-string-converter
-
     ms-azuretools.vscode-docker
-
     ms-dotnettools.csharp
-
     ms-dotnettools.vscode-dotnet-runtime
-
     ms-playwright.playwright
     ms-pyright.pyright
     ms-python.debugpy
@@ -126,6 +100,12 @@
     vscodevim.vim
     wayou.vscode-todo-highlight
   ];
+
+  # NOTE: for OCD
+  # ## Add/Remove VS Code extensions
+  # 1. in `src/module/home/code/extensions.json` remove or add with just `name` and
+  #    `publisher`
+  # 2. run `just codext`
   # programs.vscode.extensions = builtins.filter
   #   (extension: extension != null)
   #   (builtins.map
