@@ -27,7 +27,7 @@ let
       fi
 
       cat | \
-        $command 2>/dev/null | \
+        sh -c "$command 2>/dev/null" | \
         aplay --rate "$samplerate" --format S16_LE --file-type raw --quiet 2>/dev/null
     '';
   };
