@@ -7,31 +7,18 @@ let
     name = "write";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      MODEL="$1"
-      if [[ "$MODEL" == "" ]]; then
-        MODEL="${config.home.homeDirectory}/llama/default";
-        if [[ -L "$MODEL" ]]; then
-          MODEL="$(readlink "$MODEL")"
-        fi
-      fi
-      if [[ ! -f "$MODEL" ]]; then
-        printf "I need a model to write.\n"
-        exit 1
-      fi
-
-      PROMPT="$2"
-      if [[ "$PROMPT" == "" ]]; then
+      prompt="$1"
+      if [[ "$prompt" == "" ]]; then
         printf "I need a prompt to write.\n"
       fi
 
-      llama \
-        --model "$MODEL" \
-        --prompt "$PROMPT" \
-        --n-gpu-layers 100 \
-        --n-predict 200 \
-        --no-display-prompt \
-        --log-disable \
-        2>/dev/null
+      command="llama --prompt \"$prompt\" --no-display-prompt --log-disable"
+      while IFS= read -r line; do
+        command+=" $line"
+      done < "${config.home.homeDirectory}/write/options"
+      command="$command 2>/dev/null"
+
+      $command 
     '';
   };
 in

@@ -5,34 +5,29 @@ let
     name = "speak";
     runtimeInputs = [ pkgs.piper-tts pkgs.jq pkgs.alsa-utils ];
     text = ''
-      MODEL="$1"
-      if [[ "$MODEL" == "" ]]; then
-        MODEL="${config.home.homeDirectory}/piper/default"
-        if [[ -L "$MODEL" ]]; then
-          MODEL="$(readlink "$MODEL")"
+      config=""
+      command="piper --prompt \"$prompt\" --output-raw --quiet"
+      while IFS= read -r line; do
+        command+=" $line"
+
+        if [[ "$line" == --config* ]]; then
+          config="$${line#--config }"
         fi
-      fi
-      echo "$MODEL"
-      if [[ ! -f "$MODEL" ]]; then
-        printf "I need a model to speak.\n"
+      done < "${config.home.homeDirectory}/speak/options"
+      command="$command 2>/dev/null"
+
+      if [[ ! -f "$config" ]]; then 
+        printf "The options file doesn't contain a valid config parameter.\n"
         exit 1
       fi
 
-      CONFIG="$1.json"
-      if [[ ! -f "$CONFIG" ]]; then
-        printf "The provided model does not have a config.\n"
-        exit 1
-      fi
-
-      SAMPLERATE="$(jq .audio.sample_rate < "$CONFIG")"
-      if [[ ! $SAMPLERATE =~ ^[0-9]+$ ]]; then
+      samplerate="$(jq .audio.sample_rate < "$config")"
+      if [[ ! $samplerate =~ ^[0-9]+$ ]]; then
         printf "The provided model config does not include a sample rate.\n"
         exit 1
       fi
 
-      cat | \
-        piper --model "$MODEL" --config "$CONFIG" --output-raw --quiet | \
-        aplay --rate "$SAMPLERATE" --format S16_LE --file-type raw --quiet
+      cat | $command | aplay --rate "$samplerate" --format S16_LE --file-type raw --quiet
     '';
   };
 in
