@@ -3,18 +3,24 @@
 let
   llama-cpp = pkgs.llama-cpp.override { vulkanSupport = true; };
 
-  say = pkgs.writeShellApplication {
-    name = "say";
+  write = pkgs.writeShellApplication {
+    name = "write";
     runtimeInputs = [ llama-cpp ];
     text = ''
       MODEL="$1"
       if [[ ! -f "$MODEL" ]]; then
-        printf "I need a model to speak.\n"
+        printf "I need a model to write.\n"
         exit 1
+      fi
+
+      PROMPT="$2"
+      if [[ "$PROMPT" == "" ]]; then
+        printf "I need a prompt to write.\n"
       fi
 
       llama \
         --model "$MODEL" \
+        --prompt "$PROMPT" \
         --n-gpu-layers 100 \
         --log-disable
     '';
@@ -23,6 +29,6 @@ in
 {
   home.packages = [
     llama-cpp
-    say
+    write
   ];
 }
