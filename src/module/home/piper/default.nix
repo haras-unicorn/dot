@@ -14,7 +14,6 @@ let
           config="$${line#--config }"
         fi
       done < "${config.home.homeDirectory}/speak/options"
-      command="$command 2>/dev/null"
 
       if [[ ! -f "$config" ]]; then 
         printf "The options file doesn't contain a valid config parameter.\n"
@@ -27,7 +26,7 @@ let
         exit 1
       fi
 
-      cat | $command | aplay --rate "$samplerate" --format S16_LE --file-type raw --quiet
+      cat | $command 2>/dev/null | aplay --rate "$samplerate" --format S16_LE --file-type raw --quiet
     '';
   };
 in

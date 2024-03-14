@@ -16,9 +16,8 @@ let
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/write/options"
-      command="$command 2>/dev/null"
 
-      $command 
+      $command 2>/dev/null
     '';
   };
 in
