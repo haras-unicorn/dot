@@ -24,8 +24,9 @@
   "debug.saveBeforeStart": "nonUntitledEditorsInActiveGroup",
   "debug.terminal.clearBeforeReusing": true,
   "dotnet-test-explorer.enableTelemetry": false,
+  "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+  "dotnet.preferCSharpExtension": true,
   "dotnetAcquisitionExtension.enableTelemetry": false,
-  "dotnet.server.useOmnisharp": true,
   "editor.acceptSuggestionOnCommitCharacter": false,
   "editor.codeActionsOnSave": {
     "source.addMissingImports": "explicit",
@@ -172,6 +173,5 @@
   "workbench.iconTheme": "material-icon-theme",
   "workbench.panel.defaultLocation": "right",
   "workbench.settings.editor": "json",
-  "workbench.startupEditor": "readme",
-  "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true
+  "workbench.startupEditor": "readme"
 }
