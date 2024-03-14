@@ -28,6 +28,7 @@ import json
 from concurrent.futures import ThreadPoolExecutor
 import os
 import subprocess
+import sys
 from tempfile import NamedTemporaryFile
 
 from bs4 import BeautifulSoup

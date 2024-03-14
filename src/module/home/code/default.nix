@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, system, ... }:
 
 # FIXME: vscodium doesn't work (on wayland)?
 
@@ -39,6 +39,13 @@
   programs.vscode.enableUpdateCheck = false;
   programs.vscode.mutableExtensionsDir = false;
   programs.vscode.extensions = builtins.map
-    (extension: pkgs.vscode-utils.buildVscodeMarketplaceExtension { mktplcRef = extension; })
-    (import ./extensions.nix).extensions;
+    (extension:
+      pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+        vsix = builtins.fetchurl
+          (if builtins.hasAttr "platforms" extension.src
+          then ({ inherit (extension.src) name; } // extension.src.platforms.${system})
+          else extension.src);
+        mktplcRef = { inherit (extension) name publisher version; };
+      })
+    (builtins.fromJSON (builtins.readFile ./sources.json));
 }
