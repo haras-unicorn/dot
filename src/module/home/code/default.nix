@@ -40,5 +40,5 @@
   programs.vscode.mutableExtensionsDir = false;
   programs.vscode.extensions = builtins.map
     (extension: pkgs.vscode-utils.buildVscodeMarketplaceExtension extension)
-    (import ./extensions).extensions;
+    (import ./extensions.nix).extensions;
 }
