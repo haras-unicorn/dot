@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
   speak = pkgs.writeShellApplication {
@@ -6,6 +6,9 @@ let
     runtimeInputs = [ pkgs.piper-tts pkgs.jq pkgs.alsa-utils ];
     text = ''
       MODEL="$1"
+      if [[ "$MODEL" == "" ]]; then
+        MODEL="${config.home.homeDirectory}/piper/default";
+      fi
       if [[ ! -f "$MODEL" ]]; then
         printf "I need a model to speak.\n"
         exit 1
