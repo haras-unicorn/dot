@@ -11,29 +11,29 @@ lint:
   prettier --check {{root}}
 
 part *args:
-  "{{scripts}}"/part {{args}}
+  "{{scripts}}"/part.sh {{args}}
 
 mkpass *args:
-  "{{scripts}}"/mkpass {{args}}
+  "{{scripts}}"/mkpass.sh {{args}}
 
 mkage *args:
-  "{{scripts}}"/mkage {{args}}
+  "{{scripts}}"/mkage.sh {{args}}
 
 mkssh *args:
-  "{{scripts}}"/mkssh {{args}}
+  "{{scripts}}"/mkssh.sh {{args}}
 
 mkvpn *args:
-  "{{scripts}}"/mkvpn {{args}}
+  "{{scripts}}"/mkvpn.sh {{args}}
 
 mksops *args:
-  "{{scripts}}"/mksops {{args}}
+  "{{scripts}}"/mksops.sh {{args}}
 
 install *args:
-  "{{scripts}}"/install {{args}}
+  "{{scripts}}"/install.sh {{args}}
 
 image *args:
-  "{{scripts}}"/image {{args}}
+  "{{scripts}}"/image.sh {{args}}
 
 codext *args:
-  "{{scripts}}"/codext {{args}} > "{{root}}/src/module/home/code/extensions.nix"
-  nixpkgs-fmt "{{root}}/src/module/home/code/extensions.nix"
+  "{{scripts}}"/codext.py "{{root}}/src/module/home/code/extensions.nix" > "{{root}}/src/module/home/code/extensions.json"
+  prettier --write "{{root}}/src/module/home/code/extensions.json"
