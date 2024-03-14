@@ -5,9 +5,11 @@ format:
   shfmt --write {{root}}
   prettier --write {{root}}
   nixpkgs-fmt {{root}}
+  yapf --recursive --in-place --parallel "{{root}}"
 
 lint:
   shellcheck {{scripts}}/*
+  ruff check "{{root}}"
   prettier --check {{root}}
 
 part *args:

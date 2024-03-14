@@ -18,6 +18,7 @@ builtins.foldl'
           shfmt
           shellcheck
           yapf
+          ruff
 
           # Misc
           nodePackages.prettier

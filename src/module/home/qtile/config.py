@@ -351,7 +351,7 @@ layout_theme = {
     "border_normal": colors["dimMagenta"],
 }
 
-layouts = [ MonadTall(**layout_theme) ]
+layouts = [MonadTall(**layout_theme)]
 
 screens = [
     Screen(
@@ -577,6 +577,7 @@ for group_name in visible_group_names:
             make_swap_group_content(group_name),
         ),
     ])
+
 
 @hook.subscribe.client_new
 def set_floating(window: Window):

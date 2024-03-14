@@ -1,28 +1,5 @@
 #! /usr/bin/env nix-shell
 #! nix-shell -i python3 -p python3Packages.beautifulsoup4 python3Packages.requests
-# SPDX-License-Identifier: MPL-2.0
-
-"""
-Simple update script for managing Visual Studio Code extensions with Nix.
-
-Given a file named `sources.json`, in the same directory as this script, with
-a list of objects containing keys that correspond to the extension's publisher
-and name:
-
-.. highlight:: json
-.. code-block:: json
-
-    [{
-        "publisher": "bbenoist",
-        "name": "nix"
-    }]
-
-...this script will update that file in-place with version, download URL, and
-hash information.
-
-If the extension has architecture-specific versions available, the download
-URLs for any matching platforms in the global `PLATFORMS` dict.
-"""
 
 import json
 from concurrent.futures import ThreadPoolExecutor
@@ -55,9 +32,9 @@ def get_extension_sha(url):
 
 def calculate_nix_sha(fpath):
     """Calculate the base32 SRI hash for a given package."""
-    sha = subprocess.check_output(
-        ["nix", "hash", "file", "--base32", "--sri", "--type", "sha256", fpath]
-    )
+    sha = subprocess.check_output([
+        "nix", "hash", "file", "--base32", "--sri", "--type", "sha256", fpath
+    ])
     return sha.decode().strip()
 
 
@@ -77,11 +54,8 @@ def get_multiarch_ext_urls(target_version, version_blobs):
         for blob in version_blobs:
             blob_platform = blob.get("targetPlatform")
             blob_version = blob.get("version")
-            if (
-                blob_platform is not None
-                and blob_platform in PLATFORMS
-                and blob_version == target_version
-            ):
+            if (blob_platform is not None and blob_platform in PLATFORMS
+                    and blob_version == target_version):
                 future = executer.submit(get_multiarch_ext_url, blob)
                 futures.append(future)
 
@@ -94,13 +68,9 @@ def get_multiarch_ext_urls(target_version, version_blobs):
 def get_ext_url(version_blob):
     """Get the extension download URL for a VS Code extension."""
     # Presumably there's a more idiomatic way to do this...
-    return next(
-        (
-            file["source"]
-            for file in version_blob["files"]
-            if file["assetType"] == "Microsoft.VisualStudio.Services.VSIXPackage"
-        )
-    )
+    return next((
+        file["source"] for file in version_blob["files"]
+        if file["assetType"] == "Microsoft.VisualStudio.Services.VSIXPackage"))
 
 
 def get_ext_blobs(publisher, ext_name):
@@ -140,7 +110,12 @@ def get_ext_info(source):
         url = get_ext_url(latest)
         src["url"] = url
         src["sha256"] = get_extension_sha(url)
-    return {"publisher": publisher, "name": ext_name, "version": version, "src": src}
+    return {
+        "publisher": publisher,
+        "name": ext_name,
+        "version": version,
+        "src": src
+    }
 
 
 sources = []
@@ -154,5 +129,5 @@ with ThreadPoolExecutor(max_workers=4) as executor:
 
 updated_sources = list(futures)
 
-with open(sys.argv[1], "w", encoding="utf-8") as f;
+with open(sys.argv[1], "w", encoding="utf-8") as f:
     json.dump(updated_sources, f, ensure_ascii=False, indent=2)
