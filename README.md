@@ -12,6 +12,12 @@ Configurations for my NixOS systems.
 nix-store --verify --check-contents --repair
 ```
 
+## Add/Remove VS Code extensions
+
+1. in `src/module/home/code/extensions.json` remove or add with just `name` and
+   `publisher`
+2. run `just codext`
+
 ## Install on VPS via custom ISO
 
 Add your SSH keys on online console:
