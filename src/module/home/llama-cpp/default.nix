@@ -7,7 +7,7 @@ let
     name = "write";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      command="llama --prompt '$@' --no-display-prompt --log-disable"
+      command="llama --prompt '$*' --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/write/llama.options"
