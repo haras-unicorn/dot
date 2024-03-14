@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 # TODO: https://github.com/mzuther/Squeezer
+# FIXME: surge-XT wrong hash
 
 {
   home.packages = with pkgs; [
@@ -14,7 +15,7 @@
 
     distrho
     lsp-plugins
-    surge-XT
+    # surge-XT
     cardinal
     fire
     paulstretch
