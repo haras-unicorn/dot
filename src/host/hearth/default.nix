@@ -6,6 +6,7 @@
     hardware.networkInterface = "enp37s0";
     hardware.cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
     hardware.soundcardPciId = "2b:00.3";
+    # hardware.nvidiaDriver.version = "vulkan_beta";
 
     location.timeZone = "Europe/Zagreb";
     groups = [
