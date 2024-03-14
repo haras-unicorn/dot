@@ -23,7 +23,9 @@ let
         --prompt "$PROMPT" \
         --n-gpu-layers 100 \
         --n-predict 200 \
-        --log-disable
+        --no-display-prompt \
+        --log-disable \
+        2>/dev/null
     '';
   };
 in
