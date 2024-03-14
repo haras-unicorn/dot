@@ -22,7 +22,6 @@
     "${self}/src/module/home/obs-studio"
     "${self}/src/module/home/kooha"
     "${self}/src/module/home/grim-slurp-tesseract"
-    "${self}/src/module/home/piper"
     "${self}/src/module/home/miraclecast"
     "${self}/src/module/home/gstreamer"
 

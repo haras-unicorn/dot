@@ -39,7 +39,6 @@ in
     watchexec # NOTE: run something when files change
     wget # NOTE: download things but often needed for other programs
     nmap # NOTE: network discovery
-    (llama-cpp.override { vulkanSupport = true; }) # NOTE: run llms locally
     mdadm # NOTE: RAID management
   ];
 
@@ -56,6 +55,9 @@ in
 
     "${self}/src/module/home/yazi"
     "${self}/src/module/home/git"
+
+    "${self}/src/module/home/piper"
+    "${self}/src/module/home/llama-cpp"
 
     "${self}/src/module/home/yai"
     "${self}/src/module/home/tealdeer"

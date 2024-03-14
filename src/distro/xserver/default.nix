@@ -18,7 +18,6 @@
     "${self}/src/module/home/obs-studio"
     "${self}/src/module/home/peek"
     "${self}/src/module/home/flameshot"
-    "${self}/src/module/home/piper"
     "${self}/src/module/home/miraclecast"
     "${self}/src/module/home/gstreamer"
 
