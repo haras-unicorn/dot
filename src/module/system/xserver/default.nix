@@ -39,7 +39,7 @@ in
   ];
 
   services.xserver.enable = true;
-  services.xserver.layout = "us";
+  services.xserver.xkb.layout = "us";
   services.xserver.libinput.enable = true;
 
   services.picom.enable = true;
