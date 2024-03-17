@@ -2,9 +2,6 @@
 , ...
 }:
 
-# FIXME: system for ai from flake
-# FIXME: nixified-ai getting rebuilt and not using gpu
-
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
 

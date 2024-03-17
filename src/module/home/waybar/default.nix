@@ -1,7 +1,5 @@
 { pkgs, config, ... }:
 
-# FIXME: layout string gets updated way too late
-
 let
   hardware = config.dot.hardware;
 in
