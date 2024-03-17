@@ -1,5 +1,5 @@
-{ self
-, pkgs
+{ pkgs
+, lib
 , config
 , firefox-gx
 , arkenfox-userjs
@@ -13,11 +13,7 @@
 # NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
 
 {
-  config = pkgs.lib.mkIf (config.dot.browser.module == "firefox") {
-    imports = [
-      "${self}/src/module/home/ffmpeg"
-    ];
-
+  config = lib.mkIf (config.dot.browser.module == "firefox") {
     programs.firefox.enable = true;
     programs.firefox.package = pkgs.firefox-bin;
 

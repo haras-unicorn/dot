@@ -1,5 +1,6 @@
 { pkgs
 , config
+, lib
 , ...
 }:
 
@@ -8,7 +9,7 @@
 # TODO: helix emulation when it gets better
 
 {
-  config = pkgs.lib.mkIf (config.dot.visual.module == "code") {
+  config = lib.mkIf (config.dot.visual.module == "code") {
     shell.aliases = {
       code = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
     };

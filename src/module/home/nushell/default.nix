@@ -54,7 +54,7 @@ in
     };
   };
 
-  config = pkgs.lib.mkIf (config.dot.shell.module == "nushell") {
+  config = lib.mkIf (config.dot.shell.module == "nushell") {
     programs.nushell.enable = true;
 
     programs.nushell.environmentVariables = {
