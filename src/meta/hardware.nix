@@ -44,7 +44,7 @@ with lib;
     nvidiaDriver.version = mkOption {
       type = with types; str;
       description = "https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/os-specific/linux/nvidia-x11/default.nix";
-      default = "latest";
+      default = "production";
       example = "legacy_470";
     };
     nvidiaDriver.open = mkOption {
