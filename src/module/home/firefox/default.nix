@@ -6,17 +6,13 @@
 , ...
 }:
 
-# FIXME: hardware acceleration through hardware meta
-
-# TODO: duckduckgo
-# note that last time it was overwriting it
-
+# TODO: duckduckgo - note that last time it was overwriting it
 # TODO: openai login
 
 # NOTE: https://github.com/arkenfox/user.js/wiki
 # NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
 
-{
+pkgs.lib.mkIf (config.dot.browser.module == "firefox") {
   imports = [
     "${self}/src/module/home/ffmpeg"
   ];

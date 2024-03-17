@@ -7,7 +7,7 @@
 # FIXME: the new csharp extensions just dont work (https://github.com/microsoft/vscode-dotnettools/issues/225)
 # TODO: helix emulation when it gets better
 
-{
+pkgs.lib.mkIf (config.dot.visual.module == "code") {
   shell.aliases = {
     code = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
   };

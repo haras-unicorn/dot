@@ -1,6 +1,5 @@
 { self, pkgs, config, ... }:
 
-# FIXME: fix infinite recursion
 # FIXME: rpi-imager https://github.com/hyprwm/Hyprland/issues/4614
 
 # TODO: firmware tui as part of diag
@@ -50,7 +49,7 @@ in
   de.sessionVariables = {
     VISUAL = "${visual}";
     BROWSER = "${browser}";
-    EDITOR = editor;
+    EDITOR = "${editor}";
   };
 
   xdg.mimeApps.associations.added = mime;
@@ -87,15 +86,12 @@ in
     "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
     "${self}/src/module/home/discord"
-    # "${self}/src/module/home/teams"
 
     "${self}/src/module/home/chromium" # NOTE: for dev
     "${self}/src/module/home/librewolf" # NOTE: for dev
+    # "${self}/src/module/home/teams"
     # "${self}/src/module/home/jetbrains"
 
-    # "${self}/src/module/home/${config.dot.term.module}"
-    # "${self}/src/module/home/${config.dot.visual.module}"
-    # "${self}/src/module/home/${config.dot.browser.module}"
     "${self}/src/module/home/kitty"
     "${self}/src/module/home/code"
     "${self}/src/module/home/firefox"

@@ -28,7 +28,7 @@ in
     };
   };
 
-  config = {
+  config = pkgs.lib.mkIf (config.dot.term.module == "kitty") {
     programs.lulezojne.config.plop = [
       {
         template = ''

@@ -4,9 +4,7 @@
 , ...
 }:
 
-# FIXME: fix infinite recursion
-
-# TODO: https://github.com/mitsuhiko/systemfd
+# TODO: systemfd + watchexec for hot reload with anything
 
 let
   editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
@@ -62,8 +60,6 @@ in
     "${self}/src/module/home/yai"
     "${self}/src/module/home/tealdeer"
 
-    # "${self}/src/module/home/${config.dot.shell.module}"
-    # "${self}/src/module/home/${config.dot.editor.module}"
     "${self}/src/module/home/nushell"
     "${self}/src/module/home/helix"
   ];
