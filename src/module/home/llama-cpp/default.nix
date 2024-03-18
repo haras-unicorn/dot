@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 
+# FIXME: output length - wrap prompt and then cut result
+
 let
   llama-cpp = pkgs.llama-cpp.override { vulkanSupport = true; };
 
