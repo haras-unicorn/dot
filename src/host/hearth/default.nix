@@ -6,7 +6,6 @@
     hardware.networkInterface = "enp37s0";
     hardware.cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
     hardware.soundcardPciId = "2b:00.3";
-    # hardware.nvidiaDriver.version = "latest"; # FIXME: when Last Epoch stops stuttering
 
     location.timeZone = "Europe/Zagreb";
     groups = [
