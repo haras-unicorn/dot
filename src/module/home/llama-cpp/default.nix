@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 
-# FIXME: output length - wrap prompt and then cut result
+# TODO: output length - wrap prompt and then cut result
+# TODO: chat history - make chat command that will take chat name as first argument and u put chats in ~/write/chats as UTF8 text files
 
 let
   llama-cpp = pkgs.llama-cpp.override { vulkanSupport = true; };
