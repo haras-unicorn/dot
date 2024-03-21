@@ -23,7 +23,12 @@ let
     name = "chat";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      system="$1"
+      system="${config.home.homeDirectory}/write/$1.system"
+      if [[ ! -f "$system" ]]; then
+        printf "I need a system prompt.\n"
+        exit 1
+      fi
+
       command="llama-server --system-prompt-file \"$system\" --chat-template llama2 --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
