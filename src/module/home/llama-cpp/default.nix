@@ -19,12 +19,12 @@ let
     '';
   };
 
-  write-server = pkgs.writeShellApplication {
-    name = "write-server";
+  chat = pkgs.writeShellApplication {
+    name = "chat";
     runtimeInputs = [ llama-cpp ];
     text = ''
       system="$1"
-      command="llama-server --system-prompt-file "$system" --chat-template llama2 --no-display-prompt --log-disable"
+      command="llama-server --system-prompt-file \"$system\" --chat-template llama2 --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/write/llama.options"
@@ -37,6 +37,6 @@ in
   home.packages = [
     llama-cpp
     write
-    write-server
+    chat
   ];
 }
