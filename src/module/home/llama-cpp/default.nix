@@ -33,9 +33,8 @@ let
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/write/llama.options"
-      echo "$command"
 
-      sh -c "$command 2>/dev/null"
+      sh -c "$command"
     '';
   };
 in
