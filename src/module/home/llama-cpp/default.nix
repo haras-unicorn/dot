@@ -18,10 +18,24 @@ let
       sh -c "$command 2>/dev/null"
     '';
   };
+
+  write-server = pkgs.writeShellApplication {
+    name = "write";
+    runtimeInputs = [ llama-cpp ];
+    text = ''
+      command="llama-server --prompt \"$*\" --no-display-prompt --log-disable"
+      while IFS= read -r line; do
+        command+=" $line"
+      done < "${config.home.homeDirectory}/write/llama.options"
+
+      sh -c "$command 2>/dev/null"
+    '';
+  };
 in
 {
   home.packages = [
     llama-cpp
     write
+    write-server
   ];
 }
