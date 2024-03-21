@@ -29,7 +29,7 @@ let
         exit 1
       fi
 
-      command="llama-server --system-prompt-file \"$system\" --chat-template llama2 --no-display-prompt --log-disable"
+      command="llama-server --system-prompt-file \"$system\" --chat-template llama2 --log-disable"
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/write/llama.options"
