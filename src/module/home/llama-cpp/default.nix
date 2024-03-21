@@ -20,7 +20,7 @@ let
   };
 
   write-server = pkgs.writeShellApplication {
-    name = "write";
+    name = "write-server";
     runtimeInputs = [ llama-cpp ];
     text = ''
       command="llama-server --prompt \"$*\" --no-display-prompt --log-disable"
