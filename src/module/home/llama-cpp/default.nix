@@ -23,7 +23,8 @@ let
     name = "write-server";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      command="llama-server --prompt \"$*\" --no-display-prompt --log-disable"
+      system="$1"
+      command="llama-server --system-prompt-file "$system" --chat-template llama2 --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/write/llama.options"
