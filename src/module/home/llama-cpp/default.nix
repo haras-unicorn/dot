@@ -23,7 +23,7 @@ let
     name = "chat";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      system="${config.home.homeDirectory}/write/$1.system"
+      system="${config.home.homeDirectory}/write/$1.json"
       if [[ ! -f "$system" ]]; then
         printf "I need a system prompt.\n"
         exit 1
