@@ -5,7 +5,7 @@ let
 
   write = pkgs.writeShellApplication {
     name = "write";
-    runtimeInputs = [ llama-cpp glow ];
+    runtimeInputs = [ llama-cpp pkgs.glow ];
     text = ''
       set +u
       chat_name="$1"
@@ -34,7 +34,7 @@ let
 
   chat = pkgs.writeShellApplication {
     name = "chat";
-    runtimeInputs = [ llama-cpp glow ];
+    runtimeInputs = [ llama-cpp pkgs.glow ];
     text = ''
       set +u
       chat_name="$1"
