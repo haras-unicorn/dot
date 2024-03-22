@@ -23,7 +23,7 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/write.options"
 
-      sh -c "$command 2>/dev/null"
+      sh -c "$command"
     '';
   };
 
@@ -44,7 +44,7 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/chat.options"
 
-      cat | sh -c "$command 2>/dev/null" | tee "$chat_file" 
+      cat | sh -c "$command" | tee "$chat_file" 
     '';
   };
 in
