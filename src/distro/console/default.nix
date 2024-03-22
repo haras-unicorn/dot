@@ -39,6 +39,7 @@ in
     nmap # NOTE: network discovery
     mdadm # NOTE: RAID management
     mermaid-cli # NOTE: generate diagrams from text
+    glow # NOTE: render markdown in terminal
   ];
 
   imports = [
