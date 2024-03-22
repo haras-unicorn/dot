@@ -10,7 +10,14 @@ let
     name = "write";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      chat_file="${config.home.homeDirectory}/llama/$1.chat"
+      set +e
+      chat_name="$1"
+      if [[ "$chat_name" == "" ]]; then
+        chat_name="default"
+      fi
+      set -e
+
+      chat_file="${config.home.homeDirectory}/llama/$chat_name.chat"
       if [[ ! -f "$chat_file" ]]; then
         touch "$chat_file"
       fi
@@ -32,7 +39,14 @@ let
     name = "chat";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      chat_file="${config.home.homeDirectory}/llama/$1.chat"
+      set +e
+      chat_name="$1"
+      if [[ "$chat_name" == "" ]]; then
+        chat_name="default"
+      fi
+      set -e
+
+      chat_file="${config.home.homeDirectory}/llama/$chat_name.chat"
       if [[ ! -f "$chat_file" ]]; then
         touch "$chat_file"
       fi
