@@ -10,12 +10,12 @@ let
     name = "write";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      shift
       chat_file="${config.home.homeDirectory}/llama/$1.chat"
       if [[ ! -f "$chat_file" ]]; then
         touch "$chat_file"
       fi
       chat="$(cat "$chat_file")"
+      shift
 
       command="llama --verbose-prompt --prompt \"$chat\n$*\""
       command="$command --color --no-display-prompt --log-disable"
@@ -31,12 +31,12 @@ let
     name = "chat";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      shift
       chat_file="${config.home.homeDirectory}/llama/$1.chat"
       if [[ ! -f "$chat_file" ]]; then
         touch "$chat_file"
       fi
       chat="$(cat "$chat_file")"
+      shift
 
       command="llama --interactive --verbose-prompt --prompt \"$chat\""
       command="$command --color --no-display-prompt --log-disable"
