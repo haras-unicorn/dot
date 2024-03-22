@@ -27,7 +27,7 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/write.options"
 
-      echo -e "$chat" | glow -
+      printf "%s" "$chat" | glow -
       sh -c "$command 2>/dev/null" | \
         tee --append "$chat_file" | \
         glow -
@@ -58,7 +58,7 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/chat.options"
 
-      echo -e "$chat" | glow -
+      printf "%s" "$chat" | glow -
       cat | \
         tee --append "$chat_file" | \
         sh -c "$command 2>/dev/null" | \
