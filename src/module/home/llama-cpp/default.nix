@@ -69,8 +69,8 @@ let
     name = "journal";
     runtimeInputs = [ llama-cpp pkgs.mods ];
     text = ''
-      command="llama-server"
-      command="$command --color --no-display-prompt --log-disable"
+      command="llama-server --chat-template llama2"
+      command="$command --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/journal.options"
