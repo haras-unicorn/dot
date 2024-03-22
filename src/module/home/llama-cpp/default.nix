@@ -44,7 +44,7 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/chat.options"
 
-      cat | sh -c "$command 2>/dev/null" | tee "$chat_file" 
+      cat | tee "$chat_file" | sh -c "$command 2>/dev/null" | tee "$chat_file" 
     '';
   };
 in
