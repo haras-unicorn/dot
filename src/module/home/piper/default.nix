@@ -13,7 +13,7 @@ let
         if [[ "$line" == --config* ]]; then
           config="''${line#--config }"
         fi
-      done < "${config.home.homeDirectory}/speak/piper.options"
+      done < "${config.home.homeDirectory}/piper/speak.options"
 
       if [[ ! -f "$config" ]]; then 
         printf "The options file doesn't contain a valid config parameter.\n"

@@ -10,10 +10,18 @@ let
     name = "write";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      command="llama --prompt \"$*\" --no-display-prompt --log-disable"
+      shift
+      chat_file="${config.home.homeDirectory}/llama/$1.chat"
+      if [[ ! -f "$chat_file" ]]; then
+        touch "$chat_file"
+      fi
+      chat="$(cat "$chat_file")"
+
+      command="llama --verbose-prompt --prompt \"$chat\n$*\""
+      command="$command --color --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
-      done < "${config.home.homeDirectory}/write/llama.options"
+      done < "${config.home.homeDirectory}/llama/write.options"
 
       sh -c "$command 2>/dev/null"
     '';
@@ -23,18 +31,20 @@ let
     name = "chat";
     runtimeInputs = [ llama-cpp ];
     text = ''
-      system="${config.home.homeDirectory}/write/$1.json"
-      if [[ ! -f "$system" ]]; then
-        printf "I need a system prompt.\n"
-        exit 1
+      shift
+      chat_file="${config.home.homeDirectory}/llama/$1.chat"
+      if [[ ! -f "$chat_file" ]]; then
+        touch "$chat_file"
       fi
+      chat="$(cat "$chat_file")"
 
-      command="llama-server --system-prompt-file \"$system\" --chat-template llama2 --log-disable"
+      command="llama --interactive --verbose-prompt --prompt \"$chat\""
+      command="$command --color --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
-      done < "${config.home.homeDirectory}/write/llama.options"
+      done < "${config.home.homeDirectory}/llama/chat.options"
 
-      sh -c "$command"
+      cat | sh -c "$command 2>/dev/null" | tee "$chat_file" 
     '';
   };
 in
