@@ -38,6 +38,7 @@ in
     wget # NOTE: download things but often needed for other programs
     nmap # NOTE: network discovery
     mdadm # NOTE: RAID management
+    mermaid-cli # NOTE: generate diagrams from text
   ];
 
   imports = [
