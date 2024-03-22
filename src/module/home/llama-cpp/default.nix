@@ -23,7 +23,7 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/write.options"
 
-      cat "$chat"
+      echo -e "$chat"
       sh -c "$command 2>/dev/null" | tee --append "$chat_file"
     '';
   };
@@ -45,7 +45,7 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/chat.options"
 
-      cat "$chat"
+      echo -e "$chat"
       cat | tee --append "$chat_file" | sh -c "$command 2>/dev/null" | tee --append "$chat_file" 
     '';
   };
