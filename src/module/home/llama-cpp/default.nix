@@ -64,11 +64,27 @@ let
         tee --append "$chat_file"
     '';
   };
+
+  journal = pkgs.writeShellApplication {
+    name = "journal";
+    runtimeInputs = [ llama-cpp pkgs.mods ];
+    text = ''
+      command="llama-server"
+      command="$command --color --no-display-prompt --log-disable"
+      while IFS= read -r line; do
+        command+=" $line"
+      done < "${config.home.homeDirectory}/llama/journal.options"
+
+      sh -c "$command &>/dev/null" &
+      mods
+    '';
+  };
 in
 {
   home.packages = [
     llama-cpp
     write
     chat
+    journal
   ];
 }
