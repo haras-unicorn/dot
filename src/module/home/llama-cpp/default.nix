@@ -17,13 +17,13 @@ let
       chat="$(cat "$chat_file")"
       shift
 
-      command="llama --verbose-prompt --prompt \"$chat\n$*\""
+      command="llama --prompt \"$chat\n$*\""
       command="$command --color --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/write.options"
 
-      sh -c "$command"
+      sh -c "$command 2>/dev/null"
     '';
   };
 
@@ -38,13 +38,13 @@ let
       chat="$(cat "$chat_file")"
       shift
 
-      command="llama --interactive --verbose-prompt --prompt \"$chat\""
+      command="llama --interactive-first --prompt \"$chat\""
       command="$command --color --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/chat.options"
 
-      cat | sh -c "$command" | tee "$chat_file" 
+      cat | sh -c "$command 2>/dev/null" | tee "$chat_file" 
     '';
   };
 in
