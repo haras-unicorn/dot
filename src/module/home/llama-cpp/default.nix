@@ -15,7 +15,7 @@ let
       shift
       set -u
 
-      chat_file="${config.home.homeDirectory}/llama/$chat_name.chat"
+      chat_file="${config.home.homeDirectory}/llama/$chat_name.md"
       if [[ ! -f "$chat_file" ]]; then
         touch "$chat_file"
       fi
@@ -46,7 +46,7 @@ let
       shift
       set -u
 
-      chat_file="${config.home.homeDirectory}/llama/$chat_name.chat"
+      chat_file="${config.home.homeDirectory}/llama/$chat_name.md"
       if [[ ! -f "$chat_file" ]]; then
         touch "$chat_file"
       fi
