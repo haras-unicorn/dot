@@ -27,16 +27,16 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/write.options"
 
-      printf "%s" "$chat" | glow -
+      printf "%s" "$chat" | glow
       sh -c "$command 2>/dev/null" | \
         tee --append "$chat_file" | \
-        glow -
+        glow
     '';
   };
 
   chat = pkgs.writeShellApplication {
     name = "chat";
-    runtimeInputs = [ llama-cpp pkgs.glow ];
+    runtimeInputs = [ llama-cpp ];
     text = ''
       set +u
       chat_name="$1"
@@ -58,12 +58,10 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/chat.options"
 
-      printf "%s" "$chat" | glow -
-      cat | \
-        tee --append "$chat_file" | \
+      printf "%s" "$chat"
+      cat | tee --append "$chat_file" | \
         sh -c "$command 2>/dev/null" | \
-        tee --append "$chat_file" | \
-        glow -
+        tee --append "$chat_file"
     '';
   };
 in
