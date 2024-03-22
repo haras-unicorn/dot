@@ -76,7 +76,7 @@ let
       done < "${config.home.homeDirectory}/llama/journal.options"
 
       sh -c "$command &>/dev/null" &
-      mods --api localai
+      mods --ask-model
     '';
   };
 in
