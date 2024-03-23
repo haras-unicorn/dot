@@ -22,5 +22,6 @@ in
   home.packages = [
     discord
     pkgs.dorion
+    pkgs.webcord
   ];
 }
