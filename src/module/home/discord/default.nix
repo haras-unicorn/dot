@@ -21,6 +21,6 @@ in
 
   home.packages = [
     discord
-    pkgs.dissent
+    pkgs.dorion
   ];
 }
