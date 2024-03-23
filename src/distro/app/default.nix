@@ -65,7 +65,6 @@ in
     angryipscanner # NOTE: network scanner
     via # NOTE: keyboard configurator
     polychromatic # NOTE: razer device configurator
-    spotify # NOTE: music streaming
     netflix # NOTE: video streaming
     gimp # NOTE: image manipulation
     inkscape # NOTE: vector graphics design
@@ -86,6 +85,7 @@ in
     "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
     "${self}/src/module/home/discord"
+    "${self}/src/module/home/spotify"
 
     "${self}/src/module/home/chromium" # NOTE: for dev
     "${self}/src/module/home/librewolf" # NOTE: for dev
