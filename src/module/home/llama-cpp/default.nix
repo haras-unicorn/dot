@@ -22,7 +22,7 @@ let
       chat="$(cat "$chat_file")"
 
       command="llama --prompt \"$chat\n$*\""
-      command="$command --color --no-display-prompt --log-disable"
+      command="$command --color --log-disable"
       while IFS= read -r line; do
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/write.options"
