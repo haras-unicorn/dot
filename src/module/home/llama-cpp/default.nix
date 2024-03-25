@@ -5,7 +5,7 @@ let
 
   write = pkgs.writeShellApplication {
     name = "write";
-    runtimeInputs = [ llama-cpp pkgs.glow ];
+    runtimeInputs = [ llama-cpp ];
     text = ''
       set +u
       chat_name="$1"
@@ -27,10 +27,9 @@ let
         command+=" $line"
       done < "${config.home.homeDirectory}/llama/write.options"
 
-      printf "%s" "$chat" | glow
+      printf "%s" "$chat"
       sh -c "$command 2>/dev/null" | \
-        tee --append "$chat_file" | \
-        glow
+        tee --append "$chat_file"
     '';
   };
 
