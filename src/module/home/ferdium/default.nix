@@ -3,6 +3,7 @@
 # FIXME: webrtc so i dont need desktop apps
 
 # NOTE: outlook - Self Hosted at https://outlook.office.com/mail/
+# NOTE: WebRTC handling - set share all IPs so discord WebRTC works
 # TODO: like with chromium?
 # TODO: hardware related stuff elsewhere
 
