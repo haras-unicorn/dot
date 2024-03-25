@@ -12,7 +12,7 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/station \
-        --append-flags --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer \
+        --append-flags --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer,WaylandWindowDecorations \
         --append-flags --ozone-platform-hint=auto \
         --append-flags --no-sandbox
     '';
