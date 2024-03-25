@@ -14,6 +14,7 @@ let
     postBuild = ''
       wrapProgram $out/bin/ferdium \
         --append-flags --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer,WaylandWindowDecorations \
+        --append-flags --ozone-platform=wayland \
         --append-flags --ozone-platform-hint=auto
     '';
   };
