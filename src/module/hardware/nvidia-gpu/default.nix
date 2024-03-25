@@ -5,6 +5,7 @@
 
 {
   boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+  boot.kernelParams = [ "nvidia_drm.fbdev=1" ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
