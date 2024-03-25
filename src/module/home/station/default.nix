@@ -13,7 +13,8 @@ let
     postBuild = ''
       wrapProgram $out/bin/station \
         --append-flags --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer \
-        --append-flags --ozone-platform-hint=auto
+        --append-flags --ozone-platform-hint=auto \
+        --append-flags --no-sandbox
     '';
   };
 in
