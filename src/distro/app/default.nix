@@ -75,6 +75,7 @@ in
     "${self}/src/module/home/syncthing"
     "${self}/src/module/home/keepassxc"
     "${self}/src/module/home/ferdium"
+    "${self}/src/module/home/station"
 
     "${self}/src/module/home/ffmpeg"
     "${self}/src/module/home/vlc"
