@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# FIXME: webrtc so i dont need desktop apps
+# FIXME: screen sharing
 
 # NOTE: outlook - Self Hosted at https://outlook.office.com/mail/
 # NOTE: WebRTC handling - set share all IPs so discord WebRTC works

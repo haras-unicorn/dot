@@ -84,7 +84,6 @@ in
     "${self}/src/module/home/nomacs"
     "${self}/src/module/home/okular"
     "${self}/src/module/home/xarchiver"
-    "${self}/src/module/home/discord"
     "${self}/src/module/home/spotify"
 
     "${self}/src/module/home/chromium" # NOTE: for dev
