@@ -14,8 +14,8 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/ferdium \
-        --append-flags --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer,WaylandWindowDecorations \
-        --append-flags --ozone-platform=wayland \
+        --append-flags --enable-features=WebRTCPipeWireCapturer \
+        --append-flags --enable-features=UseOzonePlatform \
         --append-flags --ozone-platform-hint=auto
     '';
   };
