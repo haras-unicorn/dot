@@ -19,17 +19,23 @@
     # NOTE: the normal nixos rpi4 hardware uses this boot loader
     boot.loader.generic-extlinux-compatible.enable = false;
 
-    fileSystems."/" = {
-      device = "/dev/disk/by-label/NIXROOT";
-      fsType = "ext4";
+    boot.swraid.enable = true;
+    boot.swraid.mdadmConf = ''
+      DEVICE partitions
+      ARRAY /dev/md0 UUID=1c6fe860:f4954185:81167fc2:fe4f5c15
+    '';
+
+    fileSystems."/firmware" = {
+      device = "/dev/disk/by-label/FIRMWARE";
+      fsType = "vfat";
     };
     fileSystems."/boot" = {
       device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
     };
-    fileSystems."/firmware" = {
-      device = "/dev/disk/by-label/FIRMWARE";
-      fsType = "vfat";
+    fileSystems."/" = {
+      device = "/dev/md0";
+      fsType = "ext4";
     };
 
     # NOTE: https://github.com/NixOS/nixpkgs/issues/154163#issuecomment-1008362877  
