@@ -9,11 +9,10 @@
     gpg = { pkg = "pinentry"; bin = "pinentry-tty"; flavor = "tty"; };
   };
 
+  # NOTE: use https://hydra.nixos.org/job/nixos/trunk-combined/nixos.iso_minimal_new_kernel_no_zfs.aarch64-linux to install
+
   hardware = { self, config, modulesPath, nixos-hardware, ... }: {
     imports = [
-      # NITPICK: doesn't work without this for now
-      # it should work with just `nixos-generate`
-      "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
       nixos-hardware.nixosModules.raspberry-pi-4
     ];
 
