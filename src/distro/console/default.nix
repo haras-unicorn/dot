@@ -40,6 +40,7 @@ in
     mdadm # NOTE: RAID management
     mermaid-cli # NOTE: generate diagrams from text
     glow # NOTE: render markdown in terminal
+    nixos-generators # NOTE: collection of generators to create nixos images
   ];
 
   imports = [
