@@ -10,7 +10,7 @@ with lib;
     };
     bin = mkOption {
       type = with types; str;
-      default = "pinentry-tty";
+      default = "pinentry-curses";
       example = "pinentry-qt";
     };
     flavor = mkOption {

@@ -4,7 +4,7 @@
     groups = [ "mlocate" "video" "audio" ];
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
     editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-    gpg = { pkg = "pinentry"; bin = "pinentry-tty"; flavor = "tty"; };
+    gpg = { pkg = "pinentry"; bin = "pinentry-curses"; flavor = "curses"; };
   };
 
   hardware = {

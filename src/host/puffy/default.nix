@@ -6,7 +6,7 @@
     location.timeZone = "Europe/Zagreb";
     shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
     editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-    gpg = { pkg = "pinentry"; bin = "pinentry-tty"; flavor = "tty"; };
+    gpg = { pkg = "pinentry"; bin = "pinentry-curses"; flavor = "curses"; };
   };
 
   # NOTE: use https://hydra.nixos.org/job/nixos/trunk-combined/nixos.iso_minimal_new_kernel_no_zfs.aarch64-linux to install
