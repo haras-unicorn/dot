@@ -17,6 +17,9 @@
       nixos-hardware.nixosModules.raspberry-pi-4
     ];
 
+    # NOTE: the normal nixos rpi4 hardware uses this boot loader
+    boot.loader.generic-extlinux-compatible.enable = false;
+
     # NOTE: https://github.com/NixOS/nixpkgs/issues/154163#issuecomment-1008362877  
     nixpkgs.overlays = [
       (final: super: {
@@ -28,6 +31,8 @@
 
   system = { self, userName, hostName, vpnHost, vpnDomain, ... }: {
     imports = [
+      "${self}/src/module/system/grub"
+
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"
 
