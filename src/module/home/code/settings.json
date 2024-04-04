@@ -172,5 +172,6 @@
   "workbench.iconTheme": "material-icon-theme",
   "workbench.panel.defaultLocation": "right",
   "workbench.settings.editor": "json",
-  "workbench.startupEditor": "readme"
+  "workbench.startupEditor": "readme",
+  "markdown-preview-enhanced.plantumlServer": "https://www.plantuml.com/plantuml/svg/"
 }
