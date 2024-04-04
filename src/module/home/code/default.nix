@@ -111,7 +111,6 @@
       # markdown
       shd101wyy.markdown-preview-enhanced
       unifiedjs.vscode-mdx
-      jebbs.plantuml
       # unifiedjs.vscode-remark
 
       # data
