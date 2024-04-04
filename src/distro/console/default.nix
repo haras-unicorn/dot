@@ -22,7 +22,6 @@ in
     unrar # NOTE: unrar stuff
     p7zip # NOTE: 7zip stuff
     parted # NOTE: partition manager
-    pandoc # NOTE: document converter
     dasel # NOTE: json, yaml, toml, csv, etc manipulation
     jq # NOTE: popular json manipulator
     yq-go # NOTE: json, yaml, toml, csv, etc manipulation
@@ -53,6 +52,7 @@ in
     "${self}/src/module/home/direnv"
     "${self}/src/module/home/starship"
     "${self}/src/module/home/zoxide"
+    "${self}/src/module/home/pandoc"
 
     "${self}/src/module/home/yazi"
     "${self}/src/module/home/git"
