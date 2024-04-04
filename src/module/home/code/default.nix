@@ -110,7 +110,7 @@
       # markdown
       shd101wyy.markdown-preview-enhanced
       unifiedjs.vscode-mdx
-      unifiedjs.vscode-remark
+      # unifiedjs.vscode-remark
 
       # data
       ctcuff.font-preview
