@@ -18,5 +18,6 @@ in
   home.packages = [
     spotify
     pkgs.psst
+    pkgs.spotdl
   ];
 }
