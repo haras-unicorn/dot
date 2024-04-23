@@ -70,6 +70,7 @@ in
     inkscape # NOTE: vector graphics design
     gpt4all # NOTE: run llms locally
     pencil # NOTE: UI/UX prototyping
+    aseprite # NOTE: pixel art
   ];
 
   imports = [
