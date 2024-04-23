@@ -102,7 +102,7 @@ in
     wayland.windowManager.hyprland.xwayland.enable = true;
     wayland.windowManager.hyprland.extraConfig = ''
       monitor = , preferred, auto, 1
-      monitor = ${config.dot.hardware.mainMonitor}, highrr, auto, 1
+      monitor = ${config.dot.hardware.mainMonitor}, highrr, auto, 1, bitdepth, 10
   
       ${builtins.readFile ./hyprland.conf}
 
