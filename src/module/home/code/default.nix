@@ -49,6 +49,7 @@
       github.copilot
       ms-playwright.playwright
       ms-azuretools.vscode-docker
+      streetsidesoftware.code-spell-checker
       # jasew.vscode-helix-emulation
       vscodevim.vim
 
