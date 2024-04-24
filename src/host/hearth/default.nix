@@ -95,6 +95,7 @@
       "${self}/src/module/system/vpn"
       "${self}/src/module/system/openvpn-client"
       "${self}/src/module/system/smartmontools"
+      "${self}/src/module/system/bluetooth"
 
       "${self}/src/module/system/sudo"
       "${self}/src/module/system/keyring"
