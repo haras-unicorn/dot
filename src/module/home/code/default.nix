@@ -47,6 +47,7 @@
     programs.vscode.extensions = with pkgs.vscode-marketplace; [
       # misc
       github.copilot
+      github.copilot-chat
       ms-playwright.playwright
       ms-azuretools.vscode-docker
       streetsidesoftware.code-spell-checker
