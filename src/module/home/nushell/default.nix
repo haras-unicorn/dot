@@ -62,7 +62,7 @@ in
       PROMPT_INDICATOR_VI_NORMAL = "' '";
     };
 
-    programs.nushell.package = pkgs.nushellFull.override {
+    programs.nushell.package = pkgs.nushell.override {
       additionalFeatures = (p: p ++ [ "dataframe" ]);
     };
 
