@@ -62,6 +62,8 @@ in
       PROMPT_INDICATOR_VI_NORMAL = "' '";
     };
 
+    programs.nushell.package = pkgs.nushellFull;
+
     programs.nushell.envFile.text = ''
       ${builtins.readFile ./env.nu}
 
