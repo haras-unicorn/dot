@@ -38,6 +38,13 @@
       fsType = "ext4";
     };
 
+    swapDevices = [
+      {
+        device = "/swap";
+        size = 8 * 1024;
+      }
+    ];
+
     # NOTE: https://github.com/NixOS/nixpkgs/issues/154163#issuecomment-1008362877  
     nixpkgs.overlays = [
       (final: super: {
