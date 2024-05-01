@@ -23,6 +23,7 @@
     boot.swraid.mdadmConf = ''
       DEVICE partitions
       ARRAY /dev/md0 UUID=1c6fe860:f4954185:81167fc2:fe4f5c15
+      MAILADDR social@haras.anonaddy.me
     '';
 
     fileSystems."/firmware" = {
