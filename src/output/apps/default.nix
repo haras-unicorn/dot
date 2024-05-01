@@ -39,11 +39,11 @@ builtins.foldl'
     "${system}" = {
       default = {
         type = "app";
-        program = wrap "${self}/scripts/install" "install" system [ ];
+        program = wrap "${self}/scripts/install.sh" "install" system [ ];
       };
       image = {
         type = "app";
-        program = wrap "${self}/scripts/image" "image" system [ ];
+        program = wrap "${self}/scripts/image.sh" "image" system [ ];
       };
     };
   })
