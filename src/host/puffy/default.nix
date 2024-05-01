@@ -36,13 +36,6 @@
       device = "/dev/md0";
       fsType = "ext4";
     };
-
-    swapDevices = [
-      {
-        device = "/swap";
-        size = 8 * 1024;
-      }
-    ];
   };
 
   system = { self, userName, hostName, vpnHost, vpnDomain, ... }: {
