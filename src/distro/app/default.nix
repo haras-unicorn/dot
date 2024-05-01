@@ -71,7 +71,6 @@ in
     gpt4all # NOTE: run llms locally
     pencil # NOTE: UI/UX prototyping
     libresprite # NOTE: pixel art
-    kdiskmark # NOTE: disk benchmarking
   ];
 
   imports = [
