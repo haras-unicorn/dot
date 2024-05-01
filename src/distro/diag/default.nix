@@ -21,5 +21,6 @@
     f3 # NOTE: flash memory benchmarkingy
     sysstat # NOTE: system usage info
     sysbench # NOTE: system benchmarking
+    iozone # NOTE: disk benchmark
   ];
 }
