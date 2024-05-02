@@ -73,7 +73,6 @@ let
         lib.getAttrByPath path configObject
       else { }
     else dotObject;
-
   recursiveMerge = { lib, ... }: attrList:
     let
       f = attrPath:
@@ -88,7 +87,6 @@ let
         );
     in
     f [ ] attrList;
-
   concatModules = inputs: modules: {
     options = recursiveMerge inputs (builtins.map (module: module.options) modules);
     config = recursiveMerge inputs (builtins.map (module: module.config) modules);
