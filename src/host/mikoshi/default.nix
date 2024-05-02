@@ -1,21 +1,40 @@
+{ self, hostName, ... }:
+
 {
-  meta.dot = {
-    hardware.ram = 1;
-    hardware.networkInterface = "ens3";
-    groups = [ "mlocate" ];
-    location.timeZone = "Etc/UTC";
-    shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
-    editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-    gpg = { pkg = "pinentry"; bin = "pinentry-curses"; flavor = "curses"; };
+  shared = {
+    dot = {
+      hardware.ram = 1;
+      hardware.networkInterface = "ens3";
+      groups = [ "mlocate" ];
+      location.timeZone = "Etc/UTC";
+      shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
+      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
+      gpg = { pkg = "pinentry"; bin = "pinentry-curses"; flavor = "curses"; };
+    };
   };
 
-  hardware = { self, config, ... }: {
-    imports = [
-      "${self}/src/module/intel-cpu"
-      "${self}/src/module/firmware"
-      "${self}/src/module/swap"
-    ];
+  imports = [
+    "${self}/src/module/intel-cpu"
+    "${self}/src/module/firmware"
+    "${self}/src/module/swap"
 
+    "${self}/src/module/hardened"
+
+    "${self}/src/module/location"
+    "${self}/src/module/network"
+
+    "${self}/src/module/sudo"
+    "${self}/src/module/locate"
+
+    "${self}/src/module/openssh"
+    "${self}/src/module/openvpn-server"
+
+    "${self}/src/distro/coreutils"
+    "${self}/src/distro/diag"
+    "${self}/src/distro/console"
+  ];
+
+  system = {
     virtualisation.hypervGuest.enable = true;
 
     boot.initrd.availableKernelModules = [
@@ -25,6 +44,7 @@
       "sr_mod"
       "virtio_blk"
     ];
+
     boot.initrd.kernelModules = [
       "ext4"
       "vfat"
@@ -38,21 +58,6 @@
       device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
     };
-  };
-
-  system = { self, userName, hostName, ... }: {
-    imports = [
-      "${self}/src/module/hardened"
-
-      "${self}/src/module/location"
-      "${self}/src/module/network"
-
-      "${self}/src/module/sudo"
-      "${self}/src/module/locate"
-
-      "${self}/src/module/openssh"
-      "${self}/src/module/openvpn-server"
-    ];
 
     boot.loader.grub.device = "/dev/vda";
 
@@ -69,13 +74,5 @@
       "workbug" = "102";
       "puffy" = "103";
     };
-  };
-
-  user = { self, ... }: {
-    imports = [
-      "${self}/src/distro/coreutils"
-      "${self}/src/distro/diag"
-      "${self}/src/distro/console"
-    ];
   };
 }
