@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 
 # TODO: add dot prefix
 
@@ -76,8 +76,8 @@ in
 
         include colors.conf
 
-        shell ${pkgs."${shell.pkg}"}/bin/${shell.bin}
-        editor  ${pkgs."${editor.pkg}"}/bin/${editor.bin}
+        shell ${shell.package}/bin/${shell.bin}
+        editor  ${editor.package}/bin/${editor.bin}
 
         ${vars}
       '';

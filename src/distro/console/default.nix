@@ -8,9 +8,8 @@
 # TODO: systemfd + watchexec for hot reload with anything
 
 let
-  editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
+  editor = "${config.dot.editor.package}/bin/${config.dot.editor.bin}";
 in
-with lib;
 {
   imports = [
     "${self}/src/module/sh"
@@ -39,35 +38,35 @@ with lib;
 
   options.dot = {
     shell = {
-      pkg = mkOption {
-        type = with types; str;
+      package = lib.mkOption {
+        type = lib.types.package;
         default = "bash";
         example = "nushell";
       };
-      bin = mkOption {
-        type = with types; str;
+      bin = lib.mkOption {
+        type = lib.types.str;
         default = "bash";
         example = "nu";
       };
-      module = mkOption {
-        type = with types; str;
+      module = lib.mkOption {
+        type = lib.types.str;
         default = "bash";
         example = "nushell";
       };
     };
     editor = {
-      pkg = mkOption {
-        type = with types; str;
+      package = lib.mkOption {
+        type = lib.types.package;
         default = "vim";
         example = "helix";
       };
-      bin = mkOption {
-        type = with types; str;
+      bin = lib.mkOption {
+        type = lib.types.str;
         default = "vim";
         example = "hx";
       };
-      module = mkOption {
-        type = with types; str;
+      module = lib.mkOption {
+        type = lib.types.str;
         default = "vim";
         example = "helix";
       };

@@ -4,8 +4,8 @@
 # TODO: hook up config like with waybar
 
 let
-  pkg = pkgs.eww;
-  bin = "${pkg}/bin/eww";
+  package = pkgs.eww;
+  bin = "${package}/bin/eww";
 in
 {
   home.shared = {
@@ -22,11 +22,11 @@ in
     ];
 
     home.packages = [
-      pkg
+      package
     ];
 
     # programs.eww.enable = true;
-    # programs.eww.package = pkg;
+    # programs.eww.package = package;
     # programs.eww.configDir = ./config;
 
     programs.lulezojne.config = {

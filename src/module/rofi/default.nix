@@ -34,11 +34,12 @@
     home.packages = with pkgs; [
       keepmenu
     ];
+
     # NOTE: ln -s <db location> <home>/.keepmenu.kdbx
     xdg.configFile."keepmenu/config.ini".text = ''
       [dmenu]
       dmenu_command = ${pkgs.rofi}/bin/rofi -config ${config.xdg.configHome}/rofi/keepmenu.rasi
-      pinentry = ${pkgs."${config.dot.gpg.pkg}"}/bin/${config.dot.gpg.bin}
+      pinentry = ${config.dot.gpg.package}/bin/${config.dot.gpg.bin}
       title_path = False
 
       [dmenu_passphrase]

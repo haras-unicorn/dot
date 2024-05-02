@@ -1,20 +1,19 @@
-{ pkgs, config, lib, ... }:
+{ config, lib, ... }:
 
-with lib;
 {
   options.dot.gpg = {
-    pkg = mkOption {
-      type = with types; str;
+    package = lib.mkOption {
+      type = lib.types.str;
       default = "pinentry";
       example = "pinentry-qt";
     };
-    bin = mkOption {
-      type = with types; str;
+    bin = lib.mkOption {
+      type = lib.types.str;
       default = "pinentry-curses";
       example = "pinentry-qt";
     };
-    flavor = mkOption {
-      type = with types; str;
+    flavor = lib.mkOption {
+      type = lib.types.str;
       default = "tty";
       example = "qt";
     };
@@ -23,7 +22,7 @@ with lib;
   config = {
     home.shared = {
       home.packages = [
-        pkgs."${config.dot.gpg.pkg}"
+        config.dot.gpg.package
       ];
 
       programs.gpg.enable = true;

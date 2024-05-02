@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 
 {
   home.shared = {
@@ -9,7 +9,7 @@
     xdg.desktopEntries = {
       syncthing = {
         name = "Syncthing";
-        exec = "${pkgs."${config.dot.browser.pkg}"}/bin/${config.dot.browser.bin} localhost:8384";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} localhost:8384";
         terminal = false;
       };
     };

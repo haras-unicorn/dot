@@ -1,6 +1,5 @@
 { pkgs
 , config
-, lib
 , ...
 }:
 
@@ -10,13 +9,13 @@
 # TODO: extensions in projects?
 
 {
-  home.shared = lib.mkIf (config.dot.visual.module == "code") {
+  home.shared = {
     shell.aliases = {
-      code = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
+      code = "${config.dot.visual.package}/bin/${config.dot.visual.bin}";
     };
 
     programs.vscode.enable = true;
-    programs.vscode.package = pkgs."${config.dot.visual.pkg}";
+    programs.vscode.package = config.dot.visual.package;
     programs.vscode.keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
     programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {
       "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';
@@ -25,10 +24,10 @@
       "editor.fontSize" = config.dot.font.size.medium + 1;
       "debug.console.fontSize" = config.dot.font.size.small + 1;
       "terminal.integrated.fontSize" = config.dot.font.size.small + 1;
-      "terminal.external.linuxExec" = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
+      "terminal.external.linuxExec" = "${config.dot.term.package}/bin/${config.dot.term.bin}";
       "terminal.integrated.profiles.linux" = {
         "${config.dot.shell.module}" = {
-          "path" = "${pkgs."${config.dot.shell.pkg}"}/bin/${config.dot.shell.bin}";
+          "path" = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
         };
         "bash" = {
           "path" = "${pkgs.bashInteractiveFHS}/bin/bash";

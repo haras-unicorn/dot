@@ -60,14 +60,13 @@
     home.packages = with pkgs; [
       keepmenu
       wtype
-      pkgs."${config.dot.gpg.pkg}"
     ];
 
     # NOTE: ln -s <db location> <home>/.keepmenu.kdbx
     xdg.configFile."keepmenu/config.ini".text = ''
       [dmenu]
       dmenu_command = ${pkgs.wofi}/bin/wofi --prompt "Be careful!"
-      pinentry = ${pkgs."${config.dot.gpg.pkg}"}/bin/${config.dot.gpg.bin}
+      pinentry = ${config.dot.gpg.package}/bin/${config.dot.gpg.bin}
       title_path = False
 
       [dmenu_passphrase]

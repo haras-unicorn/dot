@@ -6,13 +6,13 @@
 # TODO: https://github.com/NixOS/nixpkgs/issues/232266
 
 let
-  term = "${pkgs."${config.dot.term.pkg}"}/bin/${config.dot.term.bin}";
-  shell = "${pkgs."${config.dot.shell.pkg}"}/bin/${config.dot.shell.bin}";
-  browser = "${pkgs."${config.dot.browser.pkg}"}/bin/${config.dot.browser.bin}";
-  visual = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
-  editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
+  term = "${config.dot.term.package}/bin/${config.dot.term.bin}";
+  shell = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
+  browser = "${config.dot.browser.package}/bin/${config.dot.browser.bin}";
+  visual = "${config.dot.visual.package}/bin/${config.dot.visual.bin}";
+  editor = "${config.dot.editor.package}/bin/${config.dot.editor.bin}";
 
-  browserDesktop = "${pkgs."${config.dot.browser.pkg}"}/share/applications/${config.dot.browser.bin}.desktop";
+  browserDesktop = "${config.dot.browser.package}/share/applications/${config.dot.browser.bin}.desktop";
   browserMime = {
     "text/html" = browserDesktop;
     "x-scheme-handler/http" = browserDesktop;
@@ -20,7 +20,7 @@ let
   };
 
 
-  visualDesktop = "${pkgs."${config.dot.visual.pkg}"}/share/applications/${config.dot.visual.bin}.desktop";
+  visualDesktop = "${config.dot.visual.package}/share/applications/${config.dot.visual.bin}.desktop";
   visualMime = {
     "text/css" = visualDesktop;
     "application/javascript" = visualDesktop;
@@ -32,7 +32,6 @@ let
 
   mime = browserMime // visualMime;
 in
-with lib;
 {
   imports = [
     "${self}/src/module/syncthing"
@@ -61,52 +60,52 @@ with lib;
 
   options.dot = {
     term = {
-      pkg = mkOption {
-        type = with types; str;
+      package = lib.mkOption {
+        type = lib.types.package;
         default = "kitty";
         example = "alacritty";
       };
-      bin = mkOption {
-        type = with types; str;
+      bin = lib.mkOption {
+        type = lib.types.str;
         default = "kitty";
         example = "alacritty";
       };
-      module = mkOption {
-        type = with types; str;
+      module = lib.mkOption {
+        type = lib.types.str;
         default = "kitty";
         example = "alacritty";
       };
     };
     visual = {
-      pkg = mkOption {
-        type = with types; str;
+      package = lib.mkOption {
+        type = lib.types.package;
         default = "vscode";
         example = "vscodium";
       };
-      bin = mkOption {
-        type = with types; str;
+      bin = lib.mkOption {
+        type = lib.types.str;
         default = "code";
         example = "codium";
       };
-      module = mkOption {
-        type = with types; str;
+      module = lib.mkOption {
+        type = lib.types.str;
         default = "code";
         example = "code";
       };
     };
     browser = {
-      pkg = mkOption {
-        type = with types; str;
+      package = lib.mkOption {
+        type = lib.types.package;
         default = "firefox";
         example = "vivaldi";
       };
-      bin = mkOption {
-        type = with types; str;
+      bin = lib.mkOption {
+        type = lib.types.str;
         default = "firefox";
         example = "vivaldi";
       };
-      module = mkOption {
-        type = with types; str;
+      module = lib.mkOption {
+        type = lib.types.str;
         default = "firefox";
         example = "vivaldi";
       };

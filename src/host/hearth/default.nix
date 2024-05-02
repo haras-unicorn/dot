@@ -1,11 +1,11 @@
 {
   meta.dot = {
-    hardware.ram = 32;
-    hardware.mainMonitor = "DP-1";
-    hardware.monitors = [ "DP-1" ];
-    hardware.networkInterface = "enp37s0";
-    hardware.cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
-    hardware.soundcardPciId = "2b:00.3";
+    ram = 32;
+    mainMonitor = "DP-1";
+    monitors = [ "DP-1" ];
+    networkInterface = "enp37s0";
+    cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
+    soundcardPciId = "2b:00.3";
 
     location.timeZone = "Europe/Zagreb";
     groups = [
