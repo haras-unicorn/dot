@@ -71,32 +71,28 @@ let
         lib.getAttrByPath path configObject
       else { }
     else dotObject;
-  concatModules = modules: builtins.foldl'
-    (acc: next: { options = acc.options // next.options; config = acc.config // next.config; })
-    { }
-    modules;
+
+  recursiveMerge = { lib, ... }: attrList:
+    let
+      f = attrPath:
+        lib.zipAttrsWith (n: values:
+          if lib.tail values == [ ]
+          then lib.head values
+          else if lib.all lib.isList values
+          then lib.unique (lib.concatLists values)
+          else if lib.all lib.isAttrs values
+          then f (attrPath ++ [ n ]) values
+          else lib.last values
+        );
+    in
+    f [ ] attrList;
+
+  concatModules = inputs: modules: {
+    options = recursiveMerge inputs (builtins.map (module: module.options) modules);
+    config = recursiveMerge inputs (builtins.map (module: module.config) modules);
+  };
 in
 rec {
-  mkSystemModule = (dotModule:
-    inputs:
-    let
-      dotObject = mkDotObject inputs dotModule;
-      imports = mkImports mkSystemModule inputs dotObject;
-      options = mkOptions inputs dotObject;
-      config = mkConfig inputs [ "system" ] dotObject;
-    in
-    concatModules (imports ++ [{ inherit options config; }]));
-
-  mkHomeSharedModule = (dotModule:
-    inputs:
-    let
-      dotObject = mkDotObject inputs dotModule;
-      imports = mkImports mkSystemModule inputs dotObject;
-      options = mkOptions inputs dotObject;
-      config = mkConfig inputs [ "home" "shared" ] dotObject;
-    in
-    concatModules (imports ++ [{ inherit options config; }]));
-
   definedUsers = (dotModule:
     { lib, ... } @inputs:
     let
@@ -112,6 +108,26 @@ rec {
           (builtins.attrNames config))
       )));
 
+  mkSystemModule = (dotModule:
+    inputs:
+    let
+      dotObject = mkDotObject inputs dotModule;
+      imports = mkImports mkSystemModule inputs dotObject;
+      options = mkOptions inputs dotObject;
+      config = mkConfig inputs [ "system" ] dotObject;
+    in
+    concatModules inputs (imports ++ [{ inherit options config; }]));
+
+  mkHomeSharedModule = (dotModule:
+    inputs:
+    let
+      dotObject = mkDotObject inputs dotModule;
+      imports = mkImports mkSystemModule inputs dotObject;
+      options = mkOptions inputs dotObject;
+      config = mkConfig inputs [ "home" "shared" ] dotObject;
+    in
+    concatModules inputs (imports ++ [{ inherit options config; }]));
+
   mkHomeUserModule = (user: dotModule:
     inputs:
     let
@@ -120,5 +136,5 @@ rec {
       options = mkOptions inputs dotObject;
       config = mkConfig inputs [ "home" user ] dotObject;
     in
-    concatModules (imports ++ [{ inherit options config; }]));
+    concatModules inputs (imports ++ [{ inherit options config; }]));
 }
