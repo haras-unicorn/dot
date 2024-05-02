@@ -23,27 +23,27 @@
 
   config = {
     home.shared = {
-      de.keybinds = (if !(builtins.isNull config.dot.hardware.screenBrightnessDevice) then [
+      de.keybinds = (if !(builtins.isNull config.dot.screenBrightnessDevice) then [
         {
           mods = [ "super" "shift" ];
           key = "b";
-          command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.hardware.screenBrightnessDevice}' set +2%'';
+          command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.screenBrightnessDevice}' set +2%'';
         }
         {
           mods = [ "super" ];
           key = "b";
-          command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.hardware.screenBrightnessDevice}' set 2%-'';
+          command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.screenBrightnessDevice}' set 2%-'';
         }
-      ] else [ ]) ++ (if !(builtins.isNull config.dot.hardware.keyboardBrightnessDevice) then [
+      ] else [ ]) ++ (if !(builtins.isNull config.dot.keyboardBrightnessDevice) then [
         {
           mods = [ "super" "control" "shift" ];
           key = "b";
-          command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.hardware.keyboardBrightnessDevice}' set +2%'';
+          command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.keyboardBrightnessDevice}' set +2%'';
         }
         {
           mods = [ "super" "control" ];
           key = "b";
-          command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.hardware.keyboardBrightnessDevice}' set 2%-'';
+          command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.keyboardBrightnessDevice}' set 2%-'';
         }
       ] else [ ]);
 

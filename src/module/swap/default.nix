@@ -1,13 +1,9 @@
 { lib, config, ... }:
 
-let
-  cfg = config.dot.hardware;
-in
-with lib;
 {
   options.dot = {
-    ram = mkOption {
-      type = with types; ints.u8;
+    ram = lib.mkOption {
+      type = lib.ints.u8;
       description = "In gigabytes; cat /proc/meminfo";
       example = 4;
     };
@@ -18,7 +14,7 @@ with lib;
       swapDevices = [
         {
           device = "/var/swap";
-          size = cfg.ram * 1024;
+          size = config.dot.ram * 1024;
         }
       ];
     };

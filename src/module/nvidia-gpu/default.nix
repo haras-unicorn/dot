@@ -33,8 +33,8 @@
 
       hardware.nvidia.modesetting.enable = true;
       hardware.nvidia.nvidiaSettings = true;
-      hardware.nvidia.open = config.dot.hardware.nvidiaDriver.open;
-      hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${config.dot.hardware.nvidiaDriver.version}";
+      hardware.nvidia.open = config.dot.nvidiaDriver.open;
+      hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${config.dot.nvidiaDriver.version}";
 
       hardware.opengl.enable = true;
       hardware.opengl.driSupport = true;

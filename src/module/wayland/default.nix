@@ -79,7 +79,7 @@ in
       ];
       xdg.portal.wlr.enable = true;
       xdg.portal.wlr.settings.screencast = {
-        output_name = config.dot.hardware.mainMonitor;
+        output_name = config.dot.mainMonitor;
         max_fps = 60;
         chooser_type = "simple";
         chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
