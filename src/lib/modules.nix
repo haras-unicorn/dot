@@ -56,6 +56,8 @@
 # This module aims to construct modules digestible by nixpkgs.lib.nixosSystem and
 # home-manager from dot modules
 
+# TODO: leave module merging to nixpkgs
+
 let
   mkDotObject = inputs: dotModule: if builtins.isFunction dotModule then (dotModule inputs) else dotModule;
   mkImports = mkModule: inputs: dotObject: builtins.map
