@@ -56,8 +56,6 @@
 # This module aims to construct modules digestible by nixpkgs.lib.nixosSystem and
 # home-manager from dot modules
 
-# TODO: leave module merging to nixpkgs
-
 let
   mkDotObject = inputs: dotModule: if builtins.isFunction dotModule then (dotModule inputs) else dotModule;
   mkImports = mkModule: inputs: dotObject: builtins.map
@@ -73,23 +71,11 @@ let
         lib.getAttrByPath path configObject
       else { }
     else dotObject;
-  recursiveMerge = { lib, ... }: attrList:
-    let
-      f = attrPath:
-        lib.zipAttrsWith (n: values:
-          if lib.tail values == [ ]
-          then lib.head values
-          else if lib.all lib.isList values
-          then lib.unique (lib.concatLists values)
-          else if lib.all lib.isAttrs values
-          then f (attrPath ++ [ n ]) values
-          else lib.last values
-        );
-    in
-    f [ ] attrList;
   concatModules = inputs: modules: {
-    options = recursiveMerge inputs (builtins.map (module: module.options) modules);
-    config = recursiveMerge inputs (builtins.map (module: module.config) modules);
+    imports = builtins.foldl'
+      (acc: next: acc ++ [{ options = next.options; config = next.config; }])
+      [ ]
+      modules;
   };
 in
 rec {
