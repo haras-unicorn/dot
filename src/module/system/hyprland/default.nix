@@ -1,9 +1,10 @@
 { pkgs, ... }:
 
 {
-  programs.hyprland.enable = true;
-  programs.hyprland.xwayland.enable = true;
+  system = {
+    programs.hyprland.enable = true;
+    programs.hyprland.xwayland.enable = true;
 
-  de.startup = "${pkgs.hyprland}/bin/Hyprland";
+    de.startup = "${pkgs.hyprland}/bin/Hyprland";
+  };
 }
-

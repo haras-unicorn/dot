@@ -5,16 +5,18 @@
 # NOTE: https://github.com/musnix/musnix
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_zen;
-  boot.kernel.sysctl = { "vm.swappiness" = 10; };
-  boot.kernelParams = [ "threadirq" ];
+  system = {
+    boot.kernelPackages = pkgs.linuxPackages_zen;
+    boot.kernel.sysctl = { "vm.swappiness" = 10; };
+    boot.kernelParams = [ "threadirq" ];
 
-  powerManagement.cpuFreqGovernor = "performance";
+    powerManagement.cpuFreqGovernor = "performance";
 
-  services.das_watchdog.enable = true;
-  services.ananicy.enable = true;
-  services.earlyoom.enable = true;
-  services.irqbalance.enable = true;
+    services.das_watchdog.enable = true;
+    services.ananicy.enable = true;
+    services.earlyoom.enable = true;
+    services.irqbalance.enable = true;
 
-  security.rtkit.enable = true;
+    security.rtkit.enable = true;
+  };
 }

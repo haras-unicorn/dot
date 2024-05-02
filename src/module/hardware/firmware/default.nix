@@ -1,6 +1,8 @@
 { ... }:
 
 {
-  hardware.enableAllFirmware = true;
-  services.fwupd.enable = true;
+  system = {
+    hardware.enableAllFirmware = true;
+    services.fwupd.enable = true;
+  };
 }

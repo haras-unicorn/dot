@@ -6,8 +6,10 @@ let
   };
 in
 {
-  home.packages = with pkgs; [ pcmanfm ];
+  home.shared = {
+    home.packages = with pkgs; [ pcmanfm ];
 
-  xdg.mimeApps.associations.added = mime;
-  xdg.mimeApps.defaultApplications = mime;
+    xdg.mimeApps.associations.added = mime;
+    xdg.mimeApps.defaultApplications = mime;
+  };
 }

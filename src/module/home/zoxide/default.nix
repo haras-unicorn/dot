@@ -1,7 +1,9 @@
 { ... }:
 
 {
-  programs.zoxide.enable = true;
+  home.shared = {
+    programs.zoxide.enable = true;
 
-  programs.zoxide.enableNushellIntegration = true;
+    programs.zoxide.enableNushellIntegration = true;
+  };
 }

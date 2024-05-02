@@ -6,9 +6,11 @@
 # TODO: https://github.com/tremor-rs/tremor-runtime - rust based stream processor
 
 {
-  services.smartd.enable = true;
+  system = {
+    services.smartd.enable = true;
 
-  environment.systemPackages = [
-    pkgs.kdiskmark
-  ];
+    environment.systemPackages = [
+      pkgs.kdiskmark
+    ];
+  };
 }

@@ -15,11 +15,13 @@ let
   };
 in
 {
-  de.sessionStartup = [
-    "${teams}/bin/teams-for-linux"
-  ];
+  home.shared = {
+    de.sessionStartup = [
+      "${teams}/bin/teams-for-linux"
+    ];
 
-  home.packages = [
-    teams
-  ];
+    home.packages = [
+      teams
+    ];
+  };
 }

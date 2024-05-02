@@ -20,11 +20,13 @@ let
   };
 in
 {
-  de.sessionStartup = [
-    "${station}/bin/station"
-  ];
+  home.shared = {
+    de.sessionStartup = [
+      "${station}/bin/station"
+    ];
 
-  home.packages = [
-    station
-  ];
+    home.packages = [
+      station
+    ];
+  };
 }

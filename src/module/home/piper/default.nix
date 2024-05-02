@@ -33,8 +33,10 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    piper-tts
-    speak
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      piper-tts
+      speak
+    ];
+  };
 }

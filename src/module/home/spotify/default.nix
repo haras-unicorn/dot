@@ -15,9 +15,11 @@ let
   };
 in
 {
-  home.packages = [
-    spotify
-    pkgs.psst
-    pkgs.spotdl
-  ];
+  home.shared = {
+    home.packages = [
+      spotify
+      pkgs.psst
+      pkgs.spotdl
+    ];
+  };
 }

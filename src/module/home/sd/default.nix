@@ -1,9 +1,11 @@
 { pkgs, ... }:
 
 {
-  shell.aliases = {
-    sed = "${pkgs.sd}/bin/sd";
-  };
+  home.shared = {
+    shell.aliases = {
+      sed = "${pkgs.sd}/bin/sd";
+    };
 
-  home.packages = with pkgs; [ sd ];
+    home.packages = with pkgs; [ sd ];
+  };
 }

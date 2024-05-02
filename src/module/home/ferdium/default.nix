@@ -21,11 +21,13 @@ let
   };
 in
 {
-  de.sessionStartup = [
-    "${ferdium}/bin/ferdium"
-  ];
+  home.shared = {
+    de.sessionStartup = [
+      "${ferdium}/bin/ferdium"
+    ];
 
-  home.packages = [
-    ferdium
-  ];
+    home.packages = [
+      ferdium
+    ];
+  };
 }

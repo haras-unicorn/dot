@@ -1,10 +1,12 @@
 { ... }:
 
 {
-  programs.tealdeer.enable = true;
-  programs.tealdeer.settings = {
-    updates = {
-      auto_update = true;
+  home.shared = {
+    programs.tealdeer.enable = true;
+    programs.tealdeer.settings = {
+      updates = {
+        auto_update = true;
+      };
     };
   };
 }

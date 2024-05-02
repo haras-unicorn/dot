@@ -7,10 +7,12 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    libsForQt5.okular
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      libsForQt5.okular
+    ];
 
-  xdg.mimeApps.associations.added = mime;
-  xdg.mimeApps.defaultApplications = mime;
+    xdg.mimeApps.associations.added = mime;
+    xdg.mimeApps.defaultApplications = mime;
+  };
 }

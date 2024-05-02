@@ -1,5 +1,7 @@
 { ... }:
 
 {
-  services.network-manager-applet.enable = true;
+  home.shared = {
+    services.network-manager-applet.enable = true;
+  };
 }

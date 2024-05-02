@@ -1,7 +1,9 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    kooha
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      kooha
+    ];
+  };
 }

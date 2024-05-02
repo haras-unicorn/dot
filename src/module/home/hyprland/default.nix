@@ -86,42 +86,44 @@ in
     };
   };
   config = {
-    programs.lulezojne.config.plop = [
-      {
-        template = builtins.readFile ./colors.conf;
-        "in" = "${config.xdg.configHome}/hypr/colors.conf";
-      }
-    ];
+    home.shared = {
+      programs.lulezojne.config.plop = [
+        {
+          template = builtins.readFile ./colors.conf;
+          "in" = "${config.xdg.configHome}/hypr/colors.conf";
+        }
+      ];
 
-    home.sessionVariables = cfg.sessionVariables;
-    systemd.user.sessionVariables = cfg.sessionVariables;
+      home.sessionVariables = cfg.sessionVariables;
+      systemd.user.sessionVariables = cfg.sessionVariables;
 
-    home.packages = [ switch-layout current-layout ];
+      home.packages = [ switch-layout current-layout ];
 
-    wayland.windowManager.hyprland.enable = true;
-    wayland.windowManager.hyprland.xwayland.enable = true;
-    wayland.windowManager.hyprland.extraConfig = ''
-      monitor = , preferred, auto, 1
-      monitor = ${config.dot.hardware.mainMonitor}, highrr, auto, 1
+      wayland.windowManager.hyprland.enable = true;
+      wayland.windowManager.hyprland.xwayland.enable = true;
+      wayland.windowManager.hyprland.extraConfig = ''
+        monitor = , preferred, auto, 1
+        monitor = ${config.dot.hardware.mainMonitor}, highrr, auto, 1
   
-      ${builtins.readFile ./hyprland.conf}
+        ${builtins.readFile ./hyprland.conf}
 
-      source = ${config.xdg.configHome}/hypr/colors.conf
+        source = ${config.xdg.configHome}/hypr/colors.conf
 
-      bind = super, space, exec, ${switch-layout}/bin/switch-layout
+        bind = super, space, exec, ${switch-layout}/bin/switch-layout
 
-      env = XDG_CURRENT_DESKTOP, Hyprland
-      env = XDG_SESSION_DESKTOP, Hyprland
+        env = XDG_CURRENT_DESKTOP, Hyprland
+        env = XDG_SESSION_DESKTOP, Hyprland
 
-      exec-once = systemctl --user import-environment PATH
-      exec-once = systemctl --user restart xdg-desktop-portal.service
+        exec-once = systemctl --user import-environment PATH
+        exec-once = systemctl --user restart xdg-desktop-portal.service
 
-      ${vars}
+        ${vars}
 
-      ${startup}
+        ${startup}
 
-      ${binds}
-    '';
+        ${binds}
+      '';
+    };
   };
 }
 

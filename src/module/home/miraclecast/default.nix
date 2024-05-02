@@ -1,7 +1,9 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    miraclecast
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      miraclecast
+    ];
+  };
 }

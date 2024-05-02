@@ -10,7 +10,7 @@
 # TODO: extensions in projects?
 
 {
-  config = lib.mkIf (config.dot.visual.module == "code") {
+  home.shared = lib.mkIf (config.dot.visual.module == "code") {
     shell.aliases = {
       code = "${pkgs."${config.dot.visual.pkg}"}/bin/${config.dot.visual.bin}";
     };

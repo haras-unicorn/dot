@@ -1,8 +1,10 @@
 { ... }:
 
 {
-  services.udiskie.enable = true;
-  services.udiskie.tray = "always";
-  services.udiskie.automount = true;
-  services.udiskie.notify = true;
+  home.shared = {
+    services.udiskie.enable = true;
+    services.udiskie.tray = "always";
+    services.udiskie.automount = true;
+    services.udiskie.notify = true;
+  };
 }

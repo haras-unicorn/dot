@@ -54,30 +54,32 @@ in
     };
   };
 
-  config = lib.mkIf (config.dot.shell.module == "nushell") {
-    programs.nushell.enable = true;
+  config = {
+    home.shared = lib.mkIf (config.dot.shell.module == "nushell") {
+      programs.nushell.enable = true;
 
-    programs.nushell.environmentVariables = {
-      PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
-      PROMPT_INDICATOR_VI_NORMAL = "' '";
+      programs.nushell.environmentVariables = {
+        PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
+        PROMPT_INDICATOR_VI_NORMAL = "' '";
+      };
+
+      programs.nushell.package = pkgs.nushell.override {
+        additionalFeatures = (p: p ++ [ "dataframe" ]);
+      };
+
+      programs.nushell.envFile.text = ''
+        ${builtins.readFile ./env.nu}
+
+        ${vars}
+      '';
+
+      programs.nushell.configFile.text = ''
+        ${builtins.readFile ./config.nu}
+
+        ${aliases}
+
+        ${startup}
+      '';
     };
-
-    programs.nushell.package = pkgs.nushell.override {
-      additionalFeatures = (p: p ++ [ "dataframe" ]);
-    };
-
-    programs.nushell.envFile.text = ''
-      ${builtins.readFile ./env.nu}
-
-      ${vars}
-    '';
-
-    programs.nushell.configFile.text = ''
-      ${builtins.readFile ./config.nu}
-
-      ${aliases}
-
-      ${startup}
-    '';
   };
 }

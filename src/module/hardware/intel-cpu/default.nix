@@ -1,12 +1,14 @@
 { ... }:
 
 {
-  boot.kernelModules = [
-    "kvm-intel"
-    "cpuid"
-  ];
+  system = {
+    boot.kernelModules = [
+      "kvm-intel"
+      "cpuid"
+    ];
 
-  hardware.cpu.intel.updateMicrocode = true;
+    hardware.cpu.intel.updateMicrocode = true;
 
-  programs.corectrl.enable = true;
+    programs.corectrl.enable = true;
+  };
 }

@@ -21,8 +21,8 @@ in
     };
   };
 
-  config = mkIf cfg.enable
-    ({
+  config = {
+    system = mkIf cfg.enable ({
       services.openssh.enable = true;
       services.openssh.allowSFTP = true;
       services.openssh.settings.PermitRootLogin = "no";
@@ -55,4 +55,5 @@ in
       #   )
       #   (cfg.authorizations))
     );
+  };
 }

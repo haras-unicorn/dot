@@ -1,7 +1,9 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs.jetbrains; [
-    rider
-  ];
+  home.shared = {
+    home.packages = with pkgs.jetbrains; [
+      rider
+    ];
+  };
 }

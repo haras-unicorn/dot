@@ -1,5 +1,7 @@
 { ... }:
 
 {
-  services.gvfs.enable = true;
+  system = {
+    services.gvfs.enable = true;
+  };
 }

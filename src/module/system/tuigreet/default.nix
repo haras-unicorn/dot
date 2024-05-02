@@ -17,6 +17,8 @@ in
   };
 
   config = {
-    de.login = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${cfg.startup}";
+    system = {
+      de.login = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${cfg.startup}";
+    };
   };
 }

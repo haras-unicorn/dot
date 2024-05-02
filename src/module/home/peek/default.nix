@@ -1,7 +1,9 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
-    peek
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      peek
+    ];
+  };
 }

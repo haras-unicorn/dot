@@ -109,27 +109,29 @@ in
   };
 
   config = {
-    home.packages = with pkgs; [
-      qtile
-    ];
+    home.shared = {
+      home.packages = with pkgs; [
+        qtile
+      ];
 
-    xdg.configFile."qtile/config.py".text = ''
-      ${builtins.readFile ./config.py}
+      xdg.configFile."qtile/config.py".text = ''
+        ${builtins.readFile ./config.py}
 
-      widget_defaults["font"] = "${builtins.toString config.dot.font.sans.name}"
-      widget_defaults["fontsize"] = ${builtins.toString config.dot.font.size.medium}
-      widget_defaults["icon_size"] = ${builtins.toString config.dot.font.size.medium}
+        widget_defaults["font"] = "${builtins.toString config.dot.font.sans.name}"
+        widget_defaults["fontsize"] = ${builtins.toString config.dot.font.size.medium}
+        widget_defaults["icon_size"] = ${builtins.toString config.dot.font.size.medium}
 
-      @hook.subscribe.startup_once
-      def startup_once():
-          lazy.spawn("systemctl --user import-environment PATH")
-          lazy.spawn("systemctl --user restart xdg-desktop-portal.service")
+        @hook.subscribe.startup_once
+        def startup_once():
+            lazy.spawn("systemctl --user import-environment PATH")
+            lazy.spawn("systemctl --user restart xdg-desktop-portal.service")
 
-      ${startup}
+        ${startup}
 
-      ${vars}
+        ${vars}
 
-      ${binds}
-    '';
+        ${binds}
+      '';
+    };
   };
 }

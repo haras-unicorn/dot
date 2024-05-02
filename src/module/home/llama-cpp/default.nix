@@ -80,10 +80,12 @@ let
   };
 in
 {
-  home.packages = [
-    llama-cpp
-    write
-    chat
-    journal
-  ];
+  home.shared = {
+    home.packages = [
+      llama-cpp
+      write
+      chat
+      journal
+    ];
+  };
 }

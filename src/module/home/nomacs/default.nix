@@ -18,10 +18,12 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    nomacs
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      nomacs
+    ];
 
-  xdg.mimeApps.associations.added = mime;
-  xdg.mimeApps.defaultApplications = mime;
+    xdg.mimeApps.associations.added = mime;
+    xdg.mimeApps.defaultApplications = mime;
+  };
 }

@@ -3,6 +3,8 @@
 # FIXME: per user?
 
 {
-  services.transmission.enable = true;
-  services.transmission.openPeerPorts = true;
+  system = {
+    services.transmission.enable = true;
+    services.transmission.openPeerPorts = true;
+  };
 }

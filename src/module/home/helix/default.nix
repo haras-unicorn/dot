@@ -1,7 +1,7 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 
 {
-  config = lib.mkIf (config.dot.editor.module == "helix") {
+  home.shared = lib.mkIf (config.dot.editor.module == "helix") {
     programs.lulezojne.config.plop = [
       {
         template = builtins.readFile ./lulezojne.toml;

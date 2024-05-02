@@ -9,24 +9,26 @@
 # TODO: cursor theme?
 
 {
-  de.sessionVariables = {
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-    QT_STYLE_OVERRIDE = "kvantum";
+  home.shared = {
+    de.sessionVariables = {
+      QT_QPA_PLATFORMTHEME = "qt5ct";
+      QT_STYLE_OVERRIDE = "kvantum";
+    };
+
+    home.packages = with pkgs; [
+      # kde
+      libsForQt5.plasma-integration
+      libsForQt5.systemsettings
+
+      # kvantum
+      libsForQt5.qtstyleplugin-kvantum
+      qt6Packages.qtstyleplugin-kvantum
+    ];
+
+    xdg.configFile."Kvantum/Sweet".source = "${sweet-theme}/kde/Kvantum/Sweet";
+    xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
+      [General]
+      theme=Sweet
+    '';
   };
-
-  home.packages = with pkgs; [
-    # kde
-    libsForQt5.plasma-integration
-    libsForQt5.systemsettings
-
-    # kvantum
-    libsForQt5.qtstyleplugin-kvantum
-    qt6Packages.qtstyleplugin-kvantum
-  ];
-
-  xdg.configFile."Kvantum/Sweet".source = "${sweet-theme}/kde/Kvantum/Sweet";
-  xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
-    [General]
-    theme=Sweet
-  '';
 }

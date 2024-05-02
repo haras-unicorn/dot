@@ -1,5 +1,7 @@
 { ... }:
 
 {
-  security.pam.services.gtklock = { };
+  system = {
+    security.pam.services.gtklock = { };
+  };
 }

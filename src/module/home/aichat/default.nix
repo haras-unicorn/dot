@@ -20,7 +20,9 @@ let
   aichat4 = mkAichat "aichat4" "gpt-4";
 in
 {
-  home.packages = [ aichat3 aichat4 ];
+  home.shared = {
+    home.packages = [ aichat3 aichat4 ];
 
-  xdg.configFile."aichat/roles.yaml".source = ./roles.yaml;
+    xdg.configFile."aichat/roles.yaml".source = ./roles.yaml;
+  };
 }

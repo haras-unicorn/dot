@@ -32,9 +32,11 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    ffmpeg-cut-1080p
-    ffmpeg-cut-720p
-    ffmpeg_6-full
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      ffmpeg-cut-1080p
+      ffmpeg-cut-720p
+      ffmpeg_6-full
+    ];
+  };
 }

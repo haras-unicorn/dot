@@ -11,8 +11,10 @@ let
   };
 in
 {
-  home.packages = with pkgs; [ spacedrive ];
+  home.shared = {
+    home.packages = with pkgs; [ spacedrive ];
 
-  xdg.mimeApps.associations.added = mime;
-  xdg.mimeApps.defaultApplications = mime;
+    xdg.mimeApps.associations.added = mime;
+    xdg.mimeApps.defaultApplications = mime;
+  };
 }

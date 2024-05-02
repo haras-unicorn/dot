@@ -20,10 +20,12 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    libreoffice-fresh
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      libreoffice-fresh
+    ];
 
-  xdg.mimeApps.associations.added = mime;
-  xdg.mimeApps.defaultApplications = mime;
+    xdg.mimeApps.associations.added = mime;
+    xdg.mimeApps.defaultApplications = mime;
+  };
 }

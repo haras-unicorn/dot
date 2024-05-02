@@ -10,7 +10,9 @@ let
   };
 in
 {
-  home.packages = [
-    open-interpreter
-  ];
+  home.shared = {
+    home.packages = [
+      open-interpreter
+    ];
+  };
 }

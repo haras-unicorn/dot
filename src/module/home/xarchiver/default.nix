@@ -13,14 +13,16 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    p7zip
-    zip
-    unzip
-    unrar
-    xarchiver
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      p7zip
+      zip
+      unzip
+      unrar
+      xarchiver
+    ];
 
-  xdg.mimeApps.associations.added = mime;
-  xdg.mimeApps.defaultApplications = mime;
+    xdg.mimeApps.associations.added = mime;
+    xdg.mimeApps.defaultApplications = mime;
+  };
 }

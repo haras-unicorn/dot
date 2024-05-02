@@ -15,13 +15,15 @@ let
   };
 in
 {
-  de.sessionStartup = [
-    "${discord}/bin/discord"
-  ];
+  home.shared = {
+    de.sessionStartup = [
+      "${discord}/bin/discord"
+    ];
 
-  home.packages = [
-    discord
-    pkgs.dorion
-    pkgs.webcord
-  ];
+    home.packages = [
+      discord
+      pkgs.dorion
+      pkgs.webcord
+    ];
+  };
 }

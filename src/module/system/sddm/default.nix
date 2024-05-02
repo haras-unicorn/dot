@@ -17,15 +17,17 @@ in
   };
 
   config = {
-    environment.systemPackages = with pkgs; [
-      libsForQt5.qt5.qtgraphicaleffects # NOTE: for sddm theme
-      libsForQt5.plasma-framework # NOTE: for sddm theme
-    ];
+    system = {
+      environment.systemPackages = with pkgs; [
+        libsForQt5.qt5.qtgraphicaleffects # NOTE: for sddm theme
+        libsForQt5.plasma-framework # NOTE: for sddm theme
+      ];
 
-    services.xserver.displayManager.sddm.enable = true;
-    services.xserver.displayManager.sddm.autoNumlock = true;
-    services.xserver.displayManager.sddm.theme = "${sweet-theme}/kde/sddm";
-    services.xserver.displayManager.defaultSession = "${cfg.session}";
-    security.pam.services.sddm.enableGnomeKeyring = true;
+      services.xserver.displayManager.sddm.enable = true;
+      services.xserver.displayManager.sddm.autoNumlock = true;
+      services.xserver.displayManager.sddm.theme = "${sweet-theme}/kde/sddm";
+      services.xserver.displayManager.defaultSession = "${cfg.session}";
+      security.pam.services.sddm.enableGnomeKeyring = true;
+    };
   };
 }

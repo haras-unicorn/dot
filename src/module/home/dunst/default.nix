@@ -3,10 +3,12 @@
 # TODO: lulezojne
 
 {
-  home.packages = with pkgs; [
-    libnotify
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      libnotify
+    ];
 
-  services.dunst.enable = true;
-  services.dunst.configFile = ./dunstrc;
+    services.dunst.enable = true;
+    services.dunst.configFile = ./dunstrc;
+  };
 }

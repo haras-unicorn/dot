@@ -3,5 +3,7 @@
 # TODO: please or doas
 
 {
-  security.sudo.package = pkgs.sudo.override { withInsults = true; };
+  system = {
+    security.sudo.package = pkgs.sudo.override { withInsults = true; };
+  };
 }

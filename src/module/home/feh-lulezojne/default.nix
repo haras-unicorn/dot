@@ -16,10 +16,12 @@ let
   };
 in
 {
-  home.packages = with pkgs; [
-    feh
-    wallpaper
-  ];
+  home.shared = {
+    home.packages = with pkgs; [
+      feh
+      wallpaper
+    ];
 
-  programs.lulezojne.enable = true;
+    programs.lulezojne.enable = true;
+  };
 }

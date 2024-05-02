@@ -27,14 +27,15 @@ let
       cfg.sessionStartup);
 in
 {
-  programs.bash.enable = true;
+  home.shared = {
+    programs.bash.enable = true;
 
-  programs.bash.initExtra = ''
-    ${vars}
+    programs.bash.initExtra = ''
+      ${vars}
 
-    ${aliases}
+      ${aliases}
 
-    ${startup}
-  '';
+      ${startup}
+    '';
+  };
 }
-

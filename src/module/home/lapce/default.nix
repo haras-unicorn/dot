@@ -4,5 +4,7 @@
 # hopefully a vscode replacement
 
 {
-  home.packages = with pkgs; [ lapce ];
+  home.shared = {
+    home.packages = with pkgs; [ lapce ];
+  };
 }

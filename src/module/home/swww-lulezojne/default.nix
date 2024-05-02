@@ -16,14 +16,16 @@ let
   };
 in
 {
-  de.sessionStartup = [
-    "${pkgs.swww}/bin/swww init"
-  ];
+  home.shared = {
+    de.sessionStartup = [
+      "${pkgs.swww}/bin/swww init"
+    ];
 
-  home.packages = with pkgs; [
-    swww
-    wallpaper
-  ];
+    home.packages = with pkgs; [
+      swww
+      wallpaper
+    ];
 
-  programs.lulezojne.enable = true;
+    programs.lulezojne.enable = true;
+  };
 }

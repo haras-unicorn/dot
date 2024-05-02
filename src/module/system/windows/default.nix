@@ -1,8 +1,10 @@
 { pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [
-    ntfs3g
-    woeusb
-  ];
+  system = {
+    environment.systemPackages = with pkgs; [
+      ntfs3g
+      woeusb
+    ];
+  };
 }
