@@ -1,3 +1,6 @@
+set windows-shell := ["nu.exe", "-c"]
+set shell := ["nu", "-c"]
+
 scripts := absolute_path('scripts')
 root := absolute_path('')
 

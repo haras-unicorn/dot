@@ -29,6 +29,7 @@ builtins.foldl'
           html-tidy
 
           # Tools
+          nushell
           just
           openssl
           openvpn
