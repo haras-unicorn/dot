@@ -1,40 +1,36 @@
 set windows-shell := ["nu.exe", "-c"]
 set shell := ["nu", "-c"]
 
+root := justfile_directory()
 scripts := absolute_path('scripts')
-root := absolute_path('')
+src := absolute_path('src')
 
 format:
-  shfmt --write {{root}}
-  prettier --write {{root}}
-  nixpkgs-fmt {{root}}
+  shfmt --write "{{root}}"
+  prettier --write "{{root}}"
+  nixpkgs-fmt "{{root}}"
   yapf --recursive --in-place --parallel "{{root}}"
 
 lint:
-  shellcheck {{scripts}}/*
+  let result = glob '{{root}}/**/*.sh' | \
+    par-each { |x| shellcheck $x } | \
+    filter { |x| $x != "" }; \
+  if ($result | is-empty) { \
+    exit 0; \
+  } else { \
+    echo ($result | str join); \
+    exit 1; \
+  }
+
   ruff check "{{root}}"
-  prettier --check {{root}}
+  prettier --check "{{root}}"
 
-part *args:
-  "{{scripts}}"/part.sh {{args}}
-
-mkpass *args:
-  "{{scripts}}"/mkpass.sh {{args}}
-
-mkage *args:
-  "{{scripts}}"/mkage.sh {{args}}
-
-mkssh *args:
-  "{{scripts}}"/mkssh.sh {{args}}
-
-mkvpn *args:
-  "{{scripts}}"/mkvpn.sh {{args}}
-
-mksops *args:
-  "{{scripts}}"/mksops.sh {{args}}
-
-install *args:
-  "{{scripts}}"/install.sh {{args}}
-
-image *args:
-  "{{scripts}}"/image.sh {{args}}
+  let result = glob '{{root}}/**/*.nix' | \
+    par-each { |x| nil diagnostics $x } | \
+    filter { |x| $x != "" }; \
+  if ($result | is-empty) { \
+    exit 0; \
+  } else { \
+    echo ($result | str join); \
+    exit 1; \
+  }
