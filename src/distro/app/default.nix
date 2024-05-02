@@ -33,46 +33,6 @@ let
   mime = browserMime // visualMime;
 in
 {
-  de.keybinds = [
-    {
-      mods = [ "super" ];
-      key = "t";
-      command = "${term} ${shell}";
-    }
-    {
-      mods = [ "super" ];
-      key = "w";
-      command = "${browser}";
-    }
-  ];
-
-  de.sessionVariables = {
-    VISUAL = "${visual}";
-    BROWSER = "${browser}";
-    EDITOR = "${editor}";
-  };
-
-  xdg.mimeApps.associations.added = mime;
-  xdg.mimeApps.defaultApplications = mime;
-
-  home.packages = with pkgs; [
-    rpi-imager # NOTE: make images for raspberry pi
-    gnome-firmware # NOTE: view firmware 
-    feh # NOTE: image viewer
-    mpv # NOTE: video viewer
-    pinta # NOTE: image manipulation
-    dbeaver # NOTE: db viewer
-    angryipscanner # NOTE: network scanner
-    via # NOTE: keyboard configurator
-    polychromatic # NOTE: razer device configurator
-    netflix # NOTE: video streaming
-    gimp # NOTE: image manipulation
-    inkscape # NOTE: vector graphics design
-    gpt4all # NOTE: run llms locally
-    pencil # NOTE: UI/UX prototyping
-    libresprite # NOTE: pixel art
-  ];
-
   imports = [
     "${self}/src/module/home/syncthing"
     "${self}/src/module/home/keepassxc"
@@ -97,4 +57,46 @@ in
     "${self}/src/module/home/code"
     "${self}/src/module/home/firefox"
   ];
+
+  home.shared = {
+    de.keybinds = [
+      {
+        mods = [ "super" ];
+        key = "t";
+        command = "${term} ${shell}";
+      }
+      {
+        mods = [ "super" ];
+        key = "w";
+        command = "${browser}";
+      }
+    ];
+
+    de.sessionVariables = {
+      VISUAL = "${visual}";
+      BROWSER = "${browser}";
+      EDITOR = "${editor}";
+    };
+
+    xdg.mimeApps.associations.added = mime;
+    xdg.mimeApps.defaultApplications = mime;
+
+    home.packages = with pkgs; [
+      rpi-imager # NOTE: make images for raspberry pi
+      gnome-firmware # NOTE: view firmware 
+      feh # NOTE: image viewer
+      mpv # NOTE: video viewer
+      pinta # NOTE: image manipulation
+      dbeaver # NOTE: db viewer
+      angryipscanner # NOTE: network scanner
+      via # NOTE: keyboard configurator
+      polychromatic # NOTE: razer device configurator
+      netflix # NOTE: video streaming
+      gimp # NOTE: image manipulation
+      inkscape # NOTE: vector graphics design
+      gpt4all # NOTE: run llms locally
+      pencil # NOTE: UI/UX prototyping
+      libresprite # NOTE: pixel art
+    ];
+  };
 }
