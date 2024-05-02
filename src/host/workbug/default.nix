@@ -41,6 +41,7 @@
     imports = [
       "${self}/src/module/hardware/amd-cpu"
       "${self}/src/module/hardware/firmware"
+      "${self}/src/module/hardware/swap"
     ];
 
     boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -68,13 +69,6 @@
       device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
     };
-
-    swapDevices = [
-      {
-        device = "/var/swap";
-        size = config.dot.hardware.ram * 1024;
-      }
-    ];
 
     services.fstrim.enable = true;
   };

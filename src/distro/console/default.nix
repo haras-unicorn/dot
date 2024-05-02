@@ -1,5 +1,6 @@
 { self
 , pkgs
+, lib
 , config
 , ...
 }:
@@ -9,6 +10,7 @@
 let
   editor = "${pkgs."${config.dot.editor.pkg}"}/bin/${config.dot.editor.bin}";
 in
+with lib;
 {
   imports = [
     "${self}/src/module/home/sh"
@@ -34,6 +36,43 @@ in
     "${self}/src/module/home/nushell"
     "${self}/src/module/home/helix"
   ];
+
+  options.dot = {
+    shell = {
+      pkg = mkOption {
+        type = with types; str;
+        default = "bash";
+        example = "nushell";
+      };
+      bin = mkOption {
+        type = with types; str;
+        default = "bash";
+        example = "nu";
+      };
+      module = mkOption {
+        type = with types; str;
+        default = "bash";
+        example = "nushell";
+      };
+    };
+    editor = {
+      pkg = mkOption {
+        type = with types; str;
+        default = "vim";
+        example = "helix";
+      };
+      bin = mkOption {
+        type = with types; str;
+        default = "vim";
+        example = "hx";
+      };
+      module = mkOption {
+        type = with types; str;
+        default = "vim";
+        example = "helix";
+      };
+    };
+  };
 
   home.shared = {
     shell.aliases = {

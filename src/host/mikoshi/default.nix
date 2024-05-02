@@ -13,6 +13,7 @@
     imports = [
       "${self}/src/module/hardware/intel-cpu"
       "${self}/src/module/hardware/firmware"
+      "${self}/src/module/hardware/swap"
     ];
 
     virtualisation.hypervGuest.enable = true;
@@ -37,13 +38,6 @@
       device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
     };
-
-    swapDevices = [
-      {
-        device = "/var/swap";
-        size = config.dot.hardware.ram * 1024;
-      }
-    ];
   };
 
   system = { self, userName, hostName, ... }: {

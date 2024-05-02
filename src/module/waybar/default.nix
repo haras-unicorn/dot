@@ -1,8 +1,5 @@
 { pkgs, config, ... }:
 
-let
-  hardware = config.dot.hardware;
-in
 {
   home.shared = {
     de.sessionStartup = [
@@ -47,13 +44,13 @@ in
       (pkgs.lib.attrsets.recursiveUpdate
         (builtins.fromJSON (builtins.readFile ./config.json))
         {
-          output = hardware.mainMonitor;
-          network = { interface = hardware.networkInterface; };
+          output = config.dot.mainMonitor;
+          network = { interface = config.dot.networkInterface; };
           tray = {
             icon-size = config.dot.font.size.large;
           };
           temperature = {
-            hwmon-path = hardware.cpuHwmon;
+            hwmon-path = config.dot.cpuHwmon;
           };
         })
     ];

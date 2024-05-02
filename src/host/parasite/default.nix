@@ -15,6 +15,8 @@
   };
 
   system = { self, ... }: {
+    wsl.enable = true;
+
     imports = [
       "${self}/src/module/system/location"
       "${self}/src/module/system/network"

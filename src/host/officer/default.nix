@@ -48,6 +48,7 @@
       "${self}/src/module/hardware/amd-cpu"
       "${self}/src/module/hardware/nvidia-gpu"
       "${self}/src/module/hardware/firmware"
+      "${self}/src/module/hardware/swap"
     ];
 
     boot.initrd.availableKernelModules = [
@@ -75,13 +76,6 @@
       device = "/dev/disk/by-partlabel/nixboot";
       fsType = "vfat";
     };
-
-    swapDevices = [
-      {
-        device = "/var/swap";
-        size = config.dot.hardware.ram * 1024;
-      }
-    ];
 
     services.fstrim.enable = true;
   };

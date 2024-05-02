@@ -1,8 +1,12 @@
-{ pkgs, config, ... }:
+{ self, pkgs, config, ... }:
 
 # TODO: lulezojne
 
 {
+  imports = [
+    "${self}/src/modules/gpg"
+  ];
+
   home.shared = {
     de.keybinds = [
       {

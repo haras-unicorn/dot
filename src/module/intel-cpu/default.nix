@@ -1,14 +1,26 @@
-{ ... }:
+{ lib, ... }:
 
 {
-  system = {
-    boot.kernelModules = [
-      "kvm-intel"
-      "cpuid"
-    ];
+  options = {
+    dot = {
+      cpuHwmon = lib.mkOption {
+        type = lib.types.str;
+        description = "ls /sys/class/hwmon";
+        example = "/sys/class/hwmon/hwmon1/temp1_input";
+      };
+    };
+  };
 
-    hardware.cpu.intel.updateMicrocode = true;
+  config = {
+    system = {
+      boot.kernelModules = [
+        "kvm-intel"
+        "cpuid"
+      ];
 
-    programs.corectrl.enable = true;
+      hardware.cpu.intel.updateMicrocode = true;
+
+      programs.corectrl.enable = true;
+    };
   };
 }

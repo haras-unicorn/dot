@@ -46,7 +46,7 @@ in
     system = mkIf cfg.enable {
       networking.nat = {
         enable = true;
-        externalInterface = config.dot.hardware.networkInterface;
+        externalInterface = config.dot.networkInterface;
         internalInterfaces = [ dev ];
       };
       networking.firewall.trustedInterfaces = [ dev ];

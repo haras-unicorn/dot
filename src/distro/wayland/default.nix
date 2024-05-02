@@ -1,4 +1,4 @@
-{ self, ... }:
+{ lib, self, ... }:
 
 # TODO: https://github.com/kando-menu/kando
 
@@ -35,6 +35,29 @@
     "${self}/src/module/home/pcmanfm"
     # "${self}/src/module/home/spacedrive"
   ];
+
+  options = {
+    dot = {
+      mainMonitor = lib.mkOption {
+        type = lib.str;
+        description = ''
+          xrandr --query
+          hyprctl monitors
+          swaymsg -t get_outputs
+        '';
+        example = "DP-1";
+      };
+      monitors = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        description = ''
+          xrandr --query
+          hyprctl monitors
+          swaymsg -t get_outputs
+        '';
+        example = [ "DP-1" ];
+      };
+    };
+  };
 
   home.shared = {
     # NOTE: needed for tray items to work properly

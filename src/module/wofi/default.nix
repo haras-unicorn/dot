@@ -1,6 +1,10 @@
-{ pkgs, config, ... }:
+{ self, pkgs, config, ... }:
 
 {
+  imports = [
+    "${self}/src/modules/gpg"
+  ];
+
   home.shared = {
     de.keybinds = [
       {

@@ -1,4 +1,4 @@
-{ self, pkgs, config, ... }:
+{ self, lib, pkgs, config, ... }:
 
 # FIXME: rpi-imager https://github.com/hyprwm/Hyprland/issues/4614
 
@@ -32,6 +32,7 @@ let
 
   mime = browserMime // visualMime;
 in
+with lib;
 {
   imports = [
     "${self}/src/module/home/syncthing"
@@ -58,45 +59,101 @@ in
     "${self}/src/module/home/firefox"
   ];
 
-  home.shared = {
-    de.keybinds = [
-      {
-        mods = [ "super" ];
-        key = "t";
-        command = "${term} ${shell}";
-      }
-      {
-        mods = [ "super" ];
-        key = "w";
-        command = "${browser}";
-      }
-    ];
-
-    de.sessionVariables = {
-      VISUAL = "${visual}";
-      BROWSER = "${browser}";
-      EDITOR = "${editor}";
+  options.dot = {
+    term = {
+      pkg = mkOption {
+        type = with types; str;
+        default = "kitty";
+        example = "alacritty";
+      };
+      bin = mkOption {
+        type = with types; str;
+        default = "kitty";
+        example = "alacritty";
+      };
+      module = mkOption {
+        type = with types; str;
+        default = "kitty";
+        example = "alacritty";
+      };
     };
+    visual = {
+      pkg = mkOption {
+        type = with types; str;
+        default = "vscode";
+        example = "vscodium";
+      };
+      bin = mkOption {
+        type = with types; str;
+        default = "code";
+        example = "codium";
+      };
+      module = mkOption {
+        type = with types; str;
+        default = "code";
+        example = "code";
+      };
+    };
+    browser = {
+      pkg = mkOption {
+        type = with types; str;
+        default = "firefox";
+        example = "vivaldi";
+      };
+      bin = mkOption {
+        type = with types; str;
+        default = "firefox";
+        example = "vivaldi";
+      };
+      module = mkOption {
+        type = with types; str;
+        default = "firefox";
+        example = "vivaldi";
+      };
+    };
+  };
 
-    xdg.mimeApps.associations.added = mime;
-    xdg.mimeApps.defaultApplications = mime;
+  config = {
+    home.shared = {
+      de.keybinds = [
+        {
+          mods = [ "super" ];
+          key = "t";
+          command = "${term} ${shell}";
+        }
+        {
+          mods = [ "super" ];
+          key = "w";
+          command = "${browser}";
+        }
+      ];
 
-    home.packages = with pkgs; [
-      rpi-imager # NOTE: make images for raspberry pi
-      gnome-firmware # NOTE: view firmware 
-      feh # NOTE: image viewer
-      mpv # NOTE: video viewer
-      pinta # NOTE: image manipulation
-      dbeaver # NOTE: db viewer
-      angryipscanner # NOTE: network scanner
-      via # NOTE: keyboard configurator
-      polychromatic # NOTE: razer device configurator
-      netflix # NOTE: video streaming
-      gimp # NOTE: image manipulation
-      inkscape # NOTE: vector graphics design
-      gpt4all # NOTE: run llms locally
-      pencil # NOTE: UI/UX prototyping
-      libresprite # NOTE: pixel art
-    ];
+      de.sessionVariables = {
+        VISUAL = "${visual}";
+        BROWSER = "${browser}";
+        EDITOR = "${editor}";
+      };
+
+      xdg.mimeApps.associations.added = mime;
+      xdg.mimeApps.defaultApplications = mime;
+
+      home.packages = with pkgs; [
+        rpi-imager # NOTE: make images for raspberry pi
+        gnome-firmware # NOTE: view firmware 
+        feh # NOTE: image viewer
+        mpv # NOTE: video viewer
+        pinta # NOTE: image manipulation
+        dbeaver # NOTE: db viewer
+        angryipscanner # NOTE: network scanner
+        via # NOTE: keyboard configurator
+        polychromatic # NOTE: razer device configurator
+        netflix # NOTE: video streaming
+        gimp # NOTE: image manipulation
+        inkscape # NOTE: vector graphics design
+        gpt4all # NOTE: run llms locally
+        pencil # NOTE: UI/UX prototyping
+        libresprite # NOTE: pixel art
+      ];
+    };
   };
 }

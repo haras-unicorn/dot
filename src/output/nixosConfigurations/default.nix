@@ -100,11 +100,8 @@ builtins.foldl'
 
           system.stateVersion = "23.11";
         })
-        nixos-wsl.nixosModules.wsl # NOTE: anabled with wsl.enable
-        ({ lib, config, ... }: lib.mkIf config.dot.wsl {
-          wsl.enable = true;
-          wsl.defaultUser = "${userName}";
-        })
+        nixos-wsl.nixosModules.wsl
+        { wsl.defaultUser = "${userName}"; }
         sops-nix.nixosModules.sops # NOTE: enabled when at least one secret is added
         ({ lib, config, sops-nix, ... }: {
           sops.defaultSopsFile = "${self}/src/host/${hostName}/secrets.sops.enc.yaml";
@@ -118,6 +115,13 @@ builtins.foldl'
           nixpkgs.overlays = [
             nix-vscode-extensions.overlays.default
           ];
+        }
+        {
+          options.dot.groups = nixpkgs.lib.mkOption {
+            type = with nixpkgs.lib.types; listOf str;
+            default = [ ];
+            example = [ "libvirtd" "docker" "podman" "video" "audio" ];
+          };
         }
         ({ pkgs, config, ... }:
           if hasUserConfigModule then {
