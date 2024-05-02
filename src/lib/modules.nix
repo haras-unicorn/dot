@@ -6,13 +6,16 @@
 # The schema closely follows nixpkgs.lib.nixosSystem module schema
 # Each module can import other modules and can declare options directly or be separated into config and options parts
 
-# Each module config has a system and home part
+# Each module config has a shared, system and home part
+
 # The system part is applied to nixpkgs.lib.nixosSystem
 # The home part is applied to home manager
 
 # The home part also has a shared part and a per-user part
 # The shared part is applied to each user via home-manager.sharedModules
 # The per-user part is applied to individual users (not yet implemented)
+
+# The shared part applies to both nixpkgs.lib.nixosSystem and home-manager.sharedModules
 
 # Here is a kitchen sink example:
 # { self, lib, config, ... }:
@@ -108,8 +111,12 @@ rec {
       imports = mkImports mkSystemModule inputs dotObject;
       options = mkOptions inputs dotObject;
       config = mkConfig inputs [ "system" ] dotObject;
+      sharedConfig = mkConfig inputs [ "shared" ] dotObject;
     in
-    concatModules inputs (imports ++ [{ inherit options config; }]));
+    concatModules inputs (imports ++ [
+      { inherit options config; }
+      { config = sharedConfig; }
+    ]));
 
   mkHomeSharedModule = (dotModule:
     inputs:
@@ -118,8 +125,12 @@ rec {
       imports = mkImports mkSystemModule inputs dotObject;
       options = mkOptions inputs dotObject;
       config = mkConfig inputs [ "home" "shared" ] dotObject;
+      sharedConfig = mkConfig inputs [ "shared" ] dotObject;
     in
-    concatModules inputs (imports ++ [{ inherit options config; }]));
+    concatModules inputs (imports ++ [
+      { inherit options config; }
+      { config = sharedConfig; }
+    ]));
 
   mkHomeUserModule = (user: dotModule:
     inputs:
@@ -128,6 +139,10 @@ rec {
       imports = mkImports mkSystemModule inputs dotObject;
       options = mkOptions inputs dotObject;
       config = mkConfig inputs [ "home" user ] dotObject;
+      sharedConfig = mkConfig inputs [ "shared" ] dotObject;
     in
-    concatModules inputs (imports ++ [{ inherit options config; }]));
+    concatModules inputs (imports ++ [
+      { inherit options config; }
+      { config = sharedConfig; }
+    ]));
 }

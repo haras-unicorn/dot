@@ -1,15 +1,45 @@
+{ nixos-hardware, pkgs, self, vpnHost, vpnDomain, ... }:
+
 {
-  meta.dot = {
-    hardware.ram = 8;
-    hardware.networkInterface = "eth0";
-    groups = [ "mlocate" ];
-    location.timeZone = "Europe/Zagreb";
-    shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
-    editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-    gpg = { pkg = "pinentry"; bin = "pinentry-curses"; flavor = "curses"; };
+  imports = [
+    "${self}/src/module/grub"
+
+    "${self}/src/module/location"
+    "${self}/src/module/network"
+
+    "${self}/src/module/sudo"
+    "${self}/src/module/locate"
+
+    "${self}/src/module/openssh"
+    "${self}/src/module/openvpn-client"
+
+    "${self}/src/distro/coreutils"
+    "${self}/src/distro/diag"
+    "${self}/src/distro/console"
+  ];
+
+  shared = {
+    dot = {
+      ram = 8;
+      networkInterface = "eth0";
+      groups = [ "mlocate" ];
+      location.timeZone = "Europe/Zagreb";
+      shell = { package = pkgs.nushell; bin = "nu"; module = "nushell"; };
+      editor = { package = pkgs.helix; bin = "hx"; module = "helix"; };
+      gpg = { package = pkgs.pinentry; bin = "pinentry-curses"; flavor = "curses"; };
+
+      openssh.enable = true;
+      openssh.authorizations = {
+        haras = [ "hearth" "workbug" ];
+      };
+
+      openvpn.client.enable = true;
+      openvpn.client.host = vpnHost;
+      openvpn.client.domain = vpnDomain;
+    };
   };
 
-  hardware = { self, config, nixos-hardware, ... }: {
+  system = {
     imports = [
       nixos-hardware.nixosModules.raspberry-pi-4
     ];
@@ -36,37 +66,5 @@
       device = "/dev/md0";
       fsType = "ext4";
     };
-  };
-
-  system = { self, userName, hostName, vpnHost, vpnDomain, ... }: {
-    imports = [
-      "${self}/src/module/grub"
-
-      "${self}/src/module/location"
-      "${self}/src/module/network"
-
-      "${self}/src/module/sudo"
-      "${self}/src/module/locate"
-
-      "${self}/src/module/openssh"
-      "${self}/src/module/openvpn-client"
-    ];
-
-    dot.openssh.enable = true;
-    dot.openssh.authorizations = {
-      haras = [ "hearth" "workbug" ];
-    };
-
-    dot.openvpn.client.enable = true;
-    dot.openvpn.client.host = vpnHost;
-    dot.openvpn.client.domain = vpnDomain;
-  };
-
-  user = { self, ... }: {
-    imports = [
-      "${self}/src/distro/coreutils"
-      "${self}/src/distro/diag"
-      "${self}/src/distro/console"
-    ];
   };
 }
