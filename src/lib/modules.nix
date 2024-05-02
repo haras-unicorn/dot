@@ -16,10 +16,9 @@
 
 # Here is a kitchen sink example:
 # { self, lib, config, ... }:
-# with lib;
 # let
-#   cfg = config.desktopEnvironment;
-#   vars = strings.concatStringsSep
+#   cfg = config.dot.desktopEnvironment;
+#   vars = lib.strings.concatStringsSep
 #     "\n"
 #     (builtins.map
 #       (name: "env = ${name}, ${builtins.toString cfg.sessionVariables."${name}"}")
@@ -27,14 +26,16 @@
 # in
 # {
 #   imports = [ "${self}/src/modules/waybar" ];
-#   options.desktopEnvironment = {
-#     sessionVariables = mkOption {
-#       type = with types; lazyAttrsOf (oneOf [ str path int float ]);
-#       default = { };
-#       example = { EDITOR = "hx"; };
-#       description = ''
-#         Environment variables to set on session start with Hyprland.
-#       '';
+#   options = {
+#     dot = {
+#       desktopEnvironment.sessionVariables = lib.mkOption {
+#         type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+#         default = { };
+#         example = { EDITOR = "hx"; };
+#         description = ''
+#           Environment variables to set on session start with Hyprland.
+#         '';
+#       };
 #     };
 #   };
 #   config = {
