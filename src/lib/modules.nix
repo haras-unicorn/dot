@@ -59,7 +59,14 @@
 let
   mkDotObject = inputs: dotModule: if builtins.isFunction dotModule then (dotModule inputs) else dotModule;
   mkImports = mkModule: inputs: dotObject: builtins.map
-    (importName: (mkModule (import importName)) inputs)
+    (maybeImport:
+      let
+        imported =
+          if (builtins.isPath maybeImport) || (builtins.isString maybeImport)
+          then import maybeImport
+          else maybeImport;
+      in
+      (mkModule (imported)) inputs)
     (if builtins.hasAttr "imports" dotObject then dotObject.imports else [ ]);
   mkOptions = inputs: dotObject: if builtins.hasAttr "options" dotObject then dotObject.options else { };
   mkConfig = { lib, ... }: path: dotObject:
