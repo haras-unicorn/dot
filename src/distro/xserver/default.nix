@@ -2,34 +2,34 @@
 
 {
   imports = [
-    "${self}/src/module/home/xdg"
+    "${self}/src/module/xdg"
 
-    "${self}/src/module/home/brightnessctl"
-    "${self}/src/module/home/playerctl"
+    "${self}/src/module/brightnessctl"
+    "${self}/src/module/playerctl"
 
-    "${self}/src/module/home/qtile"
+    "${self}/src/module/qtile"
 
-    "${self}/src/module/home/dunst"
-    "${self}/src/module/home/rofi"
-    "${self}/src/module/home/redshift"
-    "${self}/src/module/home/feh-lulezojne"
-    "${self}/src/module/home/betterlockscreen"
+    "${self}/src/module/dunst"
+    "${self}/src/module/rofi"
+    "${self}/src/module/redshift"
+    "${self}/src/module/feh-lulezojne"
+    "${self}/src/module/betterlockscreen"
 
-    "${self}/src/module/home/obs-studio"
-    "${self}/src/module/home/peek"
-    "${self}/src/module/home/flameshot"
-    "${self}/src/module/home/miraclecast"
-    "${self}/src/module/home/gstreamer"
+    "${self}/src/module/obs-studio"
+    "${self}/src/module/peek"
+    "${self}/src/module/flameshot"
+    "${self}/src/module/miraclecast"
+    "${self}/src/module/gstreamer"
 
-    "${self}/src/module/home/gtk"
-    "${self}/src/module/home/qt"
+    "${self}/src/module/gtk"
+    "${self}/src/module/qt"
 
-    "${self}/src/module/home/mangohud"
-    "${self}/src/module/home/emote"
-    "${self}/src/module/home/alarm"
+    "${self}/src/module/mangohud"
+    "${self}/src/module/emote"
+    "${self}/src/module/alarm"
 
-    "${self}/src/module/home/pcmanfm"
-    "${self}/src/module/home/spacedrive"
+    "${self}/src/module/pcmanfm"
+    "${self}/src/module/spacedrive"
   ];
 
   home.shared = {

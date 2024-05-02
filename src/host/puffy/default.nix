@@ -40,16 +40,16 @@
 
   system = { self, userName, hostName, vpnHost, vpnDomain, ... }: {
     imports = [
-      "${self}/src/module/system/grub"
+      "${self}/src/module/grub"
 
-      "${self}/src/module/system/location"
-      "${self}/src/module/system/network"
+      "${self}/src/module/location"
+      "${self}/src/module/network"
 
-      "${self}/src/module/system/sudo"
-      "${self}/src/module/system/locate"
+      "${self}/src/module/sudo"
+      "${self}/src/module/locate"
 
-      "${self}/src/module/system/openssh"
-      "${self}/src/module/system/openvpn-client"
+      "${self}/src/module/openssh"
+      "${self}/src/module/openvpn-client"
     ];
 
     dot.openssh.enable = true;

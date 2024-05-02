@@ -35,28 +35,28 @@ in
 with lib;
 {
   imports = [
-    "${self}/src/module/home/syncthing"
-    "${self}/src/module/home/keepassxc"
-    "${self}/src/module/home/ferdium"
+    "${self}/src/module/syncthing"
+    "${self}/src/module/keepassxc"
+    "${self}/src/module/ferdium"
 
-    "${self}/src/module/home/ffmpeg"
-    "${self}/src/module/home/vlc"
-    "${self}/src/module/home/udiskie"
-    "${self}/src/module/home/nm-applet"
-    "${self}/src/module/home/libreoffice"
-    "${self}/src/module/home/nomacs"
-    "${self}/src/module/home/okular"
-    "${self}/src/module/home/xarchiver"
-    "${self}/src/module/home/spotify"
+    "${self}/src/module/ffmpeg"
+    "${self}/src/module/vlc"
+    "${self}/src/module/udiskie"
+    "${self}/src/module/nm-applet"
+    "${self}/src/module/libreoffice"
+    "${self}/src/module/nomacs"
+    "${self}/src/module/okular"
+    "${self}/src/module/xarchiver"
+    "${self}/src/module/spotify"
 
-    "${self}/src/module/home/chromium" # NOTE: for dev
-    "${self}/src/module/home/librewolf" # NOTE: for dev
-    # "${self}/src/module/home/teams"
-    # "${self}/src/module/home/jetbrains"
+    "${self}/src/module/chromium" # NOTE: for dev
+    "${self}/src/module/librewolf" # NOTE: for dev
+    # "${self}/src/module/teams"
+    # "${self}/src/module/jetbrains"
 
-    "${self}/src/module/home/kitty"
-    "${self}/src/module/home/code"
-    "${self}/src/module/home/firefox"
+    "${self}/src/module/kitty"
+    "${self}/src/module/code"
+    "${self}/src/module/firefox"
   ];
 
   options.dot = {

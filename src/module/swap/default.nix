@@ -5,7 +5,7 @@ let
 in
 with lib;
 {
-  options.dot.hardware = {
+  options.dot = {
     ram = mkOption {
       type = with types; ints.u8;
       description = "In gigabytes; cat /proc/meminfo";

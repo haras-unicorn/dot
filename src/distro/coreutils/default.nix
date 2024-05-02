@@ -19,12 +19,12 @@ let
 in
 {
   imports = [
-    "${self}/src/module/home/vivid"
-    # "${self}/src/module/home/bat"
-    "${self}/src/module/home/ripgrep"
-    "${self}/src/module/home/sd"
-    "${self}/src/module/home/fd"
-    "${self}/src/module/home/eza"
+    "${self}/src/module/vivid"
+    # "${self}/src/module/bat"
+    "${self}/src/module/ripgrep"
+    "${self}/src/module/sd"
+    "${self}/src/module/fd"
+    "${self}/src/module/eza"
   ];
 
   home.shared = {

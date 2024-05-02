@@ -39,9 +39,9 @@
 
   hardware = { self, config, ... }: {
     imports = [
-      "${self}/src/module/hardware/amd-cpu"
-      "${self}/src/module/hardware/firmware"
-      "${self}/src/module/hardware/swap"
+      "${self}/src/module/amd-cpu"
+      "${self}/src/module/firmware"
+      "${self}/src/module/swap"
     ];
 
     boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -75,35 +75,35 @@
 
   system = { self, vpnHost, vpnDomain, ... }: {
     imports = [
-      "${self}/src/module/system/grub"
-      "${self}/src/module/system/plymouth"
-      "${self}/src/module/system/zen"
-      "${self}/src/module/system/development"
+      "${self}/src/module/grub"
+      "${self}/src/module/plymouth"
+      "${self}/src/module/zen"
+      "${self}/src/module/development"
 
-      "${self}/src/module/system/location"
-      "${self}/src/module/system/network"
-      "${self}/src/module/system/vpn"
-      "${self}/src/module/system/openvpn-client"
-      "${self}/src/module/system/smartmontools"
-      "${self}/src/module/system/bluetooth"
+      "${self}/src/module/location"
+      "${self}/src/module/network"
+      "${self}/src/module/vpn"
+      "${self}/src/module/openvpn-client"
+      "${self}/src/module/smartmontools"
+      "${self}/src/module/bluetooth"
 
-      "${self}/src/module/system/sudo"
-      "${self}/src/module/system/keyring"
-      "${self}/src/module/system/polkit"
-      "${self}/src/module/system/locate"
+      "${self}/src/module/sudo"
+      "${self}/src/module/keyring"
+      "${self}/src/module/polkit"
+      "${self}/src/module/locate"
 
-      "${self}/src/module/system/pipewire"
-      "${self}/src/module/system/fonts"
-      "${self}/src/module/system/wayland"
-      "${self}/src/module/system/tuigreet"
-      "${self}/src/module/system/hyprland"
-      "${self}/src/module/system/gtklock"
-      "${self}/src/module/system/gvfs"
-      "${self}/src/module/system/transmission"
+      "${self}/src/module/pipewire"
+      "${self}/src/module/fonts"
+      "${self}/src/module/wayland"
+      "${self}/src/module/tuigreet"
+      "${self}/src/module/hyprland"
+      "${self}/src/module/gtklock"
+      "${self}/src/module/gvfs"
+      "${self}/src/module/transmission"
 
-      "${self}/src/module/system/virtual"
-      "${self}/src/module/system/windows"
-      "${self}/src/module/system/gaming"
+      "${self}/src/module/virtual"
+      "${self}/src/module/windows"
+      "${self}/src/module/gaming"
     ];
 
     networking.firewall.allowedTCPPorts = [

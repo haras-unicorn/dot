@@ -4,36 +4,36 @@
 
 {
   imports = [
-    "${self}/src/module/home/xdg"
+    "${self}/src/module/xdg"
 
-    "${self}/src/module/home/brightnessctl"
-    "${self}/src/module/home/playerctl"
+    "${self}/src/module/brightnessctl"
+    "${self}/src/module/playerctl"
 
-    "${self}/src/module/home/hyprland"
-    "${self}/src/module/home/hyprpicker"
+    "${self}/src/module/hyprland"
+    "${self}/src/module/hyprpicker"
 
-    "${self}/src/module/home/waybar"
-    "${self}/src/module/home/wlogout"
-    "${self}/src/module/home/mako"
-    "${self}/src/module/home/wofi"
-    "${self}/src/module/home/swww-lulezojne"
-    "${self}/src/module/home/eww"
+    "${self}/src/module/waybar"
+    "${self}/src/module/wlogout"
+    "${self}/src/module/mako"
+    "${self}/src/module/wofi"
+    "${self}/src/module/swww-lulezojne"
+    "${self}/src/module/eww"
 
-    "${self}/src/module/home/obs-studio"
-    "${self}/src/module/home/kooha"
-    "${self}/src/module/home/grim-slurp-tesseract"
-    "${self}/src/module/home/miraclecast"
-    "${self}/src/module/home/gstreamer"
+    "${self}/src/module/obs-studio"
+    "${self}/src/module/kooha"
+    "${self}/src/module/grim-slurp-tesseract"
+    "${self}/src/module/miraclecast"
+    "${self}/src/module/gstreamer"
 
-    "${self}/src/module/home/gtk"
-    "${self}/src/module/home/qt"
+    "${self}/src/module/gtk"
+    "${self}/src/module/qt"
 
-    "${self}/src/module/home/mangohud"
-    "${self}/src/module/home/emote"
-    "${self}/src/module/home/alarm"
+    "${self}/src/module/mangohud"
+    "${self}/src/module/emote"
+    "${self}/src/module/alarm"
 
-    "${self}/src/module/home/pcmanfm"
-    # "${self}/src/module/home/spacedrive"
+    "${self}/src/module/pcmanfm"
+    # "${self}/src/module/spacedrive"
   ];
 
   options = {

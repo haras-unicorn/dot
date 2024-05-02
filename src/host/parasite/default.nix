@@ -18,13 +18,13 @@
     wsl.enable = true;
 
     imports = [
-      "${self}/src/module/system/location"
-      "${self}/src/module/system/network"
-      "${self}/src/module/system/sudo"
-      "${self}/src/module/system/ssh"
-      "${self}/src/module/system/keyring"
-      "${self}/src/module/system/polkit"
-      "${self}/src/module/system/locate"
+      "${self}/src/module/location"
+      "${self}/src/module/network"
+      "${self}/src/module/sudo"
+      "${self}/src/module/ssh"
+      "${self}/src/module/keyring"
+      "${self}/src/module/polkit"
+      "${self}/src/module/locate"
     ];
   };
 

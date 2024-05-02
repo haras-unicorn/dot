@@ -5,7 +5,7 @@
 {
   home.shared = {
     imports = [
-      "${self}/src/module/home/gstreamer"
+      "${self}/src/module/gstreamer"
     ];
 
     de.sessionStartup = [

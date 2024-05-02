@@ -11,9 +11,9 @@
 
   hardware = { self, config, ... }: {
     imports = [
-      "${self}/src/module/hardware/intel-cpu"
-      "${self}/src/module/hardware/firmware"
-      "${self}/src/module/hardware/swap"
+      "${self}/src/module/intel-cpu"
+      "${self}/src/module/firmware"
+      "${self}/src/module/swap"
     ];
 
     virtualisation.hypervGuest.enable = true;
@@ -42,16 +42,16 @@
 
   system = { self, userName, hostName, ... }: {
     imports = [
-      "${self}/src/module/system/hardened"
+      "${self}/src/module/hardened"
 
-      "${self}/src/module/system/location"
-      "${self}/src/module/system/network"
+      "${self}/src/module/location"
+      "${self}/src/module/network"
 
-      "${self}/src/module/system/sudo"
-      "${self}/src/module/system/locate"
+      "${self}/src/module/sudo"
+      "${self}/src/module/locate"
 
-      "${self}/src/module/system/openssh"
-      "${self}/src/module/system/openvpn-server"
+      "${self}/src/module/openssh"
+      "${self}/src/module/openvpn-server"
     ];
 
     boot.loader.grub.device = "/dev/vda";

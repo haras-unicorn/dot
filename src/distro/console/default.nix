@@ -13,28 +13,28 @@ in
 with lib;
 {
   imports = [
-    "${self}/src/module/home/sh"
+    "${self}/src/module/sh"
 
-    "${self}/src/module/home/gpg"
-    "${self}/src/module/home/ssh"
-    "${self}/src/module/home/cloud"
+    "${self}/src/module/gpg"
+    "${self}/src/module/ssh"
+    "${self}/src/module/cloud"
 
-    "${self}/src/module/home/direnv"
-    "${self}/src/module/home/starship"
-    "${self}/src/module/home/zoxide"
-    "${self}/src/module/home/pandoc"
+    "${self}/src/module/direnv"
+    "${self}/src/module/starship"
+    "${self}/src/module/zoxide"
+    "${self}/src/module/pandoc"
 
-    "${self}/src/module/home/yazi"
-    "${self}/src/module/home/git"
+    "${self}/src/module/yazi"
+    "${self}/src/module/git"
 
-    "${self}/src/module/home/piper"
-    "${self}/src/module/home/llama-cpp"
+    "${self}/src/module/piper"
+    "${self}/src/module/llama-cpp"
 
-    "${self}/src/module/home/yai"
-    "${self}/src/module/home/tealdeer"
+    "${self}/src/module/yai"
+    "${self}/src/module/tealdeer"
 
-    "${self}/src/module/home/nushell"
-    "${self}/src/module/home/helix"
+    "${self}/src/module/nushell"
+    "${self}/src/module/helix"
   ];
 
   options.dot = {
