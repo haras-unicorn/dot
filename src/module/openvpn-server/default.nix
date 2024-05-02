@@ -1,6 +1,5 @@
 { lib, config, hostName, ... }:
 
-with lib;
 let
   cfg = config.dot.openvpn.server;
   port = 1194;
@@ -13,29 +12,28 @@ let
 in
 {
   options.dot.openvpn.server = {
-    enable = mkEnableOption "OpenVPN server";
-    host = mkOption {
-      type = types.str;
+    host = lib.mkOption {
+      type = lib.types.str;
       default = "host";
       example = "host";
-      description = mdDoc ''
+      description = lib.mdDoc ''
         OpenVPN server name.
       '';
     };
-    domain = mkOption {
-      type = types.str;
+    domain = lib.mkOption {
+      type = lib.types.str;
       example = "domain.com";
-      description = mdDoc ''
+      description = lib.mdDoc ''
         OpenVPN server domain.
       '';
     };
-    clients = mkOption {
-      type = with types; lazyAttrsOf str;
+    clients = lib.mkOption {
+      type = with lib.types; lazyAttrsOf str;
       default = { };
       example = {
         client1 = "1";
       };
-      description = mdDoc ''
+      description = lib.mdDoc ''
         OpenVPN client to IP mapping.
         Masked subnet portion will be added to the front.
       '';
@@ -43,7 +41,7 @@ in
   };
 
   config = {
-    system = mkIf cfg.enable {
+    system = {
       networking.nat = {
         enable = true;
         externalInterface = config.dot.networkInterface;
@@ -93,9 +91,9 @@ in
           expand-hosts
           local=/${cfg.domain}/
           interface=${dev}
-          ${concatStringsSep
+          ${lib.concatStringsSep
             "\n"
-            (mapAttrsToList
+            (lib.mapAttrsToList
               (name: ipLastByte:
                 "address=/${name}.mikoshi/${subnet}.${toString ipLastByte}")
               cfg.clients)}
@@ -122,7 +120,7 @@ in
       sops.secrets."server.dhparam.pem".group = "nogroup";
       sops.secrets."server.dhparam.pem".mode = "0600";
 
-      environment.etc = attrsets.concatMapAttrs
+      environment.etc = lib.attrsets.concatMapAttrs
         (client: ip: {
           "/openvpn/${cfg.host}/clients/${client}".text = ''
             ifconfig-push ${subnet}.${ip} ${mask}

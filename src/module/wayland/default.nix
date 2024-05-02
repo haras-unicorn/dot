@@ -8,7 +8,6 @@
 
 # FIXME: https://github.com/NVIDIA/open-gpu-kernel-modules/issues/467#issuecomment-1544340511
 
-with lib;
 let
   cfg = config.de;
 
@@ -30,8 +29,8 @@ let
 in
 {
   options.de = {
-    login = mkOption {
-      type = types.str;
+    login = lib.mkOption {
+      type = lib.types.str;
       default = [ ];
       example = "tuigreet --cmd Hyprland";
       description = ''

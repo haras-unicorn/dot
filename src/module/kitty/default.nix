@@ -2,11 +2,10 @@
 
 # TODO: add dot prefix
 
-with lib;
 let
   cfg = config.term;
 
-  vars = strings.concatStringsSep
+  vars = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (name: "env ${name}=${builtins.toString cfg.sessionVariables."${name}"}")
@@ -18,8 +17,8 @@ let
 in
 {
   options.term = {
-    sessionVariables = mkOption {
-      type = with types; lazyAttrsOf (oneOf [ str path int float ]);
+    sessionVariables = lib.mkOption {
+      type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
       default = { };
       example = { EDITOR = "hx"; };
       description = ''

@@ -1,13 +1,9 @@
 { pkgs, lib, config, ... }:
 
-with lib;
-let
-  cfg = config.de;
-in
 {
-  options.de = {
-    startup = mkOption {
-      type = types.str;
+  options.dot.desktopEnvironment = {
+    startup = lib.mkOption {
+      type = lib.types.str;
       default = [ ];
       example = "Hyprland";
       description = ''
@@ -18,7 +14,8 @@ in
 
   config = {
     system = {
-      de.login = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${cfg.startup}";
+      dot.desktopEnvironment.login =
+        "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${config.dot.desktopEnvironment.startup}";
     };
   };
 }

@@ -1,28 +1,31 @@
-{ lib, config, ... }:
+{ lib
+  # , config
+  # , user
+  # , host
+, ...
+}:
 
 # FIXME: fix the ssh key thing
 
-with lib;
-let
-  cfg = config.dot.openssh;
-in
+# let
+#   cfg = config.dot.openssh;
+# in
 {
   options.dot.openssh = {
-    enable = mkEnableOption "OpenSSH server";
-    authorizations = mkOption {
-      type = with types; attrsOf (listOf str);
+    authorizations = lib.mkOption {
+      type = with lib.types; attrsOf (listOf str);
       default = { };
       example = {
         user1 = [ "host1" ];
       };
-      description = mdDoc ''
+      description = lib.mdDoc ''
         OpenSSH authorized keys specification
       '';
     };
   };
 
   config = {
-    system = mkIf cfg.enable ({
+    system = ({
       services.openssh.enable = true;
       services.openssh.allowSFTP = true;
       services.openssh.settings.PermitRootLogin = "no";

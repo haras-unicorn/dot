@@ -5,7 +5,6 @@
 # systemctl --user import-environment PATH
 # systemctl --user restart xdg-desktop-portal.service
 
-with lib;
 let
   cfg = config.de;
 
@@ -31,28 +30,28 @@ let
     '';
   };
 
-  vars = strings.concatStringsSep
+  vars = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (name: "env = ${name}, ${builtins.toString cfg.sessionVariables."${name}"}")
       (builtins.attrNames cfg.sessionVariables));
 
-  startup = strings.concatStringsSep
+  startup = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (command: "exec-once = ${builtins.toString command}")
       cfg.sessionStartup);
 
-  binds = strings.concatStringsSep
+  binds = lib.strings.concatStringsSep
     "\n"
     (builtins.map
-      (bind: "bind = ${strings.concatStringsSep " " bind.mods}, ${bind.key}, exec, ${bind.command}")
+      (bind: "bind = ${lib.strings.concatStringsSep " " bind.mods}, ${bind.key}, exec, ${bind.command}")
       cfg.keybinds);
 in
 {
   options.de = {
-    sessionVariables = mkOption {
-      type = with types; lazyAttrsOf (oneOf [ str path int float ]);
+    sessionVariables = lib.mkOption {
+      type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
       default = { };
       example = { EDITOR = "hx"; };
       description = ''
@@ -60,8 +59,8 @@ in
       '';
     };
 
-    sessionStartup = mkOption {
-      type = with types; listOf str;
+    sessionStartup = lib.mkOption {
+      type = with lib.types; listOf str;
       default = [ ];
       example = [ "keepassxc" ];
       description = ''
@@ -69,9 +68,9 @@ in
       '';
     };
 
-    keybinds = mkOption {
+    keybinds = lib.mkOption {
       # TODO: strictly check for the mods, key and command options 
-      type = with types; listOf (lazyAttrsOf (oneOf [ str (listOf str) ]));
+      type = with lib.types; listOf (lazyAttrsOf (oneOf [ str (listOf str) ]));
       default = [ ];
       example = [
         {

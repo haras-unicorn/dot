@@ -2,23 +2,22 @@
 
 # TODO: add dot prefix
 
-with lib;
 let
   cfg = config.shell;
 
-  vars = strings.concatStringsSep
+  vars = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (name: ''$env.${name} = $"(${builtins.toString cfg.sessionVariables."${name}"})"'')
       (builtins.attrNames cfg.sessionVariables));
 
-  aliases = strings.concatStringsSep
+  aliases = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (name: ''alias ${name} = ${builtins.toString cfg.aliases."${name}"}'')
       (builtins.attrNames cfg.aliases));
 
-  startup = strings.concatStringsSep
+  startup = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (command: "${builtins.toString command}")
@@ -26,8 +25,8 @@ let
 in
 {
   options.shell = {
-    sessionVariables = mkOption {
-      type = with types; lazyAttrsOf (oneOf [ str path int float ]);
+    sessionVariables = lib.mkOption {
+      type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
       default = { };
       example = { EDITOR = "hx"; };
       description = ''
@@ -35,8 +34,8 @@ in
       '';
     };
 
-    aliases = mkOption {
-      type = with types; lazyAttrsOf str;
+    aliases = lib.mkOption {
+      type = with lib.types; lazyAttrsOf str;
       default = { };
       example = { rm = "rm -i"; };
       description = ''
@@ -44,8 +43,8 @@ in
       '';
     };
 
-    sessionStartup = mkOption {
-      type = with types; listOf str;
+    sessionStartup = lib.mkOption {
+      type = with lib.types; listOf str;
       default = [ ];
       example = [ "fastfetch" ];
       description = ''

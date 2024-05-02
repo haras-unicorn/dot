@@ -15,11 +15,10 @@
 # TODO: fonts
 # TODO: callbacks for widgets??
 
-with lib;
 let
   cfg = config.de;
 
-  startup = strings.concatStringsSep
+  startup = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (command: ''
@@ -30,7 +29,7 @@ let
       '')
       cfg.sessionStartup);
 
-  vars = strings.concatStringsSep
+  vars = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (name: ''
@@ -38,7 +37,7 @@ let
       '')
       (builtins.attrNames cfg.sessionVariables));
 
-  binds = strings.concatStringsSep
+  binds = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (bind:
@@ -58,7 +57,7 @@ let
             if (builtins.length mods) == 0 then
               ""
             else
-              ''"${strings.concatStringsSep ''", "'' mods}"'';
+              ''"${lib.strings.concatStringsSep ''", "'' mods}"'';
         in
         ''
           keys.append(
@@ -73,8 +72,8 @@ let
 in
 {
   options.de = {
-    sessionVariables = mkOption {
-      type = with types; lazyAttrsOf (oneOf [ str path int float ]);
+    sessionVariables = lib.mkOption {
+      type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
       default = { };
       example = { EDITOR = "hx"; };
       description = ''
@@ -82,8 +81,8 @@ in
       '';
     };
 
-    sessionStartup = mkOption {
-      type = with types; listOf str;
+    sessionStartup = lib.mkOption {
+      type = with lib.types; listOf str;
       default = [ ];
       example = [ "keepassxc" ];
       description = ''
@@ -91,9 +90,9 @@ in
       '';
     };
 
-    keybinds = mkOption {
+    keybinds = lib.mkOption {
       # TODO: strictly check for the mods, key and command options 
-      type = with types; listOf (lazyAttrsOf (oneOf [ str (listOf str) ]));
+      type = with lib.types; listOf (lazyAttrsOf (oneOf [ str (listOf str) ]));
       default = [ ];
       example = [
         {

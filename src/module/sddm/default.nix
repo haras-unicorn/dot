@@ -1,13 +1,12 @@
 { pkgs, lib, config, sweet-theme, ... }:
 
-with lib;
 let
   cfg = config.de;
 in
 {
   options.de = {
-    session = mkOption {
-      type = types.str;
+    session = lib.mkOption {
+      type = lib.types.str;
       default = [ ];
       example = "none+qtile";
       description = ''

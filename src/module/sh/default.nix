@@ -4,23 +4,22 @@
 # TODO: programs.bash.package ?
 # TODO: prompt after starship like nushell
 
-with lib;
 let
-  cfg = config.shell;
+  cfg = config.dot.shell;
 
-  vars = strings.concatStringsSep
+  vars = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (name: ''export ${name}="$(${builtins.toString cfg.sessionVariables."${name}"})"'')
       (builtins.attrNames cfg.sessionVariables));
 
-  aliases = strings.concatStringsSep
+  aliases = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (name: ''alias ${name}="${builtins.toString cfg.aliases."${name}"}"'')
       (builtins.attrNames cfg.aliases));
 
-  startup = strings.concatStringsSep
+  startup = lib.strings.concatStringsSep
     "\n"
     (builtins.map
       (command: "${builtins.toString command}")

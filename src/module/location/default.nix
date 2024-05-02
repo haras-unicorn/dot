@@ -1,10 +1,9 @@
 { config, lib, ... }:
 
-with lib;
 {
   options.dot.location = {
-    timeZone = mkOption {
-      type = with types; str;
+    timeZone = lib.mkOption {
+      type = lib.types.str;
       default = "Etc/UTC";
       example = "Etc/UTC";
     };

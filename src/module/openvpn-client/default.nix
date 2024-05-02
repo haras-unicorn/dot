@@ -1,6 +1,5 @@
 { lib, config, ... }:
 
-with lib;
 let
   cfg = config.dot.openvpn.client;
   port = 1194;
@@ -11,26 +10,25 @@ let
 in
 {
   options.dot.openvpn.client = {
-    enable = mkEnableOption "OpenVPN client";
-    host = mkOption {
-      type = types.str;
+    host = lib.mkOption {
+      type = lib.types.str;
       default = "host";
       example = "host";
-      description = mdDoc ''
+      description = lib.mdDoc ''
         OpenVPN server name.
       '';
     };
-    domain = mkOption {
-      type = types.str;
+    domain = lib.mkOption {
+      type = lib.types.str;
       example = "domain.com";
-      description = mdDoc ''
+      description = lib.mdDoc ''
         OpenVPN server domain.
       '';
     };
   };
 
   config = {
-    system = mkIf cfg.enable {
+    system = {
       services.openvpn.servers."${cfg.host}".config = ''
         client
         remote ${cfg.domain} ${builtins.toString port}
