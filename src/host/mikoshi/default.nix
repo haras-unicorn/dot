@@ -28,8 +28,8 @@
       hardware.networkInterface = "ens3";
       groups = [ "mlocate" ];
       location.timeZone = "Etc/UTC";
-      shell = { package = pkgs.nushell; bin = "nu"; module = "nushell"; };
-      editor = { package = pkgs.helix; bin = "hx"; module = "helix"; };
+      shell = { package = pkgs.nushell; bin = "nu"; };
+      editor = { package = pkgs.helix; bin = "hx"; };
       gpg = { package = pkgs.pinentry; bin = "pinentry-curses"; flavor = "curses"; };
     };
   };

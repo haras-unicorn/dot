@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, pkgs, ... }:
 
 {
   imports = [
@@ -18,9 +18,9 @@
   shared = {
     wsl = true;
     groups = [ "mlocate" "video" "audio" ];
-    shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
-    editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-    gpg = { pkg = "pinentry"; bin = "pinentry-curses"; flavor = "curses"; };
+    shell = { package = pkgs.nushell; bin = "nu"; };
+    editor = { package = pkgs.helix; bin = "hx"; };
+    gpg = { package = pkgs.pinentry; bin = "pinentry-curses"; flavor = "curses"; };
   };
 
   system = {

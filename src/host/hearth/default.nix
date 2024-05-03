@@ -71,11 +71,11 @@
       ];
 
       gpg = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; flavor = "qt"; };
-      shell = { package = pkgs.nushell; bin = "nu"; module = "nushell"; };
-      editor = { package = pkgs.helix; bin = "hx"; module = "helix"; };
-      visual = { package = pkgs.vscode; bin = "code"; module = "code"; };
-      term = { package = pkgs.kitty; bin = "kitty"; module = "kitty"; };
-      browser = { package = pkgs.firefox-bin; bin = "firefox"; module = "firefox"; };
+      shell = { package = pkgs.nushell; bin = "nu"; };
+      editor = { package = pkgs.helix; bin = "hx"; };
+      visual = { package = pkgs.vscode; bin = "code"; };
+      term = { package = pkgs.kitty; bin = "kitty"; };
+      browser = { package = pkgs.firefox-bin; bin = "firefox"; };
 
       font.nerd = { name = "JetBrainsMono Nerd Font"; label = "JetBrainsMono"; };
       font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };

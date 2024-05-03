@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, pkgs, ... }:
 
 {
   imports = [
@@ -63,20 +63,20 @@
         "wireshark"
       ];
 
-      gpg = { pkg = "pinentry-qt"; bin = "pinentry-qt"; flavor = "qt"; };
-      shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
-      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-      visual = { pkg = "vscode"; bin = "code"; module = "code"; };
-      term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
-      browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
+      gpg = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; flavor = "qt"; };
+      shell = { package = pkgs.nushell; bin = "nu"; };
+      editor = { package = pkgs.helix; bin = "hx"; };
+      visual = { package = pkgs.vscode; bin = "code"; };
+      term = { package = pkgs.kitty; bin = "kitty"; };
+      browser = { package = pkgs.firefox-bin; bin = "firefox"; };
 
-      font.nerd = { name = "JetBrainsMono Nerd Font"; pkg = "JetBrainsMono"; };
-      font.mono = { name = "Roboto Mono"; pkg = "roboto-mono"; };
-      font.slab = { name = "Roboto Slab"; pkg = "roboto-slab"; };
-      font.sans = { name = "Roboto"; pkg = "roboto"; };
-      font.serif = { name = "Roboto Serif"; pkg = "roboto-serif"; };
-      font.script = { name = "Eunomia"; pkg = "dotcolon-fonts"; };
-      font.emoji = { name = "Noto Color Emoji"; pkg = "noto-fonts-emoji"; };
+      font.nerd = { name = "JetBrainsMono Nerd Font"; package = pkgs.JetBrainsMono; };
+      font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
+      font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
+      font.sans = { name = "Roboto"; package = pkgs.roboto; };
+      font.serif = { name = "Roboto Serif"; package = pkgs.roboto-serif; };
+      font.script = { name = "Eunomia"; package = pkgs.dotcolon-fonts; };
+      font.emoji = { name = "Noto Color Emoji"; package = pkgs.noto-fonts-emoji; };
       font.size = { small = 12; medium = 13; large = 16; };
     };
   };
