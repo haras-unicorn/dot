@@ -12,8 +12,6 @@ let
 in
 {
   imports = [
-    "${self}/src/module/sh"
-
     "${self}/src/module/gpg"
     "${self}/src/module/ssh"
     "${self}/src/module/cloud"
