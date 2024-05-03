@@ -39,7 +39,7 @@
   options = {
     dot = {
       mainMonitor = lib.mkOption {
-        type = lib.str;
+        type = lib.types.str;
         description = ''
           xrandr --query
           hyprctl monitors

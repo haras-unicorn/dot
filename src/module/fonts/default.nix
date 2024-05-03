@@ -62,7 +62,7 @@ in
   system = {
     fonts.fontDir.enable = true;
     fonts.packages = [
-      (pkgs.nerdfonts.override { fonts = [ config.dot.font.nerd.package ]; })
+      (pkgs.nerdfonts.override { fonts = [ config.dot.font.nerd.label ]; })
       config.dot.font.mono.package
       config.dot.font.slab.package
       config.dot.font.sans.package
