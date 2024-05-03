@@ -1,9 +1,13 @@
 { ... }:
 
 {
-  home.shared = {
-    de.sessionVariables = { MANGOHUD = 1; };
+  shared = {
+    dot = {
+      desktopEnvironment.sessionVariables = { MANGOHUD = 1; };
+    };
+  };
 
+  home.shared = {
     programs.mangohud.enable = true;
     programs.mangohud.enableSessionWide = true;
 

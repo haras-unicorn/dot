@@ -21,11 +21,15 @@ let
   };
 in
 {
-  home.shared = {
-    de.sessionStartup = [
-      "${ferdium}/bin/ferdium"
-    ];
+  shared = {
+    dot = {
+      desktopEnvironment.sessionStartup = [
+        "${ferdium}/bin/ferdium"
+      ];
+    };
+  };
 
+  home.shared = {
     home.packages = [
       ferdium
     ];

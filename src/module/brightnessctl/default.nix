@@ -21,9 +21,9 @@
     };
   };
 
-  config = {
-    home.shared = {
-      de.keybinds = (if !(builtins.isNull config.dot.screenBrightnessDevice) then [
+  shared = {
+    dot = {
+      desktopEnvironment.keybinds = (if !(builtins.isNull config.dot.screenBrightnessDevice) then [
         {
           mods = [ "super" "shift" ];
           key = "b";
@@ -46,7 +46,11 @@
           command = ''${pkgs.brightnessctl}/bin/brightnessctl --device='${config.dot.keyboardBrightnessDevice}' set 2%-'';
         }
       ] else [ ]);
+    };
+  };
 
+  config = {
+    home.shared = {
       home.packages = with pkgs; [ brightnessctl ];
     };
   };

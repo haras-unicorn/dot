@@ -16,11 +16,15 @@ let
   };
 in
 {
-  home.shared = {
-    de.sessionStartup = [
-      "${pkgs.swww}/bin/swww init"
-    ];
+  shared = {
+    dot = {
+      desktopEnvironment.sessionStartup = [
+        "${pkgs.swww}/bin/swww init"
+      ];
+    };
+  };
 
+  home.shared = {
     home.packages = with pkgs; [
       swww
       wallpaper

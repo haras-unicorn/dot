@@ -1,11 +1,15 @@
 { pkgs, config, ... }:
 
 {
-  home.shared = {
-    de.sessionStartup = [
-      "${pkgs.waybar}/bin/waybar"
-    ];
+  shared = {
+    dot = {
+      desktopEnvironment.sessionStartup = [
+        "${pkgs.waybar}/bin/waybar"
+      ];
+    };
+  };
 
+  home.shared = {
     programs.lulezojne.config = {
       plop = [
         {

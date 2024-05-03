@@ -104,26 +104,30 @@ in
   };
 
   config = {
-    home.shared = {
-      de.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "t";
-          command = "${term} ${shell}";
-        }
-        {
-          mods = [ "super" ];
-          key = "w";
-          command = "${browser}";
-        }
-      ];
+    shared = {
+      dot = {
+        desktopEnvironment.keybinds = [
+          {
+            mods = [ "super" ];
+            key = "t";
+            command = "${term} ${shell}";
+          }
+          {
+            mods = [ "super" ];
+            key = "w";
+            command = "${browser}";
+          }
+        ];
 
-      de.sessionVariables = {
-        VISUAL = "${visual}";
-        BROWSER = "${browser}";
-        EDITOR = "${editor}";
+        desktopEnvironment.sessionVariables = {
+          VISUAL = "${visual}";
+          BROWSER = "${browser}";
+          EDITOR = "${editor}";
+        };
       };
+    };
 
+    home.shared = {
       xdg.mimeApps.associations.added = mime;
       xdg.mimeApps.defaultApplications = mime;
 

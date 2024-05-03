@@ -7,12 +7,15 @@
     "${self}/src/module/gstreamer"
   ];
 
+  shared = {
+    dot = {
+      desktopEnvironment.sessionStartup = [
+        "${pkgs.alarm-clock-applet}/bin/alarm-clock-applet"
+      ];
+    };
+  };
+
   home.shared = {
-
-    de.sessionStartup = [
-      "${pkgs.alarm-clock-applet}/bin/alarm-clock-applet"
-    ];
-
     home.packages = with pkgs; [ alarm-clock-applet ];
   };
 }

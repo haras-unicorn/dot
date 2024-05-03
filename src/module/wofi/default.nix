@@ -5,30 +5,34 @@
     "${self}/src/module/gpg"
   ];
 
-  home.shared = {
-    de.keybinds = [
-      {
-        mods = [ "super" ];
-        key = "return";
-        command = ''${pkgs.wofi}/bin/wofi --show drun --prompt "Hello!"'';
-      }
-      {
-        mods = [ "super" ];
-        key = "p";
-        command = "${pkgs.keepmenu}/bin/keepmenu";
-      }
-      {
-        mods = [ "super" "shift" ];
-        key = "p";
-        command = "${pkgs.keepmenu}/bin/keepmenu -a '{PASSWORD}'";
-      }
-      {
-        mods = [ "super" "alt" ];
-        key = "p";
-        command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
-      }
-    ];
+  shared = {
+    dot = {
+      desktopEnvironment.keybinds = [
+        {
+          mods = [ "super" ];
+          key = "return";
+          command = ''${pkgs.wofi}/bin/wofi --show drun --prompt "Hello!"'';
+        }
+        {
+          mods = [ "super" ];
+          key = "p";
+          command = "${pkgs.keepmenu}/bin/keepmenu";
+        }
+        {
+          mods = [ "super" "shift" ];
+          key = "p";
+          command = "${pkgs.keepmenu}/bin/keepmenu -a '{PASSWORD}'";
+        }
+        {
+          mods = [ "super" "alt" ];
+          key = "p";
+          command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
+        }
+      ];
+    };
+  };
 
+  home.shared = {
     programs.lulezojne.config.plop = [
       {
         template = ''

@@ -35,25 +35,29 @@ let
   };
 in
 {
-  home.shared = {
-    de.keybinds = [
-      {
-        mods = [ ];
-        key = "Print";
-        command = "${screenshot}/bin/screenshot";
-      }
-      {
-        mods = [ "shift" ];
-        key = "Print";
-        command = "${screenshot}/bin/screenshot --region";
-      }
-      {
-        mods = [ "control" ];
-        key = "Print";
-        command = "${screenshot}/bin/screenshot --region --ocr";
-      }
-    ];
+  shared = {
+    dot = {
+      desktopEnvironment.keybinds = [
+        {
+          mods = [ ];
+          key = "Print";
+          command = "${screenshot}/bin/screenshot";
+        }
+        {
+          mods = [ "shift" ];
+          key = "Print";
+          command = "${screenshot}/bin/screenshot --region";
+        }
+        {
+          mods = [ "control" ];
+          key = "Print";
+          command = "${screenshot}/bin/screenshot --region --ocr";
+        }
+      ];
+    };
+  };
 
+  home.shared = {
     home.packages = with pkgs; [ grim slurp tesseract4 screenshot ];
   };
 }

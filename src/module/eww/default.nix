@@ -8,19 +8,23 @@ let
   bin = "${package}/bin/eww";
 in
 {
+  shared = {
+    dot = {
+      desktopEnvironment.sessionStartup = [
+        "${bin} daemon"
+      ];
+
+      desktopEnvironment.keybinds = [
+        {
+          mods = [ "super" ];
+          key = "s";
+          command = "${bin} open --toggle sysinfo";
+        }
+      ];
+    };
+  };
+
   home.shared = {
-    de.sessionStartup = [
-      "${bin} daemon"
-    ];
-
-    de.keybinds = [
-      {
-        mods = [ "super" ];
-        key = "s";
-        command = "${bin} open --toggle sysinfo";
-      }
-    ];
-
     home.packages = [
       package
     ];

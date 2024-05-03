@@ -9,12 +9,16 @@
 # TODO: cursor theme?
 
 {
-  home.shared = {
-    de.sessionVariables = {
-      QT_QPA_PLATFORMTHEME = "qt5ct";
-      QT_STYLE_OVERRIDE = "kvantum";
+  shared = {
+    dot = {
+      desktopEnvironment.sessionVariables = {
+        QT_QPA_PLATFORMTHEME = "qt5ct";
+        QT_STYLE_OVERRIDE = "kvantum";
+      };
     };
+  };
 
+  home.shared = {
     home.packages = with pkgs; [
       # kde
       libsForQt5.plasma-integration

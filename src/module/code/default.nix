@@ -38,7 +38,7 @@ in
       "terminal.integrated.fontSize" = config.dot.font.size.small + 1;
       "terminal.external.linuxExec" = "${config.dot.term.package}/bin/${config.dot.term.bin}";
       "terminal.integrated.profiles.linux" = {
-        "${config.dot.shell.package}" = {
+        "${config.dot.shell.bin}" = {
           "path" = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
         };
         "bash" = {
@@ -46,7 +46,7 @@ in
           "icon" = "terminal-bash";
         };
       };
-      "terminal.integrated.defaultProfile.linux" = "${config.dot.shell.package}";
+      "terminal.integrated.defaultProfile.linux" = "${config.dot.shell.bin}";
       "terminal.integrated.automationProfile.linux" = {
         "path" = "${pkgs.bashInteractive}/bin/bash";
       };

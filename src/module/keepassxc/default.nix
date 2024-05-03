@@ -1,11 +1,15 @@
 { pkgs, ... }:
 
 {
-  home.shared = {
-    de.sessionStartup = [
-      "${pkgs.keepassxc}/bin/keepassxc"
-    ];
+  shared = {
+    dot = {
+      desktopEnvironment.sessionStartup = [
+        "${pkgs.keepassxc}/bin/keepassxc"
+      ];
+    };
+  };
 
+  home.shared = {
     home.packages = with pkgs; [
       keepassxc
     ];

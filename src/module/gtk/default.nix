@@ -26,10 +26,19 @@ let
   };
 in
 {
+  shared = {
+    dot = {
+      desktopEnvironment.sessionVariables = {
+        GTK_USE_PORTAL = 1;
+      };
+    };
+  };
+
   home.shared = {
-    de.sessionVariables = {
-      GTK_USE_PORTAL = 1;
-      GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
+    dot = {
+      desktopEnvironment.sessionVariables = {
+        GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
+      };
     };
 
     home.packages = with pkgs; [

@@ -1,13 +1,17 @@
 { pkgs, config, ... }:
 
 {
+  shared = {
+    dot = {
+      desktopEnvironment.sessionStartup = [ "${pkgs.mako}/bin/mako" ];
+    };
+  };
+
   home.shared = {
     home.packages = with pkgs; [
       libnotify
       mako
     ];
-
-    de.sessionStartup = [ "${pkgs.mako}/bin/mako" ];
 
     programs.lulezojne.config.plop = [
       {

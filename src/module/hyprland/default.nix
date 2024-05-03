@@ -6,7 +6,7 @@
 # systemctl --user restart xdg-desktop-portal.service
 
 let
-  cfg = config.de;
+  cfg = config.dot.desktopEnvironment;
 
   current-layout = pkgs.writeShellApplication {
     name = "current-layout";
@@ -49,7 +49,7 @@ let
       cfg.keybinds);
 in
 {
-  options.de = {
+  options.dot.desktopEnvironment = {
     sessionVariables = lib.mkOption {
       type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
       default = { };
