@@ -63,41 +63,43 @@ in
     # "${self}/src/module/jetbrains"
   ];
 
-  options.dot = {
-    term = {
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.kitty;
-        example = pkgs.alacritty;
+  options = {
+    dot = {
+      term = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.kitty;
+          example = pkgs.alacritty;
+        };
+        bin = lib.mkOption {
+          type = lib.types.str;
+          default = "kitty";
+          example = "alacritty";
+        };
       };
-      bin = lib.mkOption {
-        type = lib.types.str;
-        default = "kitty";
-        example = "alacritty";
+      visual = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.vscode;
+          example = pkgs.vscodium;
+        };
+        bin = lib.mkOption {
+          type = lib.types.str;
+          default = "code";
+          example = "codium";
+        };
       };
-    };
-    visual = {
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.vscode;
-        example = pkgs.vscodium;
-      };
-      bin = lib.mkOption {
-        type = lib.types.str;
-        default = "code";
-        example = "codium";
-      };
-    };
-    browser = {
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.firefox-bin;
-        example = pkgs.vivaldi;
-      };
-      bin = lib.mkOption {
-        type = lib.types.str;
-        default = "firefox";
-        example = "vivaldi";
+      browser = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.firefox-bin;
+          example = pkgs.vivaldi;
+        };
+        bin = lib.mkOption {
+          type = lib.types.str;
+          default = "firefox";
+          example = "vivaldi";
+        };
       };
     };
   };
