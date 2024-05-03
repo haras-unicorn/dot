@@ -48,14 +48,19 @@ in
     "${self}/src/module/xarchiver"
     "${self}/src/module/spotify"
 
-    "${self}/src/module/chromium" # NOTE: for dev
-    "${self}/src/module/librewolf" # NOTE: for dev
+    # Terminals
+    "${self}/src/module/kitty"
+
+    # Visuals
+    "${self}/src/module/code"
+
+    # Browsers
+    "${self}/src/module/firefox"
+    "${self}/src/module/chromium"
+    "${self}/src/module/librewolf"
+
     # "${self}/src/module/teams"
     # "${self}/src/module/jetbrains"
-
-    "${self}/src/module/kitty"
-    "${self}/src/module/code"
-    "${self}/src/module/firefox"
   ];
 
   options.dot = {

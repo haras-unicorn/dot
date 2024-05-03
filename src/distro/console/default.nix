@@ -32,7 +32,11 @@ in
     "${self}/src/module/yai"
     "${self}/src/module/tealdeer"
 
+    # Shells
     "${self}/src/module/nushell"
+    "${self}/src/module/bash"
+
+    # Editors
     "${self}/src/module/helix"
   ];
 

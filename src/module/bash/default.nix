@@ -1,7 +1,5 @@
 { lib, config, ... }:
 
-# TODO: add dot prefix
-# TODO: programs.bash.package ?
 # TODO: prompt after starship like nushell
 
 let
