@@ -30,7 +30,6 @@
     "${self}/src/module/fonts"
     "${self}/src/module/wayland"
     "${self}/src/module/tuigreet"
-    "${self}/src/module/hyprland"
     "${self}/src/module/gtklock"
     "${self}/src/module/gvfs"
 
