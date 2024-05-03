@@ -1,4 +1,5 @@
 { pkgs
+, lib
 , config
 , ...
 }:
@@ -8,6 +9,9 @@
 # TODO: helix emulation when it gets better
 # TODO: extensions in projects?
 
+let
+  cfg = config.dot.visual;
+in
 {
   home.shared = {
     shell.aliases = {
@@ -15,7 +19,15 @@
     };
 
     programs.vscode.enable = true;
-    programs.vscode.package = config.dot.visual.package;
+    programs.vscode.package =
+      (p: yes: no: lib.mkMerge [
+        (lib.mkIf p yes)
+        (lib.mkIf (!p) no)
+      ])
+        (cfg.bin == "code")
+        cfg.package
+        pkgs.code;
+
     programs.vscode.keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
     programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {
       "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';

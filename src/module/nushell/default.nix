@@ -1,9 +1,7 @@
 { pkgs, lib, config, ... }:
 
-# TODO: add dot prefix
-
 let
-  cfg = config.shell;
+  cfg = config.dot.shell;
 
   vars = lib.strings.concatStringsSep
     "\n"
@@ -56,14 +54,18 @@ in
   config = {
     home.shared = {
       programs.nushell.enable = true;
+      programs.nushell.package =
+        (p: yes: no: lib.mkMerge [
+          (lib.mkIf p yes)
+          (lib.mkIf (!p) no)
+        ])
+          (cfg.bin == "nu")
+          cfg.package
+          pkgs.nushell;
 
       programs.nushell.environmentVariables = {
         PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
         PROMPT_INDICATOR_VI_NORMAL = "' '";
-      };
-
-      programs.nushell.package = pkgs.nushell.override {
-        additionalFeatures = (p: p ++ [ "dataframe" ]);
       };
 
       programs.nushell.envFile.text = ''

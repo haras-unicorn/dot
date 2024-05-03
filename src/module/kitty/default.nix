@@ -1,9 +1,7 @@
-{ lib, config, ... }:
-
-# TODO: add dot prefix
+{ pkgs, lib, config, ... }:
 
 let
-  cfg = config.term;
+  cfg = config.dot.term;
 
   vars = lib.strings.concatStringsSep
     "\n"
@@ -64,6 +62,15 @@ in
       ];
 
       programs.kitty.enable = true;
+      programs.kitty.package =
+        (p: yes: no: lib.mkMerge [
+          (lib.mkIf p yes)
+          (lib.mkIf (!p) no)
+        ])
+          (cfg.bin == "kitty")
+          cfg.package
+          pkgs.nushell;
+
       programs.kitty.extraConfig = ''
         ${builtins.readFile ./kitty.conf}
 

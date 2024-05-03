@@ -1,6 +1,7 @@
 { lib, config, ... }:
 
 # TODO: prompt after starship like nushell
+# TODO: package
 
 let
   cfg = config.dot.shell;
@@ -26,6 +27,7 @@ in
 {
   home.shared = {
     programs.bash.enable = true;
+    programs.bash.enableCompletion = true;
 
     programs.bash.initExtra = ''
       ${vars}

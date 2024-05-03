@@ -1,5 +1,8 @@
-{ config, ... }:
+{ lib, pkgs, config, ... }:
 
+let
+  cfg = config.dot.editor;
+in
 {
   home.shared = {
     programs.lulezojne.config.plop = [
@@ -14,6 +17,14 @@
     ];
 
     programs.helix.enable = true;
+    programs.helix.package =
+      (p: yes: no: lib.mkMerge [
+        (lib.mkIf p yes)
+        (lib.mkIf (!p) no)
+      ])
+        (cfg.bin == "hx")
+        cfg.package
+        pkgs.nushell;
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./settings.toml);
   };
