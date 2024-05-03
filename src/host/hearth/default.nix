@@ -1,4 +1,4 @@
-{ self, vpnHost, vpnDomain, ... }:
+{ self, pkgs, vpnHost, vpnDomain, ... }:
 
 {
   imports = [
@@ -49,41 +49,43 @@
   ];
 
   shared = {
-    ram = 32;
-    mainMonitor = "DP-1";
-    monitors = [ "DP-1" ];
-    networkInterface = "enp37s0";
-    cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
-    soundcardPciId = "2b:00.3";
+    dot = {
+      ram = 32;
+      mainMonitor = "DP-1";
+      monitors = [ "DP-1" ];
+      networkInterface = "enp37s0";
+      cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
+      soundcardPciId = "2b:00.3";
 
-    location.timeZone = "Europe/Zagreb";
-    groups = [
-      "libvirtd"
-      "docker"
-      "podman"
-      "development"
-      "mlocate"
-      "video"
-      "audio"
-      "gaming"
-      "wireshark"
-    ];
+      location.timeZone = "Europe/Zagreb";
+      groups = [
+        "libvirtd"
+        "docker"
+        "podman"
+        "development"
+        "mlocate"
+        "video"
+        "audio"
+        "gaming"
+        "wireshark"
+      ];
 
-    gpg = { pkg = "pinentry-qt"; bin = "pinentry-qt"; flavor = "qt"; };
-    shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
-    editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-    visual = { pkg = "vscode"; bin = "code"; module = "code"; };
-    term = { pkg = "kitty"; bin = "kitty"; module = "kitty"; };
-    browser = { pkg = "firefox-bin"; bin = "firefox"; module = "firefox"; };
+      gpg = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; flavor = "qt"; };
+      shell = { package = pkgs.nushell; bin = "nu"; module = "nushell"; };
+      editor = { package = pkgs.helix; bin = "hx"; module = "helix"; };
+      visual = { package = pkgs.vscode; bin = "code"; module = "code"; };
+      term = { package = pkgs.kitty; bin = "kitty"; module = "kitty"; };
+      browser = { package = pkgs.firefox-bin; bin = "firefox"; module = "firefox"; };
 
-    font.nerd = { name = "JetBrainsMono Nerd Font"; pkg = "JetBrainsMono"; };
-    font.mono = { name = "Roboto Mono"; pkg = "roboto-mono"; };
-    font.slab = { name = "Roboto Slab"; pkg = "roboto-slab"; };
-    font.sans = { name = "Roboto"; pkg = "roboto"; };
-    font.serif = { name = "Roboto Serif"; pkg = "roboto-serif"; };
-    font.script = { name = "Eunomia"; pkg = "dotcolon-fonts"; };
-    font.emoji = { name = "Noto Color Emoji"; pkg = "noto-fonts-emoji"; };
-    font.size = { small = 12; medium = 13; large = 16; };
+      font.nerd = { name = "JetBrainsMono Nerd Font"; label = "JetBrainsMono"; };
+      font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
+      font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
+      font.sans = { name = "Roboto"; package = pkgs.roboto; };
+      font.serif = { name = "Roboto Serif"; package = pkgs.roboto-serif; };
+      font.script = { name = "Eunomia"; package = pkgs.dotcolon-fonts; };
+      font.emoji = { name = "Noto Color Emoji"; package = pkgs.noto-fonts-emoji; };
+      font.size = { small = 12; medium = 13; large = 16; };
+    };
   };
 
   system = {

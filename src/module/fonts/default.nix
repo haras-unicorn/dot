@@ -18,7 +18,18 @@ let
 in
 {
   options.dot.font = {
-    nerd = mkFontOption "nerd" "JetBrainsMono Nerd Font" "JetBrainsMono";
+    nerd = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "JetBrainsMono Nerd Font";
+        example = "JetBrainsMono Nerd Font";
+      };
+      label = lib.mkOption {
+        type = lib.types.str;
+        default = "JetBrainsMono";
+        example = "JetBrainsMono";
+      };
+    };
     mono = mkFontOption "mono" "Roboto Mono" "roboto-mono";
     slab = mkFontOption "slab" "Roboto Slab" "roboto-slab";
     sans = mkFontOption "sans" "Roboto" "roboto";

@@ -28,7 +28,7 @@ in
   };
 
   config = {
-    home.shared = lib.mkIf (config.dot.term.module == "kitty") {
+    home.shared = {
       programs.lulezojne.config.plop = [
         {
           template = ''

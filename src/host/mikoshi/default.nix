@@ -1,4 +1,4 @@
-{ self, hostName, ... }:
+{ self, pkgs, hostName, ... }:
 
 {
   imports = [
@@ -28,9 +28,9 @@
       hardware.networkInterface = "ens3";
       groups = [ "mlocate" ];
       location.timeZone = "Etc/UTC";
-      shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
-      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-      gpg = { pkg = "pinentry"; bin = "pinentry-curses"; flavor = "curses"; };
+      shell = { package = pkgs.nushell; bin = "nu"; module = "nushell"; };
+      editor = { package = pkgs.helix; bin = "hx"; module = "helix"; };
+      gpg = { package = pkgs.pinentry; bin = "pinentry-curses"; flavor = "curses"; };
     };
   };
 

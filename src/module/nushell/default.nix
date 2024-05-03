@@ -54,7 +54,7 @@ in
   };
 
   config = {
-    home.shared = lib.mkIf (config.dot.shell.module == "nushell") {
+    home.shared = {
       programs.nushell.enable = true;
 
       programs.nushell.environmentVariables = {

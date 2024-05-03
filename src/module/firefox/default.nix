@@ -1,5 +1,4 @@
 { pkgs
-, lib
 , config
 , firefox-gx
 , arkenfox-userjs
@@ -13,7 +12,7 @@
 # NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
 
 {
-  home.shared = lib.mkIf (config.dot.browser.module == "firefox") {
+  home.shared = {
     programs.firefox.enable = true;
     programs.firefox.package = pkgs.firefox-bin;
 
