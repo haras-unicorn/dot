@@ -14,12 +14,14 @@ in
         (lib.mkIf p yes)
         (lib.mkIf (!p) no)
       ])
-        (cfg.bin == "chromium")
+        (cfg.bin == "brave"
+          || cfg.bin == "chromium"
+          || cfg.bin == "vivaldi")
         cfg.package
         pkgs.ungoogled-chromium;
 
-    programs.chromium.dictionaries = with pkgs; [
-      hunspellDictsChromium.en_US
+    programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
+      en_US
     ];
 
     programs.chromium.extensions = [
