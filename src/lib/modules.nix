@@ -28,7 +28,7 @@
 #       (builtins.attrNames cfg.sessionVariables));
 # in
 # {
-#   imports = [ "${self}/src/modules/waybar" ];
+#   imports = [ "${self}/src/module/waybar" ];
 #   options = {
 #     dot = {
 #       desktopEnvironment.sessionVariables = lib.mkOption {
@@ -89,12 +89,15 @@ let
       if lib.hasAttrByPath path configObject
       then lib.getAttrFromPath path configObject
       else { }
-    else dotObject;
+    else lib.getAttrFromPath path dotObject;
   concatModules = specialArgs: modules: {
     imports = builtins.foldl'
       (acc: next: acc ++ [{ options = next.options; config = next.config; }])
       [ ]
       modules;
+
+    config = { };
+    options = { };
   };
 in
 rec {
@@ -112,6 +115,7 @@ rec {
           (builtins.attrNames config))
       ));
 
+  # NOTE: if pkgs here not demanded other modules don't get access...
   mkSystemModule = dotModule: { pkgs, ... } @specialArgs:
     let
       dotObject = mkDotObject specialArgs dotModule;
@@ -122,7 +126,7 @@ rec {
     in
     concatModules specialArgs (imports ++ [
       { inherit options config; }
-      { config = sharedConfig; }
+      { config = sharedConfig; options = { }; }
     ]);
 
   mkHomeSharedModule = dotModule: specialArgs:
@@ -135,7 +139,7 @@ rec {
     in
     concatModules specialArgs (imports ++ [
       { inherit options config; }
-      { config = sharedConfig; }
+      { config = sharedConfig; options = { }; }
     ]);
 
   mkHomeUserModule = userName: dotModule: rawspecialArgs:
@@ -149,6 +153,6 @@ rec {
     in
     concatModules specialArgs (imports ++ [
       { inherit options config; }
-      { config = sharedConfig; }
+      { config = sharedConfig; options = { }; }
     ]);
 }
