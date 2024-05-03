@@ -155,11 +155,9 @@ builtins.foldl'
         nixpkgsConfigModule
         ({ pkgs, ... }: {
           networking.hostName = "${hostName}";
-
           environment.shells = [ "${pkgs.bashInteractiveFHS}/bin/bash" ];
           users.defaultUserShell = "${pkgs.bashInteractiveFHS}/bin/bash";
           users.mutableUsers = false;
-
           system.stateVersion = "23.11";
         })
         (dot.modules.mkSystemModule dotModule)

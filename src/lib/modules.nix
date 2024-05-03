@@ -89,8 +89,7 @@ let
   };
 in
 rec {
-  definedUsers = (dotModule:
-    { lib, ... } @inputs:
+  definedUsers = dotModule: { lib, ... } @inputs:
     let
       dotObject = mkDotObject inputs dotModule;
       imports = mkImports definedUsers inputs dotObject;
@@ -102,10 +101,9 @@ rec {
         ++ (builtins.filter
           (user: user != "shared")
           (builtins.attrNames config))
-      )));
+      ));
 
-  mkSystemModule = (dotModule:
-    inputs:
+  mkSystemModule = dotModule: inputs:
     let
       dotObject = mkDotObject inputs dotModule;
       imports = mkImports mkSystemModule inputs dotObject;
@@ -116,10 +114,9 @@ rec {
     concatModules inputs (imports ++ [
       { inherit options config; }
       { config = sharedConfig; }
-    ]));
+    ]);
 
-  mkHomeSharedModule = (dotModule:
-    inputs:
+  mkHomeSharedModule = dotModule: inputs:
     let
       dotObject = mkDotObject inputs dotModule;
       imports = mkImports mkHomeSharedModule inputs dotObject;
@@ -130,10 +127,9 @@ rec {
     concatModules inputs (imports ++ [
       { inherit options config; }
       { config = sharedConfig; }
-    ]));
+    ]);
 
-  mkHomeUserModule = (userName: dotModule:
-    rawInputs:
+  mkHomeUserModule = userName: dotModule: rawInputs:
     let
       inputs = rawInputs // { inherit userName; };
       dotObject = mkDotObject inputs dotModule;
@@ -145,5 +141,5 @@ rec {
     concatModules inputs (imports ++ [
       { inherit options config; }
       { config = sharedConfig; }
-    ]));
+    ]);
 }
