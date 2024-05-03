@@ -70,7 +70,7 @@
       ];
 
       gpg = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; flavor = "qt"; };
-      shell = { package = pkgs.nushell; bin = "nu"; };
+      shell = { package = pkgs.nushell.override { additionalFeatures = (p: p ++ [ "dataframe" ]); }; bin = "nu"; };
       editor = { package = pkgs.helix; bin = "hx"; };
       visual = { package = pkgs.vscode; bin = "code"; };
       terminal = { package = pkgs.kitty; bin = "kitty"; };
