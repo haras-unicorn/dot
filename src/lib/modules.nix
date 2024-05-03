@@ -95,16 +95,12 @@ let
       else { };
   concatModules = { lib, ... }: modules: {
     imports = builtins.foldl'
-      (acc: next: acc ++ [{ config = next.config; }])
+      (acc: next: acc ++ [{ config = next.config; options = next.options; }])
       [ ]
       modules;
 
     config = { };
-    # NOTE: if through imports it complains it can't find any options
-    options = builtins.foldl'
-      (acc: next: lib.recursiveUpdate acc next.options)
-      { }
-      modules;
+    options = { };
   };
 in
 rec {
