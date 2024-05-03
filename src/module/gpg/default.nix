@@ -1,11 +1,11 @@
-{ config, lib, ... }:
+{ pkgs, config, lib, ... }:
 
 {
   options.dot.gpg = {
     package = lib.mkOption {
-      type = lib.types.str;
-      default = "pinentry";
-      example = "pinentry-qt";
+      type = lib.types.package;
+      default = pkgs.pinentry;
+      example = pkgs.pinentry-qt;
     };
     bin = lib.mkOption {
       type = lib.types.str;
