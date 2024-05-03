@@ -93,15 +93,6 @@ let
       if lib.hasAttrByPath path dotObject
       then lib.getAttrFromPath path dotObject
       else { };
-  concatModules = { lib, ... }: modules: {
-    imports = builtins.foldl'
-      (acc: next: acc ++ [{ config = next.config; options = next.options; }])
-      [ ]
-      modules;
-
-    config = { };
-    options = { };
-  };
 in
 rec {
   definedUsers = dotModule: { lib, ... } @specialArgs:
@@ -127,10 +118,10 @@ rec {
       config = mkConfig specialArgs [ "system" ] dotObject;
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    concatModules specialArgs (imports ++ [
-      { inherit options config; }
-      { config = sharedConfig; options = { }; }
-    ]);
+    {
+      imports = imports ++ [{ config = sharedConfig; }];
+      inherit options config;
+    };
 
   mkHomeSharedModule = dotModule: specialArgs:
     let
@@ -140,10 +131,10 @@ rec {
       config = mkConfig specialArgs [ "home" "shared" ] dotObject;
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    concatModules specialArgs (imports ++ [
-      { inherit options config; }
-      { config = sharedConfig; options = { }; }
-    ]);
+    {
+      imports = imports ++ [{ config = sharedConfig; }];
+      inherit options config;
+    };
 
   mkHomeUserModule = userName: dotModule: rawspecialArgs:
     let
@@ -154,8 +145,8 @@ rec {
       config = mkConfig specialArgs [ "home" userName ] dotObject;
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    concatModules specialArgs (imports ++ [
-      { inherit options config; }
-      { config = sharedConfig; options = { }; }
-    ]);
+    {
+      imports = imports ++ [{ config = sharedConfig; }];
+      inherit options config;
+    };
 }
