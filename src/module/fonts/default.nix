@@ -42,17 +42,17 @@ in
     };
     size = {
       small = lib.mkOption {
-        type = lib.int;
+        type = lib.types.int;
         default = 12;
         example = 12;
       };
       medium = lib.mkOption {
-        type = lib.int;
+        type = lib.types.int;
         default = 13;
         example = 13;
       };
       large = lib.mkOption {
-        type = lib.int;
+        type = lib.types.int;
         default = 16;
         example = 16;
       };
