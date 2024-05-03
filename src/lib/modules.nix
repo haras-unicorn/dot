@@ -89,7 +89,10 @@ let
       if lib.hasAttrByPath path configObject
       then lib.getAttrFromPath path configObject
       else { }
-    else lib.getAttrFromPath path dotObject;
+    else
+      if lib.hasAttrByPath path dotObject
+      then lib.getAttrFromPath path dotObject
+      else { };
   concatModules = specialArgs: modules: {
     imports = builtins.foldl'
       (acc: next: acc ++ [{ options = next.options; config = next.config; }])
