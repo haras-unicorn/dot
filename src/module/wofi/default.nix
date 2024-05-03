@@ -2,7 +2,7 @@
 
 {
   imports = [
-    "${self}/src/modules/gpg"
+    "${self}/src/module/gpg"
   ];
 
   home.shared = {
