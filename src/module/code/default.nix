@@ -13,11 +13,14 @@ let
   cfg = config.dot.visual;
 in
 {
-  home.shared = {
-    shell.aliases = {
-      code = "${config.dot.visual.package}/bin/${config.dot.visual.bin}";
+  shared = {
+    dot = {
+      shell.aliases = {
+        code = "${config.dot.visual.package}/bin/${config.dot.visual.bin}";
+      };
     };
-
+  };
+  home.shared = {
     programs.vscode.enable = true;
     programs.vscode.package =
       (p: yes: no: lib.mkMerge [
@@ -36,7 +39,7 @@ in
       "editor.fontSize" = config.dot.font.size.medium + 1;
       "debug.console.fontSize" = config.dot.font.size.small + 1;
       "terminal.integrated.fontSize" = config.dot.font.size.small + 1;
-      "terminal.external.linuxExec" = "${config.dot.term.package}/bin/${config.dot.term.bin}";
+      "terminal.external.linuxExec" = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
       "terminal.integrated.profiles.linux" = {
         "${config.dot.shell.bin}" = {
           "path" = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";

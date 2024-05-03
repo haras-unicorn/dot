@@ -1,15 +1,19 @@
 { pkgs, ... }:
 {
+  shared = {
+    dot = {
+      shell.aliases = {
+        rawdog = "${pkgs.git}/bin/git";
+        bruh = "${pkgs.lazygit}/bin/lazygit";
+      };
+    };
+  };
+
   home.shared = {
     home.packages = with pkgs; [
       meld
       delta
     ];
-
-    shell.aliases = {
-      rawdog = "${pkgs.git}/bin/git";
-      bruh = "${pkgs.lazygit}/bin/lazygit";
-    };
 
     programs.git.enable = true;
     programs.git.delta.enable = true;

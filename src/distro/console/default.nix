@@ -50,6 +50,30 @@ in
         default = "bash";
         example = "nu";
       };
+      sessionVariables = lib.mkOption {
+        type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+        default = { };
+        example = { EDITOR = "hx"; };
+        description = ''
+          Environment variables to set on session start with Nushell.
+        '';
+      };
+      aliases = lib.mkOption {
+        type = with lib.types; lazyAttrsOf str;
+        default = { };
+        example = { rm = "rm -i"; };
+        description = ''
+          Aliases to use in Nushell.
+        '';
+      };
+      sessionStartup = lib.mkOption {
+        type = with lib.types; listOf str;
+        default = [ ];
+        example = [ "fastfetch" ];
+        description = ''
+          Commands to execute on session start with Nushell.
+        '';
+      };
     };
     editor = {
       package = lib.mkOption {

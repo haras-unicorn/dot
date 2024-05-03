@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
 let
-  cfg = config.dot.term;
+  cfg = config.dot.terminal;
 
   vars = lib.strings.concatStringsSep
     "\n"
@@ -14,17 +14,6 @@ let
   font = config.dot.font;
 in
 {
-  options.term = {
-    sessionVariables = lib.mkOption {
-      type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
-      default = { };
-      example = { EDITOR = "hx"; };
-      description = ''
-        Environment variables to set with kitty.
-      '';
-    };
-  };
-
   config = {
     home.shared = {
       programs.lulezojne.config.plop = [

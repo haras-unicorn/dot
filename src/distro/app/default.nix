@@ -6,7 +6,7 @@
 # TODO: https://github.com/NixOS/nixpkgs/issues/232266
 
 let
-  term = "${config.dot.term.package}/bin/${config.dot.term.bin}";
+  terminal = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
   shell = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
   browser = "${config.dot.browser.package}/bin/${config.dot.browser.bin}";
   visual = "${config.dot.visual.package}/bin/${config.dot.visual.bin}";
@@ -64,7 +64,7 @@ in
 
   options = {
     dot = {
-      term = {
+      terminal = {
         package = lib.mkOption {
           type = lib.types.package;
           default = pkgs.kitty;
@@ -74,6 +74,14 @@ in
           type = lib.types.str;
           default = "kitty";
           example = "alacritty";
+        };
+        sessionVariables = lib.mkOption {
+          type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+          default = { };
+          example = { EDITOR = "hx"; };
+          description = ''
+            Environment variables to set with kitty.
+          '';
         };
       };
       visual = {
@@ -110,7 +118,7 @@ in
           {
             mods = [ "super" ];
             key = "t";
-            command = "${term} ${shell}";
+            command = "${terminal} ${shell}";
           }
           {
             mods = [ "super" ];
