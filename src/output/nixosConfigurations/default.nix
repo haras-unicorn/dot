@@ -6,7 +6,7 @@
 , lulezojne
 , nixos-wsl
 , sops-nix
-, nix-vscode-extensions
+, lib
 , ...
 } @ inputs:
 
@@ -16,23 +16,114 @@
 # TODO: make all modules have hardware/system/user parts
 
 let
-  meta = self + "/src/meta";
-  metaModuleNames = (builtins.attrNames (builtins.readDir meta));
-  metaModules = builtins.map (name: "${meta}/${name}") metaModuleNames;
-
   userName = "haras";
   vpnHost = "mikoshi";
   vpnDomain = "haras-unicorn.xyz";
 
   systems = flake-utils.lib.defaultSystems;
 
-  host = self + "/src/host";
-  hostNames = (builtins.attrNames (builtins.readDir host));
+  hostNames = (builtins.attrNames (builtins.readDir "${self}/src/host"));
 
   configs = nixpkgs.lib.cartesianProductOfSets {
     system = systems;
     hostName = hostNames;
   };
+
+  nixConfigModule = ({ pkgs, ... }: {
+    nix.package = pkgs.nixFlakes;
+    nix.extraOptions = "experimental-features = nix-command flakes";
+    nix.gc.automatic = true;
+    nix.gc.options = "--delete-older-than 30d";
+    nix.settings.auto-optimise-store = true;
+    nix.settings.substituters = [
+      "https://cache.nixos.org"
+      "https://nix-community.cachix.org"
+      "https://haras.cachix.org"
+      "https://hyprland.cachix.org"
+      "https://ai.cachix.org"
+      "https://cuda-maintainers.cachix.org"
+    ];
+    nix.settings.trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "haras.cachix.org-1:/HIo1JYqOIH1Nwk1EGXhuPPvDW0WekxIbY5CiXUZbYw="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
+      "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+    ];
+    nix.settings.allowed-users = [
+      "root"
+      "@wheel"
+    ];
+    nix.settings.trusted-users = [
+      "root"
+    ];
+  });
+
+  nixpkgsConfigModule = ({ nix-vscode-extensions, ... }: {
+    nixpkgs.config = {
+      allowUnfree = true;
+      nvidiaAcceptLicense = true;
+    };
+    nixpkgs.overlays = [
+      nix-vscode-extensions.overlays.default
+    ];
+  });
+
+  mkRebuild = ({ pkgs, hostName, system, ... }:
+    pkgs.writeShellApplication {
+      name = "rebuild";
+      runtimeInputs = [ ];
+      text = ''
+        if [[ ! -d "/home/${userName}/src/dot" ]]; then
+          echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
+          exit 1
+        fi
+
+        sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${hostName}-${system}" "$@"
+      '';
+    });
+
+  mkRebuildWip = ({ pkgs, hostName, userName, system }:
+    pkgs.writeShellApplication {
+      name = "rebuild-wip";
+      runtimeInputs = [ ];
+      text = ''
+        if [[ ! -d "/home/${userName}/src/dot" ]]; then
+          echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
+          exit 1
+        fi
+
+        cd "/home/${userName}/src/dot"
+        git add .
+        git commit -m "WIP"
+        git push
+        sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${hostName}-${system}" "$@"
+      '';
+    });
+
+  mkUserModule = (userName: dotModule: { config, hostName, ... }: {
+    users.users."${userName}" = {
+      home = "/home/${userName}";
+      createHome = true;
+      isNormalUser = true;
+      initialPassword = userName;
+      extraGroups = [ "wheel" ] ++ config.dot.groups;
+      useDefaultShell = true;
+    };
+    home-manager.users."${userName}" = ({ self, pkgs, ... } @inputs: {
+      imports = [
+        (lib.modules.mkHomeUserModule "${userName}" dotModule)
+      ];
+
+      home.username = "${userName}";
+      home.homeDirectory = "/home/${userName}";
+      home.packages = [ (mkRebuild inputs) (mkRebuildWip inputs) ];
+
+      sops.defaultSopsFile = "${self}/src/host/${hostName}/${userName}.sops.enc.yaml";
+      sops.age.keyFile = "/home/${userName}/.sops/secrets.age";
+    });
+  });
 in
 builtins.foldl'
   (nixosConfigurations: config:
@@ -40,13 +131,7 @@ builtins.foldl'
     hostName = config.hostName;
     system = config.system;
     configName = "${hostName}-${system}";
-    configModules = import "${host}/${config.hostName}";
-    metaConfigModule = if builtins.hasAttr "meta" configModules then configModules.meta else { };
-    nixpkgsConfigModule = if builtins.hasAttr "nixpkgs" configModules then configModules.nixpkgs else { allowUnfree = true; };
-    hardwareConfigModule = if builtins.hasAttr "hardware" configModules then configModules.hardware else { };
-    systemConfigModule = if builtins.hasAttr "system" configModules then configModules.system else { };
-    hasUserConfigModule = builtins.hasAttr "user" configModules;
-    userConfigModule = if hasUserConfigModule then configModules.user else { };
+    dotModule = import "${self}/src/host/${hostName}";
     specialArgs = inputs // {
       inherit system;
       inherit hostName;
@@ -57,41 +142,19 @@ builtins.foldl'
   in
   nixosConfigurations // {
     "${configName}" = nixpkgs.lib.nixosSystem {
-      system = config.system;
-      specialArgs = specialArgs;
-      modules = metaModules ++ [
+      inherit system specialArgs;
+      modules = [
         nur.nixosModules.nur
-        ({ self, pkgs, ... }: {
-          nix.package = pkgs.nixFlakes;
-          nix.extraOptions = "experimental-features = nix-command flakes";
-          nix.gc.automatic = true;
-          # nix.gc.frequency = "weekly";
-          nix.gc.options = "--delete-older-than 30d";
-          nix.settings.auto-optimise-store = true;
-          nix.settings.substituters = [
-            "https://cache.nixos.org"
-            "https://nix-community.cachix.org"
-            "https://haras.cachix.org"
-            "https://hyprland.cachix.org"
-            "https://ai.cachix.org"
-            "https://cuda-maintainers.cachix.org"
-          ];
-          nix.settings.trusted-public-keys = [
-            "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            "haras.cachix.org-1:/HIo1JYqOIH1Nwk1EGXhuPPvDW0WekxIbY5CiXUZbYw="
-            "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-            "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
-            "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-          ];
-          nix.settings.allowed-users = [
-            "root"
-            "@wheel"
-          ];
-          nix.settings.trusted-users = [
-            "root"
-          ];
-
+        nixos-wsl.nixosModules.wsl
+        { wsl.defaultUser = "${userName}"; }
+        sops-nix.nixosModules.sops
+        ({ self, hostName, ... }: {
+          sops.defaultSopsFile = "${self}/src/host/${hostName}/secrets.sops.enc.yaml";
+          sops.age.keyFile = "/root/.sops/secrets.age";
+        })
+        nixConfigModule
+        nixpkgsConfigModule
+        ({ pkgs, ... }: {
           networking.hostName = "${hostName}";
 
           environment.shells = [ "${pkgs.bashInteractiveFHS}/bin/bash" ];
@@ -100,138 +163,36 @@ builtins.foldl'
 
           system.stateVersion = "23.11";
         })
-        nixos-wsl.nixosModules.wsl
-        { wsl.defaultUser = "${userName}"; }
-        sops-nix.nixosModules.sops # NOTE: enabled when at least one secret is added
-        ({ lib, config, sops-nix, ... }: {
-          sops.defaultSopsFile = "${self}/src/host/${hostName}/secrets.sops.enc.yaml";
-          sops.age.keyFile = "/root/.sops/secrets.age";
-        })
-        metaConfigModule
-        hardwareConfigModule
-        systemConfigModule
-        {
-          nixpkgs.config = nixpkgsConfigModule;
-          nixpkgs.overlays = [
-            nix-vscode-extensions.overlays.default
+        (lib.modules.mkSystemModule dotModule)
+        home-manager.nixosModules.home-manager
+        ({
+          home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = specialArgs;
+          home-manager.sharedModules = [
+            nur.hmModules.nur
+            nixConfigModule
+            nixpkgsConfigModule
+            sops-nix.homeManagerModules.sops
+            lulezojne.homeManagerModules.default
+            (lib.modules.mkHomeSharedModule dotModule)
           ];
-        }
-        {
-          options.dot.groups = nixpkgs.lib.mkOption {
-            type = with nixpkgs.lib.types; listOf str;
-            default = [ ];
-            example = [ "libvirtd" "docker" "podman" "video" "audio" ];
-          };
-        }
-        ({ pkgs, config, ... }:
-          if hasUserConfigModule then {
-            imports = [
-              home-manager.nixosModules.home-manager
-            ];
-            users.users."${userName}" = {
-              home = "/home/${userName}";
-              createHome = true;
-              isNormalUser = true;
-              initialPassword = userName;
-              extraGroups = [ "wheel" ] ++ config.dot.groups;
-              useDefaultShell = true;
+        })
+        ({ lib, ... }: {
+          options = {
+            dot = {
+              groups = lib.mkOption {
+                type = with lib.types; listOf str;
+                default = [ ];
+                example = [ "libvirtd" "docker" "podman" "video" "audio" ];
+              };
             };
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = specialArgs;
-            home-manager.sharedModules = metaModules ++ [
-              nur.hmModules.nur
-              ({ pkgs, ... }: {
-                # nix.package = pkgs.nixFlakes;
-                nix.extraOptions = "experimental-features = nix-command flakes";
-                nix.gc.automatic = true;
-                # nix.gc.dates = "weekly";
-                nix.gc.options = "--delete-older-than 30d";
-                nix.settings.auto-optimise-store = true;
-                nix.settings.substituters = [
-                  "https://cache.nixos.org"
-                  "https://nix-community.cachix.org"
-                  "https://haras.cachix.org"
-                  "https://hyprland.cachix.org"
-                  "https://ai.cachix.org"
-                  "https://cuda-maintainers.cachix.org"
-                ];
-                nix.settings.trusted-public-keys = [
-                  "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-                  "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-                  "haras.cachix.org-1:/HIo1JYqOIH1Nwk1EGXhuPPvDW0WekxIbY5CiXUZbYw="
-                  "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-                  "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
-                  "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
-                ];
-                nix.settings.allowed-users = [
-                  "root"
-                  "@wheel"
-                ];
-                nix.settings.trusted-users = [
-                  "root"
-                ];
-
-                programs.home-manager.enable = true;
-
-                home.stateVersion = "23.11";
-              })
-              lulezojne.homeManagerModules.default
-              sops-nix.homeManagerModules.sops
-              metaConfigModule
-              userConfigModule
-              {
-                nixpkgs.config = nixpkgsConfigModule;
-                nixpkgs.overlays = [
-                  nix-vscode-extensions.overlays.default
-                ];
-              }
-            ];
-            home-manager.users."${userName}" =
-              ({ self, pkgs, ... }:
-                let
-                  # TODO: figure out a cleaner way to do this
-                  rebuild = pkgs.writeShellApplication {
-                    name = "rebuild";
-                    runtimeInputs = [ ];
-                    text = ''
-                      if [[ ! -d "/home/${userName}/src/dot" ]]; then
-                        echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
-                        exit 1
-                      fi
-
-                      sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${configName}" "$@"
-                    '';
-                  };
-
-                  # TODO: figure out a cleaner way to do this
-                  rebuild-wip = pkgs.writeShellApplication {
-                    name = "rebuild-wip";
-                    runtimeInputs = [ ];
-                    text = ''
-                      if [[ ! -d "/home/${userName}/src/dot" ]]; then
-                        echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
-                        exit 1
-                      fi
-
-                      cd "/home/${userName}/src/dot"
-                      git add .
-                      git commit -m "WIP"
-                      git push
-                      sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${configName}" "$@"
-                    '';
-                  };
-                in
-                {
-                  home.username = "${userName}";
-                  home.homeDirectory = "/home/${userName}";
-                  home.packages = [ rebuild rebuild-wip ];
-                  sops.defaultSopsFile = "${self}/src/host/${hostName}/${userName}.sops.enc.yaml";
-                  sops.age.keyFile = "/home/${userName}/.sops/secrets.age";
-                });
-          }
-          else
-            { }
-        )
+          };
+        })
+        ({ pkgs, config, ... }: {
+          imports = builtins.map
+            (userName: mkUserModule userName dotModule)
+            (lib.modules.definedUsers dotModule);
+        })
       ];
     };
   })

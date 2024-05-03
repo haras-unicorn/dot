@@ -122,7 +122,7 @@ rec {
     inputs:
     let
       dotObject = mkDotObject inputs dotModule;
-      imports = mkImports mkSystemModule inputs dotObject;
+      imports = mkImports mkHomeSharedModule inputs dotObject;
       options = mkOptions inputs dotObject;
       config = mkConfig inputs [ "home" "shared" ] dotObject;
       sharedConfig = mkConfig inputs [ "shared" ] dotObject;
@@ -132,13 +132,14 @@ rec {
       { config = sharedConfig; }
     ]));
 
-  mkHomeUserModule = (user: dotModule:
-    inputs:
+  mkHomeUserModule = (userName: dotModule:
+    rawInputs:
     let
+      inputs = rawInputs // { inherit userName; };
       dotObject = mkDotObject inputs dotModule;
-      imports = mkImports mkSystemModule inputs dotObject;
+      imports = mkImports (mkHomeUserModule userName) inputs dotObject;
       options = mkOptions inputs dotObject;
-      config = mkConfig inputs [ "home" user ] dotObject;
+      config = mkConfig inputs [ "home" userName ] dotObject;
       sharedConfig = mkConfig inputs [ "shared" ] dotObject;
     in
     concatModules inputs (imports ++ [

@@ -48,7 +48,11 @@
         outputNames;
     in
     builtins.foldl'
-      (outputs: output: outputs // { "${output.name}" = output.mkFrom inputs; })
+      (outputs: output: outputs // {
+        "${output.name}" = output.mkFrom (inputs // {
+          lib = (import "${self}/src/lib");
+        });
+      })
       { }
       outputModules;
 }
