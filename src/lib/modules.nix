@@ -123,7 +123,7 @@ rec {
       inherit options config;
     };
 
-  mkHomeSharedModule = dotModule: specialArgs:
+  mkHomeSharedModule = dotModule: { pkgs, ... } @specialArgs:
     let
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports mkHomeSharedModule specialArgs dotObject;
@@ -136,9 +136,9 @@ rec {
       inherit options config;
     };
 
-  mkHomeUserModule = userName: dotModule: rawspecialArgs:
+  mkHomeUserModule = userName: dotModule: { pkgs, ... } @rawSpecialArgs:
     let
-      specialArgs = rawspecialArgs // { inherit userName; };
+      specialArgs = rawSpecialArgs // { inherit userName; };
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports (mkHomeUserModule userName) specialArgs dotObject;
       options = mkOptions specialArgs dotObject;

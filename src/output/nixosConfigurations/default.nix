@@ -13,11 +13,13 @@
 # TODO: secure boot (https://nixos.wiki/wiki/Secure_Boot)
 # TODO: home encryption and zfs (https://www.reddit.com/r/NixOS/comments/tzksw4/mount_an_encrypted_zfs_datastore_on_login/)
 # TODO: hashed password
+# TODO: clean this up a bit
 
 let
   userName = "haras";
   vpnHost = "mikoshi";
   vpnDomain = "haras-unicorn.xyz";
+  stateVersion = "24.05";
 
   systems = flake-utils.lib.defaultSystems;
   hostNames = (builtins.attrNames (builtins.readDir "${self}/src/host"));
@@ -99,6 +101,18 @@ let
       '';
     });
 
+  groupOptionsModule = ({ lib, ... }: {
+    options = {
+      dot = {
+        groups = lib.mkOption {
+          type = with lib.types; listOf str;
+          default = [ ];
+          example = [ "libvirtd" "docker" "podman" "video" "audio" ];
+        };
+      };
+    };
+  });
+
   mkUserModule = (userName: dotModule: { config, hostName, ... }: {
     users.users."${userName}" = {
       home = "/home/${userName}";
@@ -113,6 +127,7 @@ let
         (dot.modules.mkHomeUserModule "${userName}" dotModule)
       ];
 
+      home.stateVersion = stateVersion;
       home.username = "${userName}";
       home.homeDirectory = "/home/${userName}";
       home.packages = [ (mkRebuild inputs) (mkRebuildWip inputs) ];
@@ -135,6 +150,7 @@ builtins.foldl'
       inherit userName;
       inherit vpnHost;
       inherit vpnDomain;
+      inherit stateVersion;
     };
   in
   nixosConfigurations // {
@@ -156,7 +172,7 @@ builtins.foldl'
           environment.shells = [ "${pkgs.bashInteractiveFHS}/bin/bash" ];
           users.defaultUserShell = "${pkgs.bashInteractiveFHS}/bin/bash";
           users.mutableUsers = false;
-          system.stateVersion = "23.11";
+          system.stateVersion = stateVersion;
         })
         (dot.modules.mkSystemModule dotModule)
         home-manager.nixosModules.home-manager
@@ -169,24 +185,18 @@ builtins.foldl'
             nixpkgsConfigModule
             sops-nix.homeManagerModules.sops
             lulezojne.homeManagerModules.default
+            groupOptionsModule
             (dot.modules.mkHomeSharedModule dotModule)
           ];
         })
-        ({ lib, ... }: {
-          options = {
-            dot = {
-              groups = lib.mkOption {
-                type = with lib.types; listOf str;
-                default = [ ];
-                example = [ "libvirtd" "docker" "podman" "video" "audio" ];
-              };
-            };
-          };
-        })
+        groupOptionsModule
+        (mkUserModule userName dotModule)
         ({ pkgs, config, ... } @inputs: {
           imports = builtins.map
             (userName: mkUserModule userName dotModule)
-            (dot.modules.definedUsers dotModule inputs);
+            (builtins.filter
+              (x: x != userName)
+              (dot.modules.definedUsers dotModule inputs));
         })
       ];
     };

@@ -3,7 +3,7 @@
 {
   options.dot = {
     ram = lib.mkOption {
-      type = lib.ints.u8;
+      type = lib.types.ints.u8;
       description = "In gigabytes; cat /proc/meminfo";
       example = 4;
     };
