@@ -66,13 +66,15 @@ let
     else dotModule;
   mkImports = mkModule: specialArgs: dotObject: builtins.map
     (maybeImport:
-      let
-        imported =
-          if (builtins.isPath maybeImport) || (builtins.isString maybeImport)
-          then import maybeImport
-          else maybeImport;
-      in
-      mkModule imported specialArgs)
+      if (builtins.isPath maybeImport) || (builtins.isString maybeImport)
+      then
+        let
+          module = (mkModule (import maybeImport) specialArgs);
+        in
+        if builtins.isAttrs module
+        then module // { _file = maybeImport; }
+        else module
+      else mkModule maybeImport specialArgs)
     (if builtins.hasAttr "imports" dotObject
     then dotObject.imports
     else [ ]);
@@ -131,24 +133,19 @@ rec {
       config = mkConfig specialArgs [ "home" "shared" ] dotObject;
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    # NOTE: https://github.com/nix-community/home-manager/issues/483#issuecomment-444622320
-    ({ ... }: {
-      imports = imports ++ [ ({ ... }: sharedConfig) ];
+    {
+      imports = imports ++ [ sharedConfig ];
       inherit options config;
-    });
+    };
 
   mkHomeUserModule = userName: dotModule: { pkgs, ... } @rawSpecialArgs:
     let
       specialArgs = rawSpecialArgs // { inherit userName; };
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports (mkHomeUserModule userName) specialArgs dotObject;
-      options = mkOptions specialArgs dotObject;
       config = mkConfig specialArgs [ "home" userName ] dotObject;
-      sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    # NOTE: https://github.com/nix-community/home-manager/issues/483#issuecomment-444622320
-    ({ ... }: {
-      imports = imports ++ [ ({ ... }: sharedConfig) ];
-      inherit options config;
-    });
+    {
+      inherit imports config;
+    };
 }
