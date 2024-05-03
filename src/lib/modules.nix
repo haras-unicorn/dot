@@ -93,14 +93,17 @@ let
       if lib.hasAttrByPath path dotObject
       then lib.getAttrFromPath path dotObject
       else { };
-  concatModules = specialArgs: modules: {
+  concatModules = { lib, ... }: modules: {
     imports = builtins.foldl'
-      (acc: next: acc ++ [{ options = next.options; config = next.config; }])
+      (acc: next: acc ++ [{ config = next.config; }])
       [ ]
       modules;
 
     config = { };
-    options = { };
+    options = builtins.foldl'
+      (acc: next: lib.recursiveUpdate acc next.options)
+      { }
+      modules;
   };
 in
 rec {
