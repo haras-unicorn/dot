@@ -67,7 +67,7 @@
     shell = { packages = pkgs.nushell; bin = "nu"; };
     editor = { packages = pkgs.helix; bin = "hx"; };
     visual = { packages = pkgs.vscode; bin = "code"; };
-    term = { packages = pkgs.kitty; bin = "kitty"; };
+    terminal = { packages = pkgs.kitty; bin = "kitty"; };
     browser = { packages = pkgs.firefox-bin; bin = "firefox"; };
 
     font.nerd = { name = "JetBrainsMono Nerd Font"; packages = pkgs.JetBrainsMono; };
