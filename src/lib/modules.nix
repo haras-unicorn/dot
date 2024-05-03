@@ -119,7 +119,7 @@ rec {
       ));
 
   # NOTE: if pkgs here not demanded other modules don't get access...
-  mkSystemModule = dotModule: { pkgs, ... } @specialArgs:
+  mkSystemModule = dotModule: { pkgs, config, ... } @specialArgs:
     let
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports mkSystemModule specialArgs dotObject;
