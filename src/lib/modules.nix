@@ -87,7 +87,7 @@ let
         configObject = dotObject.config;
       in
       if lib.hasAttrByPath path configObject
-      then lib.getAttrByPath path configObject
+      then lib.getAttrFromPath path configObject
       else { }
     else dotObject;
   concatModules = specialArgs: modules: {
@@ -112,7 +112,7 @@ rec {
           (builtins.attrNames config))
       ));
 
-  mkSystemModule = dotModule: specialArgs:
+  mkSystemModule = dotModule: { pkgs, ... } @specialArgs:
     let
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports mkSystemModule specialArgs dotObject;
