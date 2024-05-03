@@ -40,8 +40,8 @@ in
     shell = {
       package = lib.mkOption {
         type = lib.types.package;
-        default = "bash";
-        example = "nushell";
+        default = pkgs.bashInteractive;
+        example = pkgs.nushell;
       };
       bin = lib.mkOption {
         type = lib.types.str;
@@ -52,8 +52,8 @@ in
     editor = {
       package = lib.mkOption {
         type = lib.types.package;
-        default = "vim";
-        example = "helix";
+        default = pkgs.vim;
+        example = pkgs.helix;
       };
       bin = lib.mkOption {
         type = lib.types.str;

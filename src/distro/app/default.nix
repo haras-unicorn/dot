@@ -62,8 +62,8 @@ in
     term = {
       package = lib.mkOption {
         type = lib.types.package;
-        default = "kitty";
-        example = "alacritty";
+        default = pkgs.kitty;
+        example = pkgs.alacritty;
       };
       bin = lib.mkOption {
         type = lib.types.str;
@@ -74,8 +74,8 @@ in
     visual = {
       package = lib.mkOption {
         type = lib.types.package;
-        default = "vscode";
-        example = "vscodium";
+        default = pkgs.vscode;
+        example = pkgs.vscodium;
       };
       bin = lib.mkOption {
         type = lib.types.str;
@@ -86,8 +86,8 @@ in
     browser = {
       package = lib.mkOption {
         type = lib.types.package;
-        default = "firefox";
-        example = "vivaldi";
+        default = pkgs.firefox-bin;
+        example = pkgs.vivaldi;
       };
       bin = lib.mkOption {
         type = lib.types.str;

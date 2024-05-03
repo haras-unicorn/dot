@@ -30,13 +30,13 @@
           "path" = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
         };
         "bash" = {
-          "path" = "${pkgs.bashInteractiveFHS}/bin/bash";
+          "path" = "${pkgs.bashInteractive}/bin/bash";
           "icon" = "terminal-bash";
         };
       };
       "terminal.integrated.defaultProfile.linux" = "${config.dot.shell.package}";
       "terminal.integrated.automationProfile.linux" = {
-        "path" = "${pkgs.bashInteractiveFHS}/bin/bash";
+        "path" = "${pkgs.bashInteractive}/bin/bash";
       };
     };
 
