@@ -1,18 +1,6 @@
 { self, hostName, ... }:
 
 {
-  shared = {
-    dot = {
-      hardware.ram = 1;
-      hardware.networkInterface = "ens3";
-      groups = [ "mlocate" ];
-      location.timeZone = "Etc/UTC";
-      shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
-      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
-      gpg = { pkg = "pinentry"; bin = "pinentry-curses"; flavor = "curses"; };
-    };
-  };
-
   imports = [
     "${self}/src/module/intel-cpu"
     "${self}/src/module/firmware"
@@ -33,6 +21,18 @@
     "${self}/src/distro/diag"
     "${self}/src/distro/console"
   ];
+
+  shared = {
+    dot = {
+      hardware.ram = 1;
+      hardware.networkInterface = "ens3";
+      groups = [ "mlocate" ];
+      location.timeZone = "Etc/UTC";
+      shell = { pkg = "nushell"; bin = "nu"; module = "nushell"; };
+      editor = { pkg = "helix"; bin = "hx"; module = "helix"; };
+      gpg = { pkg = "pinentry"; bin = "pinentry-curses"; flavor = "curses"; };
+    };
+  };
 
   system = {
     virtualisation.hypervGuest.enable = true;

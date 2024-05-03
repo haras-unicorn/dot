@@ -1,5 +1,49 @@
+{ self, vpnHost, vpnDomain, ... }:
+
 {
-  meta.dot = {
+  imports = [
+    "${self}/src/module/amd-cpu"
+    "${self}/src/module/firmware"
+    "${self}/src/module/swap"
+
+    "${self}/src/module/grub"
+    "${self}/src/module/plymouth"
+    "${self}/src/module/zen"
+    "${self}/src/module/development"
+
+    "${self}/src/module/location"
+    "${self}/src/module/network"
+    "${self}/src/module/vpn"
+    "${self}/src/module/openvpn-client"
+    "${self}/src/module/smartmontools"
+    "${self}/src/module/bluetooth"
+
+    "${self}/src/module/sudo"
+    "${self}/src/module/keyring"
+    "${self}/src/module/polkit"
+    "${self}/src/module/locate"
+
+    "${self}/src/module/pipewire"
+    "${self}/src/module/fonts"
+    "${self}/src/module/wayland"
+    "${self}/src/module/tuigreet"
+    "${self}/src/module/hyprland"
+    "${self}/src/module/gtklock"
+    "${self}/src/module/gvfs"
+    "${self}/src/module/transmission"
+
+    "${self}/src/module/virtual"
+    "${self}/src/module/windows"
+    "${self}/src/module/gaming"
+
+    "${self}/src/distro/coreutils"
+    "${self}/src/distro/diag"
+    "${self}/src/distro/console"
+    "${self}/src/distro/wayland"
+    "${self}/src/distro/app"
+  ];
+
+  shared = {
     hardware.ram = 16;
     hardware.mainMonitor = "eDP-1";
     hardware.monitors = [ "eDP-1" ];
@@ -37,13 +81,7 @@
     font.size = { small = 12; medium = 13; large = 16; };
   };
 
-  hardware = { self, config, ... }: {
-    imports = [
-      "${self}/src/module/amd-cpu"
-      "${self}/src/module/firmware"
-      "${self}/src/module/swap"
-    ];
-
+  system = {
     boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
     boot.initrd.availableKernelModules = [
@@ -71,40 +109,6 @@
     };
 
     services.fstrim.enable = true;
-  };
-
-  system = { self, vpnHost, vpnDomain, ... }: {
-    imports = [
-      "${self}/src/module/grub"
-      "${self}/src/module/plymouth"
-      "${self}/src/module/zen"
-      "${self}/src/module/development"
-
-      "${self}/src/module/location"
-      "${self}/src/module/network"
-      "${self}/src/module/vpn"
-      "${self}/src/module/openvpn-client"
-      "${self}/src/module/smartmontools"
-      "${self}/src/module/bluetooth"
-
-      "${self}/src/module/sudo"
-      "${self}/src/module/keyring"
-      "${self}/src/module/polkit"
-      "${self}/src/module/locate"
-
-      "${self}/src/module/pipewire"
-      "${self}/src/module/fonts"
-      "${self}/src/module/wayland"
-      "${self}/src/module/tuigreet"
-      "${self}/src/module/hyprland"
-      "${self}/src/module/gtklock"
-      "${self}/src/module/gvfs"
-      "${self}/src/module/transmission"
-
-      "${self}/src/module/virtual"
-      "${self}/src/module/windows"
-      "${self}/src/module/gaming"
-    ];
 
     networking.firewall.allowedTCPPorts = [
       8384 # syncthing
@@ -113,15 +117,5 @@
     dot.openvpn.client.enable = true;
     dot.openvpn.client.host = vpnHost;
     dot.openvpn.client.domain = vpnDomain;
-  };
-
-  user = { self, ... }: {
-    imports = [
-      "${self}/src/distro/coreutils"
-      "${self}/src/distro/diag"
-      "${self}/src/distro/console"
-      "${self}/src/distro/wayland"
-      "${self}/src/distro/app"
-    ];
   };
 }
