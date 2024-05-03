@@ -50,7 +50,7 @@
     builtins.foldl'
       (outputs: output: outputs // {
         "${output.name}" = output.mkFrom (inputs // {
-          lib = (import "${self}/src/lib");
+          dot = (import "${self}/src/lib");
         });
       })
       { }

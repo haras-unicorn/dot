@@ -6,7 +6,7 @@
 , lulezojne
 , nixos-wsl
 , sops-nix
-, lib
+, dot
 , ...
 } @ inputs:
 
@@ -112,7 +112,7 @@ let
     };
     home-manager.users."${userName}" = ({ self, pkgs, ... } @inputs: {
       imports = [
-        (lib.modules.mkHomeUserModule "${userName}" dotModule)
+        (dot.modules.mkHomeUserModule "${userName}" dotModule)
       ];
 
       home.username = "${userName}";
@@ -162,7 +162,7 @@ builtins.foldl'
 
           system.stateVersion = "23.11";
         })
-        (lib.modules.mkSystemModule dotModule)
+        (dot.modules.mkSystemModule dotModule)
         home-manager.nixosModules.home-manager
         ({
           home-manager.useUserPackages = true;
@@ -173,7 +173,7 @@ builtins.foldl'
             nixpkgsConfigModule
             sops-nix.homeManagerModules.sops
             lulezojne.homeManagerModules.default
-            (lib.modules.mkHomeSharedModule dotModule)
+            (dot.modules.mkHomeSharedModule dotModule)
           ];
         })
         ({ lib, ... }: {
@@ -190,7 +190,7 @@ builtins.foldl'
         ({ pkgs, config, ... }: {
           imports = builtins.map
             (userName: mkUserModule userName dotModule)
-            (lib.modules.definedUsers dotModule);
+            (dot.modules.definedUsers dotModule);
         })
       ];
     };
