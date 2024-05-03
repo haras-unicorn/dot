@@ -82,7 +82,7 @@ let
       '';
     });
 
-  mkRebuildWip = ({ pkgs, hostName, userName, system }:
+  mkRebuildWip = ({ pkgs, hostName, userName, system, ... }:
     pkgs.writeShellApplication {
       name = "rebuild-wip";
       runtimeInputs = [ ];
