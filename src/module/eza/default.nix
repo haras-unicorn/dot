@@ -1,12 +1,16 @@
 { pkgs, config, ... }:
 
 {
-  home.shared = {
-    shell.aliases = {
-      la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
-      tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
+  shared = {
+    dot = {
+      shell.aliases = {
+        la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
+        tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
+      };
     };
+  };
 
+  home.shared = {
     programs.eza.enable = true;
     programs.eza.extraOptions = [
       "--all"

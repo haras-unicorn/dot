@@ -1,11 +1,15 @@
 { pkgs, ... }:
 
 {
-  home.shared = {
-    shell.aliases = {
-      find = "${pkgs.fd}/bin/fd";
+  shared = {
+    dot = {
+      shell.aliases = {
+        find = "${pkgs.fd}/bin/fd";
+      };
     };
+  };
 
+  home.shared = {
     home.packages = with pkgs; [ fd ];
   };
 }

@@ -27,14 +27,18 @@ in
     "${self}/src/module/eza"
   ];
 
-  home.shared = {
-    shell.aliases = {
-      pls = "sudo";
-      rm = "rm -i";
-      mv = "mv -i";
-      yas = "yes";
+  shared = {
+    dot = {
+      shell.aliases = {
+        pls = "sudo";
+        rm = "rm -i";
+        mv = "mv -i";
+        yas = "yes";
+      };
     };
+  };
 
+  home.shared = {
     home.packages = with pkgs; [
       run
       repeat

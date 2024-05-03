@@ -1,10 +1,6 @@
-{ self, pkgs, config, ... }:
+{ pkgs, config, ... }:
 
 {
-  imports = [
-    "${self}/src/module/gpg"
-  ];
-
   shared = {
     dot = {
       desktopEnvironment.keybinds = [

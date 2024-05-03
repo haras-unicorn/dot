@@ -1,12 +1,8 @@
-{ self, pkgs, ... }:
+{ pkgs, ... }:
 
 # TODO: figure out why the sound doesn't work
 
 {
-  imports = [
-    "${self}/src/module/gstreamer"
-  ];
-
   shared = {
     dot = {
       desktopEnvironment.sessionStartup = [

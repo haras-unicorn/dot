@@ -1,11 +1,15 @@
 { pkgs, config, ... }:
 
 {
-  home.shared = {
-    shell.sessionVariables = {
-      LS_COLORS = "vivid generate lulezojne";
+  shared = {
+    dot = {
+      shell.sessionVariables = {
+        LS_COLORS = "vivid generate lulezojne";
+      };
     };
+  };
 
+  home.shared = {
     # TODO: try then https://unix.stackexchange.com/a/38212
     programs.lulezojne.config.plop = [
       {

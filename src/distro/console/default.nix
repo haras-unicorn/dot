@@ -90,11 +90,15 @@ in
   };
 
   config = {
-    home.shared = {
-      shell.aliases = {
-        sis = editor;
+    shared = {
+      dot = {
+        shell.aliases = {
+          sis = editor;
+        };
       };
+    };
 
+    home.shared = {
       home.packages = with pkgs; [
         cmatrix # NOTE: matrix in console
         file # NOTE: get file info
