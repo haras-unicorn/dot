@@ -100,6 +100,7 @@ let
       modules;
 
     config = { };
+    # NOTE: if through imports it complains it can't find any options
     options = builtins.foldl'
       (acc: next: lib.recursiveUpdate acc next.options)
       { }

@@ -66,7 +66,6 @@
       haras = [ "hearth" "workbug" ];
     };
 
-    dot.openvpn.server.enable = true;
     dot.openvpn.server.host = hostName;
     dot.openvpn.server.domain = "mikoshi";
     dot.openvpn.server.clients = {

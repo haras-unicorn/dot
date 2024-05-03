@@ -28,12 +28,10 @@
       editor = { package = pkgs.helix; bin = "hx"; };
       gpg = { package = pkgs.pinentry; bin = "pinentry-curses"; flavor = "curses"; };
 
-      openssh.enable = true;
       openssh.authorizations = {
         haras = [ "hearth" "workbug" ];
       };
 
-      openvpn.client.enable = true;
       openvpn.client.host = vpnHost;
       openvpn.client.domain = vpnDomain;
     };
