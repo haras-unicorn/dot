@@ -187,10 +187,10 @@ builtins.foldl'
             };
           };
         })
-        ({ pkgs, config, ... }: {
+        ({ pkgs, config, ... } @inputs: {
           imports = builtins.map
             (userName: mkUserModule userName dotModule)
-            (dot.modules.definedUsers dotModule);
+            (dot.modules.definedUsers dotModule inputs);
         })
       ];
     };
