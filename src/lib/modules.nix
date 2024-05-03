@@ -60,8 +60,11 @@
 # home-manager from dot modules
 
 let
-  mkDotObject = inputs: dotModule: if builtins.isFunction dotModule then (dotModule inputs) else dotModule;
-  mkImports = mkModule: inputs: dotObject: builtins.map
+  mkDotObject = specialArgs: dotModule:
+    if builtins.isFunction dotModule
+    then (dotModule specialArgs)
+    else dotModule;
+  mkImports = mkModule: specialArgs: dotObject: builtins.map
     (maybeImport:
       let
         imported =
@@ -69,19 +72,25 @@ let
           then import maybeImport
           else maybeImport;
       in
-      (mkModule (imported)) inputs)
-    (if builtins.hasAttr "imports" dotObject then dotObject.imports else [ ]);
-  mkOptions = inputs: dotObject: if builtins.hasAttr "options" dotObject then dotObject.options else { };
+      (mkModule (imported)) specialArgs)
+    (if builtins.hasAttr "imports" dotObject
+    then dotObject.imports
+    else [ ]);
+  mkOptions = specialArgs: dotObject:
+    if builtins.hasAttr "options" dotObject
+    then dotObject.options
+    else { };
   mkConfig = { lib, ... }: path: dotObject:
-    if builtins.hasAttr "config" dotObject then
+    if builtins.hasAttr "config" dotObject
+    then
       let
         configObject = dotObject.config;
       in
-      if lib.hasAttrByPath path configObject then
-        lib.getAttrByPath path configObject
+      if lib.hasAttrByPath path configObject
+      then lib.getAttrByPath path configObject
       else { }
     else dotObject;
-  concatModules = inputs: modules: {
+  concatModules = specialArgs: modules: {
     imports = builtins.foldl'
       (acc: next: acc ++ [{ options = next.options; config = next.config; }])
       [ ]
@@ -89,11 +98,11 @@ let
   };
 in
 rec {
-  definedUsers = dotModule: { lib, ... } @inputs:
+  definedUsers = dotModule: { lib, ... } @specialArgs:
     let
-      dotObject = mkDotObject inputs dotModule;
-      imports = mkImports definedUsers inputs dotObject;
-      config = mkConfig inputs [ "home" ] dotObject;
+      dotObject = mkDotObject specialArgs dotModule;
+      imports = mkImports definedUsers specialArgs dotObject;
+      config = mkConfig specialArgs [ "home" ] dotObject;
     in
     lib.lists.unique (
       lib.lists.flatten (
@@ -103,42 +112,42 @@ rec {
           (builtins.attrNames config))
       ));
 
-  mkSystemModule = dotModule: inputs:
+  mkSystemModule = dotModule: specialArgs:
     let
-      dotObject = mkDotObject inputs dotModule;
-      imports = mkImports mkSystemModule inputs dotObject;
-      options = mkOptions inputs dotObject;
-      config = mkConfig inputs [ "system" ] dotObject;
-      sharedConfig = mkConfig inputs [ "shared" ] dotObject;
+      dotObject = mkDotObject specialArgs dotModule;
+      imports = mkImports mkSystemModule specialArgs dotObject;
+      options = mkOptions specialArgs dotObject;
+      config = mkConfig specialArgs [ "system" ] dotObject;
+      sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    concatModules inputs (imports ++ [
+    concatModules specialArgs (imports ++ [
       { inherit options config; }
       { config = sharedConfig; }
     ]);
 
-  mkHomeSharedModule = dotModule: inputs:
+  mkHomeSharedModule = dotModule: specialArgs:
     let
-      dotObject = mkDotObject inputs dotModule;
-      imports = mkImports mkHomeSharedModule inputs dotObject;
-      options = mkOptions inputs dotObject;
-      config = mkConfig inputs [ "home" "shared" ] dotObject;
-      sharedConfig = mkConfig inputs [ "shared" ] dotObject;
+      dotObject = mkDotObject specialArgs dotModule;
+      imports = mkImports mkHomeSharedModule specialArgs dotObject;
+      options = mkOptions specialArgs dotObject;
+      config = mkConfig specialArgs [ "home" "shared" ] dotObject;
+      sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    concatModules inputs (imports ++ [
+    concatModules specialArgs (imports ++ [
       { inherit options config; }
       { config = sharedConfig; }
     ]);
 
-  mkHomeUserModule = userName: dotModule: rawInputs:
+  mkHomeUserModule = userName: dotModule: rawspecialArgs:
     let
-      inputs = rawInputs // { inherit userName; };
-      dotObject = mkDotObject inputs dotModule;
-      imports = mkImports (mkHomeUserModule userName) inputs dotObject;
-      options = mkOptions inputs dotObject;
-      config = mkConfig inputs [ "home" userName ] dotObject;
-      sharedConfig = mkConfig inputs [ "shared" ] dotObject;
+      specialArgs = rawspecialArgs // { inherit userName; };
+      dotObject = mkDotObject specialArgs dotModule;
+      imports = mkImports (mkHomeUserModule userName) specialArgs dotObject;
+      options = mkOptions specialArgs dotObject;
+      config = mkConfig specialArgs [ "home" userName ] dotObject;
+      sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    concatModules inputs (imports ++ [
+    concatModules specialArgs (imports ++ [
       { inherit options config; }
       { config = sharedConfig; }
     ]);
