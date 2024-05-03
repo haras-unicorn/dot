@@ -9,7 +9,7 @@
 # FIXME: https://github.com/NVIDIA/open-gpu-kernel-modules/issues/467#issuecomment-1544340511
 
 let
-  cfg = config.de;
+  cfg = config.dot.desktopEnvironment;
 
   copy = pkgs.writeShellApplication {
     name = "copy";
@@ -28,7 +28,7 @@ let
   };
 in
 {
-  options.de = {
+  options.dot.desktopEnvironment = {
     login = lib.mkOption {
       type = lib.types.str;
       default = [ ];

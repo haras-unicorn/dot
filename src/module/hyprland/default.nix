@@ -84,12 +84,17 @@ in
       '';
     };
   };
+
   config = {
+    shared = {
+      dot = {
+        desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
+      };
+    };
+
     system = {
       programs.hyprland.enable = true;
       programs.hyprland.xwayland.enable = true;
-
-      de.startup = "${pkgs.hyprland}/bin/Hyprland";
     };
 
     home.shared = {
