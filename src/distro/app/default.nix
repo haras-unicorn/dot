@@ -19,7 +19,6 @@ let
     "x-scheme-handler/https" = browserDesktop;
   };
 
-
   visualDesktop = "${config.dot.visual.package}/share/applications/${config.dot.visual.bin}.desktop";
   visualMime = {
     "text/css" = visualDesktop;
