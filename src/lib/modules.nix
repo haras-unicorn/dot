@@ -72,7 +72,7 @@ let
           then import maybeImport
           else maybeImport;
       in
-      (mkModule (imported)) specialArgs)
+      mkModule imported specialArgs)
     (if builtins.hasAttr "imports" dotObject
     then dotObject.imports
     else [ ]);
@@ -119,7 +119,7 @@ rec {
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
     {
-      imports = imports ++ [{ config = sharedConfig; }];
+      imports = imports ++ [ sharedConfig ];
       inherit options config;
     };
 
@@ -131,10 +131,11 @@ rec {
       config = mkConfig specialArgs [ "home" "shared" ] dotObject;
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    {
-      imports = imports ++ [{ config = sharedConfig; }];
+    # NOTE: https://github.com/nix-community/home-manager/issues/483#issuecomment-444622320
+    ({ ... }: {
+      imports = imports ++ [ ({ ... }: sharedConfig) ];
       inherit options config;
-    };
+    });
 
   mkHomeUserModule = userName: dotModule: { pkgs, ... } @rawSpecialArgs:
     let
@@ -145,8 +146,9 @@ rec {
       config = mkConfig specialArgs [ "home" userName ] dotObject;
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
-    {
-      imports = imports ++ [{ config = sharedConfig; }];
+    # NOTE: https://github.com/nix-community/home-manager/issues/483#issuecomment-444622320
+    ({ ... }: {
+      imports = imports ++ [ ({ ... }: sharedConfig) ];
       inherit options config;
-    };
+    });
 }
