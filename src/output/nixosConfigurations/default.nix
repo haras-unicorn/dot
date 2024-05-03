@@ -20,9 +20,7 @@ let
   vpnDomain = "haras-unicorn.xyz";
 
   systems = flake-utils.lib.defaultSystems;
-
   hostNames = (builtins.attrNames (builtins.readDir "${self}/src/host"));
-
   configs = nixpkgs.lib.cartesianProductOfSets {
     system = systems;
     hostName = hostNames;
