@@ -48,11 +48,6 @@ in
         default = "bash";
         example = "nu";
       };
-      module = lib.mkOption {
-        type = lib.types.str;
-        default = "bash";
-        example = "nushell";
-      };
     };
     editor = {
       package = lib.mkOption {
@@ -64,11 +59,6 @@ in
         type = lib.types.str;
         default = "vim";
         example = "hx";
-      };
-      module = lib.mkOption {
-        type = lib.types.str;
-        default = "vim";
-        example = "helix";
       };
     };
   };

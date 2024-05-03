@@ -70,11 +70,6 @@ in
         default = "kitty";
         example = "alacritty";
       };
-      module = lib.mkOption {
-        type = lib.types.str;
-        default = "kitty";
-        example = "alacritty";
-      };
     };
     visual = {
       package = lib.mkOption {
@@ -87,11 +82,6 @@ in
         default = "code";
         example = "codium";
       };
-      module = lib.mkOption {
-        type = lib.types.str;
-        default = "code";
-        example = "code";
-      };
     };
     browser = {
       package = lib.mkOption {
@@ -100,11 +90,6 @@ in
         example = "vivaldi";
       };
       bin = lib.mkOption {
-        type = lib.types.str;
-        default = "firefox";
-        example = "vivaldi";
-      };
-      module = lib.mkOption {
         type = lib.types.str;
         default = "firefox";
         example = "vivaldi";
