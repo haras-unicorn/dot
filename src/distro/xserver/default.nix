@@ -1,4 +1,4 @@
-{ self, ... }:
+{ lib, pkgs, self, config, ... }:
 
 {
   imports = [
@@ -32,6 +32,65 @@
     "${self}/src/module/spacedrive"
   ];
 
+  options = {
+    dot = {
+      mainMonitor = lib.mkOption {
+        type = lib.types.str;
+        description = ''
+          xrandr --query
+          hyprctl monitors
+          swaymsg -t get_outputs
+        '';
+        example = "DP-1";
+      };
+      monitors = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        description = ''
+          xrandr --query
+          hyprctl monitors
+          swaymsg -t get_outputs
+        '';
+        example = [ "DP-1" ];
+      };
+      cursor-theme = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.numix-cursor-theme;
+          example = pkgs.pokemon-cursor-theme;
+        };
+        name = lib.mkOption {
+          type = lib.types.str;
+          default = "Numix-Cursor";
+          example = "Pokemon";
+        };
+      };
+      icon-theme = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.numix-icon-theme;
+          example = pkgs.beauty-line-icon-theme;
+        };
+        name = lib.mkOption {
+          type = lib.types.str;
+          default = "Numix";
+          example = "Beautyline";
+        };
+      };
+      app-theme = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.numix-gtk-theme;
+          example = pkgs.sweet;
+        };
+        name = lib.mkOption {
+          type = lib.types.str;
+          default = "Numix";
+          example = "Sweet";
+        };
+      };
+    };
+  };
+
   home.shared = {
     # NOTE: needed for tray items to work properly
     systemd.user.targets.tray = {
@@ -40,5 +99,16 @@
         Requires = [ "graphical-session-pre.target" ];
       };
     };
+
+    home.pointerCursor = {
+      package = config.dot.cursor-theme.package;
+      name = config.dot.cursor-theme.name;
+    };
+
+    home.packages = [
+      config.dot.cursor-theme.package
+      config.dot.icon-theme.package
+      config.dot.app-theme.package
+    ];
   };
 }

@@ -1,28 +1,30 @@
 { pkgs, config, ... }:
 
 # TODO: lulezojne
-# TODO: figure out what to do with icon theme in terms of lulezojne
-# TODO: cursor theme?
 
 let
   font = ''"${config.dot.font.sans.name}" ${builtins.toString config.dot.font.size.medium}'';
+
   ini2 = ''
     gtk-font-name = ${font}
-    gtk-icon-theme-name = "BeautyLine"
-    gtk-theme-name = "Sweet-Dark"
+    gtk-icon-theme-name = "${config.dot.icon-theme.name}"
+    gtk-theme-name = "${config.dot.app-theme.name}"
+    gtk-cursor-theme-name = "${config.dot.cursor-theme.name}"
   '';
   ini3 = ''
     [Settings]
     gtk-font-name = ${font}
-    gtk-icon-theme-name = BeautyLine
-    gtk-theme-name = Sweet-Dark
+    gtk-icon-theme-name = ${config.dot.icon-theme.name}
+    gtk-theme-name = ${config.dot.app-theme.name}
+    gtk-cursor-theme-name = ${config.dot.cursor-theme.name}
   '';
   ini4 = ini3;
 
   dconf = {
     font-name = font;
-    gtk-theme = "Sweet-Dark";
-    icon-theme = "BeautyLine";
+    gtk-theme = config.dot.app-theme.name;
+    icon-theme = config.dot.icon-theme.name;
+    cursor-theme = config.dot.cursor-theme.name;
   };
 in
 {
@@ -43,8 +45,6 @@ in
 
     home.packages = with pkgs; [
       lxappearance
-      sweet
-      beauty-line-icon-theme
     ];
 
     xdg.configFile."gtk-2.0/settings.ini".text = ini2;

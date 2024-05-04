@@ -1,38 +1,25 @@
-{ sweet-theme
-, pkgs
-, ...
-}:
+{ pkgs, ... }:
 
-# TODO: font and font size
-# TODO: lulezojne
-# TODO: icon theme?
-# TODO: cursor theme?
+# NOTE: https://wiki.archlinux.org/title/Uniform_look_for_Qt_and_GTK_applications#QGtkStyle
 
 {
   shared = {
     dot = {
       desktopEnvironment.sessionVariables = {
-        QT_QPA_PLATFORMTHEME = "qt5ct";
-        QT_STYLE_OVERRIDE = "kvantum";
+        QT_QPA_PLATFORMTHEME = "gtk2";
       };
     };
   };
 
   home.shared = {
     home.packages = with pkgs; [
-      # kde
-      libsForQt5.plasma-integration
-      libsForQt5.systemsettings
-
-      # kvantum
-      libsForQt5.qtstyleplugin-kvantum
-      qt6Packages.qtstyleplugin-kvantum
+      libsForQt5.qtstyleplugins
+      qt6Packages.qt6gtk2
     ];
 
-    xdg.configFile."Kvantum/Sweet".source = "${sweet-theme}/kde/Kvantum/Sweet";
-    xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
-      [General]
-      theme=Sweet
+    xdg.configFile."Trolltech.conf".text = ''
+      [Qt]
+      style=GTK+    
     '';
   };
 }

@@ -1,4 +1,4 @@
-{ lib, self, ... }:
+{ lib, pkgs, self, config, ... }:
 
 # TODO: https://github.com/kando-menu/kando
 
@@ -56,6 +56,42 @@
         '';
         example = [ "DP-1" ];
       };
+      cursor-theme = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.numix-cursor-theme;
+          example = pkgs.pokemon-cursor-theme;
+        };
+        name = lib.mkOption {
+          type = lib.types.str;
+          default = "Numix-Cursor";
+          example = "Pokemon";
+        };
+      };
+      icon-theme = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.numix-icon-theme;
+          example = pkgs.beauty-line-icon-theme;
+        };
+        name = lib.mkOption {
+          type = lib.types.str;
+          default = "Numix";
+          example = "Beautyline";
+        };
+      };
+      app-theme = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.numix-gtk-theme;
+          example = pkgs.sweet;
+        };
+        name = lib.mkOption {
+          type = lib.types.str;
+          default = "Numix";
+          example = "Sweet";
+        };
+      };
     };
   };
 
@@ -67,5 +103,16 @@
         Requires = [ "graphical-session-pre.target" ];
       };
     };
+
+    home.pointerCursor = {
+      package = config.dot.cursor-theme.package;
+      name = config.dot.cursor-theme.name;
+    };
+
+    home.packages = [
+      config.dot.cursor-theme.package
+      config.dot.icon-theme.package
+      config.dot.app-theme.package
+    ];
   };
 }
