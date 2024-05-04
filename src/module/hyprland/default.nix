@@ -130,10 +130,10 @@ in
         env = XDG_SESSION_DESKTOP, Hyprland
 
         env = HYPRCURSOR_THEME,${config.dot.cursor-theme.name}
-        env = HYPRCURSOR_SIZE,${config.dot.cursor-theme.size}
+        env = HYPRCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.size}
 
         env = XCURSOR_THEME,${config.dot.cursor-theme.name}
-        env = XCURSOR_SIZE,${config.dot.cursor-theme.name}
+        env = XCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.name}
 
         exec-once = systemctl --user import-environment PATH
         exec-once = systemctl --user restart xdg-desktop-portal.service
