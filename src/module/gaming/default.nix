@@ -36,6 +36,7 @@
   home.shared = {
     home.packages = with pkgs; [
       dwarf-fortress
+      dwarf-fortress-packages.dwarf-therapist
     ];
   };
 }
