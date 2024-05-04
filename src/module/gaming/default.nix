@@ -34,9 +34,18 @@
   };
 
   home.shared = {
-    home.packages = with pkgs; [
-      dwarf-fortress
-      dwarf-fortress-packages.dwarf-therapist
+    home.packages = [
+      (pkgs.dwarf-fortress-packages.dwarf-fortress-full.override {
+        # theme = pkgs.dwarf-fortress-packages.themes.obsidian;
+        # enableIntro = false;
+        # enableStoneSense = true;
+        # enableSoundSense = true;
+        # enableDwarfTherapist = true;
+        # enableLegendsBrowser = true;
+        # enableTruetype = true;
+        enableTextMode = true;
+        enableSound = false;
+      })
     ];
   };
 }
