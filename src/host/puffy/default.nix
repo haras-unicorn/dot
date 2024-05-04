@@ -26,7 +26,7 @@
       location.timeZone = "Europe/Zagreb";
       shell = { package = pkgs.nushell; bin = "nu"; };
       editor = { package = pkgs.helix; bin = "hx"; };
-      gpg = { package = pkgs.pinentry; bin = "pinentry-curses"; flavor = pkgs.curses; };
+      pinentry = { package = pkgs.pinentry; bin = "pinentry-curses"; };
 
       openssh.authorizations = {
         haras = [ "hearth" "workbug" ];

@@ -63,7 +63,7 @@
       "wireshark"
     ];
 
-    gpg = { packages = pkgs.pinentry-qt; bin = "pinentry-qt"; flavor = "qt"; };
+    pinentry = { packages = pkgs.pinentry-qt; bin = "pinentry-qt"; };
     shell = { packages = pkgs.nushell; bin = "nu"; };
     editor = { packages = pkgs.helix; bin = "hx"; };
     visual = { packages = pkgs.vscode; bin = "code"; };

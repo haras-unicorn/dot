@@ -7,7 +7,7 @@ in
   options.dot.pinentry = {
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.pinentry-curses;
+      default = pkgs.pinentry;
       example = pkgs.pinentry-qt;
     };
     bin = lib.mkOption {

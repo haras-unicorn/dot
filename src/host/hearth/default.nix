@@ -69,7 +69,7 @@
         "wireshark"
       ];
 
-      gpg = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; flavor = "pkgs.qt"; };
+      pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
       shell = { package = pkgs.nushell.override { additionalFeatures = (p: p ++ [ "dataframe" ]); }; bin = "nu"; };
       editor = { package = pkgs.helix; bin = "hx"; };
       visual = { package = pkgs.vscode; bin = "code"; };

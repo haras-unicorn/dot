@@ -30,7 +30,7 @@
       location.timeZone = "Etc/UTC";
       shell = { package = pkgs.nushell; bin = "nu"; };
       editor = { package = pkgs.helix; bin = "hx"; };
-      gpg = { package = pkgs.pinentry; bin = "pinentry-curses"; flavor = "curses"; };
+      pinentry = { package = pkgs.pinentry; bin = "pinentry-curses"; };
     };
   };
 
