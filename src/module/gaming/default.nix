@@ -36,15 +36,18 @@
   home.shared = {
     home.packages = [
       (pkgs.dwarf-fortress-packages.dwarf-fortress-full.override {
+        # Console
+        enableIntro = false;
+        enableTextMode = true;
+        enableSound = false;
+
+        # GUI
         # theme = pkgs.dwarf-fortress-packages.themes.obsidian;
-        # enableIntro = false;
         # enableStoneSense = true;
         # enableSoundSense = true;
         # enableDwarfTherapist = true;
         # enableLegendsBrowser = true;
         # enableTruetype = true;
-        enableTextMode = true;
-        enableSound = false;
       })
     ];
   };
