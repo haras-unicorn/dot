@@ -108,7 +108,11 @@ in
       home.sessionVariables = cfg.sessionVariables;
       systemd.user.sessionVariables = cfg.sessionVariables;
 
-      home.packages = [ switch-layout current-layout ];
+      home.packages = [
+        switch-layout
+        current-layout
+        pkgs.hyprcursor
+      ];
 
       wayland.windowManager.hyprland.enable = true;
       wayland.windowManager.hyprland.xwayland.enable = true;
@@ -124,6 +128,9 @@ in
 
         env = XDG_CURRENT_DESKTOP, Hyprland
         env = XDG_SESSION_DESKTOP, Hyprland
+
+        env = HYPRCURSOR_THEME,${config.dot.cursor-theme.name}
+        env = HYPRCURSOR_SIZE,32
 
         exec-once = systemctl --user import-environment PATH
         exec-once = systemctl --user restart xdg-desktop-portal.service
