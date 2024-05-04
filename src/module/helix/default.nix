@@ -26,6 +26,6 @@ in
         cfg.package
         pkgs.nushell;
 
-    programs.helix.settings = builtins.fromTOML (builtins.readFile ./settings.toml);
+    programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
   };
 }

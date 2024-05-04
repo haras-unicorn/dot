@@ -36,6 +36,7 @@
       notARepository = "quit";
       promptToReturnFromSubprocess = false;
       gui = {
+        filterMode = "fuzzy";
         showIcons = true;
         paging = {
           colorArg = "always";
