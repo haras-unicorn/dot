@@ -101,7 +101,6 @@ in
 
     home.shared = {
       home.packages = with pkgs; [
-        cmatrix # NOTE: matrix in console
         file # NOTE: get file info
         zip # NOTE: zip stuff
         unzip # NOTE: unzip stuff

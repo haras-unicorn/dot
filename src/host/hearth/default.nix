@@ -42,6 +42,7 @@
     "${self}/src/distro/coreutils"
     "${self}/src/distro/diag"
     "${self}/src/distro/console"
+    "${self}/src/distro/bling"
     "${self}/src/distro/wayland"
     "${self}/src/distro/app"
     "${self}/src/distro/daw"
