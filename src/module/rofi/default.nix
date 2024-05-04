@@ -35,7 +35,7 @@
     xdg.configFile."keepmenu/config.ini".text = ''
       [dmenu]
       dmenu_command = ${pkgs.rofi}/bin/rofi -config ${config.xdg.configHome}/rofi/keepmenu.rasi
-      pinentry = ${config.dot.gpg.package}/bin/${config.dot.gpg.bin}
+      pinentry = ${config.dot.pinentry.package}/bin/${config.dot.pinentry.bin}
       title_path = False
 
       [dmenu_passphrase]

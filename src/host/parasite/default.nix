@@ -11,6 +11,7 @@
     "${self}/src/module/locate"
 
     "${self}/src/distro/coreutils"
+
     "${self}/src/distro/diag"
     "${self}/src/distro/console"
   ];

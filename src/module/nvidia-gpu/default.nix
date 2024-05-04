@@ -4,6 +4,8 @@
 , ...
 }:
 
+# FIXME: https://github.com/NixOS/nixpkgs/issues/306276
+
 {
   options = {
     dot = {
@@ -57,7 +59,7 @@
         libva-utils # NOTE: vainfo
         vulkan-tools # NOTE: vulkaninfo
         glxinfo # NOTE: glxinfo and eglinfo
-        nvtop
+        nvtopPackages.full # NOTE: check GPU usage
       ];
 
       networking.firewall.allowedTCPPorts = [

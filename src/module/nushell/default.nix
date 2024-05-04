@@ -3,14 +3,14 @@
 let
   cfg = config.dot.shell;
 
-  package =
+  withPackage = x:
     (p: yes: no: lib.mkMerge [
       (lib.mkIf p yes)
       (lib.mkIf (!p) no)
     ])
       (cfg.bin == "nu")
-      cfg.package
-      pkgs.nushell;
+      (x cfg.package)
+      (x pkgs.nushell);
 
   vars = lib.strings.concatStringsSep
     "\n"
@@ -34,7 +34,7 @@ in
   config = {
     home.shared = {
       programs.nushell.enable = true;
-      programs.nushell.package = package;
+      programs.nushell.package = withPackage (package: package);
 
       programs.nushell.environmentVariables = {
         PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
@@ -57,7 +57,7 @@ in
 
       home.packages = [ pkgs.nufmt ];
 
-      programs.helix.languages = {
+      programs.helix.languages = withPackage (package: {
         language-server.nu-lsp = {
           command = "${package}/bin/nu";
           args = [ "--lsp" ];
@@ -71,7 +71,7 @@ in
           };
           auto-format = true;
         }];
-      };
+      });
     };
   };
 }
