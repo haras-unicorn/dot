@@ -80,7 +80,7 @@
       font.emoji = { name = "Noto Color Emoji"; package = pkgs.noto-fonts-emoji; };
       font.size = { small = 12; medium = 13; large = 16; };
 
-      cursor-theme = { package = pkgs.pokemon-cursor-theme; name = "Pokemon"; };
+      cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
       icon-theme = { package = pkgs.beauty-line-icon-theme; name = "Beautyline"; };
       app-theme = { package = pkgs.sweet; name = "Sweet"; };
     };

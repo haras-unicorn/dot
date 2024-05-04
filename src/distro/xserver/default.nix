@@ -56,7 +56,7 @@
         package = lib.mkOption {
           type = lib.types.package;
           default = pkgs.numix-cursor-theme;
-          example = pkgs.pokemon-cursor-theme;
+          example = pkgs.pokemon-cursor;
         };
         name = lib.mkOption {
           type = lib.types.str;
