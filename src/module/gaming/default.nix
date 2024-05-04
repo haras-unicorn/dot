@@ -43,13 +43,17 @@
         enableTextMode = true;
         enableSound = false;
 
+        enableDFHack = false;
+        enableTWBT = false;
+        enableSoundSense = false;
+        enableStoneSense = false;
+        enableDwarfTherapist = false;
+        enableLegendsBrowser = false;
+        enableTruetype = false;
+        theme = null;
+
         # GUI
         # theme = pkgs.dwarf-fortress-packages.themes.obsidian;
-        # enableStoneSense = true;
-        # enableSoundSense = true;
-        # enableDwarfTherapist = true;
-        # enableLegendsBrowser = true;
-        # enableTruetype = true;
       })
     ];
   };
