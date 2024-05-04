@@ -77,7 +77,7 @@
         name = lib.mkOption {
           type = lib.types.str;
           default = "Numix";
-          example = "Beautyline";
+          example = "BeautyLine";
         };
       };
       app-theme = {
