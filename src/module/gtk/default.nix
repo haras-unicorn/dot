@@ -1,19 +1,17 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 
 # TODO: lulezojne
 
 let
-  font = ''"${config.dot.font.sans.name}" ${builtins.toString config.dot.font.size.medium}'';
-
   ini2 = ''
-    gtk-font-name = ${font}
+    gtk-font-name = "${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}"
     gtk-icon-theme-name = "${config.dot.icon-theme.name}"
     gtk-theme-name = "${config.dot.app-theme.name}"
     gtk-cursor-theme-name = "${config.dot.cursor-theme.name}"
   '';
   ini3 = ''
     [Settings]
-    gtk-font-name = ${font}
+    gtk-font-name = ${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}
     gtk-icon-theme-name = ${config.dot.icon-theme.name}
     gtk-theme-name = ${config.dot.app-theme.name}
     gtk-cursor-theme-name = ${config.dot.cursor-theme.name}
@@ -21,7 +19,7 @@ let
   ini4 = ini3;
 
   dconf = {
-    font-name = font;
+    font-name = "${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}";
     gtk-theme = config.dot.app-theme.name;
     icon-theme = config.dot.icon-theme.name;
     cursor-theme = config.dot.cursor-theme.name;
