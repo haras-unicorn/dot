@@ -25,11 +25,11 @@
 
     programs.steam.enable = true;
 
-    users.groups.gaming = { };
+    users.groups.games = { };
 
     security.pam.loginLimits = [
-      { domain = "@gaming"; item = "nofile"; type = "hard"; value = "524288"; }
-      { domain = "@gaming"; item = "nofile"; type = "soft"; value = "524288"; }
+      { domain = "@games"; item = "nofile"; type = "hard"; value = "524288"; }
+      { domain = "@games"; item = "nofile"; type = "soft"; value = "524288"; }
     ];
   };
 

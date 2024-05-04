@@ -66,7 +66,7 @@
         "mlocate"
         "video"
         "audio"
-        "gaming"
+        "games"
         "wireshark"
       ];
 

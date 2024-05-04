@@ -63,6 +63,7 @@
         "development"
         "mlocate"
         "wireshark"
+        "games"
       ];
 
       pinentry = { packages = pkgs.pinentry-qt; bin = "pinentry-qt"; };
