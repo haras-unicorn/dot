@@ -25,6 +25,7 @@ let
     gtk-theme = config.dot.app-theme.name;
     icon-theme = config.dot.icon-theme.name;
     cursor-theme = config.dot.cursor-theme.name;
+    cursor-size = config.dot.cursor-theme.size;
   };
 in
 {
@@ -42,10 +43,6 @@ in
         GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
       };
     };
-
-    home.packages = with pkgs; [
-      lxappearance
-    ];
 
     xdg.configFile."gtk-2.0/settings.ini".text = ini2;
     xdg.configFile."gtk-3.0/settings.ini".text = ini3;

@@ -67,6 +67,11 @@
           default = "Numix-Cursor";
           example = "Pokemon";
         };
+        size = lib.mkOption {
+          type = lib.types.ints.u8;
+          default = 32;
+          example = 24;
+        };
       };
       icon-theme = {
         package = lib.mkOption {
@@ -107,6 +112,7 @@
     home.pointerCursor = {
       package = config.dot.cursor-theme.package;
       name = config.dot.cursor-theme.name;
+      size = config.dot.cursor-theme.size;
     };
 
     home.packages = [
