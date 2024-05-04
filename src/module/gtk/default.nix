@@ -25,7 +25,7 @@ let
     gtk-theme = config.dot.app-theme.name;
     icon-theme = config.dot.icon-theme.name;
     cursor-theme = config.dot.cursor-theme.name;
-    cursor-size = config.dot.cursor-theme.size;
+    cursor-size = "${config.dot.cursor-theme.size}";
   };
 in
 {
