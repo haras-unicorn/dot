@@ -2,6 +2,7 @@
 
 # TODO: use instead of waybar after https://github.com/elkowar/eww/pull/743
 # TODO: hook up config like with waybar
+# TODO: more menues
 
 let
   package = pkgs.eww;
@@ -14,13 +15,13 @@ in
         "${bin} daemon"
       ];
 
-      desktopEnvironment.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "s";
-          command = "${bin} open --toggle sysinfo";
-        }
-      ];
+      # desktopEnvironment.keybinds = [
+      #   {
+      #     mods = [ "super" ];
+      #     key = "s";
+      #     command = "${bin} open --toggle sysinfo";
+      #   }
+      # ];
     };
   };
 
