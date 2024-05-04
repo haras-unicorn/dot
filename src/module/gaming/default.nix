@@ -32,4 +32,10 @@
       { domain = "@gaming"; item = "nofile"; type = "soft"; value = "524288"; }
     ];
   };
+
+  home.shared = {
+    home.packages = with pkgs; [
+      dwarf-fortress
+    ];
+  };
 }
