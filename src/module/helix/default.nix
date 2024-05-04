@@ -27,5 +27,11 @@ in
         pkgs.nushell;
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
+
+    programs.helix.languages = {
+      language-server = {
+        nil = { command = "${pkgs.nil}/bin/nil"; };
+      };
+    };
   };
 }
