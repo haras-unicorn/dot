@@ -126,7 +126,7 @@ in
               chmod -R 755 "$dest"
               cd "$dest"
               # NOTE: workaround to patch shebangs
-              nix-shell --packages bc --pure --run "patchShebangs ."
+              nix-shell --packages parallel --pure --run "patchShebangs ."
               ./change_color.sh \
                 -t ${config.homeDirectory}/.themes \
                 "${config.xdg.configHome}/materia/colors"
