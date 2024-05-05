@@ -118,8 +118,8 @@ in
               command=""
               command+=" patchShebangs .;"
               command+=" ./change_color.sh"
-              command+=" -t ${config.home.homeDirectory}/.themes"
-              command+=" -o Materia"
+              command+=" -t ${config.xdg.dataHome}/themes"
+              command+=" -o Lulezojne"
               command+=" ${config.xdg.configHome}/materia/colors"
 
               #shellcheck disable=SC2086
