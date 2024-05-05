@@ -115,6 +115,7 @@ in
               bc
               inkscape
               optipng 
+              parallel
             ];
             text = ''
               dest="${config.xdg.cacheHome}/materia-theme"
