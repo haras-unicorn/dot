@@ -84,8 +84,6 @@ in
         chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
       };
 
-      xdg.sounds.enable = true;
-
       programs.dconf.enable = true;
 
       services.greetd.enable = true;
