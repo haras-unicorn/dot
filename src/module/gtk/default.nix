@@ -82,6 +82,7 @@ in
                 rm -rf "$dest"
               fi
               cp -r "${materia-theme}" "$dest"
+              chmod -R 755 "$dest"
               cd "$dest"
               ./change_color.sh "${config.xdg.configHome}/materia/colors"
             '';
