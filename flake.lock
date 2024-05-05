@@ -242,22 +242,6 @@
         "type": "github"
       }
     },
-    "materia-theme": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1714935144,
-        "narHash": "sha256-imHURmOhU8667rymC7PK0Ox/YLc+fRx1zaEjHjJQLBg=",
-        "owner": "haras-unicorn",
-        "repo": "materia-theme",
-        "rev": "50c91295808840a260e379de0d5944f484e06502",
-        "type": "gitlab"
-      },
-      "original": {
-        "owner": "haras-unicorn",
-        "repo": "materia-theme",
-        "type": "gitlab"
-      }
-    },
     "nix-vscode-extensions": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -395,7 +379,6 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "lulezojne": "lulezojne",
-        "materia-theme": "materia-theme",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixified-ai": "nixified-ai",
         "nixos-hardware": "nixos-hardware",

@@ -37,34 +37,35 @@ let
     gtk-theme = appThemeName;
   });
 
-  mkMateriaTheme = colors:
-    pkgs.materia-theme.overrideAttrs
-      (old: {
-        patches = (old.patches or [ ]) ++ [
-          ./materia-theme-change-color.patch
-        ];
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++
-          (with pkgs; [ bc inkscape optipng ]);
-        postPatch = (old.postPatch or "") + ''
-          bg="F5F5F5"
-          fg="212121"
-          view="FFFFFF"
-          surface="FAFAFA"
-          hdr_bg="455A64"
-          hdr_fg="FFFFFF"
-          sel_bg="42A5F5"
-          args=""
-          args+="BG=$bg\n"
-          args+="FG=$fg\n"
-          args+="MATERIA_VIEW=$view\n"
-          args+="MATERIA_SURFACE=$surface\n"
-          args+="HDR_BG=$hdr_bg\n"
-          args+="HDR_FG=$hdr_fg\n"
-          args+="SEL_BG=$sel_bg\n"
-          patchShebangs .
-          ./change_color.sh <(echo -e "$args")
-        '';
-      });
+  # TODO: use this somehow ?
+  # mkMateriaTheme = colors:
+  #   pkgs.materia-theme.overrideAttrs
+  #     (old: {
+  #       patches = (old.patches or [ ]) ++ [
+  #         ./materia-theme-change-color.patch
+  #       ];
+  #       nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++
+  #         (with pkgs; [ bc inkscape optipng ]);
+  #       postPatch = (old.postPatch or "") + ''
+  #         bg="F5F5F5"
+  #         fg="212121"
+  #         view="FFFFFF"
+  #         surface="FAFAFA"
+  #         hdr_bg="455A64"
+  #         hdr_fg="FFFFFF"
+  #         sel_bg="42A5F5"
+  #         args=""
+  #         args+="BG=$bg\n"
+  #         args+="FG=$fg\n"
+  #         args+="MATERIA_VIEW=$view\n"
+  #         args+="MATERIA_SURFACE=$surface\n"
+  #         args+="HDR_BG=$hdr_bg\n"
+  #         args+="HDR_FG=$hdr_fg\n"
+  #         args+="SEL_BG=$sel_bg\n"
+  #         patchShebangs .
+  #         ./change_color.sh <(echo -e "$args")
+  #       '';
+  #     });
 in
 {
   shared = {
@@ -104,16 +105,27 @@ in
           "then" = {
             command = "${pkgs.writeShellApplication {
             name = "change-materia-colors";
-            runtimeInputs = with pkgs; [ bc inkscape optipng ];
+            runtimeInputs = with pkgs; [
+              stdenvNoCC
+              meson
+              ninja
+              sassc
+              gnome.gnome-themes-extra
+              gdk-pixbuf
+              librsvg
+              bc
+              inkscape
+              optipng 
+            ];
             text = ''
               dest="${config.xdg.cacheHome}/materia-theme"
               if [[ -d "$dest" ]]; then
                 rm -rf "$dest"
               fi
-              cp -r "${materia-theme}" "$dest"
+              cp -r "${pkgs.materia-theme}" "$dest"
               chmod -R 755 "$dest"
               cd "$dest"
-              ./change_color.sh "${config.xdg.configHome}/materia/colors"
+              ./change_color.sh -t ${config.homeDirectory}/.themes "${config.xdg.configHome}/materia/colors"
             '';
           }}/bin/change-materia-colors";
           };
