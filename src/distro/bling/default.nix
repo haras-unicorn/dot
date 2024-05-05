@@ -6,6 +6,7 @@
       fastfetch # NOTE: fetch
       krabby # NOTE: pokedex
       cmatrix # NOTE: matrix
+      pokemonsay # NOTE: cowsay
     ];
   };
 }

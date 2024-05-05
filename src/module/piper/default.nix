@@ -35,8 +35,8 @@ let
       '';
     };
 
-  paste-speak = pkgs.writeShellApplication {
-    name = "paste-speak";
+  read-clipboard = pkgs.writeShellApplication {
+    name = "read-clipboard";
     runtimeInputs = [ speak pkgs.wl-clipboard ];
     text = ''
       wl-paste | speak
@@ -50,7 +50,7 @@ in
         {
           mods = [ "super" ];
           key = "s";
-          command = "${paste-speak}/bin/paste-speak";
+          command = "${read-clipboard}/bin/read-clipboard";
         }
       ];
     };
@@ -61,7 +61,7 @@ in
       [
         piper-tts
         speak
-        paste-speak
+        read-clipboard
       ];
   };
 }

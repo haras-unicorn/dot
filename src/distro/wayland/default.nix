@@ -97,6 +97,16 @@
           example = "Sweet";
         };
       };
+      dark-mode = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        example = true;
+      };
+      wallpaper = lib.mkOption {
+        type = lib.types.string;
+        default = pkgs.nixos-artwork.wallpapers.nix-wallpaper-stripes-logo.src;
+        exapmle = "dynamic";
+      };
     };
   };
 
@@ -114,6 +124,9 @@
       name = config.dot.cursor-theme.name;
       size = config.dot.cursor-theme.size;
     };
+
+    dconf.settings."org/gnome/desktop/interface".color-scheme =
+      lib.mkIf config.dot.dark-mode "prefer-dark";
 
     home.packages = [
       config.dot.cursor-theme.package
