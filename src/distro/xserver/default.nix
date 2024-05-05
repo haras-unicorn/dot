@@ -128,7 +128,6 @@
       config.dot.cursor-theme.package
       config.dot.icon-theme.package
       config.dot.app-theme.package
-      pkgs.materia-theme
     ];
   };
 }
