@@ -116,7 +116,7 @@ in
               nix-shell --packages parallel --pure --run "patchShebangs '$dest'"
               cd "$dest"
               ./change_color.sh \
-                -t ${config.homeDirectory}/.themes \
+                -t ${config.home.homeDirectory}/.themes \
                 "${config.xdg.configHome}/materia/colors"
             '';
           }}/bin/change-materia-colors";
