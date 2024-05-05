@@ -94,7 +94,7 @@
         name = lib.mkOption {
           type = lib.types.str;
           default = "Numix";
-          example = "Sweet";
+          example = "dynamic";
         };
       };
       dark-mode = lib.mkOption {
