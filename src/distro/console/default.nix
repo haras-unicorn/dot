@@ -125,6 +125,7 @@ in
         mermaid-cli # NOTE: generate diagrams from text
         glow # NOTE: render markdown in terminal
         nixos-generators # NOTE: collection of generators to create nixos images
+        dos2unix # NOTE: convert Windows file endings to Unix
       ];
     };
   };
