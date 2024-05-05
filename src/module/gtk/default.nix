@@ -1,41 +1,28 @@
-{ lib, config, pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
-  mkIfElse = (p: yes: no: lib.mkMerge [
-    (lib.mkIf p yes)
-    (lib.mkIf (!p) no)
-  ]);
-
-  withAppThemeName = x:
-    mkIfElse
-      (config.dot.app-theme.name == "dynamic")
-      (mkIfElse config.dot.dark-mode
-        (x "Materia-dark")
-        (x "Materia-light"))
-      (x config.dot.app-theme.name);
-
-  ini2 = withAppThemeName (appThemeName: ''
+  ini2 = ''
     gtk-font-name = "${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}"
     gtk-icon-theme-name = "${config.dot.icon-theme.name}"
     gtk-cursor-theme-name = "${config.dot.cursor-theme.name}"
-    gtk-theme-name = "${appThemeName}"
-  '');
-  ini3 = withAppThemeName (appThemeName: ''
+    gtk-theme-name = "${config.dot.app-theme.name}"
+  '';
+  ini3 = ''
     [Settings]
     gtk-font-name = ${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}
     gtk-icon-theme-name = ${config.dot.icon-theme.name}
     gtk-cursor-theme-name = ${config.dot.cursor-theme.name}
-    gtk-theme-name = ${appThemeName}
-  '');
+    gtk-theme-name = ${config.dot.app-theme.name}
+  '';
   ini4 = ini3;
 
-  dconf = withAppThemeName (appThemeName: {
+  dconf = {
     font-name = "${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}";
     icon-theme = config.dot.icon-theme.name;
     cursor-theme = config.dot.cursor-theme.name;
     cursor-size = config.dot.cursor-theme.size;
-    gtk-theme = appThemeName;
-  });
+    gtk-theme = config.dot.app-theme.name;
+  };
 
   # NOTE: keeping here for reference or in case i want to upstream
   # mkMateriaTheme = colors:
@@ -124,9 +111,10 @@ in
               fi
               cp -r "${pkgs.materia-theme.src}" "$dest"
               chmod -R 755 "$dest"
-              cd "$dest"
+              find . -type f -exec chmod 644 -- {} +
               # NOTE: workaround to patch shebangs
-              nix-shell --packages parallel --pure --run "patchShebangs ."
+              nix-shell --packages parallel --pure --run "patchShebangs '$dest'"
+              cd "$dest"
               ./change_color.sh \
                 -t ${config.homeDirectory}/.themes \
                 "${config.xdg.configHome}/materia/colors"
