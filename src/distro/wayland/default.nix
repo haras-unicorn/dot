@@ -105,7 +105,7 @@
       wallpaper = lib.mkOption {
         type = lib.types.string;
         default = pkgs.nixos-artwork.wallpapers.nix-wallpaper-stripes-logo.src;
-        exapmle = "dynamic";
+        example = "dynamic";
       };
     };
   };
