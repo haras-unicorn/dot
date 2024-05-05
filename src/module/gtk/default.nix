@@ -81,11 +81,11 @@ in
         {
           template = ''
             BG={{ vivid ansi.main.black }}
-            FG={{ vivid ansi.main.white }}
-            MATERIA_VIEW={{ vivid ansi.main.white }}
-            MATERIA_SURFACE={{ vivid ansi.main.white }}
+            FG={{ vivid ansi.main.bright_white }}
+            MATERIA_VIEW={{ vivid ansi.main.bright_white }}
+            MATERIA_SURFACE={{ vivid ansi.main.bright_white }}
             HDR_BG={{ vivid ansi.main.black }}
-            HDR_FG={{ vivid ansi.main.white }}
+            HDR_FG={{ vivid ansi.main.bright_white }}
             SEL_BG={{ vivid ansi.main.red }}
           '';
           "in" = "${config.xdg.configHome}/materia/colors";
