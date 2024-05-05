@@ -37,7 +37,7 @@ let
     gtk-theme = appThemeName;
   });
 
-  # TODO: use this somehow ?
+  # NOTE: keeping here for reference or in case i want to upstream
   # mkMateriaTheme = colors:
   #   pkgs.materia-theme.overrideAttrs
   #     (old: {
@@ -125,7 +125,9 @@ in
               cp -r "${pkgs.materia-theme}" "$dest"
               chmod -R 755 "$dest"
               cd "$dest"
-              ./change_color.sh -t ${config.homeDirectory}/.themes "${config.xdg.configHome}/materia/colors"
+              ./change_color.sh \
+                -t ${config.homeDirectory}/.themes \
+                "${config.xdg.configHome}/materia/colors"
             '';
           }}/bin/change-materia-colors";
           };
