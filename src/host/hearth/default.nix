@@ -88,8 +88,9 @@
 
       cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
       icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
-      app-theme = { name = "dynamic"; };
+      app-theme = { package = pkgs.materia-theme; name = "Materia-dark"; };
       dark-mode = true;
+      wallpaper = "dynamic";
     };
   };
 
