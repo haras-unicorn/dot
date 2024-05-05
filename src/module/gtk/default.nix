@@ -82,8 +82,8 @@ in
           template = ''
             BG={{ vivid ansi.main.black }}
             FG={{ vivid ansi.main.bright_white }}
-            MATERIA_VIEW={{ vivid ansi.main.bright_black }}
-            MATERIA_SURFACE={{ vivid ansi.main.bright_black }}
+            MATERIA_VIEW={{ vivid ansi.main.black }}
+            MATERIA_SURFACE={{ vivid ansi.main.black }}
             HDR_BG={{ vivid ansi.main.black }}
             HDR_FG={{ vivid ansi.main.bright_white }}
             SEL_BG={{ vivid ansi.main.bright_red }}
