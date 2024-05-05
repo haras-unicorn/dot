@@ -132,6 +132,34 @@
       config.dot.cursor-theme.package
       config.dot.icon-theme.package
       config.dot.app-theme.package
+
+      (pkgs.materia-theme.overrideAttrs
+        (old: {
+          patches = (old.patches or [ ]) ++ [
+            ./change_color.patch
+          ];
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++
+            (with pkgs; [ bc inkscape optipng ]);
+          postPatch = (old.postPatch or "") + ''
+            bg="F5F5F5"
+            fg="212121"
+            view="FFFFFF"
+            surface="FAFAFA"
+            hdr_bg="455A64"
+            hdr_fg="FFFFFF"
+            sel_bg="42A5F5"
+            args=""
+            args+="BG=$bg\n"
+            args+="FG=$fg\n"
+            args+="MATERIA_VIEW=$view\n"
+            args+="MATERIA_SURFACE=$surface\n"
+            args+="HDR_BG=$hdr_bg\n"
+            args+="HDR_FG=$hdr_fg\n"
+            args+="SEL_BG=$sel_bg\n"
+            patchShebangs .
+            ./change_color.sh <(echo -e "$args")
+          '';
+        }))
     ];
   };
 }
