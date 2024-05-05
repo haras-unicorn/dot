@@ -106,7 +106,6 @@ in
             command = "${pkgs.writeShellApplication {
             name = "change-materia-colors";
             runtimeInputs = with pkgs; [
-              stdenvNoCC
               meson
               ninja
               sassc
@@ -122,9 +121,11 @@ in
               if [[ -d "$dest" ]]; then
                 rm -rf "$dest"
               fi
-              cp -r "${pkgs.materia-theme}" "$dest"
+              cp -r "${pkgs.materia-theme.src}" "$dest"
               chmod -R 755 "$dest"
               cd "$dest"
+              # NOTE: workaround to patch shebangs
+              nix-shell --packages bc --pure --run "patchShebangs ."
               ./change_color.sh \
                 -t ${config.homeDirectory}/.themes \
                 "${config.xdg.configHome}/materia/colors"
