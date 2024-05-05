@@ -111,7 +111,7 @@ in
               fi
               cp -r "${pkgs.materia-theme.src}" "$dest"
               chmod -R 755 "$dest"
-              find . -type f -exec chmod 644 -- {} +
+              find "$dest" -type f -exec chmod 644 -- {} +
               # NOTE: workaround to patch shebangs
               nix-shell --packages parallel --pure --run "patchShebangs '$dest'"
               cd "$dest"
