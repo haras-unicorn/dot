@@ -92,18 +92,7 @@ in
           "then" = {
             command = "${pkgs.writeShellApplication {
             name = "change-materia-colors";
-            runtimeInputs = with pkgs; [
-              meson
-              ninja
-              sassc
-              gnome.gnome-themes-extra
-              gdk-pixbuf
-              librsvg
-              bc
-              inkscape
-              optipng 
-              parallel
-            ];
+            runtimeInputs = [];
             text = ''
               dest="${config.xdg.cacheHome}/materia-theme"
               if [[ -d "$dest" ]]; then
@@ -114,11 +103,27 @@ in
               find "$dest" -type f -exec chmod 644 -- {} +
               find "$dest" -type f -name "*.sh" -exec chmod 755 -- {} +
               cd "$dest"
-              # NOTE: workaround to patch shebangs
-              nix-shell --packages parallel --pure --run "patchShebangs ."
-              ./change_color.sh \
-                -t ${config.home.homeDirectory}/.themes \
-                "${config.xdg.configHome}/materia/colors"
+
+              packages=""
+              packages+=" meson"
+              packages+=" ninja"
+              packages+=" sassc"
+              packages+=" gnome.gnome-themes-extra"
+              packages+=" gdk-pixbuf"
+              packages+=" librsvg"
+              packages+=" bc"
+              packages+=" inkscape"
+              packages+=" optipng"
+
+              command=""
+              command+=" patchShebangs .;"
+              command+=" ./change_color.sh"
+              command+=" -t ${config.home.homeDirectory}/.themes"
+              command+=" -o Materia"
+              command+=" ${config.xdg.configHome}/materia/colors"
+
+              #shellcheck disable=SC2086
+              nix-shell --packages $packages --pure --run "$command"
             '';
           }}/bin/change-materia-colors";
           };
