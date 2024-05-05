@@ -56,27 +56,27 @@
       }
 
       #lock {
-        background-image: image(url("${./lock.png}"));
+        background-image: image(url("${./lock.svg}"));
       }
 
       #logout {
-        background-image: image(url("${./logout.png}"));
+        background-image: image(url("${./logout.svg}"));
       }
 
       #suspend {
-        background-image: image(url("${./suspend.png}"));
+        background-image: image(url("${./suspend.svg}"));
       }
 
       #hibernate {
-        background-image: image(url("${./hibernate.png}"));
+        background-image: image(url("${./hibernate.svg}"));
       }
 
       #shutdown {
-        background-image: image(url("${./shutdown.png}"));
+        background-image: image(url("${./shutdown.svg}"));
       }
 
       #reboot {
-        background-image: image(url("${./reboot.png}"));
+        background-image: image(url("${./reboot.svg}"));
       }
 
       ${builtins.readFile ./style.css}
