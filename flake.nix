@@ -23,7 +23,7 @@
     nixified-ai.url = "github:nixified-ai/flake";
     nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
 
-    materia-theme.url = "gitalb:haras/materia-theme/change-color-patchl";
+    materia-theme.url = "gitlab:haras-unicorn/materia-theme";
     materia-theme.flake = false;
 
     arkenfox-userjs.url = "github:arkenfox/user.js/refs/tags/v110.0";

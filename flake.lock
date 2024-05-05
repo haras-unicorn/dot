@@ -242,6 +242,22 @@
         "type": "github"
       }
     },
+    "materia-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1714935144,
+        "narHash": "sha256-imHURmOhU8667rymC7PK0Ox/YLc+fRx1zaEjHjJQLBg=",
+        "owner": "haras-unicorn",
+        "repo": "materia-theme",
+        "rev": "50c91295808840a260e379de0d5944f484e06502",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "haras-unicorn",
+        "repo": "materia-theme",
+        "type": "gitlab"
+      }
+    },
     "nix-vscode-extensions": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -379,6 +395,7 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "lulezojne": "lulezojne",
+        "materia-theme": "materia-theme",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixified-ai": "nixified-ai",
         "nixos-hardware": "nixos-hardware",
@@ -386,8 +403,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
         "nur": "nur",
-        "sops-nix": "sops-nix",
-        "sweet-theme": "sweet-theme"
+        "sops-nix": "sops-nix"
       }
     },
     "sops-nix": {
@@ -410,23 +426,6 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
-        "type": "github"
-      }
-    },
-    "sweet-theme": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1714597116,
-        "narHash": "sha256-SqbP2cuKJTiZaOmkIVda4OI25LBR08p3HoDUzZjJzIs=",
-        "owner": "EliverLara",
-        "repo": "Sweet",
-        "rev": "cf72cb4868664ccab1eaef610cbd3bc331fd1262",
-        "type": "github"
-      },
-      "original": {
-        "owner": "EliverLara",
-        "ref": "nova",
-        "repo": "Sweet",
         "type": "github"
       }
     },
