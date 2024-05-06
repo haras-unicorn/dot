@@ -68,6 +68,7 @@ in
           language-servers = [ "nu-lsp" ];
           formatter = {
             command = "${pkgs.nufmt}/bin/nufmt";
+            args = [ "--stdin" ];
           };
           auto-format = true;
         }];
