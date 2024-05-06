@@ -1,4 +1,5 @@
 {
+  "dotnet.preferCSharpExtension": true,
   "[aspnetcorerazor]": {
     "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
