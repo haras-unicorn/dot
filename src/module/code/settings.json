@@ -1,5 +1,4 @@
 {
-  "dotnet.preferCSharpExtension": true,
   "[aspnetcorerazor]": {
     "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
@@ -26,6 +25,8 @@
   "debug.terminal.clearBeforeReusing": true,
   "dotnet-test-explorer.enableTelemetry": false,
   "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+  "dotnet.preferCSharpExtension": true,
+  "dotnet.server.useOmnisharp": true,
   "dotnetAcquisitionExtension.enableTelemetry": false,
   "editor.acceptSuggestionOnCommitCharacter": false,
   "editor.codeActionsOnSave": {
