@@ -91,6 +91,7 @@ in
       # ms-dotnettools.csharp
       # ms-dotnettools.csdevkit
       # ms-dotnettools.vscode-dotnet-runtime
+      pkgs.vscode-extensions.ms-dotnettools.vscode-dotnet-runtime
       pkgs.vscode-extensions.ms-dotnettools.csharp
       formulahendry.dotnet-test-explorer
       selcukermaya.se-csproj-extensions
