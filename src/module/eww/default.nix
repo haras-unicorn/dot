@@ -4,7 +4,7 @@
   ...
 }:
 
-# TODO: use instead of waybar after https://github.com/elkowar/eww/pull/448
+# TODO: use instead of waybar after
 # TODO: hook up config like with waybar
 # TODO: more menues
 
