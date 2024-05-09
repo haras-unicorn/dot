@@ -50,7 +50,6 @@
       monitors = [ "eDP-1" ];
       networkInterface = "wlp1s0";
       cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";
-      soundcardPciId = "03:00.1";
       screenBrightnessDevice = "amdgpu_bl0";
 
       location.timeZone = "Europe/Zagreb";
@@ -59,7 +58,6 @@
         "docker"
         "podman"
         "video"
-        "audio"
         "development"
         "mlocate"
         "wireshark"
