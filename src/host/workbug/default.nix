@@ -66,20 +66,20 @@
         "games"
       ];
 
-      pinentry = { packages = pkgs.pinentry-qt; bin = "pinentry-qt"; };
-      shell = { packages = pkgs.nushell; bin = "nu"; };
-      editor = { packages = pkgs.helix; bin = "hx"; };
-      visual = { packages = pkgs.vscode; bin = "code"; };
-      terminal = { packages = pkgs.kitty; bin = "kitty"; };
-      browser = { packages = pkgs.firefox-bin; bin = "firefox"; };
+      pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
+      shell = { package = pkgs.nushell; bin = "nu"; };
+      editor = { package = pkgs.helix; bin = "hx"; };
+      visual = { package = pkgs.vscode; bin = "code"; };
+      terminal = { package = pkgs.kitty; bin = "kitty"; };
+      browser = { package = pkgs.firefox-bin; bin = "firefox"; };
 
-      font.nerd = { name = "JetBrainsMono Nerd Font"; packages = pkgs.JetBrainsMono; };
-      font.mono = { name = "Roboto Mono"; packages = pkgs.roboto-mono; };
-      font.slab = { name = "Roboto Slab"; packages = pkgs.roboto-slab; };
-      font.sans = { name = "Roboto"; packages = pkgs.roboto; };
-      font.serif = { name = "Roboto Serif"; packages = pkgs.roboto-serif; };
-      font.script = { name = "Eunomia"; packages = pkgs.dotcolon-fonts; };
-      font.emoji = { name = "Noto Color Emoji"; packages = pkgs.noto-fonts-emoji; };
+      font.nerd = { name = "JetBrainsMono Nerd Font"; package = pkgs.JetBrainsMono; };
+      font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
+      font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
+      font.sans = { name = "Roboto"; package = pkgs.roboto; };
+      font.serif = { name = "Roboto Serif"; package = pkgs.roboto-serif; };
+      font.script = { name = "Eunomia"; package = pkgs.dotcolon-fonts; };
+      font.emoji = { name = "Noto Color Emoji"; package = pkgs.noto-fonts-emoji; };
       font.size = { small = 12; medium = 13; large = 16; };
 
       cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
