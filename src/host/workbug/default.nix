@@ -73,7 +73,7 @@
       terminal = { package = pkgs.kitty; bin = "kitty"; };
       browser = { package = pkgs.firefox-bin; bin = "firefox"; };
 
-      font.nerd = { name = "JetBrainsMono Nerd Font"; package = pkgs.JetBrainsMono; };
+      font.nerd = { name = "JetBrainsMono Nerd Font"; label = "JetBrainsMono"; };
       font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
       font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
       font.sans = { name = "Roboto"; package = pkgs.roboto; };
