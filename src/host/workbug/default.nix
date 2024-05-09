@@ -45,13 +45,13 @@
 
   shared = {
     dot = {
-      hardware.ram = 16;
-      hardware.mainMonitor = "eDP-1";
-      hardware.monitors = [ "eDP-1" ];
-      hardware.networkInterface = "wlp1s0";
-      hardware.cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";
-      hardware.soundcardPciId = "03:00.1";
-      hardware.screenBrightnessDevice = "amdgpu_bl0";
+      ram = 16;
+      mainMonitor = "eDP-1";
+      monitors = [ "eDP-1" ];
+      networkInterface = "wlp1s0";
+      cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";
+      soundcardPciId = "03:00.1";
+      screenBrightnessDevice = "amdgpu_bl0";
 
       location.timeZone = "Europe/Zagreb";
       groups = [
