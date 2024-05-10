@@ -61,7 +61,7 @@ let
   nixpkgsConfigModule = ({ nix-vscode-extensions, ... }: {
     nixpkgs.config = {
       allowUnfree = true;
-      nvidiaAcceptLicense = true;
+      nvidia.acceptLicense = true;
     };
     nixpkgs.overlays = [
       nix-vscode-extensions.overlays.default
