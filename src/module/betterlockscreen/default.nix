@@ -1,11 +1,15 @@
 { self, pkgs, ... }:
 
 {
-  home.shared = {
-    de.sessionStartup = [
-      "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${self}/assets/greeter.png'"
-    ];
+  shared = {
+    dot = {
+      desktopEnvironment.sessionStartup = [
+        "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${self}/assets/greeter.png'"
+      ];
+    };
+  };
 
+  home.shared = {
     services.betterlockscreen.enable = true;
   };
 }
