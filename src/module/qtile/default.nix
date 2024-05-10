@@ -71,7 +71,7 @@ let
       cfg.keybinds);
 in
 {
-  options.desktopEnvironment = {
+  options.dot.desktopEnvironment = {
     sessionVariables = lib.mkOption {
       type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
       default = { };

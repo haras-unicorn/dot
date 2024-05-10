@@ -43,14 +43,13 @@
 
   shared = {
     dot = {
-      hardware.ram = 16;
-      hardware.mainMonitor = "DVI-D-0";
-      hardware.monitors = [ "DVI-D-0" "HDMI-0" ];
-      hardware.networkInterface = "enp3s0";
-      hardware.cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
-      hardware.soundcardPciId = "08:00.3";
-      hardware.nvidiaDriver.version = "legacy_470";
-      hardware.nvidiaDriver.open = false;
+      ram = 16;
+      mainMonitor = "DVI-D-0";
+      monitors = [ "DVI-D-0" "HDMI-0" ];
+      networkInterface = "enp3s0";
+      cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
+      nvidiaDriver.version = "legacy_470";
+      nvidiaDriver.open = false;
 
       location.timeZone = "Europe/Zagreb";
       groups = [
@@ -71,7 +70,7 @@
       terminal = { package = pkgs.kitty; bin = "kitty"; };
       browser = { package = pkgs.firefox-bin; bin = "firefox"; };
 
-      font.nerd = { name = "JetBrainsMono Nerd Font"; package = pkgs.JetBrainsMono; };
+      font.nerd = { name = "JetBrainsMono Nerd Font"; label = "JetBrainsMono"; };
       font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
       font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
       font.sans = { name = "Roboto"; package = pkgs.roboto; };
