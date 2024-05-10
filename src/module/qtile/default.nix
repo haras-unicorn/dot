@@ -16,7 +16,7 @@
 # TODO: callbacks for widgets??
 
 let
-  cfg = config.de;
+  cfg = config.dot.desktopEnvironment;
 
   startup = lib.strings.concatStringsSep
     "\n"
@@ -71,7 +71,7 @@ let
       cfg.keybinds);
 in
 {
-  options.de = {
+  options.desktopEnvironment = {
     sessionVariables = lib.mkOption {
       type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
       default = { };
