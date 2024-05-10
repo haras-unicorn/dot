@@ -41,7 +41,7 @@ in
 
     services.xserver.enable = true;
     services.xserver.xkb.layout = "us";
-    services.xserver.libinput.enable = true;
+    services.libinput.enable = true;
 
     services.picom.enable = true;
 
