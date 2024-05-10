@@ -7,6 +7,7 @@
     "${self}/src/module/brightnessctl"
     "${self}/src/module/playerctl"
 
+    "${self}/src/module/sddm"
     "${self}/src/module/qtile"
 
     "${self}/src/module/dunst"

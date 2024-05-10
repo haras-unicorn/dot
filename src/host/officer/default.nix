@@ -23,8 +23,6 @@
     "${self}/src/module/pipewire"
     "${self}/src/module/fonts"
     "${self}/src/module/xserver"
-    "${self}/src/module/sddm"
-    "${self}/src/module/qtile"
 
     "${self}/src/module/virtual"
     "${self}/src/module/windows"
