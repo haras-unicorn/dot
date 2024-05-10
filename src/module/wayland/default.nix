@@ -1,7 +1,5 @@
 { pkgs
 , lib
-  # , self
-  # , sweet-theme
 , config
 , ...
 }:

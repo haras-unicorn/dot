@@ -1,4 +1,4 @@
-{ pkgs, lib, config, sweet-theme, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   cfg = config.de;
@@ -24,7 +24,7 @@ in
 
       services.xserver.displayManager.sddm.enable = true;
       services.xserver.displayManager.sddm.autoNumlock = true;
-      services.xserver.displayManager.sddm.theme = "${sweet-theme}/kde/sddm";
+      services.xserver.displayManager.sddm.theme = "${pkgs.sweet-nova.src}/kde/sddm";
       services.xserver.displayManager.defaultSession = "${cfg.session}";
       security.pam.services.sddm.enableGnomeKeyring = true;
     };
