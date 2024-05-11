@@ -1,4 +1,7 @@
-{ nixpkgs, pkgs, ... }:
+{ pkgs
+  # , nixpkgs
+, ...
+}:
 
 # FIXME: screen sharing
 
@@ -11,11 +14,12 @@ let
   ferdium = pkgs.symlinkJoin {
     name = "ferdium";
     paths = [
-      (pkgs.callPackage ./ferdium.nix {
-        mkFranzDerivation = pkgs.callPackage
-          "${nixpkgs}/pkgs/applications/networking/instant-messengers/franz/generic.nix"
-          { };
-      })
+      pkgs.ferdium
+      # (pkgs.callPackage ./ferdium.nix {
+      #   mkFranzDerivation = pkgs.callPackage
+      #     "${nixpkgs}/pkgs/applications/networking/instant-messengers/franz/generic.nix"
+      #     { };
+      # })
     ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
