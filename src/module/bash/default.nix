@@ -2,7 +2,6 @@
 
 # TODO: prompt after starship like nushell
 # TODO: package
-# NOTE: bash completions fucks it up
 
 let
   cfg = config.dot.shell;
@@ -37,7 +36,7 @@ in
 {
   home.shared = {
     programs.bash.enable = true;
-    # programs.bash.enableCompletion = true;
+    programs.bash.enableCompletion = true;
 
     programs.bash.initExtra = ''
       ${vars}
