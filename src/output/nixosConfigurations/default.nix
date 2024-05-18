@@ -158,7 +158,6 @@ builtins.foldl'
       inherit system specialArgs;
       modules = [
         nur.nixosModules.nur
-        nix-index-database.nixosModules.nix-index
         nixos-wsl.nixosModules.wsl
         { wsl.defaultUser = "${userName}"; }
         sops-nix.nixosModules.sops
@@ -183,6 +182,7 @@ builtins.foldl'
           home-manager.extraSpecialArgs = specialArgs;
           home-manager.sharedModules = [
             nur.hmModules.nur
+            nix-index-database.hmModules.nix-index
             nixConfigModule
             nixpkgsConfigModule
             sops-nix.homeManagerModules.sops
