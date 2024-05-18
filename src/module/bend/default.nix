@@ -17,7 +17,11 @@ let
 
     cargoHash = "sha256-YPPBtgxqfoKnGb77m/CUYQ7+vVgL5MHhJ8I3TQ1rqK8=";
 
-    buildInputs = [ pkgs.hvm ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postInstall = ''
+      wrapProgram $out/bin/bend \
+        --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.hvm ]}
+    '';
 
     RUSTC_BOOTSTRAP = true;
 
