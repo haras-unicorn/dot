@@ -6,6 +6,7 @@
 , lulezojne
 , nixos-wsl
 , sops-nix
+, nix-index-database
 , dot
 , ...
 } @ inputs:
@@ -157,6 +158,7 @@ builtins.foldl'
       inherit system specialArgs;
       modules = [
         nur.nixosModules.nur
+        nix-index-database.nixosModules.nix-index
         nixos-wsl.nixosModules.wsl
         { wsl.defaultUser = "${userName}"; }
         sops-nix.nixosModules.sops
