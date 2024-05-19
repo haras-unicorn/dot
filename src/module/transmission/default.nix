@@ -1,5 +1,8 @@
 { config, ... }:
 
+# NOTE: peer port is 51413
+# NOTE: webui port is 9091
+
 {
   system = {
     services.transmission.enable = true;
