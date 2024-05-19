@@ -144,6 +144,7 @@ in
         gnome-firmware # NOTE: view firmware 
         feh # NOTE: image viewer
         imv # NOTE: image viewer
+        viewnior # NOTE: image viewer
         mpv # NOTE: video viewer
         pinta # NOTE: image manipulation
         dbeaver # NOTE: db viewer
