@@ -7,7 +7,8 @@
 
   home.shared = {
     home.packages = with pkgs; [
-      ddcutil
+      ddccontrol
+      ddccontrol-db
     ];
   };
 }
