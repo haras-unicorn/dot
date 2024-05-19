@@ -28,7 +28,7 @@ in
     "${self}/src/module/llama-cpp"
     "${self}/src/module/piper"
     "${self}/src/module/whisper-cpp"
-    "${self}/src/module/invokeai"
+    # "${self}/src/module/invokeai"
 
     "${self}/src/module/yai"
     "${self}/src/module/tealdeer"
