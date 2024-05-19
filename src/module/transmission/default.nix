@@ -8,7 +8,7 @@
 
   home.shared = {
     xdg.desktopEntries = {
-      syncthing = {
+      transmission = {
         name = "Transmission";
         exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} localhost:9091";
         terminal = false;
