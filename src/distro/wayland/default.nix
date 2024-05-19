@@ -6,7 +6,7 @@
   imports = [
     "${self}/src/module/xdg"
 
-    "${self}/src/module/brightnessctl"
+    "${self}/src/module/ddcutil"
     "${self}/src/module/playerctl"
 
     "${self}/src/module/tuigreet"
