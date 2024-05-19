@@ -1,5 +1,9 @@
 { self, pkgs, vpnHost, vpnDomain, ... }:
 
+# TODO: put user in groups in modules
+# TODO: modularize hardware more
+# TODO: automatically import all modules and use enable
+
 {
   imports = [
     "${self}/src/module/amd-cpu"
@@ -18,6 +22,7 @@
     "${self}/src/module/openvpn-client"
     "${self}/src/module/smartmontools"
     "${self}/src/module/bluetooth"
+    "${self}/src/module/i2c"
 
     "${self}/src/module/sudo"
     "${self}/src/module/keyring"
@@ -66,6 +71,7 @@
         "audio"
         "games"
         "wireshark"
+        "i2c"
       ];
 
       pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
