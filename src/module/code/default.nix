@@ -65,6 +65,7 @@ in
       ms-playwright.playwright
       ms-azuretools.vscode-docker
       streetsidesoftware.code-spell-checker
+      streetsidesoftware.code-spell-checker-croatian
       # jasew.vscode-helix-emulation
       vscodevim.vim
 
