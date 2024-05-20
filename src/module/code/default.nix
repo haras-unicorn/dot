@@ -115,6 +115,7 @@ in
       ms-pyright.pyright
       ms-python.debugpy
       ms-python.python
+      ms-toolsai.jupyter
 
       # nix
       bbenoist.nix
