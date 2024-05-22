@@ -66,7 +66,7 @@ let
 
   journal = pkgs.writeShellApplication {
     name = "journal";
-    runtimeInputs = [ llama-cpp pkgs.mods ];
+    runtimeInputs = [ llama-cpp ];
     text = ''
       command="llama-server --chat-template llama2"
       command="$command --no-display-prompt --log-disable"
@@ -75,7 +75,6 @@ let
       done < "${config.home.homeDirectory}/llama/journal.options"
 
       sh -c "$command &>/dev/null" &
-      mods --ask-model
     '';
   };
 in
