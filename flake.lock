@@ -229,11 +229,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1715635180,
-        "narHash": "sha256-PtHrS/nolKUSNGDi3QVojP/s8fZRtV1/AFAVEf96y6c=",
+        "lastModified": 1716378367,
+        "narHash": "sha256-N+n4SFN8+9nMI4qAqa5GxYbH/3+DzdFVSTrCLZBhd00=",
         "owner": "haras-unicorn",
         "repo": "lulezojne",
-        "rev": "a7546ff6a3a91ecf1e4e9cb003d99476adb3fbc4",
+        "rev": "0d74913f4416825200f7c6d9bc487eceb77a4b7b",
         "type": "github"
       },
       "original": {
@@ -379,11 +379,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1716365865,
-        "narHash": "sha256-8JqO6yhvWiXb90GsP+DE3GUrBKuEVnhAHf4XnkaowDU=",
+        "lastModified": 1716375775,
+        "narHash": "sha256-2X4zwYV6Xudaqo3IhlwsMAQT+bZHs2nBD8Gv3ENHqTg=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "ffc15184bed310b4b4f83cee71d8d39d916eda29",
+        "rev": "0ed3297ed7a3d5308db5a57ccd067beaf196e4a7",
         "type": "github"
       },
       "original": {
