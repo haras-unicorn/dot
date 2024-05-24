@@ -57,7 +57,7 @@ in
 
     programs.vscode.enableExtensionUpdateCheck = false;
     programs.vscode.enableUpdateCheck = false;
-    programs.vscode.mutableExtensionsDir = false;
+    programs.vscode.mutableExtensionsDir = true;
     programs.vscode.extensions = with pkgs.vscode-marketplace; [
       # misc
       github.copilot
