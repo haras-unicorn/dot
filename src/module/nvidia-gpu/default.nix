@@ -70,7 +70,7 @@
         LIBVA_DRIVER_NAME = "nvidia"; # NOTE: hardware acceleration
         VDPAU_DRIVER = "va_gl"; # NOTE: hardware acceleration
         GBM_BACKEND = "nvidia-drm"; # NOTE: wayland buffer api
-        WLR_RENDERER = "vulkan"; # NOTE: wayland roots compositor renderer
+        WLR_RENDERER = "gles2"; # NOTE: wayland roots compositor renderer
         __GLX_VENDOR_LIBRARY_NAME = "nvidia"; # NOTE: offload opengl workloads to nvidia
 
         NVD_BACKEND = "direct"; # NOTE: nvidia-vaapi-driver backend
