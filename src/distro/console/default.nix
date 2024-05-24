@@ -130,6 +130,7 @@ in
         dos2unix # NOTE: convert Windows file endings to Unix
         unixtools.xxd # NOTE: make hexdump
         github-copilot-cli # CLI AI help
+        gh # GitHub CLI
       ];
     };
   };
