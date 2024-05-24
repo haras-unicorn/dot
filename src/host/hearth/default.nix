@@ -90,7 +90,7 @@
         pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
         shell = { package = pkgs.nushell.override { additionalFeatures = (p: p ++ [ "dataframe" ]); }; bin = "nu"; };
         editor = { package = pkgs.helix; bin = "hx"; };
-        visual = { package = vscode; bin = "code"; };
+        visual = { package = vscode; bin = "code-insiders"; };
         terminal = { package = pkgs.kitty; bin = "kitty"; };
         browser = { package = pkgs.firefox-bin; bin = "firefox"; };
 

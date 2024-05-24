@@ -27,7 +27,7 @@ in
         (lib.mkIf p yes)
         (lib.mkIf (!p) no)
       ])
-        (cfg.bin == "code")
+        (cfg.bin == "code" || cfg.bin == "code-insiders")
         cfg.package
         pkgs.code;
 
