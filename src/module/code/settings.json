@@ -128,7 +128,7 @@
       "commands": ["editor.action.showHover"]
     },
     {
-      "before": ["<leader>", "c", "a"],
+      "before": ["<leader>", "a"],
       "commands": ["editor.action.quickFix"]
     },
     {
@@ -140,20 +140,8 @@
       "commands": ["editor.action.marker.next"]
     },
     {
-      "before": ["<leader>", "s", "d"],
-      "commands": ["workbench.action.splitEditorDown"]
-    },
-    {
-      "before": ["<leader>", "s", "l"],
-      "commands": ["workbench.action.splitEditorLeft"]
-    },
-    {
-      "before": ["<leader>", "s", "u"],
-      "commands": ["workbench.action.splitEditorUp"]
-    },
-    {
-      "before": ["<leader>", "s", "r"],
-      "commands": ["workbench.action.splitEditorRight"]
+      "before": ["<leader>", "d"],
+      "commands": ["github.copilot.interactiveEditor.generateDocs"]
     }
   ],
   "vim.sneak": true,
