@@ -129,6 +129,7 @@ in
         nixos-generators # NOTE: collection of generators to create nixos images
         dos2unix # NOTE: convert Windows file endings to Unix
         unixtools.xxd # NOTE: make hexdump
+        github-copilot-cli # Copilot CLI
       ];
     };
   };
