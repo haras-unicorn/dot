@@ -178,6 +178,7 @@ builtins.foldl'
         (dot.modules.mkSystemModule dotModule)
         home-manager.nixosModules.home-manager
         ({
+          home-manager.backupFileExtension = "bkp";
           home-manager.useUserPackages = true;
           home-manager.extraSpecialArgs = specialArgs;
           home-manager.sharedModules = [
