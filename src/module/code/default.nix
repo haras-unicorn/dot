@@ -89,8 +89,6 @@ in
       rust-lang.rust-analyzer
 
       # csharp
-      # ms-dotnettools.csdevkit
-      # ms-dotnettools.csharp
       pkgs.vscode-extensions.ms-dotnettools.csdevkit
       ms-dotnettools.vscode-dotnet-runtime
       pkgs.vscode-extensions.ms-dotnettools.csharp
@@ -128,8 +126,8 @@ in
 
       # markdown
       shd101wyy.markdown-preview-enhanced
+      davidanson.vscode-markdownlint
       unifiedjs.vscode-mdx
-      # unifiedjs.vscode-remark
 
       # data
       ctcuff.font-preview
