@@ -39,49 +39,62 @@
     "${self}/src/distro/app"
   ];
 
-  shared = {
-    dot = {
-      ram = 16;
-      mainMonitor = "DVI-D-0";
-      monitors = [ "DVI-D-0" "HDMI-0" ];
-      networkInterface = "enp3s0";
-      cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
-      nvidiaDriver.version = "legacy_470";
-      nvidiaDriver.open = false;
+  shared =
+    let
+      vscode-insider = pkgs.vscode.override {
+        isInsiders = true;
+      };
+      vscode = vscode-insider.overrideAttrs (oldAttrs: {
+        src = (builtins.fetchTarball {
+          url = "https://update.code.visualstudio.com/latest/linux-x64/insider";
+          sha256 = "0zbk3bw2xx4015zg9l6w1izm3j28zy19jl9yc0gxls0l44rk1zn6";
+        });
+        version = "latest";
+      });
+    in
+    {
+      dot = {
+        ram = 16;
+        mainMonitor = "DVI-D-0";
+        monitors = [ "DVI-D-0" "HDMI-0" ];
+        networkInterface = "enp3s0";
+        cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
+        nvidiaDriver.version = "legacy_470";
+        nvidiaDriver.open = false;
 
-      location.timeZone = "Europe/Zagreb";
-      groups = [
-        "libvirtd"
-        "docker"
-        "podman"
-        "development"
-        "video"
-        "audio"
-        "mlocate"
-        "wireshark"
-      ];
+        location.timeZone = "Europe/Zagreb";
+        groups = [
+          "libvirtd"
+          "docker"
+          "podman"
+          "development"
+          "video"
+          "audio"
+          "mlocate"
+          "wireshark"
+        ];
 
-      pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
-      shell = { package = pkgs.nushell; bin = "nu"; };
-      editor = { package = pkgs.helix; bin = "hx"; };
-      visual = { package = pkgs.vscode; bin = "code"; };
-      terminal = { package = pkgs.kitty; bin = "kitty"; };
-      browser = { package = pkgs.firefox-bin; bin = "firefox"; };
+        pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
+        shell = { package = pkgs.nushell; bin = "nu"; };
+        editor = { package = pkgs.helix; bin = "hx"; };
+        visual = { package = vscode; bin = "code-insiders"; };
+        terminal = { package = pkgs.kitty; bin = "kitty"; };
+        browser = { package = pkgs.firefox-bin; bin = "firefox"; };
 
-      font.nerd = { name = "JetBrainsMono Nerd Font"; label = "JetBrainsMono"; };
-      font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
-      font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
-      font.sans = { name = "Roboto"; package = pkgs.roboto; };
-      font.serif = { name = "Roboto Serif"; package = pkgs.roboto-serif; };
-      font.script = { name = "Eunomia"; package = pkgs.dotcolon-fonts; };
-      font.emoji = { name = "Noto Color Emoji"; package = pkgs.noto-fonts-emoji; };
-      font.size = { small = 12; medium = 13; large = 16; };
+        font.nerd = { name = "JetBrainsMono Nerd Font"; label = "JetBrainsMono"; };
+        font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
+        font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
+        font.sans = { name = "Roboto"; package = pkgs.roboto; };
+        font.serif = { name = "Roboto Serif"; package = pkgs.roboto-serif; };
+        font.script = { name = "Eunomia"; package = pkgs.dotcolon-fonts; };
+        font.emoji = { name = "Noto Color Emoji"; package = pkgs.noto-fonts-emoji; };
+        font.size = { small = 12; medium = 13; large = 16; };
 
-      cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
-      icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
-      app-theme = { package = pkgs.materia-theme; name = "Materia-dark"; };
+        cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
+        icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
+        app-theme = { package = pkgs.materia-theme; name = "Materia-dark"; };
+      };
     };
-  };
 
   system = {
     boot.initrd.availableKernelModules = [
