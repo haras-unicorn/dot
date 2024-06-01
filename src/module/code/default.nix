@@ -85,7 +85,7 @@ in
       ms-vscode.remote-explorer
 
       # rust
-      vadimcn.vscode-lldb
+      pkgs.vscode-extensions.vadimcn.vscode-lldb
       rust-lang.rust-analyzer
 
       # csharp
