@@ -1,8 +1,8 @@
 { pkgs
 , config
 , lib
-, nixified-ai
-, system
+  # , nixified-ai
+  # , system
 , ...
 }:
 
@@ -71,7 +71,7 @@
         vulkan-tools # NOTE: vulkaninfo
         glxinfo # NOTE: glxinfo and eglinfo
         nvtopPackages.full # NOTE: check GPU usage
-        nixified-ai.packages.${system}.invokeai-nvidia # NOTE: stable diffusion
+        # nixified-ai.packages.${system}.invokeai-nvidia # NOTE: stable diffusion
       ];
 
       networking.firewall.allowedTCPPorts = [
