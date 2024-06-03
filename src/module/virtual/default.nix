@@ -3,6 +3,7 @@
 , ...
 }:
 
+# FIXME: https://github.com/NixOS/nixpkgs/pull/303442
 # FIXME: podman OCI runtime error
 # TODO: use podman when starship support
 
@@ -57,6 +58,12 @@
     services.gns3-server.enable = true;
     services.gns3-server.ubridge.enable = true;
     services.gns3-server.vpcs.enable = true;
+
+    systemd.services.gns3-server.serviceConfig = {
+      DynamicUser = false;
+      NoNewPrivileges = false;
+      RestrictSUIDSGID = false;
+    };
   };
 
   home = {
