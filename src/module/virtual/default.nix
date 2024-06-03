@@ -58,4 +58,12 @@
     services.ubridge.enable = true;
     services.vpcs.enable = true;
   };
+
+  home = {
+    shared = {
+      home.packages = with pkgs; [
+        gns3-gui
+      ];
+    };
+  };
 }
