@@ -60,10 +60,17 @@
   };
 
   home = {
-    shared = {
-      home.packages = with pkgs; [
-        gns3-gui
-      ];
+    xdg.desktopEntries = {
+      cockpit = {
+        name = "Cockpit";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} localhost:9090";
+        terminal = false;
+      };
+      gns3 = {
+        name = "GNS3";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} localhost:3080";
+        terminal = false;
+      };
     };
   };
 }
