@@ -73,8 +73,7 @@
       DynamicUser = pkgs.lib.mkForce false;
       NoNewPrivileges = pkgs.lib.mkForce false;
       RestrictSUIDSGID = pkgs.lib.mkForce false;
-      # CapabilityBoundingSet = "CAP_NET_ADMIN CAP_NET_RAW";
-      DeviceAllow = "/dev/net/tun rwm";
+      DeviceAllow = "/dev/net/tap rwm";
     };
   };
 
