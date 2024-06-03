@@ -65,7 +65,6 @@
     users.groups.gns3 = { };
     users.users.gns3 = {
       group = "gns3";
-      extraGroups = [ "ubridge" ];
       isSystemUser = true;
     };
     systemd.services.gns3-server.serviceConfig = {
