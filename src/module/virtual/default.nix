@@ -55,7 +55,7 @@
     services.packagekit.enable = true;
 
     services.gns3-server.enable = true;
-    # services.gns3-server.ubridge.enable = true;
+    services.gns3-server.ubridge.enable = true;
     services.gns3-server.vpcs.enable = true;
   };
 
