@@ -131,7 +131,7 @@ in
         unixtools.xxd # NOTE: make hexdump
         github-copilot-cli # CLI AI help
         gh # GitHub CLI
-        telnet # Like SSH but insecure
+        inetutils # Common network programs
       ];
     };
   };
