@@ -53,5 +53,9 @@
 
     services.cockpit.enable = true;
     services.packagekit.enable = true;
+
+    services.gns3-server.enable = true;
+    services.ubridge.enable = true;
+    services.vpcs.enable = true;
   };
 }
