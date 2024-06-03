@@ -59,7 +59,14 @@
     services.gns3-server.ubridge.enable = true;
     services.gns3-server.vpcs.enable = true;
 
+
+    users.groups.gns3 = { };
+    users.users.gns3 = {
+      group = "gns3";
+      isSystemUser = true;
+    };
     systemd.services.gns3-server.serviceConfig = {
+      User = "gns3";
       DynamicUser = pkgs.lib.mkForce false;
       NoNewPrivileges = pkgs.lib.mkForce false;
       RestrictSUIDSGID = pkgs.lib.mkForce false;
