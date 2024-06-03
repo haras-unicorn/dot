@@ -7,6 +7,7 @@
 }:
 
 # FIXME: https://github.com/NixOS/nixpkgs/issues/306276
+# FIXME: python-dependency-injector broken with invokeai
 # TODO: make modprobe better
 
 {
