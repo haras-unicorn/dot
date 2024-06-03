@@ -2,6 +2,7 @@
 
 let
   llama-cpp = pkgs.llama-cpp.override { vulkanSupport = true; };
+  koboldcpp = pkgs.koboldcpp.override { vulkanSupport = true; };
 
   write = pkgs.writeShellApplication {
     name = "write";
@@ -81,6 +82,7 @@ in
 {
   home.shared = {
     home.packages = [
+      koboldcpp
       llama-cpp
       write
       chat
