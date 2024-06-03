@@ -5,6 +5,7 @@
 }:
 
 # FIXME: https://github.com/NixOS/nixpkgs/issues/306276
+# TODO: make modprobe better
 
 {
   options = {
@@ -25,6 +26,14 @@
   };
 
   config = {
+    shared = {
+      dot = {
+        desktopEnvironment.sessionStartup = [
+          "sudo modprobe nvidia_uvm"
+        ];
+      };
+    };
+
     system = {
       boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
       boot.kernelParams = [ "nvidia_drm.fbdev=1" ];
