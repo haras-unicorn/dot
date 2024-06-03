@@ -73,7 +73,6 @@
       DynamicUser = pkgs.lib.mkForce false;
       NoNewPrivileges = pkgs.lib.mkForce false;
       RestrictSUIDSGID = pkgs.lib.mkForce false;
-      DeviceAllow = "/dev/net/tun rw";
     };
   };
 
