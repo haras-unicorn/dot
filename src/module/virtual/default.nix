@@ -60,9 +60,9 @@
     services.gns3-server.vpcs.enable = true;
 
     systemd.services.gns3-server.serviceConfig = {
-      DynamicUser = false;
-      NoNewPrivileges = false;
-      RestrictSUIDSGID = false;
+      DynamicUser = pkgs.lib.mkForce false;
+      NoNewPrivileges = pkgs.lib.mkForce false;
+      RestrictSUIDSGID = pkgs.lib.mkForce false;
     };
   };
 
