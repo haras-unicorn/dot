@@ -9,7 +9,7 @@
     xdg.desktopEntries = {
       syncthing = {
         name = "Syncthing";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} localhost:8384";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8384";
         terminal = false;
       };
     };

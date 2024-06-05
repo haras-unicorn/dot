@@ -4,6 +4,7 @@
 
 # TODO: firmware tui as part of diag
 # TODO: https://github.com/NixOS/nixpkgs/issues/232266
+# TODO: use lib.getExe insead of the bin thing
 
 let
   terminal = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
