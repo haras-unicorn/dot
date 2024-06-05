@@ -11,3 +11,10 @@ $env.config = {
     mode: with_love
   }
 }
+
+def "to pipe" [] {
+  let it = $in
+  let file = mktemp --tmpdir
+  $it | save $file
+  $file
+}
