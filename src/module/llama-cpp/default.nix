@@ -80,6 +80,12 @@ let
   };
 in
 {
+  system = {
+    networking.firewall.allowedTCPPorts = [
+      5001 # koboldcpp
+    ];
+  };
+
   home.shared = {
     home.packages = [
       koboldcpp
