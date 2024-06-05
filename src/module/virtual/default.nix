@@ -72,6 +72,13 @@
       DynamicUser = pkgs.lib.mkForce false;
       NoNewPrivileges = pkgs.lib.mkForce false;
       RestrictSUIDSGID = pkgs.lib.mkForce false;
+      PrivateUsers = pkgs.lib.mkForce false;
+      DeviceAllow = [
+        "/dev/net/tun rw"
+        "/dev/net/tap rw"
+      ] ++ pkgs.lib.optionals config.virtualisation.libvirtd.enable [
+        "/dev/kvm"
+      ];
     };
   };
 
