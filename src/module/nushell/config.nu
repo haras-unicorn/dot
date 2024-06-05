@@ -14,7 +14,7 @@ $env.config = {
 
 def "to pipe" [] {
   let it = $in
-  let file = mktemp --tmpdir
-  $it | save $file
+  let file = mktemp -d
+  $it | save -f $file
   $file
 }
