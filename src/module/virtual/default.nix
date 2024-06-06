@@ -57,8 +57,9 @@
 
     services.gns3-server.enable = true;
     services.gns3-server.vpcs.enable = true;
-
+    services.gns3-server.dynamips.enable = true;
     services.gns3-server.ubridge.enable = true;
+
     services.gns3-server.settings = {
       Server.ubridge_path = pkgs.lib.mkForce "/run/wrappers/bin/ubridge";
     };
