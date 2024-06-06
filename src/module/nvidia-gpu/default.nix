@@ -76,7 +76,8 @@
       ];
 
       networking.firewall.allowedTCPPorts = [
-        9092 # invokeai
+        9090 # invokeai
+        9091 # invokeai with cockpit
       ];
 
       environment.sessionVariables = {
