@@ -22,6 +22,7 @@
       docker-client
       docker-compose
       arion
+      gns3-gui
     ];
 
     services.qemuGuest.enable = true;
