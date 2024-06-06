@@ -92,11 +92,6 @@
           exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:9090";
           terminal = false;
         };
-        gns3 = {
-          name = "GNS3";
-          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:3080";
-          terminal = false;
-        };
       };
     };
   };
