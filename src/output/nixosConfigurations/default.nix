@@ -11,6 +11,7 @@
 , ...
 } @ inputs:
 
+# FIXME: https://github.com/NixOS/nixpkgs/issues/315574
 # TODO: secure boot (https://nixos.wiki/wiki/Secure_Boot)
 # TODO: home encryption and zfs (https://www.reddit.com/r/NixOS/comments/tzksw4/mount_an_encrypted_zfs_datastore_on_login/)
 # TODO: hashed password
@@ -28,6 +29,25 @@ let
     system = systems;
     hostName = hostNames;
   };
+
+  /*
+    fixes issues with lack of HTTP header sanitization in .NET Core, see:
+    - https://github.com/NixOS/nixpkgs/issues/315574
+    - https://github.com/microsoftgraph/msgraph-cli/issues/477
+  */
+  nixosNameModule = ({ lib, options, ... }: {
+    /*
+      using just `readOnly` because it can contain neither of: default, example, description, apply, type
+      see https://github.com/NixOS/nixpkgs/blob/aae38d0d557d2f0e65b2ea8e1b92219f2c0ea8f9/lib/modules.nix#L752-L756
+    */
+    options.system.nixos.codeName = lib.mkOption { readOnly = false; };
+    config.system.nixos.codeName =
+      let
+        codeName = options.system.nixos.codeName.default;
+        renames."Vicuña" = "Vicuna";
+      in
+        renames."${codeName}" or (throw "Unknown `codeName`: ${codeName}, please add it to `renames` in `ascii-workaround.nix`");
+  });
 
   nixConfigModule = ({ pkgs, ... }: {
     nix.extraOptions = "experimental-features = nix-command flakes";
@@ -166,6 +186,7 @@ builtins.foldl'
           sops.age.keyFile = "/root/.sops/secrets.age";
         })
         nixConfigModule
+        nixosNameModule
         ({ pkgs, ... }: { nix.package = pkgs.nixFlakes; })
         nixpkgsConfigModule
         ({ pkgs, ... }: {
@@ -185,6 +206,7 @@ builtins.foldl'
             nur.hmModules.nur
             nix-index-database.hmModules.nix-index
             nixConfigModule
+            nixosNameModule
             nixpkgsConfigModule
             sops-nix.homeManagerModules.sops
             lulezojne.homeManagerModules.default
