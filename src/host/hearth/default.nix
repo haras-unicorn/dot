@@ -51,65 +51,52 @@
     "${self}/src/distro/daw"
   ];
 
-  shared =
-    let
-      vscode-insider = pkgs.vscode.override {
-        isInsiders = true;
-      };
-      vscode = vscode-insider.overrideAttrs (oldAttrs: {
-        src = (builtins.fetchTarball {
-          url = "https://update.code.visualstudio.com/latest/linux-x64/insider";
-          sha256 = "0zbk3bw2xx4015zg9l6w1izm3j28zy19jl9yc0gxls0l44rk1zn6";
-        });
-        version = "latest";
-      });
-    in
-    {
-      dot = {
-        ram = 32;
-        mainMonitor = "DP-1";
-        monitors = [ "DP-1" ];
-        networkInterface = "enp37s0";
-        cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
-        soundcardPciId = "2b:00.3";
+  shared = {
+    dot = {
+      ram = 32;
+      mainMonitor = "DP-1";
+      monitors = [ "DP-1" ];
+      networkInterface = "enp37s0";
+      cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
+      soundcardPciId = "2b:00.3";
 
-        location.timeZone = "Europe/Zagreb";
-        groups = [
-          "libvirtd"
-          "docker"
-          "podman"
-          "development"
-          "mlocate"
-          "video"
-          "audio"
-          "games"
-          "wireshark"
-          "i2c"
-        ];
+      location.timeZone = "Europe/Zagreb";
+      groups = [
+        "libvirtd"
+        "docker"
+        "podman"
+        "development"
+        "mlocate"
+        "video"
+        "audio"
+        "games"
+        "wireshark"
+        "i2c"
+      ];
 
-        pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
-        shell = { package = pkgs.nushell.override { additionalFeatures = (p: p ++ [ "dataframe" ]); }; bin = "nu"; };
-        editor = { package = pkgs.helix; bin = "hx"; };
-        visual = { package = vscode; bin = "code-insiders"; };
-        terminal = { package = pkgs.kitty; bin = "kitty"; };
-        browser = { package = pkgs.firefox-bin; bin = "firefox"; };
+      pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
+      shell = { package = pkgs.nushell.override { additionalFeatures = (p: p ++ [ "dataframe" ]); }; bin = "nu"; };
+      editor = { package = pkgs.helix; bin = "hx"; };
+      visual = { package = pkgs.vscode; bin = "code"; };
+      terminal = { package = pkgs.kitty; bin = "kitty"; };
+      browser = { package = pkgs.firefox-bin; bin = "firefox"; };
 
-        font.nerd = { name = "JetBrainsMono Nerd Font"; label = "JetBrainsMono"; };
-        font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
-        font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
-        font.sans = { name = "Roboto"; package = pkgs.roboto; };
-        font.serif = { name = "Roboto Serif"; package = pkgs.roboto-serif; };
-        font.script = { name = "Eunomia"; package = pkgs.dotcolon-fonts; };
-        font.emoji = { name = "Noto Color Emoji"; package = pkgs.noto-fonts-emoji; };
-        font.size = { small = 12; medium = 13; large = 16; };
+      font.nerd = { name = "JetBrainsMono Nerd Font"; label = "JetBrainsMono"; };
+      font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
+      font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
+      font.sans = { name = "Roboto"; package = pkgs.roboto; };
+      font.serif = { name = "Roboto Serif"; package = pkgs.roboto-serif; };
+      font.script = { name = "Eunomia"; package = pkgs.dotcolon-fonts; };
+      font.emoji = { name = "Noto Color Emoji"; package = pkgs.noto-fonts-emoji; };
+      font.size = { small = 12; medium = 13; large = 16; };
 
-        cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
-        icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
-        app-theme = { package = pkgs.materia-theme; name = "Lulezojne-dark"; };
-        dark-mode = true;
-        wallpaper = "dynamic";
-      };
+      cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
+      icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
+      app-theme = { package = pkgs.materia-theme; name = "Lulezojne-dark"; };
+      dark-mode = true;
+      wallpaper = "dynamic";
     };
+  };
 
   system = {
     boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
