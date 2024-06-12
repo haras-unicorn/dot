@@ -5,6 +5,7 @@
 }:
 
 # FIXME: https://github.com/NVIDIA/open-gpu-kernel-modules/issues/467#issuecomment-1544340511
+# FIXME: hyprland insists on own portal but that one doesn't allow me to screenshare at all
 
 let
   cfg = config.dot.desktopEnvironment;
@@ -74,7 +75,7 @@ in
         libsForQt5.xdg-desktop-portal-kde
         xdg-desktop-portal-gtk
       ];
-      xdg.portal.wlr.enable = true;
+      xdg.portal.wlr.enable = pkgs.lib.mkForce true;
       xdg.portal.wlr.settings.screencast = {
         output_name = config.dot.mainMonitor;
         max_fps = 60;
