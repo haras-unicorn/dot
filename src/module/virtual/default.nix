@@ -75,6 +75,7 @@
       NoNewPrivileges = pkgs.lib.mkForce false;
       RestrictSUIDSGID = pkgs.lib.mkForce false;
       PrivateUsers = pkgs.lib.mkForce false;
+      UMask = "0022";
       DeviceAllow = [
         "/dev/net/tun rw"
         "/dev/net/tap rw"
