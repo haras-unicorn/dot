@@ -120,15 +120,15 @@ in
         wantedBy = [ "multi-user.target" ];
       };
     };
+  };
 
-    home = {
-      shared = {
-        xdg.desktopEntries = {
-          cockpit = {
-            name = "Cockpit";
-            exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:9090";
-            terminal = false;
-          };
+  home = {
+    shared = {
+      xdg.desktopEntries = {
+        cockpit = {
+          name = "Cockpit";
+          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:9090";
+          terminal = false;
         };
       };
     };
