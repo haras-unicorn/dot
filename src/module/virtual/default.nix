@@ -101,14 +101,14 @@ in
       ];
     };
     systemd.services."${tapGns3.name}-setup" = {
-      description = "Setup TAP0 interface";
+      description = "Setup ${tapGns3.name} interface";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         ExecStartPre = [
           "${pkgs.iproute2}/bin/ip tuntap add dev ${tapGns3.name} mode tap"
           "${pkgs.iproute2}/bin/ip link set ${tapGns3.name} up"
-          "${pkgs.iproute2}/bin/ip addr add ${tapGns3.subnet} dev tap0"
+          "${pkgs.iproute2}/bin/ip addr add ${tapGns3.subnet} dev ${tapGns3.name}"
         ];
         ExecStart = "${pkgs.coreutils}/bin/sleep infinity";
         ExecStop = [
