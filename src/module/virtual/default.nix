@@ -116,9 +116,6 @@ in
           "${pkgs.iproute2}/bin/ip tuntap del dev tap0 mode tap"
         ];
       };
-      install = {
-        wantedBy = [ "multi-user.target" ];
-      };
     };
   };
 
