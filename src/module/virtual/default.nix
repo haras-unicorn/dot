@@ -7,6 +7,14 @@
 # FIXME: podman OCI runtime error
 # TODO: use podman when starship support
 
+let
+  tap0 = rec {
+    name = "tap0";
+    prefix = 24;
+    address = "10.10.10.1";
+    subnet = "${address}/${builtins.toString prefix}";
+  };
+in
 {
   system = {
     environment.systemPackages = with pkgs; [
@@ -83,15 +91,44 @@
         "/dev/kvm"
       ];
     };
-  };
 
-  home = {
-    shared = {
-      xdg.desktopEntries = {
-        cockpit = {
-          name = "Cockpit";
-          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:9090";
-          terminal = false;
+    networking.interfaces.tap0 = {
+      ipv4.addresses = [
+        {
+          address = tap0.subnet;
+          prefixLength = tap0.prefix;
+        }
+      ];
+    };
+    systemd.services.tap0-setup = {
+      description = "Setup TAP0 interface";
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        ExecStartPre = [
+          "${pkgs.iproute2}/bin/ip tuntap add dev tap0 mode tap"
+          "${pkgs.iproute2}/bin/ip link set tap0 up"
+          "${pkgs.iproute2}/bin/ip addr add ${tap0.subnet} dev tap0"
+        ];
+        ExecStart = "/bin/true";
+        ExecStop = [
+          "${pkgs.iproute2}/bin/ip link set tap0 down"
+          "${pkgs.iproute2}/bin/ip tuntap del dev tap0 mode tap"
+        ];
+      };
+      install = {
+        wantedBy = [ "multi-user.target" ];
+      };
+    };
+
+    home = {
+      shared = {
+        xdg.desktopEntries = {
+          cockpit = {
+            name = "Cockpit";
+            exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:9090";
+            terminal = false;
+          };
         };
       };
     };
