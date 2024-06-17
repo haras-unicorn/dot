@@ -98,10 +98,10 @@ in
     };
 
     networking.bridges.${bridgeGns3.name}.interfaces = [ tapGns3.name ];
-    networking.interfaces.${bridgeGns3.name}.ipv4.addresses = [
+    networking.interfaces.${tapGns3.name}.ipv4.addresses = [
       {
-        address = bridgeGns3.subnet;
-        prefixLength = bridgeGns3.prefix;
+        address = tapGns3.subnet;
+        prefixLength = tapGns3.prefix;
       }
     ];
     systemd.services."${bridgeGns3.name}-setup" = {
