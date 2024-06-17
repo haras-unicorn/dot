@@ -8,15 +8,11 @@
 # TODO: use podman when starship support
 
 let
-  tapGns3 = rec {
-    name = "tap-gns3";
+  bridgeGns3 = rec {
+    name = "br-gns3";
     prefix = 24;
     address = "10.10.10.1";
     subnet = "${address}/${builtins.toString prefix}";
-  };
-
-  bridgeGns3 = {
-    name = "br-gns3";
   };
 in
 {
@@ -98,10 +94,10 @@ in
     };
 
     networking.bridges.${bridgeGns3.name}.interfaces = [ ];
-    networking.interfaces.${tapGns3.name}.ipv4.addresses = [
+    networking.interfaces.${bridgeGns3.name}.ipv4.addresses = [
       {
-        address = tapGns3.subnet;
-        prefixLength = tapGns3.prefix;
+        address = bridgeGns3.subnet;
+        prefixLength = bridgeGns3.prefix;
       }
     ];
     systemd.services."${bridgeGns3.name}-setup" = {
@@ -111,19 +107,13 @@ in
       serviceConfig = {
         ExecStartPre = [
           "${pkgs.iproute2}/bin/ip link add name ${bridgeGns3.name} type bridge"
+          "${pkgs.iproute2}/bin/ip addr add ${bridgeGns3.subnet} dev ${bridgeGns3.name}"
           "${pkgs.iproute2}/bin/ip link set ${bridgeGns3.name} up"
-          "${pkgs.iproute2}/bin/ip tuntap add dev ${tapGns3.name} mode tap"
-          "${pkgs.iproute2}/bin/ip addr add ${tapGns3.subnet} dev ${tapGns3.name}"
-          "${pkgs.iproute2}/bin/ip link set ${tapGns3.name} up"
-          "${pkgs.iproute2}/bin/ip link set ${tapGns3.name} master ${bridgeGns3.name}"
         ];
         ExecStart = "${pkgs.coreutils}/bin/sleep infinity";
         ExecStop = [
-          "${pkgs.iproute2}/bin/ip link set ${tapGns3.name} nomaster"
-          "${pkgs.iproute2}/bin/ip link set ${tapGns3.name} down"
-          "${pkgs.iproute2}/bin/ip tuntap del dev ${tapGns3.name} mode tap"
-          "${pkgs.iproute2}/bin/ip link set br-gns3 down"
-          "${pkgs.iproute2}/bin/ip link del br-gns3"
+          "${pkgs.iproute2}/bin/ip link set ${bridgeGns3.name} down"
+          "${pkgs.iproute2}/bin/ip link del ${bridgeGns3.name}"
         ];
       };
     };
