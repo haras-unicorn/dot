@@ -53,7 +53,7 @@ in
 
     # Visuals
     "${self}/src/module/code"
-    "${self}/src/module/cursor"
+    # "${self}/src/module/cursor"
 
     # Browsers
     "${self}/src/module/firefox"
