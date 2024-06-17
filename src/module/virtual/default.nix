@@ -110,7 +110,7 @@ in
           "${pkgs.iproute2}/bin/ip link set tap0 up"
           "${pkgs.iproute2}/bin/ip addr add ${tap0.subnet} dev tap0"
         ];
-        ExecStart = "${pkgs.coreutils}/bin/sleep infinitely";
+        ExecStart = "${pkgs.coreutils}/bin/sleep infinity";
         ExecStop = [
           "${pkgs.iproute2}/bin/ip link set tap0 down"
           "${pkgs.iproute2}/bin/ip tuntap del dev tap0 mode tap"
