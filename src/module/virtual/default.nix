@@ -8,8 +8,8 @@
 # TODO: use podman when starship support
 
 let
-  tap0 = rec {
-    name = "tap0";
+  tapGns3 = rec {
+    name = "tap-gns3";
     prefix = 24;
     address = "10.10.10.1";
     subnet = "${address}/${builtins.toString prefix}";
@@ -92,28 +92,28 @@ in
       ];
     };
 
-    networking.interfaces.tap0 = {
+    networking.interfaces.${tapGns3.name} = {
       ipv4.addresses = [
         {
-          address = tap0.subnet;
-          prefixLength = tap0.prefix;
+          address = tapGns3.subnet;
+          prefixLength = tapGns3.prefix;
         }
       ];
     };
-    systemd.services.tap0-setup = {
+    systemd.services."${tapGns3.name}-setup" = {
       description = "Setup TAP0 interface";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         ExecStartPre = [
-          "${pkgs.iproute2}/bin/ip tuntap add dev tap0 mode tap"
-          "${pkgs.iproute2}/bin/ip link set tap0 up"
-          "${pkgs.iproute2}/bin/ip addr add ${tap0.subnet} dev tap0"
+          "${pkgs.iproute2}/bin/ip tuntap add dev ${tapGns3.name} mode tap"
+          "${pkgs.iproute2}/bin/ip link set ${tapGns3.name} up"
+          "${pkgs.iproute2}/bin/ip addr add ${tapGns3.subnet} dev tap0"
         ];
         ExecStart = "${pkgs.coreutils}/bin/sleep infinity";
         ExecStop = [
-          "${pkgs.iproute2}/bin/ip link set tap0 down"
-          "${pkgs.iproute2}/bin/ip tuntap del dev tap0 mode tap"
+          "${pkgs.iproute2}/bin/ip link set ${tapGns3.name} down"
+          "${pkgs.iproute2}/bin/ip tuntap del dev ${tapGns3.name} mode tap"
         ];
       };
     };
