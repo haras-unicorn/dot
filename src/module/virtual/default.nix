@@ -8,8 +8,12 @@
 # TODO: use podman when starship support
 
 let
-  tapGns3 = rec {
+  tapGns3 = {
     name = "tap-gns3";
+  };
+
+  bridgeGns3 = rec {
+    name = "br-gns3";
     prefix = 24;
     address = "10.10.10.1";
     subnet = "${address}/${builtins.toString prefix}";
@@ -17,21 +21,22 @@ let
 in
 {
   system = {
-    environment.systemPackages = with pkgs; [
-      wineWowPackages.stable
-      winetricks
-      virt-manager
-      spice
-      spice-vdagent
-      virglrenderer
-      win-virtio
-      win-spice
-      lazydocker
-      docker-client
-      docker-compose
-      arion
-      gns3-gui
-    ];
+    environment.systemPackages = with pkgs;
+      [
+        wineWowPackages.stable
+        winetricks
+        virt-manager
+        spice
+        spice-vdagent
+        virglrenderer
+        win-virtio
+        win-spice
+        lazydocker
+        docker-client
+        docker-compose
+        arion
+        gns3-gui
+      ];
 
     services.qemuGuest.enable = true;
     virtualisation.libvirtd.enable = true;
@@ -92,23 +97,22 @@ in
       ];
     };
 
-    networking.interfaces.${tapGns3.name} = {
-      ipv4.addresses = [
-        {
-          address = tapGns3.subnet;
-          prefixLength = tapGns3.prefix;
-        }
-      ];
-    };
-    systemd.services."${tapGns3.name}-setup" = {
-      description = "Setup ${tapGns3.name} interface";
+    networking.bridges.${bridgeGns3.name}.interfaces = [ tapGns3.name ];
+    networking.interfaces.${bridgeGns3.name}.ipv4.addresses = [
+      {
+        address = bridgeGns3.subnet;
+        prefixLength = bridgeGns3.prefix;
+      }
+    ];
+    systemd.services."${bridgeGns3.name}-${tapGns3.name}-setup" = {
+      description = "Setup ${bridgeGns3.name} -> ${tapGns3.name} interface";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         ExecStartPre = [
           "${pkgs.iproute2}/bin/ip tuntap add dev ${tapGns3.name} mode tap"
           "${pkgs.iproute2}/bin/ip link set ${tapGns3.name} up"
-          "${pkgs.iproute2}/bin/ip addr add ${tapGns3.subnet} dev ${tapGns3.name}"
+          "${pkgs.iproute2}/bin/ip link set ${tapGns3.name} master ${bridgeGns3.name}"
         ];
         ExecStart = "${pkgs.coreutils}/bin/sleep infinity";
         ExecStop = [
