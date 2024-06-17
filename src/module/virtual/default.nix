@@ -96,7 +96,7 @@ in
     networking.bridges.${bridgeGns3.name}.interfaces = [ ];
     networking.interfaces.${bridgeGns3.name}.ipv4.addresses = [
       {
-        address = bridgeGns3.subnet;
+        address = bridgeGns3.address;
         prefixLength = bridgeGns3.prefix;
       }
     ];
