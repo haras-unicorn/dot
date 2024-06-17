@@ -97,7 +97,7 @@ in
       ];
     };
 
-    networking.bridges.${bridgeGns3.name}.interfaces = [ tapGns3.name ];
+    networking.bridges.${bridgeGns3.name}.interfaces = [ ];
     networking.interfaces.${tapGns3.name}.ipv4.addresses = [
       {
         address = tapGns3.subnet;
