@@ -4,7 +4,8 @@
   shared = {
     dot = {
       shell.aliases = {
-        find = "${pkgs.fd}/bin/fd";
+        # NOTE: find is a nushell command
+        # find = "${pkgs.fd}/bin/fd";
       };
     };
   };
