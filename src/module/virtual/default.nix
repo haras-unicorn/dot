@@ -113,6 +113,7 @@ in
         ExecStart = "${pkgs.coreutils}/bin/sleep infinity";
         ExecStop = [
           "${pkgs.iproute2}/bin/ip link set ${bridgeGns3.name} down"
+          "${pkgs.iproute2}/bin/ip addr del ${bridgeGns3.subnet} dev ${bridgeGns3.name}"
           "${pkgs.iproute2}/bin/ip link del ${bridgeGns3.name}"
         ];
       };

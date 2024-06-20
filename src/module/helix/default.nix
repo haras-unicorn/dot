@@ -24,7 +24,7 @@ in
       ])
         (cfg.bin == "hx")
         cfg.package
-        pkgs.nushell;
+        pkgs.helix;
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
 
