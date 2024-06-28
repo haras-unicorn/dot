@@ -13,7 +13,7 @@
             rev = "v${version}";
             sha256 = "sha256-DdxHNwL108t2C5LN/sMxq5VqyYtDrKXgJeO45ZJvHdA=";
           };
-          cargoHash = "";
+          cargoHash = "sha256-+IkD4JN4Cm7VXxRGrOl7Ju2djccHRtkvSEHGAfu9u68=";
           meta = {
             description = "Small command line utility to rename all files in a folder according to a specified naming convention (camelCase, snake_case, kebab-case, etc.).";
             homepage = "https://github.com/Gadiguibou/stdrename";
