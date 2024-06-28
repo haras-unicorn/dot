@@ -2,6 +2,15 @@
 
 let
   cfg = config.dot.editor;
+
+  withPkg = todo:
+    (p: yes: no: lib.mkMerge [
+      (lib.mkIf p yes)
+      (lib.mkIf (!p) no)
+    ])
+      (cfg.bin == "hx")
+      (todo cfg.package)
+      (todo pkgs.helix);
 in
 {
   home.shared = {
@@ -17,14 +26,7 @@ in
     ];
 
     programs.helix.enable = true;
-    programs.helix.package =
-      (p: yes: no: lib.mkMerge [
-        (lib.mkIf p yes)
-        (lib.mkIf (!p) no)
-      ])
-        (cfg.bin == "hx")
-        cfg.package
-        pkgs.helix;
+    programs.helix.package = withPkg (pkg: pkg);
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
 
@@ -92,6 +94,16 @@ in
           formatter = { command = "${pkgs.html-tidy}/bin/tidy"; args = [ "-xml" "-i" ]; };
         }
       ];
+    };
+
+    programs.lazygit.settings = {
+      os = {
+        editTemplate = withPkg (pkg: pkg + "/bin/helix -- {{filename}}");
+        editAtLineTemplate = withPkg (pkg: pkg + "/bin/helix -- {{filename}}:{{line}}");
+        editAtLineAndWaitTemplate = withPkg (pkg: pkg + "/bin/helix -- {{filename}}:{{line}}");
+        openDirInEditorTemplate = withPkg (pkg: pkg + "/bin/helix -- {{dir}}");
+        suspend = true;
+      };
     };
   };
 }

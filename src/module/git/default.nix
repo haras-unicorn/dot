@@ -43,6 +43,13 @@
           pager = "${pkgs.delta}/bin/delta --dark --paging=never";
         };
       };
+      os = {
+        editTemplate = pkgs.vim + "/bin/vim -- {{filename}}";
+        editAtLineTemplate = pkgs.vim + "/bin/vim +{{line}} -- {{filename}}";
+        editAtLineAndWaitTemplate = pkgs.vim + "/bin/vim +{{line}} -- {{filename}}";
+        openDirInEditorTemplate = pkgs.vim + "/bin/vim -- {{dir}}";
+        suspend = true;
+      };
     };
   };
 }
