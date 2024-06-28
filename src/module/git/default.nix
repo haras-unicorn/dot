@@ -1,4 +1,5 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+
 {
   shared = {
     dot = {
@@ -44,11 +45,11 @@
         };
       };
       os = {
-        editTemplate = pkgs.vim + "/bin/vim -- {{filename}}";
-        editAtLineTemplate = pkgs.vim + "/bin/vim +{{line}} -- {{filename}}";
-        editAtLineAndWaitTemplate = pkgs.vim + "/bin/vim +{{line}} -- {{filename}}";
-        openDirInEditorTemplate = pkgs.vim + "/bin/vim -- {{dir}}";
-        suspend = true;
+        editTemplate = lib.mkDefault (pkgs.vim + "/bin/vim -- {{filename}}");
+        editAtLineTemplate = lib.mkDefault (pkgs.vim + "/bin/vim +{{line}} -- {{filename}}");
+        editAtLineAndWaitTemplate = lib.mkDefault (pkgs.vim + "/bin/vim +{{line}} -- {{filename}}");
+        openDirInEditorTemplate = lib.mkDefault (pkgs.vim + "/bin/vim -- {{dir}}");
+        suspend = lib.mkDefault true;
       };
     };
   };
