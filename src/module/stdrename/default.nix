@@ -11,7 +11,7 @@
             owner = "Gadiguibou";
             repo = "stdrename";
             rev = "v${version}";
-            sha256 = "";
+            sha256 = "sha256-DdxHNwL108t2C5LN/sMxq5VqyYtDrKXgJeO45ZJvHdA=";
           };
           cargoHash = "";
           meta = {
