@@ -12,6 +12,8 @@ let
 in
 {
   imports = [
+    "${self}/src/module/stdrename"
+
     "${self}/src/module/pinentry"
     "${self}/src/module/gpg"
     "${self}/src/module/ssh"
