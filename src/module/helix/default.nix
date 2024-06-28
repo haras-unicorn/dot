@@ -98,10 +98,10 @@ in
 
     programs.lazygit.settings = {
       os = {
-        edit = withPkg (pkg: pkg + "/bin/helix -- {{filename}}");
-        editAtLine = withPkg (pkg: pkg + "/bin/helix -- {{filename}}:{{line}}");
-        editAtLineAndWait = withPkg (pkg: pkg + "/bin/helix -- {{filename}}:{{line}}");
-        openDirInEditor = withPkg (pkg: pkg + "/bin/helix -- {{dir}}");
+        edit = withPkg (pkg: pkg + "/bin/${cfg.bin} -- {{filename}}");
+        editAtLine = withPkg (pkg: pkg + "/bin/${cfg.bin} -- {{filename}}:{{line}}");
+        editAtLineAndWait = withPkg (pkg: pkg + "/bin/${cfg.bin} -- {{filename}}:{{line}}");
+        openDirInEditor = withPkg (pkg: pkg + "/bin/${cfg.bin} -- {{dir}}");
         suspend = true;
       };
     };
