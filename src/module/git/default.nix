@@ -45,10 +45,10 @@
         };
       };
       os = {
-        editTemplate = lib.mkDefault (pkgs.vim + "/bin/vim -- {{filename}}");
-        editAtLineTemplate = lib.mkDefault (pkgs.vim + "/bin/vim +{{line}} -- {{filename}}");
-        editAtLineAndWaitTemplate = lib.mkDefault (pkgs.vim + "/bin/vim +{{line}} -- {{filename}}");
-        openDirInEditorTemplate = lib.mkDefault (pkgs.vim + "/bin/vim -- {{dir}}");
+        edit = lib.mkDefault (pkgs.vim + "/bin/vim -- {{filename}}");
+        editAtLine = lib.mkDefault (pkgs.vim + "/bin/vim +{{line}} -- {{filename}}");
+        editAtLineAndWait = lib.mkDefault (pkgs.vim + "/bin/vim +{{line}} -- {{filename}}");
+        openDirInEditor = lib.mkDefault (pkgs.vim + "/bin/vim -- {{dir}}");
         suspend = lib.mkDefault true;
       };
     };
