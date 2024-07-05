@@ -105,11 +105,8 @@ in
 
     home.shared = {
       home.packages = with pkgs; [
-        file # NOTE: get file info
-        zip # NOTE: zip stuff
-        unzip # NOTE: unzip stuff
-        unrar # NOTE: unrar stuff
-        p7zip # NOTE: 7zip stuff
+        inetutils # NOTE: Common network programs
+        ouch # NOTE: only compression/decompression tool you will ever need
         parted # NOTE: partition manager
         dasel # NOTE: json, yaml, toml, csv, etc manipulation
         jq # NOTE: popular json manipulator
@@ -121,7 +118,7 @@ in
         hyperfine # NOTE: cli benchmarking
         fastmod # NOTE: large scale code refactoring
         usql # NOTE: connect to any db
-        postgresql_jit # NOTE: connect to postgresql
+        postgresql # NOTE: connect to postgresql
         watchexec # NOTE: run something when files change
         wget # NOTE: download things but often needed for other programs
         nmap # NOTE: network discovery
@@ -131,9 +128,7 @@ in
         nixos-generators # NOTE: collection of generators to create nixos images
         dos2unix # NOTE: convert Windows file endings to Unix
         unixtools.xxd # NOTE: make hexdump
-        github-copilot-cli # CLI AI help
-        gh # GitHub CLI
-        inetutils # Common network programs
+        github-copilot-cli # NOTE: CLI AI help
       ];
     };
   };

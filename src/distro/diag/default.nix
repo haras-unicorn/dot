@@ -23,6 +23,7 @@
       sysstat # NOTE: system usage info
       sysbench # NOTE: system benchmarking
       iozone # NOTE: disk benchmark
+      file # NOTE: get file info
     ];
   };
 }
