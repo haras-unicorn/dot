@@ -23,7 +23,8 @@
     lulezojne.inputs.nixpkgs.follows = "nixpkgs";
 
     nixified-ai.url = "github:nixified-ai/flake";
-    nixified-ai.inputs.nixpkgs.follows = "nixpkgs";
+    # NOTE: packages marked broken
+    nixified-ai.inputs.nixpkgs.url = "github:NixOS/nixpkgs/release-23.11";
 
     arkenfox-userjs.url = "github:arkenfox/user.js/refs/tags/v110.0";
     arkenfox-userjs.flake = false;
