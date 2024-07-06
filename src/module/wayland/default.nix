@@ -65,6 +65,8 @@ in
         wl-clipboard
         copy
         paste
+
+        libnotify
       ];
 
       xdg.portal.enable = true;

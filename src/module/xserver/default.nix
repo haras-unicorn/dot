@@ -5,7 +5,7 @@ let
     name = "copy";
     runtimeInputs = [ pkgs.xclip ];
     text = ''
-      xclip -sel clip "$@"
+      cat | xclip -sel clip "$@"
     '';
   };
 
@@ -37,6 +37,8 @@ in
       xclip
       copy
       paste
+
+      libnotify
     ];
 
     services.xserver.enable = true;
