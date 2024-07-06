@@ -39,7 +39,7 @@
 
     system = {
       boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
-      boot.kernelParams = [ "nvidia_drm.fbdev=1" ];
+      boot.kernelParams = [ "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
 
       services.xserver.videoDrivers = [ "nvidia" ];
 

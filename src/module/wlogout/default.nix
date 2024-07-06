@@ -1,17 +1,12 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 
 {
   home.shared = {
-    home.packages = with pkgs; [
-      gtklock
-    ];
-
     programs.wlogout.enable = true;
-
     programs.wlogout.layout = [
       {
         label = "lock";
-        action = "${pkgs.gtklock}/bin/gtklock";
+        action = "loginctl lock-session";
         text = "Lock";
         keybind = "l";
       }
