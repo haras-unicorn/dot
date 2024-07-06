@@ -3,11 +3,13 @@
 # TODO: add pager to dot config
 
 {
-  home.shared = {
+  shared.dot = {
     desktopEnvironment.sessionVariables = {
       PAGER = "${pkgs.bat}/bin/bat";
     };
+  };
 
+  home.shared = {
     shell.aliases = {
       cat = "${pkgs.bat}/bin/bat";
     };
