@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 
 {
   home.shared = {
@@ -6,37 +6,37 @@
     programs.wlogout.layout = [
       {
         label = "lock";
-        action = "loginctl lock-session";
+        action = "${pkgs.systemd}/bin/loginctl lock-session";
         text = "Lock";
         keybind = "l";
       }
       {
         label = "logout";
-        action = "loginctl terminate-user $USER";
+        action = "${pkgs.systemd}/bin/loginctl terminate-user $USER";
         text = "Logout";
         keybind = "e";
       }
       {
         label = "suspend";
-        action = "systemctl suspend";
+        action = "${pkgs.systemd}/bin/systemctl suspend-then-hibernate";
         text = "Suspend";
         keybind = "u";
       }
       {
         label = "hibernate";
-        action = "systemctl hibernate";
+        action = "${pkgs.systemd}/bin/systemctl hibernate";
         text = "Hibernate";
         keybind = "h";
       }
       {
         label = "reboot";
-        action = "systemctl reboot";
+        action = "${pkgs.systemd}/bin/systemctl reboot";
         text = "Reboot";
         keybind = "r";
       }
       {
         label = "shutdown";
-        action = "systemctl poweroff";
+        action = "${pkgs.systemd}/bin/systemctl poweroff";
         text = "Shutdown";
         keybind = "s";
       }

@@ -11,11 +11,12 @@
 
     "${self}/src/module/tuigreet"
     "${self}/src/module/gtklock"
+    "${self}/src/module/wlogout"
+    "${self}/src/module/swayidle"
     "${self}/src/module/hyprland"
     "${self}/src/module/hyprpicker"
 
     "${self}/src/module/waybar"
-    "${self}/src/module/wlogout"
     "${self}/src/module/mako"
     "${self}/src/module/wofi"
     "${self}/src/module/swww-lulezojne"
@@ -26,11 +27,11 @@
     "${self}/src/module/grim-slurp-tesseract"
     "${self}/src/module/miraclecast"
     "${self}/src/module/gstreamer"
+    "${self}/src/module/mangohud"
 
     "${self}/src/module/gtk"
     "${self}/src/module/qt"
 
-    "${self}/src/module/mangohud"
     "${self}/src/module/emote"
     "${self}/src/module/alarm"
 

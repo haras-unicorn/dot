@@ -135,8 +135,8 @@ in
         env = XCURSOR_THEME,${config.dot.cursor-theme.name}
         env = XCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.size}
 
-        exec-once = systemctl --user import-environment PATH
-        exec-once = systemctl --user restart xdg-desktop-portal.service
+        exec-once = ${pkgs.systemd}/bin/systemctl --user import-environment PATH
+        exec-once = ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
 
         ${vars}
 
