@@ -21,5 +21,16 @@
     home.packages = [
       pkgs.gtklock
     ];
+
+    services.swayidle.events = [
+      {
+        event = "lock";
+        command = "${pkgs.gtklock}/bin/gtklock -d";
+      }
+      {
+        event = "before-sleep";
+        command = "${pkgs.gtklock}/bin/gtklock -d";
+      }
+    ];
   };
 }
