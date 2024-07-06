@@ -18,6 +18,7 @@
 
     "${self}/src/module/waybar"
     "${self}/src/module/mako"
+    "${self}/src/module/swayosd"
     "${self}/src/module/wofi"
     "${self}/src/module/swww-lulezojne"
     "${self}/src/module/eww"
