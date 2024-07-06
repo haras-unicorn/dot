@@ -1,8 +1,10 @@
 { pkgs, ... }:
 
+# TODO: add pager to dot config
+
 {
   home.shared = {
-    de.sessionVariables = {
+    desktopEnvironment.sessionVariables = {
       PAGER = "${pkgs.bat}/bin/bat";
     };
 
