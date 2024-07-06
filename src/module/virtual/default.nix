@@ -104,17 +104,20 @@ in
       description = "Setup ${bridgeGns3.name} interface";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
-      postStart = ''
+      script = ''
         ${pkgs.iproute2}/bin/ip link add name ${bridgeGns3.name} type bridge
         ${pkgs.iproute2}/bin/ip addr add ${bridgeGns3.subnet} dev ${bridgeGns3.name}
         ${pkgs.iproute2}/bin/ip link set ${bridgeGns3.name} up
       '';
-      script = "${pkgs.coreutils}/bin/sleep infinity";
       preStop = ''
         ${pkgs.iproute2}/bin/ip link set ${bridgeGns3.name} down
         ${pkgs.iproute2}/bin/ip addr del ${bridgeGns3.subnet} dev ${bridgeGns3.name}
         ${pkgs.iproute2}/bin/ip link del ${bridgeGns3.name}
       '';
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+      };
     };
   };
 
