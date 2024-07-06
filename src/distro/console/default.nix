@@ -30,7 +30,6 @@ in
     "${self}/src/module/llama-cpp"
     "${self}/src/module/piper"
     "${self}/src/module/whisper-cpp"
-    # "${self}/src/module/invokeai"
 
     "${self}/src/module/yai"
     "${self}/src/module/tealdeer"
@@ -107,6 +106,8 @@ in
       home.packages = with pkgs; [
         inetutils # NOTE: Common network programs
         ouch # NOTE: only compression/decompression tool you will ever need
+        skim # NOTE: fzf
+        monolith # NOTE: entire page to one html file
         parted # NOTE: partition manager
         dasel # NOTE: json, yaml, toml, csv, etc manipulation
         jq # NOTE: popular json manipulator

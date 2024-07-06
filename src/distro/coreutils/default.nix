@@ -20,7 +20,7 @@ in
 {
   imports = [
     "${self}/src/module/vivid"
-    # "${self}/src/module/bat"
+    "${self}/src/module/bat"
     "${self}/src/module/ripgrep"
     "${self}/src/module/sd"
     "${self}/src/module/fd"
