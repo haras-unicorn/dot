@@ -60,8 +60,9 @@ in
     programs.vscode.mutableExtensionsDir = false;
     programs.vscode.extensions = with pkgs.vscode-marketplace; [
       # misc
-      github.copilot
-      github.copilot-chat
+      # github.copilot
+      # github.copilot-chat
+      supermaven.supermaven
       ms-playwright.playwright
       ms-azuretools.vscode-docker
       streetsidesoftware.code-spell-checker
