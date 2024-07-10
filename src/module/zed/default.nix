@@ -1,7 +1,9 @@
 { pkgs, ... }:
 
 {
-  home.packages = [
-    pkgs.zed-editor
-  ];
+  home.shared = {
+    home.packages = [
+      pkgs.zed-editor
+    ];
+  };
 }
