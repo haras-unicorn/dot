@@ -53,6 +53,7 @@ in
 
     # Visuals
     "${self}/src/module/code"
+    "${self}/src/module/zed"
     # "${self}/src/module/cursor"
 
     # Browsers
