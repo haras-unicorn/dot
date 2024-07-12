@@ -62,6 +62,10 @@ in
             oschmod
             oras
           ]);
+          dependencies = (with pkgs.python311Packages; [
+            oschmod
+            oras
+          ]);
         })
       ])
     ];
