@@ -28,6 +28,10 @@ let
     pname = "oschmod";
     version = "0.3.12";
 
+    build-system = [
+      pkgs.python311Packages.setuptools
+    ];
+
     src = pkgs.fetchPypi {
       inherit pname version;
       hash = "sha256-vsmSFvMWFe5lOypch8rPtOS2GEwOn3HaGGMA2srpdPM=";
