@@ -30,6 +30,7 @@ let
 
     build-system = [
       pkgs.python311Packages.setuptools
+      pkgs.python311Packages.setuptools-scm
     ];
 
     src = pkgs.fetchPypi {
