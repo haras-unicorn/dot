@@ -11,7 +11,7 @@ let
     , sha256
     , description
     , ...
-    }@args: pkgs.python311Packages.buildPythonPackage ({
+    }@args: pkgs.python311.pkgs.buildPythonPackage ({
       format = "wheel";
       src = builtins.fetchurl { inherit url sha256; };
       meta = {
@@ -24,7 +24,7 @@ let
       } // args.meta or { };
     } // (removeAttrs args [ "url" "sha256" "description" "meta" ]));
 
-  oschmod = pkgs.python311Packages.buildPythonPackage rec {
+  oschmod = pkgs.python311.pkgs.buildPythonPackage rec {
     pname = "oschmod";
     version = "0.3.12";
 
@@ -45,37 +45,14 @@ in
 {
   home.shared = {
     home.packages = with pkgs; [
-      ((azure-cli.overrideAttrs (final: prev: {
-        nativeCheckInputs = (prev.nativeCheckInputs or [ ]) ++ [
-          oschmod
-        ];
-        buildInputs = (prev.buildInputs or [ ]) ++ [
-          oschmod
-        ];
-        propagatedBuildInputs = (prev.propagatedBuildInputs or [ ]) ++ [
-          oschmod
-        ];
-        dependencies = (prev.propagatedBuildInputs or [ ]) ++ [
-          oschmod
-        ];
-      })).withExtensions [
+      (azure-cli.withExtensions [
         (mkAzExtension rec {
           pname = "ssh";
           version = "2.0.4";
           url = "https://azcliprod.blob.core.windows.net/cli-extensions/ssh-${version}-py3-none-any.whl";
           sha256 = "0d4hna7s5yrycfzvf86p41qi5j2xll2zz7sqval17zv1mq64q5gr";
           description = "SSH into Azure VMs using RBAC and AAD OpenSSH Certificates";
-          nativeCheckInputs = [
-            oschmod
-          ];
-          buildInputs = [
-            oschmod
-          ];
           propagatedBuildInputs = (with pkgs.python311Packages; [
-            oschmod
-            oras
-          ]);
-          dependencies = (with pkgs.python311Packages; [
             oschmod
             oras
           ]);
