@@ -45,7 +45,11 @@ in
 {
   home.shared = {
     home.packages = with pkgs; [
-      (azure-cli.withExtensions [
+      ((azure-cli.override (final: prev: {
+        buildInputs = [
+          oschmod
+        ];
+      })).withExtensions [
         (mkAzExtension rec {
           pname = "ssh";
           version = "2.0.4";
