@@ -28,20 +28,10 @@ let
     pname = "oschmod";
     version = "0.3.12";
 
-    build-system = [
-      pkgs.python311Packages.setuptools
-      pkgs.python311Packages.setuptools-scm
-    ];
-
-    nativeCheckInputs = [
-      pkgs.python311Packages.pytest
-    ];
-
-    src = pkgs.fetchPypi
-      {
-        inherit pname version;
-        hash = "sha256-vsmSFvMWFe5lOypch8rPtOS2GEwOn3HaGGMA2srpdPM=";
-      };
+    src = pkgs.fetchPypi {
+      inherit pname version;
+      hash = "sha256-vsmSFvMWFe5lOypch8rPtOS2GEwOn3HaGGMA2srpdPM=";
+    };
 
     meta = {
       changelog = "https://github.com/YakDriver/oschmod/releases/tag/${version}";
@@ -55,22 +45,23 @@ in
 {
   home.shared = {
     home.packages = with pkgs; [
-      (azure-cli.withExtensions [
-        (mkAzExtension rec {
-          pname = "ssh";
-          version = "2.0.4";
-          url = "https://azcliprod.blob.core.windows.net/cli-extensions/ssh-${version}-py3-none-any.whl";
-          sha256 = "0d4hna7s5yrycfzvf86p41qi5j2xll2zz7sqval17zv1mq64q5gr";
-          description = "SSH into Azure VMs using RBAC and AAD OpenSSH Certificates";
-          buildInputs = [
-            oschmod
-          ];
-          propagatedBuildInputs = (with pkgs.python311Packages; [
-            oschmod
-            oras
-          ]);
-        })
-      ])
+      # (azure-cli.withExtensions [
+      #   (mkAzExtension rec {
+      #     pname = "ssh";
+      #     version = "2.0.4";
+      #     url = "https://azcliprod.blob.core.windows.net/cli-extensions/ssh-${version}-py3-none-any.whl";
+      #     sha256 = "0d4hna7s5yrycfzvf86p41qi5j2xll2zz7sqval17zv1mq64q5gr";
+      #     description = "SSH into Azure VMs using RBAC and AAD OpenSSH Certificates";
+      #     buildInputs = [
+      #       oschmod
+      #     ];
+      #     propagatedBuildInputs = (with pkgs.python311Packages; [
+      #       oschmod
+      #       oras
+      #     ]);
+      #   })
+      # ])
+      (python311.withPackages (_: [ oschmod ]))
     ];
 
     home.file.".azure/config".source = ./azure-config;
