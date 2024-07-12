@@ -19,7 +19,7 @@ let
         inherit (pkgs.azure-cli.meta) platforms maintainers;
         homepage = "https://github.com/Azure/azure-cli-extensions";
         changelog = "https://github.com/Azure/azure-cli-extensions/blob/main/src/${pname}/HISTORY.rst";
-        license = pkgs.lib.licenses.asl20;
+        license = pkgs.lib.licenses.mit;
         sourceProvenance = [ pkgs.lib.sourceTypes.fromSource ];
       } // args.meta or { };
     } // (removeAttrs args [ "url" "sha256" "description" "meta" ]));
@@ -37,7 +37,7 @@ let
       changelog = "https://github.com/YakDriver/oschmod/releases/tag/${version}";
       description = "chmod for Windows, macOS and Linux";
       homepage = "https://github.com/YakDriver/oschmod";
-      license = pkgs.lib.licenses.apache;
+      license = pkgs.lib.licenses.asl20;
       maintainers = [ ];
     };
   };
