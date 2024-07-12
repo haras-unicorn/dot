@@ -11,7 +11,7 @@ let
     , sha256
     , description
     , ...
-    }@args: pkgs.python311.buildPythonPackage ({
+    }@args: pkgs.buildPythonPackage ({
       format = "wheel";
       src = builtins.fetchurl { inherit url sha256; };
       meta = {
