@@ -19,7 +19,7 @@ let
         inherit (pkgs.azure-cli.meta) platforms maintainers;
         homepage = "https://github.com/Azure/azure-cli-extensions";
         changelog = "https://github.com/Azure/azure-cli-extensions/blob/main/src/${pname}/HISTORY.rst";
-        license = pkgs.lib.licenses.mit;
+        license = pkgs.lib.licenses.asl20;
         sourceProvenance = [ pkgs.lib.sourceTypes.fromSource ];
       } // args.meta or { };
     } // (removeAttrs args [ "url" "sha256" "description" "meta" ]));
