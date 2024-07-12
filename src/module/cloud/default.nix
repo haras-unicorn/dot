@@ -30,7 +30,7 @@ let
 
     src = pkgs.fetchPypi {
       inherit pname version;
-      hash = "";
+      hash = "sha256-vsmSFvMWFe5lOypch8rPtOS2GEwOn3HaGGMA2srpdPM=";
     };
 
     meta = {
