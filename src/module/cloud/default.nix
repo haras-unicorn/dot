@@ -32,7 +32,7 @@ in
           pname = "ssh";
           version = "2.0.4";
           url = "https://azcliprod.blob.core.windows.net/cli-extensions/ssh-${version}-py3-none-any.whl";
-          sha256 = "";
+          sha256 = "0d4hna7s5yrycfzvf86p41qi5j2xll2zz7sqval17zv1mq64q5gr";
           description = "SSH into Azure VMs using RBAC and AAD OpenSSH Certificates";
         })
       ])
