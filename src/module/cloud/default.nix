@@ -45,8 +45,8 @@ in
 {
   home.shared = {
     home.packages = with pkgs; [
-      ((azure-cli.override (final: prev: {
-        buildInputs = [
+      ((azure-cli.overrideAttrs (final: prev: {
+        buildInputs = (prev.buildInputs or [ ]) ++ [
           oschmod
         ];
       })).withExtensions [
