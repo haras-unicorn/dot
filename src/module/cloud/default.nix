@@ -46,7 +46,16 @@ in
   home.shared = {
     home.packages = with pkgs; [
       ((azure-cli.overrideAttrs (final: prev: {
+        nativeCheckInputs = (prev.nativeCheckInputs or [ ]) ++ [
+          oschmod
+        ];
         buildInputs = (prev.buildInputs or [ ]) ++ [
+          oschmod
+        ];
+        propagatedBuildInputs = (prev.propagatedBuildInputs or [ ]) ++ [
+          oschmod
+        ];
+        dependencies = (prev.propagatedBuildInputs or [ ]) ++ [
           oschmod
         ];
       })).withExtensions [
