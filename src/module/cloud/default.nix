@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# FIXME: azure extension add fails with some pip error
+# FIXME: azure ssh extension can't find oschmod
 
 let
   # NOTE: https://github.com/NixOS/nixpkgs/blob/feb2849fdeb70028c70d73b848214b00d324a497/pkgs/tools/admin/azure-cli/default.nix#L41
@@ -46,17 +46,17 @@ in
   home.shared = {
     home.packages = with pkgs; [
       (azure-cli.withExtensions [
-        (mkAzExtension rec {
-          pname = "ssh";
-          version = "2.0.4";
-          url = "https://azcliprod.blob.core.windows.net/cli-extensions/ssh-${version}-py3-none-any.whl";
-          sha256 = "0d4hna7s5yrycfzvf86p41qi5j2xll2zz7sqval17zv1mq64q5gr";
-          description = "SSH into Azure VMs using RBAC and AAD OpenSSH Certificates";
-          propagatedBuildInputs = (with pkgs.python311Packages; [
-            oschmod
-            oras
-          ]);
-        })
+        # (mkAzExtension rec {
+        #   pname = "ssh";
+        #   version = "2.0.4";
+        #   url = "https://azcliprod.blob.core.windows.net/cli-extensions/ssh-${version}-py3-none-any.whl";
+        #   sha256 = "0d4hna7s5yrycfzvf86p41qi5j2xll2zz7sqval17zv1mq64q5gr";
+        #   description = "SSH into Azure VMs using RBAC and AAD OpenSSH Certificates";
+        #   propagatedBuildInputs = (with pkgs.python311Packages; [
+        #     oschmod
+        #     oras
+        #   ]);
+        # })
       ])
     ];
 
