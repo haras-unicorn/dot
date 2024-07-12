@@ -23,6 +23,24 @@ let
         sourceProvenance = [ pkgs.lib.sourceTypes.fromSource ];
       } // args.meta or { };
     } // (removeAttrs args [ "url" "sha256" "description" "meta" ]));
+
+  oschmod = pkgs.python311Packages.buildPythonPackage rec {
+    pname = "oschmod";
+    version = "0.3.12";
+
+    src = pkgs.fetchPypi {
+      inherit pname version;
+      hash = "";
+    };
+
+    meta = {
+      changelog = "https://github.com/YakDriver/oschmod/releases/tag/${version}";
+      description = "chmod for Windows, macOS and Linux";
+      homepage = "https://github.com/YakDriver/oschmod";
+      license = pkgs.lib.licenses.apache;
+      maintainers = [ ];
+    };
+  };
 in
 {
   home.shared = {
