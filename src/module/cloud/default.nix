@@ -33,10 +33,15 @@ let
       pkgs.python311Packages.setuptools-scm
     ];
 
-    src = pkgs.fetchPypi {
-      inherit pname version;
-      hash = "sha256-vsmSFvMWFe5lOypch8rPtOS2GEwOn3HaGGMA2srpdPM=";
-    };
+    nativeCheckInputs = [
+      pkgs.python311Packages.pytest
+    ];
+
+    src = pkgs.fetchPypi
+      {
+        inherit pname version;
+        hash = "sha256-vsmSFvMWFe5lOypch8rPtOS2GEwOn3HaGGMA2srpdPM=";
+      };
 
     meta = {
       changelog = "https://github.com/YakDriver/oschmod/releases/tag/${version}";
@@ -61,6 +66,7 @@ in
             oschmod
           ];
           propagatedBuildInputs = (with pkgs.python311Packages; [
+            oschmod
             oras
           ]);
         })
