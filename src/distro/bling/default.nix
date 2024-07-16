@@ -8,6 +8,7 @@
       cmatrix # NOTE: matrix
       pokemonsay # NOTE: cowsay
       dotacat # NOTE: rainbow cat
+      cbonsai # NOTE: grow bonsai trees
     ];
   };
 }

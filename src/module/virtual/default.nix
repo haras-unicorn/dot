@@ -5,6 +5,7 @@
 
 # FIXME: https://github.com/NixOS/nixpkgs/pull/303442
 # FIXME: podman OCI runtime error
+# FIXME: gns3 bridge fails restarting
 # TODO: use podman when starship support
 
 let
@@ -100,25 +101,26 @@ in
         prefixLength = bridgeGns3.prefix;
       }
     ];
-    systemd.services."${bridgeGns3.name}-setup" = {
-      description = "Setup ${bridgeGns3.name} interface";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
-      script = ''
-        ${pkgs.iproute2}/bin/ip link add name ${bridgeGns3.name} type bridge
-        ${pkgs.iproute2}/bin/ip addr add ${bridgeGns3.subnet} dev ${bridgeGns3.name}
-        ${pkgs.iproute2}/bin/ip link set ${bridgeGns3.name} up
-      '';
-      preStop = ''
-        ${pkgs.iproute2}/bin/ip link set ${bridgeGns3.name} down
-        ${pkgs.iproute2}/bin/ip addr del ${bridgeGns3.subnet} dev ${bridgeGns3.name}
-        ${pkgs.iproute2}/bin/ip link del ${bridgeGns3.name}
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-    };
+
+    # systemd.services."${bridgeGns3.name}-setup" = {
+    #   description = "Setup ${bridgeGns3.name} interface";
+    #   after = [ "network.target" ];
+    #   wantedBy = [ "multi-user.target" ];
+    #   script = ''
+    #     ${pkgs.iproute2}/bin/ip link add name ${bridgeGns3.name} type bridge
+    #     ${pkgs.iproute2}/bin/ip addr add ${bridgeGns3.subnet} dev ${bridgeGns3.name}
+    #     ${pkgs.iproute2}/bin/ip link set ${bridgeGns3.name} up
+    #   '';
+    #   preStop = ''
+    #     ${pkgs.iproute2}/bin/ip link set ${bridgeGns3.name} down
+    #     ${pkgs.iproute2}/bin/ip addr del ${bridgeGns3.subnet} dev ${bridgeGns3.name}
+    #     ${pkgs.iproute2}/bin/ip link del ${bridgeGns3.name}
+    #   '';
+    #   serviceConfig = {
+    #     Type = "oneshot";
+    #     RemainAfterExit = true;
+    #   };
+    # };
   };
 
   home = {
