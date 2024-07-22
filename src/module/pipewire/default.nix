@@ -23,13 +23,14 @@
     services.pipewire.alsa.support32Bit = true;
     services.pipewire.jack.enable = true;
     services.pipewire.pulse.enable = true;
+
+    programs.dconf.enable = true;
   };
 
   home = {
     share = {
       services.easyeffects.enable = true;
       services.easyeffects.preset = "speakers";
-      programs.dconf.enable = true;
     };
   };
 }
