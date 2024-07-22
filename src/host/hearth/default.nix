@@ -59,6 +59,7 @@
       networkInterface = "enp37s0";
       cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
       soundcardPciId = "2b:00.3";
+      nvidiaDriver.open = false;
 
       location.timeZone = "Europe/Zagreb";
       groups = [
