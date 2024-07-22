@@ -29,17 +29,10 @@
   };
 
   config = {
-    shared = {
-      dot = {
-        desktopEnvironment.sessionStartup = [
-          "sudo modprobe nvidia_uvm"
-        ];
-      };
-    };
-
     system = {
       boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" ];
       boot.kernelParams = [ "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
+      boot.kernelModules = [ "nvidia_uvm" ];
 
       services.xserver.videoDrivers = [ "nvidia" ];
 
