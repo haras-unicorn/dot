@@ -9,7 +9,6 @@
     environment.systemPackages = with pkgs; [
       pavucontrol
       pwvucontrol
-      easyeffects
       jamesdsp
       sonobus
     ];
@@ -24,5 +23,13 @@
     services.pipewire.alsa.support32Bit = true;
     services.pipewire.jack.enable = true;
     services.pipewire.pulse.enable = true;
+  };
+
+  home = {
+    share = {
+      services.easyeffects.enable = true;
+      services.easyeffects.preset = "speakers";
+      programs.dconf.enable = true;
+    };
   };
 }
