@@ -28,7 +28,11 @@
   };
 
   home = {
-    share = {
+    shared = {
+      home.packages = with pkgs; [
+        easyeffects
+      ];
+
       services.easyeffects.enable = true;
       services.easyeffects.preset = "speakers";
     };
