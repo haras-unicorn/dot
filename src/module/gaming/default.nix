@@ -17,6 +17,7 @@
       cartridges
       winetricks
       protontricks
+      protonup-ng
 
       mono # NOTE: ascension wow
       gnome.zenity # NOTE: ascension wow
