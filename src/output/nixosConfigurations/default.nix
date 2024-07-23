@@ -25,7 +25,7 @@ let
 
   systems = flake-utils.lib.defaultSystems;
   hostNames = (builtins.attrNames (builtins.readDir "${self}/src/host"));
-  configs = nixpkgs.lib.cartesianProductOfSets {
+  configs = nixpkgs.lib.cartesianProduct {
     system = systems;
     hostName = hostNames;
   };
