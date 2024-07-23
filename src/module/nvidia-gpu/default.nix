@@ -43,13 +43,13 @@
       hardware.nvidia.open = config.dot.nvidiaDriver.open;
       hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${config.dot.nvidiaDriver.version}";
 
-      hardware.opengl.enable = true;
-      hardware.opengl.driSupport32Bit = true;
-      hardware.opengl.extraPackages = with pkgs; [
+      hardware.graphics.enable = true;
+      hardware.graphics.driSupport32Bit = true;
+      hardware.graphics.extraPackages = with pkgs; [
         nvidia-vaapi-driver
         libvdpau-va-gl
       ];
-      hardware.opengl.extraPackages32 = with pkgs.driversi686Linux; [
+      hardware.graphics.extraPackages32 = with pkgs.driversi686Linux; [
         libvdpau-va-gl
       ];
 
