@@ -18,22 +18,21 @@ let
 in
 {
   system = {
-    environment.systemPackages = with pkgs;
-      [
-        wineWowPackages.stable
-        winetricks
-        virt-manager
-        spice
-        spice-vdagent
-        virglrenderer
-        win-virtio
-        win-spice
-        lazydocker
-        docker-client
-        docker-compose
-        arion
-        gns3-gui
-      ];
+    environment.systemPackages = with pkgs; [
+      wineWowPackages.waylandFull
+      winetricks
+      virt-manager
+      spice
+      spice-vdagent
+      virglrenderer
+      win-virtio
+      win-spice
+      lazydocker
+      docker-client
+      docker-compose
+      arion
+      gns3-gui
+    ];
 
     services.qemuGuest.enable = true;
     virtualisation.libvirtd.enable = true;
