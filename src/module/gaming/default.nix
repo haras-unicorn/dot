@@ -20,7 +20,7 @@
       protonup-ng
 
       mono # NOTE: ascension wow
-      gnome.zenity # NOTE: ascension wow
+      zenity # NOTE: ascension wow
       appimage-run # NOTE: ascension wow
     ];
 

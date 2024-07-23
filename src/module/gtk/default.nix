@@ -91,40 +91,40 @@ in
           "in" = "${config.xdg.configHome}/materia/colors";
           "then" = {
             command = "${pkgs.writeShellApplication {
-            name = "change-materia-colors";
-            runtimeInputs = [];
-            text = ''
-              dest="${config.xdg.cacheHome}/materia-theme"
-              if [[ -d "$dest" ]]; then
-                rm -rf "$dest"
-              fi
-              cp -r "${pkgs.materia-theme.src}" "$dest"
-              find "$dest" -type d -exec chmod 755 -- {} +
-              find "$dest" -type f -exec chmod 644 -- {} +
-              find "$dest" -type f -name "*.sh" -exec chmod 755 -- {} +
-              cd "$dest"
+              name = "change-materia-colors";
+              runtimeInputs = [];
+              text = ''
+                dest="${config.xdg.cacheHome}/materia-theme"
+                if [[ -d "$dest" ]]; then
+                  rm -rf "$dest"
+                fi
+                cp -r "${pkgs.materia-theme.src}" "$dest"
+                find "$dest" -type d -exec chmod 755 -- {} +
+                find "$dest" -type f -exec chmod 644 -- {} +
+                find "$dest" -type f -name "*.sh" -exec chmod 755 -- {} +
+                cd "$dest"
 
-              packages=""
-              packages+=" meson"
-              packages+=" ninja"
-              packages+=" sassc"
-              packages+=" gnome.gnome-themes-extra"
-              packages+=" gdk-pixbuf"
-              packages+=" librsvg"
-              packages+=" bc"
-              packages+=" inkscape"
-              packages+=" optipng"
+                packages=""
+                packages+=" meson"
+                packages+=" ninja"
+                packages+=" sassc"
+                packages+=" gnome-themes-extra"
+                packages+=" gdk-pixbuf"
+                packages+=" librsvg"
+                packages+=" bc"
+                packages+=" inkscape"
+                packages+=" optipng"
 
-              command=""
-              command+=" patchShebangs .;"
-              command+=" ./change_color.sh"
-              command+=" -t ${config.xdg.dataHome}/themes"
-              command+=" -o Lulezojne"
-              command+=" ${config.xdg.configHome}/materia/colors"
+                command=""
+                command+=" patchShebangs .;"
+                command+=" ./change_color.sh"
+                command+=" -t ${config.xdg.dataHome}/themes"
+                command+=" -o Lulezojne"
+                command+=" ${config.xdg.configHome}/materia/colors"
 
-              #shellcheck disable=SC2086
-              nix-shell --packages $packages --pure --run "$command"
-            '';
+                #shellcheck disable=SC2086
+                nix-shell --packages $packages --pure --run "$command"
+              '';
           }}/bin/change-materia-colors";
           };
         }
