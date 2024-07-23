@@ -30,24 +30,24 @@ let
     hostName = hostNames;
   };
 
-  /*
-    fixes issues with lack of HTTP header sanitization in .NET Core, see:
-    - https://github.com/NixOS/nixpkgs/issues/315574
-    - https://github.com/microsoftgraph/msgraph-cli/issues/477
-  */
-  nixosNameModule = ({ lib, options, ... }: {
-    /*
-      using just `readOnly` because it can contain neither of: default, example, description, apply, type
-      see https://github.com/NixOS/nixpkgs/blob/aae38d0d557d2f0e65b2ea8e1b92219f2c0ea8f9/lib/modules.nix#L752-L756
-    */
-    options.system.nixos.codeName = lib.mkOption { readOnly = false; };
-    config.system.nixos.codeName =
-      let
-        codeName = options.system.nixos.codeName.default;
-        renames."Vicuña" = "Vicuna";
-      in
-      if builtins.hasAttr renames codeName then renames."${codeName}" else codeName;
-  });
+  # /*
+  #   fixes issues with lack of HTTP header sanitization in .NET Core, see:
+  #   - https://github.com/NixOS/nixpkgs/issues/315574
+  #   - https://github.com/microsoftgraph/msgraph-cli/issues/477
+  # */
+  # nixosNameModule = ({ lib, options, ... }: {
+  #   /*
+  #     using just `readOnly` because it can contain neither of: default, example, description, apply, type
+  #     see https://github.com/NixOS/nixpkgs/blob/aae38d0d557d2f0e65b2ea8e1b92219f2c0ea8f9/lib/modules.nix#L752-L756
+  #   */
+  #   options.system.nixos.codeName = lib.mkOption { readOnly = false; };
+  #   config.system.nixos.codeName =
+  #     let
+  #       codeName = options.system.nixos.codeName.default;
+  #       renames."Vicuña" = "Vicuna";
+  #     in
+  #     if builtins.hasAttr renames codeName then renames."${codeName}" else codeName;
+  # });
 
   nixConfigModule = ({ pkgs, ... }: {
     nix.extraOptions = "experimental-features = nix-command flakes";
@@ -103,6 +103,20 @@ let
       '';
     });
 
+  mkRebuildTrace = ({ pkgs, hostName, system, ... }:
+    pkgs.writeShellApplication {
+      name = "rebuild";
+      runtimeInputs = [ ];
+      text = ''
+        if [[ ! -d "/home/${userName}/src/dot" ]]; then
+          echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
+          exit 1
+        fi
+
+        sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${hostName}-${system}" --show-trace --option eval-cache false "$@"
+      '';
+    });
+
   mkRebuildWip = ({ pkgs, hostName, userName, system, ... }:
     pkgs.writeShellApplication {
       name = "rebuild-wip";
@@ -150,7 +164,7 @@ let
       home.stateVersion = stateVersion;
       home.username = "${userName}";
       home.homeDirectory = "/home/${userName}";
-      home.packages = [ (mkRebuild inputs) (mkRebuildWip inputs) ];
+      home.packages = [ (mkRebuild inputs) (mkRebuildTrace inputs) (mkRebuildWip inputs) ];
 
       sops.defaultSopsFile = "${self}/src/host/${hostName}/${userName}.sops.enc.yaml";
       sops.age.keyFile = "/home/${userName}/.sops/secrets.age";
@@ -186,7 +200,7 @@ builtins.foldl'
           sops.age.keyFile = "/root/.sops/secrets.age";
         })
         nixConfigModule
-        nixosNameModule
+        # nixosNameModule
         ({ pkgs, ... }: { nix.package = pkgs.nixFlakes; })
         nixpkgsConfigModule
         ({ pkgs, ... }: {
@@ -206,7 +220,7 @@ builtins.foldl'
             nur.hmModules.nur
             nix-index-database.hmModules.nix-index
             nixConfigModule
-            nixosNameModule
+            # nixosNameModule
             nixpkgsConfigModule
             sops-nix.homeManagerModules.sops
             lulezojne.homeManagerModules.default
