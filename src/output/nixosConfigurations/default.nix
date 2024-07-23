@@ -105,7 +105,7 @@ let
 
   mkRebuildTrace = ({ pkgs, hostName, system, ... }:
     pkgs.writeShellApplication {
-      name = "rebuild";
+      name = "rebuild-trace";
       runtimeInputs = [ ];
       text = ''
         if [[ ! -d "/home/${userName}/src/dot" ]]; then
