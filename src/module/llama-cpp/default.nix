@@ -3,12 +3,12 @@
 let
   llama-cpp = (pkgs.llama-cpp.override { vulkanSupport = true; }).overrideAttrs (final: prev: {
     buildInputs = (prev.buildInputs or [ ]) ++ [
-      pkgs.vulkan-headers
+      pkgs.shaderc
     ];
   });
   koboldcpp = (pkgs.koboldcpp.override { vulkanSupport = true; }).overrideAttrs (final: prev: {
     buildInputs = (prev.buildInputs or [ ]) ++ [
-      pkgs.vulkan-headers
+      pkgs.shaderc
     ];
   });
 
