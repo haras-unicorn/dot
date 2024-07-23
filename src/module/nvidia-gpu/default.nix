@@ -44,7 +44,7 @@
       hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${config.dot.nvidiaDriver.version}";
 
       hardware.graphics.enable = true;
-      hardware.graphics.driSupport32Bit = true;
+      hardware.graphics.enable32Bit = true;
       hardware.graphics.extraPackages = with pkgs; [
         nvidia-vaapi-driver
         libvdpau-va-gl
