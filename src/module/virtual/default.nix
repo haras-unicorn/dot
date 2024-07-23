@@ -6,6 +6,7 @@
 # FIXME: https://github.com/NixOS/nixpkgs/pull/303442
 # FIXME: podman OCI runtime error
 # FIXME: gns3 bridge fails restarting
+# FIXME: https://github.com/NixOS/nixpkgs/issues/326245
 # TODO: use podman when starship support
 
 let
