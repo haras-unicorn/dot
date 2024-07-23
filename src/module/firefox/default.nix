@@ -25,7 +25,7 @@ in
       ])
         (cfg.bin == "firefox")
         cfg.package
-        pkgs.firefox-bin;
+        pkgs.firefox;
 
     programs.firefox.profiles = {
       personal = {
