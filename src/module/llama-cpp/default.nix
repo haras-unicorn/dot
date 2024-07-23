@@ -1,8 +1,16 @@
 { pkgs, config, ... }:
 
 let
-  llama-cpp = pkgs.llama-cpp.override { vulkanSupport = true; };
-  koboldcpp = pkgs.koboldcpp.override { vulkanSupport = true; };
+  llama-cpp = (pkgs.llama-cpp.override { vulkanSupport = true; }).overrideAttrs (final: prev: {
+    buildInputs = (prev.buildInputs or [ ]) ++ [
+      pkgs.vulkan-headers
+    ];
+  });
+  koboldcpp = (pkgs.koboldcpp.override { vulkanSupport = true; }).overrideAttrs (final: prev: {
+    buildInputs = (prev.buildInputs or [ ]) ++ [
+      pkgs.vulkan-headers
+    ];
+  });
 
   write = pkgs.writeShellApplication {
     name = "write";
