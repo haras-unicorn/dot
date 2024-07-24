@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 
+# FIXME: https://github.com/NixOS/nixpkgs/issues/329259
+
 {
   shared = {
     dot = {
