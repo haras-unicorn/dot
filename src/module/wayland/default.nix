@@ -65,6 +65,7 @@ in
         wev
 
         wl-clipboard
+        xclip
         copy
         paste
 
