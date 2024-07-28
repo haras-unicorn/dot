@@ -1,10 +1,12 @@
 { pkgs
+, config
   # , self
 , ...
 }:
 
 # TODO: build lutris packages from yml here with `lutris --install`
 # TODO: fix clashing nofile limits
+# NOTE: steamtinkerlaunch https://www.reddit.com/r/NixOS/comments/12xbdpl/comment/jhjbdz8
 
 {
   system = {
@@ -18,7 +20,6 @@
       winetricks
       protontricks
       protonup-ng
-      steamtinkerlaunch
 
       mono # NOTE: ascension wow
       zenity # NOTE: ascension wow
@@ -36,8 +37,15 @@
   };
 
   home.shared = {
-    home.packages = [
-      (pkgs.dwarf-fortress-packages.dwarf-fortress-full.override {
+    home.sessionVariables = {
+      STEAM_EXTRA_COMPAT_TOOL_PATHS = "${config.xdg.dataHome}/steamcompat";
+    };
+    home.dataFile."steamcompat/SteamTinkerLaunch/steamtinkerlaunch".source =
+      "${pkgs.steamtinkerlaunch}/bin/steamtinkerlaunch";
+
+    home.packages = with pkgs; [
+      steamtinkerlaunch
+      (dwarf-fortress-packages.dwarf-fortress-full.override {
         dfVersion = "0.47.05";
 
         # Console
