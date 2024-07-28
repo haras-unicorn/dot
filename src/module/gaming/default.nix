@@ -39,7 +39,7 @@
 
   home.shared = {
     home.sessionVariables = {
-      STEAM_EXTRA_COMPAT_TOOL_PATHS = "${config.xdg.dataHome}/steamcompat";
+      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${config.xdg.dataHome}/steamcompat";
     };
     xdg.dataFile."steamcompat/SteamTinkerLaunch/steamtinkerlaunch".source =
       "${pkgs.steamtinkerlaunch}/bin/steamtinkerlaunch";
