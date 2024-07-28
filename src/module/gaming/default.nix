@@ -20,6 +20,7 @@
       winetricks
       protontricks
       protonup-ng
+      nexusmods-app
 
       mono # NOTE: ascension wow
       zenity # NOTE: ascension wow
