@@ -18,6 +18,7 @@
       winetricks
       protontricks
       protonup-ng
+      steamtinkerlaunch
 
       mono # NOTE: ascension wow
       zenity # NOTE: ascension wow
