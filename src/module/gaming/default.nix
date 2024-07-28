@@ -21,6 +21,7 @@
       protontricks
       protonup-ng
       nexusmods-app
+      steamtinkerlaunch
 
       mono # NOTE: ascension wow
       zenity # NOTE: ascension wow
@@ -44,9 +45,8 @@
     xdg.dataFile."steamcompat/SteamTinkerLaunch/steamtinkerlaunch".source =
       "${pkgs.steamtinkerlaunch}/bin/steamtinkerlaunch";
 
-    home.packages = with pkgs; [
-      steamtinkerlaunch
-      (dwarf-fortress-packages.dwarf-fortress-full.override {
+    home.packages = [
+      (pkgs.dwarf-fortress-packages.dwarf-fortress-full.override {
         dfVersion = "0.47.05";
 
         # Console
