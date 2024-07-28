@@ -40,7 +40,7 @@
     home.sessionVariables = {
       STEAM_EXTRA_COMPAT_TOOL_PATHS = "${config.xdg.dataHome}/steamcompat";
     };
-    home.dataFile."steamcompat/SteamTinkerLaunch/steamtinkerlaunch".source =
+    xdg.dataFile."steamcompat/SteamTinkerLaunch/steamtinkerlaunch".source =
       "${pkgs.steamtinkerlaunch}/bin/steamtinkerlaunch";
 
     home.packages = with pkgs; [
