@@ -159,7 +159,7 @@ in
         pencil # NOTE: UI/UX prototyping
         libresprite # NOTE: pixel art
         xfce.xfce4-terminal # NOTE: terminal for debug
-        slack # NOTE: yes
+        # slack # NOTE: yes
       ];
     };
   };
