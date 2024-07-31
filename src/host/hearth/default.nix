@@ -16,13 +16,16 @@
     "${self}/src/module/rt"
     "${self}/src/module/development"
 
+    "${self}/src/module/smartmontools"
+    "${self}/src/module/bluetooth"
+    "${self}/src/module/i2c"
+
     "${self}/src/module/location"
     "${self}/src/module/network"
     "${self}/src/module/vpn"
     "${self}/src/module/openvpn-client"
-    "${self}/src/module/smartmontools"
-    "${self}/src/module/bluetooth"
-    "${self}/src/module/i2c"
+    "${self}/src/module/ddns"
+    "${self}/src/module/transmission"
 
     "${self}/src/module/sudo"
     "${self}/src/module/keyring"
@@ -35,8 +38,6 @@
     "${self}/src/module/fonts"
     "${self}/src/module/wayland"
     "${self}/src/module/gvfs"
-
-    "${self}/src/module/transmission"
 
     "${self}/src/module/virtual"
     "${self}/src/module/gaming"
