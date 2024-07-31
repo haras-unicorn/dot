@@ -119,10 +119,6 @@ in
     };
 
     home.shared = {
-      home.packages = [
-        pkgs.pythonPackages.qtile
-      ];
-
       xdg.configFile."qtile/config.py".text = ''
         ${builtins.readFile ./config.py}
 
