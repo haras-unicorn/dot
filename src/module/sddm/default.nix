@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
 let
-  cfg = config.de;
+  cfg = config.dot.desktopEnvironment;
 in
 {
   options.dot.desktopEnvironment = {
