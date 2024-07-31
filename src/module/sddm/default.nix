@@ -4,11 +4,11 @@ let
   cfg = config.de;
 in
 {
-  options.de = {
+  options.dot.desktopEnvironment = {
     session = lib.mkOption {
       type = lib.types.str;
       default = [ ];
-      example = "none+qtile";
+      example = "qtile";
       description = ''
         Session to launch desktop environment.
       '';
