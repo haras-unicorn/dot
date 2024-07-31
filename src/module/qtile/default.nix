@@ -119,8 +119,8 @@ in
     };
 
     home.shared = {
-      home.packages = with pkgs; [
-        qtile
+      home.packages = [
+        pkgs.pythonPackages.qtile
       ];
 
       xdg.configFile."qtile/config.py".text = ''
