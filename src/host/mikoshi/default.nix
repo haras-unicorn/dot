@@ -32,7 +32,6 @@
       editor = { package = pkgs.helix; bin = "hx"; };
       pinentry = { package = pkgs.pinentry; bin = "pinentry-curses"; };
 
-      openssh.enable = true;
       openssh.authorizations = {
         haras = [ "hearth" "workbug" ];
       };
