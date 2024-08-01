@@ -27,10 +27,6 @@ in
     "${self}/src/module/yazi"
     "${self}/src/module/git"
 
-    "${self}/src/module/llama-cpp"
-    "${self}/src/module/piper"
-    "${self}/src/module/whisper-cpp"
-
     "${self}/src/module/yai"
     "${self}/src/module/tealdeer"
 

@@ -48,6 +48,10 @@ in
     "${self}/src/module/xarchiver"
     "${self}/src/module/spotify"
 
+    "${self}/src/module/llama-cpp"
+    "${self}/src/module/piper"
+    "${self}/src/module/whisper-cpp"
+
     # Terminals
     "${self}/src/module/kitty"
 
@@ -62,6 +66,7 @@ in
     "${self}/src/module/librewolf"
 
     # "${self}/src/module/teams"
+    # "${self}/src/module/slack"
     # "${self}/src/module/jetbrains"
   ];
 
@@ -159,7 +164,6 @@ in
         pencil # NOTE: UI/UX prototyping
         libresprite # NOTE: pixel art
         xfce.xfce4-terminal # NOTE: terminal for debug
-        # slack # NOTE: yes
       ];
     };
   };
