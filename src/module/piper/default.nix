@@ -57,11 +57,10 @@ in
   };
 
   home.shared = {
-    home.packages = with pkgs;
-      [
-        piper-tts
-        speak
-        read-clipboard
-      ];
+    home.packages = with pkgs; [
+      piper-tts
+      speak
+      read-clipboard
+    ];
   };
 }
