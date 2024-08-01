@@ -24,8 +24,8 @@
 
   shared = {
     dot = {
-      hardware.ram = 1;
-      hardware.networkInterface = "ens3";
+      ram = 1;
+      networkInterface = "ens3";
       groups = [ "mlocate" ];
       location.timeZone = "Etc/UTC";
       shell = { package = pkgs.nushell; bin = "nu"; };
