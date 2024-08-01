@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# FIXME: xen on efi https://github.com/NixOS/nixpkgs/issues/127404
+# TODO: xen on efi https://github.com/NixOS/nixpkgs/pull/324693
 
 {
   system = {
