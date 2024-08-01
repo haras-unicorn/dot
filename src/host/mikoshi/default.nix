@@ -31,6 +31,19 @@
       shell = { package = pkgs.nushell; bin = "nu"; };
       editor = { package = pkgs.helix; bin = "hx"; };
       pinentry = { package = pkgs.pinentry; bin = "pinentry-curses"; };
+
+      openssh.enable = true;
+      openssh.authorizations = {
+        haras = [ "hearth" "workbug" ];
+      };
+
+      openvpn.server.host = hostName;
+      openvpn.server.domain = "mikoshi";
+      openvpn.server.clients = {
+        "hearth" = "101";
+        "workbug" = "102";
+        "puffy" = "103";
+      };
     };
   };
 
@@ -60,18 +73,5 @@
     };
 
     boot.loader.grub.device = "/dev/vda";
-
-    dot.openssh.enable = true;
-    dot.openssh.authorizations = {
-      haras = [ "hearth" "workbug" ];
-    };
-
-    dot.openvpn.server.host = hostName;
-    dot.openvpn.server.domain = "mikoshi";
-    dot.openvpn.server.clients = {
-      "hearth" = "101";
-      "workbug" = "102";
-      "puffy" = "103";
-    };
   };
 }
