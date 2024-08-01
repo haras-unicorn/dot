@@ -14,5 +14,10 @@
       { domain = "@development"; item = "nofile"; type = "hard"; value = "524288"; }
       { domain = "@development"; item = "nofile"; type = "soft"; value = "524288"; }
     ];
+
+    networking.firewall.allowedTCPPorts = [
+      5000
+      5001
+    ];
   };
 }
