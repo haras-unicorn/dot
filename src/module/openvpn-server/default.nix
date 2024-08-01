@@ -1,4 +1,10 @@
-{ lib, config, hostName, ... }:
+{ lib
+, config
+  # , hostName
+, ...
+}:
+
+# TODO: put dnsmasq in a nice place
 
 let
   cfg = config.dot.openvpn.server;
@@ -79,26 +85,7 @@ in
         push "dhcp-option DOMAIN ${cfg.domain}"
         push "dhcp-option DNS ${subnet}.1"
       '';
-      services.dnsmasq = {
-        enable = true;
-        extraConfig = ''
-          server=8.8.8.8
-          server=8.8.4.4
-          address=/${hostName}.${cfg.domain}/${subnet}.1
-          address=/dns.${cfg.domain}/${subnet}.1
-          address=/vpn.${cfg.domain}/${subnet}.1
-          domain=${cfg.domain},${subnet}.0/24
-          expand-hosts
-          local=/${cfg.domain}/
-          interface=${dev}
-          ${lib.concatStringsSep
-            "\n"
-            (lib.mapAttrsToList
-              (name: ipLastByte:
-                "address=/${name}.mikoshi/${subnet}.${toString ipLastByte}")
-              cfg.clients)}
-        '';
-      };
+
       sops.secrets."root-ca.ssl.crt".path = "/etc/openvpn/${cfg.host}/root-ca.ssl.crt";
       sops.secrets."root-ca.ssl.crt".owner = "nobody";
       sops.secrets."root-ca.ssl.crt".group = "nogroup";
@@ -127,6 +114,27 @@ in
           '';
         })
         cfg.clients;
+
+      # services.dnsmasq = {
+      #   enable = true;
+      #   extraConfig = ''
+      #     server=8.8.8.8
+      #     server=8.8.4.4
+      #     address=/${hostName}.${cfg.domain}/${subnet}.1
+      #     address=/dns.${cfg.domain}/${subnet}.1
+      #     address=/vpn.${cfg.domain}/${subnet}.1
+      #     domain=${cfg.domain},${subnet}.0/24
+      #     expand-hosts
+      #     local=/${cfg.domain}/
+      #     interface=${dev}
+      #     ${lib.concatStringsSep
+      #       "\n"
+      #       (lib.mapAttrsToList
+      #         (name: ipLastByte:
+      #           "address=/${name}.mikoshi/${subnet}.${toString ipLastByte}")
+      #         cfg.clients)}
+      #   '';
+      # };
     };
   };
 }
