@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 # TODO: fix clashing nofile limits
 
@@ -19,5 +19,14 @@
       5000
       5001
     ];
+  };
+
+  home = {
+    shared = {
+      home.packages = with pkgs; [
+        gdb
+        gdbgui
+      ];
+    };
   };
 }
