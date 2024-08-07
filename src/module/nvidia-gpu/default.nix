@@ -53,6 +53,8 @@
         libvdpau-va-gl
       ];
 
+      hardware.nvidia-container-toolkit.enable = true;
+
       programs.corectrl.enable = true;
       programs.corectrl.gpuOverclock.enable = true;
 
@@ -83,9 +85,6 @@
         __GL_GSYNC_ALLOWED = "1"; # NOTE: nvidia g-sync
         __GL_VRR_ALLOWED = "1"; # NOTE: nvidia g-sync
       };
-
-      virtualisation.docker.enableNvidia = true;
-      virtualisation.podman.enableNvidia = true;
     };
   };
 }
