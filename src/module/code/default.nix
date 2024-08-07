@@ -5,7 +5,7 @@
 }:
 
 # FIXME: vscodium doesn't work (on wayland)?
-# FIXME: the new csharp extensions just dont work (https://github.com/microsoft/vscode-dotnettools/issues/225)
+# FIXME: https://github.com/microsoft/vscode-dotnettools/issues/722
 # TODO: helix emulation when it gets better
 # TODO: extensions in projects?
 
