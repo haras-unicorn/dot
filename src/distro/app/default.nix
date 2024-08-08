@@ -47,7 +47,7 @@ in
     "${self}/src/module/okular"
     "${self}/src/module/xarchiver"
     "${self}/src/module/spotify"
-    "${self}/src/module/remmina"
+    "${self}/src/module/rdp"
 
     "${self}/src/module/llama-cpp"
     "${self}/src/module/piper"
