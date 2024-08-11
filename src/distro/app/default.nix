@@ -52,6 +52,7 @@ in
     "${self}/src/module/llama-cpp"
     "${self}/src/module/piper"
     "${self}/src/module/whisper-cpp"
+    "${self}/src/module/pinokio"
 
     # Terminals
     "${self}/src/module/kitty"
