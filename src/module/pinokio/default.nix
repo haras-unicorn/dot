@@ -17,6 +17,7 @@ in
     shared = {
       home.packages = [
         pinokio
+        pkgs.cudaPackages.nccl
       ];
 
       xdg.desktopEntries = {
