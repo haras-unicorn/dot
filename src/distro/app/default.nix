@@ -56,6 +56,7 @@ in
 
     # Terminals
     "${self}/src/module/kitty"
+    "${self}/src/module/warp"
 
     # Visuals
     "${self}/src/module/code"
