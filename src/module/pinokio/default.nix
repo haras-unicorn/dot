@@ -1,14 +1,14 @@
 { pkgs, ... }:
 
 let
-  pinokio = (pkgs.buildFHSEnv {
+  pinokio = pkgs.buildFHSEnv {
     name = "pinokio";
     runScript = "pinokio";
     targetPkgs = pkgs: (with pkgs; [
       pkgs.pinokio
       cudaPackages.nccl
     ]);
-  });
+  };
 in
 {
   home = {
