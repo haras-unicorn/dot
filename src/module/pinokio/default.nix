@@ -6,7 +6,10 @@ let
     runScript = "pinokio";
     targetPkgs = pkgs: (with pkgs; [
       pkgs.pinokio
+      cudaPackages.cudnn
+      cudaPackages.cuda_nvrtc
       cudaPackages.nccl
+      cudaPackages.cuda_cudart
     ]);
   };
 in
