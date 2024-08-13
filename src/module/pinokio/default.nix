@@ -1,19 +1,18 @@
 { pkgs, ... }:
 
 let
-  pinokio = pkgs.buildFHSEnv {
-    name = "pinokio";
-    runScript = "pinokio";
-    targetPkgs = pkgs: (with pkgs; [
-      pkgs.pinokio
+  pinokio = pkgs.pinokio;
+in
+{
+  system = {
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = with pkgs; [
       cudaPackages.cudnn
       cudaPackages.cuda_nvrtc
       cudaPackages.nccl
       cudaPackages.cuda_cudart
-    ]);
+    ];
   };
-in
-{
   home = {
     shared = {
       home.packages = [
