@@ -1,11 +1,14 @@
 { pkgs, ... }:
 
 let
-  pinokio = pkgs.pinokio.overrideAttrs (final: prev: {
-    buildInputs = (prev.buildInputs or [ ]) ++ [
-      pkgs.cudaPackages.nccl
-    ];
-  });
+  pinokio = (pkgs.buildFHSEnv {
+    name = "pinokio";
+    targetPkgs = pkgs: (with pkgs; [
+      cudaPackages.nccl
+      pinokio
+    ]);
+    runScript = "pinokio";
+  }).env;
 in
 {
   home = {
