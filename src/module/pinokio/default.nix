@@ -5,10 +5,10 @@ let
     name = "pinokio";
     runScript = "pinokio";
     targetPkgs = pkgs: (with pkgs; [
-      cudaPackages.nccl
       pkgs.pinokio
+      cudaPackages.nccl
     ]);
-  }).env;
+  });
 in
 {
   home = {
