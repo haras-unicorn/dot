@@ -1,16 +1,23 @@
 { pkgs, ... }:
 
+let
+  pinokio = pkgs.pinokio.overrideAttrs (final: prev: {
+    buildInputs = (prev.buildInputs or [ ]) ++ [
+      pkgs.cudaPackages.nccl
+    ];
+  });
+in
 {
   home = {
     shared = {
-      home.packages = with pkgs; [
+      home.packages = [
         pinokio
       ];
 
       xdg.desktopEntries = {
         pinokio = {
           name = "Pinokio";
-          exec = "${pkgs.pinokio}/bin/pinokio";
+          exec = "${pinokio}/bin/pinokio";
           terminal = false;
         };
       };
