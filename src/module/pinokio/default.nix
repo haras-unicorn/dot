@@ -7,7 +7,7 @@ in
   system = {
     programs.nix-ld.enable = true;
     programs.nix-ld.libraries = with pkgs; [
-      cudaPackages.nccl.lib
+      cudaPackages.nccl
     ];
   };
 
