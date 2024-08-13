@@ -3,11 +3,11 @@
 let
   pinokio = (pkgs.buildFHSEnv {
     name = "pinokio";
+    runScript = "pinokio";
     targetPkgs = pkgs: (with pkgs; [
       cudaPackages.nccl
-      pinokio
+      pkgs.pinokio
     ]);
-    runScript = "pinokio";
   }).env;
 in
 {
