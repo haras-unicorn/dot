@@ -1,16 +1,26 @@
 { pkgs, ... }:
 
+let
+  pinokio = pkgs.pinokio;
+in
 {
+  system = {
+    programs.nix-ld.enable = true;
+    programs.nix-ld.libraries = with pkgs; [
+      cudaPackages.nccl
+    ];
+  };
+
   home = {
     shared = {
       home.packages = [
-        pkgs.pinokio
+        pinokio
       ];
 
       xdg.desktopEntries = {
         pinokio = {
           name = "Pinokio";
-          exec = "${pkgs.pinokio}/bin/pinokio";
+          exec = "${pinokio}/bin/pinokio";
           terminal = false;
         };
       };
