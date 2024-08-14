@@ -24,6 +24,8 @@
       sysbench # NOTE: system benchmarking
       iozone # NOTE: disk benchmark
       file # NOTE: get file info
+      stress # NOTE: stability test
+      mprime # NOTE: stability test
     ];
   };
 }
