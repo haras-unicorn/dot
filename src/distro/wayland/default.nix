@@ -29,6 +29,7 @@
     "${self}/src/module/miraclecast"
     "${self}/src/module/gstreamer"
     "${self}/src/module/mangohud"
+    "${self}/src/module/screen-pipe"
 
     "${self}/src/module/gtk"
     "${self}/src/module/qt"
