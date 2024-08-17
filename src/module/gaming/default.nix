@@ -34,6 +34,8 @@
       steamtinkerlaunch
     ];
 
+    programs.gamemode.enable = true;
+
     users.groups.games = { };
 
     security.pam.loginLimits = [
