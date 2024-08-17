@@ -72,6 +72,7 @@
         "video"
         "audio"
         "games"
+        "gamemode"
         "wireshark"
         "i2c"
       ];

@@ -60,6 +60,7 @@
         "mlocate"
         "wireshark"
         "games"
+        "gamemode"
       ];
 
       pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
