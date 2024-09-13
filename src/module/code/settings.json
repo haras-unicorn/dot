@@ -54,7 +54,7 @@
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "extensions.autoCheckUpdates": false,
-  "files.autoSave": "onFocusChange",
+  "files.autoSave": "onWindowChange",
   "files.enableTrash": true,
   "files.encoding": "utf8",
   "files.eol": "\n",

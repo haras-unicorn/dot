@@ -1,9 +1,5 @@
 [
   {
-    "key": "ctrl+z",
-    "command": "workbench.action.toggleZenMode"
-  },
-  {
     "key": "ctrl+e",
     "command": "workbench.action.toggleSidebarVisibility"
   },
