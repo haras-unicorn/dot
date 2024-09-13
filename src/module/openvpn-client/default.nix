@@ -29,6 +29,7 @@ in
 
   config = {
     system = {
+      services.openvpn.servers."${cfg.host}".extraArgs = [ ];
       services.openvpn.servers."${cfg.host}".config = ''
         client
         remote ${cfg.domain} ${builtins.toString port}

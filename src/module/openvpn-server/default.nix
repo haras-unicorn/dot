@@ -56,6 +56,7 @@ in
       networking.firewall.trustedInterfaces = [ dev ];
       networking.firewall.allowedUDPPorts = [ port 53 ];
       networking.firewall.allowedTCPPorts = [ port ];
+      services.openvpn.servers."${cfg.host}".extraArgs = [ ];
       services.openvpn.servers."${cfg.host}".config = ''
         server ${subnet}.1 ${mask}
         port ${builtins.toString port}
