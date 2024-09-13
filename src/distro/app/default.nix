@@ -49,11 +49,11 @@ in
     "${self}/src/module/spotify"
     "${self}/src/module/rdp"
 
-    "${self}/src/module/llama-cpp"
+    "${self}/src/module/llama"
     "${self}/src/module/piper"
-    "${self}/src/module/whisper-cpp"
+    "${self}/src/module/whisper"
     "${self}/src/module/pinokio"
-    "${self}/src/module/local-ai"
+    "${self}/src/module/aider"
 
     # Terminals
     "${self}/src/module/kitty"
