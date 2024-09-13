@@ -56,36 +56,38 @@ in
       networking.firewall.trustedInterfaces = [ dev ];
       networking.firewall.allowedUDPPorts = [ port 53 ];
       networking.firewall.allowedTCPPorts = [ port ];
-      services.openvpn.servers."${cfg.host}".extraArgs = [ ];
-      services.openvpn.servers."${cfg.host}".config = ''
-        server ${subnet}.1 ${mask}
-        port ${builtins.toString port}
-        proto ${protocol}
-        dev ${dev}
+      services.openvpn.servers."${cfg.host}" = {
+        extraArgs = [ ];
+        config = ''
+          server ${subnet}.1 ${mask}
+          port ${builtins.toString port}
+          proto ${protocol}
+          dev ${dev}
 
-        ca /etc/openvpn/${cfg.host}/root-ca.ssl.crt
-        cert /etc/openvpn/${cfg.host}/server.ssl.crt
-        key /etc/openvpn/${cfg.host}/server.ssl.key
-        # tls-auth /etc/openvpn/${cfg.host}/server.ta.key 0
-        dh /etc/openvpn/${cfg.host}/server.dhparam.pem
+          ca /etc/openvpn/${cfg.host}/root-ca.ssl.crt
+          cert /etc/openvpn/${cfg.host}/server.ssl.crt
+          key /etc/openvpn/${cfg.host}/server.ssl.key
+          # tls-auth /etc/openvpn/${cfg.host}/server.ta.key 0
+          dh /etc/openvpn/${cfg.host}/server.dhparam.pem
 
-        ifconfig-pool-persist /etc/openvpn/${cfg.host}/ipp.txt
-        keepalive 10 120
-        client-config-dir /etc/openvpn/${cfg.host}/clients
+          ifconfig-pool-persist /etc/openvpn/${cfg.host}/ipp.txt
+          keepalive 10 120
+          client-config-dir /etc/openvpn/${cfg.host}/clients
 
-        cipher ${cipher}
-        auth ${auth}
+          cipher ${cipher}
+          auth ${auth}
 
-        user nobody
-        group nogroup
+          user nobody
+          group nogroup
 
-        verb 4
-        status /var/log/openvpn/status.log
-        log-append /var/log/openvpn/openvpn.log
+          verb 4
+          status /var/log/openvpn/status.log
+          log-append /var/log/openvpn/openvpn.log
 
-        push "dhcp-option DOMAIN ${cfg.domain}"
-        push "dhcp-option DNS ${subnet}.1"
-      '';
+          push "dhcp-option DOMAIN ${cfg.domain}"
+          push "dhcp-option DNS ${subnet}.1"
+        '';
+      };
 
       sops.secrets."root-ca.ssl.crt".path = "/etc/openvpn/${cfg.host}/root-ca.ssl.crt";
       sops.secrets."root-ca.ssl.crt".owner = "nobody";
