@@ -59,14 +59,7 @@ in
     programs.vscode.enableUpdateCheck = false;
     programs.vscode.mutableExtensionsDir = false;
     programs.vscode.extensions = with pkgs.vscode-marketplace; [
-      # misc
-      # github.copilot
-      # github.copilot-chat
-      supermaven.supermaven
-      ms-playwright.playwright
-      ms-azuretools.vscode-docker
-      streetsidesoftware.code-spell-checker
-      streetsidesoftware.code-spell-checker-croatian
+      # keybindings
       # jasew.vscode-helix-emulation
       vscodevim.vim
 
@@ -79,11 +72,12 @@ in
       akamud.vscode-theme-onedark
       pkief.material-icon-theme
 
-      # remote
-      ms-vscode-remote.remote-containers
-      ms-vscode-remote.remote-ssh
-      ms-vscode-remote.remote-ssh-edit
-      ms-vscode.remote-explorer
+      # ai
+      supermaven.supermaven
+      continue.continue
+
+      # nix
+      bbenoist.nix
 
       # rust
       pkgs.vscode-extensions.vadimcn.vscode-lldb
@@ -95,28 +89,13 @@ in
       pkgs.vscode-extensions.ms-dotnettools.csharp
       selcukermaya.se-csproj-extensions
 
-      # web
-      gamunu.vscode-yarn
-      arcanis.vscode-zipfs
-      dbaeumer.vscode-eslint
-      graphql.vscode-graphql
-      graphql.vscode-graphql-syntax
-      meganrogge.template-string-converter
-      sissel.shopify-liquid
-      styled-components.vscode-styled-components
-      stylelint.vscode-stylelint
-      esbenp.prettier-vscode
-
       # python
       charliermarsh.ruff
       eeyore.yapf
       ms-pyright.pyright
       ms-python.debugpy
       ms-python.python
-      ms-toolsai.jupyter
-
-      # nix
-      bbenoist.nix
+      # ms-toolsai.jupyter
 
       # shell
       bmalehorn.shell-syntax
@@ -130,7 +109,19 @@ in
       davidanson.vscode-markdownlint
       unifiedjs.vscode-mdx
 
-      # data
+      # web
+      # gamunu.vscode-yarn
+      # arcanis.vscode-zipfs
+      # dbaeumer.vscode-eslint
+      # graphql.vscode-graphql
+      # graphql.vscode-graphql-syntax
+      # meganrogge.template-string-converter
+      # sissel.shopify-liquid
+      # styled-components.vscode-styled-components
+      # stylelint.vscode-stylelint
+      # esbenp.prettier-vscode
+
+      # content
       ctcuff.font-preview
       davidwang.ini-for-vscode
       codezombiech.gitignore
@@ -142,6 +133,10 @@ in
       skellock.just
       tamasfe.even-better-toml
       tomoki1207.pdf
+
+      # spelling
+      streetsidesoftware.code-spell-checker
+      streetsidesoftware.code-spell-checker-croatian
     ];
   };
 }
