@@ -24,7 +24,7 @@ in
         aider
       ];
 
-      home.file.".aider.conf.yaml".source = ./config.yaml;
+      home.file.".aider.conf.yml".source = ./config.yaml;
     };
   };
 }
