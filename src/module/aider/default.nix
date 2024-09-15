@@ -6,11 +6,14 @@ let
     runtimeInputs = [ pkgs.aider-chat ];
     text = ''
       if [ -f ${config.home.homeDirectory}/.openai/api.key ]; then
-        export OPENAI_API_KEY=$(cat ${config.home.homeDirectory}/.openai/api.key)
-        export AIDER_MINI=1
+        OPENAI_API_KEY=$(cat ${config.home.homeDirectory}/.openai/api.key)
+        AIDER_MINI=1
+
+        export OPENAI_API_KEY;
+        export AIDER_MINI;
       fi
 
-      aider $@
+      aider "$@"
     '';
   };
 in
