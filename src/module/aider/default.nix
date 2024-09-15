@@ -23,6 +23,8 @@ in
       home.packages = [
         aider
       ];
+
+      home.file.".aider.conf.yaml".source = ./config.yaml;
     };
   };
 }
