@@ -5,4 +5,4 @@ collect_telemetry = false
 name = AzureCloud
 
 [extension]
-use_dynamic_install = yes_without_prompt
+use_dynamic_install = no
