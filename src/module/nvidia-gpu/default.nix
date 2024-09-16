@@ -67,6 +67,7 @@
         glxinfo # NOTE: glxinfo and eglinfo
         nvtopPackages.full # NOTE: check GPU usage
         # nixified-ai.packages.${system}.invokeai-nvidia # NOTE: stable diffusion
+        gpt4all-cuda # NOTE: llms on CUDA
       ];
 
       networking.firewall.allowedTCPPorts = [

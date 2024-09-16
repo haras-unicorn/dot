@@ -164,7 +164,6 @@ in
         netflix # NOTE: video streaming
         gimp # NOTE: image manipulation
         inkscape # NOTE: vector graphics design
-        gpt4all # NOTE: run llms locally
         pencil # NOTE: UI/UX prototyping
         libresprite # NOTE: pixel art
         xfce.xfce4-terminal # NOTE: terminal for debug
