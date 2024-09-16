@@ -69,7 +69,7 @@
         # nixified-ai.packages.${system}.invokeai-nvidia # NOTE: stable diffusion
         (gpt4all-cuda.overrideAttrs (final: prev: {
           buildInputs = (prev.buildInputs or [ ]) ++ [
-            config.boot.kernelPackages.nvidiaPackages."${config.dot.nvidiaDriver.version}"
+            config.hardware.nvidia.package
           ];
         })) # NOTE: llms on CUDA
       ];
