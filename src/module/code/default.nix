@@ -108,6 +108,7 @@ in
       shd101wyy.markdown-preview-enhanced
       davidanson.vscode-markdownlint
       unifiedjs.vscode-mdx
+      esbenp.prettier-vscode
 
       # web
       # gamunu.vscode-yarn
@@ -119,7 +120,6 @@ in
       # sissel.shopify-liquid
       # styled-components.vscode-styled-components
       # stylelint.vscode-stylelint
-      # esbenp.prettier-vscode
 
       # content
       ctcuff.font-preview
