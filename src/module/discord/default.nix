@@ -15,7 +15,7 @@ let
   };
 in
 {
-  shared = {
+  shared.dot = {
     desktopEnvironment.sessionStartup = [
       "${discord}/bin/discord"
     ];
