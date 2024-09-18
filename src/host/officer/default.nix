@@ -9,7 +9,7 @@
 
     "${self}/src/module/grub"
     "${self}/src/module/plymouth"
-    "${self}/src/module/zen"
+    "${self}/src/module/linux-6-9"
     "${self}/src/module/development"
 
     "${self}/src/module/location"
