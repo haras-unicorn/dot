@@ -15,11 +15,13 @@ let
   };
 in
 {
-  home.shared = {
-    de.sessionStartup = [
+  shared = {
+    desktopEnvironment.sessionStartup = [
       "${discord}/bin/discord"
     ];
+  };
 
+  home.shared = {
     home.packages = [
       discord
       pkgs.dorion
