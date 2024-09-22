@@ -28,8 +28,10 @@ let
         tesseract "$image" "$dir/$name"
         trimmed="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' < "$text")";
         echo "$trimmed" | wl-copy -t "text/plain"
+        notify-send CHOMP! "copied '$trimmed' to clipboard" --transient
       else
         wl-copy -t "image/$type" < "$image"
+        notify-send --icon="$image" CHOMP! "copied '$image' to clipboard" --transient
       fi
     '';
   };
