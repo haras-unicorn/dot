@@ -1,6 +1,9 @@
 { pkgs, lib, config, ... }:
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
+# FIXME: double binds node 
+# FIXME: colors import
+# FIXME: xwayland
 # WORKAROUND: these commands on de startup
 # systemctl --user import-environment PATH
 # systemctl --user restart xdg-desktop-portal.service
