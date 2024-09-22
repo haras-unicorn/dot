@@ -9,7 +9,7 @@
         {
           mods = [ "super" ];
           key = "return";
-          command = ''${pkgs.wofi}/bin/wofi --show drun --prompt "Hello!"'';
+          command = ''${pkgs.wofi}/bin/wofi --show drun --prompt run'';
         }
         {
           mods = [ "super" ];
