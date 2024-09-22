@@ -2,6 +2,7 @@ prefer-no-csd
 
 input {
   focus-follows-mouse
+
   keyboard {
     track-layout "global"
     xkb {
