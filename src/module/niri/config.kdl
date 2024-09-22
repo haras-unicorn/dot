@@ -122,7 +122,7 @@ binds {
 
     Mod+Ctrl+H { set-column-width "-10%"; }
     Mod+Ctrl+J { set-column-width "+10%"; }
-    Mod+Ctrl+J { set-window-height "-10%"; }
+    Mod+Ctrl+L { set-window-height "-10%"; }
     Mod+Ctrl+K { set-window-height "+10%"; }
 
     Mod+Space { switch-layout "next"; }
@@ -142,7 +142,7 @@ binds {
     Mod+BracketRight { consume-or-expel-window-right; }
 
     Mod+R { switch-preset-column-width; }
-    Mod+Shift+R { switch-preset-window-height; }
+    // Mod+Shift+R { switch-preset-window-height; }
     Mod+Ctrl+R { reset-window-height; }
 }
 

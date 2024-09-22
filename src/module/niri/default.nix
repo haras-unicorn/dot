@@ -119,7 +119,7 @@ in
         screenshot-path "${config.xdg.userDirs.pictures}/screenshots"
 
         output "${config.dot.mainMonitor}" {
-          variable-refresh-rate on-demand=true
+          variable-refresh-rate
         }
   
         ${builtins.readFile ./config.kdl}
