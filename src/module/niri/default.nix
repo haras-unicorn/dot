@@ -113,6 +113,8 @@ in
       ];
 
       xdg.configFile."niri/config.kdl".text = ''
+        screenshot-path "${config.xdg.userDirs.pictures}/screenshots"
+
         output "${config.dot.mainMonitor}" {
           variable-refresh-rate on-demand=true
         }

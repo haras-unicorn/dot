@@ -1,0 +1,22 @@
+layout {
+  focus-ring {
+    active-gradient \
+    	from="{{ hex ansi.main.bright_red }}" \
+    	to="{{ hex ansi.main.bright_green }}" \
+    	angle=45 \
+    	relative-to="workspace-view"
+    inactive-color "{{ hex ansi.main.bright_blue }}"
+  }
+  border {
+    active-gradient \
+    	from="{{ hex ansi.main.red }}" \
+    	to="{{ hex ansi.main.green }}" \
+    	angle=45 \
+    	relative-to="workspace-view"
+    inactive-color "{{ hex ansi.main.blue }}"
+  }
+}
+// general {
+//   col.active_border = {{ hypr ansi.main.bright_red }} {{ hypr ansi.main.bright_green }}
+//   col.inactive_border = {{ hypr ansi.main.blue }}
+// }
