@@ -59,41 +59,41 @@ let
       cfg.keybinds);
 in
 {
-  options.dot.desktopEnvironment = {
-    sessionVariables = lib.mkOption {
-      type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
-      default = { };
-      example = { EDITOR = "hx"; };
-      description = ''
-        Environment variables to set on session start with Niri.
-      '';
-    };
+  # options.dot.desktopEnvironment = {
+  #   sessionVariables = lib.mkOption {
+  #     type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+  #     default = { };
+  #     example = { EDITOR = "hx"; };
+  #     description = ''
+  #       Environment variables to set on session start with Niri.
+  #     '';
+  #   };
 
-    sessionStartup = lib.mkOption {
-      type = with lib.types; listOf str;
-      default = [ ];
-      example = [ "keepassxc" ];
-      description = ''
-        Commands to execute on session start with Niri.
-      '';
-    };
+  #   sessionStartup = lib.mkOption {
+  #     type = with lib.types; listOf str;
+  #     default = [ ];
+  #     example = [ "keepassxc" ];
+  #     description = ''
+  #       Commands to execute on session start with Niri.
+  #     '';
+  #   };
 
-    keybinds = lib.mkOption {
-      # TODO: strictly check for the mods, key and command options 
-      type = with lib.types; listOf (lazyAttrsOf (oneOf [ str (listOf str) ]));
-      default = [ ];
-      example = [
-        {
-          mods = [ "super" ];
-          key = "w";
-          command = "firefox";
-        }
-      ];
-      description = ''
-        Keybinds to set with Niri.
-      '';
-    };
-  };
+  #   keybinds = lib.mkOption {
+  #     # TODO: strictly check for the mods, key and command options 
+  #     type = with lib.types; listOf (lazyAttrsOf (oneOf [ str (listOf str) ]));
+  #     default = [ ];
+  #     example = [
+  #       {
+  #         mods = [ "super" ];
+  #         key = "w";
+  #         command = "firefox";
+  #       }
+  #     ];
+  #     description = ''
+  #       Keybinds to set with Niri.
+  #     '';
+  #   };
+  # };
 
   config = {
     # shared = {
