@@ -2,12 +2,12 @@ prefer-no-csd
 
 input {
   focus-follows-mouse
-
   keyboard {
     track-layout "global"
     xkb {
       layout "us"
     }
+  }
 }
 // input {
 //   numlock_by_default = true
