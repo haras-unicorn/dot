@@ -1,3 +1,20 @@
+input {
+  focus-follows-mouse
+  keyboard {
+    track-layout "global"
+    xkb {
+      layout "us"
+    }
+}
+// input {
+//   numlock_by_default = true
+//   sensitivity = 1.0
+//   follow_mouse = 2
+//   mouse_refocus = false
+//   float_switch_override_focus = 2
+//   kb_layout = us,hr
+// }
+
 general {
   border_size = 2
   gaps_in = 4
@@ -15,15 +32,6 @@ decoration {
   rounding = 8
   # TODO: when updated
   # blur_xray = true
-}
-
-input {
-  numlock_by_default = true
-  sensitivity = 1.0
-  follow_mouse = 2
-  mouse_refocus = false
-  float_switch_override_focus = 2
-  kb_layout = us,hr
 }
 
 misc {

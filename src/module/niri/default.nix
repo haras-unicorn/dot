@@ -55,7 +55,7 @@ let
             else mod);
           key = lib.strings.toUpper bind.key;
         in
-        "${lib.strings.concatStringsSep "+" (mods ++ key)} { spawn \"${bind.command}\"; }")
+        "${lib.strings.concatStringsSep "+" (mods ++ [key])} { spawn \"${bind.command}\"; }")
       cfg.keybinds);
 in
 {
@@ -125,9 +125,6 @@ in
         }
 
         environment {
-          XDG_CURRENT_DESKTOP "niri"
-          XDG_SESSION_DESKTOP "niri"
-
           ${vars}
         }
 
