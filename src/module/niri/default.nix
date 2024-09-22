@@ -40,7 +40,7 @@ let
   startup = lib.strings.concatStringsSep
     "\n"
     (builtins.map
-      (command: "spawn-at-startup ${builtins.toString command}")
+      (command: "spawn-at-startup \"${builtins.toString command}\"")
       cfg.sessionStartup);
 
   binds = lib.strings.concatStringsSep
