@@ -4,12 +4,13 @@
 # WORKAROUND: these commands on de startup
 # systemctl --user import-environment PATH
 # systemctl --user restart xdg-desktop-portal.service
+# TODO: remove niri- prefixes and add in the commented out options
 
 let
   cfg = config.dot.desktopEnvironment;
 
   current-layout = pkgs.writeShellApplication {
-    name = "current-layout";
+    name = "niri-current-layout";
     runtimeInputs = [ pkgs.niri pkgs.jq ];
     text = ''
       # hyprctl devices -j | \
@@ -19,7 +20,7 @@ let
   };
 
   switch-layout = pkgs.writeShellApplication {
-    name = "switch-layout";
+    name = "niri-switch-layout";
     runtimeInputs = [ pkgs.niri pkgs.jq ];
     text = ''
       # hyprctl devices -j | \
@@ -47,12 +48,14 @@ let
     (builtins.map
       (bind:
         let
-          mods = builtins.map bind.mods (mod:
-            if mod == "super" then "Mod"
-            else if mod == "alt" then "Alt"
-            else if mod == "ctrl" then "Ctrl"
-            else if mod == "shift" then "Shift"
-            else mod);
+          mods = builtins.map
+            (mod:
+              if mod == "super" then "Mod"
+              else if mod == "alt" then "Alt"
+              else if mod == "ctrl" then "Ctrl"
+              else if mod == "shift" then "Shift"
+              else mod)
+            bind.mods;
           key = lib.strings.toUpper bind.key;
         in
         "${lib.strings.concatStringsSep "+" (mods ++ [key])} { spawn \"${bind.command}\"; }")
