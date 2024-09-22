@@ -6,6 +6,11 @@
   imports = [
     "${self}/src/module/xdg"
 
+    "${self}/src/module/niri"
+
+    "${self}/src/module/hyprland"
+    "${self}/src/module/hyprpicker"
+
     "${self}/src/module/brightnessctl"
     "${self}/src/module/playerctl"
 
@@ -13,8 +18,6 @@
     "${self}/src/module/gtklock"
     "${self}/src/module/wlogout"
     "${self}/src/module/swayidle"
-    "${self}/src/module/hyprland"
-    "${self}/src/module/hyprpicker"
 
     "${self}/src/module/waybar"
     "${self}/src/module/mako"
