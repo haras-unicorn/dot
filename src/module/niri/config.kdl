@@ -24,7 +24,7 @@ layout {
   focus-ring {
     width 3
   }
-  gaps = 4
+  gaps 4
   struts {
     top 8
     bottom 8
