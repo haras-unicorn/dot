@@ -24,7 +24,7 @@ let
       shift
       set -u
 
-      chat_file="${config.home.homeDirectory}/llama/$chat_name.md"
+      chat_file="${config.xdg.dataHome}/llama/$chat_name.md"
       if [[ ! -f "$chat_file" ]]; then
         touch "$chat_file"
       fi
@@ -34,7 +34,7 @@ let
       command="$command --color --log-disable"
       while IFS= read -r line; do
         command+=" $line"
-      done < "${config.home.homeDirectory}/llama/write.options"
+      done < "${config.xdg.dataHome}/llama/write.options"
 
       printf "%s" "$chat"
       sh -c "$command 2>/dev/null" | \
@@ -54,7 +54,7 @@ let
       shift
       set -u
 
-      chat_file="${config.home.homeDirectory}/llama/$chat_name.md"
+      chat_file="${config.xdg.dataHome}/llama/$chat_name.md"
       if [[ ! -f "$chat_file" ]]; then
         touch "$chat_file"
       fi
@@ -64,7 +64,7 @@ let
       command="$command --color --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
-      done < "${config.home.homeDirectory}/llama/chat.options"
+      done < "${config.xdg.dataHome}/llama/chat.options"
 
       printf "%s" "$chat"
       cat | tee --append "$chat_file" | \
@@ -81,7 +81,7 @@ let
       command="$command --no-display-prompt --log-disable"
       while IFS= read -r line; do
         command+=" $line"
-      done < "${config.home.homeDirectory}/llama/journal.options"
+      done < "${config.xdg.dataHome}/llama/journal.options"
 
       sh -c "$command &>/dev/null" &
     '';
