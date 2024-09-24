@@ -126,6 +126,7 @@ in
         dos2unix # NOTE: convert Windows file endings to Unix
         unixtools.xxd # NOTE: make hexdump
         github-copilot-cli # NOTE: CLI AI help
+        rustscan # NOTE: ip scanner
       ];
     };
   };
