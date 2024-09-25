@@ -99,7 +99,7 @@ let
           exit 1
         fi
 
-        sudo nixos-rebuild switch --flake "${config.xdg.dataHome}/dot#${hostName}-${system}" "$@"
+        sudo nixos-rebuild switch --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" "$@"
       '';
     });
 
@@ -113,7 +113,7 @@ let
           exit 1
         fi
 
-        sudo nixos-rebuild switch --flake "${config.xdg.dataHome}/dot#${hostName}-${system}" --show-trace --option eval-cache false "$@"
+        sudo nixos-rebuild switch --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" --show-trace --option eval-cache false "$@"
       '';
     });
 
@@ -131,7 +131,7 @@ let
         git add .
         git commit -m "WIP"
         git push
-        sudo nixos-rebuild switch --flake "${config.xdg.dataHome}/dot#${hostName}-${system}" "$@"
+        sudo nixos-rebuild switch --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" "$@"
       '';
     });
 
