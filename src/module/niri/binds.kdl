@@ -48,8 +48,6 @@ Mod+Ctrl+J { set-column-width "+10%"; }
 Mod+Ctrl+L { set-window-height "-10%"; }
 Mod+Ctrl+K { set-window-height "+10%"; }
 
-Mod+Space { switch-layout "next"; }
-
 // Niri
 
 Mod+Shift+Escape { power-off-monitors; }
