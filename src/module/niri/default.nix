@@ -33,12 +33,12 @@ let
     '';
   };
 
-  capitalize = builtins.foldl'
+  capitalize = x: builtins.foldl'
     (char: string: char + string)
     ""
     (pkgs.lib.lists.imap0
       (i: x: if i == 0 then (pkgs.lib.strings.toUpper x) else x)
-      (pkgs.lib.strings.stringToCharacters "enter"));
+      (pkgs.lib.strings.stringToCharacters x));
 
   vars = lib.strings.concatStringsSep
     "\n"
