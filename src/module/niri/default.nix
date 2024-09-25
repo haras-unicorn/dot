@@ -60,7 +60,8 @@ let
             bind.mods;
           key = lib.strings.toUpper bind.key;
         in
-        "${lib.strings.concatStringsSep "+" (mods ++ [key])} { spawn \"${bind.command}\"; }")
+        "${lib.strings.concatStringsSep "+" (mods ++ [lib.strings.capitalize key])}"
+        + " { spawn \"${bind.command}\"; }")
       cfg.keybinds);
 in
 {
