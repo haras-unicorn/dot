@@ -89,49 +89,49 @@ let
     ];
   });
 
-  mkRebuild = ({ pkgs, hostName, system, ... }:
+  mkRebuild = ({ pkgs, config, hostName, system, ... }:
     pkgs.writeShellApplication {
       name = "rebuild";
       runtimeInputs = [ ];
       text = ''
-        if [[ ! -d "/home/${userName}/src/dot" ]]; then
-          echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
+        if [[ ! -d "${config.xdg.dataHome}/dot" ]]; then
+          echo "Please clone/link your dotfiles flake into '${config.xdg.dataHome}/dot'"
           exit 1
         fi
 
-        sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${hostName}-${system}" "$@"
+        sudo nixos-rebuild switch --flake "${config.xdg.dataHome}/dot#${hostName}-${system}" "$@"
       '';
     });
 
-  mkRebuildTrace = ({ pkgs, hostName, system, ... }:
+  mkRebuildTrace = ({ pkgs, config, hostName, system, ... }:
     pkgs.writeShellApplication {
       name = "rebuild-trace";
       runtimeInputs = [ ];
       text = ''
-        if [[ ! -d "/home/${userName}/src/dot" ]]; then
-          echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
+        if [[ ! -d "${config.xdg.dataHome}/dot" ]]; then
+          echo "Please clone/link your dotfiles flake into '${config.xdg.dataHome}/dot'"
           exit 1
         fi
 
-        sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${hostName}-${system}" --show-trace --option eval-cache false "$@"
+        sudo nixos-rebuild switch --flake "${config.xdg.dataHome}/dot#${hostName}-${system}" --show-trace --option eval-cache false "$@"
       '';
     });
 
-  mkRebuildWip = ({ pkgs, hostName, userName, system, ... }:
+  mkRebuildWip = ({ pkgs, config, hostName, userName, system, ... }:
     pkgs.writeShellApplication {
       name = "rebuild-wip";
       runtimeInputs = [ ];
       text = ''
-        if [[ ! -d "/home/${userName}/src/dot" ]]; then
-          echo "Please clone/link your dotfiles flake into '/home/${userName}/src/dot'"
+        if [[ ! -d "${config.xdg.dataHome}/dot" ]]; then
+          echo "Please clone/link your dotfiles flake into '${config.xdg.dataHome}/dot'"
           exit 1
         fi
 
-        cd "/home/${userName}/src/dot"
+        cd "${config.xdg.dataHome}/dot"
         git add .
         git commit -m "WIP"
         git push
-        sudo nixos-rebuild switch --flake "/home/${userName}/src/dot#${hostName}-${system}" "$@"
+        sudo nixos-rebuild switch --flake "${config.xdg.dataHome}/dot#${hostName}-${system}" "$@"
       '';
     });
 
