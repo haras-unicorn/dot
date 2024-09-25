@@ -33,6 +33,13 @@ let
     '';
   };
 
+  capitalize = builtins.foldl'
+    (char: string: char + string)
+    ""
+    (pkgs.lib.lists.imap0
+      (i: x: if i == 0 then (pkgs.lib.strings.toUpper x) else x)
+      (pkgs.lib.strings.stringToCharacters "enter"));
+
   vars = lib.strings.concatStringsSep
     "\n"
     (builtins.map
@@ -60,7 +67,7 @@ let
             bind.mods;
           key = lib.strings.toUpper bind.key;
         in
-        "${lib.strings.concatStringsSep "+" (mods ++ [lib.strings.capitalize key])}"
+        "${lib.strings.concatStringsSep "+" (mods ++ [capitalize key])}"
         + " { spawn \"${bind.command}\"; }")
       cfg.keybinds);
 in
