@@ -41,7 +41,7 @@ let
       (pkgs.lib.strings.stringToCharacters x));
 
   vars = lib.strings.concatStringsSep
-    "\n"
+    "\n  "
     (builtins.map
       (name: "${name} \"${builtins.toString cfg.sessionVariables."${name}"}\"")
       (builtins.attrNames cfg.sessionVariables));
@@ -53,7 +53,7 @@ let
       cfg.sessionStartup);
 
   binds = lib.strings.concatStringsSep
-    "\n"
+    "\n  "
     (builtins.map
       (bind:
         let
