@@ -70,6 +70,7 @@ window-rule {
 // windowrulev2 = float, class:(alarm-clock-applet)
 // windowrulev2 = float, class:(xdg-desktop-portal-gtk)
 
+
 // debug {
 //   disable_logs = false
 // }
