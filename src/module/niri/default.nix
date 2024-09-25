@@ -141,6 +141,8 @@ in
         binds {
           Mod+Space { spawn "${switch-layout}/bin/switch-layout"; }
 
+          ${builtins.readFile ./binds.kdl}
+
           ${binds}
         }
       '';
