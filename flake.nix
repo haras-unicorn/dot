@@ -37,6 +37,9 @@
 
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+    tint-gear.url = "github:haras-unicorn/tint-gear";
+    tint-gear.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, ... } @ inputs:

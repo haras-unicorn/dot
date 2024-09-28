@@ -138,6 +138,11 @@ in
         exec-once = ${pkgs.systemd}/bin/systemctl --user import-environment PATH
         exec-once = ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
 
+        general {
+          col.active_border = ${config.dot.colors.primary} ${config.dot.colors.accent}
+          col.inactive_border = ${config.dot.colors.secondary}
+        }
+
         ${vars}
 
         ${startup}

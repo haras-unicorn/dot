@@ -1,10 +1,10 @@
-{ self, pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   shared = {
     dot = {
       desktopEnvironment.sessionStartup = [
-        "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${self}/assets/greeter.png'"
+        "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${config.dot.wallpaper}'"
       ];
     };
   };
