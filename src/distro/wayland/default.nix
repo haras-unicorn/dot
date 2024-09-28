@@ -1,4 +1,4 @@
-{ lib, pkgs, self, config, tint-gear, ... }:
+{ lib, pkgs, self, config, ... }:
 
 # TODO: https://github.com/kando-menu/kando
 
@@ -10,6 +10,8 @@
 
     "${self}/src/module/hyprland"
     "${self}/src/module/hyprpicker"
+
+    "${self}/src/module/tint-gear"
 
     "${self}/src/module/brightnessctl"
     "${self}/src/module/playerctl"
@@ -93,18 +95,6 @@
           example = "BeautyLine";
         };
       };
-      app-theme = {
-        package = lib.mkOption {
-          type = lib.types.package;
-          default = pkgs.numix-gtk-theme;
-          example = pkgs.sweet;
-        };
-        name = lib.mkOption {
-          type = lib.types.str;
-          default = "Numix";
-          example = "dynamic";
-        };
-      };
       wallpaper = lib.mkOption {
         type = lib.types.str;
         default = pkgs.nixos-artwork.wallpapers.nix-wallpaper-stripes-logo.src;
@@ -161,14 +151,6 @@
   };
 
   config = {
-    shared = {
-      dot = {
-        colors = tint-gear.lib.colors {
-          imagePath = config.dot.wallpaper;
-        };
-      };
-    };
-
     home.shared = {
       # NOTE: needed for tray items to work properly
       systemd.user.targets.tray = {
@@ -193,7 +175,6 @@
       home.packages = [
         config.dot.cursor-theme.package
         config.dot.icon-theme.package
-        config.dot.app-theme.package
         pkgs.swayimg
       ];
     };

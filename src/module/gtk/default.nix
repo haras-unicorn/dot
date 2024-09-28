@@ -1,18 +1,20 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
+  theme_name = "colors";
+
   ini2 = ''
     gtk-font-name = "${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}"
     gtk-icon-theme-name = "${config.dot.icon-theme.name}"
     gtk-cursor-theme-name = "${config.dot.cursor-theme.name}"
-    gtk-theme-name = "${config.dot.app-theme.name}"
+    gtk-theme-name = "${theme_name}"
   '';
   ini3 = ''
     [Settings]
     gtk-font-name = ${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}
     gtk-icon-theme-name = ${config.dot.icon-theme.name}
     gtk-cursor-theme-name = ${config.dot.cursor-theme.name}
-    gtk-theme-name = ${config.dot.app-theme.name}
+    gtk-theme-name = "${theme_name}"
   '';
   ini4 = ini3;
 
@@ -21,7 +23,7 @@ let
     icon-theme = config.dot.icon-theme.name;
     cursor-theme = config.dot.cursor-theme.name;
     cursor-size = config.dot.cursor-theme.size;
-    gtk-theme = config.dot.app-theme.name;
+    gtk-theme = "${theme_name}";
   };
 
   # NOTE: keeping here for reference or in case i want to upstream
@@ -53,6 +55,52 @@ let
   #         ./change_color.sh <(echo -e "$args")
   #       '';
   #     });
+
+  toVividColor = x: lib.strings.toUpper (builtins.substring 1 (-1) x);
+
+  bootstrap = config.dot.colors.bootstrap;
+
+  preset = pkgs.writeTextFile {
+    name = "colors-preset";
+    text = ''
+      BG=${toVividColor bootstrap.background}
+      FG=${toVividColor bootstrap.text}
+      MATERIA_VIEW=${toVividColor bootstrap.background}
+      MATERIA_SURFACE=${toVividColor bootstrap.background}
+      HDR_BG=${toVividColor bootstrap.background}
+      HDR_FG=${toVividColor bootstrap.text}
+      SEL_BG=${toVividColor bootstrap.selection}
+    '';
+  };
+
+  colors = pkgs.runCommand
+    "colors"
+    { }
+    ''
+      cp -r ${pkgs.materia-theme.src}/* .
+      find . -type d -exec chmod 755 -- {} +
+      find . -type f -exec chmod 644 -- {} +
+      find . -type f -name "*.sh" -exec chmod 755 -- {} +
+
+      PATH=$PATH:${pkgs.meson}/bin
+      PATH=$PATH:${pkgs.ninja}/bin
+      PATH=$PATH:${pkgs.sassc}/bin
+      PATH=$PATH:${pkgs.gnome-themes-extra}/bin
+      PATH=$PATH:${pkgs.gdk-pixbuf}/bin
+      PATH=$PATH:${pkgs.librsvg}/bin
+      PATH=$PATH:${pkgs.bc}/bin
+      PATH=$PATH:${pkgs.inkscape}/bin
+      PATH=$PATH:${pkgs.optipng}/bin
+
+      printf "Patching shebangs...\n"
+      patchShebangs .
+      printf "\n"
+
+      printf "Changing colors...\n"
+      export TMPDIR=$(mktemp -d /tmp/materia-tmp.XXXXXX)      
+      ./change_color.sh -t $out/share/themes -o colors ${preset}
+      printf "\n"
+    '';
 in
 {
   shared = {
@@ -76,59 +124,7 @@ in
 
     dconf.settings."org/gnome/desktop/interface" = dconf;
 
-    programs.lulezojne.config = {
-      plop = [
-        {
-          template = ''
-            BG={{ vivid ansi.main.black }}
-            FG={{ vivid ansi.main.bright_white }}
-            MATERIA_VIEW={{ vivid ansi.main.black }}
-            MATERIA_SURFACE={{ vivid ansi.main.black }}
-            HDR_BG={{ vivid ansi.main.black }}
-            HDR_FG={{ vivid ansi.main.bright_white }}
-            SEL_BG={{ vivid ansi.main.bright_red }}
-          '';
-          "in" = "${config.xdg.configHome}/materia/colors";
-          "then" = {
-            command = "${pkgs.writeShellApplication {
-              name = "change-materia-colors";
-              runtimeInputs = [];
-              text = ''
-                dest="${config.xdg.cacheHome}/materia-theme"
-                if [[ -d "$dest" ]]; then
-                  rm -rf "$dest"
-                fi
-                cp -r "${pkgs.materia-theme.src}" "$dest"
-                find "$dest" -type d -exec chmod 755 -- {} +
-                find "$dest" -type f -exec chmod 644 -- {} +
-                find "$dest" -type f -name "*.sh" -exec chmod 755 -- {} +
-                cd "$dest"
-
-                packages=""
-                packages+=" meson"
-                packages+=" ninja"
-                packages+=" sassc"
-                packages+=" gnome-themes-extra"
-                packages+=" gdk-pixbuf"
-                packages+=" librsvg"
-                packages+=" bc"
-                packages+=" inkscape"
-                packages+=" optipng"
-
-                command=""
-                command+=" patchShebangs .;"
-                command+=" ./change_color.sh"
-                command+=" -t ${config.xdg.dataHome}/themes"
-                command+=" -o Lulezojne"
-                command+=" ${config.xdg.configHome}/materia/colors"
-
-                #shellcheck disable=SC2086
-                nix-shell --packages $packages --pure --run "$command"
-              '';
-          }}/bin/change-materia-colors";
-          };
-        }
-      ];
-    };
+    home.packages = [ colors ];
   };
 }
+

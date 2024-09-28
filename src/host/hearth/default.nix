@@ -95,7 +95,6 @@
 
       cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
       icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
-      app-theme = { package = pkgs.materia-theme; name = "Lulezojne-dark"; };
       wallpaper = "${self}/assets/wallpapers/badeline.png";
     };
   };
