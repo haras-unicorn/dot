@@ -30,7 +30,6 @@ in
   config = {
     system = {
       services.openvpn.servers."${cfg.host}" = {
-        extraArgs = [ ];
         config = ''
           client
           remote ${cfg.domain} ${builtins.toString port}

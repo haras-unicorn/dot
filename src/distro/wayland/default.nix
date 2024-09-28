@@ -186,8 +186,8 @@
 
       dconf.settings."org/gnome/desktop/interface".color-scheme =
         lib.mkMerge [
-          (lib.mkIf config.dot.colors.isDarkMode "prefer-dark")
-          (lib.mkIf (!config.dot.colors.isDarkMode) "prefer-light")
+          (lib.mkIf config.dot.colors.isLightTheme "prefer-light")
+          (lib.mkIf (!config.dot.colors.isLightTheme) "prefer-dark")
         ];
 
       home.packages = [

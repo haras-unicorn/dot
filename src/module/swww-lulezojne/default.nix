@@ -1,21 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
-let
-  wallpaper = pkgs.writeShellApplication {
-    name = "wallpaper";
-    runtimeInputs = [ pkgs.swww ];
-    text = ''
-      image="$1"
-      swww img "$image" || true
-      lulezojne plop "$image" || true
-    '';
-  };
-in
 {
   shared = {
     dot = {
       desktopEnvironment.sessionStartup = [
-        "${pkgs.swww}/bin/swww init"
+        "${pkgs.swww}/bin/swww-daemon"
       ];
     };
   };
@@ -23,9 +12,12 @@ in
   home.shared = {
     home.packages = with pkgs; [
       swww
-      wallpaper
     ];
 
-    programs.lulezojne.enable = true;
+    home.activation = {
+      swwwImgAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        run swww $VERBOSE_ARG img ${builtins.toPath config.wallpaper.path}
+      '';
+    };
   };
 }

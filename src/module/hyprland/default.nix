@@ -47,6 +47,8 @@ let
     (builtins.map
       (bind: "bind = ${lib.strings.concatStringsSep " " bind.mods}, ${bind.key}, exec, ${bind.command}")
       cfg.keybinds);
+
+  bootstrap = config.dot.colors.bootstrap;
 in
 {
   options.dot.desktopEnvironment = {
@@ -139,8 +141,8 @@ in
         exec-once = ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
 
         general {
-          col.active_border = ${config.dot.colors.primary} ${config.dot.colors.accent}
-          col.inactive_border = ${config.dot.colors.secondary}
+          col.active_border = ${bootstrap.primary} ${bootstrap.accent}
+          col.inactive_border = ${bootstrap.secondary}
         }
 
         ${vars}
