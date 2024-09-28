@@ -22,17 +22,17 @@ window {
 #battery {
   background-color: rgba(0, 0, 0, 0.4);
   border-radius: 8px;
-  padding: 6px 16px;
-  margin: 6px 4px;
+  padding: 4px 16px;
+  margin: 4px 4px;
 
   background-image: 
-      linear-gradient(to right, @black, @bright-yellow),   /* Top border */
+      linear-gradient(to right, @bright-yellow, @black),   /* Top border */
       linear-gradient(to right, transparent, transparent), /* Fake background */
-      linear-gradient(to bottom, @bright-yellow, @black), /* Right border */
+      linear-gradient(to bottom, @black, @bright-yellow), /* Right border */
       linear-gradient(to bottom, transparent, transparent), /* Fake background */
-      linear-gradient(to left, @black, @bright-yellow),   /* Bottom border */
+      linear-gradient(to left, @bright-yellow, @black),   /* Bottom border */
       linear-gradient(to left, transparent, transparent), /* Fake background */
-      linear-gradient(to top, @bright-yellow, @black);    /* Left border */
+      linear-gradient(to top, @black, @bright-yellow);    /* Left border */
   background-position: 
       top left, 
       center, 
