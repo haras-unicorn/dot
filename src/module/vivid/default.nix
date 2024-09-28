@@ -15,7 +15,7 @@ in
   };
 
   home.shared = {
-    xdg.configFile."vidid/themes/colors.yaml".text = ''
+    xdg.configFile."vivid/themes/colors.yaml".text = ''
       colors:
         black: "${toVividColor terminal.black}"
         green: "${toVividColor terminal.green}"
