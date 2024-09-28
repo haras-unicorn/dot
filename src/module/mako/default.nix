@@ -1,5 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
+let
+  bootstrap = config.dot.colors.bootstrap;
+in
 {
   shared = {
     dot = {
@@ -13,33 +16,31 @@
       mako
     ];
 
-    programs.lulezojne.config.plop = [
-      {
-        template = ''
-          font="${config.dot.font.sans.name}" ${builtins.toString config.dot.font.size.large}
-          width=512
-          height=256
+    xdg.configFile."mako/config".text = ''
+      font="${config.dot.font.sans.name}" ${builtins.toString config.dot.font.size.large}
+      width=512
+      height=256
 
-          margin=32
-          padding=8
-          border-size=2
-          border-radius=4
-          icons=1
-          max-icon-size=128
-          default-timeout=10000
-          anchor=bottom-right
+      margin=32
+      padding=8
+      border-size=2
+      border-radius=4
+      icons=1
+      max-icon-size=128
+      default-timeout=10000
+      anchor=bottom-right
 
-          background-color={{ hexa ansi.main.black }}
-          text-color={{ hex ansi.main.bright_white }}
-          border-color={{ hex ansi.main.bright_yellow }}
-          progress-color={{ hex ansi.main.bright_green }}
-        '';
-        "in" = "${config.xdg.configHome}/mako/config";
-        "then" = {
-          command = "${pkgs.mako}/bin/makoctl";
-          args = [ "reload" ];
-        };
-      }
-    ];
+      background-color=${bootstrap.background}
+      text-color=${bootstrap.text}
+      border-color=${bootstrap.accent}
+      progress-color=${bootstrap.success}
+    '';
+
+
+    home.activation = {
+      helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        ${pkgs.mako}/bin/makoctl reload
+      '';
+    };
   };
 }
