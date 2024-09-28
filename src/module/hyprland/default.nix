@@ -50,7 +50,7 @@ let
 
   bootstrap = config.dot.colors.bootstrap;
 
-  toHyprColor = x: "0x${builtins.substring 1 (-1) x}";
+  toHyprColor = x: "0xff${builtins.substring 1 (-1) x}";
 in
 {
   options.dot.desktopEnvironment = {
