@@ -29,7 +29,7 @@ in
 
       bg_dim = "#232a2e"
       bg0 = ${bootstrap.background}
-      bg1 = ${bootstrap.background2}
+      bg1 = ${bootstrap.backgroundAlternate}
       bg2 = "#3d484d"
       bg3 = "#475258"
       bg4 = "#4f585e"
