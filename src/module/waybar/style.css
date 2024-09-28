@@ -24,32 +24,6 @@ window {
   border-radius: 8px;
   padding: 4px 16px;
   margin: 4px 4px;
-
-  background-image: 
-      linear-gradient(to right, @secondary, @black),
-      linear-gradient(to right, transparent, transparent),
-      linear-gradient(to bottom, @black, @secondary),
-      linear-gradient(to bottom, transparent, transparent),
-      linear-gradient(to left, @secondary, @black),
-      linear-gradient(to left, transparent, transparent),
-      linear-gradient(to top, @black, @secondary);
-  background-position: 
-      top left, 
-      center, 
-      top right, 
-      center, 
-      bottom left, 
-      center, 
-      top left;
-  background-repeat: no-repeat;
-  background-size: 
-      100% 1px,
-      100% calc(100% - 2px),
-      1px 100%,
-      calc(100% - 2px) 100%,
-      100% 1px,
-      100% calc(100% - 2px),
-      1px 100%;
 }
 
 #workspaces button {
