@@ -26,13 +26,13 @@ window {
   margin: 4px 4px;
 
   background-image: 
-      linear-gradient(to right, @bright-yellow, @black),   /* Top border */
-      linear-gradient(to right, transparent, transparent), /* Fake background */
-      linear-gradient(to bottom, @black, @bright-yellow), /* Right border */
-      linear-gradient(to bottom, transparent, transparent), /* Fake background */
-      linear-gradient(to left, @bright-yellow, @black),   /* Bottom border */
-      linear-gradient(to left, transparent, transparent), /* Fake background */
-      linear-gradient(to top, @black, @bright-yellow);    /* Left border */
+      linear-gradient(to right, @secondary, @black),
+      linear-gradient(to right, transparent, transparent),
+      linear-gradient(to bottom, @black, @secondary),
+      linear-gradient(to bottom, transparent, transparent),
+      linear-gradient(to left, @secondary, @black),
+      linear-gradient(to left, transparent, transparent),
+      linear-gradient(to top, @black, @secondary);
   background-position: 
       top left, 
       center, 
@@ -43,13 +43,13 @@ window {
       top left;
   background-repeat: no-repeat;
   background-size: 
-      100% 1px,    /* Top border height */
-      100% calc(100% - 2px), /* Background in the center */
-      1px 100%,    /* Right border width */
-      calc(100% - 2px) 100%, /* Background in the center */
-      100% 1px,    /* Bottom border height */
-      100% calc(100% - 2px), /* Background in the center */
-      1px 100%;    /* Left border width */
+      100% 1px,
+      100% calc(100% - 2px),
+      1px 100%,
+      calc(100% - 2px) 100%,
+      100% 1px,
+      100% calc(100% - 2px),
+      1px 100%;
 }
 
 #workspaces button {

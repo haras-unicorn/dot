@@ -18,6 +18,8 @@ in
       @define-color background ${bootstrap.background};
       @define-color foreground ${bootstrap.text};
 
+      @define-color secondary ${bootstrap.secondary};
+
       @define-color black ${terminal.black};
       @define-color white ${terminal.white};
 
