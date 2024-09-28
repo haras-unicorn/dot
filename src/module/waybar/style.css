@@ -25,13 +25,13 @@
 
   padding: 5px; /* Space for the border */
   background-image: 
-      linear-gradient(to right, red, blue),   /* Top border */
+      linear-gradient(to right, @red, @blue),   /* Top border */
       linear-gradient(to right, transparent, transparent), /* Fake background */
-      linear-gradient(to bottom, red, blue), /* Right border */
+      linear-gradient(to bottom, @red, @blue), /* Right border */
       linear-gradient(to bottom, transparent, transparent), /* Fake background */
-      linear-gradient(to left, red, blue),   /* Bottom border */
+      linear-gradient(to left, @red, @blue),   /* Bottom border */
       linear-gradient(to left, transparent, transparent), /* Fake background */
-      linear-gradient(to top, red, blue);    /* Left border */
+      linear-gradient(to top, @red, @blue);    /* Left border */
   background-position: 
       top left, 
       center, 
@@ -42,13 +42,13 @@
       top left;
   background-repeat: no-repeat;
   background-size: 
-      100% 5px,    /* Top border height */
-      100% calc(100% - 10px), /* Background in the center */
-      5px 100%,    /* Right border width */
-      calc(100% - 10px) 100%, /* Background in the center */
-      100% 5px,    /* Bottom border height */
-      100% calc(100% - 10px), /* Background in the center */
-      5px 100%;    /* Left border width */
+      100% 2px,    /* Top border height */
+      100% calc(100% - 4px), /* Background in the center */
+      2px 100%,    /* Right border width */
+      calc(100% - 4px) 100%, /* Background in the center */
+      100% 2px,    /* Bottom border height */
+      100% calc(100% - 4px), /* Background in the center */
+      2px 100%;    /* Left border width */
 }
 
 #workspaces button {
