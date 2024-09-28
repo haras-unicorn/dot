@@ -20,7 +20,7 @@ window {
 #pulseaudio,
 #network,
 #battery {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.4);
   border-radius: 8px;
   padding: 6px 16px;
   margin: 6px 4px;
