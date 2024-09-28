@@ -22,6 +22,12 @@ in
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
 
+    home.activation = {
+      helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        pkill --signal "SIGUSR1" ${cfg.bin}"
+      '';
+    };
+
     xdg.configFile."helix/themes/colors.toml".text = ''
       ${builtins.readFile ./colors.toml}
 
