@@ -11,7 +11,6 @@ let
         image="$1"
       fi
       feh --bg-fill "$image" || true
-      lulezojne plop "$image" || true
     '';
   };
 in
