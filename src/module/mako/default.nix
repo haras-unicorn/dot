@@ -38,7 +38,7 @@ in
 
 
     home.activation = {
-      helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      makoReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${pkgs.mako}/bin/makoctl reload
       '';
     };
