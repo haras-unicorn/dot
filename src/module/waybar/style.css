@@ -26,13 +26,13 @@ window {
   margin: 6px 4px;
 
   background-image: 
-      linear-gradient(to right, @red, @blue),   /* Top border */
+      linear-gradient(to right, @black, @bright-yellow),   /* Top border */
       linear-gradient(to right, transparent, transparent), /* Fake background */
-      linear-gradient(to bottom, @red, @blue), /* Right border */
+      linear-gradient(to bottom, @black, @bright-yellow), /* Right border */
       linear-gradient(to bottom, transparent, transparent), /* Fake background */
-      linear-gradient(to left, @red, @blue),   /* Bottom border */
+      linear-gradient(to left, @bright-yellow, @black),   /* Bottom border */
       linear-gradient(to left, transparent, transparent), /* Fake background */
-      linear-gradient(to top, @red, @blue);    /* Left border */
+      linear-gradient(to top, @bright-yellow, @black);    /* Left border */
   background-position: 
       top left, 
       center, 
