@@ -38,7 +38,7 @@ in
 
     home.activation = {
       waybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "waybar"
+        ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "waybar" || true
       '';
     };
 
