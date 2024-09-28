@@ -100,13 +100,6 @@ in
     };
 
     home.shared = {
-      programs.lulezojne.config.plop = [
-        {
-          template = builtins.readFile ./colors.conf;
-          "in" = "${config.xdg.configHome}/hypr/colors.conf";
-        }
-      ];
-
       home.sessionVariables = cfg.sessionVariables;
       systemd.user.sessionVariables = cfg.sessionVariables;
 
@@ -123,8 +116,6 @@ in
         monitor = ${config.dot.mainMonitor}, highres, auto, 1
   
         ${builtins.readFile ./hyprland.conf}
-
-        source = ${config.xdg.configHome}/hypr/colors.conf
 
         bind = super, space, exec, ${switch-layout}/bin/switch-layout
 
