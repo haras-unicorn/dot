@@ -2,7 +2,6 @@
 
 let
   bootstrap = config.dot.colors.bootstrap;
-  terminal = config.dot.colors.terminal;
 in
 {
   home.shared = {
@@ -47,8 +46,6 @@ in
     ];
 
     programs.wlogout.style = ''
-      @import "${config.xdg.configHome}/wlogout/colors.css";
-
       * {
         font-family: '${config.dot.font.sans.name}';
         font-size: ${builtins.toString config.dot.font.size.large}px;
@@ -78,12 +75,10 @@ in
         background-image: image(url("${./reboot.svg}"));
       }
 
-      ${builtins.readFile ./style.css}
-    '';
+      @define-color background ${bootstrap.text};
+      @define-color foreground ${bootstrap.background};
 
-    xdg.configFile."wlogout/colors.css".text = ''
-      @define-color background ${bootstrap.background};
-      @define-color foreground ${bootstrap.text};
+      ${builtins.readFile ./style.css}
     '';
   };
 }
