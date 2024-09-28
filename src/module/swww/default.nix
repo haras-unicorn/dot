@@ -16,7 +16,7 @@
 
     home.activation = {
       swwwImgAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        run swww $VERBOSE_ARG img ${builtins.toPath config.wallpaper.path}
+        run swww $VERBOSE_ARG img ${builtins.toPath config.dot.wallpaper.path}
       '';
     };
   };
