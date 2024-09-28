@@ -1,4 +1,4 @@
-{ self, pkgs, ... }:
+{ self, pkgs, config, lib, ... }:
 
 let
   wallpaper = pkgs.writeShellApplication {
@@ -17,11 +17,12 @@ let
 in
 {
   home.shared = {
-    home.packages = with pkgs; [
-      feh
-      wallpaper
-    ];
+    home.packages = [ wallpaper ];
 
-    programs.lulezojne.enable = true;
+    home.activation = {
+      helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        ${wallpaper}/bin/wallpaper  '${config.dot.wallpaper}'
+      '';
+    };
   };
 }

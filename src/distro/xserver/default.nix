@@ -13,7 +13,7 @@
     "${self}/src/module/dunst"
     "${self}/src/module/rofi"
     "${self}/src/module/redshift"
-    "${self}/src/module/feh-lulezojne"
+    "${self}/src/module/feh"
     "${self}/src/module/betterlockscreen"
 
     "${self}/src/module/obs-studio"
