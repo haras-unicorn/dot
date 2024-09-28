@@ -18,9 +18,9 @@
 #pulseaudio,
 #network,
 #battery {
-  background-color: @background;
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  padding: 4px 8px;
+  padding: 8px 16px;
   margin: 6px 4px;
 
   padding: 5px; /* Space for the border */
