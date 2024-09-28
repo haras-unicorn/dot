@@ -4,6 +4,10 @@
   padding: 0;
 }
 
+window {
+  background-color: rgba(0, 0, 0, 0);
+}
+
 #tray,
 #custom-powermenu,
 #custom-layout,
@@ -18,7 +22,7 @@
 #battery {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  padding: 8px 16px;
+  padding: 6px 16px;
   margin: 6px 4px;
 
   background-image: 
@@ -79,6 +83,8 @@
 
 #cpu {
   color: @bright-cyan;
+  width: 48px;
+  text-align: right;
 }
 
 #temperature {
