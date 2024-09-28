@@ -11,28 +11,59 @@ let
       (cfg.bin == "hx")
       (todo cfg.package)
       (todo pkgs.helix);
+
+  bootstrap = config.dot.colors.bootstrap;
+  terminal = config.dot.colors.terminal;
 in
 {
   home.shared = {
-    programs.lulezojne.config.plop = [
-      {
-        template = builtins.readFile ./lulezojne.toml;
-        "in" = "${config.xdg.configHome}/helix/themes/lulezojne.toml";
-        "then" = {
-          command = "pkill";
-          args = [ "--signal" "SIGUSR1" "hx" ];
-        };
-      }
-    ];
-
     programs.helix.enable = true;
     programs.helix.package = withPkg (pkg: pkg);
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
 
+    home.configFile."helix/themes/colors.toml".text = ''
+      ${builtins.readFile} ./colors.toml
+
+      [palette]
+
+      bg_dim = "#232a2e"
+      bg0 = ${bootstrap.background}
+      bg1 = ${bootstrap.background2}
+      bg2 = "#3d484d"
+      bg3 = "#475258"
+      bg4 = "#4f585e"
+      bg5 = "#56635f"
+      bg_visual = ${bootstrap.selection}
+      bg_red = ${bootstrap.danger}
+      bg_green = ${bootstrap.green}
+      bg_blue = ${bootstrap.info}
+      bg_yellow = ${bootstrap.warning}
+
+      fg = "${bootstrap.foreground}"
+
+      red = "${terminal.brightRed}"
+      green = "${terminal.brightGreen}"
+      blue = "${terminal.brightBlue}"
+      orange = "${terminal.yellow}"
+      yellow = "${terminal.brightYellow}"
+      cyan = "${terminal.cyan}"
+      purple = "${terminal.purple}"
+
+      grey0 = "${terminal.white}"
+      grey1 = "${terminal.white}"
+      grey2 = "${terminal.white}"
+
+      statusline1 = "#a7c080"
+      statusline2 = "#d3c6aa"
+      statusline3 = "#e67e80"
+    '';
+
     programs.helix.languages = {
       language-server = {
-        nil = { command = "${pkgs.nil}/bin/nil"; };
+        nil = {
+          command = "${pkgs.nil}/bin/nil";
+        };
         taplo = { command = "${pkgs.taplo}/bin/taplo"; args = [ "server" ]; };
         yaml-language-server = {
           command = "${pkgs.yaml-language-server}/bin/yaml-language-server";

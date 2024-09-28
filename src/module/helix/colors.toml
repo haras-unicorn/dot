@@ -100,36 +100,3 @@
 "diagnostic.info" = { underline = { color = "blue", style = "curl" } }
 "diagnostic.warning" = { underline = { color = "yellow", style = "curl" } }
 "diagnostic.error" = { underline = { color = "red", style = "curl" } }
-
-[palette]
-
-bg_dim = "#232a2e"
-bg0 = "#2d353b"
-bg1 = "#343f44"
-bg2 = "#3d484d"
-bg3 = "#475258"
-bg4 = "#4f585e"
-bg5 = "#56635f"
-bg_visual = "#543a48"
-bg_red = "#514045"
-bg_green = "#425047"
-bg_blue = "#3a515d"
-bg_yellow = "#4d4c43"
-
-fg = "{{ hex ansi.main.bright_white }}"
-
-red = "{{ hex (set-lightness ansi.main.bright_red 0.8) }}"
-green = "{{ hex (set-lightness ansi.main.bright_green 0.8) }}"
-blue = "{{ hex (set-lightness ansi.main.bright_blue 0.8) }}"
-orange = "{{ hex (set-lightness ansi.main.yellow 0.8) }}"
-yellow = "{{ hex (set-lightness ansi.main.bright_yellow 0.8) }}"
-cyan = "{{ hex (set-lightness ansi.main.bright_cyan 0.8) }}"
-purple = "{{ hex (set-lightness ansi.main.bright_magenta 0.8) }}"
-
-grey0 = "{{ hex ansi.grayscale.12 }}"
-grey1 = "{{ hex ansi.grayscale.22 }}"
-grey2 = "{{ hex ansi.grayscale.28 }}"
-
-statusline1 = "#a7c080"
-statusline2 = "#d3c6aa"
-statusline3 = "#e67e80"
