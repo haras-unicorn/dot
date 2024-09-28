@@ -84,7 +84,6 @@ window {
 #cpu {
   color: @bright-cyan;
   min-width: 48px;
-  text-align: right;
 }
 
 #temperature {
