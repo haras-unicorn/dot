@@ -40,7 +40,7 @@ in
       bg_blue = ${bootstrap.info}
       bg_yellow = ${bootstrap.warning}
 
-      fg = "${bootstrap.foreground}"
+      fg = "${bootstrap.text}"
 
       red = "${terminal.brightRed}"
       green = "${terminal.brightGreen}"
