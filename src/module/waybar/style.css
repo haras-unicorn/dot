@@ -25,6 +25,7 @@ window {
   padding: 4px 16px;
   margin: 4px 4px;
 
+  /* TODO: fix with rounded corners */
   /* background-image: */ 
       /* linear-gradient(to right, @secondary, @black), */
       /* linear-gradient(to right, transparent, transparent), */
