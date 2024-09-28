@@ -100,36 +100,41 @@
         example = true;
       };
       wallpaper = lib.mkOption {
-        type = lib.types.string;
+        type = lib.types.str;
         default = pkgs.nixos-artwork.wallpapers.nix-wallpaper-stripes-logo.src;
-        example = "dynamic";
       };
     };
   };
 
-  home.shared = {
-    # NOTE: needed for tray items to work properly
-    systemd.user.targets.tray = {
-      Unit = {
-        Description = "Home Manager System Tray";
-        Requires = [ "graphical-session-pre.target" ];
+  config = {
+    home.shared = {
+      # NOTE: needed for tray items to work properly
+      systemd.user.targets.tray = {
+        Unit = {
+          Description = "Home Manager System Tray";
+          Requires = [ "graphical-session-pre.target" ];
+        };
       };
+
+      home.pointerCursor = {
+        package = config.dot.cursor-theme.package;
+        name = config.dot.cursor-theme.name;
+        size = config.dot.cursor-theme.size;
+      };
+
+
+      dconf.settings."org/gnome/desktop/interface".color-scheme =
+        lib.mkMerge [
+          (lib.mkIf config.dot.colors.isLightTheme "prefer-light")
+          (lib.mkIf (!config.dot.colors.isLightTheme) "prefer-dark")
+        ];
+
+      home.packages = [
+        config.dot.cursor-theme.package
+        config.dot.icon-theme.package
+        config.dot.app-theme.package
+        pkgs.sxiv
+      ];
     };
-
-    home.pointerCursor = {
-      package = config.dot.cursor-theme.package;
-      name = config.dot.cursor-theme.name;
-      size = config.dot.cursor-theme.size;
-    };
-
-    dconf.settings."org/gnome/desktop/interface".color-scheme =
-      lib.mkIf config.dot.dark-mode "prefer-dark";
-
-    home.packages = [
-      config.dot.cursor-theme.package
-      config.dot.icon-theme.package
-      config.dot.app-theme.package
-      pkgs.sxiv
-    ];
   };
 }

@@ -106,7 +106,7 @@
         };
       };
       wallpaper = lib.mkOption {
-        type = lib.types.string;
+        type = lib.types.str;
         default = pkgs.nixos-artwork.wallpapers.nix-wallpaper-stripes-logo.src;
       };
       colors = lib.mkOption {
