@@ -9,7 +9,7 @@ in
   shared = {
     dot = {
       shell.sessionVariables = {
-        LS_COLORS = "vivid generate colors";
+        LS_COLORS = "vivid generate ${config.xdg.configHome}/vivid/themes/colors.yaml";
       };
     };
   };
