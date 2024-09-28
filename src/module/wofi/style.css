@@ -1,6 +1,4 @@
 * {
-  background-color: rgba(0, 0, 0, 0);
-  color: @text;
   border: none;
   margin: 0;
   padding: 0;
@@ -17,7 +15,7 @@
 }
 
 window {
-  background-color: @background;
+  background-color: rgba(0, 0, 0, 0.4);
   padding: 8px;
   border: 2px solid @accent;
   border-radius: 8px;
