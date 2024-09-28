@@ -28,17 +28,17 @@ in
       [palette]
 
       bg_dim = "#232a2e"
-      bg0 = ${bootstrap.background}
-      bg1 = ${bootstrap.backgroundAlternate}
+      bg0 = "${bootstrap.background}"
+      bg1 = "${bootstrap.backgroundAlternate}"
       bg2 = "#3d484d"
       bg3 = "#475258"
       bg4 = "#4f585e"
       bg5 = "#56635f"
-      bg_visual = ${bootstrap.selection}
-      bg_red = ${bootstrap.danger}
-      bg_green = ${terminal.green}
-      bg_blue = ${bootstrap.info}
-      bg_yellow = ${bootstrap.warning}
+      bg_visual = "${bootstrap.selection}"
+      bg_red = "${bootstrap.danger}"
+      bg_green = "${terminal.green}"
+      bg_blue = "${bootstrap.info}"
+      bg_yellow = "${bootstrap.warning}"
 
       fg = "${bootstrap.text}"
 
