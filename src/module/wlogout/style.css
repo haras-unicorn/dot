@@ -21,6 +21,10 @@ button:hover {
   background-color: @foreground;
 }
 
+button label {
+  color: @foreground;
+}
+
 button:hover label {
   color: @background;
 }
