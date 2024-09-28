@@ -48,7 +48,7 @@ in
       orange = "${terminal.yellow}"
       yellow = "${terminal.brightYellow}"
       cyan = "${terminal.cyan}"
-      purple = "${terminal.purple}"
+      purple = "${terminal.magenta}"
 
       grey0 = "${terminal.white}"
       grey1 = "${terminal.white}"
