@@ -54,5 +54,4 @@ window {
 
 #entry:selected #text {
   color: @primary;
-  background-color: @selection;
 }

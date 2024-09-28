@@ -1,7 +1,5 @@
 { pkgs, config, ... }:
 
-# FIXME: https://github.com/NixOS/nixpkgs/issues/329259
-
 let
   bootstrap = config.dot.colors.bootstrap;
 in
