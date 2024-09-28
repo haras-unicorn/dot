@@ -24,7 +24,7 @@ in
 
     home.activation = {
       helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        pkill --signal "SIGUSR1" ${cfg.bin}"
+        pkill --signal "SIGUSR1" "${cfg.bin}"
       '';
     };
 
