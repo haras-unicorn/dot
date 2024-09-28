@@ -72,8 +72,8 @@ window {
 
 #custom-powermenu {
   color: @bright-red;
-  padding-right: 18px;
-  padding-bottom: 4px;
+  padding-right: 20px;
+  padding-bottom: 6px;
   margin-right: 8px;
 }
 
