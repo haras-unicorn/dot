@@ -10,6 +10,6 @@
   };
 
   home.shared = {
-    home.packages = tint-gear.packages."${system}".default;
+    home.packages = [ tint-gear.packages."${system}".default ];
   };
 }
