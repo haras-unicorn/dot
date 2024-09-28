@@ -5,7 +5,7 @@
 }
 
 window {
-  background-opacity: 50%;
+  background-color: rgba(0, 0, 0, 50%);
 }
 
 button {
@@ -18,13 +18,9 @@ button {
 }
 
 button:hover {
-  background-color: @magenta;
+  background-color: @foreground;
 }
 
 button:hover label {
-  color: @black;
-}
-
-svg {
-  color: @bright-red
+  color: @background;
 }

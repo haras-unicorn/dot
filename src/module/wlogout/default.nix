@@ -84,24 +84,6 @@ in
     xdg.configFile."wlogout/colors.css".text = ''
       @define-color background ${bootstrap.background};
       @define-color foreground ${bootstrap.text};
-
-      @define-color black ${terminal.black};
-      @define-color gray ${terminal.white};
-      @define-color white ${terminal.brightWhite};
-
-      @define-color red ${terminal.red};
-      @define-color green ${terminal.green};
-      @define-color blue ${terminal.blue};
-      @define-color cyan ${terminal.cyan};
-      @define-color yellow ${terminal.yellow};
-      @define-color magenta ${terminal.magenta};
-
-      @define-color bright-red ${terminal.brightRed};
-      @define-color bright-green ${terminal.brightGreen};
-      @define-color bright-blue ${terminal.brightBlue};
-      @define-color bright-cyan ${terminal.brightCyan};
-      @define-color bright-yellow ${terminal.brightYellow};
-      @define-color bright-magenta ${terminal.brightMagenta};
     '';
   };
 }
