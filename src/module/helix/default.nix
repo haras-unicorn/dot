@@ -22,7 +22,7 @@ in
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
 
-    home.configFile."helix/themes/colors.toml".text = ''
+    xdg.configFile."helix/themes/colors.toml".text = ''
       ${builtins.readFile ./colors.toml}
 
       [palette]
