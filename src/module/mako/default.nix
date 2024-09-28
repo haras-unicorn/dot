@@ -30,7 +30,7 @@ in
       default-timeout=10000
       anchor=bottom-right
 
-      background-color=#000000AA
+      background-color=${bootstrap.background}AA
       text-color=${bootstrap.text}
       border-color=${bootstrap.accent}
       progress-color=${bootstrap.success}
