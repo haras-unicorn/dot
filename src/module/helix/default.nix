@@ -36,7 +36,7 @@ in
       bg5 = "#56635f"
       bg_visual = ${bootstrap.selection}
       bg_red = ${bootstrap.danger}
-      bg_green = ${bootstrap.green}
+      bg_green = ${terminal.green}
       bg_blue = ${bootstrap.info}
       bg_yellow = ${bootstrap.warning}
 
