@@ -1,17 +1,15 @@
 * {
-  background-color: rgba(0, 0, 0, 0);
-  color: @foreground;
   border: none;
   margin: 0;
   padding: 0;
 }
 
 window {
-  background-color: @background;
+  background-opacity: 50%;
 }
 
 button {
-  background-color: @black;
+  background-color: @background;
   border-radius: 8px;
   margin: 4px;
   background-repeat: no-repeat;
@@ -23,10 +21,10 @@ button:hover {
   background-color: @magenta;
 }
 
-button:hover svg {
-  color: @bright-cyan;
+button:hover label {
+  color: @black;
 }
 
-svg { 
-  color: @bright-red;
+svg {
+  color: @bright-red
 }
