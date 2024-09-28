@@ -28,9 +28,9 @@ window {
   background-image: 
       linear-gradient(to right, @black, @bright-yellow),   /* Top border */
       linear-gradient(to right, transparent, transparent), /* Fake background */
-      linear-gradient(to bottom, @black, @bright-yellow), /* Right border */
+      linear-gradient(to bottom, @bright-yellow, @black), /* Right border */
       linear-gradient(to bottom, transparent, transparent), /* Fake background */
-      linear-gradient(to left, @bright-yellow, @black),   /* Bottom border */
+      linear-gradient(to left, @black, @bright-yellow),   /* Bottom border */
       linear-gradient(to left, transparent, transparent), /* Fake background */
       linear-gradient(to top, @bright-yellow, @black);    /* Left border */
   background-position: 
@@ -71,7 +71,7 @@ window {
 
 #custom-powermenu {
   color: @bright-red;
-  padding-right: 24px;
+  padding-right: 18px;
   padding-bottom: 4px;
   margin-right: 8px;
 }
