@@ -23,6 +23,10 @@ button:hover {
   background-color: @magenta;
 }
 
-button:hover label {
+button:hover svg {
   color: @bright-cyan;
+}
+
+svg { 
+  color: @bright-red;
 }
