@@ -1,9 +1,9 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   terminal = config.dot.colors.terminal;
 
-  toVividColor = x: builtins.substring 1 (-1) x;
+  toVividColor = x: lib.strings.toUpper (builtins.substring 1 (-1) x);
 in
 {
   shared = {
