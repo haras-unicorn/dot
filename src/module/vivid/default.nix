@@ -25,7 +25,7 @@ in
         cyan: "${toVividColor terminal.cyan}"
         pink: "${toVividColor terminal.brightMagenta}"
         orange: "${toVividColor terminal.yellow}"
-        white: "${toVividColor terminal.bright_white}"
+        white: "${toVividColor terminal.brightWhite}"
         base01: "${toVividColor terminal.white}"
 
       ${builtins.readFile ./colors.yaml}
