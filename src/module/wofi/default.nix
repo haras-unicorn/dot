@@ -2,6 +2,9 @@
 
 # FIXME: https://github.com/NixOS/nixpkgs/issues/329259
 
+let
+  bootstrap = config.dot.colors.bootstrap;
+in
 {
   shared = {
     dot = {
@@ -31,34 +34,6 @@
   };
 
   home.shared = {
-    programs.lulezojne.config.plop = [
-      {
-        template = ''
-          @define-color background {{ rgba ansi.main.black }};
-          @define-color foreground {{ hex ansi.main.bright_white }};
-
-          @define-color black {{ rgba ansi.main.black }};
-          @define-color gray {{ rgba ansi.main.bright_black }};
-          @define-color white {{ rgba ansi.main.white }};
-
-          @define-color red {{ hex ansi.main.red }};
-          @define-color green {{ hex ansi.main.green }};
-          @define-color blue {{ hex ansi.main.blue }};
-          @define-color cyan {{ hex ansi.main.cyan }};
-          @define-color yellow {{ hex ansi.main.yellow }};
-          @define-color magenta {{ hex ansi.main.magenta }};
-
-          @define-color bright-red {{ hex ansi.main.bright_red }};
-          @define-color bright-green {{ hex ansi.main.bright_green }};
-          @define-color bright-blue {{ hex ansi.main.bright_blue }};
-          @define-color bright-cyan {{ hex ansi.main.bright_cyan }};
-          @define-color bright-yellow {{ hex ansi.main.bright_yellow }};
-          @define-color bright-magenta {{ hex ansi.main.bright_magenta }};
-        '';
-        "in" = "${config.xdg.configHome}/wofi/colors.css";
-      }
-    ];
-
     home.packages = with pkgs; [
       keepmenu
       wtype
@@ -88,7 +63,11 @@
     };
 
     programs.wofi.style = ''
-      @import "${config.xdg.configHome}/wofi/colors.css";
+      @define-color background ${bootstrap.background};
+      @define-color text ${bootstrap.text};
+      @define-color accent ${bootstrap.accent};
+      @define-color primary ${bootstrap.primary};
+      @define-color selection ${bootstrap.selection};
 
       * {
         font-family: '${config.dot.font.sans.name}';

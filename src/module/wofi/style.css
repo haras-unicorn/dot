@@ -1,6 +1,6 @@
 * {
   background-color: rgba(0, 0, 0, 0);
-  color: @foreground;
+  color: @text;
   border: none;
   margin: 0;
   padding: 0;
@@ -19,7 +19,7 @@
 window {
   background-color: @background;
   padding: 8px;
-  border: 2px solid @bright-green;
+  border: 2px solid @accent;
   border-radius: 8px;
   animation: slideIn 0.5s ease-in-out both;
 }
@@ -53,5 +53,6 @@ window {
 }
 
 #entry:selected #text {
-  color: @bright-cyan;
+  color: @primary;
+  background-color: @selection;
 }
