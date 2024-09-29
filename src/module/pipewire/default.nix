@@ -5,6 +5,14 @@
 # TODO: packages in user
 
 {
+  shared.dow = {
+    desktopEnvironment.windowrules = [{
+      rule = "float";
+      selector = "class";
+      arg = "com.saivert.pwvucontrol";
+    }];
+  };
+
   system = {
     environment.systemPackages = with pkgs; [
       pavucontrol
