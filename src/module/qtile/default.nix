@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
 # WORKAROUND: these commands on de startup

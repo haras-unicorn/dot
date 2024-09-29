@@ -39,7 +39,7 @@ in
       # bg0 = "${bootstrap.background.normal.hex}"
       background = "${bootstrap.background.normal.hex}"
 
-      # bg1 = "${bootstrap.backgroundAlternate.normal.hex}"
+      # bg1 = "${bootstrap.background.alternate.hex}"
       # bg2 = "#3d484d"
       # bg3 = "#475258"
       # bg4 = "#4f585e"
@@ -49,7 +49,7 @@ in
       # bg_green = "${terminal.green.hex}"
       # bg_blue = "${bootstrap.info.normal.hex}"
       # bg_yellow = "${bootstrap.warning.normal.hex}"
-      backgroundAlternate = "${bootstrap.backgroundAlternate.normal.hex}"
+      backgroundAlternate = "${bootstrap.background.alternate.hex}"
 
       # fg = "${bootstrap.text.normal.hex}"
       text = "${bootstrap.text.normal.hex}"
@@ -64,7 +64,7 @@ in
       # grey0 = "${terminal.white.normal.hex}"
       # grey1 = "${terminal.white.normal.hex}"
       # grey2 = "${terminal.white.normal.hex}"
-      textAlternate = "${bootstrap.textAlternate.normal.hex}"
+      textAlternate = "${bootstrap.text.alternate.hex}"
 
       # statusline1 = "#a7c080"
       primary = "${bootstrap.primary.normal.hex}"
