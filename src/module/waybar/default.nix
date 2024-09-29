@@ -16,8 +16,8 @@ in
   home.shared = {
     xdg.configFile."waybar/colors.css".text = ''
       @define-color transparent ${bootstrap.background.rgba 0.4};
-      @define-color text ${bootstrap.text.hex}
-      @define-color text-alternate ${bootstrap.textAlternate.hex}
+      @define-color text ${bootstrap.text.hex};
+      @define-color text-alternate ${bootstrap.textAlternate.hex};
       @define-color primary ${bootstrap.primary.hex};
       @define-color secondary ${bootstrap.secondary.hex};
       @define-color accent ${bootstrap.accent.hex};
