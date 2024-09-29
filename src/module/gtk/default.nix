@@ -33,13 +33,13 @@ let
   preset = pkgs.writeTextFile {
     name = "colors-preset";
     text = ''
-      BG=${toVividColor bootstrap.background}
-      FG=${toVividColor bootstrap.text}
-      MATERIA_VIEW=${toVividColor bootstrap.background}
-      MATERIA_SURFACE=${toVividColor bootstrap.background}
-      HDR_BG=${toVividColor bootstrap.background}
-      HDR_FG=${toVividColor bootstrap.text}
-      SEL_BG=${toVividColor bootstrap.selection}
+      BG=${toVividColor bootstrap.background.hex}
+      FG=${toVividColor bootstrap.text.hex}
+      MATERIA_VIEW=${toVividColor bootstrap.background.hex}
+      MATERIA_SURFACE=${toVividColor bootstrap.background.hex}
+      HDR_BG=${toVividColor bootstrap.background.hex}
+      HDR_FG=${toVividColor bootstrap.text.hex}
+      SEL_BG=${toVividColor bootstrap.selection.hex}
     '';
   };
 
