@@ -71,7 +71,7 @@ in
 
     # "${self}/src/module/teams"
     # "${self}/src/module/slack"
-    "${self}/src/module/discord"
+    # "${self}/src/module/discord"
     # "${self}/src/module/jetbrains"
   ];
 
