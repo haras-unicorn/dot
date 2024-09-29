@@ -157,8 +157,6 @@
     "debugConsole.sourceForeground": "#ffffff",
     "debugConsole.warningForeground": "#ffff00"
   },
-  "workbench.colorTheme": "Atom One Dark",
-  "workbench.iconTheme": "material-icon-theme",
   "workbench.panel.defaultLocation": "right",
   "workbench.settings.editor": "json",
   "workbench.startupEditor": "readme",

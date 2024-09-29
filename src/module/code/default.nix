@@ -53,6 +53,8 @@ in
       "terminal.integrated.automationProfile.linux" = {
         "path" = "${pkgs.bashInteractive}/bin/bash";
       };
+      "workbench.colorTheme" = "Atom One Dark";
+      "workbench.iconTheme" = "material-icon-theme";
     };
 
     programs.vscode.enableExtensionUpdateCheck = false;
