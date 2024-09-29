@@ -40,26 +40,26 @@ in
 
         background_opacity 0.5
 
-        foreground ${bootstrap.text}
-        background ${bootstrap.background}
+        foreground ${bootstrap.text.hex}
+        background ${bootstrap.background.hex}
 
-        color0     ${terminal.black}
-        color1     ${terminal.red}
-        color2     ${terminal.green}
-        color3     ${terminal.yellow}
-        color4     ${terminal.blue}
-        color5     ${terminal.magenta}
-        color6     ${terminal.cyan}
-        color7     ${terminal.white}
+        color0     ${terminal.black.hex}
+        color1     ${terminal.red.hex}
+        color2     ${terminal.green.hex}
+        color3     ${terminal.yellow.hex}
+        color4     ${terminal.blue.hex}
+        color5     ${terminal.magenta.hex}
+        color6     ${terminal.cyan.hex}
+        color7     ${terminal.white.hex}
 
-        color8     ${terminal.brightBlack}
-        color9     ${terminal.brightRed}
-        color10    ${terminal.brightGreen}
-        color11    ${terminal.brightYellow}
-        color12    ${terminal.brightBlue}
-        color13    ${terminal.brightMagenta}
-        color14    ${terminal.brightCyan}
-        color15    ${terminal.brightWhite}
+        color8     ${terminal.brightBlack.hex}
+        color9     ${terminal.brightRed.hex}
+        color10    ${terminal.brightGreen.hex}
+        color11    ${terminal.brightYellow.hex}
+        color12    ${terminal.brightBlue.hex}
+        color13    ${terminal.brightMagenta.hex}
+        color14    ${terminal.brightCyan.hex}
+        color15    ${terminal.brightWhite.hex}
 
         shell ${shell.package}/bin/${shell.bin}
         editor  ${editor.package}/bin/${editor.bin}
