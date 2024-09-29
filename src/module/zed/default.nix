@@ -60,7 +60,7 @@ in
       };
     };
 
-    xdg.configFile."zed/themes/colors.json ".text = builtins.toJSON {
+    xdg.configFile."zed/themes/colors.json".text = builtins.toJSON {
       name = "colors";
       author = "haras";
       themes = [{
