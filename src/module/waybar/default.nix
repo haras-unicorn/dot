@@ -2,7 +2,6 @@
 
 let
   bootstrap = config.dot.colors.bootstrap;
-  terminal = config.dot.colors.terminal;
 in
 {
   shared = {
