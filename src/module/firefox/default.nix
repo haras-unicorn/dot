@@ -14,6 +14,49 @@
 
 let
   cfg = config.dot.browser;
+
+  bootstrap = config.dot.colors.bootstrap;
+
+  firefox-gx-updated = pkgs.runCommand "firefox-gx-updated" { } (
+    let
+      primary = bootstrap.primary;
+      secondary = bootstrap.secondary;
+      accent = bootstrap.accent;
+      danger = bootstrap.danger;
+      warning = bootstrap.warning;
+      info = bootstrap.info;
+      success = bootstrap.success;
+      text = bootstrap.text;
+      background = bootstrap.background;
+    in
+    ''
+      mkdir $out/chrome
+      cp -r ${firefox-gx}/chrome/* $out/chrome/
+      CSS="$out/chrome/components/ogx_root-personal.css"
+
+      declare -A COLOR_MAPPING=(
+        ["--fuchsia"]="${primary}"
+        ["--blue"]="${secondary}"
+        ["--aqua"]="${accent}"
+        ["--cyan"]="${info}"
+        ["--lightblue"]="${info}"
+        ["--pink"]="${danger}"
+        ["--purple"]="${danger}"
+        ["--green"]="${success}"
+        ["--lightgreen"]="${success}"
+        ["--yellow"]="${text}"
+        ["--orange"]="${warning}"
+        ["--red"]="${danger}"
+        ["--gray"]="${background}"
+        ["--navyblue"]="${primary}"
+      )
+
+      for VAR_NAME in "$${!COLOR_MAPPING[@]}"; do
+        COLOR_VALUE="$${COLOR_MAPPING[$VAR_NAME]}"
+        sed -i "s|\($${VAR_NAME}:\s*\)\(#\?[0-9A-Fa-f]\{6\}\)\(.*\);|\1$${COLOR_VALUE}\3;|g" "$CSS"
+      done
+    ''
+  );
 in
 {
   home.shared = {
@@ -41,7 +84,7 @@ in
       };
     };
 
-    home.file.".mozilla/firefox/personal/chrome".source = "${firefox-gx}/chrome";
+    home.file.".mozilla/firefox/personal/chrome".source = "${firefox-gx-updated}/chrome";
 
     home.file.".mozilla/firefox/personal/user.js".text = ''
       ${builtins.readFile "${arkenfox-userjs}/user.js"}
