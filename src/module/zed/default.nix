@@ -18,7 +18,7 @@ in
         light = "colors";
         dark = "colors";
       };
-      buffer_font_family = config.dot.font.mono.family;
+      buffer_font_family = config.dot.font.mono.name;
       buffer_font_size = config.dot.font.size.medium;
       ui_font_size = config.dot.font.size.medium;
       load_direnv = "direct";
@@ -44,7 +44,7 @@ in
         metrics = false;
       };
       terminal = {
-        font_family = config.dot.font.mono.family;
+        font_family = config.dot.font.mono.name;
         font_size = config.dot.font.size.small;
         shell = {
           program = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
