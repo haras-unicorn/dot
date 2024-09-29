@@ -81,4 +81,5 @@ window {
 #custom-layout {
   color: @primary;
   margin-left: 8px;
+  min-width: 128px;
 }
