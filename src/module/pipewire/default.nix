@@ -5,7 +5,7 @@
 # TODO: packages in user
 
 {
-  shared.dow = {
+  shared.dot = {
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";
