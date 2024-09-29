@@ -33,36 +33,47 @@ in
 
       [palette]
 
-      bg_dim = "#232a2e"
-      bg0 = "${bootstrap.background.hex}"
-      bg1 = "${bootstrap.backgroundAlternate.hex}"
-      bg2 = "#3d484d"
-      bg3 = "#475258"
-      bg4 = "#4f585e"
-      bg5 = "#56635f"
-      bg_visual = "${bootstrap.selection.hex}"
-      bg_red = "${bootstrap.danger.hex}"
-      bg_green = "${terminal.green.hex}"
-      bg_blue = "${bootstrap.info.hex}"
-      bg_yellow = "${bootstrap.warning.hex}"
+      # bg_dim = "#232a2e"
+      transparent = "${bootstrap.background.hex}"
 
-      fg = "${bootstrap.text.hex}"
+      # bg0 = "${bootstrap.background.hex}"
+      background = "${bootstrap.background.hex}";
 
-      red = "${terminal.brightRed.hex}"
-      green = "${terminal.brightGreen.hex}"
-      blue = "${terminal.brightBlue.hex}"
-      orange = "${terminal.yellow.hex}"
-      yellow = "${terminal.brightYellow.hex}"
-      cyan = "${terminal.cyan.hex}"
-      purple = "${terminal.magenta.hex}"
+      # bg1 = "${bootstrap.backgroundAlternate.hex}"
+      # bg2 = "#3d484d"
+      # bg3 = "#475258"
+      # bg4 = "#4f585e"
+      # bg5 = "#56635f"
+      # bg_visual = "${bootstrap.selection.hex}"
+      # bg_red = "${bootstrap.danger.hex}"
+      # bg_green = "${terminal.green.hex}"
+      # bg_blue = "${bootstrap.info.hex}"
+      # bg_yellow = "${bootstrap.warning.hex}"
+      backgroundAlternate = "${bootstrap.backgroundAlternate.hex}"
 
-      grey0 = "${terminal.white.hex}"
-      grey1 = "${terminal.white.hex}"
-      grey2 = "${terminal.white.hex}"
+      # fg = "${bootstrap.text.hex}"
+      text = "${bootstrap.text.hex}"
 
-      statusline1 = "#a7c080"
-      statusline2 = "#d3c6aa"
-      statusline3 = "#e67e80"
+      # red = "${terminal.brightRed.hex}"
+      # green = "${terminal.brightGreen.hex}"
+      # blue = "${terminal.brightBlue.hex}"
+      # orange = "${terminal.yellow.hex}"
+      # yellow = "${terminal.brightYellow.hex}"
+      # cyan = "${terminal.cyan.hex}"
+      # purple = "${terminal.magenta.hex}"
+      # grey0 = "${terminal.white.hex}"
+      # grey1 = "${terminal.white.hex}"
+      # grey2 = "${terminal.white.hex}"
+      textAlternate = "${bootstrap.textAlternate.hex}"
+
+      # statusline1 = "#a7c080"
+      primary = "${bootstrap.primary.hex}"
+
+      # statusline2 = "#d3c6aa"
+      secondary = "${bootstrap.secondary.hex}"
+
+      # statusline3 = "#e67e80"
+      accent = "${bootstrap.accent.hex}"
     '';
 
     programs.helix.languages = {

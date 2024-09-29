@@ -1,102 +1,104 @@
-"type" = "yellow"
-"constant" = "fg"
-"constant.builtin" = { fg = "purple", modifiers = ["italic"] }
-"constant.builtin.boolean" = "purple"
-"constant.numeric" = "purple"
-"constant.character.escape" = "green"
-"string" = "cyan"
-"string.regexp" = "green"
-"string.special" = "yellow"
-"comment" = { fg = "grey1", modifiers = ["italic"] }
-"variable" = "fg"
-"variable.builtin" = { fg = "purple", modifiers = ["italic"] }
-"variable.parameter" = "fg"
-"variable.other.member" = "blue"
-"label" = "orange"
-"punctuation" = "grey2"
-"punctuation.delimiter" = "grey1"
-"punctuation.bracket" = "fg"
-"punctuation.special" = "blue"
-"keyword" = "red"
-"keyword.operator" = "orange"
-"keyword.directive" = "purple"
-"keyword.storage" = "red"
-"operator" = "orange"
-"function" = "green"
-"function.macro" = "green"
-"tag" = "orange"
-"namespace" = { fg = "yellow", modifiers = ["italic"] }
-"attribute" = { fg = "purple", modifiers = ["italic"] }
-"constructor" = "green"
-"module" = "yellow"
-"special" = "blue"
+"type" = "textAlternate"
+"constant" = "text"
+"constant.builtin" = { fg = "textAlternate", modifiers = ["italic"] }
+"constant.builtin.boolean" = "textAlternate"
+"constant.numeric" = "textAlternate"
+"constant.character.escape" = "textAlternate"
+"string" = "textAlternate"
+"string.regexp" = "textAlternate"
+"string.special" = "textAlternate"
+"comment" = { fg = "textAlternate", modifiers = ["italic"] }
+"variable" = "text"
+"variable.builtin" = { fg = "textAlternate", modifiers = ["italic"] }
+"variable.parameter" = "text"
+"variable.other.member" = "textAlternate"
+"label" = "textAlternate"
+"punctuation" = "textAlternate"
+"punctuation.delimiter" = "textAlternate"
+"punctuation.bracket" = "text"
+"punctuation.special" = "textAlternate"
+"keyword" = "textAlternate"
+"keyword.operator" = "textAlternate"
+"keyword.directive" = "textAlternate"
+"keyword.storage" = "textAlternate"
+"operator" = "textAlternate"
+"function" = "textAlternate"
+"function.macro" = "textAlternate"
+"tag" = "textAlternate"
+"namespace" = { fg = "textAlternate", modifiers = ["italic"] }
+"attribute" = { fg = "textAlternate", modifiers = ["italic"] }
+"constructor" = "textAlternate"
+"module" = "textAlternate"
+"special" = "textAlternate"
 
-"markup.heading.marker" = "grey1"
-"markup.heading.1" = { fg = "red", modifiers = ["bold"] }
-"markup.heading.2" = { fg = "orange", modifiers = ["bold"] }
-"markup.heading.3" = { fg = "yellow", modifiers = ["bold"] }
-"markup.heading.4" = { fg = "green", modifiers = ["bold"] }
-"markup.heading.5" = { fg = "blue", modifiers = ["bold"] }
-"markup.heading.6" = { fg = "purple", modifiers = ["bold"] }
-"markup.list" = "red"
+"markup.heading.marker" = "textAlternate"
+"markup.heading.1" = { fg = "textAlternate", modifiers = ["bold"] }
+"markup.heading.2" = { fg = "textAlternate", modifiers = ["bold"] }
+"markup.heading.3" = { fg = "textAlternate", modifiers = ["bold"] }
+"markup.heading.4" = { fg = "textAlternate", modifiers = ["bold"] }
+"markup.heading.5" = { fg = "textAlternate", modifiers = ["bold"] }
+"markup.heading.6" = { fg = "textAlternate", modifiers = ["bold"] }
+"markup.list" = "textAlternate"
 "markup.bold" = { modifiers = ["bold"] }
 "markup.italic" = { modifiers = ["italic"] }
 "markup.strikethrough" = { modifiers = ["crossed_out"] }
-"markup.link.url" = { fg = "blue", underline = { style = "line" } }
-"markup.link.label" = "orange"
-"markup.link.text" = "purple"
-"markup.quote" = "grey1"
-"markup.raw.inline" = "green"
-"markup.raw.block" = "cyan"
+"markup.link.url" = { fg = "textAlternate", underline = { style = "line" } }
+"markup.link.label" = "textAlternate"
+"markup.link.text" = "textAlternate"
+"markup.quote" = "textAlternate"
+"markup.raw.inline" = "textAlternate"
+"markup.raw.block" = "textAlternate"
 
-"diff.plus" = "green"
-"diff.delta" = "blue"
-"diff.minus" = "red"
+"diff.plus" = "textAlternate"
+"diff.delta" = "textAlternate"
+"diff.minus" = "textAlternate"
 
 "ui.background" = {}
-"ui.background.separator" = "bg_visual"
-"ui.cursor" = { fg = "bg1", bg = "grey2" }
-"ui.cursor.insert" = { fg = "bg0", bg = "grey1" }
-"ui.cursor.select" = { fg = "bg0", bg = "blue" }
-"ui.cursor.match" = { fg = "orange", bg = "bg_yellow" }
-"ui.cursor.primary" = { fg = "bg0", bg = "fg" }
-"ui.cursorline.primary" = { bg = "bg1" }
-"ui.cursorline.secondary" = { bg = "bg2" }
-"ui.selection" = { bg = "bg3" }
-"ui.linenr" = "grey0"
-"ui.linenr.selected" = "grey2"
-"ui.statusline" = { fg = "fg" }
-"ui.statusline.inactive" = { fg = "grey0", bg = "bg1" }
-"ui.statusline.normal" = { fg = "bg0", bg = "statusline1", modifiers = [
+"ui.background.separator" = "backgroundAlternate"
+"ui.cursor" = { fg = "backgroundAlternate", bg = "textAlternate" }
+"ui.cursor.insert" = { fg = "background", bg = "textAlternate" }
+"ui.cursor.select" = { fg = "background", bg = "textAlternate" }
+"ui.cursor.match" = { fg = "textAlternate", bg = "backgroundAlternate" }
+"ui.cursor.primary" = { fg = "background", bg = "text" }
+"ui.cursorline.primary" = { bg = "backgroundAlternate" }
+"ui.cursorline.secondary" = { bg = "backgroundAlternate" }
+"ui.selection" = { bg = "backgroundAlternate" }
+"ui.linenr" = "textAlternate"
+"ui.linenr.selected" = "textAlternate"
+"ui.statusline" = { fg = "text" }
+"ui.statusline.inactive" = { fg = "textAlternate", bg = "backgroundAlternate" }
+"ui.statusline.normal" = { fg = "background", bg = "primary", modifiers = [
   "bold",
 ] }
-"ui.statusline.insert" = { fg = "bg0", bg = "statusline2", modifiers = [
+"ui.statusline.insert" = { fg = "background", bg = "secondary", modifiers = [
   "bold",
 ] }
-"ui.statusline.select" = { fg = "bg0", bg = "blue", modifiers = ["bold"] }
-"ui.bufferline" = { fg = "grey2", bg = "bg3" }
-"ui.bufferline.active" = { fg = "bg0", bg = "statusline1", modifiers = [
+"ui.statusline.select" = { fg = "background", bg = "textAlternate", modifiers = [
   "bold",
 ] }
-"ui.popup" = { fg = "grey2", bg = "bg2" }
-"ui.window" = { fg = "bg4", bg = "bg_dim" }
-"ui.help" = { fg = "fg", bg = "bg2" }
-"ui.text" = "fg"
-"ui.text.focus" = "fg"
-"ui.menu" = { fg = "fg", bg = "bg3" }
-"ui.menu.selected" = { fg = "bg0", bg = "green" }
-"ui.virtual.ruler" = { bg = "bg3" }
-"ui.virtual.whitespace" = { fg = "bg4" }
-"ui.virtual.indent-guide" = { fg = "bg4" }
-"ui.virtual.inlay-hint" = { fg = "grey0" }
-"ui.virtual.wrap" = { fg = "grey0" }
+"ui.bufferline" = { fg = "textAlternate", bg = "backgroundAlternate" }
+"ui.bufferline.active" = { fg = "background", bg = "primary", modifiers = [
+  "bold",
+] }
+"ui.popup" = { fg = "textAlternate", bg = "backgroundAlternate" }
+"ui.window" = { fg = "backgroundAlternate", bg = "transparent" }
+"ui.help" = { fg = "text", bg = "backgroundAlternate" }
+"ui.text" = "text"
+"ui.text.focus" = "text"
+"ui.menu" = { fg = "text", bg = "backgroundAlternate" }
+"ui.menu.selected" = { fg = "background", bg = "textAlternate" }
+"ui.virtual.ruler" = { bg = "backgroundAlternate" }
+"ui.virtual.whitespace" = { fg = "backgroundAlternate" }
+"ui.virtual.indent-guide" = { fg = "backgroundAlternate" }
+"ui.virtual.inlay-hint" = { fg = "textAlternate" }
+"ui.virtual.wrap" = { fg = "textAlternate" }
 
-"hint" = "green"
-"info" = "blue"
-"warning" = "yellow"
-"error" = "red"
+"hint" = "textAlternate"
+"info" = "textAlternate"
+"warning" = "textAlternate"
+"error" = "textAlternate"
 
-"diagnostic.hint" = { underline = { color = "green", style = "curl" } }
-"diagnostic.info" = { underline = { color = "blue", style = "curl" } }
-"diagnostic.warning" = { underline = { color = "yellow", style = "curl" } }
-"diagnostic.error" = { underline = { color = "red", style = "curl" } }
+"diagnostic.hint" = { underline = { color = "textAlternate", style = "curl" } }
+"diagnostic.info" = { underline = { color = "textAlternate", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "textAlternate", style = "curl" } }
+"diagnostic.error" = { underline = { color = "textAlternate", style = "curl" } }
