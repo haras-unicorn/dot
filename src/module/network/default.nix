@@ -12,6 +12,14 @@
   };
 
   config = {
+    shared.dot = {
+      desktopEnvironment.windowrules = [{
+        rule = "float";
+        selector = "class";
+        arg = "nm-connection-editor";
+      }];
+    };
+
     system = {
       networking.nftables.enable = true;
       networking.firewall.enable = true;
