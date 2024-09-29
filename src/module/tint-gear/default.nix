@@ -11,7 +11,7 @@ let
 
   toRgbColor = x:
     let
-      colors = nix-colors.lib.hexToRGB x;
+      colors = nix-colors.lib.conversions.hexToRGB x;
       r = colors .0;
       g = colors .1;
       b = colors .2;
@@ -20,7 +20,7 @@ let
 
   toRgbaColor = x: a:
     let
-      colors = nix-colors.lib.hexToRGB x;
+      colors = nix-colors.lib.conversions.hexToRGB x;
       r = colors .0;
       g = colors .1;
       b = colors .2;
