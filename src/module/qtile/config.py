@@ -322,7 +322,6 @@ floating_layout: Floating = Floating(
   float_rules=[
     *Floating.default_float_rules,
     Match(wm_class="confirmreset"),
-    Match(wm_class="pcmanfm"),
     Match(title=re.compile(".*variable.*"), wm_class="DBeaver"),
     Match(wm_class="makebranch"),
     Match(wm_class="maketag"),

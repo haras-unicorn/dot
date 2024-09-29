@@ -6,7 +6,7 @@
 # systemctl --user restart xdg-desktop-portal.service
 
 # TODO: layout command
-# TODO: float rules (make it a config thing here)
+# TODO: use windowrules
 # TODO: logout button (xfce4-session-logout)?
 # TODO: lulezojne
 # TODO: resize submap
@@ -70,14 +70,15 @@ let
         '')
       cfg.keybinds);
 
-  # TODO: use windowrules
-  # windowrules = lib.strings.concatStringsSep
-  #   "\n"
-  #   (builtins.map
-  #     (windowrule: "windowrulev2 ="
-  #       + " ${windowrule.rule}"
-  #       + ", ${windowrule.selector}:(${windowrule.arg})")
-  #     cfg.windowrules);
+  windowrules = lib.strings.concatStringsSep
+    "\n"
+    (builtins.map
+      (windowrule: "floating_layout.float_rules.add(Match(wm_${windowrule.selector}=\"${windowrule.arg}\"))"
+        + " ${windowrule.rule}"
+        + ", ${windowrule.selector}:(${windowrule.arg})")
+      (builtins.filter
+        (windowrule: windowrule.rule == "float")
+        cfg.windowrules));
 in
 {
   options.dot.desktopEnvironment = {
@@ -159,6 +160,8 @@ in
         ${vars}
 
         ${binds}
+
+        ${windowrules}
       '';
     };
   };

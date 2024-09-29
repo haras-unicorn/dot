@@ -6,6 +6,14 @@ let
   };
 in
 {
+  shared.dot = {
+    desktopEnvironment.windowrules = [{
+      rule = "float";
+      selector = "class";
+      arg = "pcmanfm";
+    }];
+  };
+
   home.shared = {
     home.packages = with pkgs; [ pcmanfm ];
 
