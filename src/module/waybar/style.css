@@ -70,7 +70,7 @@ window {
 
 #network {
   color: @text-alternate;
-  min-width: 200px;
+  min-width: 256px;
 }
 
 #clock {
