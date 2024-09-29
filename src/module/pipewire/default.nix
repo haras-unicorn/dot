@@ -1,9 +1,5 @@
 { pkgs, ... }:
 
-# TODO: fix screen capture from wayland 
-# TODO: check out the systemPackages
-# TODO: packages in user
-
 {
   shared.dot = {
     desktopEnvironment.windowrules = [{
