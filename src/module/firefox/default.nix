@@ -56,7 +56,18 @@ let
         sed -i "s|\(''${VAR_NAME}:\s*\)\(#\?[0-9A-Fa-f]\{6\}\)\(.*\);|\1''${COLOR_VALUE}\3;|g" "$CSS"
       done
 
-      cp -f '${config.dot.wallpaper}' ./chrome/newtab/wallpaper-dark1.png
+      ${
+        if config.dot.colors.isLightTheme then ''
+          cp -f '${config.dot.wallpaper}' ./chrome/newtab/wallpaper-light.png
+          cp -f '${config.dot.wallpaper}' ./chrome/newtab/private-light.png
+          cp -f '${config.dot.wallpaper}' ./chrome/newtab/main-image-light.png
+        ''
+        else ''
+          cp -f '${config.dot.wallpaper}' ./chrome/newtab/wallpaper-dark.png
+          cp -f '${config.dot.wallpaper}' ./chrome/newtab/private-dark.png
+          cp -f '${config.dot.wallpaper}' ./chrome/newtab/main-image-dark.png
+        ''
+      }
 
       mkdir -p $out
       cp -r chrome $out/
