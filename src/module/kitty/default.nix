@@ -43,23 +43,23 @@ in
         foreground ${bootstrap.text.normal.hex}
         background ${bootstrap.background.normal.hex}
 
-        color0     ${terminal.black.hex}
-        color1     ${terminal.red.hex}
-        color2     ${terminal.green.hex}
-        color3     ${terminal.yellow.hex}
-        color4     ${terminal.blue.hex}
-        color5     ${terminal.magenta.hex}
-        color6     ${terminal.cyan.hex}
-        color7     ${terminal.white.hex}
+        color0     ${terminal.black.normal.hex}
+        color1     ${terminal.red.normal.hex}
+        color2     ${terminal.green.normal.hex}
+        color3     ${terminal.yellow.normal.hex}
+        color4     ${terminal.blue.normal.hex}
+        color5     ${terminal.magenta.normal.hex}
+        color6     ${terminal.cyan.normal.hex}
+        color7     ${terminal.white.normal.hex}
 
-        color8     ${terminal.brightBlack.hex}
-        color9     ${terminal.brightRed.hex}
-        color10    ${terminal.brightGreen.hex}
-        color11    ${terminal.brightYellow.hex}
-        color12    ${terminal.brightBlue.hex}
-        color13    ${terminal.brightMagenta.hex}
-        color14    ${terminal.brightCyan.hex}
-        color15    ${terminal.brightWhite.hex}
+        color8     ${terminal.brightBlack.normal.hex}
+        color9     ${terminal.brightRed.normal.hex}
+        color10    ${terminal.brightGreen.normal.hex}
+        color11    ${terminal.brightYellow.normal.hex}
+        color12    ${terminal.brightBlue.normal.hex}
+        color13    ${terminal.brightMagenta.normal.hex}
+        color14    ${terminal.brightCyan.normal.hex}
+        color15    ${terminal.brightWhite.normal.hex}
 
         shell ${shell.package}/bin/${shell.bin}
         editor  ${editor.package}/bin/${editor.bin}

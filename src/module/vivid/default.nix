@@ -15,16 +15,16 @@ in
   home.shared = {
     xdg.configFile."vivid/themes/colors.yaml".text = ''
       colors:
-        black: "${terminal.black.vivid}"
-        green: "${terminal.green.vivid}"
-        purple: "${terminal.magenta.vivid}"
-        red: "${terminal.red.vivid}"
-        yellow: "${terminal.brightYellow.vivid}"
-        cyan: "${terminal.cyan.vivid}"
-        pink: "${terminal.brightMagenta.vivid}"
-        orange: "${terminal.yellow.vivid}"
-        white: "${terminal.brightWhite.vivid}"
-        base01: "${terminal.white.vivid}"
+        black: "${terminal.black.normal.vivid}"
+        green: "${terminal.green.normal.vivid}"
+        purple: "${terminal.magenta.normal.vivid}"
+        red: "${terminal.red.normal.vivid}"
+        yellow: "${terminal.brightYellow.normal.vivid}"
+        cyan: "${terminal.cyan.normal.vivid}"
+        pink: "${terminal.brightMagenta.normal.vivid}"
+        orange: "${terminal.yellow.normal.vivid}"
+        white: "${terminal.brightWhite.normal.vivid}"
+        base01: "${terminal.white.normal.vivid}"
 
       ${builtins.readFile ./colors.yaml}
     '';
