@@ -1,9 +1,7 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, config, ... }:
 
 let
   terminal = config.dot.colors.terminal;
-
-  toVividColor = x: lib.strings.toUpper (builtins.substring 1 (-1) x);
 in
 {
   shared = {
@@ -17,16 +15,16 @@ in
   home.shared = {
     xdg.configFile."vivid/themes/colors.yaml".text = ''
       colors:
-        black: "${toVividColor terminal.black}"
-        green: "${toVividColor terminal.green}"
-        purple: "${toVividColor terminal.magenta}"
-        red: "${toVividColor terminal.red}"
-        yellow: "${toVividColor terminal.brightYellow}"
-        cyan: "${toVividColor terminal.cyan}"
-        pink: "${toVividColor terminal.brightMagenta}"
-        orange: "${toVividColor terminal.yellow}"
-        white: "${toVividColor terminal.brightWhite}"
-        base01: "${toVividColor terminal.white}"
+        black: "${terminal.black.vivid}"
+        green: "${terminal.green.vivid}"
+        purple: "${terminal.magenta.vivid}"
+        red: "${terminal.red.vivid}"
+        yellow: "${terminal.brightYellow.vivid}"
+        cyan: "${terminal.cyan.vivid}"
+        pink: "${terminal.brightMagenta.vivid}"
+        orange: "${terminal.yellow.vivid}"
+        white: "${terminal.brightWhite.vivid}"
+        base01: "${terminal.white.vivid}"
 
       ${builtins.readFile ./colors.yaml}
     '';

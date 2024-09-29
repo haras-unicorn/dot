@@ -49,8 +49,6 @@ let
       cfg.keybinds);
 
   bootstrap = config.dot.colors.bootstrap;
-
-  toHyprColor = x: "0xff${builtins.substring 1 (-1) x}";
 in
 {
   options.dot.desktopEnvironment = {
@@ -134,8 +132,8 @@ in
         exec-once = ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
 
         general {
-          col.active_border = ${toHyprColor bootstrap.primary} ${toHyprColor bootstrap.accent}
-          col.inactive_border = ${toHyprColor bootstrap.secondary}
+          col.active_border = ${bootstrap.primary.hypr} ${bootstrap.accent.hypr}
+          col.inactive_border = ${bootstrap.secondary.hypr}
         }
 
         ${vars}

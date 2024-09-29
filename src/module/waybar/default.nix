@@ -15,27 +15,28 @@ in
 
   home.shared = {
     xdg.configFile."waybar/colors.css".text = ''
-      @define-color background ${bootstrap.background};
-      @define-color foreground ${bootstrap.text};
+      @define-color background ${bootstrap.background.hex};
+      @define-color foreground ${bootstrap.text.hex};
+      @define-color transparent ${bootstrap.background.rgba 0.4};
 
-      @define-color secondary ${bootstrap.secondary};
+      @define-color secondary ${bootstrap.secondary.hex};
 
-      @define-color black ${terminal.black};
-      @define-color white ${terminal.white};
+      @define-color black ${terminal.black.hex};
+      @define-color white ${terminal.white.hex};
 
-      @define-color red ${terminal.red};
-      @define-color green ${terminal.green};
-      @define-color blue ${terminal.blue};
-      @define-color cyan ${terminal.cyan};
-      @define-color yellow ${terminal.yellow};
-      @define-color magenta ${terminal.magenta};
+      @define-color red ${terminal.red.hex};
+      @define-color green ${terminal.green.hex};
+      @define-color blue ${terminal.blue.hex};
+      @define-color cyan ${terminal.cyan.hex};
+      @define-color yellow ${terminal.yellow.hex};
+      @define-color magenta ${terminal.magenta.hex};
 
-      @define-color bright-red ${terminal.brightRed};
-      @define-color bright-green ${terminal.brightGreen};
-      @define-color bright-blue ${terminal.brightBlue};
-      @define-color bright-cyan ${terminal.brightCyan};
-      @define-color bright-yellow ${terminal.brightYellow};
-      @define-color bright-magenta ${terminal.brightMagenta};
+      @define-color bright-red ${terminal.brightRed.hex};
+      @define-color bright-green ${terminal.brightGreen.hex};
+      @define-color bright-blue ${terminal.brightBlue.hex};
+      @define-color bright-cyan ${terminal.brightCyan.hex};
+      @define-color bright-yellow ${terminal.brightYellow.hex};
+      @define-color bright-magenta ${terminal.brightMagenta.hex};
     '';
 
     home.activation = {

@@ -1,9 +1,46 @@
-{ tint-gear, system, config, ... }:
+{ tint-gear, system, config, lib, nix-colors, ... }:
 
 let
-  colors = tint-gear.lib.colors {
+  original = tint-gear.lib.colors {
     imagePath = config.dot.wallpaper;
   };
+
+  toHyprColor = x: "0xff${builtins.substring 1 (-1) x}";
+
+  toVividColor = x: lib.strings.toUpper (builtins.substring 1 (-1) x);
+
+  toRgbColor = x:
+    let
+      colors = nix-colors.lib.hexToRGB x;
+      r = colors .0;
+      g = colors .1;
+      b = colors .2;
+    in
+    "rgb(${r}, ${g}, ${b})";
+
+  toRgbaColor = x: a:
+    let
+      colors = nix-colors.lib.hexToRGB x;
+      r = colors .0;
+      g = colors .1;
+      b = colors .2;
+    in
+    "rgba(${r}, ${g}, ${b}, ${a})";
+
+  colors = lib.attrsets.mapAttrsRecursive
+    (
+      (k: v:
+        if builtins.isString v
+        then {
+          hex = v;
+          hypr = toHyprColor v;
+          vivid = toVividColor v;
+          rgb = toRgbColor v;
+          rgba = toRgbaColor v;
+        }
+        else v)
+    )
+    original;
 in
 {
   shared = {
@@ -15,6 +52,6 @@ in
   home.shared = {
     home.packages = [ tint-gear.packages."${system}".default ];
 
-    xdg.configFile."tint-gear/colors.json".text = builtins.toJSON colors;
+    xdg.configFile."tint-gear/colors.json".text = builtins.toJSON original;
   };
 }
