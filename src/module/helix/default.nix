@@ -37,7 +37,7 @@ in
       transparent = "${bootstrap.background.hex}"
 
       # bg0 = "${bootstrap.background.hex}"
-      background = "${bootstrap.background.hex}";
+      background = "${bootstrap.background.hex}"
 
       # bg1 = "${bootstrap.backgroundAlternate.hex}"
       # bg2 = "#3d484d"
