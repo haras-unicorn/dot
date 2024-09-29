@@ -65,7 +65,7 @@ in
       "enableSpellchecking": true,
       "enableTranslator": false,
       "spellcheckerLanguage": "en-us",
-      "darkMode": ${isLightTheme},
+      "darkMode": ${builtins.toString isLightTheme},
       "navigationBarManualActive": true,
       "splitMode": false,
       "splitColumns": 3,
