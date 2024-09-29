@@ -24,33 +24,6 @@ window {
   border-radius: 8px;
   padding: 4px 16px;
   margin: 4px 4px;
-
-  /* TODO: fix with rounded corners */
-  /* background-image: */ 
-      /* linear-gradient(to right, @secondary, @black), */
-      /* linear-gradient(to right, transparent, transparent), */
-      /* linear-gradient(to bottom, @black, @secondary), */
-      /* linear-gradient(to bottom, transparent, transparent), */
-      /* linear-gradient(to left, @secondary, @black), */
-      /* linear-gradient(to left, transparent, transparent), */
-      /* linear-gradient(to top, @black, @secondary); */
-  /* background-position: */ 
-      /* top left, */ 
-      /* center, */ 
-      /* top right, */ 
-      /* center, */ 
-      /* bottom left, */ 
-      /* center, */ 
-      /* top left; */
-  /* background-repeat: no-repeat; */
-  /* background-size: */ 
-      /* 100% 1px, */
-      /* 100% calc(100% - 2px), */
-      /* 1px 100%, */
-      /* calc(100% - 2px) 100%, */
-      /* 100% 1px, */
-      /* 100% calc(100% - 2px), */
-      /* 1px 100%; */
 }
 
 #workspaces button {
@@ -59,53 +32,53 @@ window {
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 8px;
-  color: @foreground;
+  color: @text;
 }
 
 #workspaces button.active label {
-  color: @bright-yellow;
+  color: @accent;
 }
 
 #battery {
-  color: @bright-red;
+  color: @text;
 }
 
 #custom-powermenu {
-  color: @bright-red;
+  color: @secondary;
   padding-right: 20px;
   padding-bottom: 6px;
   margin-right: 8px;
 }
 
 #pulseaudio {
-  color: @bright-green;
+  color: @text-alternate;
   padding-right: 14px;
 }
 
 #cpu {
-  color: @bright-cyan;
+  color: @text-alternate;
   min-width: 48px;
 }
 
 #temperature {
-  color: @bright-yellow;
+  color: @text-alternate;
 }
 
 #memory {
-  color: @bright-cyan;
+  color: @text-alternate;
 }
 
 #network {
-  color: @bright-magenta;
+  color: @text-alternate;
   min-width: 200px;
 }
 
 #clock {
-  color: @bright-cyan;
+  color: @text;
   margin-left: 8px;
 }
 
 #custom-layout {
-  color: @bright-magenta;
+  color: @primary;
   margin-left: 8px;
 }
