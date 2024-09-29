@@ -13,7 +13,6 @@ let
       (todo pkgs.helix);
 
   bootstrap = config.dot.colors.bootstrap;
-  terminal = config.dot.colors.terminal;
 in
 {
   home.shared = {
@@ -33,46 +32,16 @@ in
 
       [palette]
 
-      # bg_dim = "#232a2e"
       transparent = "${bootstrap.background.normal.hex}"
 
-      # bg0 = "${bootstrap.background.normal.hex}"
       background = "${bootstrap.background.normal.hex}"
-
-      # bg1 = "${bootstrap.background.alternate.hex}"
-      # bg2 = "#3d484d"
-      # bg3 = "#475258"
-      # bg4 = "#4f585e"
-      # bg5 = "#56635f"
-      # bg_visual = "${bootstrap.selection.normal.hex}"
-      # bg_red = "${bootstrap.danger.normal.hex}"
-      # bg_green = "${terminal.green.hex}"
-      # bg_blue = "${bootstrap.info.normal.hex}"
-      # bg_yellow = "${bootstrap.warning.normal.hex}"
       backgroundAlternate = "${bootstrap.background.alternate.hex}"
 
-      # fg = "${bootstrap.text.normal.hex}"
       text = "${bootstrap.text.normal.hex}"
-
-      # red = "${terminal.brightRed.hex}"
-      # green = "${terminal.brightGreen.hex}"
-      # blue = "${terminal.brightBlue.hex}"
-      # orange = "${terminal.yellow.hex}"
-      # yellow = "${terminal.brightYellow.hex}"
-      # cyan = "${terminal.cyan.normal.hex}"
-      # purple = "${terminal.magenta.normal.hex}"
-      # grey0 = "${terminal.white.normal.hex}"
-      # grey1 = "${terminal.white.normal.hex}"
-      # grey2 = "${terminal.white.normal.hex}"
       textAlternate = "${bootstrap.text.alternate.hex}"
 
-      # statusline1 = "#a7c080"
       primary = "${bootstrap.primary.normal.hex}"
-
-      # statusline2 = "#d3c6aa"
       secondary = "${bootstrap.secondary.normal.hex}"
-
-      # statusline3 = "#e67e80"
       accent = "${bootstrap.accent.normal.hex}"
     '';
 
