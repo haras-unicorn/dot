@@ -221,14 +221,15 @@ in
       symbol = " "
 
       [time]
-      format = "[at](italic fg:${bootstrap.info.hex}) [$time]($style) "
+      format = "[at](italic fg:${bootstrap.textAlternate.hex}) [$time]($style) "
+      style = "bold fg:${bootstrap.info.hex}"
       disabled = false
 
       [cmd_duration]
       min_time = 1
-      format = "[took](italic fg:${bootstrap.warning.hex}) [$duration]($style)"
+      format = "[took](italic fg:${bootstrap.textAlternate.hex}) [$duration]($style)"
       disabled = false
-      style = "underline bold bright-yellow"
+      style = "underline bold fg:${bootstrap.info.hex}"
 
       [status]
       symbol = " "
