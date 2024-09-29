@@ -69,6 +69,15 @@ let
           )
         '')
       cfg.keybinds);
+
+  # TODO: use windowrules
+  # windowrules = lib.strings.concatStringsSep
+  #   "\n"
+  #   (builtins.map
+  #     (windowrule: "windowrulev2 ="
+  #       + " ${windowrule.rule}"
+  #       + ", ${windowrule.selector}:(${windowrule.arg})")
+  #     cfg.windowrules);
 in
 {
   options.dot.desktopEnvironment = {
@@ -104,6 +113,18 @@ in
       description = ''
         Keybinds to set with Hyprland.
       '';
+    };
+
+    windowrules = lib.mkOption {
+      type = with lib.types; listOf (lazyAttrsOf (str));
+      default = [ ];
+      example = [
+        {
+          rule = "float";
+          selector = "class";
+          arg = "org.keepassxc.KeePassXC";
+        }
+      ];
     };
   };
 
