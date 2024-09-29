@@ -161,6 +161,8 @@ in
         ${startup}
 
         ${binds}
+
+        ${windowrules}
       '';
     };
   };
