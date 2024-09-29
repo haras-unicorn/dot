@@ -117,7 +117,7 @@ in
       format = "[$indicator]($style)"
       fish_indicator = "󰈺 "
       bash_indicator = " "
-      style = "bold fg:${config.dot.colors.terminal.blue.hex}"
+      style = "bold fg:${config.dot.colors.terminal.blue.normal.hex}"
       disabled = false
 
       [shlvl]
