@@ -48,6 +48,14 @@ let
       (bind: "bind = ${lib.strings.concatStringsSep " " bind.mods}, ${bind.key}, exec, ${bind.command}")
       cfg.keybinds);
 
+  windowrules = lib.strings.concatStringsSep
+    "\n"
+    (builtins.map
+      (windowrule: "windowrulev2 ="
+        + " ${windowrule.rule}"
+        + ", ${windowrule.selector}:(${windowrule.arg})")
+      cfg.windowrules);
+
   bootstrap = config.dot.colors.bootstrap;
 in
 {
@@ -84,6 +92,18 @@ in
       description = ''
         Keybinds to set with Hyprland.
       '';
+    };
+
+    windowrules = lib.mkOption {
+      type = with lib.types; listOf (lazyAttrsOf (str));
+      default = [ ];
+      example = [
+        {
+          rule = "float";
+          selector = "class";
+          arg = "org.keepassxc.KeePassXC";
+        }
+      ];
     };
   };
 
