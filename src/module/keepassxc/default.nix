@@ -6,6 +6,12 @@
       desktopEnvironment.sessionStartup = [
         "${pkgs.keepassxc}/bin/keepassxc"
       ];
+
+      desktopEnvironment.windowrules = [{
+        rule = "float";
+        selector = "class";
+        arg = "org.keepassxc.KeePassXC";
+      }];
     };
   };
 
