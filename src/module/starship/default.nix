@@ -13,15 +13,15 @@ in
       # TODO: fix how slow python is
       # $python\
       format = """\
-      [╭─](bold fg:${bootstrap.accent.hex})\
+      [╭─](bold fg:${bootstrap.accent.normal.hex})\
 
-      $username[@](bold fg:${bootstrap.accent.hex})$hostname\
-      [\\(](bold fg:${bootstrap.accent.hex})\
+      $username[@](bold fg:${bootstrap.accent.normal.hex})$hostname\
+      [\\(](bold fg:${bootstrap.accent.normal.hex})\
       $localip\
-      [\\)](bold fg:${bootstrap.accent.hex}) \
+      [\\)](bold fg:${bootstrap.accent.normal.hex}) \
 
-      [using](italic fg:${bootstrap.textAlternate.hex}) $shlvl$shell \
-      [\\(](bold fg:${bootstrap.accent.hex}) \
+      [using](italic fg:${bootstrap.textAlternate.normal.hex}) $shlvl$shell \
+      [\\(](bold fg:${bootstrap.accent.normal.hex}) \
       $aws\
       $azure\
       $gcloud\
@@ -33,7 +33,7 @@ in
       $terraform\
       $nix_shell\
       $conda\
-      [\\)](bold fg:${bootstrap.accent.hex}) \
+      [\\)](bold fg:${bootstrap.accent.normal.hex}) \
 
       $jobs\
       $time\
@@ -45,12 +45,12 @@ in
 
       $line_break\
 
-      [│](bold fg:${bootstrap.accent.hex}) \
+      [│](bold fg:${bootstrap.accent.normal.hex}) \
 
-      [in](italic fg:${bootstrap.textAlternate.hex}) $directory\
+      [in](italic fg:${bootstrap.textAlternate.normal.hex}) $directory\
 
       $package\
-      [\\[](bold fg:${bootstrap.accent.hex}) \
+      [\\[](bold fg:${bootstrap.accent.normal.hex}) \
       $helm\
       $cmake\
       $cobol\
@@ -81,14 +81,14 @@ in
       $vagrant\
       $zig\
       $crystal\
-      [\\]](bold fg:${bootstrap.accent.hex}) \
+      [\\]](bold fg:${bootstrap.accent.normal.hex}) \
 
       $git_branch$hg_branch\
       $git_commit$git_state$git_metrics$git_status\
 
       $line_break\
 
-      [╰─](bold fg:${bootstrap.accent.hex})\
+      [╰─](bold fg:${bootstrap.accent.normal.hex})\
       """
 
       scan_timeout = 1000
@@ -97,20 +97,20 @@ in
 
       [username]
       format = "[$user]($style)"
-      style_user = "bold fg:${bootstrap.primary.hex}"
-      style_root = "bold fg:${bootstrap.warning.hex}"
+      style_user = "bold fg:${bootstrap.primary.normal.hex}"
+      style_root = "bold fg:${bootstrap.warning.normal.hex}"
       show_always = true
 
       [hostname]
       format = "[$hostname]($style)"
-      style = "bold fg:${bootstrap.secondary.hex}"
+      style = "bold fg:${bootstrap.secondary.normal.hex}"
       trim_at = "-"
       ssh_only = false
       disabled = false
 
       [localip]
       format = "[$localipv4]($style)"
-      style = "bold fg:${bootstrap.secondary.hex}"
+      style = "bold fg:${bootstrap.secondary.normal.hex}"
       disabled = false
 
       [shell]
@@ -125,7 +125,7 @@ in
       format = "[$symbol]($style)"
       symbol = ""
       repeat = true
-      style = "bold fg:${bootstrap.text.hex}"
+      style = "bold fg:${bootstrap.text.normal.hex}"
       disabled = false
 
       [aws]
@@ -221,26 +221,26 @@ in
       symbol = " "
 
       [time]
-      format = "[at](italic fg:${bootstrap.textAlternate.hex}) [$time]($style) "
-      style = "bold fg:${bootstrap.info.hex}"
+      format = "[at](italic fg:${bootstrap.textAlternate.normal.hex}) [$time]($style) "
+      style = "bold fg:${bootstrap.info.normal.hex}"
       disabled = false
 
       [cmd_duration]
       min_time = 1
-      format = "[took](italic fg:${bootstrap.textAlternate.hex}) [$duration]($style)"
+      format = "[took](italic fg:${bootstrap.textAlternate.normal.hex}) [$duration]($style)"
       disabled = false
-      style = "underline bold fg:${bootstrap.info.hex}"
+      style = "underline bold fg:${bootstrap.info.normal.hex}"
 
       [status]
       symbol = " "
-      style = "fg:${bootstrap.danger.hex}"
+      style = "fg:${bootstrap.danger.normal.hex}"
       format = """ \
-      [[{](bold fg:${bootstrap.accent.hex})\
+      [[{](bold fg:${bootstrap.accent.normal.hex})\
       $symbol\
       $status_common_meaning\
       $status_signal_name\
       $status_maybe_int\
-      [}](bold fg:${bootstrap.accent.hex})]\
+      [}](bold fg:${bootstrap.accent.normal.hex})]\
       ($style)"""
       map_symbol = true
       disabled = false
@@ -250,28 +250,28 @@ in
       format = "[$symbol$version]($style) "
 
       [directory]
-      style = "bold fg:${bootstrap.textAlternate.hex}"
+      style = "bold fg:${bootstrap.textAlternate.normal.hex}"
       read_only = " "
       truncation_length = 3
       truncate_to_repo = true
 
       [git_branch]
-      format = "[on](italic fg:${bootstrap.textAlternate.hex}) [$symbol $branch]($style)"
-      style = "bold fg:${bootstrap.info.hex}"
+      format = "[on](italic fg:${bootstrap.textAlternate.normal.hex}) [$symbol $branch]($style)"
+      style = "bold fg:${bootstrap.info.normal.hex}"
       symbol = ""
 
       [hg_branch]
-      format = "[on](italic fg:${bootstrap.textAlternate.hex}) [$symbol $branch]($style)"
-      style = "bold fg:${bootstrap.info.hex}"
+      format = "[on](italic fg:${bootstrap.textAlternate.normal.hex}) [$symbol $branch]($style)"
+      style = "bold fg:${bootstrap.info.normal.hex}"
       symbol = ""
 
       [git_status]
-      style = "bold fg:${bootstrap.warning.hex}"
+      style = "bold fg:${bootstrap.warning.normal.hex}"
       format = """ \
-      [[{](bold fg:${bootstrap.accent.hex})\
+      [[{](bold fg:${bootstrap.accent.normal.hex})\
       $all_status\
       $ahead_behind\
-      [}](bold fg:${bootstrap.accent.hex})]\
+      [}](bold fg:${bootstrap.accent.normal.hex})]\
       ($style)"""
       ahead = "$${count}"
       diverged = "󰹺$${ahead_count}$${behind_count}"
@@ -279,9 +279,9 @@ in
       deleted = "x"
 
       [character]
-      success_symbol = "[󰞷](bold fg:${bootstrap.success.hex})"
-      vicmd_symbol = "[ ](bold fg:${bootstrap.success.hex})"
-      error_symbol = "[ ](bold fg:${bootstrap.danger.hex})"
+      success_symbol = "[󰞷](bold fg:${bootstrap.success.normal.hex})"
+      vicmd_symbol = "[ ](bold fg:${bootstrap.success.normal.hex})"
+      error_symbol = "[ ](bold fg:${bootstrap.danger.normal.hex})"
 
       [battery]
       format = " [$symbol$percentage]($style)"

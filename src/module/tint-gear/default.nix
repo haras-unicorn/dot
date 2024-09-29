@@ -35,6 +35,8 @@ let
 
   toMakoAColor = x: a: "${toMakoColor x}${a}";
 
+  toGtkColor = x: lib.strings.toUpper (builtins.substring 1 (-1) x);
+
   transformColors = colors:
     lib.attrsets.mapAttrsRecursive
       (
@@ -49,6 +51,7 @@ let
             rgba = toRgbaColor v;
             mako = toMakoColor v;
             makoa = toMakoAColor v;
+            gtk = toGtkColor v;
           }
           else v)
       )

@@ -75,8 +75,8 @@ in
         background-image: image(url("${./reboot.svg}"));
       }
 
-      @define-color background ${bootstrap.text.hex};
-      @define-color foreground ${bootstrap.background.hex};
+      @define-color background ${bootstrap.text.normal.hex};
+      @define-color foreground ${bootstrap.background.normal.hex};
 
       ${builtins.readFile ./style.css}
     '';

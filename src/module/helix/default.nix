@@ -34,25 +34,25 @@ in
       [palette]
 
       # bg_dim = "#232a2e"
-      transparent = "${bootstrap.background.hex}"
+      transparent = "${bootstrap.background.normal.hex}"
 
-      # bg0 = "${bootstrap.background.hex}"
-      background = "${bootstrap.background.hex}"
+      # bg0 = "${bootstrap.background.normal.hex}"
+      background = "${bootstrap.background.normal.hex}"
 
-      # bg1 = "${bootstrap.backgroundAlternate.hex}"
+      # bg1 = "${bootstrap.backgroundAlternate.normal.hex}"
       # bg2 = "#3d484d"
       # bg3 = "#475258"
       # bg4 = "#4f585e"
       # bg5 = "#56635f"
-      # bg_visual = "${bootstrap.selection.hex}"
-      # bg_red = "${bootstrap.danger.hex}"
+      # bg_visual = "${bootstrap.selection.normal.hex}"
+      # bg_red = "${bootstrap.danger.normal.hex}"
       # bg_green = "${terminal.green.hex}"
-      # bg_blue = "${bootstrap.info.hex}"
-      # bg_yellow = "${bootstrap.warning.hex}"
-      backgroundAlternate = "${bootstrap.backgroundAlternate.hex}"
+      # bg_blue = "${bootstrap.info.normal.hex}"
+      # bg_yellow = "${bootstrap.warning.normal.hex}"
+      backgroundAlternate = "${bootstrap.backgroundAlternate.normal.hex}"
 
-      # fg = "${bootstrap.text.hex}"
-      text = "${bootstrap.text.hex}"
+      # fg = "${bootstrap.text.normal.hex}"
+      text = "${bootstrap.text.normal.hex}"
 
       # red = "${terminal.brightRed.hex}"
       # green = "${terminal.brightGreen.hex}"
@@ -64,16 +64,16 @@ in
       # grey0 = "${terminal.white.hex}"
       # grey1 = "${terminal.white.hex}"
       # grey2 = "${terminal.white.hex}"
-      textAlternate = "${bootstrap.textAlternate.hex}"
+      textAlternate = "${bootstrap.textAlternate.normal.hex}"
 
       # statusline1 = "#a7c080"
-      primary = "${bootstrap.primary.hex}"
+      primary = "${bootstrap.primary.normal.hex}"
 
       # statusline2 = "#d3c6aa"
-      secondary = "${bootstrap.secondary.hex}"
+      secondary = "${bootstrap.secondary.normal.hex}"
 
       # statusline3 = "#e67e80"
-      accent = "${bootstrap.accent.hex}"
+      accent = "${bootstrap.accent.normal.hex}"
     '';
 
     programs.helix.languages = {

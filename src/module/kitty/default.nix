@@ -40,8 +40,8 @@ in
 
         background_opacity 0.5
 
-        foreground ${bootstrap.text.hex}
-        background ${bootstrap.background.hex}
+        foreground ${bootstrap.text.normal.hex}
+        background ${bootstrap.background.normal.hex}
 
         color0     ${terminal.black.hex}
         color1     ${terminal.red.hex}

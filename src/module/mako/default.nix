@@ -30,10 +30,10 @@ in
       default-timeout=10000
       anchor=bottom-right
 
-      background-color=${bootstrap.background.makoa "AA"}
-      text-color=${bootstrap.text.mako}
-      border-color=${bootstrap.accent.mako}
-      progress-color=${bootstrap.success.mako}
+      background-color=${bootstrap.background.normal.makoa "AA"}
+      text-color=${bootstrap.text.normal.mako}
+      border-color=${bootstrap.accent.normal.mako}
+      progress-color=${bootstrap.success.normal.mako}
     '';
 
 

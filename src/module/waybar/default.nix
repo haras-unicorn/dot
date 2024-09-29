@@ -15,12 +15,12 @@ in
 
   home.shared = {
     xdg.configFile."waybar/colors.css".text = ''
-      @define-color transparent ${bootstrap.background.rgba 0.4};
-      @define-color text ${bootstrap.text.hex};
-      @define-color text-alternate ${bootstrap.textAlternate.hex};
-      @define-color primary ${bootstrap.primary.hex};
-      @define-color secondary ${bootstrap.secondary.hex};
-      @define-color accent ${bootstrap.accent.hex};
+      @define-color transparent ${bootstrap.background.normal.rgba 0.4};
+      @define-color text ${bootstrap.text.normal.hex};
+      @define-color text-alternate ${bootstrap.textAlternate.normal.hex};
+      @define-color primary ${bootstrap.primary.normal.hex};
+      @define-color secondary ${bootstrap.secondary.normal.hex};
+      @define-color accent ${bootstrap.accent.normal.hex};
     '';
 
     home.activation = {

@@ -132,8 +132,8 @@ in
         exec-once = ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
 
         general {
-          col.active_border = ${bootstrap.primary.hypr} ${bootstrap.accent.hypr}
-          col.inactive_border = ${bootstrap.secondary.hypr}
+          col.active_border = ${bootstrap.primary.normal.hypr} ${bootstrap.accent.normal.hypr}
+          col.inactive_border = ${bootstrap.secondary.normal.hypr}
         }
 
         ${vars}
