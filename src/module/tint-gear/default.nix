@@ -5,6 +5,8 @@ let
     imagePath = config.dot.wallpaper;
   };
 
+  toHexaColor = x: a: "${x}${a}";
+
   toHyprColor = x: "0xff${builtins.substring 1 (-1) x}";
 
   toHyprAColor = x: a: "0x${a}${builtins.substring 1 (-1) x}";
@@ -44,6 +46,7 @@ let
           if builtins.isString v
           then {
             hex = v;
+            hexa = toHexaColor v;
             hypr = toHyprColor v;
             hypra = toHyprAColor v;
             vivid = toVividColor v;
