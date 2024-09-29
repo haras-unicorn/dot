@@ -62,7 +62,7 @@ in
 
     programs.wofi.style = ''
       @define-color background ${bootstrap.background.hex};
-      @define-color transparent ${bootstrap.transparent.rgba 0.8};
+      @define-color transparent ${bootstrap.background.rgba 0.8};
       @define-color text ${bootstrap.text.hex};
       @define-color accent ${bootstrap.accent.hex};
       @define-color primary ${bootstrap.primary.hex};
