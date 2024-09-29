@@ -51,9 +51,9 @@ let
         ["--navyblue"]="${primary}"
       )
 
-      for VAR_NAME in "$${!COLOR_MAPPING[@]}"; do
-        COLOR_VALUE="$${COLOR_MAPPING[$VAR_NAME]}"
-        sed -i "s|\($${VAR_NAME}:\s*\)\(#\?[0-9A-Fa-f]\{6\}\)\(.*\);|\1$${COLOR_VALUE}\3;|g" "$CSS"
+      for VAR_NAME in "''${!COLOR_MAPPING[@]}"; do
+        COLOR_VALUE="''${COLOR_MAPPING[$VAR_NAME]}"
+        sed -i "s|\(''${VAR_NAME}:\s*\)\(#\?[0-9A-Fa-f]\{6\}\)\(.*\);|\1''${COLOR_VALUE}\3;|g" "$CSS"
       done
 
       mkdir -p $out
