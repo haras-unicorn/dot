@@ -19,20 +19,20 @@ let
 
   firefox-gx-updated = pkgs.runCommand "firefox-gx-updated" { } (
     let
-      primary = bootstrap.primary;
-      secondary = bootstrap.secondary;
-      accent = bootstrap.accent;
-      danger = bootstrap.danger;
-      warning = bootstrap.warning;
-      info = bootstrap.info;
-      success = bootstrap.success;
-      text = bootstrap.text;
-      background = bootstrap.background;
+      primary = bootstrap.primary.normal.hex;
+      secondary = bootstrap.secondary.normal.hex;
+      accent = bootstrap.accent.normal.hex;
+      danger = bootstrap.danger.normal.hex;
+      warning = bootstrap.warning.normal.hex;
+      info = bootstrap.info.normal.hex;
+      success = bootstrap.success.normal.hex;
+      text = bootstrap.text.normal.hex;
+      background = bootstrap.background.normal.hex;
     in
     ''
-      mkdir $out/chrome
-      cp -r ${firefox-gx}/chrome/* $out/chrome/
-      CSS="$out/chrome/components/ogx_root-personal.css"
+      cp -r ${firefox-gx}/chrome .
+      chmod -R u+w chrome
+      CSS="./chrome/components/ogx_root-personal.css"
 
       declare -A COLOR_MAPPING=(
         ["--fuchsia"]="${primary}"
@@ -55,6 +55,9 @@ let
         COLOR_VALUE="$${COLOR_MAPPING[$VAR_NAME]}"
         sed -i "s|\($${VAR_NAME}:\s*\)\(#\?[0-9A-Fa-f]\{6\}\)\(.*\);|\1$${COLOR_VALUE}\3;|g" "$CSS"
       done
+
+      mkdir -p $out
+      cp -r chrome $out/
     ''
   );
 in
