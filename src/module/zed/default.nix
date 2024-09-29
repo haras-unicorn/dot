@@ -60,8 +60,7 @@ in
       };
     };
 
-    xdg.configFile." zed/themes/colors.json ".text = builtins.toJSON {
-      " ''$schema" = "https://zed.dev/schema/themes/v0.1.0.json";
+    xdg.configFile."zed/themes/colors.json ".text = builtins.toJSON {
       name = "colors";
       author = "haras";
       themes = [{
