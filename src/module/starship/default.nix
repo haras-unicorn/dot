@@ -20,7 +20,7 @@ in
       $localip\
       [\\)](bold fg:${bootstrap.accent.normal.hex}) \
 
-      [using](italic fg:${bootstrap.textAlternate.normal.hex}) $shlvl$shell \
+      [using](italic fg:${bootstrap.text.alternate.hex}) $shlvl$shell \
       [\\(](bold fg:${bootstrap.accent.normal.hex}) \
       $aws\
       $azure\
@@ -47,7 +47,7 @@ in
 
       [│](bold fg:${bootstrap.accent.normal.hex}) \
 
-      [in](italic fg:${bootstrap.textAlternate.normal.hex}) $directory\
+      [in](italic fg:${bootstrap.text.alternate.hex}) $directory\
 
       $package\
       [\\[](bold fg:${bootstrap.accent.normal.hex}) \
@@ -221,13 +221,13 @@ in
       symbol = " "
 
       [time]
-      format = "[at](italic fg:${bootstrap.textAlternate.normal.hex}) [$time]($style) "
+      format = "[at](italic fg:${bootstrap.text.alternate.hex}) [$time]($style) "
       style = "bold fg:${bootstrap.info.normal.hex}"
       disabled = false
 
       [cmd_duration]
       min_time = 1
-      format = "[took](italic fg:${bootstrap.textAlternate.normal.hex}) [$duration]($style)"
+      format = "[took](italic fg:${bootstrap.text.alternate.hex}) [$duration]($style)"
       disabled = false
       style = "underline bold fg:${bootstrap.info.normal.hex}"
 
@@ -250,18 +250,18 @@ in
       format = "[$symbol$version]($style) "
 
       [directory]
-      style = "bold fg:${bootstrap.textAlternate.normal.hex}"
+      style = "bold fg:${bootstrap.text.alternate.hex}"
       read_only = " "
       truncation_length = 3
       truncate_to_repo = true
 
       [git_branch]
-      format = "[on](italic fg:${bootstrap.textAlternate.normal.hex}) [$symbol $branch]($style)"
+      format = "[on](italic fg:${bootstrap.text.alternate.hex}) [$symbol $branch]($style)"
       style = "bold fg:${bootstrap.info.normal.hex}"
       symbol = ""
 
       [hg_branch]
-      format = "[on](italic fg:${bootstrap.textAlternate.normal.hex}) [$symbol $branch]($style)"
+      format = "[on](italic fg:${bootstrap.text.alternate.hex}) [$symbol $branch]($style)"
       style = "bold fg:${bootstrap.info.normal.hex}"
       symbol = ""
 
