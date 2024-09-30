@@ -63,7 +63,7 @@ in
     programs.vscode.extensions = with pkgs.vscode-marketplace; [
       # keybindings
       # jasew.vscode-helix-emulation
-      vscodevim.vim
+      # vscodevim.vim
 
       # ui
       usernamehw.errorlens
