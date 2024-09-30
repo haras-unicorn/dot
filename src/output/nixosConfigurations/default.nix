@@ -3,7 +3,6 @@
 , nixpkgs
 , nur
 , home-manager
-, lulezojne
 , nixos-wsl
 , sops-nix
 , nix-index-database
@@ -223,7 +222,6 @@ builtins.foldl'
             # nixosNameModule
             nixpkgsConfigModule
             sops-nix.homeManagerModules.sops
-            lulezojne.homeManagerModules.default
             groupOptionsModule
             (dot.modules.mkHomeSharedModule dotModule)
           ];

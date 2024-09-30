@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 
-# TODO: lulezojne
+# TODO: tint-gear
 
 {
   shared = {

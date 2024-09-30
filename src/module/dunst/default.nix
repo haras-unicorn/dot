@@ -1,6 +1,6 @@
 { pkgs, ... }:
 
-# TODO: lulezojne
+# TODO: tint-gear
 
 {
   home.shared = {

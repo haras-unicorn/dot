@@ -8,7 +8,7 @@
 # TODO: layout command
 # TODO: use windowrules
 # TODO: logout button (xfce4-session-logout)?
-# TODO: lulezojne
+# TODO: tint-gear
 # TODO: resize submap
 # TODO: hardware vars
 # TODO: location vars

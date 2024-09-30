@@ -19,9 +19,6 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs-stable";
 
-    lulezojne.url = "github:haras-unicorn/lulezojne";
-    lulezojne.inputs.nixpkgs.follows = "nixpkgs";
-
     nixified-ai.url = "github:nixified-ai/flake";
     # NOTE: packages marked broken
     nixified-ai.inputs.nixpkgs.url = "github:NixOS/nixpkgs/release-23.11";
