@@ -76,7 +76,8 @@ let
     name = "inspect-gtk";
     runtimeInputs = [ ];
     text = ''
-      GTK_DEBUG=interactive "$@"
+      export GTK_DEBUG=interactive
+      exec "$@"
     '';
   };
 in
