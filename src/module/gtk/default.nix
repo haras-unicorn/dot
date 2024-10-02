@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+
+# TODO: more from here https://github.com/nana-4/materia-theme/blob/d7f59a37ef51f893c28b55dc344146e04b2cd52c/change_color.sh#L119
 
 let
-  theme_name = "colors";
+  theme_name = lib.mkMerge [
+    (lib.mkIf config.dot.colors.isLightTheme "colors-light")
+    (lib.mkIf (!config.dot.colors.isLightTheme) "colors-dark")
+  ];
 
   ini2 = ''
     gtk-font-name = "${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}"

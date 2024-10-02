@@ -1,5 +1,7 @@
 { lib, pkgs, config, ... }:
 
+# TODO: proper theming as explained here: https://docs.helix-editor.com/themes.html
+
 let
   cfg = config.dot.editor;
 
