@@ -1,35 +1,32 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
 # TODO: more from here https://github.com/nana-4/materia-theme/blob/d7f59a37ef51f893c28b55dc344146e04b2cd52c/change_color.sh#L119
 
 let
-  withColorMode = x: lib.mkMerge [
-    (lib.mkIf config.dot.colors.isLightTheme (x true))
-    (lib.mkIf (!config.dot.colors.isLightTheme) (x false))
-  ];
+  theme_name = "colors";
 
-  ini2 = withColorMode (isLightTheme: ''
+  ini2 = ''
     gtk-font-name = "${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}"
     gtk-icon-theme-name = "${config.dot.icon-theme.name}"
     gtk-cursor-theme-name = "${config.dot.cursor-theme.name}"
-    gtk-theme-name = ${if isLightTheme then "colors-light" else "colors-dark"}
-  '');
-  ini3 = withColorMode (isLightTheme: ''
+    gtk-theme-name = "${theme_name}"
+  '';
+  ini3 = ''
     [Settings]
     gtk-font-name = ${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}
     gtk-icon-theme-name = ${config.dot.icon-theme.name}
     gtk-cursor-theme-name = ${config.dot.cursor-theme.name}
-    gtk-theme-name = ${if isLightTheme then "colors-light" else "colors-dark"}
-  '');
+    gtk-theme-name = "${theme_name}"
+  '';
   ini4 = ini3;
 
-  dconf = withColorMode (isLightTheme: {
+  dconf = {
     font-name = "${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}";
     icon-theme = config.dot.icon-theme.name;
     cursor-theme = config.dot.cursor-theme.name;
     cursor-size = config.dot.cursor-theme.size;
-    gtk-theme = if isLightTheme then "colors-light" else "colors-dark";
-  });
+    gtk-theme = "${theme_name}";
+  };
 
   bootstrap = config.dot.colors.bootstrap;
 
