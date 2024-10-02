@@ -71,6 +71,14 @@ let
       ./change_color.sh -t $out/share/themes -o colors ${preset}
       printf "\n"
     '';
+
+  inspect-gtk = pkgs.writeShellApplication {
+    name = "inspect-gtk";
+    runtimeInputs = [ ];
+    text = ''
+      GTK_DEBUG=interactive "$@"
+    '';
+  };
 in
 {
   shared = {
@@ -94,7 +102,7 @@ in
 
     dconf.settings."org/gnome/desktop/interface" = dconf;
 
-    home.packages = [ colors ];
+    home.packages = [ colors inspect-gtk ];
   };
 }
 
