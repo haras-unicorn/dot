@@ -101,7 +101,7 @@ in
       "sidebarServicesLocation": 0,
       "iconSize": 20,
       "sentry": true,
-      "navigationBarBehaviour": "never",
+      "navigationBarBehaviour": "always",
       "webRTCIPHandlingPolicy": "default",
       "searchEngine": "startPage",
       "translatorLanguage": "en",
