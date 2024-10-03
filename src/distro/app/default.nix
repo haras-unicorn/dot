@@ -67,6 +67,7 @@ in
     # Browsers
     "${self}/src/module/firefox"
     "${self}/src/module/chromium"
+    "${self}/src/module/myfooddata"
     # "${self}/src/module/librewolf"
 
     # "${self}/src/module/teams"
