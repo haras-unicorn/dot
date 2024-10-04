@@ -19,7 +19,7 @@ in
     home.packages = [ wallpaper ];
 
     home.activation = {
-      helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      fehReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${wallpaper}/bin/wallpaper  '${config.dot.wallpaper}'
       '';
     };
