@@ -79,6 +79,7 @@
 
       cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
       icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
+      wallpaper = "${self}/assets/wallpapers/elden-ring.png";
     };
   };
 
