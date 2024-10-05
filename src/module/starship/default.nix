@@ -273,9 +273,9 @@ in
       $ahead_behind\
       [}](bold fg:${bootstrap.accent.normal.hex})]\
       ($style)"""
-      ahead = "$${ahead_count}"
-      diverged = "󰹺$${ahead_count}$${behind_count}"
-      behind = "$${behind_count}"
+      ahead = "''${count}"
+      diverged = "󰹺''${ahead_count}''${behind_count}"
+      behind = "''${count}"
       deleted = "x"
 
       [character]
