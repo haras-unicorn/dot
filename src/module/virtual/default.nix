@@ -8,6 +8,7 @@
 # FIXME: gns3 bridge fails restarting
 # FIXME: https://github.com/NixOS/nixpkgs/issues/326245
 # TODO: use podman when starship support
+# TODO: use docker rootless when networking becomes less of a pain
 
 let
   bridgeGns3 = rec {
@@ -60,8 +61,8 @@ in
 
     virtualisation.docker.enable = true;
     virtualisation.docker.autoPrune.enable = true;
-    virtualisation.docker.rootless.enable = true;
-    virtualisation.docker.rootless.setSocketVariable = true;
+    # virtualisation.docker.rootless.enable = true;
+    # virtualisation.docker.rootless.setSocketVariable = true;
 
     services.cockpit.enable = true;
     services.packagekit.enable = true;
