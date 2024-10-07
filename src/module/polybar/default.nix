@@ -15,7 +15,7 @@ in
   home.shared = {
     home.activation = {
       polybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${package}/bin/polybar-msg cmd restart
+        ${package}/bin/polybar-msg cmd restart || true
       '';
     };
 

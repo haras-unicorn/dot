@@ -165,7 +165,7 @@ in
 
       home.activation = {
         qtileReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          ${package}/bin/qtile cmd-obj -f reload_config
+          ${package}/bin/qtile cmd-obj -f reload_config || true
         '';
       };
 
