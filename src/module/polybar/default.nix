@@ -5,18 +5,21 @@
 
 let
   bootstrap = config.dot.colors.bootstrap;
+
+  package = pkgs.polybarFull;
 in
 {
   home.shared = {
     home.activation = {
       polybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${pkgs.polybar}/bin/polybar-msg cmd restart
+        ${package}/bin/polybar-msg cmd restart
       '';
     };
 
     services.polybar.enable = true;
     services.polybar.config = ./config.ini;
-    services.polybar.script = "${pkgs.polybar}/bin/polybar top &>/dev/null & disown %-";
+    services.polybar.package = package;
+    services.polybar.script = "${package}/bin/polybar top &>/dev/null & disown %-";
     services.polybar.settings = {
       nix = {
         background = bootstrap.background.normal.hex;
