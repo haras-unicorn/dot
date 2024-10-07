@@ -39,20 +39,23 @@ in
         network-interface = config.dot.networkInterface;
         cpu-hwmon = config.dot.cpuHwmon;
         font = (builtins.toString config.dot.font.sans.name)
+          + ":size="
+          + (builtins.toString fontSizePt)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2))
-          + "px:size="
-          + (builtins.toString fontSizePt);
+          + "px";
         font2 = (builtins.toString config.dot.font.nerd.name)
+          + ":size="
+          + (builtins.toString fontSizePt)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2))
-          + "px:size="
-          + (builtins.toString fontSizePt);
+          + "px";
         font3 = (builtins.toString config.dot.font.emoji.name)
+          + ":size="
+          + (builtins.toString fontSizePt)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2))
-          + "px:size="
-          + (builtins.toString fontSizePt);
+          + "px";
       };
       "module/battery" = {
         label-charging = "%{F${nix.accent}} %percentage%%{F-}";
