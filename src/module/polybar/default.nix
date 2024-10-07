@@ -22,7 +22,7 @@ in
     services.polybar.script = "${package}/bin/polybar top &>/dev/null & disown %-";
     services.polybar.settings = rec {
       nix = {
-        width = config.dot.mainMonitorWidth - 16;
+        width = "${builtins.toString (config.dot.mainMonitorWidth - 16)}px";
         background = bootstrap.background.normal.hex;
         background-alternate = bootstrap.background.alternate.hex;
         background-inverted = bootstrap.background.inverted.hex;
