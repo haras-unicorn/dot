@@ -13,7 +13,7 @@ in
       '';
     };
 
-    services.picom.enable = true;
+    # services.picom.enable = true;
     services.picom.settings = lib.mkForce { };
     services.picom.extraArgs = [ "--legacy-backends" ];
 
