@@ -34,24 +34,30 @@ in
         font = (builtins.toString config.dot.font.sans.name)
           + ":size="
           + (builtins.toString config.dot.font.size.large);
+        font2 = (builtins.toString config.dot.font.nerd.name)
+          + ":size="
+          + (builtins.toString config.dot.font.size.large);
+        font3 = (builtins.toString config.dot.font.emoji.name)
+          + ":size="
+          + (builtins.toString config.dot.font.size.large);
       };
       "module/battery" = {
-        format-charging = "%{F${nix.accent}} %percentage%%%{F-}";
-        format-discharging = "%{F${nix.text-alternate}}%icon% %percentage%%%{F-}";
+        label-charging = "%{F${nix.accent}} %percentage%%%{F-}";
+        label-discharging = "%{F${nix.text-alternate}}%icon% %percentage%%%{F-}";
         label-full = "%{F${nix.text-alternate}} %percentage%%%{F-}";
       };
       "module/pulseaudio" = {
-        format-volume = "%{F${nix.text-alternate}}%percentage%% {icon}%{F-}";
+        label-volume = "%{F${nix.text-alternate}}%percentage%% {icon}%{F-}";
       };
       "module/temperature" = {
-        format = "%{F${nix.text-alternate}}%temperature-c%°C%{F-}";
-        format-warn = "%{F${nix.accent}}%temperature-c%°C%{F-}";
+        label = "%{F${nix.text-alternate}}%temperature-c%°C%{F-}";
+        label-warn = "%{F${nix.accent}}%temperature-c%°C%{F-}";
       };
       "module/memory" = {
-        format = "%{F${nix.text-alternate}}󰍛 %used%%{F-}";
+        label = "%{F${nix.text-alternate}}󰍛 %used%%{F-}";
       };
       "module/cpu" = {
-        format = "%{F${nix.text-alternate}}󰻠 %usage%%%{F-}";
+        label = "%{F${nix.text-alternate}}󰻠 %usage%%%{F-}";
       };
     };
   };
