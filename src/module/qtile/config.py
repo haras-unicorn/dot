@@ -171,7 +171,7 @@ floating_layout: Floating = Floating(
 )
 
 layout_theme = {
-  "margin": 4,
+  "margin": 6,
   "border_width": 2,
   "single_border_width": 2,
   "border_focus": colors["primary"],
@@ -180,7 +180,12 @@ layout_theme = {
 
 layouts = [MonadTall(**layout_theme)]
 
-screens = [Screen()]
+screens = [Screen(
+    top=bar.Gap(32),
+    right=bar.Gap(8),
+    left=bar.Gap(8),
+    bottom=bar.Gap(8),
+)]
 
 mouse = [
   Drag(
