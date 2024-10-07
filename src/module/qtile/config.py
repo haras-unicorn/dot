@@ -260,4 +260,9 @@ def set_floating(window: Window):
                           False)
 
 
+@hook.subscribe.client_focus
+def set_hint(window):
+    window.window.set_property("IS_FLOATING", str(window.floating), type="STRING", format=8)
+
+
 widget_defaults = {}

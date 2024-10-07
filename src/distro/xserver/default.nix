@@ -11,6 +11,7 @@
 
     "${self}/src/module/sddm"
     "${self}/src/module/qtile"
+    "${self}/src/module/picom"
 
     "${self}/src/module/polybar"
     "${self}/src/module/dunst"
