@@ -73,7 +73,7 @@ let
   windowrules = lib.strings.concatStringsSep
     "\n"
     (builtins.map
-      (windowrule: "floating_layout.float_rules.add(Match(wm_${windowrule.selector}=\"${windowrule.arg}\"))")
+      (windowrule: "floating_layout.float_rules.append(Match(wm_${windowrule.selector}=\"${windowrule.arg}\"))")
       (builtins.filter
         (windowrule: windowrule.rule == "float")
         cfg.windowrules));
