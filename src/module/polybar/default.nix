@@ -10,11 +10,11 @@ let
 in
 {
   home.shared = {
-    home.activation = {
-      polybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${package}/bin/polybar-msg cmd restart
-      '';
-    };
+    # home.activation = {
+    #   polybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    #     ${package}/bin/polybar-msg cmd restart
+    #   '';
+    # };
 
     services.polybar.enable = true;
     services.polybar.config = ./config.ini;
