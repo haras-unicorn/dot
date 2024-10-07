@@ -19,7 +19,7 @@ in
     services.polybar.script = "${pkgs.polybar}/bin/polybar top &>/dev/null & disown %-";
     services.polybar.settings = {
       nix = {
-        background = bootstrap.background.normal.hexa 66;
+        background = bootstrap.background.normal.hex;
         text = bootstrap.text.normal.hex;
         text-alternate = bootstrap.text.alternate.hex;
         primary = bootstrap.primary.normal.hex;
