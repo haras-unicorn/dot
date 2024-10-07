@@ -124,13 +124,6 @@ colors = {
 }
 
 
-def as_transparent(color: str, transparency: str):
-  return "#%s%s" % (
-    transparency[:2].ljust(2, "0"),
-    color.replace("#", "").ljust(6, "0"),
-  )
-
-
 # Defaults
 
 widget_defaults = {
@@ -321,17 +314,6 @@ groups = [
 floating_layout: Floating = Floating(
   float_rules=[
     *Floating.default_float_rules,
-    Match(wm_class="confirmreset"),
-    Match(title=re.compile(".*variable.*"), wm_class="DBeaver"),
-    Match(wm_class="makebranch"),
-    Match(wm_class="maketag"),
-    Match(wm_class="feh"),
-    Match(wm_class="ssh-askpass"),
-    Match(wm_class="pinentry-gtk-2"),
-    Match(wm_class="tk"),
-    Match(title="branchdialog"),
-    Match(title="galculator"),
-    Match(title="Open File"),
   ],
   fullscreen_border_width=0,
   border_width=1,

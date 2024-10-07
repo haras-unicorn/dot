@@ -16,7 +16,9 @@
       desktopEnvironment.windowrules = [{
         rule = "float";
         selector = "class";
+        xselector = "wm_class";
         arg = "nm-connection-editor";
+        xarg = "nm-connection-editor";
       }];
     };
 

@@ -5,7 +5,9 @@
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";
+      xselector = "wm_class";
       arg = "com.saivert.pwvucontrol";
+      xarg = "pwvucontrol";
     }];
   };
 
