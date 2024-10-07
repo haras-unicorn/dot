@@ -258,3 +258,5 @@ def set_floating(window: Window):
   float_rules: List[Match] = floating_layout.float_rules
   return functools.reduce(lambda s, x: s or x.compare(window), float_rules,
                           False)
+
+widget_defaults = {}
