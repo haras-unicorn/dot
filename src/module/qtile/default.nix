@@ -160,6 +160,12 @@ in
         current-layout
       ];
 
+      home.activation = {
+        qtileReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          ${pkgs.qtile}/bin/qtile cmd-obj -o cmd -f reload_config
+        '';
+      };
+
       xdg.configFile."qtile/config.py".text = ''
         colors = {
           "background": "${bootstrap.background.normal.hex}",
