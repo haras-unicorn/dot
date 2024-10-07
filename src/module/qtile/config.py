@@ -162,9 +162,7 @@ layout_theme = {
 
 layouts = [MonadTall(**layout_theme)]
 
-screens = [Screen(
-    top=bar.Gap(56),
-)]
+screens = [Screen(top=bar.Gap(48))]
 
 mouse = [
   Drag(
