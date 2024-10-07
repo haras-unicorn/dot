@@ -49,24 +49,6 @@ focus_on_window_activation = "focus"
 
 wmname = "qtile"
 
-widget_defaults = {
-  "padding_x": 5,
-  "padding_y": 5,
-  "margin_x": 2,
-  "margin_y": 2,
-  "padding": 5,
-  "margin": 5,
-  "background": colors["background"],
-  "foreground": colors["text"],
-  "highlight_method": "text",
-  "urgent_alert_method": "block",
-  "threshold": 80,
-  "urgent_border": colors["danger"],
-  "foreground_alert": colors["danger-alternate"],
-  "markup": False,
-  "rounded": False,
-}
-
 
 def make_goto_group(new_group_name: str):
 
