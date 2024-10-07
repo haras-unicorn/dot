@@ -45,7 +45,7 @@
       mainMonitor = "DVI-D-0";
       monitors = [ "DVI-D-0" "HDMI-0" ];
       networkInterface = "enp3s0";
-      cpuHwmon = "/sys/class/hwmon/hwmon1/temp1_input";
+      cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";
       nvidiaDriver.version = "legacy_470";
       nvidiaDriver.open = false;
 

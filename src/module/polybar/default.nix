@@ -19,7 +19,7 @@ in
     services.polybar.script = "${pkgs.polybar}/bin/polybar \"bar/top\" &>/dev/null & disown %-";
     services.polybar.settings = {
       nix = {
-        transparent = bootstrap.background.normal.rgba 0.4;
+        background = bootstrap.background.normal.rgba 0.4;
         text = bootstrap.text.normal.hex;
         text-alternate = bootstrap.text.alternate.hex;
         primary = bootstrap.primary.normal.hex;
@@ -28,8 +28,9 @@ in
         monitor = config.dot.mainMonitor;
         network-interface = config.dot.networkInterface;
         cpu-hwmon = config.dot.cpuHwmon;
-        font-family = config.dot.font.sans.name;
-        font-size = config.dot.font.size.large;
+        font = (builtins.toString config.dot.font.sans.name)
+          + ":size="
+          + (builtins.toString config.dot.font.size.large);
       };
     };
   };
