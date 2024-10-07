@@ -16,7 +16,7 @@ in
 
     services.polybar.enable = true;
     services.polybar.config = ./config.ini;
-    services.polybar.script = "${pkgs.polybar}/bin/polybar \"bar/top\" &>/dev/null & disown %-";
+    services.polybar.script = "${pkgs.polybar}/bin/polybar top &>/dev/null & disown %-";
     services.polybar.settings = {
       nix = {
         background = bootstrap.background.normal.rgba 0.4;
