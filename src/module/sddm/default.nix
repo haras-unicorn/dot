@@ -24,7 +24,7 @@ in
 
       services.displayManager.sddm.enable = true;
       services.displayManager.sddm.autoNumlock = true;
-      # services.displayManager.sddm.theme = "${pkgs.sweet-nova.src}/kde/sddm";
+      services.displayManager.sddm.theme = "${pkgs.sweet-nova.src}/kde/sddm";
       services.displayManager.defaultSession = "${cfg.session}";
       security.pam.services.sddm.enableGnomeKeyring = true;
     };
