@@ -43,7 +43,7 @@
     dot = {
       ram = 16;
       mainMonitor = "DVI-D-0";
-      mainMonitorWidth = 1080;
+      mainMonitorWidth = 1920;
       monitors = [ "DVI-D-0" ];
       networkInterface = "enp3s0";
       cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";
