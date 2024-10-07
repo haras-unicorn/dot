@@ -164,6 +164,12 @@ layouts = [MonadTall(**layout_theme)]
 
 screens = [Screen(top=bar.Gap(32))]
 
+
+@lazy.function
+def kill(_qtile: Qtile):
+  _qtile.current_window.cmd_kill()  
+
+
 mouse = [
   Drag(
     [super_mod],
