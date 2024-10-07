@@ -31,22 +31,23 @@ in
         primary = bootstrap.primary.normal.hex;
         secondary = bootstrap.secondary.normal.hex;
         accent = bootstrap.accent.normal.hex;
+        danger = bootstrap.danger.normal.hex;
         monitor = config.dot.mainMonitor;
         network-interface = config.dot.networkInterface;
         cpu-hwmon = config.dot.cpuHwmon;
         font = (builtins.toString config.dot.font.sans.name)
-          + ";8"
-          # + (builtins.toString (builtins.floor (32 - config.dot.font.size.large) / 2))
+          + ";2"
+          # + (builtins.toString (32 - config.dot.font.size.large) / 2)
           + ":size="
           + (builtins.toString config.dot.font.size.large);
         font2 = (builtins.toString config.dot.font.nerd.name)
           + ";"
-          # + (builtins.toString (builtins.floor (32 - config.dot.font.size.large) / 2))
+          # + (builtins.toString (32 - config.dot.font.size.large) / 2)
           + ":size="
           + (builtins.toString config.dot.font.size.large);
         font3 = (builtins.toString config.dot.font.emoji.name)
           + ";"
-          # + (builtins.toString (builtins.floor (32 - config.dot.font.size.large) / 2))
+          # + (builtins.toString (32 - config.dot.font.size.large) / 2)
           + ":size="
           + (builtins.toString config.dot.font.size.large);
       };
