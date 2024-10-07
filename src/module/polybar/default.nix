@@ -43,6 +43,7 @@ in
           + (builtins.toString fontSizePt)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2))
+          + "4"
           + "px";
         font2 = (builtins.toString config.dot.font.nerd.name)
           + ":size="
