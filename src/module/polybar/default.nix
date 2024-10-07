@@ -42,20 +42,17 @@ in
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2))
           + "px:size="
-          + (builtins.toString fontSizePt)
-          + "pt";
+          + (builtins.toString fontSizePt);
         font2 = (builtins.toString config.dot.font.nerd.name)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2))
           + "px:size="
-          + (builtins.toString fontSizePt)
-          + "pt";
+          + (builtins.toString fontSizePt);
         font3 = (builtins.toString config.dot.font.emoji.name)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2))
           + "px:size="
-          + (builtins.toString fontSizePt)
-          + "pt";
+          + (builtins.toString fontSizePt);
       };
       "module/battery" = {
         label-charging = "%{F${nix.accent}} %percentage%%{F-}";
