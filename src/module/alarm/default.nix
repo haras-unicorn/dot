@@ -10,7 +10,9 @@
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";
+      xselector = "wm_class";
       arg = "alarm-clock-applet";
+      xarg = "alarm-clock-applet";
     }];
   };
 
