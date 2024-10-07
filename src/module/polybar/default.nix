@@ -50,8 +50,8 @@ in
         label-volume = "%{F${nix.text-alternate}}%percentage%% {icon}%{F-}";
       };
       "module/temperature" = {
-        label = "%{F${nix.text-alternate}}%temperature-c%°C%{F-}";
-        label-warn = "%{F${nix.accent}}%temperature-c%°C%{F-}";
+        label = "%{F${nix.text-alternate}}%temperature-c%%{F-}";
+        label-warn = "%{F${nix.accent}}%temperature-c%%{F-}";
       };
       "module/memory" = {
         label = "%{F${nix.text-alternate}}󰍛 %used%%{F-}";
