@@ -10,6 +10,8 @@ let
 
   bootstrap = config.dot.colors.bootstrap;
 
+  package = pkgs.qtile-unwrapped;
+
   current-layout = pkgs.writeShellApplication {
     name = "current-layout";
     runtimeInputs = [ pkgs.hyprland pkgs.jq ];
@@ -148,6 +150,7 @@ in
 
     system = {
       services.xserver.windowManager.qtile.enable = true;
+      services.xserver.windowManager.qtile.package = package;
       services.xserver.windowManager.qtile.extraPackages =
         python3Packages: with python3Packages; [
           psutil
@@ -162,7 +165,7 @@ in
 
       home.activation = {
         qtileReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          ${pkgs.qtile}/bin/qtile cmd-obj -o cmd -f reload_config
+          ${package}/bin/qtile cmd-obj -o cmd -f reload_config
         '';
       };
 
