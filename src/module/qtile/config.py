@@ -259,4 +259,5 @@ def set_floating(window: Window):
   return functools.reduce(lambda s, x: s or x.compare(window), float_rules,
                           False)
 
+
 widget_defaults = {}
