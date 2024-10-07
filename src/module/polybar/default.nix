@@ -26,7 +26,7 @@ in
     services.polybar.settings = rec {
       nix = {
         width = "${builtins.toString (config.dot.mainMonitorWidth - 16)}px";
-        transparent = bootstrap.background.normal.ahex "AA";
+        transparent = bootstrap.background.normal.ahex "44";
         background = bootstrap.background.normal.hex;
         background-alternate = bootstrap.background.alternate.hex;
         background-inverted = bootstrap.background.inverted.hex;
