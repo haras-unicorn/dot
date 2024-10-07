@@ -60,7 +60,7 @@ in
     programs.wlogout.style = ''
       * {
         font-family: '${config.dot.font.sans.name}';
-        font-size: ${builtins.toString config.dot.font.size.large}px;
+        font-size: ${builtins.toString config.dot.font.size.large}pt;
       }
 
       #lock {

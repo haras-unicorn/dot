@@ -59,8 +59,11 @@
       };
       mainMonitorWidth = lib.mkOption {
         type = lib.types.int;
-        description = "For configuring the top bar";
         default = 1920;
+      };
+      mainMonitorDpi = lib.mkOption {
+        type = lib.types.int;
+        default = 96;
       };
       monitors = lib.mkOption {
         type = lib.types.listOf lib.types.str;

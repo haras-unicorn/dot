@@ -26,6 +26,7 @@
       file # NOTE: get file info
       stress-ng # NOTE: stability test
       mprime # NOTE: stability test
+      xorg.xdpyinfo # NOTE: monitor info
     ];
   };
 }
