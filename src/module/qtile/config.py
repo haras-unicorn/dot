@@ -162,7 +162,7 @@ layout_theme = {
 
 layouts = [MonadTall(**layout_theme)]
 
-screens = [Screen(top=bar.Gap(32))]
+screens = [Screen(top=bar.Gap(40))]
 
 
 @lazy.function
