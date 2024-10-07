@@ -41,19 +41,19 @@ in
         font = (builtins.toString config.dot.font.sans.name)
           + ":size="
           + (builtins.toString fontSizePt)
-          + ";"
+          + "pt;"
           + (builtins.toString ((32 - fontSizePx) / 2))
           + "px";
         font2 = (builtins.toString config.dot.font.nerd.name)
           + ":size="
           + (builtins.toString fontSizePt)
-          + ";"
+          + "pt;"
           + (builtins.toString ((32 - fontSizePx) / 2))
           + "px";
         font3 = (builtins.toString config.dot.font.emoji.name)
           + ":size="
           + (builtins.toString fontSizePt)
-          + ";"
+          + "pt;"
           + (builtins.toString ((32 - fontSizePx) / 2))
           + "px";
       };
