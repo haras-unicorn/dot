@@ -45,6 +45,7 @@
     dot = {
       ram = 16;
       mainMonitor = "eDP-1";
+      mainMonitorWidth = 1080;
       monitors = [ "eDP-1" ];
       networkInterface = "wlp1s0";
       cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";

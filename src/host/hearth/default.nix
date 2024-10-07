@@ -56,6 +56,7 @@
     dot = {
       ram = 32;
       mainMonitor = "DP-3";
+      mainMonitorWidth = 1080;
       monitors = [ "DP-3" ];
       networkInterface = "enp37s0";
       cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";

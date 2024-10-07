@@ -43,7 +43,8 @@
     dot = {
       ram = 16;
       mainMonitor = "DVI-D-0";
-      monitors = [ "DVI-D-0" "HDMI-0" ];
+      mainMonitorWidth = 1080;
+      monitors = [ "DVI-D-0" ];
       networkInterface = "enp3s0";
       cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";
       nvidiaDriver.version = "legacy_470";
