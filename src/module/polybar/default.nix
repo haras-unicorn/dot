@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, ... }:
 
 # TODO: logout menu
 # TODO: switch-layout, current-layout and logout should be through nix
@@ -10,12 +10,6 @@ let
 in
 {
   home.shared = {
-    # home.activation = {
-    #   polybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    #     ${package}/bin/polybar-msg cmd restart
-    #   '';
-    # };
-
     services.polybar.enable = true;
     services.polybar.config = ./config.ini;
     services.polybar.package = package;
