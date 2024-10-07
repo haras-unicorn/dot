@@ -4,14 +4,6 @@ let
   bootstrap = config.dot.colors.bootstrap;
 in
 {
-  shared = {
-    dot = {
-      desktopEnvironment.sessionStartup = [
-        "${pkgs.waybar}/bin/waybar"
-      ];
-    };
-  };
-
   home.shared = {
     xdg.configFile."waybar/colors.css".text = ''
       @define-color transparent ${bootstrap.background.normal.rgba 0.4};
@@ -29,6 +21,7 @@ in
     };
 
     programs.waybar.enable = true;
+    programs.waybar.systemd.enable = true;
     programs.waybar.settings = [
       (pkgs.lib.attrsets.recursiveUpdate
         (builtins.fromJSON (builtins.readFile ./config.json))
