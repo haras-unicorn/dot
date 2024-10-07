@@ -7,6 +7,9 @@ let
   bootstrap = config.dot.colors.bootstrap;
 
   package = pkgs.polybarFull;
+
+  fontSizePt = config.dot.font.size.large;
+  fontSizePx = fontSizePt * config.dot.mainMonitorDpi / 72;
 in
 {
   home.shared = {
@@ -37,22 +40,22 @@ in
         cpu-hwmon = config.dot.cpuHwmon;
         font = (builtins.toString config.dot.font.sans.name)
           + ";"
-          + (builtins.toString ((32 - config.dot.font.size.large) / 2))
+          + (builtins.toString ((32 - fontSizePx) / 2))
           + "px:size="
-          + (builtins.toString config.dot.font.size.large)
-          + "px";
+          + (builtins.toString fontSizePt)
+          + "pt";
         font2 = (builtins.toString config.dot.font.nerd.name)
           + ";"
-          + (builtins.toString ((32 - config.dot.font.size.large) / 2))
+          + (builtins.toString ((32 - fontSizePx) / 2))
           + "px:size="
-          + (builtins.toString config.dot.font.size.large)
-          + "px";
+          + (builtins.toString fontSizePt)
+          + "pt";
         font3 = (builtins.toString config.dot.font.emoji.name)
           + ";"
-          + (builtins.toString ((32 - config.dot.font.size.large) / 2))
+          + (builtins.toString ((32 - fontSizePx) / 2))
           + "px:size="
-          + (builtins.toString config.dot.font.size.large)
-          + "px";
+          + (builtins.toString fontSizePt)
+          + "pt";
       };
       "module/battery" = {
         label-charging = "%{F${nix.accent}} %percentage%%{F-}";

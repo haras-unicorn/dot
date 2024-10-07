@@ -46,6 +46,7 @@
       ram = 16;
       mainMonitor = "eDP-1";
       mainMonitorWidth = 1920;
+      mainMonitorDpi = 96;
       monitors = [ "eDP-1" ];
       networkInterface = "wlp1s0";
       cpuHwmon = "/sys/class/hwmon/hwmon0/temp1_input";

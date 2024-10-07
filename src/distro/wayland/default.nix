@@ -63,6 +63,9 @@
       };
       mainMonitorDpi = lib.mkOption {
         type = lib.types.int;
+        description = ''
+          xdpyinfo | grep dots # take average
+        '';
         default = 96;
       };
       monitors = lib.mkOption {
