@@ -185,6 +185,14 @@ in
         widget_defaults["fontsize"] = ${builtins.toString config.dot.font.size.medium}
         widget_defaults["icon_size"] = ${builtins.toString config.dot.font.size.medium}
 
+        keys.append(
+            Key(
+                ["mod4"],
+                "space",
+                lazy.spawn("${switch-layout}/bin/switch-layout")
+            )
+        )
+
         @hook.subscribe.startup_once
         def startup_once():
             lazy.spawn("systemctl --user import-environment PATH")
