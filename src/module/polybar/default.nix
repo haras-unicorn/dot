@@ -54,7 +54,7 @@ in
         label-warn = "%{F${nix.accent}}%temperature-c%%{F-}";
       };
       "module/memory" = {
-        label = "%{F${nix.text-alternate}} %percentage%%{F-}";
+        label = "%{F${nix.text-alternate}} %used%%{F-}";
       };
       "module/cpu" = {
         label = "%{F${nix.text-alternate}} %percentage%%{F-}";
