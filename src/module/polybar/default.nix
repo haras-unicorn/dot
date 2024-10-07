@@ -37,17 +37,17 @@ in
         cpu-hwmon = config.dot.cpuHwmon;
         font = (builtins.toString config.dot.font.sans.name)
           + ";"
-          + (builtins.toString (32 - config.dot.font.size.large) / 2)
+          + (builtins.toString ((32 - config.dot.font.size.large) / 2))
           + "px:size="
           + (builtins.toString config.dot.font.size.large);
         font2 = (builtins.toString config.dot.font.nerd.name)
           + ";"
-          + (builtins.toString (32 - config.dot.font.size.large) / 2)
+          + (builtins.toString ((32 - config.dot.font.size.large) / 2))
           + "px:size="
           + (builtins.toString config.dot.font.size.large);
         font3 = (builtins.toString config.dot.font.emoji.name)
           + ";"
-          + (builtins.toString (32 - config.dot.font.size.large) / 2)
+          + (builtins.toString ((32 - config.dot.font.size.large) / 2))
           + "px:size="
           + (builtins.toString config.dot.font.size.large);
       };
