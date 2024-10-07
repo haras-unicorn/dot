@@ -14,6 +14,8 @@ in
     };
 
     services.picom.enable = true;
+    services.picom.settings = lib.mkForce { };
+    services.picom.extraArgs = [ "--legacy-backends" ];
 
     xdg.configFile."picom/picom.conf".text = ''
       ${builtins.readFile ./picom.conf}
