@@ -7,6 +7,8 @@ let
 
   toHexaColor = x: a: "${x}${builtins.toString a}";
 
+  toAhexColor = x: a: "#${builtins.toString a}${builtins.substring 1 (-1) x}";
+
   toHyprColor = x: "0xff${builtins.substring 1 (-1) x}";
 
   toHyprAColor = x: a: "0x${a}${builtins.substring 1 (-1) x}";
@@ -47,6 +49,7 @@ let
           then {
             hex = v;
             hexa = toHexaColor v;
+            ahex = toAhexColor v;
             hypr = toHyprColor v;
             hypra = toHyprAColor v;
             vivid = toVividColor v;
