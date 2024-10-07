@@ -36,7 +36,7 @@ in
         network-interface = config.dot.networkInterface;
         cpu-hwmon = config.dot.cpuHwmon;
         font = (builtins.toString config.dot.font.sans.name)
-          + ";2"
+          # + ";2"
           # + (builtins.toString (32 - config.dot.font.size.large) / 2)
           + ":size="
           + (builtins.toString config.dot.font.size.large);
