@@ -20,7 +20,7 @@ in
 
     home.activation = {
       fehReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${wallpaper}/bin/wallpaper  '${config.dot.wallpaper}' || true
+        ${wallpaper}/bin/wallpaper '${config.dot.wallpaper}' || true
       '';
     };
   };
