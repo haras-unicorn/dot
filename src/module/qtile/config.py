@@ -171,7 +171,7 @@ floating_layout: Floating = Floating(
 )
 
 layout_theme = {
-  "margin": 6,
+  "margin": 8,
   "border_width": 2,
   "single_border_width": 2,
   "border_focus": colors["primary"],
