@@ -2,9 +2,21 @@
 
 let
   bootstrap = config.dot.colors.bootstrap;
+
+  logout = pkgs.writeShellApplication {
+    name = "logout";
+    runtimeInputs = [ pkgs.wlogout ];
+    text = ''
+      exec wlogout -p layer-shell
+    '';
+  };
 in
 {
   home.shared = {
+    home.packages = [
+      logout
+    ];
+
     programs.wlogout.enable = true;
     programs.wlogout.layout = [
       {

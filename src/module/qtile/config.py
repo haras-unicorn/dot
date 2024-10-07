@@ -28,36 +28,6 @@ from libqtile.widget.textbox import TextBox
 from libqtile.widget.battery import Battery
 from libqtile.widget.backlight import Backlight
 
-# IDs
-
-nvidia_bus_id = os.environ.get("NVIDIA_BUS_ID", None)
-net_interface_id = os.environ.get("NET_INTERFACE", None)
-cpu_sensor_tag = os.environ.get("CPU_SENSOR_TAG", None)
-display_brightness_device = os.environ.get("DISPLAY_BRIGHTNESS_DEVICE", None)
-keyboard_brightness_device = os.environ.get("KEYBOARD_BRIGHTNESS_DEVICE", None)
-
-# Locations
-
-home_dir = os.path.expanduser("~")
-qtile_config_dir = os.path.join(home_dir, ".config", "qtile")
-qtile_config_loc = os.path.join(qtile_config_dir, "config.py")
-
-rofi_config_dir = os.path.join(home_dir, ".config", "rofi")
-rofi_launcher_loc = os.path.join(rofi_config_dir, "launcher.rasi")
-
-user_dir = os.path.join(home_dir, "user")
-pictures_dir = os.path.join(user_dir, "pictures")
-screenshot_dir = os.path.join(pictures_dir, "screenshots")
-keymap_dir = os.path.join(pictures_dir, "keymap")
-
-assets_dir = os.path.join(home_dir, ".local", "share")
-
-wallpaper_dir = os.path.join(assets_dir, "wallpapers")
-wallpaper_loc = os.path.join(wallpaper_dir, "magical-forest.jpg")
-lock_wallpaper_loc = os.path.join(wallpaper_dir, "cat-roof-city-neon.jpg")
-
-# Special keys
-
 super_mod = "mod4"
 control = "control"
 shift = "shift"
@@ -66,8 +36,6 @@ enter = "Return"
 escape = "Escape"
 tab = "Tab"
 print_screen = "Print"
-
-# Misc
 
 main = None
 
@@ -79,52 +47,7 @@ auto_fullscreen = True
 
 focus_on_window_activation = "focus"
 
-# doesn't mean anything
-wmname = "LG3D"
-
-termianl_prefix = "kitty -e nu"
-
-
-def terminal_wrap(x):
-  return "kitty -e nu -c '" + x + "'"
-
-
-# Colors
-
-# Material Palenight
-# https://github.com/samsebastien/windows-terminal-palenight
-colors = {
-  "transparent": "#00" + "#000000"[1:],
-  "background": "#29" + "#191349"[1:],
-  "foreground": "#bf" + "#c7d5ff"[1:],
-  "black": "#132339",
-  "white": "#ffddff",
-  "blue": "#82aaff",
-  "cyan": "#89ddff",
-  "green": "#c3e88d",
-  "magenta": "#c792ea",
-  "red": "#ff5874",
-  "yellow": "#ffeb95",
-  "brightBlack": "#3c435e",
-  "brightWhite": "#ffffff",
-  "brightBlue": "#92baff",
-  "brightCyan": "#99fdff",
-  "brightGreen": "#c3f88d",
-  "brightMagenta": "#d792fa",
-  "brightRed": "#ff6884",
-  "brightYellow": "#fffba5",
-  "dimBlack": "#000200",
-  "dimWhite": "#ddccdd",
-  "dimBlue": "#72baff",
-  "dimCyan": "#79edff",
-  "dimGreen": "#b3d87d",
-  "dimMagenta": "#b782da",
-  "dimRed": "#ff4884",
-  "dimYellow": "#ffdb85",
-}
-
-
-# Defaults
+wmname = "qtile"
 
 widget_defaults = {
   "padding_x": 5,
@@ -134,60 +57,15 @@ widget_defaults = {
   "padding": 5,
   "margin": 5,
   "background": colors["background"],
-  "foreground": colors["foreground"],
+  "foreground": colors["text"],
   "highlight_method": "text",
   "urgent_alert_method": "block",
   "threshold": 80,
-  "urgent_border": colors["red"],
-  "foreground_alert": colors["red"],
+  "urgent_border": colors["danger"],
+  "foreground_alert": colors["danger-alternate"],
   "markup": False,
   "rounded": False,
 }
-
-# Lazy
-
-
-@lazy.function
-def lock(_: Qtile):
-  os.system("betterlockscreen --lock")
-
-
-@lazy.function
-def restart_qtile(_qtile: Qtile):
-  _qtile.cmd_restart()
-
-
-@lazy.function
-def kill(_qtile: Qtile):
-  _qtile.current_window.cmd_kill()
-
-
-@lazy.function
-def random_wallpaper(_: Qtile):
-  os.system("systemctl start --user random-background")
-
-
-@lazy.function
-def increase_display_brightness(_: Qtile):
-  os.system(f"brightnessctl --device='{display_brightness_device}' set +2%")
-
-
-@lazy.function
-def decrease_display_brightness(_: Qtile):
-  os.system(f"brightnessctl --device='{display_brightness_device}' set 2%-")
-
-
-@lazy.function
-def increase_keyboard_brightness(_: Qtile):
-  os.system(f"brightnessctl --device='{keyboard_brightness_device}' set +2%")
-
-
-@lazy.function
-def decrease_keyboard_brightness(_: Qtile):
-  os.system(f"brightnessctl --device='{keyboard_brightness_device}' set 2%-")
-
-
-# Lazy factories
 
 
 def make_goto_group(new_group_name: str):
@@ -246,35 +124,6 @@ def make_swap_group_content(new_group_name: str):
   return swap_group_content
 
 
-# Callbacks
-
-
-def show_net_config():
-  qtile.cmd_spawn("nm-connection-editor")
-
-
-def show_nvidia_temp():
-  qtile.cmd_spawn("corectrl")
-
-
-def show_cpu_temp():
-  qtile.cmd_spawn("corectrl")
-
-
-def show_gpu_config():
-  qtile.cmd_spawn("nvidia-settings")
-
-
-def show_cpu_config():
-  qtile.cmd_spawn("corectrl")
-
-
-def show_process_list():
-  qtile.cmd_spawn(terminal_wrap("htop"))
-
-
-# Groups
-
 visible_group_names = [
   "1",
   "2",
@@ -317,163 +166,21 @@ floating_layout: Floating = Floating(
   ],
   fullscreen_border_width=0,
   border_width=1,
-  border_focus=colors["dimCyan"],
-  border_normal=colors["dimMagenta"],
+  border_focus=colors["primary"],
+  border_normal=colors["accent"],
 )
 
 layout_theme = {
   "margin": 4,
   "border_width": 2,
   "single_border_width": 2,
-  "border_focus": colors["dimCyan"],
-  "border_normal": colors["dimMagenta"],
+  "border_focus": colors["primary"],
+  "border_normal": colors["accent"],
 }
 
 layouts = [MonadTall(**layout_theme)]
 
-screens = [
-  Screen(
-    top=bar.Bar(
-      widgets=[
-        GroupBox(
-          visible_groups=visible_group_names,
-          this_current_screen_border=colors["yellow"],
-          this_screen_border=colors["yellow"],
-          other_current_screen_border=colors["yellow"],
-          other_screen_border=colors["yellow"],
-          active=colors["green"],
-          inactive=colors["magenta"],
-          disable_drag=True,
-        ),
-        TextBox(
-          text="|",
-          foreground=colors["blue"],
-        ),
-        TaskList(
-          padding_x=5,
-          padding_y=0,
-          margin_x=5,
-          margin_y=0,
-          title_width_method="uniform",
-          max_title_width=200,
-          foreground=colors["magenta"],
-          border=colors["cyan"],
-          txt_floating="🗗",
-          txt_minimized=">_",
-        ),
-        Systray(),
-      ],
-      size=25,
-      background=colors["transparent"],
-    ),
-    bottom=bar.Bar(
-      widgets=[
-        Clock(
-          format="%Y %m (%b) %d (%a) %H:%M:%S",
-          foreground=colors["magenta"],
-        ),
-        TextBox(
-          text="|",
-          foreground=colors["blue"],
-        ),
-        KeyboardLayout(
-          foreground=colors["cyan"],
-          configured_keyboards=["us", "hr"],
-        ),
-        TextBox(
-          text="|",
-          foreground=colors["blue"],
-        ),
-        CapsNumLockIndicator(foreground=colors["green"], ),
-        Chord(foreground=colors["yellow"]),
-        Spacer(length=bar.STRETCH),
-        # configure laptop things
-        *([
-          Battery(foreground=colors["green"], ),
-          Backlight(
-            foreground=colors["green"],
-            backlight_name=display_brightness_device,
-          ),
-          TextBox(
-            text="|",
-            foreground=colors["blue"],
-          ),
-        ] if display_brightness_device is not None else []),
-        *([
-          Net(
-            interface=[net_interface_id],
-            format="{down:>8}↓{up:>8}↑",
-            foreground=colors["cyan"],
-            mouse_callbacks={
-              "Button1": show_net_config,
-            },
-          ),
-          TextBox(
-            text="|",
-            foreground=colors["blue"],
-          ),
-        ] if net_interface_id is not None else []),
-        TextBox(text="Temp", foreground=colors["foreground"]),
-        *([
-          NvidiaSensors(
-            gpu_bus_id=nvidia_bus_id,
-            format="[GPU: {temp}°C]",
-            foreground=colors["yellow"],
-            mouse_callbacks={
-              "Button1": show_nvidia_temp,
-            },
-          ),
-        ] if nvidia_bus_id is not None else []),
-        ThermalSensor(
-          fmt="[CPU: {}]",
-          foreground=colors["yellow"],
-          mouse_callbacks={
-            "Button1": show_cpu_temp,
-          },
-          tag_sensor=cpu_sensor_tag,
-        ),
-        TextBox(
-          text="|",
-          foreground=colors["blue"],
-        ),
-        TextBox(text="Perf", foreground=colors["foreground"]),
-        *([
-          NvidiaSensors(
-            gpu_bus_id=nvidia_bus_id,
-            format="[GPU: {perf}]",
-            foreground=colors["green"],
-            mouse_callbacks={
-              "Button1": show_gpu_config,
-            },
-          ),
-        ] if nvidia_bus_id is not None else []),
-        CPU(
-          format="[CPU:{freq_current: 1.1f}GHz " + "{load_percent: 2.1f}%]",
-          foreground=colors["red"],
-          mouse_callbacks={
-            "Button1": show_cpu_config,
-          },
-        ),
-        TextBox(
-          text="|",
-          foreground=colors["blue"],
-        ),
-        Memory(
-          format="Mem: {MemPercent: 2.0f}% " + "Swap: {SwapPercent: 2.0f}%",
-          measure_mem="G",
-          mouse_callbacks={
-            "Button1": show_process_list,
-          },
-          foreground=colors["magenta"],
-        ),
-      ],
-      size=25,
-      background=colors["transparent"],
-    ),
-  ),
-]
-
-# Mouse
+screens = [Screen()]
 
 mouse = [
   Drag(

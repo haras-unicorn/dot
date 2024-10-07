@@ -1,5 +1,8 @@
 { pkgs, config, lib, ... }:
 
+# TODO: config paths for executables
+# TODO: switch-layout, current-layout and logout should be through nix
+
 let
   bootstrap = config.dot.colors.bootstrap;
 in

@@ -12,6 +12,7 @@
     "${self}/src/module/sddm"
     "${self}/src/module/qtile"
 
+    "${self}/src/module/polybar"
     "${self}/src/module/dunst"
     "${self}/src/module/rofi"
     "${self}/src/module/redshift"

@@ -1,22 +1,36 @@
-{ lib, config, ... }:
+{ pkgs, lib, config, ... }:
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
 # WORKAROUND: these commands on de startup
 # systemctl --user import-environment PATH
 # systemctl --user restart xdg-desktop-portal.service
 
-# TODO: layout command
-# TODO: use windowrules
-# TODO: logout button (xfce4-session-logout)?
-# TODO: tint-gear
-# TODO: resize submap
-# TODO: hardware vars
-# TODO: location vars
-# TODO: fonts
-# TODO: callbacks for widgets??
-
 let
   cfg = config.dot.desktopEnvironment;
+
+  bootstrap = config.dot.colors.bootstrap;
+
+  current-layout = pkgs.writeShellApplication {
+    name = "current-layout";
+    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
+    text = ''
+      # hyprctl devices -j | \
+      #   jq -r '.keyboards[] | select(.name | contains("power") | not) | .active_keymap' | \
+      #   head -n 1
+    '';
+  };
+
+  switch-layout = pkgs.writeShellApplication {
+    name = "switch-layout";
+    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
+    text = ''
+      # hyprctl devices -j | \
+      #   jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
+      #   xargs -IR sh -c 'hyprctl switchxkblayout R next &>/dev/null'
+
+      ${current-layout}/bin/current-layout
+    '';
+  };
 
   startup = lib.strings.concatStringsSep
     "\n"
@@ -141,7 +155,21 @@ in
     };
 
     home.shared = {
+      home.packages = [
+        switch-layout
+        current-layout
+      ];
+
       xdg.configFile."qtile/config.py".text = ''
+        colors = {
+          "background": "${bootstrap.background.normal.hex}",
+          "text": "${bootstrap.text.normal.hex}",
+          "danger": "${bootstrap.danger.normal.hex}",
+          "danger-alternate": "${bootstrap.danger.alternate.hex}",
+          "primary": "${bootstrap.primary.normal.hex}",
+          "accent": "${bootstrap.accent.normal.hex}"
+        }
+
         ${builtins.readFile ./config.py}
 
         widget_defaults["font"] = "${builtins.toString config.dot.font.sans.name}"
