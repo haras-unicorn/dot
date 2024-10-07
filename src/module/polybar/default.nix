@@ -17,6 +17,8 @@ in
     services.polybar.settings = rec {
       nix = {
         background = bootstrap.background.normal.hex;
+        background-alternate = bootstrap.background.alternate.hex;
+        background-inverted = bootstrap.background.inverted.hex;
         text = bootstrap.text.normal.hex;
         text-alternate = bootstrap.text.alternate.hex;
         primary = bootstrap.primary.normal.hex;
