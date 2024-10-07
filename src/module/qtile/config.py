@@ -140,6 +140,7 @@ groups = [
     label=group_labels[i],
     layout="monadtall",
     persist=True,
+    position=i,
   ) for i in range(len(group_names))
 ]
 
