@@ -2,6 +2,7 @@
 
 # TODO: https://github.com/mzuther/Squeezer
 # FIXME: surge-XT wrong hash
+# FIXME: distrho build error
 
 {
   home.shared = {
@@ -14,7 +15,7 @@
       supercollider
       helio-workstation
 
-      distrho
+      # distrho
       lsp-plugins
       # surge-XT
       cardinal
