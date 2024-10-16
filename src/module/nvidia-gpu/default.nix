@@ -8,6 +8,7 @@
 
 # FIXME: https://github.com/NixOS/nixpkgs/issues/306276
 # FIXME: python-dependency-injector broken with invokeai
+# FIXME: gpt4all build error
 # TODO: make modprobe better
 
 {
@@ -67,7 +68,7 @@
         glxinfo # NOTE: glxinfo and eglinfo
         nvtopPackages.full # NOTE: check GPU usage
         # nixified-ai.packages.${system}.invokeai-nvidia # NOTE: stable diffusion
-        gpt4all-cuda
+        # gpt4all-cuda
       ];
 
       networking.firewall.allowedTCPPorts = [
