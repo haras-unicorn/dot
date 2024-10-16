@@ -6,7 +6,7 @@ let
   dbeaver = pkgs.symlinkJoin {
     name = "dbeaver";
     paths = [
-      pkgs.dbeaver
+      pkgs.dbeaver-bin
     ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
