@@ -49,6 +49,7 @@ in
     "${self}/src/module/xarchiver"
     "${self}/src/module/spotify"
     "${self}/src/module/rdp"
+    "${self}/src/module/dbeaver"
 
     "${self}/src/module/llama"
     "${self}/src/module/piper"
@@ -160,7 +161,6 @@ in
         feh # NOTE: image viewer
         mpv # NOTE: video viewer
         pinta # NOTE: image manipulation
-        dbeaver-bin # NOTE: db viewer
         angryipscanner # NOTE: network scanner
         via # NOTE: keyboard configurator
         # polychromatic # NOTE: razer device configurator
