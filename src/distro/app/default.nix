@@ -53,7 +53,7 @@ in
     "${self}/src/module/piper"
     "${self}/src/module/whisper"
     "${self}/src/module/pinokio"
-    "${self}/src/module/aider"
+    # "${self}/src/module/aider"
 
     # Terminals
     "${self}/src/module/kitty"

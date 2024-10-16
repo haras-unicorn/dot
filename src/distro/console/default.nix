@@ -17,7 +17,7 @@ in
     "${self}/src/module/pinentry"
     "${self}/src/module/gpg"
     "${self}/src/module/ssh"
-    "${self}/src/module/cloud"
+    # "${self}/src/module/cloud"
 
     "${self}/src/module/direnv"
     "${self}/src/module/starship"
