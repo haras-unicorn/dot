@@ -1,6 +1,7 @@
 { self, lib, pkgs, config, ... }:
 
 # FIXME: rpi-imager https://github.com/hyprwm/Hyprland/issues/4614
+# FIXME: polychromatic build error
 
 # TODO: firmware tui as part of diag
 # TODO: https://github.com/NixOS/nixpkgs/issues/232266
@@ -162,7 +163,7 @@ in
         dbeaver-bin # NOTE: db viewer
         angryipscanner # NOTE: network scanner
         via # NOTE: keyboard configurator
-        polychromatic # NOTE: razer device configurator
+        # polychromatic # NOTE: razer device configurator
         netflix # NOTE: video streaming
         gimp # NOTE: image manipulation
         inkscape # NOTE: vector graphics design
