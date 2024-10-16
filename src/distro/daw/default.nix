@@ -3,6 +3,7 @@
 # TODO: https://github.com/mzuther/Squeezer
 # FIXME: surge-XT wrong hash
 # FIXME: distrho build error
+# FIXME: helm build error
 
 {
   home.shared = {
@@ -23,7 +24,7 @@
       paulstretch
       zynaddsubfx
       yoshimi
-      helm
+      # helm
       vital
       geonkick
       wolf-shaper
