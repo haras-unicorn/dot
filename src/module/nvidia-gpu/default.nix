@@ -67,11 +67,7 @@
         glxinfo # NOTE: glxinfo and eglinfo
         nvtopPackages.full # NOTE: check GPU usage
         # nixified-ai.packages.${system}.invokeai-nvidia # NOTE: stable diffusion
-        (gpt4all-cuda.overrideAttrs (final: prev: {
-          nativeBuildInputs = (prev.nativeBuildInputs or [ ]) ++ [
-            pkgs.autoAddDriverRunpath
-          ];
-        })) # NOTE: llms on CUDA
+        gpt4all-cuda
       ];
 
       networking.firewall.allowedTCPPorts = [
