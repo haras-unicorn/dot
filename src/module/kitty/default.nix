@@ -38,7 +38,7 @@ in
         bold_italic_font ${font.nerd.name}
         font_size        ${builtins.toString font.size.medium}
 
-        background_opacity 0.5
+        background_opacity 0.8
 
         foreground ${bootstrap.text.normal.hex}
         background ${bootstrap.background.normal.hex}
