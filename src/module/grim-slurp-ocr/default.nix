@@ -3,7 +3,7 @@
 let
   screenshot = pkgs.writeShellApplication {
     name = "screenshot";
-    runtimeInputs = [ pkgs.grim pkgs.slurp pkgs.tesseract pkgs.easyocr pkgs.wl-clipboard ];
+    runtimeInputs = [ pkgs.grim pkgs.slurp pkgs.tesseract pkgs.wl-clipboard ];
     text = ''
       type="png"
       dir="${config.xdg.userDirs.pictures}/screenshots"
@@ -60,6 +60,6 @@ in
   };
 
   home.shared = {
-    home.packages = with pkgs; [ grim slurp tesseract easyocr screenshot ];
+    home.packages = with pkgs; [ grim slurp tesseract screenshot ];
   };
 }
