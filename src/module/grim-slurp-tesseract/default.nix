@@ -25,7 +25,7 @@ let
       # shellcheck disable=SC2199
       if [[ "$@" == *"--ocr"* ]]; then
         # NOTE: tesseract adds the .txt extension
-        tesseract "$image" "$dir/$name"
+        tesseract --psm 1 --oem 1 "$image" "$dir/$name"
         trimmed="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' < "$text")";
         echo "$trimmed" | wl-copy -t "text/plain"
         notify-send CHOMP! "copied '$trimmed' to clipboard" --transient
