@@ -30,7 +30,7 @@
 
     "${self}/src/module/obs-studio"
     "${self}/src/module/kooha"
-    "${self}/src/module/grim-slurp-tesseract"
+    "${self}/src/module/grim-slurp-ocr"
     "${self}/src/module/miraclecast"
     "${self}/src/module/gstreamer"
     "${self}/src/module/mangohud"
