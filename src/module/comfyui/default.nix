@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ nix-comfyui, pkgs, ... }:
 
 {
   home.shared = {
     home.packages = [
-      pkgs.comfyuiPackages.comfyui-with-extensions
+      nix-comfyui.packages.${pkgs.system}.cuda.comfyui
     ];
   };
 }
