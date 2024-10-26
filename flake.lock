@@ -317,15 +317,15 @@
         "poetry2nix": "poetry2nix"
       },
       "locked": {
-        "lastModified": 1724630400,
-        "narHash": "sha256-40BMcGmRNbdBs+vc+bGIsuJJOyZjFiuRZpIW8yfyOqA=",
-        "owner": "dyscorv",
+        "lastModified": 1726520528,
+        "narHash": "sha256-jyvXEVOF+qwMVmAjmyMA1TUI0m+nW5clunnvbzE73Oo=",
+        "owner": "quag",
         "repo": "nix-comfyui",
-        "rev": "b80947a30a0ec9c683cbfb840f689e18c562fc3f",
+        "rev": "557a1d940a54e7be6d7fe9e6cc08707400f7e950",
         "type": "github"
       },
       "original": {
-        "owner": "dyscorv",
+        "owner": "quag",
         "repo": "nix-comfyui",
         "type": "github"
       }
