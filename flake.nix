@@ -40,7 +40,9 @@
 
     nix-colors.url = "github:Misterio77/nix-colors";
 
-    nix-comfyui.url = "github:quag/nix-comfyui";
+    nix-comfyui.url = "github:haras-unicorn/nix-comfyui";
+    nix-comfyui.inputs.nixpkgs.follows = "nixpkgs";
+    nix-comfyui.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { self, ... } @ inputs:

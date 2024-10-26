@@ -6,8 +6,8 @@
 , nixos-wsl
 , sops-nix
 , nix-index-database
-, nix-comfyui
 , dot
+, nix-comfyui
 , ...
 } @ inputs:
 
@@ -87,7 +87,6 @@ let
     };
     nixpkgs.overlays = [
       nix-vscode-extensions.overlays.default
-      nix-comfyui.overlays.default
     ];
   });
 
