@@ -55,6 +55,7 @@ in
     "${self}/src/module/piper"
     "${self}/src/module/whisper"
     "${self}/src/module/pinokio"
+    "${self}/src/module/comfyui"
     # "${self}/src/module/aider"
 
     # Terminals
