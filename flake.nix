@@ -39,6 +39,10 @@
     tint-gear.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-colors.url = "github:Misterio77/nix-colors";
+
+    nix-comfyui.url = "github:dyscorv/nix-comfyui";
+    nix-comfyui.inputs.nixpkgs.follows = "nixpkgs";
+    nix-comfyui.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = { self, ... } @ inputs:
