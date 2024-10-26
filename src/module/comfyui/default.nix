@@ -3,7 +3,7 @@
 {
   home.shared = {
     home.packages = [
-      nix-comfyui.packages.${pkgs.system}.cuda.comfyui
+      nix-comfyui.packages.${pkgs.system}.cuda-comfyui
     ];
   };
 }
