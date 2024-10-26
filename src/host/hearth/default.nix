@@ -55,10 +55,10 @@
   shared = {
     dot = {
       ram = 32;
-      mainMonitor = "DP-3";
-      mainMonitorWidth = 1920;
+      mainMonitor = "DP-1";
+      mainMonitorWidth = 2560;
       mainMonitorDpi = 96;
-      monitors = [ "DP-3" ];
+      monitors = [ "DP-1" ];
       networkInterface = "enp37s0";
       cpuHwmon = "/sys/class/hwmon/hwmon2/temp1_input";
       soundcardPciId = "2b:00.3";
