@@ -15,13 +15,15 @@ let
   };
 in
 {
+  shared = {
+    dot = {
+      desktopEnvironment.sessionStartup = [
+        "${wallpaper}/bin/wallpaper '${config.dot.wallpaper}' || true"
+      ];
+    };
+  };
+
   home.shared = {
     home.packages = [ wallpaper ];
-
-    home.activation = {
-      fehReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${wallpaper}/bin/wallpaper '${config.dot.wallpaper}' || true
-      '';
-    };
   };
 }
