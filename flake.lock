@@ -304,11 +304,11 @@
         "poetry2nix": "poetry2nix"
       },
       "locked": {
-        "lastModified": 1729973741,
-        "narHash": "sha256-AGJMIH/wI5kMvHN39ccCMtgeamS5QGobtdqdr93u0x0=",
+        "lastModified": 1729973844,
+        "narHash": "sha256-RG1LZbE3/cDH4WTX3uV1Ob4N2QKdzsw0V7jXbHkeWNA=",
         "owner": "haras-unicorn",
         "repo": "nix-comfyui",
-        "rev": "469572d62409fccedcbf907a0331fae9553421cb",
+        "rev": "71a3a6b00c77e079048cd7f82470fe02f64c670d",
         "type": "github"
       },
       "original": {
