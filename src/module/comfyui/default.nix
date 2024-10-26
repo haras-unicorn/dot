@@ -9,7 +9,7 @@ let
     text = ''
       mkdir -p "${config.xdg.dataHome}/comfyui"
       cd "${config.xdg.dataHome}/comfyui"
-      comfyui "$@"
+      comfyui --preview-method auto "$@"
     '';
   };
 in
