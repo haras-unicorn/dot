@@ -5,7 +5,7 @@
 let
   comfyui = pkgs.writeShellApplication {
     name = "comfyui";
-    runtimeInputs = [ nix-comfyui.packages.${pkgs.system}.cuda-comfyui ];
+    runtimeInputs = [ nix-comfyui.packages.${pkgs.system}.cuda-comfyui-with-extensions ];
     text = ''
       mkdir -p "${config.xdg.dataHome}/comfyui"
       cd "${config.xdg.dataHome}/comfyui"
