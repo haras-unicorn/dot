@@ -98,6 +98,7 @@
       cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
       icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
       wallpaper = "${self}/assets/wallpapers/halloween.png";
+      opacity = 0.7;
     };
   };
 

@@ -15,6 +15,8 @@ let
 
   bootstrap = config.dot.colors.bootstrap;
   terminal = config.dot.colors.terminal;
+
+  opacity = config.dot.opacity;
 in
 {
   config = {
@@ -38,7 +40,7 @@ in
         bold_italic_font ${font.nerd.name}
         font_size        ${builtins.toString font.size.medium}
 
-        background_opacity 0.9
+        background_opacity ${opacity}
 
         foreground ${bootstrap.text.normal.hex}
         background ${bootstrap.background.normal.hex}
