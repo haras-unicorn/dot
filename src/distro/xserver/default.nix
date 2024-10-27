@@ -98,6 +98,11 @@
           example = "BeautyLine";
         };
       };
+      opacity = lib.mkOption {
+        type = lib.types.float;
+        default = 0.8;
+        example = 0.9;
+      };
     };
   };
 

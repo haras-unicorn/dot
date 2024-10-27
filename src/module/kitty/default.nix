@@ -40,7 +40,7 @@ in
         bold_italic_font ${font.nerd.name}
         font_size        ${builtins.toString font.size.medium}
 
-        background_opacity ${opacity}
+        background_opacity ${builtins.toString opacity}
 
         foreground ${bootstrap.text.normal.hex}
         background ${bootstrap.background.normal.hex}
