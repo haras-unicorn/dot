@@ -162,7 +162,7 @@ in
         feh # NOTE: image viewer
         mpv # NOTE: video viewer
         pinta # NOTE: image manipulation
-        angryipscanner # NOTE: network scanner
+        # angryipscanner # NOTE: network scanner
         via # NOTE: keyboard configurator
         # polychromatic # NOTE: razer device configurator
         netflix # NOTE: video streaming
