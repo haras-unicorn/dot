@@ -7,7 +7,6 @@
 , sops-nix
 , nix-index-database
 , dot
-, nix-comfyui
 , ...
 } @ inputs:
 
@@ -202,7 +201,7 @@ builtins.foldl'
         })
         nixConfigModule
         # nixosNameModule
-        ({ pkgs, ... }: { nix.package = pkgs.nixFlakes; })
+        ({ pkgs, ... }: { nix.package = pkgs.nixVersions.stable; })
         nixpkgsConfigModule
         ({ pkgs, ... }: {
           networking.hostName = "${hostName}";
