@@ -127,8 +127,9 @@ in
         unixtools.xxd # NOTE: make hexdump
         github-copilot-cli # NOTE: CLI AI help
         rustscan # NOTE: ip scanner
-        # marimo # NOTE: next-gen python notebook
+        marimo # NOTE: next-gen python notebook
         ocrmypdf # NOTE: create ocr version of pdfs
+        sqruff # NOTE: sql formatter/linter
       ];
     };
   };
