@@ -30,6 +30,7 @@
       merge.tool = "meld";
       "mergetool \"meld\"".cmd = ''${pkgs.meld}/bin/meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
       color.ui = "auto";
+      fetch.prune = true;
     };
 
     programs.lazygit.enable = true;
