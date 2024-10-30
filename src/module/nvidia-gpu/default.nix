@@ -34,7 +34,10 @@
 
       services.xserver.videoDrivers = [ "nvidia" ];
 
-      nixpkgs.config = { cudaSupport = true; };
+      nixpkgs.config.cudaSupport = lib.mkIf
+        (config.dot.nvidiaDriver.version == "production"
+          || config.dot.nvidiaDriver.version == "latest")
+        true;
 
       hardware.nvidia.modesetting.enable = true;
       hardware.nvidia.nvidiaSettings = true;
@@ -82,6 +85,13 @@
         __GL_GSYNC_ALLOWED = "1"; # NOTE: nvidia g-sync
         __GL_VRR_ALLOWED = "1"; # NOTE: nvidia g-sync
       };
+    };
+
+    home.shared = {
+      nixpkgs.config.cudaSupport = lib.mkIf
+        (config.dot.nvidiaDriver.version == "production"
+          || config.dot.nvidiaDriver.version == "latest")
+        true;
     };
   };
 }
