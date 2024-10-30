@@ -30,7 +30,6 @@ let
   };
 
   nixConfigModule = ({ pkgs, ... }: {
-    nix.package = pkgs.nixVersions.stable;
     nix.extraOptions = "experimental-features = nix-command flakes";
     nix.gc.automatic = true;
     nix.gc.options = "--delete-older-than 30d";
@@ -181,6 +180,7 @@ builtins.foldl'
           sops.age.keyFile = "/root/.sops/secrets.age";
         })
         nixConfigModule
+        ({ pkgs, ... }: { nix.package = pkgs.nixVersions.stable; })
         nixpkgsConfigModule
         ({ pkgs, ... }: {
           networking.hostName = "${hostName}";
