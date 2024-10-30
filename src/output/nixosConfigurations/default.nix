@@ -29,26 +29,8 @@ let
     hostName = hostNames;
   };
 
-  # /*
-  #   fixes issues with lack of HTTP header sanitization in .NET Core, see:
-  #   - https://github.com/NixOS/nixpkgs/issues/315574
-  #   - https://github.com/microsoftgraph/msgraph-cli/issues/477
-  # */
-  # nixosNameModule = ({ lib, options, ... }: {
-  #   /*
-  #     using just `readOnly` because it can contain neither of: default, example, description, apply, type
-  #     see https://github.com/NixOS/nixpkgs/blob/aae38d0d557d2f0e65b2ea8e1b92219f2c0ea8f9/lib/modules.nix#L752-L756
-  #   */
-  #   options.system.nixos.codeName = lib.mkOption { readOnly = false; };
-  #   config.system.nixos.codeName =
-  #     let
-  #       codeName = options.system.nixos.codeName.default;
-  #       renames."Vicuña" = "Vicuna";
-  #     in
-  #     if builtins.hasAttr renames codeName then renames."${codeName}" else codeName;
-  # });
-
   nixConfigModule = ({ pkgs, ... }: {
+    nix.package = pkgs.nixVersions.stable;
     nix.extraOptions = "experimental-features = nix-command flakes";
     nix.gc.automatic = true;
     nix.gc.options = "--delete-older-than 30d";
@@ -82,7 +64,6 @@ let
   nixpkgsConfigModule = ({ nix-vscode-extensions, ... }: {
     nixpkgs.config = {
       allowUnfree = true;
-      nvidia.acceptLicense = true;
     };
     nixpkgs.overlays = [
       nix-vscode-extensions.overlays.default
@@ -200,8 +181,6 @@ builtins.foldl'
           sops.age.keyFile = "/root/.sops/secrets.age";
         })
         nixConfigModule
-        # nixosNameModule
-        ({ pkgs, ... }: { nix.package = pkgs.nixVersions.stable; })
         nixpkgsConfigModule
         ({ pkgs, ... }: {
           networking.hostName = "${hostName}";
@@ -220,7 +199,6 @@ builtins.foldl'
             nur.hmModules.nur
             nix-index-database.hmModules.nix-index
             nixConfigModule
-            # nixosNameModule
             nixpkgsConfigModule
             sops-nix.homeManagerModules.sops
             groupOptionsModule

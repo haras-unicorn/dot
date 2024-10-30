@@ -34,6 +34,7 @@
 
       services.xserver.videoDrivers = [ "nvidia" ];
 
+      nixpkgs.config.nvidia.acceptLicense = true;
       nixpkgs.config.cudaSupport = lib.mkIf
         (config.dot.nvidiaDriver.version == "production"
           || config.dot.nvidiaDriver.version == "latest")
@@ -88,6 +89,7 @@
     };
 
     home.shared = {
+      nixpkgs.config.nvidia.acceptLicense = true;
       nixpkgs.config.cudaSupport = lib.mkIf
         (config.dot.nvidiaDriver.version == "production"
           || config.dot.nvidiaDriver.version == "latest")

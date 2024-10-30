@@ -54,7 +54,7 @@ in
     "${self}/src/module/llama"
     "${self}/src/module/piper"
     "${self}/src/module/whisper"
-    "${self}/src/module/pinokio"
+    # "${self}/src/module/pinokio"
     "${self}/src/module/comfyui"
     "${self}/src/module/gpt4all"
     # "${self}/src/module/aider"
