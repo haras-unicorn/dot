@@ -15,11 +15,11 @@ let
   };
 in
 {
-  shared.dot = {
-    desktopEnvironment.sessionStartup = [
-      "${discord}/bin/discord"
-    ];
-  };
+  # shared.dot = {
+  #   desktopEnvironment.sessionStartup = [
+  #     "${discord}/bin/discord"
+  #   ];
+  # };
 
   home.shared = {
     home.packages = [
