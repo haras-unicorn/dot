@@ -43,7 +43,7 @@ let
       HDR_FG=${bootstrap.text.normal.gtk}
       SEL_BG=${bootstrap.selection.normal.gtk}
       INACTIVE_FG=${bootstrap.background.inverted.gtk}
-      INACTIVE_MATERIA_VIEW=${bootstrap.foreground.inverted.gtk}
+      INACTIVE_MATERIA_VIEW=${bootstrap.text.inverted.gtk}
       MATERIA_COLOR_VARIANT=${if config.dot.colors.isLightTheme then "light" else "dark"}
       TERMINAL_COLOR4=${terminal.cyan.normal.gtk}
       TERMINAL_COLOR5=${terminal.magenta.normal.gtk}
