@@ -29,17 +29,28 @@ let
   };
 
   bootstrap = config.dot.colors.bootstrap;
+  terminal = config.dot.colors.terminal;
 
+  # NOTE: the theme wants blue actually but i like cyan better :)
   preset = pkgs.writeTextFile {
     name = "colors-preset";
     text = ''
       BG=${bootstrap.background.normal.gtk}
       FG=${bootstrap.text.normal.gtk}
       MATERIA_VIEW=${bootstrap.background.normal.gtk}
-      MATERIA_SURFACE=${bootstrap.background.normal.gtk}
+      MATERIA_SURFACE=${bootstrap.background.alternate.gtk}
       HDR_BG=${bootstrap.background.normal.gtk}
       HDR_FG=${bootstrap.text.normal.gtk}
       SEL_BG=${bootstrap.selection.normal.gtk}
+      INACTIVE_FG=${bootstrap.background.inverted.gtk}
+      INACTIVE_MATERIA_VIEW=${bootstrap.foreground.inverted.gtk}
+      MATERIA_COLOR_VARIANT=${if config.dot.colors.isLightTheme then "light" else "dark"}
+      TERMINAL_COLOR4=${terminal.cyan.normal.gtk}
+      TERMINAL_COLOR5=${terminal.magenta.normal.gtk}
+      TERMINAL_COLOR9=${terminal.brightRed.normal.gtk}
+      TERMINAL_COLOR10=${terminal.brightGreen.normal.gtk}
+      TERMINAL_COLOR11=${terminal.brightYellow.normal.gtk}
+      TERMINAL_COLOR12=${terminal.brightCyan.normal.gtk}
     '';
   };
 
