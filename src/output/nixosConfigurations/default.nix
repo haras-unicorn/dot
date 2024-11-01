@@ -3,11 +3,10 @@
 , nixpkgs
 , nur
 , home-manager
-, nixos-wsl
 , sops-nix
 , nix-index-database
-, dot
 , nixos-facter-modules
+, dot
 , ...
 } @ inputs:
 
@@ -19,8 +18,6 @@
 
 let
   userName = "haras";
-  vpnHost = "mikoshi";
-  vpnDomain = "haras-unicorn.xyz";
   stateVersion = "24.05";
 
   systems = flake-utils.lib.defaultSystems;
@@ -30,7 +27,7 @@ let
     hostName = hostNames;
   };
 
-  nixConfigModule = ({ pkgs, ... }: {
+  nixConfigModule = {
     nix.extraOptions = "experimental-features = nix-command flakes";
     nix.gc.automatic = true;
     nix.gc.options = "--delete-older-than 30d";
@@ -51,15 +48,7 @@ let
       "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
       "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
     ];
-    nix.settings.allowed-users = [
-      "root"
-      "@wheel"
-    ];
-    nix.settings.trusted-users = [
-      "root"
-      "@wheel"
-    ];
-  });
+  };
 
   nixpkgsConfigModule = ({ nix-vscode-extensions, ... }: {
     nixpkgs.config = {
@@ -75,12 +64,9 @@ let
       name = "rebuild";
       runtimeInputs = [ ];
       text = ''
-        if [[ ! -d "${config.xdg.dataHome}/dot" ]]; then
-          echo "Please clone/link your dotfiles flake into '${config.xdg.dataHome}/dot'"
-          exit 1
-        fi
-
-        sudo nixos-rebuild switch --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" "$@"
+        sudo nixos-rebuild switch \
+          --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" \
+          "$@"
       '';
     });
 
@@ -89,30 +75,11 @@ let
       name = "rebuild-trace";
       runtimeInputs = [ ];
       text = ''
-        if [[ ! -d "${config.xdg.dataHome}/dot" ]]; then
-          echo "Please clone/link your dotfiles flake into '${config.xdg.dataHome}/dot'"
-          exit 1
-        fi
-
-        sudo nixos-rebuild switch --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" --show-trace --option eval-cache false "$@"
-      '';
-    });
-
-  mkRebuildWip = ({ pkgs, config, hostName, userName, system, ... }:
-    pkgs.writeShellApplication {
-      name = "rebuild-wip";
-      runtimeInputs = [ ];
-      text = ''
-        if [[ ! -d "${config.xdg.dataHome}/dot" ]]; then
-          echo "Please clone/link your dotfiles flake into '${config.xdg.dataHome}/dot'"
-          exit 1
-        fi
-
-        cd "${config.xdg.dataHome}/dot"
-        git add .
-        git commit -m "WIP"
-        git push
-        sudo nixos-rebuild switch --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" "$@"
+        sudo nixos-rebuild switch \
+          --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" \
+          --show-trace \
+          --option eval-cache false \
+          "$@"
       '';
     });
 
@@ -163,8 +130,6 @@ builtins.foldl'
       inherit system;
       inherit hostName;
       inherit userName;
-      inherit vpnHost;
-      inherit vpnDomain;
       inherit stateVersion;
     };
   in
@@ -173,10 +138,8 @@ builtins.foldl'
       inherit system specialArgs;
       modules = [
         nur.nixosModules.nur
-        inputs.nixos-facter-modules.nixosModules.facter
+        nixos-facter-modules.nixosModules.facter
         { facter.reportPath = "${self}/src/host/${hostName}/facter.json"; }
-        nixos-wsl.nixosModules.wsl
-        { wsl.defaultUser = "${userName}"; }
         sops-nix.nixosModules.sops
         ({ self, hostName, ... }: {
           sops.defaultSopsFile = "${self}/src/host/${hostName}/secrets.sops.enc.yaml";
@@ -187,8 +150,8 @@ builtins.foldl'
         nixpkgsConfigModule
         ({ pkgs, ... }: {
           networking.hostName = "${hostName}";
-          environment.shells = [ "${pkgs.bashInteractiveFHS}/bin/bash" ];
-          users.defaultUserShell = "${pkgs.bashInteractiveFHS}/bin/bash";
+          environment.shells = [ "${pkgs.bashInteractive}/bin/bash" ];
+          users.defaultUserShell = "${pkgs.bashInteractive}/bin/bash";
           users.mutableUsers = false;
           system.stateVersion = stateVersion;
         })
