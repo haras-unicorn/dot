@@ -6,7 +6,7 @@ let
   bootstrap = config.dot.colors.bootstrap;
 in
 {
-  home.shared = {
+  home = {
     home.activation = {
       picomReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "picom" || true

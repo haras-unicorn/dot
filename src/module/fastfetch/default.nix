@@ -3,7 +3,7 @@
 # TODO: looks ugly
 
 {
-  home.shared = {
+  home = {
     shell.sessionStartup = [
       "${pkgs.fastfetch}/bin/fastfetch"
     ];

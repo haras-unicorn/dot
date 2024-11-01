@@ -24,7 +24,7 @@ let
   };
 in
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [ vlc ];
 
     xdg.mimeApps.associations.added = mime;

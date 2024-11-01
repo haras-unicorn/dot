@@ -11,7 +11,7 @@ let
   };
 in
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [ spacedrive ];
 
     xdg.mimeApps.associations.added = mime;

@@ -12,7 +12,7 @@ let
   fontSizePx = fontSizePt * config.dot.mainMonitorDpi / 72;
 in
 {
-  home.shared = {
+  home = {
     home.activation = {
       polybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${package}/bin/polybar-msg cmd restart || true

@@ -28,7 +28,7 @@ let
   yai4 = mkYai "yai4" "gpt-4-1106-preview" "chat" "";
 in
 {
-  home.shared = {
+  home = {
     home.packages = [ yai3 yai4 ];
   };
 }

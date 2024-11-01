@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       lm_sensors # NOTE: get sensor information
       dua # NOTE: get disk space usage interactively

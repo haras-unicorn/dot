@@ -57,7 +57,7 @@ in
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       piper-tts
       speak

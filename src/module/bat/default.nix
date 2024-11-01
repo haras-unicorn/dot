@@ -9,7 +9,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     home.sessionVariables = {
       PAGER = "${pkgs.bat}/bin/bat";
     };

@@ -5,7 +5,7 @@ let
   terminal = config.dot.colors.terminal;
 in
 {
-  home.shared = {
+  home = {
     home.packages = [
       pkgs.zed-editor
     ];

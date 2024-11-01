@@ -15,7 +15,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = [
       pkgs.hyprpicker
     ];

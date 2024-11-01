@@ -21,7 +21,7 @@ in
   #   ];
   # };
 
-  home.shared = {
+  home = {
     home.packages = [
       discord
       pkgs.dorion

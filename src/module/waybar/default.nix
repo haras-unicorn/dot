@@ -7,7 +7,7 @@ let
   bootstrap = config.dot.colors.bootstrap;
 in
 {
-  home.shared = {
+  home = {
     xdg.configFile."waybar/colors.css".text = ''
       @define-color transparent ${bootstrap.background.normal.rgba 0.4};
       @define-color text ${bootstrap.text.normal.hex};

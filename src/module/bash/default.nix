@@ -34,7 +34,12 @@ let
       cfg.sessionStartup);
 in
 {
-  home.shared = {
+  system = {
+    environment.shells = [ "${pkgs.bashInteractive}/bin/bash" ];
+    users.defaultUserShell = "${pkgs.bashInteractive}/bin/bash";
+  };
+
+  home = {
     programs.bash.enable = true;
     programs.bash.enableCompletion = true;
 

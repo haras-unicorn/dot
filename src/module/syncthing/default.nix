@@ -1,7 +1,7 @@
 { config, ... }:
 
 {
-  home.shared = {
+  home = {
     services.syncthing.enable = true;
     # TODO: fix tray is not available on boot
     # services.syncthing.tray.enable = true;

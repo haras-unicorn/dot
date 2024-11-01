@@ -30,7 +30,7 @@ let
   };
 in
 {
-  home.shared = {
+  home = {
     home.packages = [
       (pkgs.lib.mkIf hasAnyPlatform comfyui)
     ];

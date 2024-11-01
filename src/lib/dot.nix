@@ -11,10 +11,6 @@
 # The system part is applied to nixpkgs.lib.nixosSystem
 # The home part is applied to home manager
 
-# The home part also has a shared part and a per-user part
-# The shared part is applied to each user via home-manager.sharedModules
-# The per-user part is applied to individual users (not yet implemented)
-
 # The shared part applies to both nixpkgs.lib.nixosSystem and home-manager.sharedModules
 
 # Here is a kitchen sink example:
@@ -46,7 +42,7 @@
 #       programs.hyprland.enable = true;
 #       programs.hyprland.xwayland.enable = true;
 #     };
-#     home.shared = {
+#     home = {
 #       wayland.windowManager.hyprland.enable = true;
 #       wayland.windowManager.hyprland.xwayland.enable = true;
 #       wayland.windowManager.hyprland.extraConfig = ''
@@ -97,20 +93,6 @@ let
       else { };
 in
 rec {
-  definedUsers = dotModule: { lib, ... } @specialArgs:
-    let
-      dotObject = mkDotObject specialArgs dotModule;
-      imports = mkImports definedUsers specialArgs dotObject;
-      config = mkConfig specialArgs [ "home" ] dotObject;
-    in
-    lib.lists.unique (
-      lib.lists.flatten (
-        imports
-        ++ (builtins.filter
-          (user: user != "shared")
-          (builtins.attrNames config))
-      ));
-
   # NOTE: if pkgs here not demanded other modules don't get access...
   mkSystemModule = dotModule: { pkgs, ... } @specialArgs:
     let
@@ -125,27 +107,16 @@ rec {
       inherit options config;
     };
 
-  mkHomeSharedModule = dotModule: { pkgs, ... } @specialArgs:
+  mkHomeModule = dotModule: { pkgs, ... } @specialArgs:
     let
       dotObject = mkDotObject specialArgs dotModule;
-      imports = mkImports mkHomeSharedModule specialArgs dotObject;
+      imports = mkImports mkHomeModule specialArgs dotObject;
       options = mkOptions specialArgs dotObject;
-      config = mkConfig specialArgs [ "home" "shared" ] dotObject;
+      config = mkConfig specialArgs [ "home" ] dotObject;
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
     {
       imports = imports ++ [ sharedConfig ];
       inherit options config;
-    };
-
-  mkHomeUserModule = userName: dotModule: { pkgs, ... } @rawSpecialArgs:
-    let
-      specialArgs = rawSpecialArgs // { inherit userName; };
-      dotObject = mkDotObject specialArgs dotModule;
-      imports = mkImports (mkHomeUserModule userName) specialArgs dotObject;
-      config = mkConfig specialArgs [ "home" userName ] dotObject;
-    in
-    {
-      inherit imports config;
     };
 }

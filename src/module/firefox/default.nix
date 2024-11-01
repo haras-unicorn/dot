@@ -75,7 +75,7 @@ let
   );
 in
 {
-  home.shared = {
+  home = {
     programs.firefox.enable = true;
     programs.firefox.package =
       (p: yes: no: lib.mkMerge [

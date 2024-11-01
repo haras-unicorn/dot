@@ -4,7 +4,7 @@ let
   bootstrap = config.dot.colors.bootstrap;
 in
 {
-  home.shared = {
+  home = {
     programs.starship.enable = true;
     programs.starship.enableBashIntegration = true;
     programs.starship.enableNushellIntegration = true;

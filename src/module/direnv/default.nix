@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  home.shared = {
+  home = {
     programs.direnv.enable = true;
     programs.direnv.nix-direnv.enable = true;
     programs.direnv.enableBashIntegration = true;

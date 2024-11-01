@@ -101,7 +101,7 @@ in
     };
   };
 
-  home.shared = {
+  home = {
     dot = {
       desktopEnvironment.sessionVariables = {
         GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";

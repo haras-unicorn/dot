@@ -38,7 +38,7 @@ in
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       run
       repeat

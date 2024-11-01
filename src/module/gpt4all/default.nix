@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.shared = {
+  home = {
     home.packages = [
       pkgs.gpt4all
     ];

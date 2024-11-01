@@ -16,7 +16,7 @@
     }];
   };
 
-  home.shared = {
+  home = {
     home.packages = with pkgs; [ alarm-clock-applet ];
   };
 }

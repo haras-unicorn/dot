@@ -6,7 +6,7 @@
 # FIXME: helm build error
 
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       ardour
       zrythm

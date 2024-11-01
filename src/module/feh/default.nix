@@ -23,7 +23,7 @@ in
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = [ wallpaper ];
   };
 }

@@ -10,7 +10,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     programs.eza.enable = true;
     programs.eza.extraOptions = [
       "--all"

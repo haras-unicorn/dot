@@ -17,7 +17,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = [
       pkgs.gtklock
     ];

@@ -17,6 +17,9 @@
 
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
+    lanzaboote.url = "github:nix-community/lanzaboote/v0.4.1";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -36,23 +39,146 @@
     nix-comfyui.inputs.flake-utils.follows = "flake-utils";
   };
 
-  outputs = { self, ... } @ inputs:
+  outputs =
+    { self
+    , flake-utils
+    , nixpkgs
+    , nix-index-database
+    , home-manager
+    , nur
+    , nixos-facter-modules
+    , sops-nix
+    , ...
+    } @ inputs:
     let
-      outputs = ./src/output;
-      outputNames = (builtins.attrNames (builtins.readDir outputs));
-      outputModules = builtins.map
-        (name: {
-          inherit name;
-          mkFrom = import "${outputs}/${name}";
-        })
-        outputNames;
+      user = "haras";
+      version = "24.05";
+
+      importDir = (dir: builtins.map (name: import "${self}/src/module/${name}"));
+
+      lib = importDir "${self}/src/lib";
+      modules = builtins.attrValues (importDir "${self}/src/module");
     in
-    builtins.foldl'
-      (outputs: output: outputs // {
-        "${output.name}" = output.mkFrom (inputs // {
-          dot = (import "${self}/src/lib");
-        });
-      })
-      { }
-      outputModules;
+    flake-utils.lib.eachDefaultSystem
+      (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+        };
+      in
+      {
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            # Nix
+            nil
+            nixpkgs-fmt
+
+            # Scripts
+            nodePackages.bash-language-server
+            shfmt
+            shellcheck
+            yapf
+            ruff
+
+            # Misc
+            nodePackages.prettier
+            nodePackages.yaml-language-server
+            nodePackages.vscode-json-languageserver
+            marksman
+            taplo
+            html-tidy
+
+            # Tools
+            nushell
+            just
+            openssl
+            openvpn
+            openssh
+            age
+            sops
+          ];
+        };
+      }) // {
+      nixosConfigurations =
+        let
+          hosts = (builtins.attrNames (builtins.readDir "${self}/src/host"));
+          configs = nixpkgs.lib.cartesianProduct {
+            system = flake-utils.lib.defaultSystems;
+            host = hosts;
+          };
+
+          mkNixosConfiguration = { system, host }:
+            let
+              specialArgs = inputs // { inherit version host user; };
+
+              config = import "${self}/src/host/${host}/config.nix";
+              hardware = "${self}/src/host/${host}/hardware.json";
+              secrets = "${self}/src/host/${host}/secrets.yaml";
+            in
+            {
+              "${host}-${system}" = nixpkgs.lib.nixosSystem {
+                inherit system specialArgs;
+                modules = [
+                  nur.nixosModules.nur
+                  nixos-facter-modules.nixosModules.facter
+                  sops-nix.nixosModules.sops
+                  (lib.dot.mkSystemModule config)
+                  home-manager.nixosModules.home-manager
+                  {
+                    import = builtins.map lib.dot.mkSystemModule modules;
+
+                    fileSystems."/" = {
+                      device = "/dev/disk/by-label/NIXROOT";
+                      fsType = "ext4";
+                    };
+                    fileSystems."/boot" = {
+                      device = "/dev/disk/by-label/NIXBOOT";
+                      fsType = "vfat";
+                    };
+
+                    facter.reportPath = hardware;
+
+                    sops.defaultSopsFile = secrets;
+                    sops.age.keyFile = "/root/.sops/secrets.age";
+
+                    networking.hostName = host;
+                    system.stateVersion = version;
+
+                    users.mutableUsers = false;
+                    users.users."${user}" = {
+                      home = "/home/${user}";
+                      createHome = true;
+                      isNormalUser = true;
+                      initialPassword = user;
+                      extraGroups = [ "wheel" ];
+                      useDefaultShell = true;
+                    };
+
+                    home-manager.backupFileExtension = "backup";
+                    home-manager.useUserPackages = true;
+                    home-manager.extraSpecialArgs = specialArgs;
+                    home-manager.sharedModules = [
+                      nur.hmModules.nur
+                      nix-index-database.hmModules.nix-index
+                      sops-nix.homeManagerModules.sops
+                      (lib.dot.mkHomeSharedModule config)
+                    ];
+                    home-manager.users."${user}" = ({ self, pkgs, ... }: {
+                      imports = builtins.map lib.dot.mkHomeSharedModule modules;
+
+                      home.stateVersion = version;
+                      home.username = "${user}";
+                      home.homeDirectory = "/home/${user}";
+
+                      sops.defaultSopsFile = "${self}/src/host/${host}/${user}.sops.enc.yaml";
+                      sops.age.keyFile = "/home/${user}/.sops/secrets.age";
+                    });
+                  }
+                ];
+              };
+            };
+        in
+        nixpkgs.lib.attrsets.mergeAttrsList
+          (builtins.map mkNixosConfiguration configs);
+    };
 }

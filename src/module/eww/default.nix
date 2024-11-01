@@ -30,7 +30,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     # home.packages = [
     #   package
     # ];

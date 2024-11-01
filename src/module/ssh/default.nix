@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  home.shared = {
+  home = {
     programs.ssh.enable = true;
     services.ssh-agent.enable = true;
   };

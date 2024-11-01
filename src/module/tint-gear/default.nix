@@ -83,7 +83,7 @@ in
       };
     };
 
-    home.shared = {
+    home = {
       home.packages = [ tint-gear.packages."${system}".default ];
 
       xdg.configFile."tint-gear/colors.json".text = builtins.toJSON original;

@@ -11,7 +11,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       libsForQt5.qtstyleplugins
       qt6Packages.qt6gtk2

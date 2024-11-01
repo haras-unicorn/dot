@@ -7,7 +7,7 @@ let
   cfg = config.dot.browser;
 in
 {
-  home.shared = {
+  home = {
     programs.librewolf.enable = true;
     programs.librewolf.package =
       (p: yes: no: lib.mkMerge [

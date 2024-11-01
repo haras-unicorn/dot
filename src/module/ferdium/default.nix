@@ -37,7 +37,7 @@ in
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = [
       ferdium
     ];

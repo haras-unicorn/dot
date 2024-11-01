@@ -3,7 +3,7 @@
 # TODO: check if pipewire plugin is here
 
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs.gst_all_1; [
       gstreamer
       gst-vaapi

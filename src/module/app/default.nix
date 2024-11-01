@@ -153,7 +153,7 @@ in
       };
     };
 
-    home.shared = {
+    home = {
       xdg.mimeApps.associations.added = mime;
       xdg.mimeApps.defaultApplications = mime;
 

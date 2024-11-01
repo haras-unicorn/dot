@@ -3,7 +3,7 @@
 # TODO: doesn't work - check note below
 
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       mommy
     ];

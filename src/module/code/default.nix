@@ -20,7 +20,7 @@ in
       };
     };
   };
-  home.shared = {
+  home = {
     programs.vscode.enable = true;
     programs.vscode.package =
       (p: yes: no: lib.mkMerge [

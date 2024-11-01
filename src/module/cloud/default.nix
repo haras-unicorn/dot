@@ -5,7 +5,7 @@
 # FIXME: azure-cli: fabric: ModuleNotFoundError: No module named 'nacl'
 
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       (azure-cli.withExtensions (with pkgs; [
         azure-cli-extensions.ssh

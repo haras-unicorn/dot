@@ -15,7 +15,7 @@ let
   };
 in
 {
-  home.shared = {
+  home = {
     de.sessionStartup = [
       "${teams}/bin/teams-for-linux"
     ];

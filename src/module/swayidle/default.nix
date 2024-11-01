@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home.shared = {
+  home = {
     services.swayidle.enable = true;
     services.swayidle.timeouts = [
       {

@@ -88,7 +88,7 @@
       };
     };
 
-    home.shared = {
+    home = {
       nixpkgs.config.nvidia.acceptLicense = true;
       nixpkgs.config.cudaSupport = lib.mkIf
         (config.dot.nvidiaDriver.version == "production"

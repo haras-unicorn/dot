@@ -4,7 +4,7 @@ let
   whisper-cpp = pkgs.openai-whisper-cpp;
 in
 {
-  home.shared = {
+  home = {
     home.packages = [
       whisper-cpp
     ];

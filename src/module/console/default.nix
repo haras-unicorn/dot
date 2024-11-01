@@ -98,7 +98,7 @@ in
       };
     };
 
-    home.shared = {
+    home = {
       home.packages = with pkgs; [
         inetutils # NOTE: Common network programs
         ouch # NOTE: only compression/decompression tool you will ever need

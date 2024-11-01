@@ -13,7 +13,7 @@ let
   };
 in
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       p7zip
       zip

@@ -15,7 +15,7 @@
     # services.transmission.openPeerPorts = true;
   };
 
-  home.shared = {
+  home = {
     # xdg.desktopEntries = {
     #   transmission = {
     #     name = "Transmission";

@@ -121,7 +121,7 @@ in
       programs.hyprland.xwayland.enable = true;
     };
 
-    home.shared = {
+    home = {
       home.sessionVariables = cfg.sessionVariables;
       systemd.user.sessionVariables = cfg.sessionVariables;
 

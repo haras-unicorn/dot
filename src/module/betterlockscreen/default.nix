@@ -9,7 +9,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     services.betterlockscreen.enable = true;
   };
 }

@@ -17,7 +17,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       keepassxc
     ];

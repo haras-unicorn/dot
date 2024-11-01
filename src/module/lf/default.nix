@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  home.shared = {
+  home = {
     programs.lf.enable = true;
   };
 }

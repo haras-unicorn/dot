@@ -20,7 +20,7 @@ let
 in
 {
   config = {
-    home.shared = {
+    home = {
       programs.kitty.enable = true;
       programs.kitty.package =
         (p: yes: no: lib.mkMerge [

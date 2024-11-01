@@ -1,49 +1,40 @@
 { lib, pkgs, self, config, ... }:
 
-# TODO: https://github.com/kando-menu/kando
-
 {
   imports = [
     "${self}/src/module/xdg"
-
-    "${self}/src/module/niri"
-
-    "${self}/src/module/hyprland"
-    "${self}/src/module/hyprpicker"
 
     "${self}/src/module/tint-gear"
 
     "${self}/src/module/brightnessctl"
     "${self}/src/module/playerctl"
 
-    "${self}/src/module/tuigreet"
-    "${self}/src/module/gtklock"
-    "${self}/src/module/wlogout"
-    "${self}/src/module/swayidle"
+    "${self}/src/module/sddm"
+    "${self}/src/module/qtile"
+    "${self}/src/module/picom"
 
-    "${self}/src/module/waybar"
-    "${self}/src/module/mako"
-    "${self}/src/module/swayosd"
-    "${self}/src/module/wofi"
-    "${self}/src/module/swww"
-    "${self}/src/module/eww"
+    "${self}/src/module/polybar"
+    "${self}/src/module/dunst"
+    "${self}/src/module/rofi"
+    "${self}/src/module/redshift"
+    "${self}/src/module/feh"
+    "${self}/src/module/betterlockscreen"
 
     "${self}/src/module/obs-studio"
-    "${self}/src/module/kooha"
-    "${self}/src/module/grim-slurp-ocr"
+    "${self}/src/module/peek"
+    "${self}/src/module/flameshot"
     "${self}/src/module/miraclecast"
     "${self}/src/module/gstreamer"
-    "${self}/src/module/mangohud"
-    "${self}/src/module/screen-pipe"
 
     "${self}/src/module/gtk"
     "${self}/src/module/qt"
 
+    "${self}/src/module/mangohud"
     "${self}/src/module/emote"
     "${self}/src/module/alarm"
 
     "${self}/src/module/pcmanfm"
-    # "${self}/src/module/spacedrive"
+    "${self}/src/module/spacedrive"
   ];
 
   options = {
@@ -59,6 +50,7 @@
       };
       mainMonitorWidth = lib.mkOption {
         type = lib.types.int;
+        description = "For configuring the top bar";
         default = 1920;
       };
       mainMonitorDpi = lib.mkOption {
@@ -115,7 +107,7 @@
   };
 
   config = {
-    home.shared = {
+    home = {
       # NOTE: needed for tray items to work properly
       systemd.user.targets.tray = {
         Unit = {
@@ -130,6 +122,7 @@
         size = config.dot.cursor-theme.size;
       };
 
+
       dconf.settings."org/gnome/desktop/interface".color-scheme =
         lib.mkMerge [
           (lib.mkIf config.dot.colors.isLightTheme "prefer-light")
@@ -139,7 +132,7 @@
       home.packages = [
         config.dot.cursor-theme.package
         config.dot.icon-theme.package
-        pkgs.swayimg
+        pkgs.sxiv
       ];
     };
   };

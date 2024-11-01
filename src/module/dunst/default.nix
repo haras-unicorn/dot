@@ -3,7 +3,7 @@
 # TODO: tint-gear
 
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       libnotify
     ];

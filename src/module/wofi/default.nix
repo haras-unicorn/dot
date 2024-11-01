@@ -31,7 +31,7 @@ in
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       keepmenu
       wtype

@@ -16,7 +16,7 @@ in
     }];
   };
 
-  home.shared = {
+  home = {
     home.packages = with pkgs; [ pcmanfm ];
 
     xdg.mimeApps.associations.added = mime;

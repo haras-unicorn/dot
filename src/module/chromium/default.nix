@@ -7,7 +7,7 @@ let
   cfg = config.dot.browser;
 in
 {
-  home.shared = {
+  home = {
     programs.chromium.enable = true;
     programs.chromium.package =
       (p: yes: no: lib.mkMerge [

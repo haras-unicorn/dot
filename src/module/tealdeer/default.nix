@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  home.shared = {
+  home = {
     programs.tealdeer.enable = true;
     programs.tealdeer.settings = {
       updates = {

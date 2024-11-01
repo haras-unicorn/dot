@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  home.shared = {
+  home = {
     services.swayosd.enable = true;
   };
 }

@@ -59,7 +59,7 @@ in
     };
   };
 
-  home.shared = {
+  home = {
     home.packages = with pkgs; [ grim slurp tesseract screenshot ];
   };
 }

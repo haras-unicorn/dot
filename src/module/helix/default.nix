@@ -17,7 +17,7 @@ let
   bootstrap = config.dot.colors.bootstrap;
 in
 {
-  home.shared = {
+  home = {
     programs.helix.enable = true;
     programs.helix.package = withPkg (pkg: pkg);
 

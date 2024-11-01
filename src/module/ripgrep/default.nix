@@ -11,7 +11,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     programs.ripgrep.enable = true;
     programs.ripgrep.arguments = [
       "--max-columns=100"

@@ -25,7 +25,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     services.playerctld.enable = true;
   };
 }

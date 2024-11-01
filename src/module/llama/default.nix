@@ -94,7 +94,7 @@ in
     ];
   };
 
-  home.shared = {
+  home = {
     home.packages = [
       koboldcpp
       llama-cpp

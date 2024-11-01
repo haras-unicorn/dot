@@ -20,7 +20,7 @@ let
   };
 in
 {
-  home.shared = {
+  home = {
     de.sessionStartup = [
       "${station}/bin/station"
     ];

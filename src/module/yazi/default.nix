@@ -3,7 +3,7 @@
 # TODO: configure
 
 {
-  home.shared = {
+  home = {
     programs.yazi.enable = true;
 
     programs.yazi.enableNushellIntegration = true;

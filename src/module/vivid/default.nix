@@ -12,7 +12,7 @@ in
     };
   };
 
-  home.shared = {
+  home = {
     xdg.configFile."vivid/themes/colors.yaml".text = ''
       colors:
         black: "${terminal.black.normal.vivid}"

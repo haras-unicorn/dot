@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  home.shared = {
+  home = {
     services.network-manager-applet.enable = true;
   };
 }

@@ -157,7 +157,7 @@ in
         ];
     };
 
-    home.shared = {
+    home = {
       home.packages = [
         switch-layout
         current-layout

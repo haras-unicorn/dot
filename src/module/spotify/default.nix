@@ -15,7 +15,7 @@ let
   };
 in
 {
-  home.shared = {
+  home = {
     home.packages = [
       spotify
       pkgs.psst

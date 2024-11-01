@@ -32,7 +32,7 @@ let
 in
 {
   config = {
-    home.shared = {
+    home = {
       programs.nushell.enable = true;
       programs.nushell.package = withPackage (package: package);
 

@@ -13,7 +13,7 @@
     };
   };
 
-  home.shared = {
+  home = {
     services.flameshot.enable = true;
   };
 }

@@ -7,7 +7,7 @@ let
   };
 in
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       libsForQt5.okular
     ];

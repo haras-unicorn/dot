@@ -32,7 +32,7 @@ let
   };
 in
 {
-  home.shared = {
+  home = {
     home.packages = with pkgs; [
       ffmpeg-cut-1080p
       ffmpeg-cut-720p

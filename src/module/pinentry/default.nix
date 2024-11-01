@@ -18,7 +18,7 @@ in
   };
 
   config = {
-    home.shared = {
+    home = {
       home.packages = [ cfg.package ];
 
       services.gpg-agent.pinentryPackage = cfg.package;

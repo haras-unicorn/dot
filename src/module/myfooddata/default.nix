@@ -1,7 +1,7 @@
 { config, ... }:
 
 {
-  home.shared = {
+  home = {
     xdg.desktopEntries = {
       myfooddata = {
         name = "My Food Data";

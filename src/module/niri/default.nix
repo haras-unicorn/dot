@@ -117,7 +117,7 @@ in
     #   };
     # };
 
-    home.shared = {
+    home = {
       home.sessionVariables = cfg.sessionVariables;
       systemd.user.sessionVariables = cfg.sessionVariables;
 
