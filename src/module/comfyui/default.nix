@@ -2,9 +2,9 @@
 
 let
   packageName =
-    if config.nixpkgs.config.cudaSupport then
+    if builtins.hasAttr "cudaSupport" config.nixpkgs.config then
       "cuda-comfyui-with-extensions"
-    else if config.nixpkgs.config.rocmSupport then
+    else if builtins.hasAttr "rocmSupport" config.nixpkgs.config then
       "rocm-comfyui-with-extensions"
     else
       "comfyui-with-extensions";
