@@ -27,6 +27,7 @@
       stress-ng # NOTE: stability test
       mprime # NOTE: stability test
       xorg.xdpyinfo # NOTE: monitor info
+      nixos-facter # NOTE: system info for nix modules
     ];
   };
 }
