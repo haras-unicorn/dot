@@ -9,6 +9,14 @@ let
     else
       "comfyui-with-extensions";
 
+  hasAnyPlatform =
+    if builtins.hasAttr "cudaSupport" config.nixpkgs.config then
+      true
+    else if builtins.hasAttr "rocmSupport" config.nixpkgs.config then
+      true
+    else
+      false;
+
   package = nix-comfyui.packages.${pkgs.system}.${packageName};
 
   comfyui = pkgs.writeShellApplication {
@@ -24,7 +32,7 @@ in
 {
   home.shared = {
     home.packages = [
-      comfyui
+      (pkgs.lib.mkIf hasAnyPlatform comfyui)
     ];
   };
 }
