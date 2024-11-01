@@ -43,6 +43,8 @@
     nix-comfyui.url = "github:haras-unicorn/nix-comfyui/dev";
     nix-comfyui.inputs.nixpkgs.follows = "nixpkgs";
     nix-comfyui.inputs.flake-utils.follows = "flake-utils";
+
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
   };
 
   outputs = { self, ... } @ inputs:

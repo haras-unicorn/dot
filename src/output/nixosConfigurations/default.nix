@@ -7,6 +7,7 @@
 , sops-nix
 , nix-index-database
 , dot
+, nixos-facter-modules
 , ...
 } @ inputs:
 
@@ -172,6 +173,8 @@ builtins.foldl'
       inherit system specialArgs;
       modules = [
         nur.nixosModules.nur
+        inputs.nixos-facter-modules.nixosModules.facter
+        { facter.reportPath = "${self}/src/host/${hostName}/facter.json"; }
         nixos-wsl.nixosModules.wsl
         { wsl.defaultUser = "${userName}"; }
         sops-nix.nixosModules.sops
