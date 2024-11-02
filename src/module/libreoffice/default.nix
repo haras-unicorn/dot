@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: colors that libreoffice uses
+
 let
   writer = "${pkgs.libreoffice-fresh}/share/applications/writer.desktop";
   calc = "${pkgs.libreoffice-fresh}/share/applications/calc.desktop";

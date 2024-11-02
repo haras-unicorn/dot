@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 let
-  # TODO: like with chromium?
   discord = pkgs.symlinkJoin {
     name = "discord";
     paths = [ pkgs.discord ];

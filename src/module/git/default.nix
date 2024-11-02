@@ -12,7 +12,6 @@
 
   home = {
     home.packages = with pkgs; [
-      meld
       delta
     ];
 
@@ -27,8 +26,6 @@
       push.default = "upstream";
       push.followTags = true;
       rerere.enabled = true;
-      merge.tool = "meld";
-      "mergetool \"meld\"".cmd = ''${pkgs.meld}/bin/meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
       color.ui = "auto";
       fetch.prune = true;
     };

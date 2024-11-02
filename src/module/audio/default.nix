@@ -1,12 +1,7 @@
 { pkgs, lib, config, ... }:
 
-let
-  hasSoundcard =
-    (builtins.hasAttr "sound" config.facter.report.hardware) &&
-    ((builtins.length config.facter.report.hardware.sound) > 0);
-in
 {
-  shared = lib.mkIf hasSoundcard {
+  shared = lib.mkIf config.dot.hardware.sound {
     dot = {
       desktopEnvironment.windowrules = [{
         rule = "float";
@@ -18,7 +13,7 @@ in
     };
   };
 
-  system = lib.mkIf hasSoundcard {
+  system = lib.mkIf config.dot.hardware.sound {
     services.pipewire.enable = true;
     services.pipewire.wireplumber.enable = true;
     services.pipewire.alsa.enable = true;
@@ -28,7 +23,7 @@ in
     programs.dconf.enable = true;
   };
 
-  home = lib.mkIf hasSoundcard {
+  home = lib.mkIf config.dot.hardware.sound {
     home.packages = with pkgs; [
       pwvucontrol
       easyeffects

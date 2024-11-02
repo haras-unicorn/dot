@@ -1,9 +1,6 @@
 { pkgs, ... }:
 
-# FIXME: webrtc so i dont need desktop apps
-
-# TODO: like with chromium?
-# TODO: hardware related stuff elsewhere
+# FIXME: screen sharing
 
 let
   station = pkgs.symlinkJoin {
@@ -14,8 +11,7 @@ let
       wrapProgram $out/bin/station \
         --append-flags --enable-features=UseOzonePlatform \
         --append-flags --enable-features=WebRTCPipeWireCapturer \
-        --append-flags --ozone-platform-hint=auto \
-        --append-flags --no-sandbox
+        --append-flags --ozone-platform-hint=auto
     '';
   };
 in

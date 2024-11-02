@@ -41,7 +41,7 @@ in
     dot = {
       desktopEnvironment.keybinds = [
         {
-          mods = [ ];
+          mods = [ "super" ];
           key = "Print";
           command = "${screenshot}/bin/screenshot";
         }

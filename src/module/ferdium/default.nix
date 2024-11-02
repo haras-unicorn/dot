@@ -4,11 +4,9 @@
 }:
 
 # FIXME: screen sharing
+# TODO: WebRTC handling - set share all IPs so discord WebRTC works
 
 # NOTE: outlook - Self Hosted at https://outlook.office.com/mail/
-# NOTE: WebRTC handling - set share all IPs so discord WebRTC works
-# TODO: like with chromium?
-# TODO: hardware related stuff elsewhere
 
 let
   isLightTheme = config.dot.colors.isLightTheme;

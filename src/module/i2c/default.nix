@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# TODO: monitor brightness control
+
 {
   system = {
     hardware.i2c.enable = true;

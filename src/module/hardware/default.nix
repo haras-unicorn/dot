@@ -1,5 +1,7 @@
 { config, lib, ... }:
 
+# TODO: xserver needed detection
+
 let
   memoryInBytes = (builtins.head config.facter.report.hardware.memory.resources).range;
 
