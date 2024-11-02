@@ -1,7 +1,4 @@
-{ self, lib, pkgs, config, ... }:
-
-# FIXME: rpi-imager https://github.com/hyprwm/Hyprland/issues/4614
-# FIXME: polychromatic build error
+{ lib, pkgs, config, ... }:
 
 # TODO: firmware tui as part of diag
 # TODO: https://github.com/NixOS/nixpkgs/issues/232266
@@ -34,97 +31,49 @@ let
   mime = browserMime // visualMime;
 in
 {
-  imports = [
-    "${self}/src/module/syncthing"
-    "${self}/src/module/keepassxc"
-    "${self}/src/module/ferdium"
-
-    "${self}/src/module/ffmpeg"
-    "${self}/src/module/vlc"
-    "${self}/src/module/udiskie"
-    "${self}/src/module/nm-applet"
-    "${self}/src/module/libreoffice"
-    "${self}/src/module/nomacs"
-    "${self}/src/module/okular"
-    "${self}/src/module/xarchiver"
-    "${self}/src/module/spotify"
-    "${self}/src/module/rdp"
-    "${self}/src/module/dbeaver"
-
-    "${self}/src/module/llama"
-    "${self}/src/module/piper"
-    "${self}/src/module/whisper"
-    # "${self}/src/module/pinokio"
-    "${self}/src/module/comfyui"
-    "${self}/src/module/gpt4all"
-    # "${self}/src/module/aider"
-
-    # Terminals
-    "${self}/src/module/kitty"
-    # "${self}/src/module/warp"
-
-    # Visuals
-    "${self}/src/module/code"
-    "${self}/src/module/zed"
-    # "${self}/src/module/cursor"
-
-    # Browsers
-    "${self}/src/module/firefox"
-    "${self}/src/module/chromium"
-    "${self}/src/module/myfooddata"
-    # "${self}/src/module/librewolf"
-
-    # "${self}/src/module/teams"
-    # "${self}/src/module/slack"
-    "${self}/src/module/discord"
-    # "${self}/src/module/jetbrains"
-  ];
-
   options = {
-    dot = {
-      terminal = {
-        package = lib.mkOption {
-          type = lib.types.package;
-          default = pkgs.kitty;
-          example = pkgs.alacritty;
-        };
-        bin = lib.mkOption {
-          type = lib.types.str;
-          default = "kitty";
-          example = "alacritty";
-        };
-        sessionVariables = lib.mkOption {
-          type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
-          default = { };
-          example = { EDITOR = "hx"; };
-          description = ''
-            Environment variables to set with kitty.
-          '';
-        };
+    terminal = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.kitty;
+        example = pkgs.alacritty;
       };
-      visual = {
-        package = lib.mkOption {
-          type = lib.types.package;
-          default = pkgs.vscode;
-          example = pkgs.vscodium;
-        };
-        bin = lib.mkOption {
-          type = lib.types.str;
-          default = "code";
-          example = "codium";
-        };
+      bin = lib.mkOption {
+        type = lib.types.str;
+        default = "kitty";
+        example = "alacritty";
       };
-      browser = {
-        package = lib.mkOption {
-          type = lib.types.package;
-          default = pkgs.firefox-bin;
-          example = pkgs.vivaldi;
-        };
-        bin = lib.mkOption {
-          type = lib.types.str;
-          default = "firefox";
-          example = "vivaldi";
-        };
+      sessionVariables = lib.mkOption {
+        type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+        default = { };
+        example = { EDITOR = "hx"; };
+        description = ''
+          Environment variables to set with kitty.
+        '';
+      };
+    };
+    visual = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.vscode;
+        example = pkgs.vscodium;
+      };
+      bin = lib.mkOption {
+        type = lib.types.str;
+        default = "code";
+        example = "codium";
+      };
+    };
+    browser = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.firefox-bin;
+        example = pkgs.vivaldi;
+      };
+      bin = lib.mkOption {
+        type = lib.types.str;
+        default = "firefox";
+        example = "vivaldi";
       };
     };
   };
@@ -158,20 +107,11 @@ in
       xdg.mimeApps.defaultApplications = mime;
 
       home.packages = with pkgs; [
-        rpi-imager # NOTE: make images for raspberry pi
-        gnome-firmware # NOTE: view firmware 
-        feh # NOTE: image viewer
-        mpv # NOTE: video viewer
         pinta # NOTE: image manipulation
-        # angryipscanner # NOTE: network scanner
-        via # NOTE: keyboard configurator
-        # polychromatic # NOTE: razer device configurator
         netflix # NOTE: video streaming
         gimp # NOTE: image manipulation
         inkscape # NOTE: vector graphics design
         pencil # NOTE: UI/UX prototyping
-        libresprite # NOTE: pixel art
-        xfce.xfce4-terminal # NOTE: terminal for debug
       ];
     };
   };

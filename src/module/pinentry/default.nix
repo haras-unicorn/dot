@@ -1,27 +1,12 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, ... }:
 
 let
-  cfg = config.dot.pinentry;
+  hasMonitor = builtins.hasAttr "monitor" config.facter.report.hardware;
+  package = if hasMonitor then pkgs.pinentry-qt else pkgs.pinentry-curses;
 in
 {
-  options.dot.pinentry = {
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = pkgs.pinentry;
-      example = pkgs.pinentry-qt;
-    };
-    bin = lib.mkOption {
-      type = lib.types.str;
-      default = "pinentry-curses";
-      example = "pinentry-qt";
-    };
-  };
-
-  config = {
-    home = {
-      home.packages = [ cfg.package ];
-
-      services.gpg-agent.pinentryPackage = cfg.package;
-    };
+  home = {
+    home.packages = [ package ];
+    services.gpg-agent.pinentryPackage = package;
   };
 }

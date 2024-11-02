@@ -1,7 +1,33 @@
 { pkgs, config, ... }:
 
+let
+  visual = { package = pkgs.vscode; bin = "code"; };
+  browser = { package = pkgs.firefox-bin; bin = "firefox"; };
+
+  browserDesktop = "${browser.package}/share/applications/${browser.bin}.desktop";
+  browserMime = {
+    "text/html" = browserDesktop;
+    "x-scheme-handler/http" = browserDesktop;
+    "x-scheme-handler/https" = browserDesktop;
+  };
+
+  visualDesktop = "${visual.package}/share/applications/${visual.bin}.desktop";
+  visualMime = {
+    "text/css" = visualDesktop;
+    "application/javascript" = visualDesktop;
+    "application/json" = visualDesktop;
+    "application/x-sh" = visualDesktop;
+    "application/xhtml+xml" = visualDesktop;
+    "application/xml" = visualDesktop;
+  };
+
+  mime = browserMime // visualMime;
+in
 {
   home = {
+    xdg.mimeApps.associations.added = mime;
+    xdg.mimeApps.defaultApplications = mime;
+
     home.packages = with pkgs; [
       xdg-user-dirs
       xdg-utils

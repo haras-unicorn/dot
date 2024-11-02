@@ -164,8 +164,21 @@
                     home-manager.sharedModules = [
                       nur.hmModules.nur
                       nix-index-database.hmModules.nix-index
-                      sops-nix.homeManagerModules.sops
                       (lib.dot.mkHomeSharedModule config)
+                      ({ lib, ... }: {
+                        options.facter = {
+                          report = lib.mkOption {
+                            type = lib.types.raw;
+                            default = builtins.fromJSON
+                              (builtins.readFile config.facter.reportPath);
+                          };
+
+                          reportPath = lib.mkOption {
+                            type = lib.types.path;
+                            default = hardware;
+                          };
+                        };
+                      })
                     ];
                     home-manager.users."${user}" = ({ self, pkgs, ... }: {
                       imports = builtins.map lib.dot.mkHomeSharedModule modules;
@@ -173,9 +186,6 @@
                       home.stateVersion = version;
                       home.username = "${user}";
                       home.homeDirectory = "/home/${user}";
-
-                      sops.defaultSopsFile = "${self}/src/host/${host}/${user}.sops.enc.yaml";
-                      sops.age.keyFile = "/home/${user}/.sops/secrets.age";
                     });
                   }
                 ];
