@@ -1,35 +1,42 @@
 { pkgs
-, lib
 , config
+, lib
 , ...
 }:
 
-# FIXME: vscodium doesn't work (on wayland)?
-# FIXME: https://github.com/microsoft/vscode-dotnettools/issues/722
-# TODO: helix emulation when it gets better
 # TODO: extensions in projects?
 
 let
-  cfg = config.dot.visual;
+  hasMonitor =
+    (builtins.hasAttr "monitor" config.facter.report.hardware) &&
+    ((builtins.length config.facter.report.hardware.monitor) > 0);
+
+  package = pkgs.symlinkJoin {
+    name = "vscodium";
+    paths = [
+      pkgs.vscodium
+    ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/codium \
+        --append-flags --ozone-platform-hint=auto
+    '';
+  };
+
+  alias = "${package}/bin/codium";
 in
 {
-  shared = {
+  shared = lib.mkIf hasMonitor {
     dot = {
       shell.aliases = {
-        code = "${config.dot.visual.package}/bin/${config.dot.visual.bin}";
+        code = alias;
       };
     };
   };
-  home = {
+
+  home = lib.mkIf hasMonitor {
     programs.vscode.enable = true;
-    programs.vscode.package =
-      (p: yes: no: lib.mkMerge [
-        (lib.mkIf p yes)
-        (lib.mkIf (!p) no)
-      ])
-        (cfg.bin == "code" || cfg.bin == "code-insiders")
-        cfg.package
-        pkgs.code;
+    programs.vscode.package = package;
 
     programs.vscode.keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
     programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {

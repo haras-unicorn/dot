@@ -1,7 +1,5 @@
 { pkgs, ... }:
 
-# TODO: add pager to dot config
-
 {
   shared.dot = {
     shell.aliases = {

@@ -72,6 +72,8 @@ in
           auto-format = true;
         }];
       });
+
+      programs.direnv.enableNushellIntegration = true;
     };
   };
 }

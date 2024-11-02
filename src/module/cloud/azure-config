@@ -1,8 +1,0 @@
-[core]
-collect_telemetry = false
-
-[cloud]
-name = AzureCloud
-
-[extension]
-use_dynamic_install = no

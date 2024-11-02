@@ -1,6 +1,7 @@
-{ self, pkgs, ... }:
+{ pkgs, ... }:
 
 # FIXME: bat cache
+# TODO: proper repeat
 
 let
   run = pkgs.writeShellApplication {
@@ -18,15 +19,6 @@ let
   };
 in
 {
-  imports = [
-    "${self}/src/module/vivid"
-    "${self}/src/module/bat"
-    "${self}/src/module/ripgrep"
-    "${self}/src/module/sd"
-    "${self}/src/module/fd"
-    "${self}/src/module/eza"
-  ];
-
   shared = {
     dot = {
       shell.aliases = {
@@ -42,6 +34,7 @@ in
     home.packages = with pkgs; [
       run
       repeat
+      htop
       man-pages
       man-pages-posix
     ];

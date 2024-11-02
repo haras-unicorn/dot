@@ -15,17 +15,10 @@ let
   };
 in
 {
-  # shared.dot = {
-  #   desktopEnvironment.sessionStartup = [
-  #     "${discord}/bin/discord"
-  #   ];
-  # };
-
   home = {
     home.packages = [
       discord
-      pkgs.dorion
-      pkgs.webcord
+      pkgs.vesktop
     ];
   };
 }

@@ -1,19 +1,9 @@
 { pkgs, lib, config, ... }:
 
 # TODO: prompt after starship like nushell
-# TODO: package
 
 let
   cfg = config.dot.shell;
-
-  withPackage = x:
-    (p: yes: no: lib.mkMerge [
-      (lib.mkIf p yes)
-      (lib.mkIf (!p) no)
-    ])
-      (cfg.bin == "bash")
-      (x cfg.package)
-      (x pkgs.bashInteractive);
 
   vars = lib.strings.concatStringsSep
     "\n"
@@ -45,26 +35,34 @@ in
 
     programs.bash.initExtra = ''
       ${vars}
-
       ${aliases}
-
       ${startup}
     '';
 
-    programs.helix.languages = withPackage (package: {
-      language-server.bash-language-server = {
-        command = "${pkgs.nodePackages.bash-language-server}/bin/bash-language-server";
-        args = [ "start" ];
+    programs.helix.languages =
+      let
+        bash-language-server = pkgs.nodePackages.bash-language-server.overrideAttrs (final: prev: {
+          buildInputs = (prev.buildInputs or [ ]) ++ [
+            pkgs.shellcheck
+          ];
+        });
+      in
+      {
+        language-server.bash-language-server = {
+          command = "${bash-language-server}/bin/bash-language-server";
+          args = [ "start" ];
+        };
+
+        language = [{
+          name = "bash";
+          language-servers = [ "bash-language-server" ];
+          formatter = {
+            command = "${pkgs.shfmt}/bin/shfmt";
+          };
+          auto-format = true;
+        }];
       };
 
-      language = [{
-        name = "bash";
-        language-servers = [ "bash-language-server" ];
-        formatter = {
-          command = "${pkgs.shfmt}/bin/shfmt";
-        };
-        auto-format = true;
-      }];
-    });
+    programs.direnv.enableBashIntegration = true;
   };
 }

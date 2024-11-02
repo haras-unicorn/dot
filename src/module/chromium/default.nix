@@ -4,26 +4,17 @@
 # TODO: hardware acceleration
 
 let
-  cfg = config.dot.browser;
+  hasMonitor =
+    (builtins.hasAttr "monitor" config.facter.report.hardware) &&
+    ((builtins.length config.facter.report.hardware.monitor) > 0);
 in
 {
-  home = {
+  home = lib.mkIf hasMonitor {
     programs.chromium.enable = true;
-    programs.chromium.package =
-      (p: yes: no: lib.mkMerge [
-        (lib.mkIf p yes)
-        (lib.mkIf (!p) no)
-      ])
-        (cfg.bin == "brave"
-          || cfg.bin == "chromium"
-          || cfg.bin == "vivaldi")
-        cfg.package
-        pkgs.ungoogled-chromium;
-
+    programs.chromium.package = pkgs.ungoogled-chromium;
     programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
       en_US
     ];
-
     programs.chromium.extensions = [
       # ublock origin
       { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
