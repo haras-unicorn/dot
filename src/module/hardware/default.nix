@@ -43,30 +43,37 @@ in
         type = lib.types.ints.unsigned;
         default = memoryInBytes;
       };
+
       network = lib.mkOption {
         type = lib.types.bool;
         default = network;
       };
+
       bluetooth = lib.mkOption {
         type = lib.types.bool;
         default = bluetooth;
       };
+
       sound = lib.mkOption {
         type = lib.types.bool;
         default = sound;
       };
+
       monitor = lib.mkOption {
         type = lib.types.bool;
         default = monitor;
       };
+
       graphics = lib.mkOption {
         type = lib.types.nullOr lib.types.enum [ "nvidia" "amd" ];
         default = graphics;
       };
+
       keyboard = lib.mkOption {
         type = lib.types.bool;
         default = keyboard;
       };
+
       mouse = lib.mkOption {
         type = lib.types.bool;
         default = mouse;
