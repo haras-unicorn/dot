@@ -13,6 +13,8 @@
 
 # The shared part applies to both nixpkgs.lib.nixosSystem and home-manager.sharedModules
 
+# Option definitions are automatically prefixed with dot to prevent colisions
+
 # Here is a kitchen sink example:
 # { self, lib, config, ... }:
 # let
@@ -26,15 +28,13 @@
 # {
 #   imports = [ "${self}/src/module/waybar" ];
 #   options = {
-#     dot = {
-#       desktopEnvironment.sessionVariables = lib.mkOption {
-#         type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
-#         default = { };
-#         example = { EDITOR = "hx"; };
-#         description = ''
-#           Environment variables to set on session start with Hyprland.
-#         '';
-#       };
+#     desktopEnvironment.sessionVariables = lib.mkOption {
+#       type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+#       default = { };
+#       example = { EDITOR = "hx"; };
+#       description = ''
+#         Environment variables to set on session start with Hyprland.
+#       '';
 #     };
 #   };
 #   config = {
@@ -76,7 +76,7 @@ let
     else [ ]);
   mkOptions = specialArgs: dotObject:
     if builtins.hasAttr "options" dotObject
-    then dotObject.options
+    then { dot = dotObject.options; }
     else { };
   mkConfig = { lib, ... }: path: dotObject:
     if builtins.hasAttr "config" dotObject
