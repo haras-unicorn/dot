@@ -82,9 +82,6 @@
             nixpkgs-fmt
 
             # Scripts
-            nodePackages.bash-language-server
-            shfmt
-            shellcheck
             yapf
             ruff
 
@@ -94,7 +91,6 @@
             nodePackages.vscode-json-languageserver
             marksman
             taplo
-            html-tidy
 
             # Tools
             nushell
