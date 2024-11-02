@@ -54,7 +54,15 @@
       user = "haras";
       version = "24.05";
 
-      importDir = (dir: builtins.map (name: import "${self}/src/module/${name}"));
+      importDir = (dir: nixpkgs.lib.attrsets.mapAttrs'
+        (name: type: {
+          name =
+            if type == "regular" then
+              (builtins.replaceStrings [ ".nix" ] [ "" ] name) else
+              name;
+          value = import "${dir}/${name}";
+        })
+        (builtins.readDir dir));
 
       lib = importDir "${self}/src/lib";
       modules = builtins.attrValues (importDir "${self}/src/module");
