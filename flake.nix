@@ -43,11 +43,7 @@
     { self
     , flake-utils
     , nixpkgs
-    , nix-index-database
-    , home-manager
-    , nur
     , nixos-facter-modules
-    , sops-nix
     , ...
     } @ rawInputs:
     let

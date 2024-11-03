@@ -1,4 +1,9 @@
-{ self, nur, nix-index-database, nixos-facter-modules, ... }@inputs:
+{ self
+, nur
+, nix-index-database
+, nixos-facter-modules
+, ...
+}@inputs:
 
 let
   user = self.lib.nixosConfiguration.user;
