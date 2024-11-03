@@ -13,6 +13,10 @@
 # generated on (date now | format date %+):
 #
 # 2024-11-03T11:05:07.566302818+01:00
+#
+# wayback machine link
+# 
+# https://web.archive.org/web/20240928225313/https://www.nvidia.com/en-us/drivers/unix/legacy-gpu/
 
 {
   legacy = [
