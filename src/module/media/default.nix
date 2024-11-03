@@ -2,7 +2,7 @@
 
 # TODO: colors that libreoffice uses
 # TODO: transmission mime
-# NOTE: peer port is 51413
+# NOTE: transmission peer port is 51413
 
 let
   writer = "${pkgs.libreoffice-fresh}/share/applications/writer.desktop";
@@ -79,6 +79,11 @@ in
       pkgs.vlc
       pkgs.xarchiver
       pkgs.transmission_4-gtk
+      pkgs.pinta
+      pkgs.netflix
+      pkgs.gimp
+      pkgs.inkscape
+      pkgs.pencil
     ];
 
     xdg.mimeApps.associations.added = mime;

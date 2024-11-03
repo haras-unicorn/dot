@@ -1,9 +1,5 @@
 { lib, pkgs, config, ... }:
 
-# TODO: firmware tui as part of diag
-# TODO: https://github.com/NixOS/nixpkgs/issues/232266
-# TODO: use lib.getExe insead of the bin thing
-
 let
   terminal = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
   shell = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
@@ -32,6 +28,54 @@ let
 in
 {
   options = {
+    shell = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.bashInteractive;
+        example = pkgs.nushell;
+      };
+      bin = lib.mkOption {
+        type = lib.types.str;
+        default = "bash";
+        example = "nu";
+      };
+      sessionVariables = lib.mkOption {
+        type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+        default = { };
+        example = { EDITOR = "hx"; };
+        description = ''
+          Environment variables to set on session start with Nushell.
+        '';
+      };
+      aliases = lib.mkOption {
+        type = with lib.types; lazyAttrsOf str;
+        default = { };
+        example = { rm = "rm -i"; };
+        description = ''
+          Aliases to use in Nushell.
+        '';
+      };
+      sessionStartup = lib.mkOption {
+        type = with lib.types; listOf str;
+        default = [ ];
+        example = [ "fastfetch" ];
+        description = ''
+          Commands to execute on session start with Nushell.
+        '';
+      };
+    };
+    editor = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.vim;
+        example = pkgs.helix;
+      };
+      bin = lib.mkOption {
+        type = lib.types.str;
+        default = "vim";
+        example = "hx";
+      };
+    };
     terminal = {
       package = lib.mkOption {
         type = lib.types.package;
@@ -106,13 +150,31 @@ in
       xdg.mimeApps.associations.added = mime;
       xdg.mimeApps.defaultApplications = mime;
 
-      home.packages = with pkgs; [
-        pinta # NOTE: image manipulation
-        netflix # NOTE: video streaming
-        gimp # NOTE: image manipulation
-        inkscape # NOTE: vector graphics design
-        pencil # NOTE: UI/UX prototyping
+      home.packages = [
+        pkgs.xdg-user-dirs
+        pkgs.xdg-utils
+        pkgs.shared-mime-info
       ];
+
+      xdg.enable = true;
+
+      xdg.userDirs.enable = true;
+      xdg.userDirs.createDirectories = true;
+
+      xdg.userDirs.desktop = "${config.home.homeDirectory}/desktop";
+      xdg.userDirs.download = "${config.home.homeDirectory}/download";
+
+      xdg.userDirs.music = "${config.home.homeDirectory}/music";
+      xdg.userDirs.pictures = "${config.home.homeDirectory}/pictures";
+      xdg.userDirs.videos = "${config.home.homeDirectory}/videos";
+
+      xdg.userDirs.templates = "${config.home.homeDirectory}/templates";
+      xdg.userDirs.documents = "${config.home.homeDirectory}/documents";
+
+      xdg.userDirs.publicShare = "${config.home.homeDirectory}/public";
+
+      xdg.mime.enable = true;
+      xdg.mimeApps.enable = true;
     };
   };
 }

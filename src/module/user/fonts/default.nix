@@ -1,7 +1,5 @@
 { lib, pkgs, config, ... }:
 
-# FIXME: fontfor not compiling
-
 let
   mkFontOption = type: name: package: {
     name = lib.mkOption {
@@ -80,7 +78,7 @@ in
     fonts.fontconfig.defaultFonts.monospace = [ config.dot.font.mono.name ];
 
     environment.systemPackages = with pkgs; [
-      # fontfor
+      fontfor
       fontpreview
     ];
   };
