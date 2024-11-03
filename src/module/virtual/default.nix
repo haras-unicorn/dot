@@ -11,12 +11,16 @@
 # TODO: use docker rootless when networking becomes less of a pain
 
 let
-  bridgeGns3 = rec {
-    name = "br-gns3";
-    prefix = 24;
-    address = "10.10.10.1";
-    subnet = "${address}/${builtins.toString prefix}";
-  };
+  bridgeGns3 =
+    let
+      prefix = 24;
+      address = "10.10.10.1";
+    in
+    {
+      inherit address prefix;
+      name = "br-gns3";
+      subnet = "${address}/${builtins.toString prefix}";
+    };
 in
 {
   system = {

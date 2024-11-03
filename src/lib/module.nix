@@ -39,10 +39,9 @@ let
       if lib.hasAttrByPath path dotObject
       then lib.getAttrFromPath path dotObject
       else { };
-in
-rec {
+
   # NOTE: if pkgs here not demanded other modules don't get access...
-  mkSystemModule = dotModule: { pkgs, ... } @specialArgs:
+  mkSystemModule = mkSystemModule: dotModule: { pkgs, ... } @specialArgs:
     let
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports mkSystemModule specialArgs dotObject;
@@ -55,7 +54,8 @@ rec {
       inherit options config;
     };
 
-  mkHomeModule = dotModule: { pkgs, ... } @specialArgs:
+  # NOTE: if pkgs here not demanded other modules don't get access...
+  mkHomeModule = mkHomeModule: dotModule: { pkgs, ... } @specialArgs:
     let
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports mkHomeModule specialArgs dotObject;
@@ -67,4 +67,8 @@ rec {
       imports = imports ++ [ sharedConfig ];
       inherit options config;
     };
+in
+{
+  mkSystemModule = mkSystemModule mkSystemModule;
+  mkHomeModule = mkHomeModule mkHomeModule;
 }
