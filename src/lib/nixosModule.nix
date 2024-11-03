@@ -1,4 +1,4 @@
-{ self, nur, nix-index-database, ... }@inputs:
+{ self, nur, nix-index-database, nixos-facter-modules, ... }@inputs:
 
 let
   user = self.lib.nixosConfiguration.user;
@@ -40,22 +40,9 @@ in
       home-manager.useUserPackages = true;
       home-manager.extraSpecialArgs = specialArgs;
       home-manager.sharedModules = [
-        nur.hmModules.nur
-        nix-index-database.hmModules.nix-index
-        ({ lib, ... }: {
-          options.facter = {
-            report = lib.mkOption {
-              type = lib.types.raw;
-              default = builtins.fromJSON
-                (builtins.readFile config.facter.reportPath);
-            };
-
-            reportPath = lib.mkOption {
-              type = lib.types.path;
-              default = hardware;
-            };
-          };
-        })
+        nur.hmModules.default
+        nix-index-database.hmModules.default
+        nixos-facter-modules.hmModules.default
       ];
       home-manager.users."${user}" = self.hmModules."${host}-${system}";
     };

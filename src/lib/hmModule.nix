@@ -9,11 +9,14 @@ in
   mkHmModule = host: system:
     let
       config = import "${self}/src/host/${host}/config.nix";
+      hardware = "${self}/src/host/${host}/hardware.json";
     in
     {
       imports =
         (builtins.map self.lib.module.mkHomeSharedModule modules)
         ++ [ (self.lib.module.mkHomeSharedModule config) ];
+
+      facter.reportPath = hardware;
 
       home.stateVersion = version;
       home.username = "${user}";
