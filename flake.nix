@@ -51,151 +51,38 @@
     , ...
     } @ inputs:
     let
-      importDir = (dir: nixpkgs.lib.attrsets.mapAttrs'
-        (name: type: {
-          name =
-            if type == "regular" then
-              (builtins.replaceStrings [ ".nix" ] [ "" ] name) else
-              name;
-          value = import "${dir}/${name}";
-        })
-        (builtins.readDir dir));
-    in
-    flake-utils.lib.eachDefaultSystem
-      (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-        };
-      in
-      {
-        devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            # Nix
-            nil
-            nixpkgs-fmt
+      systemPart = flake-utils.lib.eachDefaultSystem (system:
+        {
+          devShells.default = self.lib.devShell.mkDevShell system;
+        });
 
-            # Scripts
-            yapf
-            ruff
+      libPart = {
+        lib = nixpkgs.lib.mapAttrs'
+          (name: value: { inherit name; value = value inputs; })
+          (((import "${self}/src/lib/import.nix") inputs).importDir "${self}/src/lib");
+      };
 
-            # Misc
-            nodePackages.prettier
-            nodePackages.yaml-language-server
-            nodePackages.vscode-json-languageserver
-            marksman
-            taplo
-
-            # Tools
-            nushell
-            just
-            openssl
-            openvpn
-            openssh
-            age
-            sops
-          ];
-        };
-      }) // {
-      lib = nixpkgs.lib.mapAttrs'
-        (name: value: { inherit name; value = value inputs; })
-        (importDir "${self}/src/lib");
-
-      nixosConfigurations =
+      hostPart =
         let
-          modules = builtins.attrValues (importDir "${self}/src/module");
-
-          user = "haras";
-          version = "24.05";
-
           hosts = (builtins.attrNames (builtins.readDir "${self}/src/host"));
           configs = nixpkgs.lib.cartesianProduct {
             system = flake-utils.lib.defaultSystems;
             host = hosts;
           };
-
-          mkNixosConfiguration = { system, host }:
-            let
-              specialArgs = inputs // { inherit version host user; };
-
-              config = import "${self}/src/host/${host}/config.nix";
-              hardware = "${self}/src/host/${host}/hardware.json";
-              secrets = "${self}/src/host/${host}/secrets.yaml";
-            in
-            {
-              "${host}-${system}" = nixpkgs.lib.nixosSystem {
-                inherit system specialArgs;
-                modules = [
-                  nur.nixosModules.nur
-                  nixos-facter-modules.nixosModules.facter
-                  sops-nix.nixosModules.sops
-                  (self.lib.module.mkSystemModule config)
-                  home-manager.nixosModules.home-manager
-                  {
-                    import = builtins.map self.lib.module.mkSystemModule modules;
-
-                    fileSystems."/" = {
-                      device = "/dev/disk/by-label/NIXROOT";
-                      fsType = "ext4";
-                    };
-                    fileSystems."/boot" = {
-                      device = "/dev/disk/by-label/NIXBOOT";
-                      fsType = "vfat";
-                    };
-
-                    facter.reportPath = hardware;
-
-                    sops.defaultSopsFile = secrets;
-                    sops.age.keyFile = "/root/.sops/secrets.age";
-
-                    networking.hostName = host;
-                    system.stateVersion = version;
-
-                    users.mutableUsers = false;
-                    users.users."${user}" = {
-                      home = "/home/${user}";
-                      createHome = true;
-                      isNormalUser = true;
-                      initialPassword = user;
-                      extraGroups = [ "wheel" ];
-                      useDefaultShell = true;
-                    };
-
-                    home-manager.backupFileExtension = "backup";
-                    home-manager.useUserPackages = true;
-                    home-manager.extraSpecialArgs = specialArgs;
-                    home-manager.sharedModules = [
-                      nur.hmModules.nur
-                      nix-index-database.hmModules.nix-index
-                      (self.lib.module.mkHomeSharedModule config)
-                      ({ lib, ... }: {
-                        options.facter = {
-                          report = lib.mkOption {
-                            type = lib.types.raw;
-                            default = builtins.fromJSON
-                              (builtins.readFile config.facter.reportPath);
-                          };
-
-                          reportPath = lib.mkOption {
-                            type = lib.types.path;
-                            default = hardware;
-                          };
-                        };
-                      })
-                    ];
-                    home-manager.users."${user}" = ({ self, pkgs, ... }: {
-                      imports = builtins.map self.lib.module.mkHomeSharedModule modules;
-
-                      home.stateVersion = version;
-                      home.username = "${user}";
-                      home.homeDirectory = "/home/${user}";
-                    });
-                  }
-                ];
-              };
-            };
         in
-        nixpkgs.lib.mergeAttrsList
-          (builtins.map mkNixosConfiguration configs);
-    };
+        {
+          nixosModules =
+            nixpkgs.lib.mergeAttrsList
+              (builtins.map self.lib.nixosModule.mkNixosModule configs);
+
+          homeManagerModules =
+            nixpkgs.lib.mergeAttrsList
+              (builtins.map self.lib.homeManagerModule.mkHomeManagerModule configs);
+
+          nixosConfigurations =
+            nixpkgs.lib.mergeAttrsList
+              (builtins.map self.lib.nixosConfiguration.mkNixosConfiguration configs);
+        };
+    in
+    systemPart // libPart // hostPart;
 }
