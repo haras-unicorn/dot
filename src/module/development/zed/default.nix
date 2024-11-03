@@ -1,11 +1,11 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 
 let
   bootstrap = config.dot.colors.bootstrap;
   terminal = config.dot.colors.terminal;
 in
 {
-  home = {
+  home = lib.mkIf config.dot.hardware.monitor.enable {
     home.packages = [
       pkgs.zed-editor
     ];

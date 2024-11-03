@@ -1,11 +1,16 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
 # FIXME: networkmanager-fortisslvpn
 # TODO: openfortivpn as a service
 # NOTE: https://github.com/qdm12/ddns-updater/blob/master/docs/duckdns.md -> /var/lib/ddns-updater/config.json
 
+let
+  hasNetwork = config.dot.hardware.network.enable;
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
+in
 {
-  shared.dot = {
+  shared.dot = lib.mkIf (hasNetwork && hasMonitor && hasKeyboard) {
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";
@@ -15,7 +20,7 @@
     }];
   };
 
-  system = {
+  system = lib.mkIf hasNetwork {
     networking.nftables.enable = true;
     networking.firewall.enable = true;
     networking.networkmanager.enable = true;
@@ -45,7 +50,7 @@
     };
   };
 
-  home = {
+  home = lib.mkIf (hasNetwork && hasMonitor) {
     services.network-manager-applet.enable = true;
     xdg.desktopEntries = {
       ddns-updater = {

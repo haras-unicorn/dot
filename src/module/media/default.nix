@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
 # TODO: colors that libreoffice uses
 # TODO: transmission mime
@@ -70,7 +70,7 @@ let
   };
 in
 {
-  home = {
+  home = lib.mkIf config.dot.hardware.monitor.enable {
     home.packages = [
       pkgs.libreoffice-fresh
       pkgs.nomacs

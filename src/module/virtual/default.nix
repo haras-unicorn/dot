@@ -1,4 +1,5 @@
 { pkgs
+, lib
 , config
 , ...
 }:
@@ -11,6 +12,8 @@
 # TODO: wine packages
 
 let
+  hasMonitor = config.dot.hardware.monitor.enable;
+
   bridgeGns3 =
     let
       prefix = 24;
@@ -24,23 +27,15 @@ let
 in
 {
   system = {
-    environment.systemPackages = with pkgs; [
-      lazydocker
-      docker-client
-      docker-compose
-      gns3-gui
+    environment.systemPackages = [
+      pkgs.lazydocker
+      pkgs.docker-client
+      pkgs.docker-compose
+      (lib.mkIf hasMonitor pkgs.gns3-gui)
     ];
-
-    # virtualisation.podman.enable = true;
-    # virtualisation.podman.dockerSocket.enable = true;
-    # virtualisation.podman.autoPrune.enable = true;
-    # virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
-    # virtualisation.oci-containers.backend = "podman";
 
     virtualisation.docker.enable = true;
     virtualisation.docker.autoPrune.enable = true;
-    # virtualisation.docker.rootless.enable = true;
-    # virtualisation.docker.rootless.setSocketVariable = true;
 
     services.gns3-server.enable = true;
     services.gns3-server.vpcs.enable = true;
@@ -77,6 +72,15 @@ in
         prefixLength = bridgeGns3.prefix;
       }
     ];
+
+    # virtualisation.podman.enable = true;
+    # virtualisation.podman.dockerSocket.enable = true;
+    # virtualisation.podman.autoPrune.enable = true;
+    # virtualisation.podman.defaultNetwork.settings.dns_enabled = true;
+    # virtualisation.oci-containers.backend = "podman";
+
+    # virtualisation.docker.rootless.enable = true;
+    # virtualisation.docker.rootless.setSocketVariable = true;
 
     # systemd.services."${bridgeGns3.name}-setup" = {
     #   description = "Setup ${bridgeGns3.name} interface";

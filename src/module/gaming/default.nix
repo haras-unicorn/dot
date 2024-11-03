@@ -1,18 +1,15 @@
-{ pkgs
-  # , self
-, ...
-}:
+{ pkgs, config, lib, ... }:
 
 # TODO: lutris packages
 
 {
-  shared = {
+  shared = lib.mkIf config.dot.hardware.monitor.enable {
     dot = {
       desktopEnvironment.sessionVariables = { MANGOHUD = 1; };
     };
   };
 
-  system = {
+  system = lib.mkIf config.dot.hardware.monitor.enable {
     programs.steam.enable = true;
     programs.steam.extest.enable = true;
     programs.steam.protontricks.enable = true;
@@ -23,7 +20,7 @@
     programs.gamemode.enable = true;
   };
 
-  home = {
+  home = lib.mkIf config.dot.hardware.monitor.enable {
     programs.mangohud.enable = true;
     programs.mangohud.enableSessionWide = true;
   };

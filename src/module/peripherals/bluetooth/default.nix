@@ -1,16 +1,15 @@
 { pkgs, config, lib, ... }:
 
 let
-  hasBluetooth =
-    (builtins.hasAttr "bluetooth" config.facter.report.hardware) &&
-    ((builtins.length config.facter.report.hardware.bluetooth) > 0);
+  hasBluetooth = config.dot.hardware.bluetooth.enable;
+  hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
   shared.dot = lib.mkIf hasBluetooth {
-    desktopEnvironment.sessionStartup = [
+    desktopEnvironment.sessionStartup = lib.mkIf hasMonitor [
       "${pkgs.blueman}/bin/blueman-applet"
     ];
-    desktopEnvironment.windowrules = [{
+    desktopEnvironment.windowrules = lib.mkIf hasMonitor [{
       rule = "float";
       selector = "class";
       xselector = "wm_class";

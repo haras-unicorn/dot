@@ -1,6 +1,9 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 
 let
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
+
   cfg = config.dot.terminal;
 
   vars = lib.strings.concatStringsSep
@@ -20,17 +23,8 @@ let
 in
 {
   config = {
-    home = {
+    home = lib.mkIf (hasKeyboard && hasMonitor) {
       programs.kitty.enable = true;
-      programs.kitty.package =
-        (p: yes: no: lib.mkMerge [
-          (lib.mkIf p yes)
-          (lib.mkIf (!p) no)
-        ])
-          (cfg.bin == "kitty")
-          cfg.package
-          pkgs.nushell;
-
       programs.kitty.extraConfig = ''
         ${builtins.readFile ./kitty.conf}
 

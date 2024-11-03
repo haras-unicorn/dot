@@ -73,11 +73,6 @@ let
   );
 in
 {
-  shared.dot = lib.mkIf (config.dot.hardware.monior.enable) {
-    browser.package = pkgs.firefox;
-    browser.bin = "firefox";
-  };
-
   home = lib.mkIf (config.dot.hardware.monior.enable) {
     programs.firefox.enable = true;
     programs.firefox.package = pkgs.firefox;

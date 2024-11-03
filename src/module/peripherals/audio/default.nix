@@ -1,7 +1,11 @@
 { pkgs, lib, config, ... }:
 
+let
+  hasSound = config.dot.hardware.sound.enable;
+  hasMonitor = config.dot.hardware.monitor.enable;
+in
 {
-  shared = lib.mkIf config.dot.hardware.sound {
+  shared = lib.mkIf (hasSound && hasMonitor) {
     dot = {
       desktopEnvironment.windowrules = [{
         rule = "float";
@@ -13,7 +17,7 @@
     };
   };
 
-  system = lib.mkIf config.dot.hardware.sound {
+  system = lib.mkIf hasSound {
     services.pipewire.enable = true;
     services.pipewire.wireplumber.enable = true;
     services.pipewire.alsa.enable = true;
@@ -23,7 +27,7 @@
     programs.dconf.enable = true;
   };
 
-  home = lib.mkIf config.dot.hardware.sound {
+  home = lib.mkIf (hasSound && hasMonitor) {
     home.packages = with pkgs; [
       pwvucontrol
       easyeffects

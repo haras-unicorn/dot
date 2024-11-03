@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
 # FIXME: https://github.com/dbeaver/dbeaver/issues/34528#issuecomment-2412519650
 # TODO: customize custom dbeaver colors
@@ -16,7 +16,7 @@ let
   };
 in
 {
-  home = {
+  home = lib.mkIf config.dot.hardware.monitor.enable {
     home.packages = [
       dbeaver
     ];

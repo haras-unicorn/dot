@@ -1,9 +1,13 @@
 { pkgs, lib, config, ... }:
 
+let
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
+in
 {
-  shared = lib.mkIf config.dot.hardware.monitor.enable {
+  shared = {
     dot = {
-      desktopEnvironment.keybinds = [
+      desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
         {
           mods = [ "super" "shift" ];
           key = "b";
@@ -18,7 +22,7 @@
     };
   };
 
-  config = lib.mkIf config.dot.hardware.monitor.enable {
+  config = lib.mkIf hasMonitor {
     system = {
       hardware.i2c.enable = true;
       services.ddccontrol.enable = true;
