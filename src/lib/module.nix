@@ -1,3 +1,5 @@
+{ ... }:
+
 # dot modules come in two forms: function and object
 
 # Function modules take input args from nixpkgs.lib.nixosSystem and home-manager module parameters

@@ -98,7 +98,10 @@
           ];
         };
       }) // {
-      lib = importDir "${self}/src/lib";
+      lib = nixpkgs.lib.mapAttrs'
+        (name: value: { inherit name; value = value inputs; })
+        (importDir "${self}/src/lib");
+
       nixosConfigurations =
         let
           modules = builtins.attrValues (importDir "${self}/src/module");
@@ -193,7 +196,7 @@
               };
             };
         in
-        nixpkgs.lib.attrsets.mergeAttrsList
+        nixpkgs.lib.mergeAttrsList
           (builtins.map mkNixosConfiguration configs);
     };
 }
