@@ -1,5 +1,7 @@
 { lib, pkgs, config, ... }:
 
+# TODO: declare through config
+
 let
   mkFontOption = type: name: package: {
     name = lib.mkOption {

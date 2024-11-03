@@ -1,5 +1,7 @@
 { lib, pkgs, config, ... }:
 
+# TODO: declare through config
+
 let
   terminal = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
   shell = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
