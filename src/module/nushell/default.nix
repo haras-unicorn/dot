@@ -74,6 +74,7 @@ in
       });
 
       programs.direnv.enableNushellIntegration = true;
+      programs.zoxide.enableNushellIntegration = true;
     };
   };
 }

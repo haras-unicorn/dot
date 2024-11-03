@@ -26,6 +26,10 @@
   };
 
   home = {
+    home.packages = [
+      pkgs.playerctl
+    ];
+
     services.playerctld.enable = true;
   };
 }

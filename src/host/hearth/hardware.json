@@ -87,12 +87,8 @@
         "hotplug": "usb",
         "driver": "btusb",
         "driver_module": "btusb",
-        "drivers": [
-          "btusb"
-        ],
-        "driver_modules": [
-          "btusb"
-        ],
+        "drivers": ["btusb"],
+        "driver_modules": ["btusb"],
         "module_alias": "usb:v2357p0604d0200dcE0dsc01dp01icE0isc01ip01in01"
       },
       {
@@ -160,12 +156,8 @@
         "hotplug": "usb",
         "driver": "btusb",
         "driver_module": "btusb",
-        "drivers": [
-          "btusb"
-        ],
-        "driver_modules": [
-          "btusb"
-        ],
+        "drivers": ["btusb"],
+        "driver_modules": ["btusb"],
         "module_alias": "usb:v2357p0604d0200dcE0dsc01dp01icE0isc01ip01in00"
       }
     ],
@@ -227,9 +219,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d00001453sv00001462sd00007A38bc06sc04i00"
       },
       {
@@ -312,12 +302,8 @@
         },
         "driver": "k10temp",
         "driver_module": "k10temp",
-        "drivers": [
-          "k10temp"
-        ],
-        "driver_modules": [
-          "k10temp"
-        ],
+        "drivers": ["k10temp"],
+        "driver_modules": ["k10temp"],
         "module_alias": "pci:v00001022d00001463sv00000000sd00000000bc06sc00i00"
       },
       {
@@ -460,9 +446,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d000043B4sv00001B21sd00003306bc06sc04i00"
       },
       {
@@ -736,9 +720,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d00001454sv00007A38sd00001462bc06sc04i00"
       },
       {
@@ -801,9 +783,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d000043B4sv00001B21sd00003306bc06sc04i00"
       },
       {
@@ -903,9 +883,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d00001453sv00001462sd00007A38bc06sc04i00"
       },
       {
@@ -1045,9 +1023,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d00001453sv00001462sd00007A38bc06sc04i00"
       },
       {
@@ -1147,9 +1123,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d00001454sv00007A38sd00001462bc06sc04i00"
       },
       {
@@ -1212,9 +1186,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d000043B4sv00001B21sd00003306bc06sc04i00"
       },
       {
@@ -1357,9 +1329,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d000043B4sv00001B21sd00003306bc06sc04i00"
       },
       {
@@ -1422,9 +1392,7 @@
           "prog_if": 0
         },
         "driver": "pcieport",
-        "drivers": [
-          "pcieport"
-        ],
+        "drivers": ["pcieport"],
         "module_alias": "pci:v00001022d000043B2sv00001B21sd00000201bc06sc04i00"
       },
       {
@@ -1699,12 +1667,8 @@
         ],
         "driver": "nvme",
         "driver_module": "nvme",
-        "drivers": [
-          "nvme"
-        ],
-        "driver_modules": [
-          "nvme"
-        ]
+        "drivers": ["nvme"],
+        "driver_modules": ["nvme"]
       },
       {
         "index": 59,
@@ -1775,14 +1739,8 @@
         ],
         "driver": "ahci",
         "driver_module": "ahci",
-        "drivers": [
-          "ahci",
-          "sd"
-        ],
-        "driver_modules": [
-          "ahci",
-          "sd_mod"
-        ]
+        "drivers": ["ahci", "sd"],
+        "driver_modules": ["ahci", "sd_mod"]
       },
       {
         "index": 60,
@@ -1853,14 +1811,8 @@
         ],
         "driver": "ahci",
         "driver_module": "ahci",
-        "drivers": [
-          "ahci",
-          "sd"
-        ],
-        "driver_modules": [
-          "ahci",
-          "sd_mod"
-        ]
+        "drivers": ["ahci", "sd"],
+        "driver_modules": ["ahci", "sd_mod"]
       }
     ],
     "graphics_card": [
@@ -1964,12 +1916,8 @@
         },
         "driver": "nvidia",
         "driver_module": "nvidia",
-        "drivers": [
-          "nvidia"
-        ],
-        "driver_modules": [
-          "nvidia"
-        ],
+        "drivers": ["nvidia"],
+        "driver_modules": ["nvidia"],
         "module_alias": "pci:v000010DEd00002504sv00001462sd0000397Dbc03sc00i00"
       }
     ],
@@ -2039,9 +1987,7 @@
         },
         "hotplug": "usb",
         "driver": "hub",
-        "drivers": [
-          "hub"
-        ],
+        "drivers": ["hub"],
         "module_alias": "usb:v1D6Bp0002d0611dc09dsc00dp01ic09isc00ip00in00"
       },
       {
@@ -2099,9 +2045,7 @@
         },
         "hotplug": "usb",
         "driver": "hub",
-        "drivers": [
-          "hub"
-        ],
+        "drivers": ["hub"],
         "module_alias": "usb:v1D6Bp0003d0611dc09dsc00dp03ic09isc00ip00in00"
       },
       {
@@ -2169,9 +2113,7 @@
         },
         "hotplug": "usb",
         "driver": "hub",
-        "drivers": [
-          "hub"
-        ],
+        "drivers": ["hub"],
         "module_alias": "usb:v1D6Bp0002d0611dc09dsc00dp01ic09isc00ip00in00"
       },
       {
@@ -2229,9 +2171,7 @@
         },
         "hotplug": "usb",
         "driver": "hub",
-        "drivers": [
-          "hub"
-        ],
+        "drivers": ["hub"],
         "module_alias": "usb:v1D6Bp0003d0611dc09dsc00dp03ic09isc00ip00in00"
       }
     ],
@@ -2501,9 +2441,7 @@
         "sysfs_bus_id": "0000:25:00.0",
         "sysfs_iommu_group_id": 14,
         "unix_device_name": "enp37s0",
-        "unix_device_names": [
-          "enp37s0"
-        ],
+        "unix_device_names": ["enp37s0"],
         "resources": [
           {
             "type": "hwaddr",
@@ -2553,12 +2491,8 @@
         },
         "driver": "r8169",
         "driver_module": "r8169",
-        "drivers": [
-          "r8169"
-        ],
-        "driver_modules": [
-          "r8169"
-        ],
+        "drivers": ["r8169"],
+        "driver_modules": ["r8169"],
         "module_alias": "pci:v000010ECd00008168sv00001462sd00007A38bc02sc00i00"
       }
     ],
@@ -2577,9 +2511,7 @@
         "model": "Loopback network interface",
         "sysfs_id": "/class/net/lo",
         "unix_device_name": "lo",
-        "unix_device_names": [
-          "lo"
-        ]
+        "unix_device_names": ["lo"]
       },
       {
         "index": 82,
@@ -2596,9 +2528,7 @@
         "sysfs_id": "/class/net/enp37s0",
         "sysfs_device_link": "/devices/pci0000:00/0000:00:01.3/0000:03:00.2/0000:20:04.0/0000:25:00.0",
         "unix_device_name": "enp37s0",
-        "unix_device_names": [
-          "enp37s0"
-        ],
+        "unix_device_names": ["enp37s0"],
         "resources": [
           {
             "type": "hwaddr",
@@ -2611,12 +2541,8 @@
         ],
         "driver": "r8169",
         "driver_module": "r8169",
-        "drivers": [
-          "r8169"
-        ],
-        "driver_modules": [
-          "r8169"
-        ]
+        "drivers": ["r8169"],
+        "driver_modules": ["r8169"]
       }
     ],
     "sound": [
@@ -2684,12 +2610,8 @@
         },
         "driver": "snd_hda_intel",
         "driver_module": "snd_hda_intel",
-        "drivers": [
-          "snd_hda_intel"
-        ],
-        "driver_modules": [
-          "snd_hda_intel"
-        ],
+        "drivers": ["snd_hda_intel"],
+        "driver_modules": ["snd_hda_intel"],
         "module_alias": "pci:v000010DEd0000228Esv00001462sd0000397Dbc04sc03i00"
       },
       {
@@ -2753,12 +2675,8 @@
         },
         "driver": "snd_hda_intel",
         "driver_module": "snd_hda_intel",
-        "drivers": [
-          "snd_hda_intel"
-        ],
-        "driver_modules": [
-          "snd_hda_intel"
-        ],
+        "drivers": ["snd_hda_intel"],
+        "driver_modules": ["snd_hda_intel"],
         "module_alias": "pci:v00001022d00001457sv00001462sd0000FA38bc04sc03i00"
       },
       {
@@ -2831,12 +2749,8 @@
         "hotplug": "usb",
         "driver": "snd-usb-audio",
         "driver_module": "snd_usb_audio",
-        "drivers": [
-          "snd-usb-audio"
-        ],
-        "driver_modules": [
-          "snd_usb_audio"
-        ],
+        "drivers": ["snd-usb-audio"],
+        "driver_modules": ["snd_usb_audio"],
         "module_alias": "usb:v194Fp0303d0112dc00dsc00dp00ic01isc03ip00in04"
       },
       {
@@ -2922,12 +2836,8 @@
         "hotplug": "usb",
         "driver": "snd-usb-audio",
         "driver_module": "snd_usb_audio",
-        "drivers": [
-          "snd-usb-audio"
-        ],
-        "driver_modules": [
-          "snd_usb_audio"
-        ],
+        "drivers": ["snd-usb-audio"],
+        "driver_modules": ["snd_usb_audio"],
         "module_alias": "usb:v194Fp0303d0112dc00dsc00dp00ic01isc02ip20in02"
       },
       {
@@ -3013,12 +2923,8 @@
         "hotplug": "usb",
         "driver": "snd-usb-audio",
         "driver_module": "snd_usb_audio",
-        "drivers": [
-          "snd-usb-audio"
-        ],
-        "driver_modules": [
-          "snd_usb_audio"
-        ],
+        "drivers": ["snd-usb-audio"],
+        "driver_modules": ["snd_usb_audio"],
         "module_alias": "usb:v194Fp0303d0112dc00dsc00dp00ic01isc01ip20in00"
       },
       {
@@ -3091,12 +2997,8 @@
         "hotplug": "usb",
         "driver": "snd-usb-audio",
         "driver_module": "snd_usb_audio",
-        "drivers": [
-          "snd-usb-audio"
-        ],
-        "driver_modules": [
-          "snd_usb_audio"
-        ],
+        "drivers": ["snd-usb-audio"],
+        "driver_modules": ["snd_usb_audio"],
         "module_alias": "usb:v194Fp0303d0112dc00dsc00dp00ic01isc01ip00in03"
       },
       {
@@ -3182,12 +3084,8 @@
         "hotplug": "usb",
         "driver": "snd-usb-audio",
         "driver_module": "snd_usb_audio",
-        "drivers": [
-          "snd-usb-audio"
-        ],
-        "driver_modules": [
-          "snd_usb_audio"
-        ],
+        "drivers": ["snd-usb-audio"],
+        "driver_modules": ["snd_usb_audio"],
         "module_alias": "usb:v194Fp0303d0112dc00dsc00dp00ic01isc02ip20in01"
       }
     ],
@@ -3255,12 +3153,8 @@
         },
         "driver": "nvme",
         "driver_module": "nvme",
-        "drivers": [
-          "nvme"
-        ],
-        "driver_modules": [
-          "nvme"
-        ],
+        "drivers": ["nvme"],
+        "driver_modules": ["nvme"],
         "module_alias": "pci:v0000144Dd0000A809sv0000144Dsd0000A801bc01sc08i02"
       },
       {
@@ -3338,12 +3232,8 @@
         },
         "driver": "ahci",
         "driver_module": "ahci",
-        "drivers": [
-          "ahci"
-        ],
-        "driver_modules": [
-          "ahci"
-        ],
+        "drivers": ["ahci"],
+        "driver_modules": ["ahci"],
         "module_alias": "pci:v00001022d000043B7sv00001B21sd00001062bc01sc06i01"
       },
       {
@@ -3413,12 +3303,8 @@
         },
         "driver": "ahci",
         "driver_module": "ahci",
-        "drivers": [
-          "ahci"
-        ],
-        "driver_modules": [
-          "ahci"
-        ],
+        "drivers": ["ahci"],
+        "driver_modules": ["ahci"],
         "module_alias": "pci:v00001022d00007901sv00001462sd00007A38bc01sc06i01"
       }
     ],
@@ -3589,12 +3475,8 @@
         },
         "driver": "ccp",
         "driver_module": "ccp",
-        "drivers": [
-          "ccp"
-        ],
-        "driver_modules": [
-          "ccp"
-        ],
+        "drivers": ["ccp"],
+        "driver_modules": ["ccp"],
         "module_alias": "pci:v00001022d00001456sv00001462sd00007A38bc10sc80i00"
       },
       {
@@ -3687,12 +3569,8 @@
         },
         "driver": "piix4_smbus",
         "driver_module": "i2c_piix4",
-        "drivers": [
-          "piix4_smbus"
-        ],
-        "driver_modules": [
-          "i2c_piix4"
-        ],
+        "drivers": ["piix4_smbus"],
+        "driver_modules": ["i2c_piix4"],
         "module_alias": "pci:v00001022d0000790Bsv00001462sd00007A38bc0Csc05i00"
       },
       {
@@ -3716,9 +3594,7 @@
         },
         "model": "16550A",
         "unix_device_name": "/dev/ttyS0",
-        "unix_device_names": [
-          "/dev/ttyS0"
-        ],
+        "unix_device_names": ["/dev/ttyS0"],
         "resources": [
           {
             "type": "io",
@@ -3875,12 +3751,8 @@
         },
         "driver": "xhci_hcd",
         "driver_module": "xhci_pci",
-        "drivers": [
-          "xhci_hcd"
-        ],
-        "driver_modules": [
-          "xhci_pci"
-        ],
+        "drivers": ["xhci_hcd"],
+        "driver_modules": ["xhci_pci"],
         "module_alias": "pci:v00001022d000043BBsv00001B21sd00001142bc0Csc03i30"
       },
       {
@@ -3948,12 +3820,8 @@
         },
         "driver": "xhci_hcd",
         "driver_module": "xhci_pci",
-        "drivers": [
-          "xhci_hcd"
-        ],
-        "driver_modules": [
-          "xhci_pci"
-        ],
+        "drivers": ["xhci_hcd"],
+        "driver_modules": ["xhci_pci"],
         "module_alias": "pci:v00001022d0000145Csv00001462sd00007A38bc0Csc03i30"
       }
     ]
@@ -3998,10 +3866,7 @@
         "name": "Motherboard",
         "value": 10
       },
-      "features": [
-        "Hosting Board",
-        "Replaceable"
-      ],
+      "features": ["Hosting Board", "Replaceable"],
       "location": "To be filled by O.E.M.",
       "chassis": 3
     },
@@ -4035,12 +3900,8 @@
           "name": "8-way Set-Associative",
           "value": 7
         },
-        "sram_type_current": [
-          "Pipeline Burst"
-        ],
-        "sram_type_supported": [
-          "Pipeline Burst"
-        ]
+        "sram_type_current": ["Pipeline Burst"],
+        "sram_type_supported": ["Pipeline Burst"]
       },
       {
         "handle": 20,
@@ -4071,12 +3932,8 @@
           "name": "8-way Set-Associative",
           "value": 7
         },
-        "sram_type_current": [
-          "Pipeline Burst"
-        ],
-        "sram_type_supported": [
-          "Pipeline Burst"
-        ]
+        "sram_type_current": ["Pipeline Burst"],
+        "sram_type_supported": ["Pipeline Burst"]
       },
       {
         "handle": 21,
@@ -4107,12 +3964,8 @@
           "name": "16-way Set-Associative",
           "value": 8
         },
-        "sram_type_current": [
-          "Pipeline Burst"
-        ],
-        "sram_type_supported": [
-          "Pipeline Burst"
-        ]
+        "sram_type_current": ["Pipeline Burst"],
+        "sram_type_supported": ["Pipeline Burst"]
       }
     ],
     "chassis": {
@@ -4144,9 +3997,7 @@
     },
     "config": {
       "handle": 12,
-      "options": [
-        "To be filled by O.E.M."
-      ]
+      "options": ["To be filled by O.E.M."]
     },
     "memory_array": [
       {
@@ -4198,9 +4049,7 @@
           "name": "Other",
           "value": 26
         },
-        "memory_type_details": [
-          "Synchronous"
-        ],
+        "memory_type_details": ["Synchronous"],
         "speed": 2400
       },
       {
@@ -4223,9 +4072,7 @@
           "name": "Other",
           "value": 26
         },
-        "memory_type_details": [
-          "Synchronous"
-        ],
+        "memory_type_details": ["Synchronous"],
         "speed": 2400
       },
       {
@@ -4248,9 +4095,7 @@
           "name": "Other",
           "value": 26
         },
-        "memory_type_details": [
-          "Synchronous"
-        ],
+        "memory_type_details": ["Synchronous"],
         "speed": 2400
       },
       {
@@ -4273,9 +4118,7 @@
           "name": "Other",
           "value": 26
         },
-        "memory_type_details": [
-          "Synchronous"
-        ],
+        "memory_type_details": ["Synchronous"],
         "speed": 2400
       }
     ],
@@ -4694,11 +4537,7 @@
           "value": 4
         },
         "id": 0,
-        "features": [
-          "3.3 V",
-          "Shared",
-          "PME#"
-        ]
+        "features": ["3.3 V", "Shared", "PME#"]
       },
       {
         "handle": 5,
@@ -4720,11 +4559,7 @@
           "value": 3
         },
         "id": 1,
-        "features": [
-          "3.3 V",
-          "Shared",
-          "PME#"
-        ]
+        "features": ["3.3 V", "Shared", "PME#"]
       },
       {
         "handle": 6,
@@ -4746,11 +4581,7 @@
           "value": 3
         },
         "id": 2,
-        "features": [
-          "3.3 V",
-          "Shared",
-          "PME#"
-        ]
+        "features": ["3.3 V", "Shared", "PME#"]
       },
       {
         "handle": 7,
@@ -4772,11 +4603,7 @@
           "value": 3
         },
         "id": 3,
-        "features": [
-          "3.3 V",
-          "Shared",
-          "PME#"
-        ]
+        "features": ["3.3 V", "Shared", "PME#"]
       },
       {
         "handle": 8,
@@ -4798,11 +4625,7 @@
           "value": 3
         },
         "id": 4,
-        "features": [
-          "3.3 V",
-          "Shared",
-          "PME#"
-        ]
+        "features": ["3.3 V", "Shared", "PME#"]
       },
       {
         "handle": 9,
@@ -4824,11 +4647,7 @@
           "value": 3
         },
         "id": 5,
-        "features": [
-          "3.3 V",
-          "Shared",
-          "PME#"
-        ]
+        "features": ["3.3 V", "Shared", "PME#"]
       },
       {
         "handle": 10,
@@ -4850,11 +4669,7 @@
           "value": 3
         },
         "id": 6,
-        "features": [
-          "3.3 V",
-          "Shared",
-          "PME#"
-        ]
+        "features": ["3.3 V", "Shared", "PME#"]
       },
       {
         "handle": 53,
@@ -4876,10 +4691,7 @@
           "value": 3
         },
         "id": 7,
-        "features": [
-          "3.3 V",
-          "PME#"
-        ]
+        "features": ["3.3 V", "PME#"]
       },
       {
         "handle": 54,
@@ -4901,10 +4713,7 @@
           "value": 3
         },
         "id": 8,
-        "features": [
-          "3.3 V",
-          "PME#"
-        ]
+        "features": ["3.3 V", "PME#"]
       },
       {
         "handle": 55,
@@ -4926,10 +4735,7 @@
           "value": 3
         },
         "id": 32,
-        "features": [
-          "3.3 V",
-          "PME#"
-        ]
+        "features": ["3.3 V", "PME#"]
       },
       {
         "handle": 56,
@@ -4951,10 +4757,7 @@
           "value": 3
         },
         "id": 2,
-        "features": [
-          "3.3 V",
-          "PME#"
-        ]
+        "features": ["3.3 V", "PME#"]
       },
       {
         "handle": 57,
@@ -4976,10 +4779,7 @@
           "value": 3
         },
         "id": 3,
-        "features": [
-          "3.3 V",
-          "PME#"
-        ]
+        "features": ["3.3 V", "PME#"]
       },
       {
         "handle": 58,
@@ -5001,10 +4801,7 @@
           "value": 3
         },
         "id": 4,
-        "features": [
-          "3.3 V",
-          "PME#"
-        ]
+        "features": ["3.3 V", "PME#"]
       },
       {
         "handle": 59,
@@ -5026,10 +4823,7 @@
           "value": 3
         },
         "id": 5,
-        "features": [
-          "3.3 V",
-          "PME#"
-        ]
+        "features": ["3.3 V", "PME#"]
       }
     ],
     "system": {

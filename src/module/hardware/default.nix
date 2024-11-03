@@ -1,6 +1,6 @@
-{ config, lib, ... }:
+{ self, config, lib, ... }:
 
-# TODO: xserver needed detection
+# TODO: stable wayland detection
 
 let
   memoryInBytes = (builtins.head config.facter.report.hardware.memory.resources).range;
@@ -21,14 +21,39 @@ let
     (builtins.hasAttr "monitor" config.facter.report.hardware) &&
     ((builtins.length config.facter.report.hardware.monitor) > 0);
 
+  monitorWidth =
+    if monitor then
+      (builtins.head config.facter.report.hardware.monitor).detail.width
+    else null;
+
+  monitorHeight =
+    if monitor then
+      (builtins.head config.facter.report.hardware.monitor).detail.height
+    else null;
+
+  monitorDpi =
+    if monitor then
+      let monitor = builtins.head config.facter.report.hardware.monitor; in
+      (monitor.detail.width / (monitor.detail.width_millimetres / 25.4))
+    else null;
+
   graphics =
-    if
-      (builtins.hasAttr "graphics_card" config.facter.report.hardware) &&
-      ((builtins.length config.facter.report.hardware.graphics_card) > 0)
-    then
-      config.facter.report.hardware.graphics_card.driver
-    else
-      null;
+    (builtins.hasAttr "graphics_card" config.facter.report.hardware) &&
+    ((builtins.length config.facter.report.hardware.graphics_card) > 0);
+
+  graphicsDriver =
+    if graphics then
+      (builtins.head config.facter.report.hardware.graphics_card).driver
+    else null;
+
+  graphicsWayland =
+    if graphics then
+      let
+        graphics = builtins.head config.facter.report.hardware.graphics_card;
+      in
+        !(graphics.driver == "nvidia"
+          && (builtins.any (pciId: lib.strings.hasInfix pciId graphics.module_alias) self.lib.nvidia.legacy))
+    else null;
 
   keyboard =
     (builtins.hasAttr "keyboard" config.facter.report.hardware) &&
@@ -46,37 +71,62 @@ in
         default = memoryInBytes;
       };
 
-      network = lib.mkOption {
+      network.enable = lib.mkOption {
         type = lib.types.bool;
         default = network;
       };
 
-      bluetooth = lib.mkOption {
+      bluetooth.enable = lib.mkOption {
         type = lib.types.bool;
         default = bluetooth;
       };
 
-      sound = lib.mkOption {
+      sound.enable = lib.mkOption {
         type = lib.types.bool;
         default = sound;
       };
 
-      monitor = lib.mkOption {
+      monitor.enable = lib.mkOption {
         type = lib.types.bool;
         default = monitor;
       };
 
-      graphics = lib.mkOption {
-        type = lib.types.nullOr lib.types.enum [ "nvidia" "amd" ];
+      monitor.width = lib.mkOption {
+        type = lib.types.ints.unsigned;
+        default = monitorWidth;
+      };
+
+      monitor.height = lib.mkOption {
+        type = lib.types.ints.unsigned;
+        default = monitorHeight;
+      };
+
+      monitor.dpi = lib.mkOption {
+        type = lib.types.float;
+        default = monitorDpi;
+      };
+
+      graphics.enable = lib.mkOption {
+        type = lib.types.bool;
         default = graphics;
       };
 
-      keyboard = lib.mkOption {
+      graphics.driver = lib.mkOption {
+        type = lib.types.nullOr (lib.types.enum [ "nvidia" "amdgpu" ]);
+        default = graphicsDriver;
+      };
+
+      graphics.wayland = lib.mkOption {
+        type = lib.types.bool;
+        default = graphicsWayland;
+      };
+
+      keyboard.enable = lib.mkOption {
         type = lib.types.bool;
         default = keyboard;
       };
 
-      mouse = lib.mkOption {
+      mouse.enable = lib.mkOption {
         type = lib.types.bool;
         default = mouse;
       };

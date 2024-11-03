@@ -64,5 +64,6 @@ in
       };
 
     programs.direnv.enableBashIntegration = true;
+    programs.zoxide.enableBashIntegration = true;
   };
 }

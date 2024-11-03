@@ -51,8 +51,6 @@
     , ...
     } @ inputs:
     let
-      user = "haras";
-      version = "24.05";
 
       importDir = (dir: nixpkgs.lib.attrsets.mapAttrs'
         (name: type: {
@@ -63,9 +61,6 @@
           value = import "${dir}/${name}";
         })
         (builtins.readDir dir));
-
-      lib = importDir "${self}/src/lib";
-      modules = builtins.attrValues (importDir "${self}/src/module");
     in
     flake-utils.lib.eachDefaultSystem
       (system:
@@ -103,8 +98,14 @@
           ];
         };
       }) // {
+      lib = importDir "${self}/src/lib";
       nixosConfigurations =
         let
+          modules = builtins.attrValues (importDir "${self}/src/module");
+
+          user = "haras";
+          version = "24.05";
+
           hosts = (builtins.attrNames (builtins.readDir "${self}/src/host"));
           configs = nixpkgs.lib.cartesianProduct {
             system = flake-utils.lib.defaultSystems;
@@ -126,10 +127,10 @@
                   nur.nixosModules.nur
                   nixos-facter-modules.nixosModules.facter
                   sops-nix.nixosModules.sops
-                  (lib.dot.mkSystemModule config)
+                  (self.lib.module.mkSystemModule config)
                   home-manager.nixosModules.home-manager
                   {
-                    import = builtins.map lib.dot.mkSystemModule modules;
+                    import = builtins.map self.lib.module.mkSystemModule modules;
 
                     fileSystems."/" = {
                       device = "/dev/disk/by-label/NIXROOT";
@@ -164,7 +165,7 @@
                     home-manager.sharedModules = [
                       nur.hmModules.nur
                       nix-index-database.hmModules.nix-index
-                      (lib.dot.mkHomeSharedModule config)
+                      (self.lib.module.mkHomeSharedModule config)
                       ({ lib, ... }: {
                         options.facter = {
                           report = lib.mkOption {
@@ -181,7 +182,7 @@
                       })
                     ];
                     home-manager.users."${user}" = ({ self, pkgs, ... }: {
-                      imports = builtins.map lib.dot.mkHomeSharedModule modules;
+                      imports = builtins.map self.lib.module.mkHomeSharedModule modules;
 
                       home.stateVersion = version;
                       home.username = "${user}";

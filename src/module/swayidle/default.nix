@@ -1,5 +1,7 @@
 { pkgs, ... }:
 
+# FIXME: focused video not preventing locking
+
 {
   home = {
     services.swayidle.enable = true;
