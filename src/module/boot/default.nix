@@ -25,6 +25,7 @@ in
       device = "/var/swap";
       size = config.dot.hardware.memory / 1000 / 1000;
     }];
+    services.fstrim.enable = true;
 
     boot.initrd.systemd.enable = lib.mkIf hasMonitor true;
     boot.initrd.verbose = lib.mkIf hasMonitor false;
