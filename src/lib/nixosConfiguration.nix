@@ -7,15 +7,16 @@
 , ...
 } @inputs:
 
-# TODO: allow for module nesting
-
 let
   user = "haras";
   version = "24.11";
-  modules = builtins.filter
-    (x: !(builtins.isNull x))
-    (builtins.attrValues
-      (self.lib.import.importDir "${self}/src/module"));
+  modules = builtins.map
+    (x: x.__import.value)
+    (builtins.filter
+      (x: x.__import.type != "unknown")
+      (nixpkgs.lib.collect
+        (x: builtins.hasAttr "__import" x)
+        (self.lib.import.importDirMeta "${self}/src/module")));
 in
 {
   inherit user version modules;
