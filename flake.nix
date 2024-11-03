@@ -51,7 +51,6 @@
     , ...
     } @ inputs:
     let
-
       importDir = (dir: nixpkgs.lib.attrsets.mapAttrs'
         (name: type: {
           name =
