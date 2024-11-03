@@ -13,7 +13,7 @@ let
   modules = builtins.map
     (x: x.__import.value)
     (builtins.filter
-      (x: x.__import.type != "unknown")
+      (x: x.__import.type == "default")
       (nixpkgs.lib.collect
         (builtins.hasAttr "__import")
         (self.lib.import.importDirMeta "${self}/src/module")));
