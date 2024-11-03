@@ -3,7 +3,7 @@
 # TODO: importDir with metadata
 
 let
-  importDir = importDir: dir:
+  importDir = importDir: wrap: dir:
     nixpkgs.lib.attrsets.mapAttrs'
       (name: type: {
         name =
@@ -14,15 +14,42 @@ let
           if type == "regular"
           then
             if nixpkgs.lib.hasSuffix ".nix" name
-            then import "${dir}/${name}"
-            else null
+            then
+              wrap
+                {
+                  __import = {
+                    path = "${dir}/${name}";
+                    type = "regular";
+                    value = import "${dir}/${name}";
+                  };
+                }
+            else
+              wrap {
+                __import = {
+                  path = "${dir}/${name}";
+                  type = "unknown";
+                  value = null;
+                };
+              }
           else
             if builtins.pathExists "${dir}/default.nix"
-            then import "${dir}/default.nix"
+            then
+              wrap
+                {
+                  __import = {
+                    path = "${dir}/default.nix";
+                    type = "default";
+                    value = import "${dir}/default.nix";
+                  };
+                }
             else importDir "${dir}/${name}";
       })
       (builtins.readDir dir);
+
+  importDirWrap = importDir importDir;
 in
 {
-  importDir = importDir importDir;
+  importDirWrap = importDirWrap;
+  importDirMeta = importDirWrap (import: import);
+  importDir = importDirWrap (import: import.__import.value);
 }
