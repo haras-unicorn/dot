@@ -19,6 +19,8 @@ let
 
   hasMonitor = config.dot.hardware.monitor.enable;
 
+  hasKeyboard = config.dot.hardware.keyboard.enable;
+
   hasSound = config.dot.hardware.sound.enable;
 
   package = nix-comfyui.packages.${pkgs.system}.${packageName};
@@ -33,38 +35,36 @@ let
     '';
   };
 
-  speak =
-    pkgs.writeShellApplication
-      {
-        name = "speak";
-        runtimeInputs = [ pkgs.piper-tts pkgs.jq pkgs.alsa-utils ];
-        text = ''
-          config=""
-          command="piper --output-raw --quiet"
-          while IFS= read -r line; do
-            command+=" $line"
+  speak = pkgs.writeShellApplication {
+    name = "speak";
+    runtimeInputs = [ pkgs.piper-tts pkgs.jq pkgs.alsa-utils ];
+    text = ''
+      config=""
+      command="piper --output-raw --quiet"
+      while IFS= read -r line; do
+        command+=" $line"
 
-            if [[ "$line" == --config* ]]; then
-              config="''${line#--config }"
-            fi
-          done < "${config.xdg.dataHome}/piper/speak.options"
+        if [[ "$line" == --config* ]]; then
+          config="''${line#--config }"
+        fi
+      done < "${config.xdg.dataHome}/piper/speak.options"
 
-          if [[ ! -f "$config" ]]; then 
-            printf "The options file doesn't contain a valid config parameter.\n"
-            exit 1
-          fi
+      if [[ ! -f "$config" ]]; then 
+        printf "The options file doesn't contain a valid config parameter.\n"
+        exit 1
+      fi
 
-          samplerate="$(jq .audio.sample_rate < "$config")"
-          if [[ ! $samplerate =~ ^[0-9]+$ ]]; then
-            printf "The provided model config does not include a sample rate.\n"
-            exit 1
-          fi
+      samplerate="$(jq .audio.sample_rate < "$config")"
+      if [[ ! $samplerate =~ ^[0-9]+$ ]]; then
+        printf "The provided model config does not include a sample rate.\n"
+        exit 1
+      fi
 
-          cat | \
-            sh -c "$command 2>/dev/null" | \
-            aplay --rate "$samplerate" --format S16_LE --file-type raw --quiet 2>/dev/null
-        '';
-      };
+      cat | \
+        sh -c "$command 2>/dev/null" | \
+        aplay --rate "$samplerate" --format S16_LE --file-type raw --quiet 2>/dev/null
+    '';
+  };
 
   read = lib.mkMerge [
     (lib.mkIf config.dot.hardware.graphics.wayland (pkgs.writeShellApplication {
@@ -86,7 +86,7 @@ in
 {
   shared = {
     dot = {
-      desktopEnvironment.keybinds = [
+      desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
         {
           mods = [ "super" ];
           key = "s";
