@@ -1,7 +1,5 @@
 { lib, pkgs, config, ... }:
 
-# TODO: declare through config
-
 let
   terminal = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
   shell = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
@@ -127,6 +125,12 @@ in
   config = {
     shared = {
       dot = {
+        shell = { package = pkgs.nushell; bin = "nu"; };
+        editor = { package = pkgs.helix; bin = "hx"; };
+        visual = { package = pkgs.vscode; bin = "code"; };
+        terminal = { package = pkgs.kitty; bin = "kitty"; };
+        browser = { package = pkgs.firefox-bin; bin = "firefox"; };
+
         desktopEnvironment.keybinds = [
           {
             mods = [ "super" ];

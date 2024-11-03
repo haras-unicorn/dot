@@ -97,8 +97,8 @@ in
     dot = {
       desktopEnvironment.sessionVariables = {
         GTK_USE_PORTAL = 1;
-        QT_QPA_PLATFORMTHEME = "gtk2";
         GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
+        QT_QPA_PLATFORMTHEME = "gtk2";
       };
     };
   };
