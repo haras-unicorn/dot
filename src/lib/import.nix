@@ -24,5 +24,5 @@ let
         (builtins.readDir dir));
 in
 {
-  importDir = importDir importDir;
+  dir = importDir importDir;
 }

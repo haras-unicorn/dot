@@ -10,7 +10,7 @@
 let
   user = "haras";
   version = "24.11";
-  modules = builtins.attrValues (self.lib.import.importDir "${self}/src/module");
+  modules = builtins.attrValues (self.lib.import.dir "${self}/src/module");
 in
 {
   inherit user version modules;

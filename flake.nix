@@ -74,7 +74,7 @@
       libPart = {
         lib = nixpkgs.lib.mapAttrs'
           (name: value: { inherit name; value = value inputs; })
-          (((import "${self}/src/lib/import.nix") inputs).importDir "${self}/src/lib");
+          (((import "${self}/src/lib/import.nix") inputs).dir "${self}/src/lib");
       };
 
       systemPart = flake-utils.lib.eachDefaultSystem (system: {
