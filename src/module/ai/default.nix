@@ -17,6 +17,10 @@ let
     else
       false;
 
+  hasMonitor = config.dot.hardware.monitor.enable;
+
+  hasSound = config.dot.hardware.sound.enable;
+
   package = nix-comfyui.packages.${pkgs.system}.${packageName};
 
   comfyui = pkgs.writeShellApplication {
@@ -62,13 +66,22 @@ let
         '';
       };
 
-  read-clipboard = pkgs.writeShellApplication {
-    name = "read-clipboard";
-    runtimeInputs = [ speak pkgs.wl-clipboard ];
-    text = ''
-      wl-paste | speak
-    '';
-  };
+  read = lib.mkMerge [
+    (lib.mkIf config.dot.hardware.graphics.wayland (pkgs.writeShellApplication {
+      name = "read";
+      runtimeInputs = [ speak pkgs.wl-clipboard ];
+      text = ''
+        wl-paste | speak
+      '';
+    }))
+    (lib.mkIf (!config.dot.hardware.graphics.wayland) (pkgs.writeShellApplication {
+      name = "read";
+      runtimeInputs = [ speak pkgs.xclip ];
+      text = ''
+        xclip -o | speak
+      '';
+    }))
+  ];
 in
 {
   shared = {
@@ -77,7 +90,7 @@ in
         {
           mods = [ "super" ];
           key = "s";
-          command = "${read-clipboard}/bin/read-clipboard";
+          command = "${read}/bin/read";
         }
       ];
     };
@@ -86,11 +99,10 @@ in
   home = {
     home.packages = [
       (lib.mkIf hasAnyPlatform comfyui)
-      pkgs.gpt4all
-      pkgs.piper-tts
-      speak
-      read-clipboard
-      pkgs.openai-whisper-cpp
+      (lib.mkIf hasMonitor pkgs.gpt4all)
+      (lib.mkIf hasSound pkgs.piper-tts)
+      (lib.mkIf hasSound pkgs.openai-whisper-cpp)
+      (lib.mkIf hasSound speak)
     ];
   };
 }
