@@ -15,20 +15,18 @@ in
 {
   inherit user version modules;
 
-  mkNixosConfiguration = system: host:
+  mkNixosConfiguration = host: system:
     let
       specialArgs = inputs // { inherit version host user; };
     in
-    {
-      "${host}-${system}" = nixpkgs.lib.nixosSystem {
-        inherit system specialArgs;
-        modules = [
-          nur.nixosModules.nur
-          nixos-facter-modules.nixosModules.facter
-          sops-nix.nixosModules.sops
-          home-manager.nixosModules.home-manager
-          self.nixosModules."${host}-${system}"
-        ];
-      };
+    nixpkgs.lib.nixosSystem {
+      inherit system specialArgs;
+      modules = [
+        nur.nixosModules.nur
+        nixos-facter-modules.nixosModules.facter
+        sops-nix.nixosModules.sops
+        home-manager.nixosModules.home-manager
+        self.nixosModules."${host}-${system}"
+      ];
     };
 }

@@ -51,38 +51,35 @@
     , ...
     } @ inputs:
     let
-      systemPart = flake-utils.lib.eachDefaultSystem (system:
-        {
-          devShells.default = self.lib.devShell.mkDevShell system;
-        });
-
       libPart = {
         lib = nixpkgs.lib.mapAttrs'
           (name: value: { inherit name; value = value inputs; })
           (((import "${self}/src/lib/import.nix") inputs).importDir "${self}/src/lib");
       };
 
+      systemPart = flake-utils.lib.eachDefaultSystem (system: {
+        devShells.default = self.lib.devShell.mkDevShell system;
+      });
+
       hostPart =
         let
-          hosts = (builtins.attrNames (builtins.readDir "${self}/src/host"));
-          configs = nixpkgs.lib.cartesianProduct {
-            system = flake-utils.lib.defaultSystems;
-            host = hosts;
-          };
+          invokeForHostSystemMatrix = mk: nixpkgs.lib.mergeAttrsList
+            (builtins.map
+              ({ host, system }: {
+                "${host}-${system}" = mk host system;
+              })
+              nixpkgs.lib.cartesianProduct
+              {
+                host = (builtins.attrNames (builtins.readDir "${self}/src/host"));
+                system = flake-utils.lib.defaultSystems;
+              }
+            );
         in
         {
-          nixosModules =
-            nixpkgs.lib.mergeAttrsList
-              (builtins.map self.lib.nixosModule.mkNixosModule configs);
-
-          homeManagerModules =
-            nixpkgs.lib.mergeAttrsList
-              (builtins.map self.lib.homeManagerModule.mkHomeManagerModule configs);
-
-          nixosConfigurations =
-            nixpkgs.lib.mergeAttrsList
-              (builtins.map self.lib.nixosConfiguration.mkNixosConfiguration configs);
+          nixosModules = invokeForHostSystemMatrix self.lib.nixosModule.mkNixosModule;
+          hmModules = invokeForHostSystemMatrix self.lib.hmModule.mkHmModule;
+          nixosConfigurations = invokeForHostSystemMatrix self.lib.nixosConfiguration.mkNixosConfiguration;
         };
     in
-    systemPart // libPart // hostPart;
+    libPart // systemPart // hostPart;
 }
