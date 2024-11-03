@@ -1,43 +1,26 @@
-{ pkgs
+{ self
+, pkgs
 , config
 , lib
 , nix-vscode-extensions
 , ...
 }:
 
-# TODO: extensions in projects?
+# TODO: extensions in projects
 
 let
-  hasMonitor =
-    (builtins.hasAttr "monitor" config.facter.report.hardware) &&
-    ((builtins.length config.facter.report.hardware.monitor) > 0);
-
-  package = pkgs.symlinkJoin {
-    name = "vscodium";
-    paths = [
-      pkgs.vscodium
-    ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/codium \
-        --append-flags --ozone-platform-hint=auto
-    '';
-  };
-
-  alias = "${package}/bin/codium";
+  package = self.lib.electron.wrap pkgs pkgs.vscodium "codium";
 in
 {
-  shared = lib.mkIf hasMonitor {
+  shared = lib.mkIf config.dot.hardware.monitor.enable {
     dot = {
       shell.aliases = {
-        code = alias;
+        code = "${package}/bin/codium";
       };
     };
   };
 
-
-
-  home = lib.mkIf hasMonitor {
+  home = lib.mkIf config.dot.hardware.monitor.enable {
     nixpkgs.overlays = [
       nix-vscode-extensions.overlays.default
     ];

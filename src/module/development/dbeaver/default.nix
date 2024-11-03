@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 # FIXME: https://github.com/dbeaver/dbeaver/issues/34528#issuecomment-2412519650
-
 # TODO: customize custom dbeaver colors
 
 let

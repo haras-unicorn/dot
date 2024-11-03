@@ -1,4 +1,5 @@
-{ pkgs
+{ self
+, pkgs
 , config
 , ...
 }:
@@ -11,24 +12,12 @@ let
   isLightTheme = config.dot.colors.isLightTheme;
   bootstrap = config.dot.colors.bootstrap;
 
-  electronWrap = package: bin: pkgs.symlinkJoin {
-    name = bin;
-    paths = [ package ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/${bin} \
-        --append-flags --enable-features=WebRTCPipeWireCapturer \
-        --append-flags --enable-features=UseOzonePlatform \
-        --append-flags --ozone-platform-hint=auto
-    '';
-  };
-
-  ferdium = electronWrap pkgs.ferdium "ferdium";
-  discord = electronWrap pkgs.discord "discord";
-  slack = electronWrap pkgs.slack "slack";
-  teams = electronWrap pkgs.teams-for-linux "teams";
-  station = electronWrap pkgs.station "station";
-  vesktop = electronWrap pkgs.vesktop "vesktop";
+  ferdium = self.lib.electron.wrap pkgs pkgs.ferdium "ferdium";
+  discord = self.lib.electron.wrap pkgs pkgs.discord "discord";
+  slack = self.lib.electron.wrap pkgs pkgs.slack "slack";
+  teams = self.lib.electron.wrap pkgs pkgs.teams-for-linux "teams";
+  station = self.lib.electron.wrap pkgs pkgs.station "station";
+  vesktop = self.lib.electron.wrap pkgs pkgs.vesktop "vesktop";
 in
 {
   shared = {
