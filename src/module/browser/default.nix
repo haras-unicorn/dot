@@ -73,7 +73,7 @@ let
   );
 in
 {
-  shared.dot = {
+  shared.dot = lib.mkIf (config.dot.hardware.monior.enable) {
     browser.package = pkgs.firefox;
     browser.bin = "firefox";
   };
