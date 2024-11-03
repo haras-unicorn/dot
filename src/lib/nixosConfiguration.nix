@@ -7,10 +7,15 @@
 , ...
 } @inputs:
 
+# TODO: allow for module nesting
+
 let
   user = "haras";
   version = "24.11";
-  modules = builtins.attrValues (self.lib.import.importDir "${self}/src/module");
+  modules = builtins.filter
+    (x: !(builtins.isNull x))
+    (builtins.attrValues
+      (self.lib.import.importDir "${self}/src/module"));
 in
 {
   inherit user version modules;

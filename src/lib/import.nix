@@ -1,5 +1,7 @@
 { nixpkgs, ... }:
 
+# TODO: importDir with metadata
+
 let
   importDir = importDir: dir:
     nixpkgs.lib.attrsets.mapAttrs'
