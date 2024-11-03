@@ -10,6 +10,14 @@ in
   };
 
   home = lib.mkIf hasMonitor {
+    # NOTE: needed for tray items to work properly
+    systemd.user.targets.tray = {
+      Unit = {
+        Description = "Home Manager System Tray";
+        Requires = [ "graphical-session-pre.target" ];
+      };
+    };
+
     xdg.portal.enable = true;
     xdg.portal.config.common.default = "*";
     xdg.portal.xdgOpenUsePortal = true;

@@ -1,16 +1,27 @@
-{ self, lib, config, ... }:
+{ self, pkgs, lib, config, ... }:
 
 let
   name = "elden-ring";
-  cfg = config.dot.hardware.monitor;
+  monitor = config.dot.hardware.monitor;
+  graphics = config.dot.hardware.graphics;
+  wallpaper = "${self}/assets/wallpapers/${name}-${monitor.width}-${monitor.height}.png";
 in
 {
-  shared = lib.mkIf cfg.enable {
+  option = {
+    wallpaper = lib.mkOption {
+      type = lib.types.str;
+    };
+  };
+
+  shared = lib.mkIf monitor.enable {
     dot = {
-      wallpaper = lib.mkOption {
-        type = lib.types.str;
-        default = "${self}/assets/wallpaper/${name}-${cfg.width}-${cfg.height}.png";
-      };
+      inherit wallpaper;
+
+      desktopEnvironment.sessionStartup = [
+        (lib.mkIf (!graphics.wayland) "feh --bg-fill '${wallpaper}'")
+        (lib.mkIf (graphics.wayland) "${pkgs.swww}/bin/swww-daemon")
+        (lib.mkIf (graphics.wayland) "${pkgs.swww}/bin/swww img '${wallpaper}'")
+      ];
     };
   };
 }

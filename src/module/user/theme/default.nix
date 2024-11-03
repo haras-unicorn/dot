@@ -150,6 +150,8 @@ in
       pkgs.libsForQt5.qtstyleplugins
       pkgs.qt6Packages.qt6gtk2
       pkgs.gnome-themes-extra
+      config.dot.cursor-theme.package
+      config.dot.icon-theme.package
     ];
 
     home.pointerCursor = {
