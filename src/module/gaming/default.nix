@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, user, ... }:
 
 # TODO: lutris packages
 
@@ -15,6 +15,10 @@
     programs.steam.protontricks.enable = true;
     programs.steam.extraCompatPackages = with pkgs; [
       proton-ge-bin
+    ];
+
+    users.users.${user}.extraGroups = [
+      "gamemode"
     ];
 
     programs.gamemode.enable = true;

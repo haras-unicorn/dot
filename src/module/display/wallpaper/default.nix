@@ -7,7 +7,7 @@ in
 {
   shared = lib.mkIf cfg.enable {
     dot = {
-      memory = lib.mkOption {
+      wallpaper = lib.mkOption {
         type = lib.types.str;
         default = "${self}/assets/wallpaper/${name}-${cfg.width}-${cfg.height}.png";
       };

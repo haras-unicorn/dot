@@ -3,49 +3,6 @@
 # TODO: https://github.com/kando-menu/kando
 
 {
-  imports = [
-    "${self}/src/module/xdg"
-
-    "${self}/src/module/niri"
-
-    "${self}/src/module/hyprland"
-    "${self}/src/module/hyprpicker"
-
-    "${self}/src/module/tint-gear"
-
-    "${self}/src/module/brightnessctl"
-    "${self}/src/module/playerctl"
-
-    "${self}/src/module/tuigreet"
-    "${self}/src/module/gtklock"
-    "${self}/src/module/wlogout"
-    "${self}/src/module/swayidle"
-
-    "${self}/src/module/waybar"
-    "${self}/src/module/mako"
-    "${self}/src/module/swayosd"
-    "${self}/src/module/wofi"
-    "${self}/src/module/swww"
-    "${self}/src/module/eww"
-
-    "${self}/src/module/obs-studio"
-    "${self}/src/module/kooha"
-    "${self}/src/module/grim-slurp-ocr"
-    "${self}/src/module/miraclecast"
-    "${self}/src/module/gstreamer"
-    "${self}/src/module/mangohud"
-    "${self}/src/module/screen-pipe"
-
-    "${self}/src/module/gtk"
-    "${self}/src/module/qt"
-
-    "${self}/src/module/emote"
-    "${self}/src/module/alarm"
-
-    "${self}/src/module/pcmanfm"
-    # "${self}/src/module/spacedrive"
-  ];
-
   options = {
     dot = {
       mainMonitor = lib.mkOption {

@@ -1,6 +1,7 @@
 { pkgs
 , lib
 , config
+, user
 , ...
 }:
 
@@ -32,6 +33,11 @@ in
       pkgs.docker-client
       pkgs.docker-compose
       (lib.mkIf hasMonitor pkgs.gns3-gui)
+    ];
+
+    users.users.${user}.extraGroups = [
+      "docker"
+      "podman"
     ];
 
     virtualisation.docker.enable = true;

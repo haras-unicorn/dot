@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, user, ... }:
 
 let
   hasSound = config.dot.hardware.sound.enable;
@@ -24,7 +24,14 @@ in
     services.pipewire.alsa.support32Bit = true;
     services.pipewire.jack.enable = true;
     services.pipewire.pulse.enable = true;
+
     programs.dconf.enable = true;
+
+    security.rtkit.enable = true;
+
+    users.users.${user}.extraGroups = [
+      "audio"
+    ];
   };
 
   home = lib.mkIf (hasSound && hasMonitor) {

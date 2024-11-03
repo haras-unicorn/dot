@@ -1,6 +1,7 @@
 { self, config, lib, ... }:
 
 # TODO: stable wayland detection
+# TODO: better graphics driver detection
 
 let
   memoryInBytes = (builtins.head config.facter.report.hardware.memory.resources).range;
@@ -54,6 +55,10 @@ let
         !(graphics.driver == "nvidia"
           && (builtins.any (pciId: lib.strings.hasInfix pciId graphics.module_alias) self.lib.nvidia.legacy))
     else null;
+
+  graphicsVersion = if graphicsWayland then "production" else "legacy_470";
+
+  graphicsOpen = graphicsWayland;
 
   keyboard =
     (builtins.hasAttr "keyboard" config.facter.report.hardware) &&
@@ -119,6 +124,16 @@ in
       graphics.wayland = lib.mkOption {
         type = lib.types.bool;
         default = graphicsWayland;
+      };
+
+      graphics.version = lib.mkOption {
+        type = lib.types.str;
+        default = graphicsVersion;
+      };
+
+      graphics.open = lib.mkOption {
+        type = lib.types.bool;
+        default = graphicsOpen;
       };
 
       keyboard.enable = lib.mkOption {

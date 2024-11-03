@@ -112,7 +112,7 @@ in
   config = {
     shared = {
       dot = {
-        desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
+        desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.hyprland}/bin/Hyprland";
       };
     };
 

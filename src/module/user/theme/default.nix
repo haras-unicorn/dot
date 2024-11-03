@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   theme_name = "colors";
@@ -24,6 +24,7 @@ let
     cursor-theme = config.dot.cursor-theme.name;
     cursor-size = config.dot.cursor-theme.size;
     gtk-theme = "${theme_name}";
+    color-scheme = if config.dot.colors.isLightTheme then "prefer-light" else "prefer-dark";
   };
 
   bootstrap = config.dot.colors.bootstrap;
@@ -91,6 +92,38 @@ let
   };
 in
 {
+  options = {
+    cursor-theme = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.numix-cursor-theme;
+        example = pkgs.pokemon-cursor;
+      };
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Numix-Cursor";
+        example = "Pokemon";
+      };
+      size = lib.mkOption {
+        type = lib.types.ints.u8;
+        default = 32;
+        example = 24;
+      };
+    };
+    icon-theme = {
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = pkgs.numix-icon-theme;
+        example = pkgs.beauty-line-icon-theme;
+      };
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "Numix";
+        example = "BeautyLine";
+      };
+    };
+  };
+
   shared = {
     dot = {
       desktopEnvironment.sessionVariables = {
@@ -98,6 +131,9 @@ in
         GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
         QT_QPA_PLATFORMTHEME = "gtk2";
       };
+
+      cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
+      icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
     };
   };
 
@@ -115,6 +151,12 @@ in
       pkgs.qt6Packages.qt6gtk2
       pkgs.gnome-themes-extra
     ];
+
+    home.pointerCursor = {
+      package = config.dot.cursor-theme.package;
+      name = config.dot.cursor-theme.name;
+      size = config.dot.cursor-theme.size;
+    };
 
     xdg.configFile."Trolltech.conf".text = ''
       [Qt]

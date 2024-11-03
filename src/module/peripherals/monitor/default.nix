@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, user, ... }:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -26,6 +26,10 @@ in
     system = {
       hardware.i2c.enable = true;
       services.ddccontrol.enable = true;
+
+      users.users.${user}.extraGroups = [
+        "i2c"
+      ];
     };
 
     home = {
