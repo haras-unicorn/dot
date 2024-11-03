@@ -15,7 +15,7 @@ let
     (builtins.filter
       (x: x.__import.type != "unknown")
       (nixpkgs.lib.collect
-        (x: builtins.hasAttr "__import" x)
+        (builtins.hasAttr "__import")
         (self.lib.import.importDirMeta "${self}/src/module")));
 in
 {
