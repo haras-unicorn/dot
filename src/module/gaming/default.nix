@@ -6,6 +6,12 @@
 # TODO: lutris packages
 
 {
+  shared = {
+    dot = {
+      desktopEnvironment.sessionVariables = { MANGOHUD = 1; };
+    };
+  };
+
   system = {
     programs.steam.enable = true;
     programs.steam.extest.enable = true;
@@ -15,5 +21,10 @@
     ];
 
     programs.gamemode.enable = true;
+  };
+
+  home = {
+    programs.mangohud.enable = true;
+    programs.mangohud.enableSessionWide = true;
   };
 }

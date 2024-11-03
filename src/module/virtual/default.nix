@@ -6,9 +6,9 @@
 # FIXME: https://github.com/NixOS/nixpkgs/pull/303442
 # FIXME: podman OCI runtime error
 # FIXME: gns3 bridge fails restarting
-# FIXME: https://github.com/NixOS/nixpkgs/issues/326245
 # TODO: use podman when starship support
 # TODO: use docker rootless when networking becomes less of a pain
+# TODO: wine packages
 
 let
   bridgeGns3 =
@@ -25,37 +25,11 @@ in
 {
   system = {
     environment.systemPackages = with pkgs; [
-      wineWowPackages.waylandFull
-      winetricks
-      virt-manager
-      spice
-      spice-vdagent
-      virglrenderer
-      win-virtio
-      win-spice
       lazydocker
       docker-client
       docker-compose
-      arion
-      # gns3-gui
+      gns3-gui
     ];
-
-    services.qemuGuest.enable = true;
-    virtualisation.libvirtd.enable = true;
-    virtualisation.libvirtd.qemu.package = pkgs.qemu_kvm;
-    virtualisation.libvirtd.qemu.ovmf.enable = true;
-    virtualisation.libvirtd.qemu.ovmf.packages = [ pkgs.OVMFFull.fd ];
-    virtualisation.libvirtd.qemu.swtpm.enable = true;
-    # NOTE: secure boot
-    environment.etc = {
-      "ovmf/edk2-x86_64-secure-code.fd" = {
-        source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-x86_64-secure-code.fd";
-      };
-
-      "ovmf/edk2-i386-vars.fd" = {
-        source = config.virtualisation.libvirtd.qemu.package + "/share/qemu/edk2-i386-vars.fd";
-      };
-    };
 
     # virtualisation.podman.enable = true;
     # virtualisation.podman.dockerSocket.enable = true;
@@ -67,9 +41,6 @@ in
     virtualisation.docker.autoPrune.enable = true;
     # virtualisation.docker.rootless.enable = true;
     # virtualisation.docker.rootless.setSocketVariable = true;
-
-    services.cockpit.enable = true;
-    services.packagekit.enable = true;
 
     services.gns3-server.enable = true;
     services.gns3-server.vpcs.enable = true;
@@ -126,17 +97,5 @@ in
     #     RemainAfterExit = true;
     #   };
     # };
-  };
-
-  home = {
-    shared = {
-      xdg.desktopEntries = {
-        cockpit = {
-          name = "Cockpit";
-          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:9090";
-          terminal = false;
-        };
-      };
-    };
   };
 }
