@@ -1,6 +1,7 @@
 { pkgs
 , config
 , lib
+, nix-vscode-extensions
 , ...
 }:
 
@@ -34,7 +35,13 @@ in
     };
   };
 
+
+
   home = lib.mkIf hasMonitor {
+    nixpkgs.overlays = [
+      nix-vscode-extensions.overlays.default
+    ];
+
     programs.vscode.enable = true;
     programs.vscode.package = package;
 

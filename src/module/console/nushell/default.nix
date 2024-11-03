@@ -75,6 +75,7 @@ in
 
       programs.direnv.enableNushellIntegration = true;
       programs.zoxide.enableNushellIntegration = true;
+      programs.yazi.enableNushellIntegration = true;
     };
   };
 }

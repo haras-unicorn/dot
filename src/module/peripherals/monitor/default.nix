@@ -1,8 +1,5 @@
 { lib, pkgs, config, ... }:
 
-# TODO: subkey
-# TODO: mkIf and all that
-
 {
   options = {
     dot = {
@@ -50,8 +47,18 @@
   };
 
   config = {
+    system = {
+      hardware.i2c.enable = true;
+      services.ddccontrol.enable = true;
+    };
+
     home = {
-      home.packages = with pkgs; [ brightnessctl ];
+      home.packages = [
+        pkgs.brightnessctl
+        pkgs.ddcutil # NOTE: because ddccontrol might core dump with nvidia
+        pkgs.ddccontrol
+        pkgs.ddccontrol-db
+      ];
     };
   };
 }
