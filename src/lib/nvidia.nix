@@ -18,17 +18,6 @@ let
     hash = "";
   };
 
-  mkExpr = name: html: script:
-    pkgs.lib.splitString "\n"
-      (builtins.readFile
-        (pkgs.runCommand
-          "nvidia-${name}-text"
-          {
-            buildInputs = [ pkgs.nushell ];
-          }
-          ''
-            cat ${html} | nu --stdin ${script}
-          ''));
   mkLegacyScript = curr: prev: pkgs.writeTextFile {
     name = "nvidia-legacy-${curr}-script";
     text = ''
@@ -53,24 +42,35 @@ let
         | str replace -r '<td>([0-9A-F]+).*</td>' '$1'
     '';
   };
+  mkExpr = name: html: script:
+    pkgs.lib.splitString "\n"
+      (builtins.readFile
+        (pkgs.runCommand
+          "nvidia-${name}-text"
+          {
+            buildInputs = [ pkgs.nushell ];
+          }
+          ''
+            cat ${html} | nu --stdin ${script}
+          ''));
 
-  open = mkExpr "open" openHtml openScript;
-  legacy470 = mkExpr "legacy-470" legacyHtml (mkLegacyScript "470" "390");
-  legacy390 = mkExpr "legacy-390" legacyHtml (mkLegacyScript "390" "340");
   # legacy340 = mkExpr "legacy-340" legacyHtml (mkLegacyScript "340" "304");
   legacy340 = [ ];
+  legacy470 = mkExpr "legacy-470" legacyHtml (mkLegacyScript "470" "390");
+  legacy390 = mkExpr "legacy-390" legacyHtml (mkLegacyScript "390" "340");
+  open = mkExpr "open" openHtml openScript;
 in
 {
   inherit
-    open
-    legacy470
-    legacy390
     legacy340
+    legacy390
+    legacy470
+    open
     ;
 
   legacy = builtins.concatLists [
-    legacy470
-    legacy390
     legacy340
+    legacy390
+    legacy470
   ];
 }
