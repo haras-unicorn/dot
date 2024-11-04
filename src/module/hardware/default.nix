@@ -9,6 +9,14 @@ let
     (builtins.hasAttr "network_controller" config.facter.report.hardware) &&
     ((builtins.length config.facter.report.hardware.network_controller) > 0);
 
+  networkInterface =
+    if network then
+      let
+        network = builtins.head config.facter.report.hardware.network_controller;
+      in
+      network.unix_device_name
+    else null;
+
   bluetooth =
     (builtins.hasAttr "bluetooth" config.facter.report.hardware) &&
     ((builtins.length config.facter.report.hardware.bluetooth) > 0);
@@ -87,6 +95,11 @@ in
       network.enable = lib.mkOption {
         type = lib.types.bool;
         default = network;
+      };
+
+      network.interface = lib.mkOption {
+        type = lib.types.str;
+        default = networkInterface;
       };
 
       bluetooth.enable = lib.mkOption {
