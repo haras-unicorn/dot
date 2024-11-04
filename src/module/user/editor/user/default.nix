@@ -5,21 +5,19 @@
 let
   cfg = config.dot.editor;
 
-  withPkg = todo:
-    (p: yes: no: lib.mkMerge [
-      (lib.mkIf p yes)
-      (lib.mkIf (!p) no)
-    ])
-      (cfg.bin == "hx")
-      (todo cfg.package)
-      (todo pkgs.helix);
+  editor = "${cfg.package}/bin/${cfg.bin}";
 
   bootstrap = config.dot.colors.bootstrap;
 in
 {
+  shared = {
+    dot = {
+      editor = { package = pkgs.helix; bin = "hx"; };
+    };
+  };
+
   home = {
     programs.helix.enable = true;
-    programs.helix.package = withPkg (pkg: pkg);
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
 
@@ -117,10 +115,10 @@ in
 
     programs.lazygit.settings = {
       os = {
-        edit = withPkg (pkg: pkg + "/bin/${cfg.bin} -- {{filename}}");
-        editAtLine = withPkg (pkg: pkg + "/bin/${cfg.bin} -- {{filename}}:{{line}}");
-        editAtLineAndWait = withPkg (pkg: pkg + "/bin/${cfg.bin} -- {{filename}}:{{line}}");
-        openDirInEditor = withPkg (pkg: pkg + "/bin/${cfg.bin} -- {{dir}}");
+        edit = "${editor} -- {{filename}}";
+        editAtLine = "${editor} -- {{filename}}:{{line}}";
+        editAtLineAndWait = "${editor} -- {{filename}}:{{line}}";
+        openDirInEditor = "${editor} -- {{dir}}";
         suspend = true;
       };
     };

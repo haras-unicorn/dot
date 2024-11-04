@@ -1,10 +1,9 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   shared = {
     dot = {
       shell.aliases = {
-        rawdog = "${pkgs.git}/bin/git";
         bruh = "${pkgs.lazygit}/bin/lazygit";
       };
     };
@@ -18,7 +17,6 @@
     programs.git.enable = true;
     programs.git.delta.enable = true;
     programs.git.attributes = [ "* text=auto eof=lf" ];
-    programs.git.lfs.enable = true;
     programs.git.extraConfig = {
       interactive.singleKey = true;
       init.defaultBranch = "main";
@@ -43,11 +41,7 @@
         };
       };
       os = {
-        edit = lib.mkDefault (pkgs.vim + "/bin/vim -- {{filename}}");
-        editAtLine = lib.mkDefault (pkgs.vim + "/bin/vim +{{line}} -- {{filename}}");
-        editAtLineAndWait = lib.mkDefault (pkgs.vim + "/bin/vim +{{line}} -- {{filename}}");
-        openDirInEditor = lib.mkDefault (pkgs.vim + "/bin/vim -- {{dir}}");
-        suspend = lib.mkDefault true;
+        suspend = true;
       };
     };
   };

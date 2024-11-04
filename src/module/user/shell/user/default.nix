@@ -3,15 +3,6 @@
 let
   cfg = config.dot.shell;
 
-  withPackage = x:
-    (p: yes: no: lib.mkMerge [
-      (lib.mkIf p yes)
-      (lib.mkIf (!p) no)
-    ])
-      (cfg.bin == "nu")
-      (x cfg.package)
-      (x pkgs.nushell);
-
   vars = lib.strings.concatStringsSep
     "\n"
     (builtins.map
@@ -32,9 +23,14 @@ let
 in
 {
   config = {
+    shared = {
+      dot = {
+        shell = { package = pkgs.nushell; bin = "nu"; };
+      };
+    };
+
     home = {
       programs.nushell.enable = true;
-      programs.nushell.package = withPackage (package: package);
 
       programs.nushell.environmentVariables = {
         PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
@@ -57,9 +53,9 @@ in
 
       home.packages = [ pkgs.nufmt ];
 
-      programs.helix.languages = withPackage (package: {
+      programs.helix.languages = {
         language-server.nu-lsp = {
-          command = "${package}/bin/nu";
+          command = "${pkgs.nu}/bin/nu";
           args = [ "--lsp" ];
         };
 
@@ -71,7 +67,7 @@ in
           };
           auto-format = true;
         }];
-      });
+      };
 
       programs.direnv.enableNushellIntegration = true;
       programs.zoxide.enableNushellIntegration = true;

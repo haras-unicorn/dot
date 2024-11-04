@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -20,6 +20,12 @@ let
   terminal = config.dot.colors.terminal;
 in
 {
+  shared = {
+    dot = {
+      terminal = { package = pkgs.kitty; bin = "kitty"; };
+    };
+  };
+
   config = {
     home = lib.mkIf (hasKeyboard && hasMonitor) {
       programs.kitty.enable = true;

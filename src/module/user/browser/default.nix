@@ -73,9 +73,15 @@ let
   );
 in
 {
+  shared = {
+    dot = {
+      browser = { package = pkgs.firefox-bin; bin = "firefox"; };
+    };
+  };
+
   home = lib.mkIf (config.dot.hardware.monior.enable) {
     programs.firefox.enable = true;
-    programs.firefox.package = pkgs.firefox;
+    programs.firefox.package = pkgs.firefox-bin;
     programs.firefox.profiles = {
       personal = {
         id = 0;

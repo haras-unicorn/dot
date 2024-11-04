@@ -5,6 +5,12 @@ let
   terminal = config.dot.colors.terminal;
 in
 {
+  shared = {
+    dot = {
+      visual = { package = pkgs.zed-editor; bin = "zeditor"; };
+    };
+  };
+
   home = lib.mkIf config.dot.hardware.monitor.enable {
     home.packages = [
       pkgs.zed-editor
