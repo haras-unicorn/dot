@@ -133,7 +133,7 @@ in
       xdg.configFile."niri/config.kdl".text = ''
         screenshot-path "${config.xdg.userDirs.pictures}/screenshots"
 
-        output "${config.dot.mainMonitor}" {
+        output "${config.dot.hardware.monitor.main}" {
           variable-refresh-rate
         }
   

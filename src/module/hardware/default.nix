@@ -123,6 +123,9 @@ in
         type = lib.types.str;
         default = "DP-1";
         description = ''
+          xrandr --query
+          hyprctl monitors
+          swaymsg -t get_outputs
         '';
       };
 

@@ -142,7 +142,7 @@ in
       wwyland.windowManager.hyprland.systemd.enable = true;
       wayland.windowManager.hyprland.extraConfig = ''
         monitor = , preferred, auto, 1
-        monitor = ${config.dot.mainMonitor}, highrr, auto, 1
+        monitor = ${config.dot.hardware.monitor.main}, highrr, auto, 1
   
         ${builtins.readFile ./hyprland.conf}
 

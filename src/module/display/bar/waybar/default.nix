@@ -23,7 +23,7 @@ in
       (pkgs.lib.attrsets.recursiveUpdate
         (builtins.fromJSON (builtins.readFile ./config.json))
         {
-          output = config.dot.mainMonitor;
+          output = config.dot.hardware.monitor.main;
           network = { interface = config.dot.networkInterface; };
           tray = {
             icon-size = config.dot.font.size.large;

@@ -28,7 +28,7 @@ in
     services.polybar.script = "${package}/bin/polybar top &>/dev/null & disown %-";
     services.polybar.settings = rec {
       nix = {
-        width = "${builtins.toString (config.dot.mainMonitorWidth - 16)}px";
+        width = "${builtins.toString (config.dot.hardware.monitor.width - 16)}px";
         transparent = bootstrap.background.normal.ahex "44";
         background = bootstrap.background.normal.hex;
         background-alternate = bootstrap.background.alternate.hex;
@@ -39,7 +39,7 @@ in
         secondary = bootstrap.secondary.normal.hex;
         accent = bootstrap.accent.normal.hex;
         danger = bootstrap.danger.normal.hex;
-        monitor = config.dot.mainMonitor;
+        monitor = config.dot.hardware.monitor.main;
         network-interface = config.dot.networkInterface;
         cpu-hwmon = config.dot.cpuHwmon;
         font = (builtins.toString config.dot.font.sans.name)
