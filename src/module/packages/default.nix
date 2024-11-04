@@ -1,15 +1,21 @@
-{ pkgs, config, hostName, system, ... }:
-
-# TODO: ensure repo is present in ~/repos/dot on activation
-# then make rebuild use that location instead of the one in dataHome
+{ pkgs, config, hostName, system, lib, ... }:
 
 let
+  path = "${config.xdg.dataHome}/dot";
+
+  ensure = ''
+    if [ ! -d "${path}/.git" ]; then
+      ${pkgs.git}/bin/git clone ssh://git@github.com/haras-unicorn/dot "${path}"
+    fi
+  '';
+
   rebuild = pkgs.writeShellApplication {
     name = "rebuild";
     runtimeInputs = [ ];
     text = ''
+      ${ensure}
       sudo nixos-rebuild switch \
-        --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" \
+        --flake "${path}#${hostName}-${system}" \
         "$@"
     '';
   };
@@ -18,8 +24,9 @@ let
     name = "rebuild-trace";
     runtimeInputs = [ ];
     text = ''
+      ${ensure}
       sudo nixos-rebuild switch \
-        --flake "$(readlink -f "${config.xdg.dataHome}/dot")#${hostName}-${system}" \
+        --flake "${path}#${hostName}-${system}" \
         --show-trace \
         --option eval-cache false \
         "$@"
@@ -53,7 +60,7 @@ in
     ];
 
     nixpkgs.config = {
-      nixpkgs.config.nvidia.acceptLicense = graphicsCardDriver == "nvidia";
+      nvidia.acceptLicense = graphicsCardDriver == "nvidia";
       cudaSupport = graphicsCardDriver == "nvidia";
       rocmSupport = graphicsCardDriver == "amdgpu";
     };
@@ -61,6 +68,10 @@ in
 
   home = {
     home.packages = [ rebuild rebuild-trace ];
+
+    home.activation = {
+      ensurePulledAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ensure;
+    };
   };
 
   system = {
