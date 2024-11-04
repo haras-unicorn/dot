@@ -1,8 +1,4 @@
-{ self
-, pkgs
-, config
-, ...
-}:
+{ self, pkgs, lib, config, ... }:
 
 # FIXME: screen sharing
 # TODO: ferdium WebRTC handling - set share all IPs so discord WebRTC works
@@ -11,6 +7,8 @@
 let
   isLightTheme = config.dot.colors.isLightTheme;
   bootstrap = config.dot.colors.bootstrap;
+
+  hasMonitor = config.dot.hardware.monitor.enable;
 
   ferdium = self.lib.electron.wrap pkgs pkgs.ferdium "ferdium";
   discord = self.lib.electron.wrap pkgs pkgs.discord "discord";
@@ -22,13 +20,13 @@ in
 {
   shared = {
     dot = {
-      desktopEnvironment.sessionStartup = [
+      desktopEnvironment.sessionStartup = lib.mkIf hasMonitor [
         "${ferdium}/bin/ferdium"
       ];
     };
   };
 
-  home = {
+  home = lib.mkIf hasMonitor {
     home.packages = [
       ferdium
       station
