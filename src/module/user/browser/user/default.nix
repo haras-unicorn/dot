@@ -106,7 +106,7 @@ in
     xdg.desktopEntries = {
       myfooddata = {
         name = "My Food Data";
-        exec = "${pkgs.firefox}/bin/firefox --new-window https://myfooddata.com";
+        exec = "${pkgs.firefox}/bin/firefox -ssb --new-window https://myfooddata.com";
         terminal = false;
       };
     };

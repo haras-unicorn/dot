@@ -2,14 +2,19 @@
 
 # TODO: lutris packages
 
+let
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasMouse = config.dot.hardware.mouse.enable;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
+in
 {
-  shared = lib.mkIf config.dot.hardware.monitor.enable {
+  shared = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     dot = {
       desktopEnvironment.sessionVariables = { MANGOHUD = 1; };
     };
   };
 
-  system = lib.mkIf config.dot.hardware.monitor.enable {
+  system = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.steam.enable = true;
     programs.steam.extest.enable = true;
     programs.steam.protontricks.enable = true;
@@ -24,7 +29,7 @@
     programs.gamemode.enable = true;
   };
 
-  home = lib.mkIf config.dot.hardware.monitor.enable {
+  home = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.mangohud.enable = true;
     programs.mangohud.enableSessionWide = true;
   };
