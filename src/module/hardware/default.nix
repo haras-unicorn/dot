@@ -1,5 +1,7 @@
 { self, config, lib, ... }:
 
+# TODO: temp and monitor id from facter
+
 assert lib.asserts.assertOneOf "version" config.facter.report.hardware.version [ "1" ];
 
 let
