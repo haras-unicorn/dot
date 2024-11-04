@@ -119,6 +119,13 @@ in
         default = monitorDpi;
       };
 
+      monitor.main = lib.mkOption {
+        type = lib.types.str;
+        default = "DP-1";
+        description = ''
+        '';
+      };
+
       graphics.enable = lib.mkOption {
         type = lib.types.bool;
         default = graphics;

@@ -9,7 +9,7 @@ let
   package = pkgs.polybarFull;
 
   fontSizePt = config.dot.font.size.large;
-  fontSizePx = fontSizePt * config.dot.mainMonitorDpi / 72;
+  fontSizePx = fontSizePt * config.dot.hardware.monitor.dpi / 72;
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
