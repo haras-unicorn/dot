@@ -92,6 +92,15 @@ in
         default = memoryInBytes;
       };
 
+      temp = lib.mkOption {
+        type = lib.types.str;
+        default = "/sys/class/hwmon/hwmon0/temp1_input";
+        description = ''
+          cat /sys/class/hwmon/hwmon*/name
+          k10temp or coretemp then temp1_input
+        '';
+      };
+
       network.enable = lib.mkOption {
         type = lib.types.bool;
         default = network;

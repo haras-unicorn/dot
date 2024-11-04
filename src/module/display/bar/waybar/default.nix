@@ -29,7 +29,7 @@ in
             icon-size = config.dot.font.size.large;
           };
           temperature = {
-            hwmon-path = config.dot.cpuHwmon;
+            hwmon-path = config.dot.hardware.temp;
           };
         })
     ];

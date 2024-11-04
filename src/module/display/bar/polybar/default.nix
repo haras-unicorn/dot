@@ -41,7 +41,7 @@ in
         danger = bootstrap.danger.normal.hex;
         monitor = config.dot.hardware.monitor.main;
         network-interface = config.dot.hardware.network.interface;
-        cpu-hwmon = config.dot.cpuHwmon;
+        cpu-hwmon = config.dot.hardware.temp;
         font = (builtins.toString config.dot.font.sans.name)
           + ":size="
           + (builtins.toString fontSizePt)
