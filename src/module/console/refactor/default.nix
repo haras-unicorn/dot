@@ -2,9 +2,9 @@
 
 {
   home = {
-    home.packages = with pkgs; [
-      rnr
-      fastmod
+    home.packages = [
+      pkgs.rnr
+      pkgs.fastmod
       (pkgs.rustPlatform.buildRustPackage (
         let
           version = "1.3.0";

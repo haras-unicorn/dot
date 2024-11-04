@@ -1,10 +1,7 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, ... }:
 
-let
-  hasKeyboard = config.dot.hardware.keyboard.enable;
-in
 {
-  home = lib.mkIf (hasKeyboard) {
+  home = {
     home.packages = [
       pkgs.vim
     ];
