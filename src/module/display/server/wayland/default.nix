@@ -4,9 +4,6 @@
 , ...
 }:
 
-# FIXME: https://github.com/NVIDIA/open-gpu-kernel-modules/issues/467#issuecomment-1544340511
-# FIXME: hyprland insists on own portal but that one doesn't allow me to screenshare at all
-
 let
   cfg = config.dot.desktopEnvironment;
 

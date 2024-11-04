@@ -3,6 +3,11 @@
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
+
+  pinentry = lib.mkMerge [
+    (lib.mkIf hasMonitor pkgs.pinentry-qt)
+    (lib.mkIf (!hasMonitor) pkgs.pinentry-curser)
+  ];
 in
 {
   shared = (lib.mkIf (hasMonitor && hasKeyboard)) {
@@ -21,11 +26,14 @@ in
     };
   };
 
-  home = (lib.mkIf (hasMonitor && hasKeyboard)) {
-    home.packages = with pkgs; [
-      keepassxc
+  home = {
+    home.packages = [
+      (lib.mkIf (hasMonitor && hasKeyboard) pkgs.keepassxc)
+      pinentry
     ];
 
-    xdg.configFile."keepassxc/keepassxc.ini".source = ./keepassxc.ini;
+    services.gpg-agent.pinentryPackage = pinentry;
+
+    xdg.configFile."keepassxc/keepassxc.ini".source = lib.mkIf (hasMonitor && hasKeyboard) ./keepassxc.ini;
   };
 }
