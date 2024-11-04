@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   copy = pkgs.writeShellApplication {
@@ -16,9 +16,12 @@ let
       xclip -o -sel clip "$@"
     '';
   };
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  system = {
+  system = lib.mkIf (hasMonitor && !hasWayland) {
     environment.sessionVariables = {
       QT_QPA_PLATFORM = "xcb";
       # NIXOS_OZONE_WL = "1";
@@ -42,9 +45,5 @@ in
     ];
 
     services.xserver.enable = true;
-    services.xserver.xkb.layout = "us";
-    services.libinput.enable = true;
-
-    console.useXkbConfig = true;
   };
 }

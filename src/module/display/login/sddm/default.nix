@@ -2,6 +2,10 @@
 
 let
   cfg = config.dot.desktopEnvironment;
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
   options.dot.desktopEnvironment = {
@@ -15,7 +19,7 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
     system = {
       environment.systemPackages = with pkgs; [
         libsForQt5.qt5.qtgraphicaleffects # NOTE: for sddm theme

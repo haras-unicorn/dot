@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   screenshot = pkgs.writeShellApplication {
@@ -35,9 +35,14 @@ let
       fi
     '';
   };
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
+  hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  shared = {
+  shared = lib.mkIf (hasMonitor && hasWayland && hasKeyboard && hasMouse) {
     dot = {
       desktopEnvironment.keybinds = [
         {
@@ -59,7 +64,7 @@ in
     };
   };
 
-  home = {
+  home = lib.mkIf (hasMonitor && hasWayland) {
     home.packages = with pkgs; [ grim slurp tesseract screenshot ];
   };
 }

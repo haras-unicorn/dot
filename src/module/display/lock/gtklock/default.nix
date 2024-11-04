@@ -1,7 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
+let
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
+in
 {
-  system = {
+  system = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     security.pam.services.gtklock = { };
     services.systemd-lock-handler.enable = true;
 
@@ -17,7 +22,7 @@
     };
   };
 
-  home = {
+  home = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     home.packages = [
       pkgs.gtklock
     ];

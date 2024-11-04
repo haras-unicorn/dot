@@ -1,9 +1,14 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
-# TODO: tint-gear
+# TODO: colors
 
+let
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
+in
 {
-  shared = {
+  shared = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
     dot = {
       desktopEnvironment.keybinds = [
         {
@@ -30,7 +35,7 @@
     };
   };
 
-  home = {
+  home = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
     home.packages = with pkgs; [
       keepmenu
     ];

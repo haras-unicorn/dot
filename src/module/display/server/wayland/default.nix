@@ -1,8 +1,4 @@
-{ pkgs
-, lib
-, config
-, ...
-}:
+{ pkgs, lib, config, ... }:
 
 let
   cfg = config.dot.desktopEnvironment;
@@ -22,6 +18,9 @@ let
       wl-paste "$@"
     '';
   };
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
   options.dot.desktopEnvironment = {
@@ -36,7 +35,7 @@ in
   };
 
   config = {
-    system = {
+    system = lib.mkIf (hasMonitor && hasWayland) {
       environment.sessionVariables = {
         QT_QPA_PLATFORM = "wayland;xcb";
         NIXOS_OZONE_WL = "1";

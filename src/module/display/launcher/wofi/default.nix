@@ -1,10 +1,14 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   bootstrap = config.dot.colors.bootstrap;
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared = {
+  shared = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     dot = {
       desktopEnvironment.keybinds = [
         {
@@ -31,7 +35,7 @@ in
     };
   };
 
-  home = {
+  home = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     home.packages = with pkgs; [
       keepmenu
       wtype

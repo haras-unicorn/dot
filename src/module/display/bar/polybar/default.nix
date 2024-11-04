@@ -10,9 +10,12 @@ let
 
   fontSizePt = config.dot.font.size.large;
   fontSizePx = fontSizePt * config.dot.mainMonitorDpi / 72;
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  home = {
+  home = lib.mkIf (hasMonitor && !hasWayland) {
     home.activation = {
       polybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${package}/bin/polybar-msg cmd restart || true

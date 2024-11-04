@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   bootstrap = config.dot.colors.bootstrap;
@@ -10,9 +10,13 @@ let
       exec wlogout -p layer-shell
     '';
   };
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
+  hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  home = {
+  home = lib.mkIf (hasMonitor && hasMouse && hasWayland) {
     home.packages = [
       logout
     ];

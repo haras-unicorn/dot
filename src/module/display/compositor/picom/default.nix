@@ -4,9 +4,12 @@
 
 let
   bootstrap = config.dot.colors.bootstrap;
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  home = {
+  home = lib.mkIf (hasMonitor && !hasWayland) {
     home.activation = {
       picomReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "picom" || true

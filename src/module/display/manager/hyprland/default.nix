@@ -6,8 +6,6 @@
 # systemctl --user restart xdg-desktop-portal.service
 
 let
-  hasMonitor = config.dot.hardware.monitor.enable;
-
   cfg = config.dot.desktopEnvironment;
 
   current-layout = pkgs.writeShellApplication {
@@ -59,6 +57,9 @@ let
       cfg.windowrules);
 
   bootstrap = config.dot.colors.bootstrap;
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
   options.dot.desktopEnvironment = {
@@ -112,20 +113,20 @@ in
   };
 
   config = {
-    shared = lib.mkIf hasMonitor {
+    shared = lib.mkIf (hasMonitor && hasWayland) {
       dot = {
         desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.hyprland}/bin/Hyprland";
-        # desktopEnvironment.keybinds = [
-        #   {
-        #     mods = [ "super" ];
-        #     key = "c";
-        #     command = "${pkgs.hyprpicker}/bin/hyprpicker";
-        #   }
-        # ];
+        desktopEnvironment.keybinds = [
+          {
+            mods = [ "super" ];
+            key = "c";
+            command = "${pkgs.hyprpicker}/bin/hyprpicker";
+          }
+        ];
       };
     };
 
-    home = lib.mkIf hasMonitor {
+    home = lib.mkIf (hasMonitor && hasWayland) {
       home.sessionVariables = cfg.sessionVariables;
       systemd.user.sessionVariables = cfg.sessionVariables;
 

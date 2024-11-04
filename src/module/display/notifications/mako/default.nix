@@ -2,15 +2,18 @@
 
 let
   bootstrap = config.dot.colors.bootstrap;
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  shared = {
+  shared = lib.mkIf (hasMonitor && hasWayland) {
     dot = {
       desktopEnvironment.sessionStartup = [ "${pkgs.mako}/bin/mako" ];
     };
   };
 
-  home = {
+  home = lib.mkIf (hasMonitor && hasWayland) {
     home.packages = with pkgs; [
       libnotify
       mako

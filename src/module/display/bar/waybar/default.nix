@@ -5,18 +5,12 @@
 
 let
   bootstrap = config.dot.colors.bootstrap;
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  home = {
-    xdg.configFile."waybar/colors.css".text = ''
-      @define-color transparent ${bootstrap.background.normal.rgba 0.4};
-      @define-color text ${bootstrap.text.normal.hex};
-      @define-color text-alternate ${bootstrap.text.alternate.hex};
-      @define-color primary ${bootstrap.primary.normal.hex};
-      @define-color secondary ${bootstrap.secondary.normal.hex};
-      @define-color accent ${bootstrap.accent.normal.hex};
-    '';
-
+  home = lib.mkIf (hasMonitor && hasWayland) {
     home.activation = {
       waybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "waybar" || true
@@ -49,6 +43,15 @@ in
       }
 
       ${builtins.readFile ./style.css}
+    '';
+
+    xdg.configFile."waybar/colors.css".text = ''
+      @define-color transparent ${bootstrap.background.normal.rgba 0.4};
+      @define-color text ${bootstrap.text.normal.hex};
+      @define-color text-alternate ${bootstrap.text.alternate.hex};
+      @define-color primary ${bootstrap.primary.normal.hex};
+      @define-color secondary ${bootstrap.secondary.normal.hex};
+      @define-color accent ${bootstrap.accent.normal.hex};
     '';
   };
 }

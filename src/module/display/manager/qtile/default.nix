@@ -93,6 +93,9 @@ let
       (builtins.filter
         (windowrule: windowrule.rule == "float")
         cfg.windowrules));
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
   options.dot.desktopEnvironment = {
@@ -144,11 +147,13 @@ in
   };
 
   config = {
-    shared.dot = {
-      desktopEnvironment.session = "qtile";
+    shared = lib.mkIf (hasMonitor && !hasWayland) {
+      dot = {
+        desktopEnvironment.session = "qtile";
+      };
     };
 
-    system = {
+    system = lib.mkIf (hasMonitor && !hasWayland) {
       services.xserver.windowManager.qtile.enable = true;
       services.xserver.windowManager.qtile.package = package;
       services.xserver.windowManager.qtile.extraPackages =
@@ -157,7 +162,7 @@ in
         ];
     };
 
-    home = {
+    home = lib.mkIf (hasMonitor && !hasWayland) {
       home.packages = [
         switch-layout
         current-layout

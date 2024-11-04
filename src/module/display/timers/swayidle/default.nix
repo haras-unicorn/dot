@@ -1,9 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
 # FIXME: focused video not preventing locking
 
+let
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
+in
 {
-  home = {
+  home = lib.mkIf (hasMonitor && hasWayland) {
     services.swayidle.enable = true;
     services.swayidle.timeouts = [
       {
