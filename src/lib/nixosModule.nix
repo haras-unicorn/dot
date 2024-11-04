@@ -19,7 +19,7 @@ in
       secrets = "${self}/src/host/${host}/secrets.yaml";
     in
     {
-      import =
+      imports =
         (builtins.map self.lib.module.mkSystemModule modules) ++
         [ (self.lib.module.mkSystemModule config) ];
 

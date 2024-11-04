@@ -28,8 +28,8 @@ in
     nixpkgs.lib.nixosSystem {
       inherit system specialArgs;
       modules = [
-        nur.nixosModules.default
-        nixos-facter-modules.nixosModules.default
+        nur.nixosModules.nur
+        nixos-facter-modules.nixosModules.facter
         sops-nix.nixosModules.default
         home-manager.nixosModules.default
         self.nixosModules."${host}-${system}"
