@@ -1,5 +1,8 @@
 { pkgs, config, hostName, system, ... }:
 
+# TODO: ensure repo is present in ~/repos/dot on activation
+# then make rebuild use that location instead of the one in dataHome
+
 let
   rebuild = pkgs.writeShellApplication {
     name = "rebuild";
@@ -50,7 +53,7 @@ in
     ];
 
     nixpkgs.config = {
-      allowUnfree = true;
+      nixpkgs.config.nvidia.acceptLicense = graphicsCardDriver == "nvidia";
       cudaSupport = graphicsCardDriver == "nvidia";
       rocmSupport = graphicsCardDriver == "amdgpu";
     };

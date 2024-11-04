@@ -1,6 +1,5 @@
 { pkgs
 , config
-, lib
 , user
 , ...
 }:
@@ -8,14 +7,6 @@
 # FIXME: https://github.com/NixOS/nixpkgs/issues/306276
 
 {
-  shared = {
-    nixpkgs.config.nvidia.acceptLicense = true;
-    nixpkgs.config.cudaSupport = lib.mkIf
-      (config.dot.hardware.graphics.version == "production"
-        || config.dot.hardware.graphics.version == "latest")
-      true;
-  };
-
   system = {
     boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" ];
     boot.kernelParams = [ "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
