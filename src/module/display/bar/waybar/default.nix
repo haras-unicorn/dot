@@ -24,7 +24,7 @@ in
         (builtins.fromJSON (builtins.readFile ./config.json))
         {
           output = config.dot.hardware.monitor.main;
-          network = { interface = config.dot.networkInterface; };
+          network = { interface = config.dot.hardware.network.interface; };
           tray = {
             icon-size = config.dot.font.size.large;
           };
