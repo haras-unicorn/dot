@@ -13,8 +13,16 @@ in
     boot.loader.grub.efiSupport = true;
     boot.loader.grub.useOSProber = true;
 
+    boot.binfmt.emulatedSystems = lib.mkIf
+      (pkgs.system == "x86_64-linux")
+      [ "aarch64-linux" ];
+
     boot.kernelPackages = pkgs.linuxPackages;
 
+    boot.initrd.kernelModules = [
+      "ext4"
+      "vfat"
+    ];
     fileSystems."/boot" = {
       device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
