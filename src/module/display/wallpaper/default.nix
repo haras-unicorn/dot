@@ -13,11 +13,11 @@ in
     };
   };
 
-  shared = lib.mkIf monitor.enable {
+  shared = {
     dot = {
       inherit wallpaper;
 
-      desktopEnvironment.sessionStartup = [
+      desktopEnvironment.sessionStartup = lib.mkIf monitor.enable [
         (lib.mkIf (!graphics.wayland) "feh --bg-fill '${wallpaper}'")
         (lib.mkIf (graphics.wayland) "${pkgs.swww}/bin/swww-daemon")
         (lib.mkIf (graphics.wayland) "${pkgs.swww}/bin/swww img '${wallpaper}'")
