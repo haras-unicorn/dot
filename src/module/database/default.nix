@@ -14,9 +14,11 @@ let
       wrapProgram $out/bin/dbeaver --set GDK_BACKEND x11
     '';
   };
+
+  hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  home = lib.mkIf config.dot.hardware.monitor.enable {
+  home = lib.mkIf hasMonitor {
     home.packages = [
       dbeaver
     ];
