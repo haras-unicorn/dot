@@ -1,3 +1,5 @@
+{ ... }:
+
 {
   wrap = pkgs: package: bin: pkgs.symlinkJoin {
     name = bin;

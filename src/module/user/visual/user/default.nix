@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ self, pkgs, config, lib, ... }:
 
 let
   bootstrap = config.dot.colors.bootstrap;
@@ -6,17 +6,19 @@ let
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
+
+  package = self.lib.mangohud.wrap pkgs.zed-editor "zeditor" false;
 in
 {
   shared = {
     dot = {
-      visual = { package = pkgs.zed-editor; bin = "zeditor"; };
+      visual = { inherit package; bin = "zeditor"; };
     };
   };
 
   home = lib.mkIf (hasMonitor && hasKeyboard) {
     home.packages = [
-      pkgs.zed-editor
+      package
     ];
 
     xdg.configFile."zed/settings.json".text = builtins.toJSON {
@@ -151,5 +153,3 @@ in
     };
   };
 }
-
-
