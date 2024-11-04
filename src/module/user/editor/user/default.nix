@@ -8,6 +8,8 @@ let
   editor = "${cfg.package}/bin/${cfg.bin}";
 
   bootstrap = config.dot.colors.bootstrap;
+
+  hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
   shared = {
@@ -16,7 +18,7 @@ in
     };
   };
 
-  home = {
+  home = lib.mkIf (hasKeyboard) {
     programs.helix.enable = true;
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);

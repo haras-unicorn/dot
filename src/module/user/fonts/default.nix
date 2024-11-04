@@ -1,7 +1,5 @@
 { lib, pkgs, config, ... }:
 
-# TODO: declare through config
-
 let
   mkFontOption = type: name: package: {
     name = lib.mkOption {
@@ -15,6 +13,8 @@ let
       example = package;
     };
   };
+
+  hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
   options.dot.font = {
@@ -60,20 +60,7 @@ in
   };
 
   config = {
-    shared = {
-      dot = {
-        font.nerd = { name = "JetBrainsMono Nerd Font"; label = "JetBrainsMono"; };
-        font.mono = { name = "Roboto Mono"; package = pkgs.roboto-mono; };
-        font.slab = { name = "Roboto Slab"; package = pkgs.roboto-slab; };
-        font.sans = { name = "Roboto"; package = pkgs.roboto; };
-        font.serif = { name = "Roboto Serif"; package = pkgs.roboto-serif; };
-        font.script = { name = "Eunomia"; package = pkgs.dotcolon-fonts; };
-        font.emoji = { name = "Noto Color Emoji"; package = pkgs.noto-fonts-emoji; };
-        font.size = { small = 12; medium = 13; large = 16; };
-      };
-    };
-
-    system = {
+    system = lib.mkIf hasMonitor {
       fonts.fontDir.enable = true;
       fonts.packages = [
         (pkgs.nerdfonts.override { fonts = [ config.dot.font.nerd.label ]; })
@@ -86,16 +73,17 @@ in
       ] ++ config.dot.font.extra;
       fonts.enableDefaultPackages = true;
       fonts.enableGhostscriptFonts = true;
+    };
 
+    home = lib.mkIf hasMonitor {
       fonts.fontconfig.enable = true;
       fonts.fontconfig.defaultFonts.sansSerif = [ config.dot.font.sans.name ];
       fonts.fontconfig.defaultFonts.serif = [ config.dot.font.serif.name ];
       fonts.fontconfig.defaultFonts.emoji = [ config.dot.font.emoji.name ];
       fonts.fontconfig.defaultFonts.monospace = [ config.dot.font.mono.name ];
-
-      environment.systemPackages = with pkgs; [
-        fontfor
-        fontpreview
+      home.packages = [
+        pkgs.fontfor
+        pkgs.fontpreview
       ];
     };
   };

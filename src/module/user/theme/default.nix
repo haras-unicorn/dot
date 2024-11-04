@@ -131,9 +131,6 @@ in
         GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
         QT_QPA_PLATFORMTHEME = "gtk2";
       };
-
-      cursor-theme = { package = pkgs.pokemon-cursor; name = "Pokemon"; };
-      icon-theme = { package = pkgs.beauty-line-icon-theme; name = "BeautyLine"; };
     };
   };
 

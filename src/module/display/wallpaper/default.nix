@@ -4,19 +4,20 @@ let
   name = "elden-ring";
   monitor = config.dot.hardware.monitor;
   graphics = config.dot.hardware.graphics;
-  wallpaper = "${self}/assets/wallpapers/${name}-${monitor.width}-${monitor.height}.png";
+  default = "${self}/assets/wallpapers/${name}-${monitor.width}-${monitor.height}.png";
+  wallpaper = config.dot.wallpaper;
 in
 {
   option = {
     wallpaper = lib.mkOption {
       type = lib.types.str;
+      default = default;
+      example = default;
     };
   };
 
   shared = {
     dot = {
-      inherit wallpaper;
-
       desktopEnvironment.sessionStartup = lib.mkIf monitor.enable [
         (lib.mkIf (!graphics.wayland) "feh --bg-fill '${wallpaper}'")
         (lib.mkIf (graphics.wayland) "${pkgs.swww}/bin/swww-daemon")

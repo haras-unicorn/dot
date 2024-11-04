@@ -3,6 +3,9 @@
 let
   bootstrap = config.dot.colors.bootstrap;
   terminal = config.dot.colors.terminal;
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
   shared = {
@@ -11,7 +14,7 @@ in
     };
   };
 
-  home = lib.mkIf config.dot.hardware.monitor.enable {
+  home = lib.mkIf (hasMonitor && hasKeyboard) {
     home.packages = [
       pkgs.zed-editor
     ];

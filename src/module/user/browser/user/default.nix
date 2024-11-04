@@ -6,10 +6,9 @@
 , ...
 }:
 
-# FIXME: firefox openai login
+# FIXME: openai login
 # FIXME: hardware acceleration
-# FIXME: firefox duckduckgo - note that last time it was overwriting it
-# FIXME: chromium extensions https://github.com/NixOS/nixpkgs/issues/158449
+# FIXME: duckduckgo - note that last time it was overwriting it
 # NOTE: https://github.com/arkenfox/user.js/wiki
 # NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
 
@@ -71,6 +70,8 @@ let
       cp -r chrome $out/
     ''
   );
+
+  hasMonitor = config.dot.hardware.monior.enable;
 in
 {
   shared = {
@@ -79,7 +80,7 @@ in
     };
   };
 
-  home = lib.mkIf (config.dot.hardware.monior.enable) {
+  home = lib.mkIf (hasMonitor) {
     programs.firefox.enable = true;
     programs.firefox.package = pkgs.firefox-bin;
     programs.firefox.profiles = {
@@ -101,22 +102,6 @@ in
 
       ${builtins.readFile ./user-overrides.js}
     '';
-
-    programs.chromium.enable = true;
-    programs.chromium.package = pkgs.ungoogled-chromium;
-    programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
-      en_US
-    ];
-    programs.chromium.extensions = [
-      # ublock origin
-      { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
-      # dark reader
-      { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
-      # vimium c
-      { id = "hfjbmagddngcpeloejdejnfgbamkjaeg"; }
-      # vimium c new tab
-      { id = "cglpcedifkgalfdklahhcchnjepcckfn"; }
-    ];
 
     xdg.desktopEntries = {
       myfooddata = {

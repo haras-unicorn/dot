@@ -1,5 +1,7 @@
 { pkgs, config, lib, ... }:
 
+# TODO: theming
+
 let
   hasMonitor = config.dot.hardware.monitor.enable;
 in

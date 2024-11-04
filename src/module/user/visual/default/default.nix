@@ -10,9 +10,12 @@
 
 let
   package = self.lib.electron.wrap pkgs pkgs.vscodium "codium";
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared = lib.mkIf config.dot.hardware.monitor.enable {
+  shared = lib.mkIf (hasMonitor && hasKeyboard) {
     dot = {
       shell.aliases = {
         code = "${package}/bin/codium";
@@ -20,7 +23,7 @@ in
     };
   };
 
-  home = lib.mkIf config.dot.hardware.monitor.enable {
+  home = lib.mkIf (hasMonitor && hasKeyboard) {
     nixpkgs.overlays = [
       nix-vscode-extensions.overlays.default
     ];
