@@ -88,12 +88,10 @@
               ({ host, system }: {
                 "${host}-${system}" = mk host system;
               })
-              nixpkgs.lib.cartesianProduct
-              {
+              (nixpkgs.lib.cartesianProduct {
                 host = (builtins.attrNames (builtins.readDir "${self}/src/host"));
                 system = flake-utils.lib.defaultSystems;
-              }
-            );
+              }));
         in
         {
           nixosModules = invokeForHostSystemMatrix self.lib.nixosModule.mkNixosModule;
