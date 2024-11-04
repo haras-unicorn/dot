@@ -1,7 +1,6 @@
 { self, config, lib, ... }:
 
-# TODO: stable wayland detection
-# TODO: better graphics driver detection
+assert lib.asserts.assertOneOf "version" config.facter.report.hardware.version [ "1" ];
 
 let
   memoryInBytes = (builtins.head config.facter.report.hardware.memory.resources).range;
