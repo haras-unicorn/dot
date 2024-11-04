@@ -47,18 +47,27 @@ let
       (builtins.head config.facter.report.hardware.graphics_card).driver
     else null;
 
-  graphicsWayland =
+  matchNvidiaList = list:
     if graphics then
       let
         graphics = builtins.head config.facter.report.hardware.graphics_card;
       in
-        !(graphics.driver == "nvidia"
-          && (builtins.any (pciId: lib.strings.hasInfix pciId graphics.module_alias) self.lib.nvidia.legacy))
-    else null;
+      graphics.driver == "nvidia"
+      && (builtins.any
+        (pciId: builtins.match "^pci:.+d${pciId}.+$" graphics.module_alias)
+        self.lib.nvidia.${list})
+    else false;
 
-  graphicsVersion = if graphicsWayland then "production" else "legacy_470";
+  graphicsVersion =
+    if (matchNvidiaList "legacy340") then "legacy_340"
+    else if (matchNvidiaList "legacy390") then "legacy_390"
+    else if (matchNvidiaList "legacy470") then "legacy_470"
+    else if (matchNvidiaList "open") then "latest"
+    else "production";
 
-  graphicsOpen = graphicsWayland;
+  graphicsOpen = matchNvidiaList "open";
+
+  graphicsWayland = !(matchNvidiaList "legacy");
 
   keyboard =
     (builtins.hasAttr "keyboard" config.facter.report.hardware) &&
