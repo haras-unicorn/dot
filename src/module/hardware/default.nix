@@ -54,7 +54,7 @@ let
       (builtins.head config.facter.report.hardware.graphics_card).driver
     else null;
 
-  nvidia = (self.lib.nvidia pkgs);
+  nvidia = self.lib.nvidia pkgs;
 
   matchNvidiaList = list:
     if graphics then
@@ -63,7 +63,7 @@ let
       in
       graphics.driver == "nvidia"
       && (builtins.any
-        (pciId: builtins.match "^pci:.+d${pciId}.+$" graphics.module_alias)
+        (pciId: (builtins.match "^pci:.+d${pciId}.+$" graphics.module_alias) != null)
         nvidia.${list})
     else false;
 

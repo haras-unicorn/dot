@@ -9,13 +9,13 @@ let
   openHtml = pkgs.fetchurl {
     name = "nvidia-open-html";
     url = openUrl;
-    hash = "";
+    hash = "sha256-NrNmHasMqS8Yxe55CWZULdiJ5hw1Jdt8uHev1aBi4qM=";
   };
   legacyUrl = "https://web.archive.org/web/20240928225313/https://www.nvidia.com/en-us/drivers/unix/legacy-gpu/";
   legacyHtml = pkgs.fetchurl {
     name = "nvidia-legacy-html";
     url = legacyUrl;
-    hash = "";
+    hash = "sha256-o2AAJBcLcrGBQqH51425BoDVqDvk7jGJVjTdVmf7LzQ=";
   };
 
   mkLegacyScript = curr: prev: pkgs.writeTextFile {
@@ -38,21 +38,22 @@ let
     text = ''
       $in
         | lines
-        | where $it =~ '<td>([0-9A-F]+ ?){1,3}</td>'
-        | str replace -r '<td>([0-9A-F]+).*</td>' '$1'
+        | where $it =~ "<td>([0-9A-F]+ ?){1,3}</td>"
+        | str replace -r "<td>([0-9A-F]+).*</td>" "$1"
     '';
   };
   mkExpr = name: html: script:
     pkgs.lib.splitString "\n"
       (builtins.readFile
-        (pkgs.runCommand
+        "${pkgs.runCommand
           "nvidia-${name}-text"
           {
             buildInputs = [ pkgs.nushell ];
           }
           ''
-            cat ${html} | nu --stdin ${script}
-          ''));
+            mkdir $out
+            cat ${html} | nu --stdin -c '${builtins.readFile script}' > $out/result
+          ''}/result");
 
   # legacy340 = mkExpr "legacy-340" legacyHtml (mkLegacyScript "340" "304");
   legacy340 = [ ];
