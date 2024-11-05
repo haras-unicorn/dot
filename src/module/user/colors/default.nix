@@ -1,4 +1,4 @@
-{ pkgs, tint-gear, system, config, lib, nix-colors, ... }:
+{ tint-gear, system, config, lib, nix-colors, ... }:
 
 let
   original = tint-gear.lib.colors {
