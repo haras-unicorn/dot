@@ -13,7 +13,7 @@ in
 {
   mkNixosModule = host: system:
     let
-      specialArgs = inputs // { inherit version host user; };
+      specialArgs = inputs // { inherit version host system user; };
       config = import "${self}/src/host/${host}/config.nix";
       hardware = "${self}/src/host/${host}/hardware.json";
       secrets = "${self}/src/host/${host}/secrets.yaml";

@@ -1,4 +1,4 @@
-{ pkgs, config, hostName, system, lib, ... }:
+{ pkgs, config, host, system, lib, ... }:
 
 let
   path = "${config.xdg.dataHome}/dot";
@@ -19,7 +19,7 @@ let
     text = ''
       ${ensure}
       sudo nixos-rebuild switch \
-        --flake "${path}#${hostName}-${system}" \
+        --flake "${path}#${host}-${system}" \
         "$@"
     '';
   };
@@ -30,7 +30,7 @@ let
     text = ''
       ${ensure}
       sudo nixos-rebuild switch \
-        --flake "${path}#${hostName}-${system}" \
+        --flake "${path}#${host}-${system}" \
         --show-trace \
         --option eval-cache false \
         "$@"

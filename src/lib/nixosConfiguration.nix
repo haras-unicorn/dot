@@ -23,7 +23,7 @@ in
 
   mkNixosConfiguration = host: system:
     let
-      specialArgs = inputs // { inherit version host user; };
+      specialArgs = inputs // { inherit version host system user; };
     in
     nixpkgs.lib.nixosSystem {
       inherit system specialArgs;

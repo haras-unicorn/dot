@@ -2,8 +2,6 @@
 
 # TODO: temp and monitor id from facter
 
-assert lib.asserts.assertOneOf "version" config.facter.report.hardware.version [ "1" ];
-
 let
   memoryInBytes = (builtins.head config.facter.report.hardware.memory.resources).range;
 
@@ -186,6 +184,24 @@ in
       mouse.enable = lib.mkOption {
         type = lib.types.bool;
         default = mouse;
+      };
+
+      check = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+    };
+  };
+
+  config = {
+    shared = {
+      dot = {
+        hardware.check =
+          builtins.trace
+            (lib.assertMsg
+              (config.facter.report.hardware.version == "1")
+              "Only facter report version 1 supported")
+            false;
       };
     };
   };
