@@ -71,7 +71,7 @@ let
     ''
   );
 
-  hasMonitor = config.dot.hardware.monior.enable;
+  hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
   shared = {

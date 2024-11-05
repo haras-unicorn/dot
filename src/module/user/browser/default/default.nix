@@ -4,7 +4,7 @@
 # FIXME: chromium extensions https://github.com/NixOS/nixpkgs/issues/158449
 
 let
-  hasMonitor = config.dot.hardware.monior.enable;
+  hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
   home = lib.mkIf hasMonitor {
