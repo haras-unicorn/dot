@@ -40,7 +40,7 @@ let
                     value = import "${dir}/default.nix";
                   };
                 }
-            else importDir "${dir}/${name}";
+            else importDir importDir wrap "${dir}/${name}";
       })
       (builtins.readDir dir);
 
