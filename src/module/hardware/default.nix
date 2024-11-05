@@ -3,7 +3,7 @@
 # TODO: temp and monitor id from facter
 
 let
-  memoryInBytes = (builtins.head config.facter.report.hardware.memory.resources).range;
+  memoryInBytes = (builtins.head (builtins.head config.facter.report.hardware.memory).resources).range;
 
   network =
     (builtins.hasAttr "network_controller" config.facter.report.hardware) &&
