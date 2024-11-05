@@ -13,8 +13,8 @@ in
     in
     {
       imports =
-        (builtins.map self.lib.module.mkHomeSharedModule modules)
-        ++ [ (self.lib.module.mkHomeSharedModule config) ];
+        (builtins.map self.lib.module.mkHomeModule modules)
+        ++ [ (self.lib.module.mkHomeModule config) ];
 
       facter.reportPath = hardware;
 
