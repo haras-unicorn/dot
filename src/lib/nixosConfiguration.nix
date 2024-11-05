@@ -9,7 +9,8 @@
 
 let
   user = "haras";
-  version = "24.11";
+  version = "24.05";
+
   modules = builtins.map
     (x: x.__import.value)
     (builtins.filter

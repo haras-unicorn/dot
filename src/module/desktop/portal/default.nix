@@ -9,6 +9,8 @@ in
 {
   system = lib.mkIf hasMonitor {
     environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+
+    programs.dconf.enable = true;
   };
 
   home = lib.mkIf hasMonitor {
@@ -21,7 +23,5 @@ in
       pkgs.xdg-desktop-portal-gtk
       pkgs.libsForQt5.xdg-desktop-portal-kde
     ];
-
-    programs.dconf.enable = true;
   };
 }
