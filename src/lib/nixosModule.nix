@@ -45,9 +45,9 @@ in
       home-manager.useUserPackages = true;
       home-manager.extraSpecialArgs = specialArgs;
       home-manager.sharedModules = [
-        nur.hmModules.default
-        nix-index-database.hmModules.default
-        nixos-facter-modules.hmModules.default
+        nur.hmModules.nur
+        nix-index-database.hmModules.nix-index
+        nixos-facter-modules.hmModules.facter
       ];
       home-manager.users."${user}" = self.hmModules."${host}-${system}";
     };

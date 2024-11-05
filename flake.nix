@@ -65,8 +65,7 @@
             });
           in
           {
-            hmModules.nixos-facter-modules = hmModule;
-            hmModules.default = hmModule;
+            hmModules.facter = hmModule;
           }
         );
       };
