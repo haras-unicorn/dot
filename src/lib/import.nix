@@ -30,14 +30,14 @@ let
                 };
               }
           else
-            if builtins.pathExists "${dir}/default.nix"
+            if builtins.pathExists "${dir}/${name}/default.nix"
             then
               wrap
                 {
                   __import = {
-                    path = "${dir}/default.nix";
+                    path = "${dir}/${name}/default.nix";
                     type = "default";
-                    value = import "${dir}/default.nix";
+                    value = import "${dir}/${name}/default.nix";
                   };
                 }
             else importDir importDir wrap "${dir}/${name}";
