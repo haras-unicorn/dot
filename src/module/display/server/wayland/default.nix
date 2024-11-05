@@ -23,7 +23,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  options.dot.desktopEnvironment = {
+  options.desktopEnvironment = {
     login = lib.mkOption {
       type = lib.types.str;
       default = [ ];

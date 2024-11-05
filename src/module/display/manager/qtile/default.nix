@@ -98,7 +98,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  options.dot.desktopEnvironment = {
+  options.desktopEnvironment = {
     sessionVariables = lib.mkOption {
       type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
       default = { };

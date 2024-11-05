@@ -17,7 +17,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  options.dot.font = {
+  options.font = {
     nerd = {
       name = lib.mkOption {
         type = lib.types.str;

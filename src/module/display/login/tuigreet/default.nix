@@ -6,7 +6,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  options.dot.desktopEnvironment = {
+  options.desktopEnvironment = {
     startup = lib.mkOption {
       type = lib.types.str;
       default = [ ];

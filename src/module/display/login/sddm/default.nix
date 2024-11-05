@@ -8,7 +8,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  options.dot.desktopEnvironment = {
+  options.desktopEnvironment = {
     session = lib.mkOption {
       type = lib.types.str;
       default = [ ];
