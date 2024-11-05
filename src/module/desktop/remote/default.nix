@@ -5,10 +5,8 @@ let
 in
 {
   home = lib.mkIf hasMonitor {
-    shared = {
-      home.packages = [
-        pkgs.remmina
-      ];
-    };
+    home.packages = [
+      pkgs.remmina
+    ];
   };
 }

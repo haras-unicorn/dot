@@ -139,7 +139,7 @@ in
 
       wayland.windowManager.hyprland.enable = true;
       wayland.windowManager.hyprland.xwayland.enable = true;
-      wwyland.windowManager.hyprland.systemd.enable = true;
+      wayland.windowManager.hyprland.systemd.enable = true;
       wayland.windowManager.hyprland.extraConfig = ''
         monitor = , preferred, auto, 1
         monitor = ${config.dot.hardware.monitor.main}, highrr, auto, 1
