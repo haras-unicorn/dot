@@ -71,7 +71,8 @@ let
     if (matchNvidiaList "legacy340") then "legacy_340"
     else if (matchNvidiaList "legacy390") then "legacy_390"
     else if (matchNvidiaList "legacy470") then "legacy_470"
-    else if (matchNvidiaList "open") then "latest"
+    # NOTE: should be latest https://www.reddit.com/r/linux_gaming/comments/1d0mqmz/nvidia_555_beta_gsp_firmware/
+    else if (matchNvidiaList "open") then "production"
     else "production";
 
   graphicsOpen = matchNvidiaList "open";
