@@ -4,7 +4,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  system = lib.mkId hasMonitor {
+  system = lib.mkIf hasMonitor {
     security.polkit.enable = true;
 
     environment.systemPackages = with pkgs; [

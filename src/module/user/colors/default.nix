@@ -66,7 +66,7 @@ let
   colors = transformColors original;
 in
 {
-  options.dot = {
+  options = {
     colors = lib.mkOption {
       default = { };
     };

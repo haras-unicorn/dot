@@ -1,14 +1,17 @@
 { self, pkgs, lib, config, ... }:
 
+# NOTE: wallpaper inpaint/outpaint script for all resolutions
+
 let
   name = "elden-ring";
   monitor = config.dot.hardware.monitor;
   graphics = config.dot.hardware.graphics;
-  default = "${self}/assets/wallpapers/${name}-${monitor.width}-${monitor.height}.png";
+  # default = "${self}/assets/wallpapers/${name}-${builtins.toString monitor.width}-${builtins.toString monitor.height}.png";
+  default = "${self}/assets/wallpapers/${name}.png";
   wallpaper = config.dot.wallpaper;
 in
 {
-  option = {
+  options = {
     wallpaper = lib.mkOption {
       type = lib.types.str;
       default = default;

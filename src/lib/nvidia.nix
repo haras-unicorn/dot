@@ -2,9 +2,9 @@
 
 # TODO: fix 340
 
-let
-  pkgs = import nixpkgs { };
+pkgs:
 
+let
   openUrl = "https://web.archive.org/web/20241006015348/https://github.com/NVIDIA/open-gpu-kernel-modules";
   openHtml = pkgs.fetchurl {
     name = "nvidia-open-html";

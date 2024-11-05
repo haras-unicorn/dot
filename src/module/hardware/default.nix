@@ -1,4 +1,4 @@
-{ self, config, lib, ... }:
+{ self, pkgs, config, lib, ... }:
 
 # TODO: temp and monitor id from facter
 
@@ -54,6 +54,8 @@ let
       (builtins.head config.facter.report.hardware.graphics_card).driver
     else null;
 
+  nvidia = (self.lib.nvidia pkgs);
+
   matchNvidiaList = list:
     if graphics then
       let
@@ -62,7 +64,7 @@ let
       graphics.driver == "nvidia"
       && (builtins.any
         (pciId: builtins.match "^pci:.+d${pciId}.+$" graphics.module_alias)
-        self.lib.nvidia.${list})
+        nvidia.${list})
     else false;
 
   graphicsVersion =
