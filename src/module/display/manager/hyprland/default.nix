@@ -62,118 +62,66 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  options.desktopEnvironment = {
-    sessionVariables = lib.mkOption {
-      type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
-      default = { };
-      example = { EDITOR = "hx"; };
-      description = ''
-        Environment variables to set on session start with Hyprland.
-      '';
-    };
-
-    sessionStartup = lib.mkOption {
-      type = with lib.types; listOf str;
-      default = [ ];
-      example = [ "keepassxc" ];
-      description = ''
-        Commands to execute on session start with Hyprland.
-      '';
-    };
-
-    keybinds = lib.mkOption {
-      # TODO: strictly check for the mods, key and command options 
-      type = with lib.types; listOf (lazyAttrsOf (oneOf [ str (listOf str) ]));
-      default = [ ];
-      example = [
+  shared = lib.mkIf (hasMonitor && hasWayland) {
+    dot = {
+      desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.hyprland}/bin/Hyprland";
+      desktopEnvironment.keybinds = [
         {
           mods = [ "super" ];
-          key = "w";
-          command = "firefox";
-        }
-      ];
-      description = ''
-        Keybinds to set with Hyprland.
-      '';
-    };
-
-    windowrules = lib.mkOption {
-      type = with lib.types; listOf (lazyAttrsOf (str));
-      default = [ ];
-      example = [
-        {
-          rule = "float";
-          selector = "class";
-          xselector = "wm_class";
-          arg = "org.keepassxc.KeePassXC";
-          xarg = "keepassxc";
+          key = "c";
+          command = "${pkgs.hyprpicker}/bin/hyprpicker";
         }
       ];
     };
   };
 
-  config = {
-    shared = lib.mkIf (hasMonitor && hasWayland) {
-      dot = {
-        desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.hyprland}/bin/Hyprland";
-        desktopEnvironment.keybinds = [
-          {
-            mods = [ "super" ];
-            key = "c";
-            command = "${pkgs.hyprpicker}/bin/hyprpicker";
-          }
-        ];
-      };
-    };
+  home = lib.mkIf (hasMonitor && hasWayland) {
+    home.sessionVariables = cfg.sessionVariables;
+    systemd.user.sessionVariables = cfg.sessionVariables;
 
-    home = lib.mkIf (hasMonitor && hasWayland) {
-      home.sessionVariables = cfg.sessionVariables;
-      systemd.user.sessionVariables = cfg.sessionVariables;
+    home.packages = [
+      switch-layout
+      current-layout
+      pkgs.hyprcursor
+      # pkgs.hyprpicker
+    ];
 
-      home.packages = [
-        switch-layout
-        current-layout
-        pkgs.hyprcursor
-        # pkgs.hyprpicker
-      ];
-
-      wayland.windowManager.hyprland.enable = true;
-      wayland.windowManager.hyprland.xwayland.enable = true;
-      wayland.windowManager.hyprland.systemd.enable = true;
-      wayland.windowManager.hyprland.extraConfig = ''
-        monitor = , preferred, auto, 1
-        monitor = ${config.dot.hardware.monitor.main}, highrr, auto, 1
+    wayland.windowManager.hyprland.enable = true;
+    wayland.windowManager.hyprland.xwayland.enable = true;
+    wayland.windowManager.hyprland.systemd.enable = true;
+    wayland.windowManager.hyprland.extraConfig = ''
+      monitor = , preferred, auto, 1
+      monitor = ${config.dot.hardware.monitor.main}, highrr, auto, 1
   
-        ${builtins.readFile ./hyprland.conf}
+      ${builtins.readFile ./hyprland.conf}
 
-        bind = super, space, exec, ${switch-layout}/bin/switch-layout
+      bind = super, space, exec, ${switch-layout}/bin/switch-layout
 
-        env = XDG_CURRENT_DESKTOP, Hyprland
-        env = XDG_SESSION_DESKTOP, Hyprland
+      env = XDG_CURRENT_DESKTOP, Hyprland
+      env = XDG_SESSION_DESKTOP, Hyprland
 
-        env = HYPRCURSOR_THEME,${config.dot.cursor-theme.name}
-        env = HYPRCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.size}
+      env = HYPRCURSOR_THEME,${config.dot.cursor-theme.name}
+      env = HYPRCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.size}
 
-        env = XCURSOR_THEME,${config.dot.cursor-theme.name}
-        env = XCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.size}
+      env = XCURSOR_THEME,${config.dot.cursor-theme.name}
+      env = XCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.size}
 
-        exec-once = ${pkgs.systemd}/bin/systemctl --user import-environment PATH
-        exec-once = ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
+      exec-once = ${pkgs.systemd}/bin/systemctl --user import-environment PATH
+      exec-once = ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
 
-        general {
-          col.active_border = ${bootstrap.primary.normal.hypr} ${bootstrap.accent.normal.hypr}
-          col.inactive_border = ${bootstrap.secondary.normal.hypr}
-        }
+      general {
+        col.active_border = ${bootstrap.primary.normal.hypr} ${bootstrap.accent.normal.hypr}
+        col.inactive_border = ${bootstrap.secondary.normal.hypr}
+      }
 
-        ${vars}
+      ${vars}
 
-        ${startup}
+      ${startup}
 
-        ${binds}
+      ${binds}
 
-        ${windowrules}
-      '';
-    };
+      ${windowrules}
+    '';
   };
 }
 

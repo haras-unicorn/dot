@@ -77,88 +77,50 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  options.desktopEnvironment = {
-    sessionVariables = lib.mkOption {
-      type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
-      default = { };
-      example = { EDITOR = "hx"; };
-      description = ''
-        Environment variables to set on session start with Niri.
-      '';
-    };
-
-    sessionStartup = lib.mkOption {
-      type = with lib.types; listOf str;
-      default = [ ];
-      example = [ "keepassxc" ];
-      description = ''
-        Commands to execute on session start with Niri.
-      '';
-    };
-
-    keybinds = lib.mkOption {
-      # TODO: strictly check for the mods, key and command options 
-      type = with lib.types; listOf (lazyAttrsOf (oneOf [ str (listOf str) ]));
-      default = [ ];
-      example = [
-        {
-          mods = [ "super" ];
-          key = "w";
-          command = "firefox";
-        }
-      ];
-      description = ''
-        Keybinds to set with Niri.
-      '';
+  shared = lib.mkIf (hasMonitor && hasWayland) {
+    dot = {
+      desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
     };
   };
 
-  config = {
-    shared = lib.mkIf (hasMonitor && hasWayland) {
-      dot = {
-        desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
-      };
-    };
+  home = lib.mkIf (hasMonitor && hasWayland) {
+    home.sessionVariables = cfg.sessionVariables;
+    systemd.user.sessionVariables = cfg.sessionVariables;
 
-    home = lib.mkIf (hasMonitor && hasWayland) {
-      home.sessionVariables = cfg.sessionVariables;
-      systemd.user.sessionVariables = cfg.sessionVariables;
+    home.packages = [
+      pkgs.niri
+      switch-layout
+      current-layout
+    ];
 
-      home.packages = [
-        pkgs.niri
-        switch-layout
-        current-layout
-      ];
+    xdg.configFile."niri/config.kdl".text = ''
+      screenshot-path "${config.xdg.userDirs.pictures}/screenshots"
 
-      xdg.configFile."niri/config.kdl".text = ''
-        screenshot-path "${config.xdg.userDirs.pictures}/screenshots"
-
-        output "${config.dot.hardware.monitor.main}" {
-          variable-refresh-rate
-        }
+      output "${config.dot.hardware.monitor.main}" {
+        variable-refresh-rate
+      }
   
-        ${builtins.readFile ./config.kdl}
+      ${builtins.readFile ./config.kdl}
         
-        cursor {
-          xcursor-theme "${config.dot.cursor-theme.name}"
-          xcursor-size ${builtins.toString config.dot.cursor-theme.size}
-        }
+      cursor {
+        xcursor-theme "${config.dot.cursor-theme.name}"
+        xcursor-size ${builtins.toString config.dot.cursor-theme.size}
+      }
 
-        environment {
-          ${vars}
-        }
+      environment {
+        ${vars}
+      }
 
-        ${startup}
+      ${startup}
 
-        binds {
-          Mod+Space { spawn "${switch-layout}/bin/switch-layout"; }
+      binds {
+        Mod+Space { spawn "${switch-layout}/bin/switch-layout"; }
 
-          ${builtins.readFile ./binds.kdl}
+        ${builtins.readFile ./binds.kdl}
 
-          ${binds}
-        }
-      '';
-    };
+        ${binds}
+      }
+    '';
   };
 }
 
