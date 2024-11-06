@@ -30,5 +30,6 @@ in
 
     programs.eww.enable = true;
     programs.eww.package = package;
+    programs.eww.configDir = ./config;
   };
 }
