@@ -31,6 +31,7 @@ let
         | where ($it.index mod 5) == 0
         | each { |x| $x.item }
         | str replace -r ".*<td.*>([0-9A-F]+).*</td>.*" "$1"
+        | str join "\n"
     '';
   };
   openScript = pkgs.writeTextFile {
@@ -40,6 +41,7 @@ let
         | lines
         | where $it =~ "<td>([0-9A-F]+ ?){1,3}</td>"
         | str replace -r "<td>([0-9A-F]+).*</td>" "$1"
+        | str join "\n"
     '';
   };
   mkExpr = name: html: script:

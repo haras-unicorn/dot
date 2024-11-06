@@ -63,7 +63,7 @@ let
       in
       graphics.driver == "nvidia"
       && (builtins.any
-        (pciId: (builtins.match "^pci:.+d${pciId}.+$" graphics.module_alias) != null)
+        (pciId: (builtins.match "^pci:.+d.*${pciId}sv.+$" graphics.module_alias) != null)
         nvidia.${list})
     else false;
 
