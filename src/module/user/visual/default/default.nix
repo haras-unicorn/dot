@@ -1,15 +1,17 @@
-{ self
-, pkgs
+{ pkgs
+  # , self
 , config
 , lib
 , nix-vscode-extensions
 , ...
 }:
 
+# FIXME: electron wrapper
 # TODO: extensions in projects
 
 let
-  package = self.lib.electron.wrap pkgs pkgs.vscodium "codium";
+  # package = self.lib.electron.wrap pkgs pkgs.vscodium "codium";
+  package = pkgs.vscodium;
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
