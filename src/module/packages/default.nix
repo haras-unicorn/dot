@@ -64,6 +64,7 @@ in
     ];
 
     nixpkgs.config = {
+      allowUnfree = true;
       nvidia.acceptLicense = graphicsCardDriver == "nvidia";
       cudaSupport = graphicsCardDriver == "nvidia";
       rocmSupport = graphicsCardDriver == "amdgpu";

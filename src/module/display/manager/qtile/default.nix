@@ -100,7 +100,7 @@ in
 {
   shared = lib.mkIf (hasMonitor && !hasWayland) {
     dot = {
-      desktopEnvironment.session = "qtile";
+      desktopEnvironment.startup = "qtile";
     };
   };
 

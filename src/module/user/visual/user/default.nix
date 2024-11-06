@@ -10,12 +10,6 @@ let
   package = self.lib.mangohud.wrap pkgs.zed-editor "zeditor" false;
 in
 {
-  shared = {
-    dot = {
-      visual = { inherit package; bin = "zeditor"; };
-    };
-  };
-
   home = lib.mkIf (hasMonitor && hasKeyboard) {
     home.packages = [
       package

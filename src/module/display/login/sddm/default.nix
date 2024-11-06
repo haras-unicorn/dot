@@ -8,17 +8,6 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  options.desktopEnvironment = {
-    session = lib.mkOption {
-      type = lib.types.str;
-      default = [ ];
-      example = "qtile";
-      description = ''
-        Session to launch desktop environment.
-      '';
-    };
-  };
-
   config = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
     system = {
       environment.systemPackages = with pkgs; [
@@ -29,7 +18,7 @@ in
       services.displayManager.sddm.enable = true;
       services.displayManager.sddm.autoNumlock = true;
       services.displayManager.sddm.theme = "${pkgs.sweet-nova.src}/kde/sddm";
-      services.displayManager.defaultSession = "${cfg.session}";
+      services.displayManager.defaultSession = "${cfg.startup}";
       security.pam.services.sddm.enableGnomeKeyring = true;
     };
   };

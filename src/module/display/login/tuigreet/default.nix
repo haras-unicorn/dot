@@ -6,17 +6,6 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  options.desktopEnvironment = {
-    startup = lib.mkOption {
-      type = lib.types.str;
-      default = [ ];
-      example = "Hyprland";
-      description = ''
-        Command to launch desktop environment.
-      '';
-    };
-  };
-
   config = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     shared = {
       dot = {
