@@ -22,12 +22,16 @@ let
     else [ ]);
 
   mkOptions = specialArgs: dotObject:
-    if builtins.hasAttr "options" dotObject
+    if builtins.hasAttr "disabled" dotObject
+    then { }
+    else if builtins.hasAttr "options" dotObject
     then { dot = dotObject.options; }
     else { };
 
   mkConfig = { lib, ... }: path: dotObject:
-    if builtins.hasAttr "config" dotObject
+    if builtins.hasAttr "disabled" dotObject
+    then { }
+    else if builtins.hasAttr "config" dotObject
     then
       let
         configObject = dotObject.config;

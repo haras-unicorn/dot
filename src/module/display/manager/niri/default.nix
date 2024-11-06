@@ -77,6 +77,8 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
+  disabled = true;
+
   shared = lib.mkIf (hasMonitor && hasWayland) {
     dot = {
       desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
