@@ -1,8 +1,8 @@
 { pkgs, lib, config, ... }:
 
-# TODO: use instead of waybar after
+# TODO: use instead of waybar
 # TODO: hook up config like with waybar
-# TODO: more menues
+# TODO: menues
 # TODO: colors
 
 let
@@ -20,14 +20,6 @@ in
       desktopEnvironment.sessionStartup = [
         "${bin} daemon"
       ];
-
-      desktopEnvironment.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "s";
-          command = "${bin} open --toggle sysinfo";
-        }
-      ];
     };
   };
 
@@ -38,6 +30,5 @@ in
 
     programs.eww.enable = true;
     programs.eww.package = package;
-    programs.eww.configDir = ./config;
   };
 }
