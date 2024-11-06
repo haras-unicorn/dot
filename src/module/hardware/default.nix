@@ -78,13 +78,13 @@ let
 
   graphicsWayland = !(matchNvidiaList "legacy");
 
-  keyboard =
-    (builtins.hasAttr "keyboard" config.facter.report.hardware) &&
-    ((builtins.length config.facter.report.hardware.keyboard) > 0);
+  keyboard = bluetooth ||
+    ((builtins.hasAttr "keyboard" config.facter.report.hardware) &&
+      ((builtins.length config.facter.report.hardware.keyboard) > 0));
 
-  mouse =
-    (builtins.hasAttr "mouse" config.facter.report.hardware) &&
-    ((builtins.length config.facter.report.hardware.mouse) > 0);
+  mouse = bluetooth ||
+    ((builtins.hasAttr "mouse" config.facter.report.hardware) &&
+      ((builtins.length config.facter.report.hardware.mouse) > 0));
 in
 {
   options = {
