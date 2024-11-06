@@ -66,22 +66,20 @@ let
     '';
   };
 
-  read = lib.mkMerge [
-    (lib.mkIf config.dot.hardware.graphics.wayland (pkgs.writeShellApplication {
-      name = "read";
-      runtimeInputs = [ speak pkgs.wl-clipboard ];
-      text = ''
-        wl-paste | speak
-      '';
-    }))
-    (lib.mkIf (!config.dot.hardware.graphics.wayland) (pkgs.writeShellApplication {
-      name = "read";
-      runtimeInputs = [ speak pkgs.xclip ];
-      text = ''
-        xclip -o | speak
-      '';
-    }))
-  ];
+  read = pkgs.writeShellApplication {
+    name = "read";
+    runtimeInputs = [
+      speak
+      (if config.dot.hardware.graphics.wayland
+      then pkgs.wl-clipboard
+      else pkgs.xclip)
+    ];
+    text = ''
+      ${if config.dot.hardware.graphics.wayland
+      then "wl-paste"
+      else "xclip -o"} | speak
+    '';
+  };
 in
 {
   shared = {
