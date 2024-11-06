@@ -37,7 +37,14 @@ let
     '';
   };
 
-  graphicsCardDriver = config.facter.report.hardware.graphics_card.driver;
+  graphics =
+    (builtins.hasAttr "graphics_card" config.facter.report.hardware) &&
+    ((builtins.length config.facter.report.hardware.graphics_card) > 0);
+
+  graphicsDriver =
+    if graphics then
+      (builtins.head config.facter.report.hardware.graphics_card).driver
+    else null;
 in
 {
 
@@ -65,9 +72,9 @@ in
 
     nixpkgs.config = {
       allowUnfree = true;
-      nvidia.acceptLicense = graphicsCardDriver == "nvidia";
-      cudaSupport = graphicsCardDriver == "nvidia";
-      rocmSupport = graphicsCardDriver == "amdgpu";
+      nvidia.acceptLicense = graphicsDriver == "nvidia";
+      cudaSupport = graphicsDriver == "nvidia";
+      rocmSupport = graphicsDriver == "amdgpu";
     };
   };
 
