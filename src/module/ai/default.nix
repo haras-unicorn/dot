@@ -95,12 +95,14 @@ in
   };
 
   home = {
-    home.packages = [
-      (lib.mkIf hasAnyPlatform comfyui)
-      (lib.mkIf hasMonitor pkgs.gpt4all)
-      (lib.mkIf hasSound pkgs.piper-tts)
-      (lib.mkIf hasSound pkgs.openai-whisper-cpp)
-      (lib.mkIf hasSound speak)
+    home.packages = lib.optionals hasAnyPlatform [
+      comfyui
+    ] ++ lib.optionals hasMonitor [
+      pkgs.gpt4all
+    ] ++ lib.optionals hasSound [
+      pkgs.piper-tts
+      pkgs.openai-whisper-cpp
+      speak
     ];
   };
 }
