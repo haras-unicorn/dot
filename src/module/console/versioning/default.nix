@@ -10,8 +10,8 @@
   };
 
   home = {
-    home.packages = with pkgs; [
-      delta
+    home.packages = [
+      pkgs.delta
     ];
 
     programs.git.enable = true;

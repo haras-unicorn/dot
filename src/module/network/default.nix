@@ -32,10 +32,10 @@ in
       ipcp-accept-remote
     '';
 
-    environment.systemPackages = with pkgs; [
-      ppp
-      openfortivpn
-      networkmanager-fortisslvpn
+    environment.systemPackages = [
+      pkgs.ppp
+      pkgs.openfortivpn
+      pkgs.networkmanager-fortisslvpn
     ];
 
     services.openssh.enable = true;

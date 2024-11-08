@@ -23,7 +23,7 @@ in
   };
 
   home = lib.mkIf hasMonitor {
-    home.packages = with pkgs; [ pcmanfm ];
+    home.packages = [ pkgs.pcmanfm ];
 
     xdg.mimeApps.associations.added = mime;
     xdg.mimeApps.defaultApplications = mime;

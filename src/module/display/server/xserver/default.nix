@@ -34,14 +34,14 @@ in
       # _JAVA_AWT_WM_NONREPARENTING = "1";
     };
 
-    environment.systemPackages = with pkgs; [
-      libsForQt5.qt5ct
+    environment.systemPackages = [
+      pkgs.libsForQt5.qt5ct
 
-      xclip
+      pkgs.xclip
       copy
       paste
 
-      libnotify
+      pkgs.libnotify
     ];
 
     services.xserver.enable = true;

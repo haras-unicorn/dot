@@ -8,8 +8,8 @@ let
 in
 {
   home = lib.mkIf (hasMonitor && !hasWayland) {
-    home.packages = with pkgs; [
-      libnotify
+    home.packages = [
+      pkgs.libnotify
     ];
 
     services.dunst.enable = true;

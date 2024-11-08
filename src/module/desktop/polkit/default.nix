@@ -7,8 +7,8 @@ in
   system = lib.mkIf hasMonitor {
     security.polkit.enable = true;
 
-    environment.systemPackages = with pkgs; [
-      polkit_gnome
+    environment.systemPackages = [
+      pkgs.polkit_gnome
     ];
 
     systemd.user.services.polkit-gnome-authentication-agent-1 = {

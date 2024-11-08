@@ -35,9 +35,9 @@ in
   };
 
   home = lib.mkIf (hasSound && hasMonitor) {
-    home.packages = with pkgs; [
-      pwvucontrol
-      easyeffects
+    home.packages = [
+      pkgs.pwvucontrol
+      pkgs.easyeffects
     ];
 
     services.easyeffects.enable = true;

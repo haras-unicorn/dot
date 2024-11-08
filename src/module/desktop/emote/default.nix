@@ -27,8 +27,8 @@ in
   };
 
   home = (lib.mkIf (hasMonitor && hasKeyboard)) {
-    home.packages = with pkgs; [
-      smile
+    home.packages = [
+      pkgs.smile
     ];
   };
 }

@@ -65,6 +65,11 @@ in
   };
 
   home = lib.mkIf (hasMonitor && hasWayland) {
-    home.packages = with pkgs; [ grim slurp tesseract screenshot ];
+    home.packages = [
+      pkgs.grim
+      pkgs.slurp
+      pkgs.tesseract
+      screenshot
+    ];
   };
 }

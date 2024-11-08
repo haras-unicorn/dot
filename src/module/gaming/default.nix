@@ -18,8 +18,8 @@ in
     programs.steam.enable = true;
     programs.steam.extest.enable = true;
     programs.steam.protontricks.enable = true;
-    programs.steam.extraCompatPackages = with pkgs; [
-      proton-ge-bin
+    programs.steam.extraCompatPackages = [
+      pkgs.proton-ge-bin
     ];
 
     users.users.${user}.extraGroups = [

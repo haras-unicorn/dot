@@ -36,9 +36,9 @@ in
   };
 
   home = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
-    home.packages = with pkgs; [
-      keepmenu
-      wtype
+    home.packages = [
+      pkgs.keepmenu
+      pkgs.wtype
     ];
 
     # NOTE: ln -s <db location> <home>/.keepmenu.kdbx

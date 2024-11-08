@@ -83,7 +83,7 @@ in
       switch-layout
       current-layout
       pkgs.hyprcursor
-      # pkgs.hyprpicker
+      pkgs.hyprpicker
     ];
 
     wayland.windowManager.hyprland.enable = true;

@@ -38,22 +38,22 @@ in
       _JAVA_AWT_WM_NONREPARENTING = "1";
     };
 
-    environment.systemPackages = with pkgs; [
-      egl-wayland
-      xwaylandvideobridge
+    environment.systemPackages = [
+      pkgs.egl-wayland
+      pkgs.xwaylandvideobridge
 
-      libsForQt5.qt5ct
-      qt6.qtwayland
-      libsForQt5.qt5.qtwayland
+      pkgs.libsForQt5.qt5ct
+      pkgs.qt6.qtwayland
+      pkgs.libsForQt5.qt5.qtwayland
 
-      wev
+      pkgs.wev
 
-      wl-clipboard
-      xclip
+      pkgs.wl-clipboard
+      pkgs.xclip
       copy
       paste
 
-      libnotify
+      pkgs.libnotify
     ];
 
     services.greetd.enable = true;

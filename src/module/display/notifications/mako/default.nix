@@ -14,9 +14,9 @@ in
   };
 
   home = lib.mkIf (hasMonitor && hasWayland) {
-    home.packages = with pkgs; [
-      libnotify
-      mako
+    home.packages = [
+      pkgs.libnotify
+      pkgs.mako
     ];
 
     xdg.configFile."mako/config".text = ''

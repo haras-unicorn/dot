@@ -10,9 +10,9 @@ in
 {
   config = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
     system = {
-      environment.systemPackages = with pkgs; [
-        libsForQt5.qt5.qtgraphicaleffects # NOTE: for sddm theme
-        libsForQt5.plasma-framework # NOTE: for sddm theme
+      environment.systemPackages = [
+        pkgs.libsForQt5.qt5.qtgraphicaleffects
+        pkgs.libsForQt5.plasma-framework
       ];
 
       services.displayManager.sddm.enable = true;

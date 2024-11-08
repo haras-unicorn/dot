@@ -29,8 +29,8 @@ in
       ${builtins.readFile ./colors.yaml}
     '';
 
-    home.packages = with pkgs; [
-      vivid
+    home.packages = [
+      pkgs.vivid
     ];
   };
 }
