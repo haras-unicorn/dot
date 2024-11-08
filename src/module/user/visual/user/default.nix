@@ -7,7 +7,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
 
-  package = self.lib.mangohud.wrap pkgs.zed-editor "zeditor" false;
+  package = self.lib.mangohud.wrap pkgs pkgs.zed-editor "zeditor" false;
 in
 {
   home = lib.mkIf (hasMonitor && hasKeyboard) {

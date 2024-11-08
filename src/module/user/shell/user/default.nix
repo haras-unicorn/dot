@@ -55,7 +55,7 @@ in
 
       programs.helix.languages = {
         language-server.nu-lsp = {
-          command = "${pkgs.nu}/bin/nu";
+          command = "${pkgs.nushell}/bin/nu";
           args = [ "--lsp" ];
         };
 
