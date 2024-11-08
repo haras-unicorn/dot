@@ -63,6 +63,7 @@
         "wireshark"
         "games"
         "gamemode"
+        "dialout"
       ];
 
       pinentry = { package = pkgs.pinentry-qt; bin = "pinentry-qt"; };
