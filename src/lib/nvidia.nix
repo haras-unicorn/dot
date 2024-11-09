@@ -15,7 +15,7 @@ let
   legacyHtml = pkgs.fetchurl {
     name = "nvidia-legacy-html";
     url = legacyUrl;
-    hash = "sha256-1Ofa/ykwnupjmZwuO+KKV2zlwvwXk2j8txmJBW/5Pj0=";
+    hash = "sha256-Q7DcNeBGHukYFJgX3y+vO4GqRFzLbR5BJyRTCZGixc4=";
   };
 
   mkLegacyScript = curr: prev: pkgs.writeTextFile {
