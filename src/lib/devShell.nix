@@ -1,5 +1,7 @@
 { nixpkgs, ... }:
 
+# TODO: uncomment nufmt once it gets better
+
 {
   mkDevShell = system:
     let
@@ -12,8 +14,9 @@
         nixpkgs-fmt
 
         # Scripts
-        yapf
-        ruff
+        just
+        nushell
+        # nufmt
 
         # Misc
         nodePackages.prettier
@@ -23,8 +26,6 @@
         taplo
 
         # Tools
-        nushell
-        just
         openssl
         openvpn
         openssh

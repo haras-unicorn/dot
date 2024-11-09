@@ -1,5 +1,7 @@
 { pkgs, lib, config, ... }:
 
+# TODO: uncomment formatter when it gets better
+
 let
   cfg = config.dot.shell;
 
@@ -62,10 +64,10 @@ in
         language = [{
           name = "nu";
           language-servers = [ "nu-lsp" ];
-          formatter = {
-            command = "${pkgs.nufmt}/bin/nufmt";
-          };
-          auto-format = true;
+          # formatter = {
+          #   command = "${pkgs.nufmt}/bin/nufmt --stdin";
+          # };
+          # auto-format = true;
         }];
       };
 
