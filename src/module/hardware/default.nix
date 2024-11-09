@@ -54,7 +54,7 @@ let
       (builtins.head config.facter.report.hardware.graphics_card).driver
     else null;
 
-  nvidia = self.lib.nvidia pkgs;
+  nvidia = (self.lib.nvidia pkgs).frozen;
 
   matchNvidiaList = list:
     if graphics then
