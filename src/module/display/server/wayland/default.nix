@@ -52,6 +52,8 @@ in
       paste
 
       pkgs.libnotify
+
+      pkgs.libdecor
     ];
 
     services.greetd.enable = true;
