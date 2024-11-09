@@ -69,7 +69,7 @@ in
         {
           mods = [ "super" ];
           key = "c";
-          command = "${pkgs.hyprpicker}/bin/hyprpicker";
+          command = "${pkgs.hyprpicker}/bin/hyprpicker --no-fancy | ${pkgs.wl-clipboard}/bin/wl-copy";
         }
       ];
     };
