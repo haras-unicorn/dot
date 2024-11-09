@@ -9,7 +9,7 @@ let
   openHtml = pkgs.fetchurl {
     name = "nvidia-open-html";
     url = openUrl;
-    hash = "sha256-OoaoXg/5pOpDHWJZ1ksshtSJceCyNzb6R71rpSkHsyA=";
+    hash = "sha256-1Ofa/ykwnupjmZwuO+KKV2zlwvwXk2j8txmJBW/5Pj0=";
   };
   legacyUrl = "https://web.archive.org/web/20240928225313/https://www.nvidia.com/en-us/drivers/unix/legacy-gpu";
   legacyHtml = pkgs.fetchurl {
