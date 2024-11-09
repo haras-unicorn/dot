@@ -70,6 +70,8 @@ def "main pass" [name: string, length: int = 32] {
 # to be used for decryption during host activation
 #
 # outputs:
+#   ./secrets.age.pub
+#   ./secrets.age
 #   ./secrets.yaml.pub
 #   ./secrets.yaml
 def "main encrypt" [] {
