@@ -30,6 +30,7 @@
         openssh
         age
         sops
+        nebula
       ];
     };
 }
