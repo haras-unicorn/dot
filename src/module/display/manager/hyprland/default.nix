@@ -75,6 +75,12 @@ in
     };
   };
 
+  system = lib.mkIf (hasMonitor && hasWayland) {
+    programs.hyprland.enable = true;
+    programs.hyprland.xwayland.enable = true;
+    programs.hyprland.systemd.setPath.enable = true;
+  };
+
   home = lib.mkIf (hasMonitor && hasWayland) {
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
@@ -105,9 +111,6 @@ in
 
       env = XCURSOR_THEME,${config.dot.cursor-theme.name}
       env = XCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.size}
-
-      exec-once = ${pkgs.systemd}/bin/systemctl --user import-environment PATH
-      exec-once = ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
 
       general {
         col.active_border = ${bootstrap.primary.normal.hypr} ${bootstrap.accent.normal.hypr}
