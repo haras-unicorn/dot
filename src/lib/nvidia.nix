@@ -9,13 +9,13 @@ let
   openHtml = pkgs.fetchurl {
     name = "nvidia-open-html";
     url = openUrl;
-    hash = "sha256-FUf3MQuLrI5IQuxYPvw2D95xjmm3AVEFhyVcyyUQM2I=";
+    hash = "sha256-OoaoXg/5pOpDHWJZ1ksshtSJceCyNzb6R71rpSkHsyA=";
   };
   legacyUrl = "https://web.archive.org/web/20240928225313/https://www.nvidia.com/en-us/drivers/unix/legacy-gpu";
   legacyHtml = pkgs.fetchurl {
     name = "nvidia-legacy-html";
     url = legacyUrl;
-    hash = "sha256-wOaj75WG22nP/cZ/JlJfBfl9D3YBQy6LTJuaaCbwI/E=";
+    hash = "sha256-EuMaUyOuguTomUtnpgW6ehb0zPhkpaEUHgxJYmx3XdE=";
   };
 
   mkLegacyScript = curr: prev: pkgs.writeTextFile {

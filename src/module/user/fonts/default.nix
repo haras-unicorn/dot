@@ -9,8 +9,8 @@ let
     };
     package = lib.mkOption {
       type = lib.types.package;
-      default = package;
-      example = package;
+      default = pkgs.${package};
+      example = pkgs.${package};
     };
   };
 
