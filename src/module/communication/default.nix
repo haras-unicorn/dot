@@ -13,7 +13,7 @@ let
   ferdium = self.lib.electron.wrap pkgs pkgs.ferdium "ferdium";
   discord = self.lib.electron.wrap pkgs pkgs.discord "discord";
   slack = self.lib.electron.wrap pkgs pkgs.slack "slack";
-  teams = self.lib.electron.wrap pkgs pkgs.teams-for-linux "teams";
+  teams = self.lib.electron.wrap pkgs pkgs.teams-for-linux "teams-for-linux";
   station = self.lib.electron.wrap pkgs pkgs.station "station";
   vesktop = self.lib.electron.wrap pkgs pkgs.vesktop "vesktop";
 in
