@@ -34,6 +34,17 @@ def "main vpn host" [name: string, ip: string, ca: string = "haras"] {
   chmod 400 $"($name).vpn"
 }
 
+# create an ssh key pair
+#
+# outputs:
+#   ./name.ssh.pub
+#   ./name.ssh
+def "main ssh" [name: string] {
+  ssh-keygen -q -a 100 -t ed25519 -N $name -f $"($name).ssh"
+  chmod 644 $"($name).ssh.pub"
+  chmod 400 $"($name).ssh"
+}
+
 # create a linux user password using mkpasswd
 #
 # outputs:
@@ -47,17 +58,6 @@ def "main pass" [name: string, length: int = 32] {
   let encrypted = $pass | mkpasswd --stdin
   $encrypted | save -f $"($name).pass"
   chmod 400 $"($name).pass"
-}
-
-# create an ssh key pair
-#
-# outputs:
-#   ./name.ssh.pub
-#   ./name.ssh
-def "main ssh" [name: string] {
-  ssh-keygen -q -a 100 -t ed25519 -N $name -f $"($name).ssh"
-  chmod 644 $"($name).ssh.pub"
-  chmod 400 $"($name).ssh"
 }
 
 # create a sops secret file from a directory of secret files and encrypt it
