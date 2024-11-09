@@ -24,6 +24,22 @@ let
     '';
   };
 
+  rebuild-wip = pkgs.writeShellApplication {
+    name = "rebuild-wip";
+    runtimeInputs = [ ];
+    text = ''
+      ${ensure}
+
+      cd "${path}" && ${pkgs.git}/bin/git add "${path}"
+      cd "${path}" && ${pkgs.git}/bin/git commit -m WIP
+      cd "${path}" && ${pkgs.git}/bin/git push
+
+      sudo nixos-rebuild switch \
+        --flake "${path}#${host}-${system}" \
+        "$@"
+    '';
+  };
+
   rebuild-trace = pkgs.writeShellApplication {
     name = "rebuild-trace";
     runtimeInputs = [ ];
@@ -79,7 +95,7 @@ in
   };
 
   home = {
-    home.packages = [ rebuild rebuild-trace ];
+    home.packages = [ rebuild rebuild-wip rebuild-trace ];
 
     home.activation = {
       ensurePulledAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ensure;

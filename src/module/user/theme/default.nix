@@ -96,30 +96,25 @@ in
     cursor-theme = {
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.numix-cursor-theme;
-        example = pkgs.pokemon-cursor;
+        default = pkgs.pokemon-cursor;
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Numix-Cursor";
-        example = "Pokemon";
+        default = "Pokemon";
       };
       size = lib.mkOption {
         type = lib.types.ints.u8;
-        default = 32;
-        example = 24;
+        default = 24;
       };
     };
     icon-theme = {
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.numix-icon-theme;
-        example = pkgs.beauty-line-icon-theme;
+        default = pkgs.beauty-line-icon-theme;
       };
       name = lib.mkOption {
         type = lib.types.str;
-        default = "Numix";
-        example = "BeautyLine";
+        default = "BeautyLine";
       };
     };
   };
