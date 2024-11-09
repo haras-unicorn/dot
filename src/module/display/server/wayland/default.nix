@@ -33,9 +33,7 @@ in
       NIXOS_XDG_OPEN_USE_PORTAL = "1";
       GDK_BACKEND = "wayland,x11";
       CLUTTER_BACKEND = "wayland";
-      # NOTE: fixes stuttering but steam games suck
-      # XWAYLAND_NO_GLAMOR = "1";
-      _JAVA_AWT_WM_NONREPARENTING = "1";
+      SDL_VIDEODRIVER = "wayland,x11";
     };
 
     environment.systemPackages = [
