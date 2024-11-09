@@ -64,7 +64,7 @@ in
 {
   shared = lib.mkIf (hasMonitor && hasWayland) {
     dot = {
-      desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.hyprland}/bin/Hyprland";
+      desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
       desktopEnvironment.keybinds = [
         {
           mods = [ "super" ];
