@@ -108,7 +108,7 @@ in
 
       exec-once = ${pkgs.systemd}/bin/systemctl --user import-environment PATH
       exec-once = ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal.service
-      exec-once = ${pkgs.xhost}/bin/xhost +SI:localuser:root
+      exec-once = ${pkgs.xorg.xhost}/bin/xhost +SI:localuser:root
 
       general {
         col.active_border = ${bootstrap.primary.normal.hypr} ${bootstrap.accent.normal.hypr}
