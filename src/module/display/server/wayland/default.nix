@@ -12,7 +12,7 @@ let
   };
 
   paste = pkgs.writeShellApplication {
-    name = "copy";
+    name = "paste";
     runtimeInputs = [ pkgs.wl-clipboard ];
     text = ''
       wl-paste "$@"
