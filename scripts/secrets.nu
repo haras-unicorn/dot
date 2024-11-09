@@ -1,7 +1,7 @@
-#!/usr/bin/env nu --stdin
+#!/usr/bin/env nu
 
 def "main" [] {
-  
+  help main
 }
 
 # create the nebula vpn ca
@@ -9,7 +9,7 @@ def "main" [] {
 # outputs:
 #   ./name.vpn.pub
 #   ./name.vpn
-def "main vpn ca" [name: string = "haras"] {
+def "main nebula ca" [name: string = "haras"] {
   nebula-cert ca -name $name -duration (365 * 24 * 100)
 
   mv $"($name).crt" $"($name).vpn.pub"
@@ -24,7 +24,7 @@ def "main vpn ca" [name: string = "haras"] {
 # outputs:
 #   ./name.vpn.pub
 #   ./name.vpn
-def "main vpn host" [name: string, ip: string, ca: string = "haras"] {
+def "main nebula host" [name: string, ip: string, ca: string = "haras"] {
   nebula-cert sign -ca-crt $"($ca).vpn.pub" -ca-key $"($ca).vpn" -name $name -ip $ip  
 
   mv $"($name).crt" $"($name).vpn.pub"
@@ -50,7 +50,7 @@ def "main ssh" [name: string] {
 # outputs:
 #   ./name.pass.pub
 #   ./name.pass
-def "main pass" [name: string, length: int = 32] {
+def "main mkpasswd" [name: string, length: int = 32] {
   let pass = random chars --length $length
   $pass | save -f $"($name).pass.pub"
   chmod 644 $"($name).pass.pub"
@@ -61,6 +61,7 @@ def "main pass" [name: string, length: int = 32] {
 }
 
 # create a sops secret file from a directory of secret files and encrypt it
+#
 # each file in the directory will be a secret in the resulting file
 # with the name equal to the name of the file
 #
@@ -74,7 +75,7 @@ def "main pass" [name: string, length: int = 32] {
 #   ./secrets.age
 #   ./secrets.yaml.pub
 #   ./secrets.yaml
-def "main encrypt" [] {
+def "main sops" [] {
   age-keygen | save -f "secrets.age"
   chmod 400 "secrets.age"
 
