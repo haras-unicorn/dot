@@ -18,10 +18,11 @@ in
     xdg.portal.xdgOpenUsePortal = true;
 
     xdg.portal.config.common.default = "*";
-    xdg.portal.extraPortals = [
-      (lib.mkIf hasWayland pkgs.xdg-desktop-portal-hyprland)
+    xdg.portal.extraPortals = lib.optionals hasWayland [
+      pkgs.xdg-desktop-portal-hyprland
+    ] ++ [
       pkgs.xdg-desktop-portal-gtk
-      pkgs.libsForQt5.xdg-desktop-portal-kde
+      # pkgs.libsForQt5.xdg-desktop-portal-kde
     ];
   };
 }
