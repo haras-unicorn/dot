@@ -6,8 +6,8 @@ let
   ensure = ''
     if [ ! -d "${path}/.git" ]; then
       ${pkgs.git}/bin/git clone \
-        -c user.name=haras
-        -c user.email=social@haras.anonaddy.me
+        -c user.name=haras \
+        -c user.email=social@haras.anonaddy.me \
         ssh://git@github.com/haras-unicorn/dot \
         "${path}"
     fi
