@@ -9,7 +9,7 @@ def "main" [] {
 # outputs:
 #   ./name.vpn.pub
 #   ./name.vpn
-def "main nebula ca" [name: string = "haras"] {
+def "main nebula ca" [name: string = "ca"] {
   nebula-cert ca -name $name -duration (365 * 24 * 100)
 
   mv $"($name).crt" $"($name).vpn.pub"
@@ -24,7 +24,7 @@ def "main nebula ca" [name: string = "haras"] {
 # outputs:
 #   ./name.vpn.pub
 #   ./name.vpn
-def "main nebula host" [name: string, ip: string, ca: string = "haras"] {
+def "main nebula host" [name: string, ip: string, ca: string = "ca"] {
   nebula-cert sign -ca-crt $"($ca).vpn.pub" -ca-key $"($ca).vpn" -name $name -ip $ip  
 
   mv $"($name).crt" $"($name).vpn.pub"
