@@ -1,7 +1,18 @@
 #!/usr/bin/env nu
 
+# create secrets for all hosts
 def "main" [] {
-  help main
+  main shared
+
+  main host lighthouse --name puffy
+  main host regular --name hearth
+  main host regular --name workbug
+  main host regular --name officer
+
+  main host lock --name puffy
+  main host lock --name hearth
+  main host lock --name workbug
+  main host lock --name officer
 }
 
 # create secrets shared between hosts
@@ -58,11 +69,14 @@ def "main vpn ca" [name: string = "ca"] {
 
 # create nebula vpn keys signed by a previously generated vpn ca
 #
+# expects the ip to be in the NEBULA_`NAME`_IP env var
+#
 # outputs:
 #   ./name.vpn.pub
 #   ./name.vpn
 def "main vpn host" [name: string, ca: string = "ca"] {
-  let ip = $env.NEBULA_HOST_IP?
+  let ip_key = $"NEBULA_($name | str upcase)_IP"
+  let ip = $env | default null $ip_key | get $ip_key
   if ($ip | is-empty) {
     error make {
       msg: "expected ip provided via NEBULA_HOST_IP"
@@ -109,7 +123,6 @@ def "main vpn lighthouse" [name: string, lighthouse: bool] {
   $config | save -f $"($name).lighthouse"
   chmod 400 $"($name).lighthouse"
 }
-
 
 # create an ssh key pair
 #
