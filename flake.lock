@@ -752,11 +752,11 @@
         "poetry2nix": "poetry2nix_2"
       },
       "locked": {
-        "lastModified": 1727610612,
-        "narHash": "sha256-ryOVqS6UioXVkk55rFBKBJI54MU5tI++Oz63R93EqtU=",
+        "lastModified": 1731252432,
+        "narHash": "sha256-JwSQtQ4GoFE+lAGUu/ltknz4yelGNQMkP4jsBi/dUZc=",
         "owner": "haras-unicorn",
         "repo": "tint-gear",
-        "rev": "0ef8efcf988a4a25313a6a3e833f92e49f840db5",
+        "rev": "d1795d977579eb0f374ff1c1bbf0b00a4889d96b",
         "type": "github"
       },
       "original": {

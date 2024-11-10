@@ -1,7 +1,8 @@
-{ tint-gear, system, config, lib, nix-colors, ... }:
+{ tint-gear, pkgs, system, config, lib, nix-colors, ... }:
 
 let
   original = tint-gear.lib.colors {
+    inherit pkgs;
     imagePath = config.dot.wallpaper;
   };
 
