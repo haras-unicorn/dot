@@ -1,5 +1,9 @@
 { pkgs, lib, host, config, ... }:
 
+let
+  hasNetwork = config.dot.hardware.network.enable;
+  hasMonitor = config.dot.hardware.monitor.enable;
+in
 {
   options = {
     vpn.lighthouse.enable = lib.mkOption {
@@ -8,7 +12,7 @@
     };
   };
 
-  config = {
+  config = lib.mkIf hasNetwork {
     system = {
       # NOTE: these values are not used but nix evaluates them for some reason
       services.nebula.networks.nebula = {
@@ -89,6 +93,17 @@
         owner = "ddns-updater";
         group = "ddns-updater";
         mode = "0400";
+      };
+    };
+  };
+
+  home = lib.mkIf (hasNetwork && hasMonitor) {
+    services.network-manager-applet.enable = true;
+    xdg.desktopEntries = {
+      ddns-updater = {
+        name = "DDNS Updater";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8000";
+        terminal = false;
       };
     };
   };

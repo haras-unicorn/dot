@@ -2,7 +2,6 @@
 
 # FIXME: networkmanager-fortisslvpn
 # TODO: openfortivpn as a service
-# NOTE: https://github.com/qdm12/ddns-updater/blob/master/docs/duckdns.md -> /var/lib/ddns-updater/config.json
 
 let
   hasNetwork = config.dot.hardware.network.enable;
@@ -43,16 +42,5 @@ in
     services.openssh.settings.PermitRootLogin = "no";
     services.openssh.settings.PasswordAuthentication = true;
     services.openssh.settings.KbdInteractiveAuthentication = false;
-  };
-
-  home = lib.mkIf (hasNetwork && hasMonitor) {
-    services.network-manager-applet.enable = true;
-    xdg.desktopEntries = {
-      ddns-updater = {
-        name = "DDNS Updater";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8000";
-        terminal = false;
-      };
-    };
   };
 }
