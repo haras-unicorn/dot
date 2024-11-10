@@ -1,13 +1,12 @@
-{ pkgs
-, config
-, user
-, ...
-}:
+{ pkgs, lib, config, user, ... }:
 
 # FIXME: https://github.com/NixOS/nixpkgs/issues/306276
 
+let
+  hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
+in
 {
-  system = {
+  system = lib.mkIf hasNvidia {
     boot.initrd.availableKernelModules = [ "nvidia" "nvidia_modeset" "nvidia_drm" ];
     boot.kernelParams = [ "nvidia_drm.modeset=1" "nvidia_drm.fbdev=1" "nvidia.NVreg_PreserveVideoMemoryAllocations=1" ];
     boot.kernelModules = [ "nvidia_uvm" ];

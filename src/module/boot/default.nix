@@ -9,10 +9,11 @@ in
 {
   system = {
     boot.loader.efi.canTouchEfiVariables = false;
-    boot.loader.grub.enable = true;
+    boot.loader.grub.enable = !isRpi4;
     boot.loader.grub.device = "nodev";
     boot.loader.grub.efiSupport = true;
     boot.loader.grub.useOSProber = true;
+    boot.loader.generic-extlinux-compatible.enable = isRpi4;
 
     boot.binfmt.emulatedSystems = lib.mkIf
       (pkgs.system == "x86_64-linux")
@@ -31,11 +32,11 @@ in
       device = "/dev/disk/by-label/FIRMWARE";
       fsType = "vfat";
     };
-    fileSystems."/boot" = {
+    fileSystems."/boot" = lib.mkIf (!isRpi4) {
       device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
     };
-    fileSystems."/" = {
+    fileSystems."/" = lib.mkIf (!isRpi4) {
       device = "/dev/disk/by-label/NIXROOT";
       fsType = "ext4";
     };
