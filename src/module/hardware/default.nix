@@ -89,6 +89,11 @@ in
 {
   options = {
     hardware = {
+      rpi."4".enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+
       memory = lib.mkOption {
         type = lib.types.ints.unsigned;
         default = memoryInBytes;

@@ -4,6 +4,7 @@
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
+  isRpi4 = config.dot.hardware.rpi."4".enable;
 in
 {
   system = {
@@ -17,12 +18,19 @@ in
       (pkgs.system == "x86_64-linux")
       [ "aarch64-linux" ];
 
-    boot.kernelPackages = pkgs.linuxPackages;
+    boot.kernelPackages =
+      if isRpi4
+      then pkgs.linuxKernel.packages.linux_rpi4
+      else pkgs.linuxPackages;
 
     boot.initrd.kernelModules = [
       "ext4"
       "vfat"
     ];
+    fileSystems."/firmware" = lib.mkIf isRpi4 {
+      device = "/dev/disk/by-label/FIRMWARE";
+      fsType = "vfat";
+    };
     fileSystems."/boot" = {
       device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";

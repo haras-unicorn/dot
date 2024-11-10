@@ -43,11 +43,6 @@ in
     services.openssh.settings.PermitRootLogin = "no";
     services.openssh.settings.PasswordAuthentication = true;
     services.openssh.settings.KbdInteractiveAuthentication = false;
-
-    services.ddns-updater.enable = true;
-    services.ddns-updater.environment = {
-      CONFIG_FILEPATH = "/etc/ddns-updater.json";
-    };
   };
 
   home = lib.mkIf (hasNetwork && hasMonitor) {

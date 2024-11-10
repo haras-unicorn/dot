@@ -15,13 +15,17 @@ in
     let
       specialArgs = inputs // { inherit version host system user; };
       config = import "${self}/src/host/${host}/config.nix";
+      shared = "${self}/src/host/shared.nix";
       hardware = "${self}/src/host/${host}/hardware.json";
       secrets = "${self}/src/host/${host}/secrets.yaml";
     in
     {
       imports =
         (builtins.map self.lib.module.mkSystemModule modules) ++
-        [ (self.lib.module.mkSystemModule config) ];
+        [ (self.lib.module.mkSystemModule config) ] ++
+        (if builtins.pathExists shared
+        then [ (self.lib.module.mkSystemModule (import shared)) ]
+        else [ ]);
 
       facter.reportPath = hardware;
 

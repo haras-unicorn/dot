@@ -8,8 +8,8 @@
 } @inputs:
 
 let
-  user = "haras";
   version = "24.05";
+  user = "haras";
 
   modules = builtins.map
     (x: x.__import.value)
