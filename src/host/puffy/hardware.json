@@ -1121,6 +1121,9 @@
           "name": "ARM Ethernet controller",
           "value": 0
         },
+        "vendor": {
+          "value": 0
+        },
         "model": "ARM Ethernet controller",
         "sysfs_id": "/devices/platform/soc/fe300000.mmcnr/mmc_host/mmc1/mmc1:0001/mmc1:0001:1",
         "sysfs_bus_id": "mmc1:0001:1",
@@ -1281,6 +1284,9 @@
           "hex": "a9a6",
           "name": "BCM43430 WLAN card",
           "value": 43430
+        },
+        "vendor": {
+          "value": 0
         },
         "model": "Broadcom BCM43430 WLAN card",
         "sysfs_id": "/devices/platform/soc/fe300000.mmcnr/mmc_host/mmc1/mmc1:0001/mmc1:0001:1",

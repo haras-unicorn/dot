@@ -1,4 +1,4 @@
-{ lib, host, config, ... }:
+{ pkgs, lib, host, config, ... }:
 
 {
   options = {
@@ -10,13 +10,20 @@
 
   config = {
     system = {
-      services.nebula.networks.nebula.enable = true;
+      # NOTE: these values are not used but nix evaluates them for some reason
+      services.nebula.networks.nebula = {
+        enable = true;
+        isLighthouse = config.dot.vpn.lighthouse.enable;
+        cert = "/etc/nebula/host.crt";
+        key = "/etc/nebula/host.key";
+        ca = "/etc/nebula/ca.crt";
+      };
       systemd.services."nebula@nebula" = {
         serviceConfig = {
-          ExecStart = "${config.services.nebula.networks.nebula.package}/bin/nebula -config /etc/nebula/config.d";
+          ExecStart = lib.mkForce "${pkgs.nebula}/bin/nebula -config /etc/nebula/config.d";
         };
       };
-      environment.etc."nebula/config.d/config.yaml" = ''
+      environment.etc."nebula/config.d/config.yaml".text = ''
         pki:
           ca: /etc/nebula/ca.crt
           cert: /etc/nebula/host.crt
@@ -72,7 +79,7 @@
       users.groups.ddns-updater = lib.mkIf config.dot.vpn.lighthouse.enable { };
       systemd.services.ddns-updater = lib.mkIf config.dot.vpn.lighthouse.enable {
         serviceConfig = {
-          DynamicUser = false;
+          DynamicUser = lib.mkForce false;
           User = "ddns-updater";
           Group = "ddns-updater";
         };
