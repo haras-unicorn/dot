@@ -86,6 +86,8 @@ in
       pkgs.pencil
     ];
 
+    xdg.mime.enable = true;
+    xdg.mimeApps.enable = true;
     xdg.mimeApps.associations.added = mime;
     xdg.mimeApps.defaultApplications = mime;
   };

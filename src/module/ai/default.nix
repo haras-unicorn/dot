@@ -7,12 +7,12 @@ let
     else if builtins.hasAttr "rocmSupport" config.nixpkgs.config then
       "rocm-comfyui-with-extensions"
     else
-      "comfyui-with-extensions";
+      null;
 
   hasAnyPlatform =
-    if builtins.hasAttr "cudaSupport" config.nixpkgs.config then
+    if config.nixpkgs.config.cudaSupport then
       true
-    else if builtins.hasAttr "rocmSupport" config.nixpkgs.config then
+    else if config.nixpkgs.config.rocmSupport then
       true
     else
       false;

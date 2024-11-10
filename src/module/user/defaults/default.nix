@@ -24,7 +24,13 @@ let
     "application/xml" = visualDesktop;
   };
 
-  mime = browserMime // visualMime;
+  hasMonitor = config.dot.hardware.monitor.enable;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
+
+  mime = lib.mkMerge [
+    (lib.mkIf (hasMonitor) browserMime)
+    (lib.mkIf (hasKeyboard && hasMonitor) visualMime)
+  ];
 in
 {
   options = {
@@ -125,56 +131,55 @@ in
   config = {
     shared = {
       dot = {
-        desktopEnvironment.keybinds = [
-          {
-            mods = [ "super" ];
-            key = "t";
-            command = "${terminal} ${shell}";
-          }
-          {
+        desktopEnvironment.keybinds = lib.mkMerge [
+          (lib.mkIf hasMonitor {
+
             mods = [ "super" ];
             key = "w";
             command = "${browser}";
-          }
+          })
+          (lib.mkIf (hasMonitor && hasKeyboard) {
+            mods = [ "super" ];
+            key = "t";
+            command = "${terminal} ${shell}";
+          })
         ];
 
-        desktopEnvironment.sessionVariables = {
-          VISUAL = "${visual}";
-          BROWSER = "${browser}";
-          EDITOR = "${editor}";
-        };
+        desktopEnvironment.sessionVariables = lib.mkMerge [
+          (lib.mkIf hasMonitor {
+            BROWSER = "${browser}";
+          })
+          (lib.mkIf (hasMonitor && hasKeyboard) {
+            VISUAL = "${visual}";
+            EDITOR = "${editor}";
+          })
+        ];
       };
     };
 
     home = {
-      xdg.mimeApps.associations.added = mime;
-      xdg.mimeApps.defaultApplications = mime;
-
       home.packages = [
         pkgs.xdg-user-dirs
         pkgs.xdg-utils
         pkgs.shared-mime-info
       ];
 
-      xdg.enable = true;
+      xdg.mime.enable = true;
+      xdg.mimeApps.enable = true;
+      xdg.mimeApps.associations.added = mime;
+      xdg.mimeApps.defaultApplications = mime;
 
+      xdg.enable = true;
       xdg.userDirs.enable = true;
       xdg.userDirs.createDirectories = true;
-
       xdg.userDirs.desktop = "${config.home.homeDirectory}/desktop";
       xdg.userDirs.download = "${config.home.homeDirectory}/download";
-
       xdg.userDirs.music = "${config.home.homeDirectory}/music";
       xdg.userDirs.pictures = "${config.home.homeDirectory}/pictures";
       xdg.userDirs.videos = "${config.home.homeDirectory}/videos";
-
       xdg.userDirs.templates = "${config.home.homeDirectory}/templates";
       xdg.userDirs.documents = "${config.home.homeDirectory}/documents";
-
       xdg.userDirs.publicShare = "${config.home.homeDirectory}/public";
-
-      xdg.mime.enable = true;
-      xdg.mimeApps.enable = true;
     };
   };
 }
