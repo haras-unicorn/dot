@@ -4,17 +4,23 @@ set shell := ["nu", "-c"]
 root := justfile_directory()
 secrets-script := absolute_path('scripts/secrets.nu')
 secrets-dir := absolute_path('secrets')
+hosts := absolute_path('src/host')
 
 default:
   @just --choose
 
 format:
   cd '{{ root }}'; just --unstable --fmt
-  prettier --write "{{root}}"
-  nixpkgs-fmt "{{root}}"
+  prettier --write '{{ root }}'
+  nixpkgs-fmt '{{ root }}'
 
 lint:
-  prettier --check "{{root}}"
+  prettier --check '{{ root }}'
 
 secrets *args:
-  mkdir {{ secrets-dir }}; cd {{ secrets-dir }}; {{ secrets-script }} {{ args }}
+  mkdir '{{ secrets-dir }}'
+  cd '{{ secrets-dir }}'; {{ secrets-script }} {{ args }}
+  cp -f '{{ secrets-dir }}/puffy.sops.pub' '{{ hosts }}/puffy/secrets.yaml'
+  cp -f '{{ secrets-dir }}/hearth.sops.pub' '{{ hosts }}/hearth/secrets.yaml'
+  cp -f '{{ secrets-dir }}/workbug.sops.pub' '{{ hosts }}/workbug/secrets.yaml'
+  cp -f '{{ secrets-dir }}/officer.sops.pub' '{{ hosts }}/officer/secrets.yaml'
