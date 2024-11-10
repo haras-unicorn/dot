@@ -6,7 +6,10 @@ in
 {
   system = lib.mkIf hasNetwork {
     services.openssh.enable = true;
+    services.openssh.allowSFTP = true;
+    services.openssh.settings.PermitRootLogin = "no";
     services.openssh.settings.PasswordAuthentication = false;
+    services.openssh.settings.KbdInteractiveAuthentication = false;
 
     sops.secrets."${host}.ssh" = {
       path = "/home/${user}/.ssh/id";
