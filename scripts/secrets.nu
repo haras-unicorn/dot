@@ -16,9 +16,8 @@ def "main host lighthouse" [
   main ddns $name
   main vpn host $name shared
   main vpn lighthouse $name true
-  main ssh $name
+  main ssh key $name
   main pass $name
-  main sops $name
 }
 
 # create secrets for a regular host
@@ -28,8 +27,17 @@ def "main host regular" [
 ] {
   main vpn host $name shared
   main vpn lighthouse $name false
-  main ssh $name
+  main ssh key $name
   main pass $name
+}
+
+# lock secrets for a host
+#
+# this includes ssh authorized keys files and sops secrets files
+def "main host lock" [
+  --name: string, # name of the host
+] {
+  main ssh auth $name
   main sops $name
 }
 
@@ -108,10 +116,32 @@ def "main vpn lighthouse" [name: string, lighthouse: bool] {
 # outputs:
 #   ./name.ssh.pub
 #   ./name.ssh
-def "main ssh" [name: string] {
+def "main ssh key" [name: string] {
   ssh-keygen -q -a 100 -t ed25519 -N $name -f $"($name).ssh"
   chmod 644 $"($name).ssh.pub"
   chmod 400 $"($name).ssh"
+}
+
+# create an ssh authorized_keys file
+#
+# each file ending with .ssh.pub not starting with `name`
+# will be inserted into the final file
+#
+# outputs:
+#   ./name.auth.pub
+def "main ssh auth" [name: string] {
+  ls $env.PWD
+    | where { |x| $x.type == "file" }
+    | where { |x| 
+        let basename = $x.name | path basename
+        return (
+          not ($basename | str starts-with $name)
+          and ($basename | str ends-with .ssh.pub))
+      }
+    | each { |x| open --raw $x.name }
+    | str join "\n"
+    | save -f $"($name).auth.pub"
+  chmod 644 $"($name).auth.pub"
 }
 
 # create a linux user password using mkpasswd
@@ -198,7 +228,9 @@ def "main sops" [name: string] {
     | where { |x| $x.type == "file" }
     | where { |x| 
         let basename = $x.name | path basename
-        return (($basename | str starts-with $name) or ($basename | str starts-with shared))
+        return (
+          ($basename | str starts-with $name)
+          or ($basename | str starts-with shared))
       }
     | each { |x|
         let content = open --raw $x.name
@@ -208,12 +240,12 @@ def "main sops" [name: string] {
       }
     | str join "\n"
     | save -f $"($name).sops"
-  chmod 644 $"($name).sops"
+  chmod 400 $"($name).sops"
 
   (sops encrypt $"($name).sops"
     --input-type yaml
     --age (open --raw $"($name).age.pub")
     --output $"($name).sops.pub"
     --output-type yaml)
-  chmod 400 $"($name).sops.pub"
+  chmod 644 $"($name).sops.pub"
 }
