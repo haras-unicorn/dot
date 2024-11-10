@@ -130,7 +130,7 @@ def "main vpn lighthouse" [name: string, lighthouse: bool] {
 #   ./name.ssh.pub
 #   ./name.ssh
 def "main ssh key" [name: string] {
-  ssh-keygen -q -a 100 -t ed25519 -N $name -f $"($name).ssh"
+  ssh-keygen -q -a 100 -t ed25519 -N "" -C $name -f $"($name).ssh"
   chmod 644 $"($name).ssh.pub"
   chmod 400 $"($name).ssh"
 }
