@@ -33,4 +33,4 @@ user_pref("media.hardware-video-decoding.force-enabled", true);
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
 // enable single-site browser
-user_pref("browser.ssb.enabled", true)
+user_pref("browser.ssb.enabled", true);
