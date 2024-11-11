@@ -3,6 +3,8 @@
 let
   theme_name = "colors";
 
+  hasMonitor = config.dot.hardware.monitor.enable;
+
   ini2 = ''
     gtk-font-name = "${config.dot.font.sans.name} ${builtins.toString config.dot.font.size.medium}"
     gtk-icon-theme-name = "${config.dot.icon-theme.name}"
@@ -119,43 +121,45 @@ in
     };
   };
 
-  shared = {
-    dot = {
-      desktopEnvironment.sessionVariables = {
-        GTK_USE_PORTAL = 1;
-        GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
-        QT_QPA_PLATFORMTHEME = "gtk2";
+  config = {
+    shared = lib.mkIf hasMonitor {
+      dot = {
+        desktopEnvironment.sessionVariables = {
+          GTK_USE_PORTAL = 1;
+          GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
+          QT_QPA_PLATFORMTHEME = "gtk2";
+        };
       };
     };
-  };
 
-  home = {
-    xdg.configFile."gtk-2.0/settings.ini".text = ini2;
-    xdg.configFile."gtk-3.0/settings.ini".text = ini3;
-    xdg.configFile."gtk-4.0/settings.ini".text = ini4;
+    home = lib.mkIf hasMonitor {
+      xdg.configFile."gtk-2.0/settings.ini".text = ini2;
+      xdg.configFile."gtk-3.0/settings.ini".text = ini3;
+      xdg.configFile."gtk-4.0/settings.ini".text = ini4;
 
-    dconf.settings."org/gnome/desktop/interface" = dconf;
+      dconf.settings."org/gnome/desktop/interface" = dconf;
 
-    home.packages = [
-      colors
-      inspect-gtk
-      pkgs.libsForQt5.qtstyleplugins
-      pkgs.qt6Packages.qt6gtk2
-      pkgs.gnome-themes-extra
-      config.dot.cursor-theme.package
-      config.dot.icon-theme.package
-    ];
+      home.packages = [
+        colors
+        inspect-gtk
+        pkgs.libsForQt5.qtstyleplugins
+        pkgs.qt6Packages.qt6gtk2
+        pkgs.gnome-themes-extra
+        config.dot.cursor-theme.package
+        config.dot.icon-theme.package
+      ];
 
-    home.pointerCursor = {
-      package = config.dot.cursor-theme.package;
-      name = config.dot.cursor-theme.name;
-      size = config.dot.cursor-theme.size;
+      home.pointerCursor = {
+        package = config.dot.cursor-theme.package;
+        name = config.dot.cursor-theme.name;
+        size = config.dot.cursor-theme.size;
+      };
+
+      xdg.configFile."Trolltech.conf".text = ''
+        [Qt]
+        style=GTK+    
+      '';
     };
-
-    xdg.configFile."Trolltech.conf".text = ''
-      [Qt]
-      style=GTK+    
-    '';
   };
 }
 
