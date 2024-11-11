@@ -27,6 +27,10 @@ in
           ExecStart = lib.mkForce "${pkgs.nebula}/bin/nebula -config /etc/nebula/config.d";
         };
       };
+      networking.firewall.allowedUDPPorts =
+        lib.mkIf config.dot.vpn.lighthouse.enable [
+          4242
+        ];
       environment.etc."nebula/config.d/config.yaml".text = ''
         pki:
           ca: /etc/nebula/ca.crt
