@@ -8,10 +8,14 @@
 
 # FIXME: electron wrapper
 # TODO: extensions in projects
+# TODO: vscodium
 
 let
-  # package = self.lib.electron.wrap pkgs pkgs.vscodium "codium";
-  package = pkgs.vscodium;
+  # # package = self.lib.electron.wrap pkgs pkgs.vscodium "codium";
+  # package = pkgs.vscodium;
+
+  # package = self.lib.electron.wrap pkgs pkgs.vscode "code";
+  package = pkgs.vscode;
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
@@ -90,8 +94,8 @@ in
       # csharp
       ms-dotnettools.vscode-dotnet-runtime
       selcukermaya.se-csproj-extensions
-      # pkgs.vscode-extensions.ms-dotnettools.csdevkit
-      # pkgs.vscode-extensions.ms-dotnettools.csharp
+      pkgs.vscode-extensions.ms-dotnettools.csdevkit
+      pkgs.vscode-extensions.ms-dotnettools.csharp
 
       # python
       charliermarsh.ruff
@@ -141,9 +145,11 @@ in
       # spelling
       streetsidesoftware.code-spell-checker
       streetsidesoftware.code-spell-checker-croatian
-    ]) ++ (with pkgs.open-vsx; [
-      # csharp
-      muhammad-sammy.csharp
-    ]);
+    ]) ++ (
+      # with pkgs.open-vsx; 
+      [
+        # csharp
+        # muhammad-sammy.csharp
+      ]);
   };
 }
