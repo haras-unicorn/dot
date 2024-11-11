@@ -12,8 +12,8 @@ in
     };
   };
 
-  config = lib.mkIf hasNetwork {
-    system = {
+  config = {
+    system = lib.mkIf hasNetwork {
       # NOTE: these values are not used but nix evaluates them for some reason
       services.nebula.networks.nebula = {
         enable = true;
@@ -95,15 +95,14 @@ in
         mode = "0400";
       };
     };
-  };
 
-  home = lib.mkIf (hasNetwork && hasMonitor) {
-    services.network-manager-applet.enable = true;
-    xdg.desktopEntries = {
-      ddns-updater = {
-        name = "DDNS Updater";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8000";
-        terminal = false;
+    home = lib.mkIf (hasNetwork && hasMonitor) {
+      xdg.desktopEntries = {
+        ddns-updater = {
+          name = "DDNS Updater";
+          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8000";
+          terminal = false;
+        };
       };
     };
   };

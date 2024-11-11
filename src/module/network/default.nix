@@ -37,4 +37,8 @@ in
       pkgs.networkmanager-fortisslvpn
     ];
   };
+
+  home = lib.mkIf (hasNetwork && hasMonitor) {
+    services.network-manager-applet.enable = true;
+  };
 }
