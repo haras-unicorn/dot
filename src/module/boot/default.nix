@@ -1,6 +1,7 @@
 { pkgs, config, lib, ... }:
 
-# TODO: theming
+# TODO: grub theming
+# TODO: use iso generator and put firmware on sd card for rpi 4
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -36,10 +37,16 @@ in
       device = "/dev/disk/by-label/NIXBOOT";
       fsType = "vfat";
     };
-    fileSystems."/" = lib.mkIf (!isRpi4) {
-      device = "/dev/disk/by-label/NIXROOT";
-      fsType = "ext4";
-    };
+    fileSystems."/" = lib.mkMerge [
+      (lib.mkIf (!isRpi4) {
+        device = "/dev/disk/by-label/NIXROOT";
+        fsType = "ext4";
+      })
+      (lib.mkIf (isRpi4) {
+        device = "/dev/disk/by-label/NIXOS_SD";
+        fsType = "ext4";
+      })
+    ];
     swapDevices = [{
       device = "/var/swap";
       size = config.dot.hardware.memory / 1000 / 1000;
