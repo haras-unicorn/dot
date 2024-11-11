@@ -1,5 +1,7 @@
 { pkgs, lib, config, ... }:
 
+# NOTE: install everywhere to enable full ssh compatibility
+
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
@@ -27,9 +29,9 @@ in
   };
 
   config = {
-    home = lib.mkIf (hasKeyboard && hasMonitor) {
+    home = {
       programs.kitty.enable = true;
-      programs.kitty.extraConfig = ''
+      programs.kitty.extraConfig = lib.mkIf (hasKeyboard && hasMonitor) ''
         ${builtins.readFile ./kitty.conf}
 
         font_family      ${font.nerd.name}
