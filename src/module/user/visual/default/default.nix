@@ -16,7 +16,7 @@ let
 
   # package = self.lib.electron.wrap pkgs pkgs.vscode "code";
   # package = pkgs.vscode;
-  package = lib.writeShellApplication {
+  package = pkgs.writeShellApplication {
     name = "code";
     runtimeInputs = [ pkgs.vscode ];
     text = ''
