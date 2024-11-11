@@ -25,6 +25,7 @@ let
         --enable-features=WebRTCPipeWireCapturer \
         --enable-features=UseOzonePlatform \
         --ozone-platform-hint=auto \
+        --disable-gpu-compositing \
         "$@"
     '';
   };
