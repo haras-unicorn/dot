@@ -203,14 +203,16 @@ def "main ddns" [name: string] {
     }
   }
 
-  [
-    {
-      "provider": "duckdns",
-      "domain": $"($domain).duckdns.org",
-      "token": $token,
-      "ip_version": "ipv4"
-    }
-  ] | to json | save -f $"($name).ddns"
+  {
+    "settings": [
+      {
+        "provider": "duckdns",
+        "domain": $"($domain).duckdns.org",
+        "token": $token,
+        "ip_version": "ipv4"
+      }
+    ]
+  } | to json | save -f $"($name).ddns"
   chmod 400 $"($name).ddns"
 }
 
