@@ -24,7 +24,7 @@ in
   shared = lib.mkIf (hasMonitor && hasKeyboard) {
     dot = {
       shell.aliases = {
-        code = "${package}/bin/codium";
+        code = "${package}/bin/code";
       };
     };
   };
