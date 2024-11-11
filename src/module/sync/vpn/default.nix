@@ -39,6 +39,9 @@ in
         listen:
           host: '[::]'
           port: ${if config.dot.vpn.lighthouse.enable then "4242" else "0"}
+        static_map:
+          cadence: 5m
+          lookup_timeout: 10s
         firewall:
           outbound:
             - port: any
