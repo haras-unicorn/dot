@@ -132,17 +132,16 @@ in
     shared = {
       dot = {
         desktopEnvironment.keybinds = lib.mkMerge [
-          (lib.mkIf hasMonitor {
-
+          (lib.mkIf hasMonitor [{
             mods = [ "super" ];
             key = "w";
             command = "${browser}";
-          })
-          (lib.mkIf (hasMonitor && hasKeyboard) {
+          }])
+          (lib.mkIf (hasMonitor && hasKeyboard) [{
             mods = [ "super" ];
             key = "t";
             command = "${terminal} ${shell}";
-          })
+          }])
         ];
 
         desktopEnvironment.sessionVariables = lib.mkMerge [
