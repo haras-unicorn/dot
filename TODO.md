@@ -1,7 +1,5 @@
 # TODO
 
-- use [ddns-updater](https://github.com/qdm12/ddns-updater)
-- use [nebula](https://github.com/slackhq/nebula)
 - use [citus](https://www.citusdata.com/)
 - use [nfs](https://en.wikipedia.org/wiki/Network_File_System)
 - use [sops](https://github.com/Mic92/sops-nix)
