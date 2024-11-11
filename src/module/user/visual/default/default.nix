@@ -15,10 +15,11 @@ let
   # package = pkgs.vscodium;
 
   # package = self.lib.electron.wrap pkgs pkgs.vscode "code";
-  # package = pkgs.vscode;
-  package = pkgs.writeShellApplication {
+  package = pkgs.vscode;
+
+  alias = pkgs.writeShellApplication {
     name = "code";
-    runtimeInputs = [ pkgs.vscode ];
+    runtimeInputs = [ package ];
     text = ''
       code \
         --enable-features=WebRTCPipeWireCapturer \
@@ -35,7 +36,7 @@ in
   shared = lib.mkIf (hasMonitor && hasKeyboard) {
     dot = {
       shell.aliases = {
-        code = "${package}/bin/code";
+        code = "${alias}/bin/code";
       };
     };
   };
