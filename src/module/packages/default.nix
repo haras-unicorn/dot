@@ -8,7 +8,7 @@ let
       ${pkgs.git}/bin/git clone \
         -c user.name=haras \
         -c user.email=social@haras.anonaddy.me \
-        ssh://git@github.com/haras-unicorn/dot \
+        https://github.com/haras-unicorn/dot \
         "${path}"
     fi
   '';
