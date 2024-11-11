@@ -14,8 +14,6 @@ in
     };
 
     programs.starship.enable = true;
-    programs.starship.enableBashIntegration = true;
-    programs.starship.enableNushellIntegration = true;
 
     programs.starship.settings = builtins.fromTOML ''
       # TODO: fix how slow python is
