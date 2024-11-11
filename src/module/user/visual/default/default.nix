@@ -62,86 +62,88 @@ in
     programs.vscode.enableExtensionUpdateCheck = false;
     programs.vscode.enableUpdateCheck = false;
     programs.vscode.mutableExtensionsDir = false;
-    programs.vscode.extensions = with pkgs.vscode-marketplace; [
-      # keybindings
-      # jasew.vscode-helix-emulation
-      vscodevim.vim
+    programs.vscode.extensions =
+      with pkgs.vscode-marketplace;
+      with pkgs.open-vsx; [
+        # keybindings
+        # jasew.vscode-helix-emulation
+        vscodevim.vim
 
-      # ui
-      usernamehw.errorlens
-      wayou.vscode-todo-highlight
-      naumovs.color-highlight
+        # ui
+        usernamehw.errorlens
+        wayou.vscode-todo-highlight
+        naumovs.color-highlight
 
-      # theme
-      akamud.vscode-theme-onedark
-      pkief.material-icon-theme
+        # theme
+        akamud.vscode-theme-onedark
+        pkief.material-icon-theme
 
-      # ai
-      supermaven.supermaven
-      continue.continue
+        # ai
+        supermaven.supermaven
+        continue.continue
 
-      # nix
-      bbenoist.nix
+        # nix
+        bbenoist.nix
 
-      # rust
-      pkgs.vscode-extensions.vadimcn.vscode-lldb
-      rust-lang.rust-analyzer
+        # rust
+        pkgs.vscode-extensions.vadimcn.vscode-lldb
+        rust-lang.rust-analyzer
 
-      # csharp
-      ms-dotnettools.vscode-dotnet-runtime
-      selcukermaya.se-csproj-extensions
-      muhammad-sammy.csharp
-      # pkgs.vscode-extensions.ms-dotnettools.csdevkit
-      # pkgs.vscode-extensions.ms-dotnettools.csharp
+        # csharp
+        ms-dotnettools.vscode-dotnet-runtime
+        selcukermaya.se-csproj-extensions
+        muhammad-sammy.csharp
+        # pkgs.vscode-extensions.ms-dotnettools.csdevkit
+        # pkgs.vscode-extensions.ms-dotnettools.csharp
 
-      # python
-      charliermarsh.ruff
-      eeyore.yapf
-      ms-pyright.pyright
-      ms-python.debugpy
-      ms-python.python
-      # ms-toolsai.jupyter
+        # python
+        charliermarsh.ruff
+        eeyore.yapf
+        ms-pyright.pyright
+        ms-python.debugpy
+        ms-python.python
+        # ms-toolsai.jupyter
 
-      # shell
-      bmalehorn.shell-syntax
-      foxundermoon.shell-format
-      ms-vscode.powershell
-      thenuprojectcontributors.vscode-nushell-lang
-      timonwong.shellcheck
+        # shell
+        bmalehorn.shell-syntax
+        foxundermoon.shell-format
+        ms-vscode.powershell
+        thenuprojectcontributors.vscode-nushell-lang
+        timonwong.shellcheck
 
-      # markdown
-      shd101wyy.markdown-preview-enhanced
-      davidanson.vscode-markdownlint
-      unifiedjs.vscode-mdx
-      esbenp.prettier-vscode
+        # markdown
+        shd101wyy.markdown-preview-enhanced
+        davidanson.vscode-markdownlint
+        unifiedjs.vscode-mdx
+        esbenp.prettier-vscode
 
-      # web
-      # gamunu.vscode-yarn
-      # arcanis.vscode-zipfs
-      # dbaeumer.vscode-eslint
-      # graphql.vscode-graphql
-      # graphql.vscode-graphql-syntax
-      # meganrogge.template-string-converter
-      # sissel.shopify-liquid
-      # styled-components.vscode-styled-components
-      # stylelint.vscode-stylelint
+        # web
+        # gamunu.vscode-yarn
+        # arcanis.vscode-zipfs
+        # dbaeumer.vscode-eslint
+        # graphql.vscode-graphql
+        # graphql.vscode-graphql-syntax
+        # meganrogge.template-string-converter
+        # sissel.shopify-liquid
+        # styled-components.vscode-styled-components
+        # stylelint.vscode-stylelint
 
-      # content
-      ctcuff.font-preview
-      davidwang.ini-for-vscode
-      codezombiech.gitignore
-      editorconfig.editorconfig
-      emilast.logfilehighlighter
-      jock.svg
-      ms-vscode.hexeditor
-      redhat.vscode-yaml
-      skellock.just
-      tamasfe.even-better-toml
-      tomoki1207.pdf
+        # content
+        ctcuff.font-preview
+        davidwang.ini-for-vscode
+        codezombiech.gitignore
+        editorconfig.editorconfig
+        emilast.logfilehighlighter
+        jock.svg
+        ms-vscode.hexeditor
+        redhat.vscode-yaml
+        skellock.just
+        tamasfe.even-better-toml
+        tomoki1207.pdf
 
-      # spelling
-      streetsidesoftware.code-spell-checker
-      streetsidesoftware.code-spell-checker-croatian
-    ];
+        # spelling
+        streetsidesoftware.code-spell-checker
+        streetsidesoftware.code-spell-checker-croatian
+      ];
   };
 }
