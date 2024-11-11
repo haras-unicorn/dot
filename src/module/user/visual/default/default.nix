@@ -88,10 +88,11 @@ in
       rust-lang.rust-analyzer
 
       # csharp
-      pkgs.vscode-extensions.ms-dotnettools.csdevkit
       ms-dotnettools.vscode-dotnet-runtime
-      pkgs.vscode-extensions.ms-dotnettools.csharp
       selcukermaya.se-csproj-extensions
+      muhammad-sammy.csharp
+      # pkgs.vscode-extensions.ms-dotnettools.csdevkit
+      # pkgs.vscode-extensions.ms-dotnettools.csharp
 
       # python
       charliermarsh.ruff
