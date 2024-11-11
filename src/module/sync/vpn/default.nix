@@ -1,5 +1,7 @@
 { pkgs, lib, host, config, ... }:
 
+# TODO: convert firewall rules to nebula firewall rules
+
 let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
