@@ -1,9 +1,7 @@
 { pkgs, lib, config, ... }:
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
-# WORKAROUND: these commands on de startup
-# systemctl --user import-environment PATH
-# systemctl --user restart xdg-desktop-portal.service
+# TODO: try https://github.com/hyprwm/Hyprland/issues/7252#issuecomment-2345792172
 
 let
   cfg = config.dot.desktopEnvironment;
