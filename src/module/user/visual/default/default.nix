@@ -15,7 +15,18 @@ let
   # package = pkgs.vscodium;
 
   # package = self.lib.electron.wrap pkgs pkgs.vscode "code";
-  package = pkgs.vscode;
+  # package = pkgs.vscode;
+  package = lib.writeShellApplication {
+    name = "code";
+    runtimeInputs = [ pkgs.vscode ];
+    text = ''
+      code \
+        --enable-features=WebRTCPipeWireCapturer \
+        --enable-features=UseOzonePlatform \
+        --ozone-platform-hint=auto \
+        "$@"
+    '';
+  };
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
