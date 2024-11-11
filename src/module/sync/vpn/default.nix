@@ -1,6 +1,7 @@
 { pkgs, lib, host, config, ... }:
 
 # TODO: convert firewall rules to nebula firewall rules
+# TODO: disable all traffic from outside vpn
 
 let
   hasNetwork = config.dot.hardware.network.enable;

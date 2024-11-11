@@ -1,5 +1,7 @@
 { lib, user, host, config, ... }:
 
+# TODO: only allow from vpn
+
 let
   hasNetwork = config.dot.hardware.network.enable;
 in
