@@ -1,4 +1,9 @@
-{ config, host, ... }:
+{ host
+  # , config
+, ...
+}:
+
+# TODO: find mepo alternative
 
 {
   system = {
@@ -16,6 +21,6 @@
     location.provider = "geoclue2";
     i18n.defaultLocale = "en_US.UTF-8";
     services.automatic-timezoned.enable = true;
-    programs.mepo.enable = config.dot.hardware.monitor.enable;
+    # programs.mepo.enable = config.dot.hardware.monitor.enable;
   };
 }
