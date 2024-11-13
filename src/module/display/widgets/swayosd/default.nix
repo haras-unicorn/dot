@@ -10,13 +10,8 @@ in
   system = lib.mkIf (hasMonitor && hasWayland) {
     environment.systemPackages = [ pkgs.swayosd ];
     services.udev.packages = [ pkgs.swayosd ];
-  };
 
-  home = lib.mkIf (hasMonitor && hasWayland) {
-    services.swayosd.enable = true;
-    services.swayosd.display = config.dot.hardware.monitor.main;
-
-    systemd.user.services.swayosd-libinput-backend = {
+    systemd.services.swayosd-libinput-backend = {
       Unit = {
         Description = "SwayOSD LibInput backend for listening to certain keys like CapsLock, ScrollLock, VolumeUp, etc.";
         Documentation = [ "https://github.com/ErikReider/SwayOSD" ];
@@ -33,5 +28,10 @@ in
         WantedBy = [ "graphical.target" ];
       };
     };
+  };
+
+  home = lib.mkIf (hasMonitor && hasWayland) {
+    services.swayosd.enable = true;
+    services.swayosd.display = config.dot.hardware.monitor.main;
   };
 }
