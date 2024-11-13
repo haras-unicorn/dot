@@ -54,9 +54,9 @@ in
           (lib.mkIf (!hasMonitor) pkgs.pinentry-curses)
         ];
 
-      # xdg.configFile."keepassxc/keepassxc.ini" = lib.mkIf (hasMonitor && hasKeyboard) {
-      #   source = ./keepassxc.ini;
-      # };
+      xdg.configFile."keepassxc/keepassxc.ini" = lib.mkIf (hasMonitor && hasKeyboard) {
+        source = ./keepassxc.ini;
+      };
     };
   };
 }
