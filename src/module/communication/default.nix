@@ -15,17 +15,27 @@ let
   slack = self.lib.electron.wrap pkgs pkgs.slack "slack";
   teams = self.lib.electron.wrap pkgs pkgs.teams-for-linux "teams-for-linux";
   vesktop = self.lib.electron.wrap pkgs pkgs.vesktop "vesktop";
+
 in
 {
   shared = lib.mkIf hasMonitor {
     dot = {
-      desktopEnvironment.windowrules = [{
-        rule = "float";
-        selector = "class";
-        xselector = "wm_class";
-        arg = "ferdium";
-        xarg = "ferdium";
-      }];
+      desktopEnvironment.windowrules = [
+        {
+          rule = "float";
+          selector = "class";
+          xselector = "wm_class";
+          arg = "ferdium";
+          xarg = "ferdium";
+        }
+        {
+          rule = "float";
+          selector = "class";
+          xselector = "wm_class";
+          arg = "teams-for-linux";
+          xarg = "teams-for-linux";
+        }
+      ];
     };
   };
 
@@ -69,5 +79,11 @@ in
       isMaximized = true;
       isFullScreen = false;
     };
+
+    xdg.configFile."teams-for-linux/config.json".text = ''
+      {
+        "closeAppOnCross": true
+      }     
+    '';
   };
 }
