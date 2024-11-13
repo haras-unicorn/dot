@@ -16,6 +16,20 @@ let
   teams = self.lib.electron.wrap pkgs pkgs.teams-for-linux "teams-for-linux";
   vesktop = self.lib.electron.wrap pkgs pkgs.vesktop "vesktop";
 
+  windowState = {
+    width = monitorWidth * 3 / 4;
+    height = monitorHeight * 3 / 4;
+    x = monitorWidth / 4;
+    y = monitorHeight / 4;
+    displayBounds = {
+      x = 0;
+      y = 0;
+      width = monitorWidth;
+      height = monitorHeight;
+    };
+    isMaximized = true;
+    isFullScreen = false;
+  };
 in
 {
   shared = lib.mkIf hasMonitor {
@@ -57,33 +71,17 @@ in
       Service.ExecStart = "${ferdium}/bin/ferdium";
       Install.WantedBy = [ "graphical-session.target" ];
     };
-
     xdg.configFile."Ferdium/config/settings.json".text = builtins.toJSON
       ((builtins.fromJSON (builtins.readFile ./ferdium.json)) // {
         darkMode = !isLightTheme;
         accentColor = bootstrap.primary.normal.hex;
         progressbarAccentColor = bootstrap.primary.alternate.hex;
       });
+    xdg.configFile."Ferdium/config/window-state.json".text = builtins.toJSON windowState;
 
-    xdg.configFile."Ferdium/config/window-state.json".text = builtins.toJSON {
-      width = monitorWidth * 3 / 4;
-      height = monitorHeight * 3 / 4;
-      x = monitorWidth / 4;
-      y = monitorHeight / 4;
-      displayBounds = {
-        x = 0;
-        y = 0;
-        width = monitorWidth;
-        height = monitorHeight;
-      };
-      isMaximized = true;
-      isFullScreen = false;
+    xdg.configFile."teams-for-linux/config.json".text = builtins.toJSON {
+      closeAppOnCross = true;
     };
-
-    xdg.configFile."teams-for-linux/config.json".text = ''
-      {
-        "closeAppOnCross": true
-      }     
-    '';
+    xdg.configFile."teams-for-linux/window-state.json".text = builtins.toJSON windowState;
   };
 }
