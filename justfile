@@ -29,5 +29,5 @@ copy-secrets:
 
 copy-secret-key name:
     cp -f '{{ secrets-dir }}/{{ name }}.age' /root/.sops/secrets.age
-    chown root root /root/.sops/secrets.age
+    chown root:root /root/.sops/secrets.age
     chmod 400 /root/.sops/secrets.age
