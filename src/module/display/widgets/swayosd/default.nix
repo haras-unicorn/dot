@@ -1,5 +1,7 @@
 { pkgs, lib, config, ... }:
 
+# TODO: colors
+
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
