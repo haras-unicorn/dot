@@ -20,16 +20,17 @@ in
       Unit = {
         Description = "SwayOSD LibInput backend for listening to certain keys like CapsLock, ScrollLock, VolumeUp, etc.";
         Documentation = [ "https://github.com/ErikReider/SwayOSD" ];
-        WantedBy = [ "graphical.target" ];
         PartOf = [ "graphical.target" ];
         After = [ "graphical.target" ];
       };
-
-      ServiceConfig = {
+      Service = {
         Type = "dbus";
         BusName = "org.erikreider.swayosd";
         ExecStart = "${pkgs.swayosd}/bin/swayosd-libinput-backend";
         Restart = "on-failure";
+      };
+      Install = {
+        WantedBy = [ "graphical.target" ];
       };
     };
   };
