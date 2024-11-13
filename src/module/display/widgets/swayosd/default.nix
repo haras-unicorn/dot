@@ -7,11 +7,10 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  system = lib.mkIf (hasMonitor && hasWayland) {
-    environment.systemPackages = [ pkgs.swayosd ];
-    services.udev.packages = [ pkgs.swayosd ];
-    services.dbus.packages = [ pkgs.swayosd ];
-  };
+  # system = lib.mkIf (hasMonitor && hasWayland) {
+  #   environment.systemPackages = [ pkgs.swayosd ];
+  #   services.udev.packages = [ pkgs.swayosd ];
+  # };
 
   home = lib.mkIf (hasMonitor && hasWayland) {
     services.swayosd.enable = true;
