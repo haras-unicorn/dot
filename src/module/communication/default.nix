@@ -55,7 +55,7 @@ in
         progressbarAccentColor = bootstrap.primary.alternate.hex;
       });
 
-    xdg.configFile."Ferdium/config/window-state.json".text = builtins.toJson {
+    xdg.configFile."Ferdium/config/window-state.json".text = builtins.toJSON {
       width = monitorWidth * 3 / 4;
       height = monitorHeight * 3 / 4;
       x = monitorWidth / 4;
