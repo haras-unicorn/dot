@@ -7,5 +7,6 @@ in
 {
   home = lib.mkIf (hasMonitor && hasWayland) {
     services.swayosd.enable = true;
+    services.swayosd.displae = config.dot.hardware.monitor.main;
   };
 }
