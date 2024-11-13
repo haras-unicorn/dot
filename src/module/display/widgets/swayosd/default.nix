@@ -19,7 +19,7 @@ in
         After = [ "graphical.target" ];
         WantedBy = [ "graphical.target" ];
       };
-      Service = {
+      ServiceConfig = {
         Type = "dbus";
         BusName = "org.erikreider.swayosd";
         ExecStart = "${pkgs.swayosd}/bin/swayosd-libinput-backend";
