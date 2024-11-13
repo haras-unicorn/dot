@@ -15,7 +15,7 @@ in
 
   home = lib.mkIf hasNetwork {
     services.syncthing.enable = true;
-    services.syncthing.tray.enable = true;
+    # services.syncthing.tray.enable = true;
 
     xdg.desktopEntries = lib.mkIf hasMonitor {
       syncthing = {
