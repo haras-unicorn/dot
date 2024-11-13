@@ -273,8 +273,10 @@ def "main sops" [name: string] {
     | where { |x| 
         let basename = $x.name | path basename
         return (
-          ($basename | str starts-with $name)
-          or ($basename | str starts-with shared))
+          not ($basename | str ends-with ".sops")
+          and not ($basename | str ends-with ".sops.pub")
+          and (($basename | str starts-with $name)
+          or ($basename | str starts-with shared)))
       }
     | each { |x|
         let content = open --raw $x.name

@@ -16,6 +16,7 @@
         # Scripts
         just
         nushell
+        fzf
         # nufmt
 
         # Misc
