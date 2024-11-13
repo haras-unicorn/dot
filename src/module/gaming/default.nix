@@ -17,6 +17,12 @@ in
         arg = "steam";
         xarg = "steam";
       }];
+
+      # NOTE: programs.mangohud.enableSessionWide doesn't work for some reason
+      desktopEnvironment.sessionVariables = {
+        MANGOHUD = 1;
+        MANGOHUD_DLSYM = 1;
+      };
     };
   };
 
@@ -37,7 +43,6 @@ in
 
   home = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.mangohud.enable = true;
-    programs.mangohud.enableSessionWide = true;
 
     systemd.user.services.steam = {
       Unit = {
