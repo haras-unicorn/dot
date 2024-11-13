@@ -1,6 +1,11 @@
 # TODO
 
-- use [citus](https://www.citusdata.com/)
+- use [swayosd](https://github.com/ErikReider/SwayOSD)
+- use [gammastep](https://gitlab.com/chinstrap/gammastep)
+- use [kando](https://github.com/kando-menu/kando) for logout menu
+- use [eww](https://github.com/elkowar/eww) for top bar
+- remove wlogout, waybar, polybar, move picom to xserver config
+- use [galera](https://galeracluster.com/)
 - use [nfs](https://en.wikipedia.org/wiki/Network_File_System)
 - use [sops](https://github.com/Mic92/sops-nix)
 - use [vault](https://github.com/hashicorp/vault)
