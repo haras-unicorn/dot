@@ -25,10 +25,6 @@ in
   config = {
     shared = (lib.mkIf (hasMonitor && hasKeyboard)) {
       dot = {
-        desktopEnvironment.sessionStartup = [
-          "${pkgs.keepassxc}/bin/keepassxc"
-        ];
-
         desktopEnvironment.windowrules = [{
           rule = "float";
           selector = "class";
@@ -56,6 +52,17 @@ in
 
       xdg.configFile."keepassxc/keepassxc.ini" = lib.mkIf (hasMonitor && hasKeyboard) {
         source = ./keepassxc.ini;
+      };
+
+      systemd.user.services.keepassxc = lib.mkIf (hasMonitor && hasKeyboard) {
+        Unit = {
+          Description = "keepassxc daemon";
+          Requires = "tray.target";
+          After = [ "graphical-session-pre.target" "tray.target" ];
+          PartOf = [ "graphical-session.target" ];
+        };
+        Service.ExecStart = "${pkgs.keepassxc}/bin/keepassxc";
+        Install.WantedBy = [ "graphical-session.target" ];
       };
     };
   };

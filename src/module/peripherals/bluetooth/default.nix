@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ config, lib, ... }:
 
 let
   hasBluetooth = config.dot.hardware.bluetooth.enable;
@@ -6,9 +6,6 @@ let
 in
 {
   shared.dot = lib.mkIf hasBluetooth {
-    desktopEnvironment.sessionStartup = lib.mkIf hasMonitor [
-      "${pkgs.blueman}/bin/blueman-applet"
-    ];
     desktopEnvironment.windowrules = lib.mkIf hasMonitor [{
       rule = "float";
       selector = "class";
@@ -21,5 +18,9 @@ in
   system = lib.mkIf hasBluetooth {
     hardware.bluetooth.enable = true;
     services.blueman.enable = true;
+  };
+
+  home = lib.mkIf (hasBluetooth && hasMonitor) {
+    services.blueman-applet.enable = true;
   };
 }
