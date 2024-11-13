@@ -10,6 +10,7 @@ in
   system = lib.mkIf (hasMonitor && hasWayland) {
     environment.systemPackages = [ pkgs.swayosd ];
     services.udev.packages = [ pkgs.swayosd ];
+    services.dbus.packages = [ pkgs.swayosd ];
   };
 
   home = lib.mkIf (hasMonitor && hasWayland) {
