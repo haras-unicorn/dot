@@ -227,7 +227,7 @@ def "main ddns" [name: string] {
   chmod 400 $"($name).ddns"
 }
 
-# create a geoclue2 provider url for google maps api
+# create geoclue2 provider settings for google maps api
 #
 # expects the api key to be in the GEOCLUE2_GOOGLE_MAPS_API_KEY env var
 #
@@ -241,7 +241,9 @@ def "main geo" [name: string] {
     }
   }
 
-  $"https://www.googleapis.com/geolocation/v1/geolocate?key=($key)" | save -f $"($name).geo"
+  ("[wifi]"
+    + "\nurl=https://www.googleapis.com/geolocation/v1/geolocate?key="
+    + $key) | save -f $"($name).geo"
   chmod 400 $"($name).geo"
 }
 
