@@ -1,6 +1,5 @@
 # TODO
 
-- use [swayosd](https://github.com/ErikReider/SwayOSD)
 - use [gammastep](https://gitlab.com/chinstrap/gammastep)
 - use [kando](https://github.com/kando-menu/kando) for logout menu
 - use [eww](https://github.com/elkowar/eww) for top bar
