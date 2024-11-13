@@ -6,6 +6,7 @@ let
 in
 {
   system = lib.mkIf (hasMonitor && hasWayland) {
+    services.avahi.enable = true; # NOTE: https://github.com/NixOS/nixpkgs/issues/329522
     services.geoclue2.enable = true;
   };
 
