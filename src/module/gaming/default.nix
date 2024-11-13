@@ -8,6 +8,18 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
+  shared = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
+    dot = {
+      desktopEnvironment.windowrules = [{
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "steam";
+        xarg = "steam";
+      }];
+    };
+  };
+
   system = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.steam.enable = true;
     programs.steam.extest.enable = true;
