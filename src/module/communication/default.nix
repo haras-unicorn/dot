@@ -49,6 +49,13 @@ in
           arg = "teams-for-linux";
           xarg = "teams-for-linux";
         }
+        {
+          rule = "float";
+          selector = "class";
+          xselector = "wm_class";
+          arg = "vesktop";
+          xarg = "vesktop";
+        }
       ];
     };
   };
