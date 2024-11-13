@@ -8,6 +8,8 @@ let
   bootstrap = config.dot.colors.bootstrap;
 
   hasMonitor = config.dot.hardware.monitor.enable;
+  monitorWidth = config.dot.hardware.monitor.width;
+  monitorHeight = config.dot.hardware.monitor.height;
 
   ferdium = self.lib.electron.wrap pkgs pkgs.ferdium "ferdium";
   slack = self.lib.electron.wrap pkgs pkgs.slack "slack";
@@ -52,5 +54,20 @@ in
         accentColor = bootstrap.primary.normal.hex;
         progressbarAccentColor = bootstrap.primary.alternate.hex;
       });
+
+    xdg.configFile."Ferdium/config/window-state.json".text = builtins.toJson {
+      width = monitorWidth * 3 / 4;
+      height = monitorHeight * 3 / 4;
+      x = monitorWidth / 4;
+      y = monitorHeight / 4;
+      displayBounds = {
+        x = 0;
+        y = 0;
+        width = monitorWidth;
+        height = monitorHeight;
+      };
+      isMaximized = true;
+      isFullScreen = false;
+    };
   };
 }
