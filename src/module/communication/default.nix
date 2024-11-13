@@ -88,7 +88,7 @@ in
 
     xdg.configFile."teams-for-linux/config.json".text = builtins.toJSON {
       closeAppOnCross = true;
-      trayIconEnabled = true;
+      trayIconEnabled = false;
     };
     xdg.configFile."teams-for-linux/window-state.json".text = builtins.toJSON windowState;
   };
