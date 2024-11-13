@@ -56,7 +56,7 @@ in
 
       systemd.user.services.keepassxc = lib.mkIf (hasMonitor && hasKeyboard) {
         Unit = {
-          Description = "keepassxc daemon";
+          Description = "KeePassXC daemon";
           Requires = "tray.target";
           After = [ "graphical-session-pre.target" "tray.target" ];
           PartOf = [ "graphical-session.target" ];

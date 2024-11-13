@@ -23,9 +23,9 @@ in
       slack
     ];
 
-    systemd.user.services.keepassxc = lib.mkIf hasMonitor {
+    systemd.user.services.ferdium = {
       Unit = {
-        Description = "ferdium daemon";
+        Description = "Ferdium daemon";
         Requires = "tray.target";
         After = [ "graphical-session-pre.target" "tray.target" ];
         PartOf = [ "graphical-session.target" ];
