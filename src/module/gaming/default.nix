@@ -34,7 +34,7 @@ in
         After = [ "graphical-session-pre.target" "tray.target" ];
         PartOf = [ "graphical-session.target" ];
       };
-      Service.ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent ";
+      Service.ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent";
       Install.WantedBy = [ "graphical-session.target" ];
     };
   };
