@@ -8,7 +8,6 @@
     # NOTE: https://github.com/NixOS/nixpkgs/issues/293212#issuecomment-2319051915
     services.geoclue2.geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
 
-
     location.provider = "geoclue2";
     i18n.defaultLocale = "en_US.UTF-8";
     services.automatic-timezoned.enable = true;

@@ -2,13 +2,22 @@
 
 # create secrets for all hosts
 def "main" [] {
+  main gen
+  main lock
+}
+
+# create secrets for all hosts
+def "main gen" [] {
   main shared
 
   main host lighthouse --name puffy
   main host regular --name hearth
   main host regular --name workbug
   main host regular --name officer
+}
 
+# lock secrets for all hosts
+def "main lock" [] {
   main host lock --name puffy
   main host lock --name hearth
   main host lock --name workbug
@@ -29,6 +38,7 @@ def "main host lighthouse" [
   main vpn lighthouse $name true
   main ssh key $name
   main pass $name
+  main geo $name
 }
 
 # create secrets for a regular host
@@ -40,6 +50,7 @@ def "main host regular" [
   main vpn lighthouse $name false
   main ssh key $name
   main pass $name
+  main geo $name
 }
 
 # lock secrets for a host
@@ -214,6 +225,24 @@ def "main ddns" [name: string] {
     ]
   } | to json | save -f $"($name).ddns"
   chmod 400 $"($name).ddns"
+}
+
+# create a geoclue2 provider url for google maps api
+#
+# expects the api key to be in the GEOCLUE2_GOOGLE_MAPS_API_KEY env var
+#
+# outputs:
+#   ./name.geo
+def "main geo" [name: string] {
+  let key = $env.GEOCLUE2_GOOGLE_MAPS_API_KEY?
+  if ($key | is-empty) {
+    error make {
+      msg: "expected api key provided via GEOCLUE2_GOOGLE_MAPS_API_KEY"
+    }
+  }
+
+  $"https://www.googleapis.com/geolocation/v1/geolocate?key=($key)" | save -f $"($name).geo"
+  chmod 400 $"($name).geo"
 }
 
 # create a sops secret file from a directory of secret files and encrypt it
