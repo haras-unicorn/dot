@@ -7,6 +7,8 @@
     services.geoclue2.enable = true;
     # NOTE: https://github.com/NixOS/nixpkgs/issues/293212#issuecomment-2319051915
     services.geoclue2.geoProviderUrl = "https://beacondb.net/v1/geolocate?key=geoclue";
+    services.geoclue2.submissionUrl = "https://beacondb.net/v1/geolocate?key=geoclue";
+    services.geoclue2.submissionNick = "geoclue";
 
 
     location.provider = "geoclue2";
