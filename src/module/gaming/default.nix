@@ -8,12 +8,6 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
-    dot = {
-      desktopEnvironment.sessionVariables = { MANGOHUD = 1; };
-    };
-  };
-
   system = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.steam.enable = true;
     programs.steam.extest.enable = true;
@@ -32,5 +26,16 @@ in
   home = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.mangohud.enable = true;
     programs.mangohud.enableSessionWide = true;
+
+    systemd.user.services.steam = {
+      Unit = {
+        Description = "Steam daemon";
+        Requires = "tray.target";
+        After = [ "graphical-session-pre.target" "tray.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+      Service.ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent ";
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
   };
 }

@@ -143,16 +143,6 @@ in
             command = "${terminal} ${shell}";
           }])
         ];
-
-        desktopEnvironment.sessionVariables = lib.mkMerge [
-          (lib.mkIf hasMonitor {
-            BROWSER = "${browser}";
-          })
-          (lib.mkIf (hasMonitor && hasKeyboard) {
-            VISUAL = "${visual}";
-            EDITOR = "${editor}";
-          })
-        ];
       };
     };
 
@@ -161,6 +151,18 @@ in
         pkgs.xdg-user-dirs
         pkgs.xdg-utils
         pkgs.shared-mime-info
+      ];
+
+      home.sessionVariables = lib.mkMerge [
+        (lib.mkIf hasMonitor {
+          BROWSER = "${browser}";
+        })
+        (lib.mkIf (hasMonitor && hasKeyboard) {
+          VISUAL = "${visual}";
+        })
+        (lib.mkIf hasKeyboard {
+          EDITOR = "${editor}";
+        })
       ];
 
       xdg.mime.enable = true;

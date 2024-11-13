@@ -58,6 +58,8 @@ let
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
+
+  floatingSizeString = builtins.toString (config.dot.hardware.monitor.height / 2);
 in
 {
   shared = lib.mkIf (hasMonitor && hasWayland) {
@@ -114,6 +116,8 @@ in
         col.active_border = ${bootstrap.primary.normal.hypr} ${bootstrap.accent.normal.hypr}
         col.inactive_border = ${bootstrap.secondary.normal.hypr}
       }
+
+      windowrulev2=size ${floatingSizeString} ${floatingSizeString},floating:1
 
       ${vars}
 
