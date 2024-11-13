@@ -15,6 +15,18 @@ let
   vesktop = self.lib.electron.wrap pkgs pkgs.vesktop "vesktop";
 in
 {
+  shared = lib.mkIf hasMonitor {
+    dot = {
+      desktopEnvironment.windowrules = [{
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "ferdium";
+        xarg = "ferdium";
+      }];
+    };
+  };
+
   home = lib.mkIf hasMonitor {
     home.packages = [
       ferdium

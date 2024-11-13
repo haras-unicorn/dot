@@ -23,7 +23,7 @@ in
   };
 
   config = {
-    shared = (lib.mkIf (hasMonitor && hasKeyboard)) {
+    shared = lib.mkIf (hasMonitor && hasKeyboard) {
       dot = {
         desktopEnvironment.windowrules = [{
           rule = "float";
