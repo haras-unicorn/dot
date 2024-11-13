@@ -17,15 +17,13 @@ in
         Documentation = [ "https://github.com/ErikReider/SwayOSD" ];
         PartOf = [ "graphical.target" ];
         After = [ "graphical.target" ];
+        WantedBy = [ "graphical.target" ];
       };
       Service = {
         Type = "dbus";
         BusName = "org.erikreider.swayosd";
         ExecStart = "${pkgs.swayosd}/bin/swayosd-libinput-backend";
         Restart = "on-failure";
-      };
-      Install = {
-        WantedBy = [ "graphical.target" ];
       };
     };
   };
