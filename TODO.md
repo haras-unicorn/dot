@@ -11,6 +11,7 @@
   [comin](https://github.com/nlewo/comin)
 - use [vaultwarden](https://github.com/dani-garcia/vaultwarden)
 - use [nextcloud](https://github.com/nextcloud/server)
+- use [freshrss](https://freshrss.org/index.html)
 - use [stylix](https://github.com/danth/stylix)
 - use [nh](https://github.com/viperML/nh)
 - use [lorri](https://github.com/nix-community/lorri/)
