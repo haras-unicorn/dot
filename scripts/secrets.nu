@@ -1,5 +1,7 @@
 #!/usr/bin/env nu
 
+let user = "haras"
+
 # create secrets for all hosts
 def "main" [] {
   main gen
@@ -63,6 +65,57 @@ def "main host lock" [
   main sops $name
 }
 
+# create a sops secret file from a directory of secret files and encrypt it
+#
+# each file in the directory starting with prefix `name` or shared
+# will be a secret in the resulting file
+# with the name equal to the name of the file
+#
+# use `sops encrypt --help` to check out available private key options
+#
+# additionally creates an age key pair
+# to be used for decryption during host activation
+#
+# outputs:
+#   ./name.age.pub
+#   ./name.age
+#   ./name.sops.pub
+#   ./name.sops
+def "main sops" [name: string] {
+  age-keygen | save -f $"($name).age"
+  chmod 400 $"($name).age"
+
+  open --raw $"($name).age" | age-keygen -y | save -f $"($name).age.pub"
+  chmod 644 $"($name).age.pub"
+
+  ls $env.PWD
+    | where { |x| $x.type == "file" }
+    | where { |x| 
+        let basename = $x.name | path basename
+        return (
+          not ($basename | str ends-with ".sops")
+          and not ($basename | str ends-with ".sops.pub")
+          and (($basename | str starts-with $name)
+          or ($basename | str starts-with shared)))
+      }
+    | each { |x|
+        let content = open --raw $x.name
+          | str trim
+          | str replace --all "\n" "\n  "
+        return $"($x.name | path basename): |\n  ($content)" 
+      }
+    | str join "\n"
+    | save -f $"($name).sops"
+  chmod 400 $"($name).sops"
+
+  (sops encrypt $"($name).sops"
+    --input-type yaml
+    --age (open --raw $"($name).age.pub")
+    --output $"($name).sops.pub"
+    --output-type yaml)
+  chmod 644 $"($name).sops.pub"
+}
+
 # create the nebula vpn ca
 #
 # outputs:
@@ -85,7 +138,8 @@ def "main vpn ca" [name: string = "ca"] {
 # outputs:
 #   ./name.vpn.pub
 #   ./name.vpn
-def "main vpn host" [name: string, ca: string = "ca"] {
+#   ./name.ip
+def "main vpn host" [name: string, ca: path = "ca"] {
   let ip_key = $"NEBULA_($name | str upcase)_IP"
   let ip = $env | default null $ip_key | get $ip_key
   if ($ip | is-empty) {
@@ -101,6 +155,9 @@ def "main vpn host" [name: string, ca: string = "ca"] {
 
   mv $"($name).key" $"($name).vpn"
   chmod 400 $"($name).vpn"
+
+  $ip | save -f $"($name).ip"
+  chmod 400 $"($name).ip"
 }
 
 # create nebula lighthouse domain config
@@ -133,6 +190,40 @@ def "main vpn lighthouse" [name: string, lighthouse: bool] {
       + $"\n    - '($ip)'") }))
   $config | save -f $"($name).lighthouse"
   chmod 400 $"($name).lighthouse"
+}
+
+# create a ddns-updater settings file for duckdns
+#
+# expects the token to be in the DDNS_UPDATER_DUCKDNS_TOKEN env var
+# expects the domain to be in the DDNS_UPDATER_DUCKDNS_DOMAIN env var
+#
+# outputs:
+#   ./name.ddns
+def "main ddns" [name: string] {
+  let token = $env.DDNS_UPDATER_DUCKDNS_TOKEN?
+  if ($token | is-empty) {
+    error make {
+      msg: "expected token provided via DDNS_UPDATER_DUCKDNS_TOKEN"
+    }
+  }
+  let domain = $env.DDNS_UPDATER_DUCKDNS_DOMAIN?
+  if ($domain | is-empty) {
+    error make {
+      msg: "expected domain provided via DDNS_UPDATER_DUCKDNS_DOMAIN"
+    }
+  }
+
+  {
+    "settings": [
+      {
+        "provider": "duckdns",
+        "domain": $"($domain).duckdns.org",
+        "token": $token,
+        "ip_version": "ipv4"
+      }
+    ]
+  } | to json | save -f $"($name).ddns"
+  chmod 400 $"($name).ddns"
 }
 
 # create an ssh key pair
@@ -183,48 +274,130 @@ def "main pass" [name: string, length: int = 32] {
   chmod 400 $"($name).pass.pub"
 }
 
-# create a random alphanumeric key 
+# create the database ssl ca
 #
 # outputs:
-#   ./name.key
-def "main key" [name: string, length: int = 32] {
-  let key = random chars --length $length
-  $key | save -f $"($name).key"
-  chmod 400 $"($name).key"
+#   ./name.db.pub
+#   ./name.db
+def "main db ca" [name: string] {
+  (openssl genpkey -algorithm ED25519
+    -out $"($name).db")
+  chmod 400 $"($name).db"
+
+  (openssl req -x509
+    -key $"($name).db"
+    -out $"($name).db.pub"
+    -subj $"/CN=($name)"
+    -days 3650)
+  chmod 644 $"($name).db.pub"
 }
 
-# create a ddns-updater settings file for duckdns
-#
-# expects the token to be in the DDNS_UPDATER_DUCKDNS_TOKEN env var
-# expects the domain to be in the DDNS_UPDATER_DUCKDNS_DOMAIN env var
+# create database ssl keys signed by a previously generated ca
 #
 # outputs:
-#   ./name.ddns
-def "main ddns" [name: string] {
-  let token = $env.DDNS_UPDATER_DUCKDNS_TOKEN?
-  if ($token | is-empty) {
+#   ./name.db.pub
+#   ./name.db
+def "main db host" [name: string, ca: path] {
+  (openssl genpkey -algorithm ED25519
+    -out $"($name).db")
+  chmod 400 $"($name).db"
+
+  (openssl req -new
+    -key $"($name).db"
+    -out $"($name).db.req"
+    -subj $"/CN=($name)")
+  (openssl x509 -req
+    -in $"($name).db.req"
+    -CA $"($ca).db.pub"
+    -CAkey $"($ca).db"
+    -CAcreateserial
+    -out $"($name).db.pub"
+    -days 3650)
+  rm -f $"($name).db.req"
+  chmod 644 $"($name).db.pub"
+}
+
+# create mariadb galera cluster configuration
+#
+# expects the cluster ip in the GALERA_CLUSTER_IP env var
+# expects the host ip in the GALERA_HOST_IP env var
+#
+# outputs:
+#   ./name.galera
+def "main db galera" [name: string] {
+  let cluster_ip = $env.GALERA_CLUSTER_IP?
+  if ($cluster_ip | is-empty) {
     error make {
-      msg: "expected token provided via DDNS_UPDATER_DUCKDNS_TOKEN"
-    }
-  }
-  let domain = $env.DDNS_UPDATER_DUCKDNS_DOMAIN?
-  if ($domain | is-empty) {
-    error make {
-      msg: "expected domain provided via DDNS_UPDATER_DUCKDNS_DOMAIN"
+      msg: "expected cluster ip provided via GALERA_CLUSTER_IP"
     }
   }
 
-  {
-    "settings": [
-      {
-        "provider": "duckdns",
-        "domain": $"($domain).duckdns.org",
-        "token": $token,
-        "ip_version": "ipv4"
+  let host_ip = $env.GALERA_HOST_IP?
+  if ($host_ip | is-empty) {
+    error make {
+      msg: "expected host ip provided via GALERA_HOST_IP"
+    }
+  }
+
+  let cnf =  $"
+    wsrep_cluster_address=\"gcomm://($cluster_ip)\"
+    wsrep_cluster_name=\"galera\"
+    wsrep_node_address=\"($host_ip)\"
+    wsrep_node_name=\"($name)\"
+  "
+  $cnf | save -f $"($name).mycnf"
+}
+
+# create initial database sql script
+#
+# each file ending wiht .service.db.key
+# will be included as a corresponding service user and database
+# in the database server
+#
+# outputs:
+#   ./name.sql 
+def "main db sql" [name: string, rootpass: string, userpass: string] {
+  let services = ls $env.FILE_PWD
+    | where { |x| 
+        let basename = $x.name | path basename
+        ($x.type == "file") and ($basename | str ends-with ".service.db.key")
       }
-    ]
-  } | to json | save -f $"($name).ddns"
-  chmod 400 $"($name).ddns"
+    | each { |x|
+        let basename = $x.name | path basename
+        let name = $basename | parse "{name}.service.db.key" | get name
+        let pass = open --raw $x.name
+        $"
+          CREATE DATABASE IF NOT EXISTS ($name);
+          CREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';
+          GRANT ALL PRIVILEGES ON ($name).* TO '($user)'@'%';
+          GRANT ALL PRIVILEGES ON ($name).* TO '($name)'@'%';
+        "
+      }
+    | str join "\n"
+
+  let sql = $"
+    START TRANSACTION;
+    CREATE DATABASE IF NOT EXISTS init;
+    USE init;
+    CREATE TABLE IF NOT EXISTS init \(
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    \);
+    SELECT COUNT\(*\) INTO @already_initialized FROM init;
+    DO CASE
+      WHEN @already_initialized > 0 THEN
+        ROLLBACK;
+        LEAVE;
+      END CASE;
+    INSERT INTO init \(timestamp\) VALUES \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\);
+    COMMIT;
+
+    ALTER USER 'root'@'localhost' IDENTIFIED BY '(open --raw $rootpass)';
+    CREATE USER IF NOT EXISTS '($user)'@'%' IDENTIFIED BY '(open --raw $userpass)';
+
+    ($services)
+
+    FLUSH PRIVILEGES;
+  "
 }
 
 # create geoclue2 provider settings for google maps api
@@ -247,53 +420,12 @@ def "main geo" [name: string] {
   chmod 400 $"($name).geo"
 }
 
-# create a sops secret file from a directory of secret files and encrypt it
-#
-# each file in the directory starting with prefix `name` or shared
-# will be a secret in the resulting file
-# with the name equal to the name of the file
-#
-# use `sops encrypt --help` to check out available private key options
-#
-# additionally creates an age key pair
-# to be used for decryption during host activation
+# create a random alphanumeric key 
 #
 # outputs:
-#   ./name.age.pub
-#   ./name.age
-#   ./name.sops.pub
-#   ./name.sops
-def "main sops" [name: string] {
-  age-keygen | save -f $"($name).age"
-  chmod 400 $"($name).age"
-
-  open --raw $"($name).age" | age-keygen -y | save -f $"($name).age.pub"
-  chmod 644 $"($name).age.pub"
-
-  ls $env.PWD
-    | where { |x| $x.type == "file" }
-    | where { |x| 
-        let basename = $x.name | path basename
-        return (
-          not ($basename | str ends-with ".sops")
-          and not ($basename | str ends-with ".sops.pub")
-          and (($basename | str starts-with $name)
-          or ($basename | str starts-with shared)))
-      }
-    | each { |x|
-        let content = open --raw $x.name
-          | str trim
-          | str replace --all "\n" "\n  "
-        return $"($x.name | path basename): |\n  ($content)" 
-      }
-    | str join "\n"
-    | save -f $"($name).sops"
-  chmod 400 $"($name).sops"
-
-  (sops encrypt $"($name).sops"
-    --input-type yaml
-    --age (open --raw $"($name).age.pub")
-    --output $"($name).sops.pub"
-    --output-type yaml)
-  chmod 644 $"($name).sops.pub"
+#   ./name.key
+def "main key" [name: string, length: int = 32] {
+  let key = random chars --length $length
+  $key | save -f $"($name).key"
+  chmod 400 $"($name).key"
 }

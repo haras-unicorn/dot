@@ -21,31 +21,31 @@ in
 
       !includedir /etc/mysql/conf.d/
     '';
-    sops.secrets."${host}.mysql" = {
+    sops.secrets."${host}.sql" = {
       path = "/etc/mysql/init.sql";
       owner = "mysql";
       group = "mysql";
       mode = "0400";
     };
-    sops.secrets."${host}.mycnf" = {
+    sops.secrets."${host}.galera" = {
       path = "/etc/mysql/conf.d/secret.cnf";
       owner = "mysql";
       group = "mysql";
       mode = "0400";
     };
-    sops.secrets."shared.myca" = {
+    sops.secrets."shared.db.pub" = {
       path = "/etc/mysql/ca.crt";
       owner = "mysql";
       group = "mysql";
       mode = "0400";
     };
-    sops.secrets."${host}.mycrt" = {
+    sops.secrets."${host}.db.pub" = {
       path = "/etc/mysql/host.crt";
       owner = "mysql";
       group = "mysql";
       mode = "0400";
     };
-    sops.secrets."${host}.mykey" = {
+    sops.secrets."${host}.db" = {
       path = "/etc/mysql/host.key";
       owner = "mysql";
       group = "mysql";
