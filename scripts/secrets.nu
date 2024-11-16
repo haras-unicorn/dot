@@ -11,8 +11,7 @@ def "main" [] {
 # create secrets for all hosts
 def "main gen" [] {
   main shared
-
-  main host lighthouse --name puffy
+  main host coordinator --name puffy
   main host regular --name hearth
   main host regular --name workbug
   main host regular --name officer
@@ -29,16 +28,23 @@ def "main lock" [] {
 # create secrets shared between hosts
 def "main shared" [] {
   main vpn ca shared
+  main db ca shared
+  main db service vault
+  main key shared-db-root
+  main key shared-db-user
 }
 
-# create secrets for the nebula lighthouse host
-def "main host lighthouse" [
+# create secrets for a coordinator host
+def "main host coordinator" [
   --name: string, # name of the host
 ] {
   main ddns $name
   main vpn host $name shared
-  main vpn lighthouse $name true
+  main vpn config $name --lighthouse
   main ssh key $name
+  main db host $name shared
+  main db sql $name shared-db-root.key shared-db-user.key
+  main db config $name --arbitrator
   main pass $name
   main geo $name
 }
@@ -49,8 +55,10 @@ def "main host regular" [
   --ip: string, # ip of the host in the nebula vpn
 ] {
   main vpn host $name shared
-  main vpn lighthouse $name false
+  main vpn config $name
   main ssh key $name
+  main db host $name shared
+  main db config $name
   main pass $name
   main geo $name
 }
@@ -160,14 +168,14 @@ def "main vpn host" [name: string, ca: path = "ca"] {
   chmod 400 $"($name).ip"
 }
 
-# create nebula lighthouse domain config
+# create nebula vpn config
 #
 # expects the ip to be in the NEBULA_LIGHTHOUSE_IP env var
 # expects the domain to be in the NEBULA_LIGHTHOUSE_DOMAIN env var
 #
 # outputs:
 #   ./name.lighthouse
-def "main vpn lighthouse" [name: string, lighthouse: bool] {
+def "main vpn config" [name: string, --lighthouse] {
   let ip = $env.NEBULA_LIGHTHOUSE_IP?
   if ($ip | is-empty) {
     error make {
@@ -190,40 +198,6 @@ def "main vpn lighthouse" [name: string, lighthouse: bool] {
       + $"\n    - '($ip)'") }))
   $config | save -f $"($name).lighthouse"
   chmod 400 $"($name).lighthouse"
-}
-
-# create a ddns-updater settings file for duckdns
-#
-# expects the token to be in the DDNS_UPDATER_DUCKDNS_TOKEN env var
-# expects the domain to be in the DDNS_UPDATER_DUCKDNS_DOMAIN env var
-#
-# outputs:
-#   ./name.ddns
-def "main ddns" [name: string] {
-  let token = $env.DDNS_UPDATER_DUCKDNS_TOKEN?
-  if ($token | is-empty) {
-    error make {
-      msg: "expected token provided via DDNS_UPDATER_DUCKDNS_TOKEN"
-    }
-  }
-  let domain = $env.DDNS_UPDATER_DUCKDNS_DOMAIN?
-  if ($domain | is-empty) {
-    error make {
-      msg: "expected domain provided via DDNS_UPDATER_DUCKDNS_DOMAIN"
-    }
-  }
-
-  {
-    "settings": [
-      {
-        "provider": "duckdns",
-        "domain": $"($domain).duckdns.org",
-        "token": $token,
-        "ip_version": "ipv4"
-      }
-    ]
-  } | to json | save -f $"($name).ddns"
-  chmod 400 $"($name).ddns"
 }
 
 # create an ssh key pair
@@ -257,21 +231,6 @@ def "main ssh auth" [name: string] {
     | str join "\n"
     | save -f $"($name).auth.pub"
   chmod 644 $"($name).auth.pub"
-}
-
-# create a linux user password using mkpasswd
-#
-# outputs:
-#   ./name.pass.pub
-#   ./name.pass
-def "main pass" [name: string, length: int = 32] {
-  let pass = random chars --length $length
-  $pass | save -f $"($name).pass"
-  chmod 644 $"($name).pass"
-
-  let encrypted = $pass | mkpasswd --stdin
-  $encrypted | save -f $"($name).pass.pub"
-  chmod 400 $"($name).pass.pub"
 }
 
 # create the database ssl ca
@@ -317,14 +276,14 @@ def "main db host" [name: string, ca: path] {
   chmod 644 $"($name).db.pub"
 }
 
-# create mariadb galera cluster configuration
+# create database configuration
 #
 # expects the cluster ip in the GALERA_CLUSTER_IP env var
 # expects the host ip in the GALERA_HOST_IP env var
 #
 # outputs:
 #   ./name.galera
-def "main db galera" [name: string] {
+def "main db config" [name: string, --arbitrator] {
   let cluster_ip = $env.GALERA_CLUSTER_IP?
   if ($cluster_ip | is-empty) {
     error make {
@@ -339,18 +298,19 @@ def "main db galera" [name: string] {
     }
   }
 
-  let cnf =  $"
+  let galera =  $"
     wsrep_cluster_address=\"gcomm://($cluster_ip)\"
     wsrep_cluster_name=\"galera\"
     wsrep_node_address=\"($host_ip)\"
     wsrep_node_name=\"($name)\"
+    wsrep_provider_options=\"pc.weight=(if $arbitrator { 10 } else { 1 })\"
   "
-  $cnf | save -f $"($name).mycnf"
+  $galera | save -f $"($name).galera"
 }
 
 # create initial database sql script
 #
-# each file ending wiht .service.db.key
+# each file ending with .service
 # will be included as a corresponding service user and database
 # in the database server
 #
@@ -364,7 +324,7 @@ def "main db sql" [name: string, rootpass: string, userpass: string] {
       }
     | each { |x|
         let basename = $x.name | path basename
-        let name = $basename | parse "{name}.service.db.key" | get name
+        let name = $basename | parse "{name}.service" | get name
         let pass = open --raw $x.name
         $"
           CREATE DATABASE IF NOT EXISTS ($name);
@@ -398,6 +358,68 @@ def "main db sql" [name: string, rootpass: string, userpass: string] {
 
     FLUSH PRIVILEGES;
   "
+
+  $sql | save -f $"($name).sql"
+  chmod 400 $"($name).sql"
+}
+
+# create a database service password 
+#
+# outputs:
+#   ./name.service
+def "main db service" [name: string] {
+  let key = random chars --length 32
+  $key | save -f $"($name).service"
+  chmod 400 $"($name).service"
+}
+
+# create a linux user password using mkpasswd
+#
+# outputs:
+#   ./name.pass.pub
+#   ./name.pass
+def "main pass" [name: string, length: int = 32] {
+  let pass = random chars --length $length
+  $pass | save -f $"($name).pass"
+  chmod 644 $"($name).pass"
+
+  let encrypted = $pass | mkpasswd --stdin
+  $encrypted | save -f $"($name).pass.pub"
+  chmod 400 $"($name).pass.pub"
+}
+
+# create a ddns-updater settings file for duckdns
+#
+# expects the token to be in the DDNS_UPDATER_DUCKDNS_TOKEN env var
+# expects the domain to be in the DDNS_UPDATER_DUCKDNS_DOMAIN env var
+#
+# outputs:
+#   ./name.ddns
+def "main ddns" [name: string] {
+  let token = $env.DDNS_UPDATER_DUCKDNS_TOKEN?
+  if ($token | is-empty) {
+    error make {
+      msg: "expected token provided via DDNS_UPDATER_DUCKDNS_TOKEN"
+    }
+  }
+  let domain = $env.DDNS_UPDATER_DUCKDNS_DOMAIN?
+  if ($domain | is-empty) {
+    error make {
+      msg: "expected domain provided via DDNS_UPDATER_DUCKDNS_DOMAIN"
+    }
+  }
+
+  {
+    "settings": [
+      {
+        "provider": "duckdns",
+        "domain": $"($domain).duckdns.org",
+        "token": $token,
+        "ip_version": "ipv4"
+      }
+    ]
+  } | to json | save -f $"($name).ddns"
+  chmod 400 $"($name).ddns"
 }
 
 # create geoclue2 provider settings for google maps api
@@ -420,11 +442,11 @@ def "main geo" [name: string] {
   chmod 400 $"($name).geo"
 }
 
-# create a random alphanumeric key 
+# create a random alphanumeric key of specified length
 #
 # outputs:
 #   ./name.key
-def "main key" [name: string, length: int = 32] {
+def "main key" [name: string, length: number = 32] {
   let key = random chars --length $length
   $key | save -f $"($name).key"
   chmod 400 $"($name).key"

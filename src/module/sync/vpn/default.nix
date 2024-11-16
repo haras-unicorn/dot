@@ -6,6 +6,7 @@
 let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
+  isLighthouse = config.dot.vpn.lighthouse.enable;
 in
 {
   options = {
@@ -20,7 +21,7 @@ in
       # NOTE: these values are not used but nix evaluates them for some reason
       services.nebula.networks.nebula = {
         enable = true;
-        isLighthouse = config.dot.vpn.lighthouse.enable;
+        isLighthouse = isLighthouse;
         cert = "/etc/nebula/host.crt";
         key = "/etc/nebula/host.key";
         ca = "/etc/nebula/ca.crt";
@@ -31,7 +32,7 @@ in
         };
       };
       networking.firewall.allowedUDPPorts =
-        lib.mkIf config.dot.vpn.lighthouse.enable [
+        lib.mkIf isLighthouse [
           4242
         ];
       environment.etc."nebula/config.d/config.yaml".text = ''
@@ -41,7 +42,7 @@ in
           key: /etc/nebula/host.key
         listen:
           host: '[::]'
-          port: ${if config.dot.vpn.lighthouse.enable then "4242" else "0"}
+          port: ${if isLighthouse then "4242" else "0"}
         static_map:
           cadence: 5m
           lookup_timeout: 10s
@@ -81,24 +82,24 @@ in
       };
 
       # NOTE: default period is 5 minutes
-      services.ddns-updater.enable = config.dot.vpn.lighthouse.enable;
-      services.ddns-updater.environment = lib.mkIf config.dot.vpn.lighthouse.enable {
+      services.ddns-updater.enable = isLighthouse;
+      services.ddns-updater.environment = lib.mkIf isLighthouse {
         CONFIG_FILEPATH = "/etc/ddns-updater/config.json";
       };
-      users.users.ddns-updater = lib.mkIf config.dot.vpn.lighthouse.enable {
+      users.users.ddns-updater = lib.mkIf isLighthouse {
         group = "ddns-updater";
         description = "DDNS updater service user";
         isSystemUser = true;
       };
-      users.groups.ddns-updater = lib.mkIf config.dot.vpn.lighthouse.enable { };
-      systemd.services.ddns-updater = lib.mkIf config.dot.vpn.lighthouse.enable {
+      users.groups.ddns-updater = lib.mkIf isLighthouse { };
+      systemd.services.ddns-updater = lib.mkIf isLighthouse {
         serviceConfig = {
           DynamicUser = lib.mkForce false;
           User = "ddns-updater";
           Group = "ddns-updater";
         };
       };
-      sops.secrets."${host}.ddns" = lib.mkIf config.dot.vpn.lighthouse.enable {
+      sops.secrets."${host}.ddns" = lib.mkIf isLighthouse {
         path = "/etc/ddns-updater/config.json";
         owner = "ddns-updater";
         group = "ddns-updater";
@@ -106,7 +107,7 @@ in
       };
     };
 
-    home = lib.mkIf (hasNetwork && hasMonitor) {
+    home = lib.mkIf (hasNetwork && hasMonitor && isLighthouse) {
       xdg.desktopEntries = {
         ddns-updater = {
           name = "DDNS Updater";
