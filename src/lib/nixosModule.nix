@@ -34,7 +34,7 @@ in
       facter.reportPath = hardware;
 
       sops.defaultSopsFile = secrets;
-      sops.age.keyFile = "/root/.sops/secrets.age";
+      sops.age.keyFile = "/root/host.scrt.key";
 
       networking.hostName = host;
       system.stateVersion = version;

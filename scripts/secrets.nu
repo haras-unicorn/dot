@@ -77,6 +77,38 @@ def "main lock" [] {
   }
 }
 
+# copy secret values for all hosts
+def "main copy vals" [] {
+  let secrets = ls $env.PWD
+    | where { |x| $x.name | str ends-with ".scrt.val.pub" }
+  for $secret in $secrets {
+    let host = $secret.name
+      | path basename
+      | parse "{host}.scrt.val.pub"
+      | get host
+    let dest = [
+      ($env.FILE_PWD | path dirname)
+      "src"
+      "host"
+      $host
+      "sercrets.yaml"
+    ] | path join
+    cp -f $secret.name $dest
+  }
+}
+
+# copy secret keys for current host
+def "main copy key" [] {
+  let host = open --raw /etc/hostname
+  let origin = [ $env.PWD $"($host).scrt.key" ] | path join
+  let dest_dir = [ "/root" ] | path join
+  let dest = [ $dest_dir $"host.scrt.key" ] | path join
+  sudo mkdir $dest_dir
+  sudo cp -f $origin $dest
+  sudo chown root:root $dest
+  sudo chmod 400 $dest
+}
+
 # create a secret key
 #
 # assumes sops is used
