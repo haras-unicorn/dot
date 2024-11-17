@@ -21,7 +21,7 @@ in
   config = {
     system = lib.mkIf (hasNetwork) {
       services.mysql.enable = true;
-      services.mysql.package = pkgs.mariadb_110;
+      services.mysql.package = pkgs.mariadb;
       services.mysql.initialScript = lib.mkIf isCoordinator "/etc/mysql/init.sql";
       services.mysql.configFile = pkgs.writeText "my.cnf" ''
         [mysqld]
