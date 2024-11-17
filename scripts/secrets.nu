@@ -187,7 +187,11 @@ def "main vpn key" [name: string, ca: path] {
     }
   }
 
-  nebula-cert sign -ca-crt $"($ca).vpn.pub" -ca-key $"($ca).vpn" -name $name -ip $ip  
+  (nebula-cert sign
+    -ca-crt $"($ca).vpn.ca.pub"
+    -ca-key $"($ca).vpn.ca"
+    -name $name
+    -ip $ip)
 
   mv $"($name).crt" $"($name).vpn.key.pub"
   chmod 644 $"($name).vpn.key.pub"
@@ -287,15 +291,15 @@ def "main ssh auth" [name: string] {
 #   ./name.db.ca
 def "main db ca" [name: string] {
   (openssl genpkey -algorithm ED25519
-    -out $"($name).db")
-  chmod 600 $"($name).db"
+    -out $"($name).db.ca")
+  chmod 600 $"($name).db.ca"
 
   (openssl req -x509
-    -key $"($name).db"
-    -out $"($name).db.pub"
+    -key $"($name).db.ca"
+    -out $"($name).db.ca.pub"
     -subj $"/CN=($name)"
     -days 3650)
-  chmod 644 $"($name).db.pub"
+  chmod 644 $"($name).db.ca.pub"
 }
 
 # create database ssl keys signed by a previously generated db ca
@@ -316,8 +320,8 @@ def "main db key" [name: string, ca: path] {
     -subj $"/CN=($name)")
   (openssl x509 -req
     -in $"($name).db.key.req"
-    -CA $"($ca).db.key.pub"
-    -CAkey $"($ca).db.key"
+    -CA $"($ca).db.ca.pub"
+    -CAkey $"($ca).db.ca"
     -CAcreateserial
     -out $"($name).db.key.pub"
     -days 3650)
