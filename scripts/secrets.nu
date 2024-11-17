@@ -360,14 +360,15 @@ def "main db cnf" [name: string, --coordinator] {
     }
   }
 
-  $"
-    [mysqld]
-    wsrep_cluster_address=\"gcomm://($cluster_ips)\"
-    wsrep_cluster_name=\"cluster\"
-    wsrep_node_address=\"($host_ip)\"
-    wsrep_node_name=\"($name)\"
-    wsrep_provider_options=\"pc.weight=(if $coordinator { 100 } else { 1 })\"
-  " | save -f $"($name).db.cnf"
+  let weight = if $coordinator { 100 } else { 1 }
+
+  $"[mysqld]
+wsrep_cluster_address=\"gcomm://($cluster_ips)\"
+wsrep_cluster_name=\"cluster\"
+wsrep_node_address=\"($host_ip)\"
+wsrep_node_name=\"($name)\"
+wsrep_provider_options=\"pc.weight=($weight)\""
+    | save -f $"($name).db.cnf"
   chmod 600 $"($name).db.cnf"
 }
 
@@ -413,57 +414,47 @@ def "main db sql" [name: string] {
         let name = $basename | parse "{name}.db.user" | get name
         let pass = open --raw $x.name
         let services = $services
-          | each { |x|
-              $"\nGRANT ALL PRIVILEGES ON ($x.name).* TO '($name)'@'%';"
-            }
+          | each { |x| $"\nGRANT ALL PRIVILEGES ON ($x.name).* TO '($name)'@'%';" }
           | str join ""
         if ($name == "root") {
-          $"
-            ALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';
-          "
+          $"\nALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';"
         } else {
-          $"
-            CREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';
-            ($services)
-          "
+          $"\nCREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';($services)"
         }
       }
-    | str join "\n"
+    | str join ""
 
   let services = $services
     | each { |x|
-        $"
-          CREATE DATABASE IF NOT EXISTS ($x.name);
-          CREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)';
-          GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';
-        "
+        $"\nCREATE DATABASE IF NOT EXISTS ($x.name);"
+        + $"\nCREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)';"
+        + $"\nGRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';"
       }
-    | str join "\n"
+    | str join ""
 
-  let sql = $"
-    START TRANSACTION;
-    CREATE DATABASE IF NOT EXISTS init;
-    USE init;
-    CREATE TABLE IF NOT EXISTS init \(
-      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-    \);
-    SELECT COUNT\(*\) INTO @already_initialized FROM init;
-    DO CASE
-      WHEN @already_initialized > 0 THEN
-        ROLLBACK;
-        LEAVE;
-      END CASE;
-    INSERT INTO init \(timestamp\) VALUES \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\);
-    COMMIT;
+  let lock = "START TRANSACTION;
 
-    ($services)
+CREATE DATABASE IF NOT EXISTS init;
+USE init;
 
-    ($users)
+CREATE TABLE IF NOT EXISTS init \(
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+\);
 
-    FLUSH PRIVILEGES;
-  "
+SELECT COUNT\(*\) INTO @already_initialized FROM init;
+DO CASE
+  WHEN @already_initialized > 0 THEN
+    ROLLBACK;
+    LEAVE;
+  END CASE;
 
-  $sql | save -f $"($name).db.sql"
+INSERT INTO init \(timestamp\)
+  VALUES \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\);
+
+COMMIT;"
+
+ ($lock + $services + $users + "FLUSH PRIVILEGES;")
+  | save -f $"($name).db.sql"
   chmod 600 $"($name).db.sql"
 }
 
