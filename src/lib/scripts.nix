@@ -26,5 +26,5 @@ in
 {
   mkSystemModule = scripts: { imports = [ (mkModule (parse scripts)) ]; };
 
-  mkHmModule = scripts: { imports = [ (mkModule (parse scripts)) ]; };
+  mkHomeModule = scripts: { imports = [ (mkModule (parse scripts)) ]; };
 }
