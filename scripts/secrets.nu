@@ -8,23 +8,6 @@ def "main" [] {
 
 # create secrets for all hosts
 def "main create" [] {
-  main shared
-  main host coordinator --name puffy
-  main host regular --name hearth
-  main host regular --name workbug
-  main host regular --name officer
-}
-
-# lock secrets for all hosts
-def "main lock" [] {
-  main host lock --name puffy
-  main host lock --name hearth
-  main host lock --name workbug
-  main host lock --name officer
-}
-
-# create secrets shared between hosts
-def "main shared" [] {
   main vpn ca shared
 
   main ssh key shared
@@ -35,54 +18,61 @@ def "main shared" [] {
   main db user haras
 
   main scrt key shared
+
+  let hosts = ls ([ ($env.FILE_PWD | path dirname) "src" "host" ] | path join)
+    | each { |x|
+        let name = $x.name | path basename
+        let scripts_path = [ $x.name "scripts.json" ] | path join
+        let scripts = if ($scripts_path | path exists) {
+          open $scripts_path
+        } else {
+          { }
+        }
+        {
+          "name": $name,
+          "scripts": $scripts
+        }
+      }
+
+  for $host in $hosts {
+    main scrt key $host.name
+
+    if ($host.scripts.ddnsCoordinator? | is-not-empty) {
+      main ddns $host.name
+    }
+
+    main vpn key $host.name shared
+    if ($host.scripts.vpnCoordinator? | is-not-empty) {
+      main vpn cnf $host.name --coordinator
+    } else {
+      main vpn cnf $host.name
+    }
+
+    main ssh key $host.name
+
+    main db key $host.name shared
+    if ($host.scripts.dbCoordinator? | is-not-empty) {
+      main db sql $host.name
+      main db cnf $host.name --coordinator
+    } else {
+      main db cnf $host.name
+    }
+
+    main pass $host.name
+
+    main geo $host.name
+  }
 }
 
-# create secrets for a coordinator host
-def "main host coordinator" [
-  --name: string, # name of the host
-] {
-  main ddns $name
+# lock secrets for all hosts
+def "main lock" [] {
+  let hosts = ls ([ ($env.FILE_PWD | path dirname) "src" "host" ] | path join)
+    | each { |x| $x.name | path basename }
 
-  main vpn key $name shared
-  main vpn cnf $name --coordinator
-
-  main ssh key $name
-
-  main db key $name shared
-  main db sql $name
-  main db cnf $name --coordinator
-
-  main pass $name
-
-  main geo $name
-}
-
-# create secrets for a regular host
-def "main host regular" [
-  --name: string, # name of the host
-  --ip: string, # ip of the host in the nebula vpn
-] {
-  main vpn key $name shared
-  main vpn cnf $name
-
-  main ssh key $name
-
-  main db key $name shared
-  main db cnf $name
-
-  main pass $name
-
-  main geo $name
-}
-
-# lock secrets for a host
-def "main host lock" [
-  --name: string, # name of the host
-] {
-  main ssh auth $name
-
-  main scrt key $name
-  main scrt val $name
+  for $name in $hosts {
+    main ssh auth $name
+    main scrt val $name
+  }
 }
 
 # create a secret key

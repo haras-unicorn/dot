@@ -1,0 +1,5 @@
+{
+  "ddnsCoordinator": true,
+  "vpnCoordinator": true,
+  "dbCoordinator": true
+}

@@ -18,13 +18,17 @@ in
       shared = "${self}/src/host/shared.nix";
       hardware = "${self}/src/host/${host}/hardware.json";
       secrets = "${self}/src/host/${host}/secrets.yaml";
+      scripts = "${self}/src/host/${host}/scripts.json";
     in
     {
       imports =
-        (builtins.map self.lib.module.mkSystemModule modules) ++
-        [ (self.lib.module.mkSystemModule config) ] ++
-        (if builtins.pathExists shared
+        (builtins.map self.lib.module.mkSystemModule modules)
+        ++ [ (self.lib.module.mkSystemModule config) ]
+        ++ (if builtins.pathExists shared
         then [ (self.lib.module.mkSystemModule (import shared)) ]
+        else [ ])
+        ++ (if builtins.pathExists scripts
+        then [ (self.lib.scripts.mkSystemModule scripts) ]
         else [ ]);
 
       facter.reportPath = hardware;
