@@ -286,7 +286,7 @@ def "main ssh auth" [name: string] {
 
 # create the database ssl ca
 #
-# assumes that database uses openssl kesy
+# assumes that the database uses openssl keys
 #
 # outputs:
 #   ./name.db.ca.pub
@@ -306,7 +306,7 @@ def "main db ca" [name: string] {
 
 # create database ssl keys signed by a previously generated db ca
 #
-# assumes that database uses openssl kesy
+# assumes that the database uses openssl keys
 #
 # outputs:
 #   ./name.db.key.pub
