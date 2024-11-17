@@ -1,5 +1,7 @@
 #!/usr/bin/env nu
 
+use std
+
 # create secrets for all hosts and lock them
 def "main" [] {
   main create
@@ -83,10 +85,13 @@ def "main lock" [] {
 #   ./name.scrt.key.pub
 #   ./name.scrt.key
 def "main scrt key" [name: string] {
-  age-keygen | save -f $"($name).scrt.key"
+  age-keygen err> (std null-device) out> $"($name).scrt.key"
   chmod 600 $"($name).scrt.key"
 
-  open --raw $"($name).scrt.key" | age-keygen -y | save -f $"($name).scrt.key.pub"
+  open --raw $"($name).scrt.key"
+    | (age-keygen -y
+      err> (std null-device)
+      out> $"($name).scrt.key.pub")
   chmod 644 $"($name).scrt.key.pub"
 }
 
@@ -324,7 +329,7 @@ def "main db key" [name: string, ca: path] {
     -CAkey $"($ca).db.ca"
     -CAcreateserial
     -out $"($name).db.key.pub"
-    -days 3650)
+    -days 3650) err>| ignore
   rm -f $"($name).db.key.req"
   chmod 644 $"($name).db.key.pub"
 }
