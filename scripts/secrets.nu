@@ -1,16 +1,16 @@
 #!/usr/bin/env nu
 
-let user = "haras"
-
 # create secrets for all hosts
 def "main" [] {
   main gen
+
   main lock
 }
 
 # create secrets for all hosts
 def "main gen" [] {
   main shared
+
   main host coordinator --name puffy
   main host regular --name hearth
   main host regular --name workbug
@@ -28,10 +28,15 @@ def "main lock" [] {
 # create secrets shared between hosts
 def "main shared" [] {
   main vpn ca shared
+
+  main ssh key shared
+
   main db ca shared
-  main db service vault
-  main key shared-db-root
-  main key shared-db-user
+  main db svc vault
+  main db user root
+  main db user haras
+
+  main scrt key shared
 }
 
 # create secrets for a coordinator host
@@ -39,13 +44,18 @@ def "main host coordinator" [
   --name: string, # name of the host
 ] {
   main ddns $name
-  main vpn host $name shared
-  main vpn config $name --lighthouse
+
+  main vpn key $name shared
+  main vpn cnf $name --coordinator
+
   main ssh key $name
-  main db host $name shared
-  main db sql $name shared-db-root.key shared-db-user.key
-  main db config $name --arbitrator
+
+  main db key $name shared
+  main db sql $name
+  main db cnf $name --coordinator
+
   main pass $name
+
   main geo $name
 }
 
@@ -54,57 +64,74 @@ def "main host regular" [
   --name: string, # name of the host
   --ip: string, # ip of the host in the nebula vpn
 ] {
-  main vpn host $name shared
-  main vpn config $name
+  main vpn key $name shared
+  main vpn cnf $name
+
   main ssh key $name
-  main db host $name shared
-  main db config $name
+
+  main db key $name shared
+  main db cnf $name
+
   main pass $name
+
   main geo $name
 }
 
 # lock secrets for a host
-#
-# this includes ssh authorized keys files and sops secrets files
 def "main host lock" [
   --name: string, # name of the host
 ] {
   main ssh auth $name
-  main sops $name
+
+  main scrt key $name
+  main scrt val $name
 }
 
-# create a sops secret file from a directory of secret files and encrypt it
+# create a secret key
 #
-# each file in the directory starting with prefix `name` or shared
-# will be a secret in the resulting file
-# with the name equal to the name of the file
-#
-# use `sops encrypt --help` to check out available private key options
-#
-# additionally creates an age key pair
-# to be used for decryption during host activation
+# assumes sops is used
 #
 # outputs:
-#   ./name.age.pub
-#   ./name.age
-#   ./name.sops.pub
-#   ./name.sops
-def "main sops" [name: string] {
-  age-keygen | save -f $"($name).age"
-  chmod 400 $"($name).age"
+#   ./name.scrt.key.pub
+#   ./name.scrt.key
+def "main scrt key" [name: string] {
+  age-keygen | save -f $"($name).scrt.key"
+  chmod 400 $"($name).scrt.key"
 
-  open --raw $"($name).age" | age-keygen -y | save -f $"($name).age.pub"
-  chmod 644 $"($name).age.pub"
+  open --raw $"($name).scrt.key" | age-keygen -y | save -f $"($name).scrt.key.pub"
+  chmod 644 $"($name).scrt.key.pub"
+}
 
+# create secret values
+#
+# each file in the directory starting with prefix `name` or shared
+# excluding secret keys or values
+# will be a secret in the resulting file
+#
+# each file in the directory starting with prefix `name` or shared
+# and ending with .key
+# will be used to encrypt the resulting file
+#
+# assumes sops is used
+#
+# outputs:
+#   ./name.scrt.val.pub
+#   ./name.scrt.val
+def "main scrt val" [name: string] {
   ls $env.PWD
     | where { |x| $x.type == "file" }
     | where { |x| 
         let basename = $x.name | path basename
         return (
-          not ($basename | str ends-with ".sops")
-          and not ($basename | str ends-with ".sops.pub")
-          and (($basename | str starts-with $name)
-          or ($basename | str starts-with shared)))
+          not ($basename | str ends-with ".scrt.val")
+          and not ($basename | str ends-with ".scrt.val.pub")
+          and not ($basename | str ends-with ".scrt.key")
+          and not ($basename | str ends-with ".scrt.key.pub")
+          and (
+            ($basename | str starts-with $name)
+            or ($basename | str starts-with shared)
+          )
+        )
       }
     | each { |x|
         let content = open --raw $x.name
@@ -113,102 +140,125 @@ def "main sops" [name: string] {
         return $"($x.name | path basename): |\n  ($content)" 
       }
     | str join "\n"
-    | save -f $"($name).sops"
-  chmod 400 $"($name).sops"
+    | save -f $"($name).scrt.val"
+  chmod 400 $"($name).scrt.val"
 
-  (sops encrypt $"($name).sops"
+  let keys = ls $env.PWD
+    | where { |x| $x.type == "file" }
+    | where { |x| 
+        let basename = $x.name | path basename
+        return (
+          ($basename | str ends-with ".scrt.key.pub")
+          and (
+            ($basename | str starts-with $name)
+            or ($basename | str starts-with shared)
+          )
+        )
+      }
+    | each { |x| open --raw $x.name }
+    | str join ","
+
+  (sops encrypt $"($name).scrt.val"
     --input-type yaml
-    --age (open --raw $"($name).age.pub")
-    --output $"($name).sops.pub"
+    --age $keys
+    --output $"($name).scrt.val.pub"
     --output-type yaml)
-  chmod 644 $"($name).sops.pub"
+  chmod 644 $"($name).scrt.val.pub"
 }
 
 # create the nebula vpn ca
 #
 # outputs:
-#   ./name.vpn.pub
-#   ./name.vpn
+#   ./name.vpn.ca.pub
+#   ./name.vpn.ca
 def "main vpn ca" [name: string = "ca"] {
   nebula-cert ca -name $name -duration $"(365 * 24 * 100)h"
 
-  mv $"ca.crt" $"($name).vpn.pub"
-  chmod 644 $"($name).vpn.pub"
+  mv $"ca.crt" $"($name).vpn.ca.pub"
+  chmod 644 $"($name).vpn.ca.pub"
 
-  mv $"ca.key" $"($name).vpn"
-  chmod 400 $"($name).vpn"
+  mv $"ca.key" $"($name).vpn.ca"
+  chmod 400 $"($name).vpn.ca"
 }
 
 # create nebula vpn keys signed by a previously generated vpn ca
 #
-# expects the ip to be in the NEBULA_`NAME`_IP env var
+# additionally saves the ip to a file
+#
+# expects the ip to be in the VPN_`NAME`_IP env var
+#
+# assumes nebula vpn is used
 #
 # outputs:
-#   ./name.vpn.pub
-#   ./name.vpn
-#   ./name.ip
-def "main vpn host" [name: string, ca: path = "ca"] {
-  let ip_key = $"NEBULA_($name | str upcase)_IP"
+#   ./name.vpn.key.pub
+#   ./name.vpn.key
+#   ./name.vpn.ip
+def "main vpn key" [name: string, ca: path] {
+  let ip_key = $"VPN_($name | str upcase)_IP"
   let ip = $env | default null $ip_key | get $ip_key
   if ($ip | is-empty) {
     error make {
-      msg: "expected ip provided via NEBULA_HOST_IP"
+      msg: "expected ip provided via VPN_`NAME`_IP"
     }
   }
 
   nebula-cert sign -ca-crt $"($ca).vpn.pub" -ca-key $"($ca).vpn" -name $name -ip $ip  
 
-  mv $"($name).crt" $"($name).vpn.pub"
-  chmod 644 $"($name).vpn.pub"
+  mv $"($name).crt" $"($name).vpn.key.pub"
+  chmod 644 $"($name).vpn.key.pub"
 
-  mv $"($name).key" $"($name).vpn"
-  chmod 400 $"($name).vpn"
+  mv $"($name).key" $"($name).vpn.key"
+  chmod 400 $"($name).vpn.key"
 
-  $ip | save -f $"($name).ip"
-  chmod 400 $"($name).ip"
+  $ip | save -f $"($name).vpn.ip"
+  chmod 400 $"($name).vpn.ip"
 }
 
 # create nebula vpn config
 #
-# expects the ip to be in the NEBULA_LIGHTHOUSE_IP env var
-# expects the domain to be in the NEBULA_LIGHTHOUSE_DOMAIN env var
+# expects the ip to be in the VPN_COORDINATOR_IP env var
+# expects the domain to be in the VPN_COORDINATOR_DOMAIN env var
+#
+# assumes nebula vpn is used
 #
 # outputs:
-#   ./name.lighthouse
-def "main vpn config" [name: string, --lighthouse] {
-  let ip = $env.NEBULA_LIGHTHOUSE_IP?
+#   ./name.vpn.cnf
+def "main vpn cnf" [name: string, --coordinator] {
+  let ip = $env.VPN_COORDINATOR_IP?
   if ($ip | is-empty) {
     error make {
-      msg: "expected ip provided via NEBULA_LIGHTHOUSE_IP"
+      msg: "expected ip provided via VPN_COORDINATOR_IP"
     }
   }
-  let domain = $env.NEBULA_LIGHTHOUSE_DOMAIN?
+  let domain = $env.VPN_COORDINATOR_DOMAIN?
   if ($domain | is-empty) {
     error make {
-      msg: "expected domain provided via NEBULA_LIGHTHOUSE_DOMAIN"
+      msg: "expected domain provided via VPN_COORDINATOR_DOMAIN"
     }
   }
 
-  let config = (("static_host_map:"
+  (("static_host_map:"
     + $"\n  \"($ip)\": [\"($domain):4242\"]"
     + "\nlighthouse:"
-    + $"\n  am_lighthouse: ($lighthouse)")
-    + (if $lighthouse { "" } else {
+    + $"\n  am_lighthouse: ($coordinator)")
+    + (if $coordinator { "" } else {
       ("\n  hosts:"
       + $"\n    - '($ip)'") }))
-  $config | save -f $"($name).lighthouse"
-  chmod 400 $"($name).lighthouse"
+    | save -f $"($name).vpn.cnf"
+  chmod 400 $"($name).vpn.cnf"
 }
 
 # create an ssh key pair
 #
+# assumes that openssh is used
+#
 # outputs:
-#   ./name.ssh.pub
-#   ./name.ssh
+#   ./name.ssh.key.pub
+#   ./name.ssh.key
 def "main ssh key" [name: string] {
-  ssh-keygen -q -a 100 -t ed25519 -N "" -C $name -f $"($name).ssh"
-  chmod 644 $"($name).ssh.pub"
-  chmod 400 $"($name).ssh"
+  ssh-keygen -q -a 100 -t ed25519 -N "" -C $name -f $"($name).ssh.key"
+  chmod 644 $"($name).ssh.key.pub"
+  chmod 400 $"($name).ssh.key"
 }
 
 # create an ssh authorized_keys file
@@ -216,8 +266,10 @@ def "main ssh key" [name: string] {
 # each file ending with .ssh.pub not starting with `name`
 # will be inserted into the final file
 #
+# assumes that openssh is used
+#
 # outputs:
-#   ./name.auth.pub
+#   ./name.ssh.auth.pub
 def "main ssh auth" [name: string] {
   ls $env.PWD
     | where { |x| $x.type == "file" }
@@ -229,15 +281,17 @@ def "main ssh auth" [name: string] {
       }
     | each { |x| open --raw $x.name }
     | str join "\n"
-    | save -f $"($name).auth.pub"
-  chmod 644 $"($name).auth.pub"
+    | save -f $"($name).ssh.auth.pub"
+  chmod 644 $"($name).ssh.auth.pub"
 }
 
 # create the database ssl ca
 #
+# assumes that database uses openssl kesy
+#
 # outputs:
-#   ./name.db.pub
-#   ./name.db
+#   ./name.db.ca.pub
+#   ./name.db.ca
 def "main db ca" [name: string] {
   (openssl genpkey -algorithm ED25519
     -out $"($name).db")
@@ -253,83 +307,116 @@ def "main db ca" [name: string] {
 
 # create database ssl keys signed by a previously generated ca
 #
+# assumes that database uses openssl kesy
+#
 # outputs:
-#   ./name.db.pub
-#   ./name.db
-def "main db host" [name: string, ca: path] {
+#   ./name.db.key.pub
+#   ./name.db.key
+def "main db key" [name: string, ca: path] {
   (openssl genpkey -algorithm ED25519
-    -out $"($name).db")
-  chmod 400 $"($name).db"
+    -out $"($name).db.key")
+  chmod 400 $"($name).db.key"
 
   (openssl req -new
-    -key $"($name).db"
-    -out $"($name).db.req"
+    -key $"($name).db.key"
+    -out $"($name).db.key.req"
     -subj $"/CN=($name)")
   (openssl x509 -req
-    -in $"($name).db.req"
-    -CA $"($ca).db.pub"
-    -CAkey $"($ca).db"
+    -in $"($name).db.key.req"
+    -CA $"($ca).db.key.pub"
+    -CAkey $"($ca).db.key"
     -CAcreateserial
-    -out $"($name).db.pub"
+    -out $"($name).db.key.pub"
     -days 3650)
-  rm -f $"($name).db.req"
-  chmod 644 $"($name).db.pub"
+  rm -f $"($name).db.key.req"
+  chmod 644 $"($name).db.key.pub"
 }
 
 # create database configuration
 #
-# expects the cluster ip in the GALERA_CLUSTER_IP env var
-# expects the host ip in the GALERA_HOST_IP env var
+# expects the cluster ip in the DATABASE_CLUSTER_IP env var
+# expects the host ip in the DATABASE_HOST_IP env var
+#
+# assumes that a mariadb galera cluster is used
 #
 # outputs:
-#   ./name.galera
-def "main db config" [name: string, --arbitrator] {
-  let cluster_ip = $env.GALERA_CLUSTER_IP?
+#   ./name.db.cnf
+def "main db cnf" [name: string, --coordinator] {
+  let cluster_ip = $env.DATABASE_CLUSTER_IP?
   if ($cluster_ip | is-empty) {
     error make {
-      msg: "expected cluster ip provided via GALERA_CLUSTER_IP"
+      msg: "expected cluster ip provided via DATABASE_CLUSTER_IP"
     }
   }
 
-  let host_ip = $env.GALERA_HOST_IP?
+  let host_ip = $env.DATABASE_HOST_IP?
   if ($host_ip | is-empty) {
     error make {
-      msg: "expected host ip provided via GALERA_HOST_IP"
+      msg: "expected host ip provided via DATABASE_HOST_IP"
     }
   }
 
-  let galera =  $"
+  $"
+    [mysqld]
     wsrep_cluster_address=\"gcomm://($cluster_ip)\"
-    wsrep_cluster_name=\"galera\"
+    wsrep_cluster_name=\"cluster\"
     wsrep_node_address=\"($host_ip)\"
     wsrep_node_name=\"($name)\"
-    wsrep_provider_options=\"pc.weight=(if $arbitrator { 10 } else { 1 })\"
-  "
-  $galera | save -f $"($name).galera"
+    wsrep_provider_options=\"pc.weight=(if $coordinator { 100 } else { 1 })\"
+  " | save -f $"($name).db.cnf"
+  chmod 400 $"($name).db.cnf"
 }
 
 # create initial database sql script
 #
-# each file ending with .service
+# each file ending with .db.user
+# will be included as a corresponding user
+# in the database server
+#
+# each file ending with .db.svc
 # will be included as a corresponding service user and database
 # in the database server
 #
+# assumes that a mariadb galera cluster is used
+#
 # outputs:
-#   ./name.sql 
-def "main db sql" [name: string, rootpass: string, userpass: string] {
-  let services = ls $env.FILE_PWD
+#   ./name.db.sql 
+def "main db sql" [name: string] {
+  let users = ls $env.FILE_PWD
     | where { |x| 
         let basename = $x.name | path basename
-        ($x.type == "file") and ($basename | str ends-with ".service.db.key")
+        ($x.type == "file") and ($basename | str ends-with ".db.user")
       }
     | each { |x|
         let basename = $x.name | path basename
-        let name = $basename | parse "{name}.service" | get name
+        let name = $basename | parse "{name}.db.user" | get name
+        let pass = open --raw $x.name
+        if ($name == "root") {
+          $"
+            ALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';
+          "
+        } else {
+          $"
+            CREATE USER IF NOT EXISTS '($name)'@'%';
+            ALTER USER '($name)'@'%' IDENTIFIED BY '($pass)';
+            GRANT ALL PRIVILEGES ON *.* TO '($name)'@'%';
+          "
+        }
+      }
+    | str join "\n"
+
+  let services = ls $env.FILE_PWD
+    | where { |x| 
+        let basename = $x.name | path basename
+        ($x.type == "file") and ($basename | str ends-with ".db.svc")
+      }
+    | each { |x|
+        let basename = $x.name | path basename
+        let name = $basename | parse "{name}.db.svc" | get name
         let pass = open --raw $x.name
         $"
           CREATE DATABASE IF NOT EXISTS ($name);
           CREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';
-          GRANT ALL PRIVILEGES ON ($name).* TO '($user)'@'%';
           GRANT ALL PRIVILEGES ON ($name).* TO '($name)'@'%';
         "
       }
@@ -351,29 +438,38 @@ def "main db sql" [name: string, rootpass: string, userpass: string] {
     INSERT INTO init \(timestamp\) VALUES \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\);
     COMMIT;
 
-    ALTER USER 'root'@'localhost' IDENTIFIED BY '(open --raw $rootpass)';
-    CREATE USER IF NOT EXISTS '($user)'@'%' IDENTIFIED BY '(open --raw $userpass)';
+    ($users)
 
     ($services)
 
     FLUSH PRIVILEGES;
   "
 
-  $sql | save -f $"($name).sql"
-  chmod 400 $"($name).sql"
+  $sql | save -f $"($name).db.sql"
+  chmod 400 $"($name).db.sql"
+}
+
+# create a database user password 
+#
+# outputs:
+#   ./name.db.user
+def "main db user" [name: string] {
+  let key = random chars --length 32
+  $key | save -f $"($name).db.user"
+  chmod 400 $"($name).db.user"
 }
 
 # create a database service password 
 #
 # outputs:
-#   ./name.service
-def "main db service" [name: string] {
+#   ./name.db.svc
+def "main db svc" [name: string] {
   let key = random chars --length 32
-  $key | save -f $"($name).service"
-  chmod 400 $"($name).service"
+  $key | save -f $"($name).db.svc"
+  chmod 400 $"($name).db.svc"
 }
 
-# create a linux user password using mkpasswd
+# create a linux user password
 #
 # outputs:
 #   ./name.pass.pub
@@ -388,21 +484,23 @@ def "main pass" [name: string, length: int = 32] {
   chmod 400 $"($name).pass.pub"
 }
 
-# create a ddns-updater settings file for duckdns
+# create ddns settings
 #
-# expects the token to be in the DDNS_UPDATER_DUCKDNS_TOKEN env var
-# expects the domain to be in the DDNS_UPDATER_DUCKDNS_DOMAIN env var
+# expects the token to be in the DDNS_DUCKDNS_TOKEN env var
+# expects the domain to be in the DDNS_DUCKDNS_DOMAIN env var
+#
+# assumes that ddns-updater with duckdns provider is used
 #
 # outputs:
 #   ./name.ddns
 def "main ddns" [name: string] {
-  let token = $env.DDNS_UPDATER_DUCKDNS_TOKEN?
+  let token = $env.DDNS_DUCKDNS_TOKEN?
   if ($token | is-empty) {
     error make {
       msg: "expected token provided via DDNS_UPDATER_DUCKDNS_TOKEN"
     }
   }
-  let domain = $env.DDNS_UPDATER_DUCKDNS_DOMAIN?
+  let domain = $env.DDNS_DUCKDNS_DOMAIN?
   if ($domain | is-empty) {
     error make {
       msg: "expected domain provided via DDNS_UPDATER_DUCKDNS_DOMAIN"
@@ -422,9 +520,11 @@ def "main ddns" [name: string] {
   chmod 400 $"($name).ddns"
 }
 
-# create geoclue2 provider settings for google maps api
+# create geolocation settings
 #
-# expects the api key to be in the GEOCLUE2_GOOGLE_MAPS_API_KEY env var
+# expects the api key to be in the GEO_API_KEY env var
+#
+# assumes that geoclue with google geolocation api is used
 #
 # outputs:
 #   ./name.geo
@@ -432,7 +532,7 @@ def "main geo" [name: string] {
   let key = $env.GEOCLUE2_GOOGLE_MAPS_API_KEY?
   if ($key | is-empty) {
     error make {
-      msg: "expected api key provided via GEOCLUE2_GOOGLE_MAPS_API_KEY"
+      msg: "expected api key provided via GEO_API_KEY"
     }
   }
 

@@ -2,7 +2,6 @@
 
 let
   hasNetwork = config.dot.hardware.network.enable;
-  hasMonitor = config.dot.hardware.monitor.enable;
   isArbitrator = config.dot.database.arbitrator.enable;
 
   wsrepProviderOptions = builtins.concatStringsSep ";" [
