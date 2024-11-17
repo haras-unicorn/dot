@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ nixpkgs, ... }:
 
 let
   parseBool = expr: name: if builtins.hasAttr name expr then builtins.getAttr name expr else null;
@@ -13,7 +13,7 @@ let
       dbCoordinator = parseBool expr "dbCoordinator";
     };
 
-  mkBool = bool: lib.mkIf (bool != null) bool;
+  mkBool = bool: nixpkgs.lib.mkIf (bool != null) bool;
 
   mkModule = parsed: {
     dot = {
