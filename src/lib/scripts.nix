@@ -24,7 +24,7 @@ let
   };
 in
 {
-  mkSystemModule = scripts: { inherits = [ (mkModule (parse scripts)) ]; };
+  mkSystemModule = scripts: { imports = [ (mkModule (parse scripts)) ]; };
 
-  mkHmModule = scripts: { inherits = [ (mkModule (parse scripts)) ]; };
+  mkHmModule = scripts: { imports = [ (mkModule (parse scripts)) ]; };
 }
