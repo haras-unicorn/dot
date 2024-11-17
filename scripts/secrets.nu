@@ -171,8 +171,6 @@ def "main vpn ca" [name: string] {
 
 # create nebula vpn keys signed by a previously generated vpn ca
 #
-# additionally saves the ip to a file
-#
 # expects the ip to be in the VPN_`NAME`_IP env var
 #
 # assumes nebula vpn is used
@@ -180,7 +178,6 @@ def "main vpn ca" [name: string] {
 # outputs:
 #   ./name.vpn.key.pub
 #   ./name.vpn.key
-#   ./name.vpn.ip
 def "main vpn key" [name: string, ca: path] {
   let ip_key = $"VPN_($name | str upcase)_IP"
   let ip = $env | default null $ip_key | get $ip_key
@@ -197,9 +194,6 @@ def "main vpn key" [name: string, ca: path] {
 
   mv $"($name).key" $"($name).vpn.key"
   chmod 600 $"($name).vpn.key"
-
-  $ip | save -f $"($name).vpn.ip"
-  chmod 600 $"($name).vpn.ip"
 }
 
 # create nebula vpn config
@@ -336,7 +330,7 @@ def "main db key" [name: string, ca: path] {
 # expects the cluster ip in the DB_CNF_CLUSTER_IPS env var
 # with format ip1,ip2,ip3...
 # 
-# expects the host ip in the DB_CNF_`name`_IP env var
+# expects the host ip in the DB_CNF_`NAME`_IP env var
 #
 # assumes that a mariadb galera cluster is used
 #
@@ -354,7 +348,7 @@ def "main db cnf" [name: string, --coordinator] {
     | where { |x| $x | is-not-empty }
     | str join "," 
 
-  let host_ip_key = $"DB_CNF_($name)_IP"
+  let host_ip_key = $"DB_CNF_($name | str upcase)_IP"
   let host_ip = $env | default null $host_ip_key | get $host_ip_key
   if ($host_ip | is-empty) {
     error make {
@@ -506,28 +500,28 @@ def "main pass" [name: string, length: int = 32] {
 
 # create ddns settings
 #
-# expects the token to be in the DDNS_`name`_TOKEN env var
+# expects the token to be in the DDNS_`NAME`_TOKEN env var
 #
-# expects the domain to be in the DDNS_`name`_DOMAIN env var
+# expects the domain to be in the DDNS_`NAME`_DOMAIN env var
 #
 # assumes that ddns-updater with duckdns provider is used
 #
 # outputs:
 #   ./name.ddns
 def "main ddns" [name: string] {
-  let token_key = $"DDNS_($name)_TOKEN"
+  let token_key = $"DDNS_($name | str upcase)_TOKEN"
   let token = $env | default null $token_key | get $token_key
   if ($token | is-empty) {
     error make {
-      msg: "expected token provided via DDNS_`name`_TOKEN"
+      msg: "expected token provided via DDNS_`NAME`_TOKEN"
     }
   }
 
-  let domain_key = $"DDNS_($name)_DOMAIN"
+  let domain_key = $"DDNS_($name | str upcase)_DOMAIN"
   let domain = $env | default null $domain_key | get $domain_key
   if ($domain | is-empty) {
     error make {
-      msg: "expected domain provided via DDNS_`name`_DOMAIN"
+      msg: "expected domain provided via DDNS_`NAME`_DOMAIN"
     }
   }
 
