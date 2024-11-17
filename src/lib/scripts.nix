@@ -1,7 +1,7 @@
-{ ... }:
+{ lib, ... }:
 
 let
-  parseBool = expr: name: if builtins.hasAttr name expr then builtins.getAttr name expr else false;
+  parseBool = expr: name: if builtins.hasAttr name expr then builtins.getAttr name expr else null;
 
   parse = scripts:
     let
@@ -13,11 +13,13 @@ let
       dbCoordinator = parseBool expr "dbCoordinator";
     };
 
+  mkBool = bool: lib.mkIf (bool != null) bool;
+
   mkModule = parsed: {
     dot = {
-      ddns.coordinator.enable = parsed.ddnsCoordinator;
-      vpn.coordinator.enable = parsed.vpnCoordinator;
-      db.coordinator.enable = parsed.dbCoordinator;
+      ddns.coordinator.enable = mkBool parsed.ddnsCoordinator;
+      vpn.coordinator.enable = mkBool parsed.vpnCoordinator;
+      db.coordinator.enable = mkBool parsed.dbCoordinator;
     };
   };
 in
