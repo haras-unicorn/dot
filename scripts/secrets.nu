@@ -81,8 +81,9 @@ def "main lock" [] {
 def "main copy vals" [] {
   let secrets = ls $env.PWD
     | where { |x| $x.name | str ends-with ".scrt.val.pub" }
+    | get name
   for $secret in $secrets {
-    let host = $secret.name
+    let host = $secret
       | path basename
       | parse "{host}.scrt.val.pub"
       | get host
@@ -93,7 +94,7 @@ def "main copy vals" [] {
       $host
       "sercrets.yaml"
     ] | path join
-    cp -f $secret.name $dest
+    cp -f $secret $dest
   }
 }
 
