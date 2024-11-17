@@ -12,26 +12,23 @@ in
     services.openssh.settings.PermitRootLogin = "no";
     services.openssh.settings.PasswordAuthentication = false;
     services.openssh.settings.KbdInteractiveAuthentication = false;
-
-    sops.secrets."${host}.ssh" = {
-      path = "/home/${user}/.ssh/id";
+    sops.secrets."${host}.ssh.auth.pub" = {
+      path = "/home/${user}/.ssh/authorized_keys";
       owner = user;
       group = "users";
-      mode = "0400";
+      mode = "0644";
     };
-
-    sops.secrets."${host}.ssh.pub" = {
+    sops.secrets."${host}.ssh.key.pub" = {
       path = "/home/${user}/.ssh/id.pub";
       owner = user;
       group = "users";
       mode = "0644";
     };
-
-    sops.secrets."${host}.auth.pub" = {
-      path = "/home/${user}/.ssh/authorized_keys";
+    sops.secrets."${host}.ssh.key" = {
+      path = "/home/${user}/.ssh/id";
       owner = user;
       group = "users";
-      mode = "0644";
+      mode = "0400";
     };
   };
 }

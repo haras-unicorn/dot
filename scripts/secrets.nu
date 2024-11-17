@@ -1,16 +1,14 @@
 #!/usr/bin/env nu
 
-# create secrets for all hosts
+# create secrets for all hosts and lock them
 def "main" [] {
-  main gen
-
+  main create
   main lock
 }
 
 # create secrets for all hosts
-def "main gen" [] {
+def "main create" [] {
   main shared
-
   main host coordinator --name puffy
   main host regular --name hearth
   main host regular --name workbug
