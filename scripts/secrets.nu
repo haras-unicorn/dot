@@ -274,7 +274,7 @@ def "main ssh auth" [name: string] {
         let basename = $x.name | path basename
         return (
           not ($basename | str starts-with $name)
-          and ($basename | str ends-with .ssh.pub))
+          and ($basename | str ends-with .ssh.key.pub))
       }
     | each { |x| open --raw $x.name }
     | str join "\n"
