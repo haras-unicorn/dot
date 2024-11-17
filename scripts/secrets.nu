@@ -304,7 +304,7 @@ def "main db ca" [name: string] {
   chmod 644 $"($name).db.pub"
 }
 
-# create database ssl keys signed by a previously generated ca
+# create database ssl keys signed by a previously generated db ca
 #
 # assumes that database uses openssl kesy
 #
