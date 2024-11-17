@@ -547,7 +547,7 @@ def "main ddns" [name: string] {
 # outputs:
 #   ./name.geo
 def "main geo" [name: string] {
-  let key_key = $"GEO_($name)_API_KEY"
+  let key_key = $"GEO_($name | str upcase)_API_KEY"
   let key = $env | default null $key_key | get $key_key
   if ($key | is-empty) {
     error make {
