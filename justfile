@@ -21,13 +21,21 @@ secrets *args:
     mkdir '{{ secrets-dir }}'
     cd '{{ secrets-dir }}'; {{ secrets-script }} {{ args }}
 
-copy-secrets:
-    cp -f '{{ secrets-dir }}/puffy.sops.pub' '{{ hosts }}/puffy/secrets.yaml'
-    cp -f '{{ secrets-dir }}/hearth.sops.pub' '{{ hosts }}/hearth/secrets.yaml'
-    cp -f '{{ secrets-dir }}/workbug.sops.pub' '{{ hosts }}/workbug/secrets.yaml'
-    cp -f '{{ secrets-dir }}/officer.sops.pub' '{{ hosts }}/officer/secrets.yaml'
+copy-secret-vals:
+    let secrets = ls '{{ secrets-dir }}' \
+      | where { |x| $x.name | str ends-with ".scrt.val.pub" } \
+    for $secret in $ secrets { \
+      let host = $x.name \
+        | path basename \
+        | parse "{host}.scrt.val.pub" \
+        | get host \
+      cp -f $secret.name $"{{ hosts }}/($host)/secrets.yaml" \
+    }
 
-copy-secret-key name:
-    cp -f '{{ secrets-dir }}/{{ name }}.age' /root/.sops/secrets.age
+copy-secret-key:
+    let host = open --raw /etc/hostname \
+    (cp -f \
+      $"{{ secrets-dir }}/($host).scrt.key" \
+      /root/.sops/secrets.age)
     chown root:root /root/.sops/secrets.age
     chmod 400 /root/.sops/secrets.age
