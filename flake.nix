@@ -4,6 +4,10 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
+    deploy-rs.inputs.utils.follows = "flake-utils";
+
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -43,6 +47,7 @@
     { self
     , flake-utils
     , nixpkgs
+    , deploy-rs
     , nixos-facter-modules
     , ...
     } @ rawInputs:
@@ -96,6 +101,9 @@
           nixosModules = invokeForHostSystemMatrix self.lib.nixosModule.mkNixosModule;
           hmModules = invokeForHostSystemMatrix self.lib.hmModule.mkHmModule;
           nixosConfigurations = invokeForHostSystemMatrix self.lib.nixosConfiguration.mkNixosConfiguration;
+          deploy.nodes = invokeForHostSystemMatrix self.lib.deploy.mkDeploy;
+
+          checks = self.lib.deploy.checks;
         };
     in
     libPart // systemPart // hostPart;

@@ -33,6 +33,7 @@
         age
         sops
         nebula
+        deploy-rs
       ];
     };
 }
