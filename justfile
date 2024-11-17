@@ -16,6 +16,7 @@ format:
 
 lint:
     prettier --check '{{ root }}'
+    nix flake check
 
 secrets *args:
     mkdir '{{ secrets-dir }}/current'
