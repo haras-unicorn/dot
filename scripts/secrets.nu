@@ -375,12 +375,14 @@ def "main db cnf" [name: string, --coordinator] {
 
 # create initial database cluster sql script
 #
-# each file ending with .db.user
-# will be included as a corresponding user
+# each file ending with .db.svc
+# will be included as a corresponding service database
+# and user with all permissions to that database
 # in the database cluster
 #
-# each file ending with .db.svc
-# will be included as a corresponding service user and database
+# each file ending with .db.user
+# will be included as a corresponding user
+# with all permissions for all service databases 
 # in the database cluster
 #
 # assumes that a mariadb galera cluster is used
@@ -388,29 +390,6 @@ def "main db cnf" [name: string, --coordinator] {
 # outputs:
 #   ./name.db.sql 
 def "main db sql" [name: string] {
-  let users = ls $env.FILE_PWD
-    | where { |x| 
-        let basename = $x.name | path basename
-        ($x.type == "file") and ($basename | str ends-with ".db.user")
-      }
-    | each { |x|
-        let basename = $x.name | path basename
-        let name = $basename | parse "{name}.db.user" | get name
-        let pass = open --raw $x.name
-        if ($name == "root") {
-          $"
-            ALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';
-          "
-        } else {
-          $"
-            CREATE USER IF NOT EXISTS '($name)'@'%';
-            ALTER USER '($name)'@'%' IDENTIFIED BY '($pass)';
-            GRANT ALL PRIVILEGES ON *.* TO '($name)'@'%';
-          "
-        }
-      }
-    | str join "\n"
-
   let services = ls $env.FILE_PWD
     | where { |x| 
         let basename = $x.name | path basename
@@ -420,10 +399,45 @@ def "main db sql" [name: string] {
         let basename = $x.name | path basename
         let name = $basename | parse "{name}.db.svc" | get name
         let pass = open --raw $x.name
+        {
+          "name": $name,
+          "pass": $pass
+        }
+      }
+
+  let users = ls $env.FILE_PWD
+    | where { |x| 
+        let basename = $x.name | path basename
+        ($x.type == "file") and ($basename | str ends-with ".db.user")
+      }
+    | each { |x|
+        let basename = $x.name | path basename
+        let name = $basename | parse "{name}.db.user" | get name
+        let pass = open --raw $x.name
+        let services = $services
+          | each { |x|
+              $"\nGRANT ALL PRIVILEGES ON ($x.name).* TO '($name)'@'%';"
+            }
+          | str join ""
+        if ($name == "root") {
+          $"
+            ALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';
+          "
+        } else {
+          $"
+            CREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';
+            ($services)
+          "
+        }
+      }
+    | str join "\n"
+
+  let services = $services
+    | each { |x|
         $"
-          CREATE DATABASE IF NOT EXISTS ($name);
-          CREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';
-          GRANT ALL PRIVILEGES ON ($name).* TO '($name)'@'%';
+          CREATE DATABASE IF NOT EXISTS ($x.name);
+          CREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)';
+          GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';
         "
       }
     | str join "\n"
@@ -444,9 +458,9 @@ def "main db sql" [name: string] {
     INSERT INTO init \(timestamp\) VALUES \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\);
     COMMIT;
 
-    ($users)
-
     ($services)
+
+    ($users)
 
     FLUSH PRIVILEGES;
   "
