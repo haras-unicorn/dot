@@ -37,7 +37,6 @@ in
         wsrep_debug="NONE"
         wsrep_provider="${pkgs.mariadb-galera}/lib/libgalera_smm.so"
         wsrep_provider_options="${wsrepProviderOptions}"
-        wsrep_sst_method="mariabackup"
 
         !includedir /etc/mysql/conf.d/
       '';

@@ -18,6 +18,7 @@ def "main create" []: nothing -> nothing {
   main db svc vault
   main db user root
   main db user mysql
+  main db user sst
   main db user haras
 
   main scrt key shared
@@ -465,7 +466,9 @@ def "main db cnf" [name: string, --coordinator]: nothing -> nothing {
 wsrep_cluster_address=\"gcomm://($cluster_ips)\"
 wsrep_cluster_name=\"cluster\"
 wsrep_node_address=\"($host_ip)\"
-wsrep_node_name=\"($name)\""
+wsrep_node_name=\"($name)\"
+wsrep_sst_method=\"mariabackup\"
+wsrep_sst_auth=\"sst:(open --raw sst.db.user)\""
     | save -f $"($name).db.cnf"
   chmod 600 $"($name).db.cnf"
 }
@@ -534,6 +537,8 @@ def "main db sql" [name: string]: nothing -> nothing {
           $"\n    ALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';"
         } else if ($name == "mysql") {
           $"\n    ALTER USER 'mysql'@'localhost' IDENTIFIED BY '($pass)';"
+        } else if ($name == "sst") {
+          $"\n    CREATE USER IF NOT EXISTS 'sst'@'localhost' IDENTIFIED BY '($pass)';"
         } else {
           let hosts = $host_names
             | each { |host| $"CREATE USER IF NOT EXISTS '($name)'@'($host)' IDENTIFIED BY '($pass)';" }
