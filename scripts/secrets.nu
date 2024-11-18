@@ -97,7 +97,7 @@ def "main copy vals" []: nothing -> nothing {
 # to specified remote host
 # using ssh and scp
 # otherwise, copies the secret key to the current host
-def --wrapped "main copy key" [--host: string, ...args]: nothing -> nothing {
+def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
   let this_host = open --raw /etc/hostname
   if (($host | is-empty) or ($host == $this_host)) {
     let host = $this_host
@@ -112,8 +112,9 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> nothing {
     sudo chmod 400 $dest
   } else {
     let pass = input -s $"gimme me the password for ($env.USER)@($host) pls\n"
+    print "got it! now checking if its alright..."
     def rce [cmd: string]: nothing -> nothing { 
-      echo $pass | ssh ...($args) -tt $host $"bash -c 'sudo ($cmd)'"
+      ssh ...($args) $host $"bash -c 'echo ($pass) | sudo -S ($cmd)'" o+e>| ignore
     }
     def rcp [origin: string, dest: string]: nothing -> nothing {
       scp ...($args) $origin $dest
