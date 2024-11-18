@@ -532,7 +532,9 @@ def "main db sql" [name: string]: nothing -> nothing {
           $"CREATE DATABASE IF NOT EXISTS ($x.name);"
           $"CREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)';"
           $"GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';"
-        ] | each { |x| $"\n    ($x)" }
+        ]
+          | each { |x| $"\n    ($x)" }
+          | str join ""
       }
     | str join "\n"
 
