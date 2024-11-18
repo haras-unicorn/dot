@@ -511,47 +511,64 @@ def "main db sql" [name: string]: nothing -> nothing {
         let name = $basename | parse "{name}.db.user" | get name
         let pass = open --raw $x.name
         let services = $services
-          | each { |x| $"\nGRANT ALL PRIVILEGES ON ($x.name).* TO '($name)'@'%';" }
+          | each { |x| $"\n  GRANT ALL PRIVILEGES ON ($x.name).* TO '($name)'@'%';" }
           | str join ""
         if ($name == "root") {
-          $"\nALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';"
+          $"\n  ALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';"
         } else {
-          $"\nCREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';($services)"
+          $"\n  CREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';($services)"
         }
       }
-    | str join ""
+    | str join "\n"
 
   let services = $services
     | each { |x|
-        $"\nCREATE DATABASE IF NOT EXISTS ($x.name);"
-        + $"\nCREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)';"
-        + $"\nGRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';"
+        $"\n  CREATE DATABASE IF NOT EXISTS ($x.name);"
+        + $"\n  CREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)';"
+        + $"\n  GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';"
       }
-    | str join ""
+    | str join "\n"
 
-  let lock = "START TRANSACTION;
+  let sql = $"DELIMITER $$
 
-CREATE DATABASE IF NOT EXISTS init;
-USE init;
+DROP PROCEDURE IF EXISTS init$$
 
-CREATE TABLE IF NOT EXISTS init \(
-  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-\);
-
-SELECT COUNT\(*\) INTO @already_initialized FROM init;
-DO CASE
-  WHEN @already_initialized > 0 THEN
+CREATE PROCEDURE init\(\)
+BEGIN
+  DECLARE already_initialized INT DEFAULT 0;
+  
+  START TRANSACTION;
+  
+  CREATE DATABASE IF NOT EXISTS init;
+  USE init;
+  
+  CREATE TABLE IF NOT EXISTS init (
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
+  
+  SELECT COUNT\(*\) INTO already_initialized FROM init;
+  
+  IF already_initialized > 0 THEN
     ROLLBACK;
-    LEAVE;
-  END CASE;
+    RETURN;
+  END IF;
 
-INSERT INTO init \(timestamp\)
-  VALUES \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\);
+  INSERT INTO init \(timestamp\)
+    VALUES \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\);
+  COMMIT;
 
-COMMIT;"
+  ($services)
 
- ($lock + $services + $users + "FLUSH PRIVILEGES;")
-  | save -f $"($name).db.sql"
+  ($users)
+
+  FLUSH PRIVILEGES;
+END$$
+
+DELIMITER ;
+
+CALL init\(\);"
+
+  $sql | save -f $"($name).db.sql"
   chmod 600 $"($name).db.sql"
 }
 
