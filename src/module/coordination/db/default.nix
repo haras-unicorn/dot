@@ -30,6 +30,7 @@ in
         wsrep_provider=${pkgs.mariadb-galera}/lib/libgalera_smm.so
         wsrep_sst_method=mariabackup
         wsrep_provider_options="${wsrepProviderOptions}"
+        binlog_format = "ROW";
 
         !includedir /etc/mysql/conf.d/
       '';
