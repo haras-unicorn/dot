@@ -538,7 +538,9 @@ def "main db sql" [name: string]: nothing -> nothing {
         } else if ($name == "mysql") {
           $"\n    ALTER USER 'mysql'@'localhost' IDENTIFIED BY '($pass)';"
         } else if ($name == "sst") {
-          $"\n    CREATE USER IF NOT EXISTS 'sst'@'localhost' IDENTIFIED BY '($pass)';"
+          ($"\n    CREATE USER IF NOT EXISTS 'sst'@'localhost' IDENTIFIED BY '($pass)';"
+            + $"\n    GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT, SUPER ON *.* TO 'sst'@'localhost';")
+
         } else {
           let hosts = $host_names
             | each { |host| $"CREATE USER IF NOT EXISTS '($name)'@'($host)' IDENTIFIED BY '($pass)';" }
