@@ -113,6 +113,7 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
   } else {
     let pass = input -s $"gimme me the password for ($env.USER)@($host) pls\n"
     print "got it! now checking if its alright..."
+
     def rce [cmd: string]: nothing -> nothing { 
       ssh ...($args) $host $"bash -c 'echo ($pass) | sudo -S ($cmd)'"
     }
@@ -121,9 +122,7 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
     }
 
     mut result = null
-    try {
-      $result = rce "echo test"
-    }
+    $result = rce "echo test"
     if ($result | is-empty) {
       (print
         $"password for ($env.USER)@($host) is invalid"
@@ -131,7 +130,7 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
         "exiting :(")
       exit 1
     }
-    print "thx :)"
+    print "the password is fine - thx! :)"
 
     let name = rce "cat /etc/hostname"
     let backup = $"($name).scrt.key.orig"
@@ -143,21 +142,21 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
     let tmp_file = $"(random uuid)-($file)"
     let tmp_dest = [ "/home" $env.USER $tmp_file ] | path join
 
-    try {
-      rce $"mv -f ($dest) ($tmp_dest)"
-      rce $"chown ($env.USER):(id -gn) ($tmp_dest)"
-      rce $"chmod 400 ($tmp_dest)"
-      rcp $"($host):($tmp_dest)" $backup
-      rce $"rm -f ($tmp_dest)"
-    } catch {
-      if ($backup | path exists) {
-        (print
-          $"($backup) file already exists"
-          "cannot create backup"
-          "exiting :(")
-        exit 1
-      }
+    if ($backup | path exists) {
+      (print
+        $"backup file ($backup) already exists"
+        "can u pls just like move it or delete or sth"
+        "thx :)"
+        "ill exit now...")
+      exit 1
     }
+
+    rce $"mv -f ($dest) ($tmp_dest)"
+    rce $"chown ($env.USER):(id -gn) ($tmp_dest)"
+    rce $"chmod 400 ($tmp_dest)"
+    rcp $"($host):($tmp_dest)" $backup
+    rce $"rm -f ($tmp_dest)"
+
     rce $"mkdir -p ($dest_dir)"
     rce $"chown root:root ($dest_dir)"
     rce $"chmod 700 ($dest_dir)"
