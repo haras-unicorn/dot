@@ -111,12 +111,26 @@ def "main copy key" [--host: string, ...args] {
     sudo chown root:root $dest
     sudo chmod 400 $dest
   } else {
+    let pass = input -s $"gimme me the password for ($env.USER)@($host) pls\n"
     def rce [cmd: string] { 
-      ssh ...($args) $host $"bash -c ($cmd)"
+      echo $pass | ssh ...($args) -tt $host $"bash -c 'sudo ($cmd)'"
     }
     def rcp [origin: string, dest: string] {
       scp ...($args) $origin $dest
     }
+
+    let result = null
+    try {
+      $result = rce "echo test"
+    }
+    if ($result | is-empty) {
+      (print
+        $"password for ($env.USER)@($host) is invalid"
+        $"or ($env.USER)@($host) is not in wheel group"
+        "exiting :(")
+      exit 1
+    }
+    print "thx :)"
 
     let name = rce "cat /etc/hostname"
     let backup = $"($name).scrt.key.orig"
@@ -135,17 +149,17 @@ def "main copy key" [--host: string, ...args] {
         (print
           $"($backup) file already exists"
           "cannot create backup"
-          "exiting...")
+          "exiting :(")
         exit 1
       }
     }
-    rce $"sudo mkdir ($dest_dir)"
-    rce $"sudo chown root:root ($dest_dir)"
-    rce $"sudo chmod 700 ($dest_dir)"
+    rce $"mkdir ($dest_dir)"
+    rce $"chown root:root ($dest_dir)"
+    rce $"chmod 700 ($dest_dir)"
     rcp $origin $"($host):($tmp_dest)"
-    rce $"sudo mv -f ($tmp_dest) ($dest)"
-    rce $"sudo chown root:root ($dest)"
-    rce $"sudo chmod 400 ($dest)"
+    rce $"mv -f ($tmp_dest) ($dest)"
+    rce $"chown root:root ($dest)"
+    rce $"chmod 400 ($dest)"
   }
 }
 
