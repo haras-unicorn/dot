@@ -84,7 +84,6 @@ def "main copy vals" [] {
     | get name
   for $secret in $secrets {
     let host = $secret
-      | path basename
       | parse "{host}.scrt.val.pub"
       | get host
     let dest = [
@@ -104,9 +103,10 @@ def "main copy vals" [] {
 # to specified remote host
 # using ssh and scp
 # otherwise, copies the secret key to the current host
-def "main copy key" [--host: string | null = null, ...args] {
-  if ($host | is-null) {
-    let host = open --raw /etc/hostname
+def "main copy key" [--host: string, ...args] {
+  let this_host = open --raw /etc/hostname
+  if (($host | is-empty) or ($host == $this_host)) {
+    let host = $this_host
     let origin = [ $env.PWD $"($host).scrt.key" ] | path join
     let dest_dir = [ "/root" ] | path join
     let dest = [ $dest_dir $"host.scrt.key" ] | path join
@@ -127,12 +127,13 @@ def "main copy key" [--host: string | null = null, ...args] {
     let name = rce "cat /etc/hostname"
     let backup = $"($name).scrt.key.orig"
     let file = "host.scrt.key"
-    let dest_dir = [ "/root" ] | path join
+    let dest_dir = "/root"
     let dest = [ $dest_dir $file ] | path join
     let origin_file = $"($name).scrt.key"
     let origin = [ $env.PWD $origin_file ] | path join
-    let tmp_file = $"(random chars --length 32)-($file)"
+    let tmp_file = $"(random uuid)-($file)"
     let tmp_dest = [ "/home" $env.USER $tmp_file ] | path join
+
     try {
       rcp $"($host):($dest)" $backup
     } catch {
