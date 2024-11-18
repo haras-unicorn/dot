@@ -4,6 +4,7 @@ bash-language-server = { command = "bash-language-server", args = ["start"] }
 taplo = { command = "taplo", args = ["lsp", "stdio"] }
 yaml-language-server = { command = "yaml-language-server", args = ["--stdio"] }
 marksman = { command = "marksman", args = ["server"] }
+nu-lsp = { command = "nu", args = ["lsp"] }
 
 [language-server.vscode-json-language-server]
 command = "vscode-json-language-server"
@@ -53,3 +54,7 @@ language-servers = ["marksman"]
 name = "xml"
 auto-format = true
 formatter = { command = "tidy", args = ["-xml", "-i"] }
+
+[[language]]
+name = "nu"
+language-servers = ["nu-lsp"]

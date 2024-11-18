@@ -15,7 +15,9 @@ format:
     nixpkgs-fmt '{{ root }}'
 
 lint:
+    cd '{{ root }}'; just --unstable --fmt --check
     prettier --check '{{ root }}'
+    nixpkgs-fmt --check '{{ root }}'
     nix flake check
 
 secrets *args:
