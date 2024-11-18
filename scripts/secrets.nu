@@ -542,7 +542,6 @@ def "main db sql" [name: string]: nothing -> nothing {
         } else if ($name == "sst") {
           ($"\n    CREATE USER IF NOT EXISTS 'sst'@'localhost' IDENTIFIED BY '($pass)';"
             + $"\n    GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT, PROCESS, SLAVE MONITOR ON *.* TO 'sst'@'localhost';")
-
         } else {
           let hosts = $host_names
             | each { |host| $"CREATE USER IF NOT EXISTS '($name)'@'($host)' IDENTIFIED BY '($pass)';" }
@@ -555,13 +554,17 @@ def "main db sql" [name: string]: nothing -> nothing {
 
   let services = $services
     | each { |x|
-        [
-          $"CREATE DATABASE IF NOT EXISTS ($x.name);"
-          $"CREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)';"
-          $"GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';"
-        ]
-          | each { |x| $"\n    ($x)" }
+        let hosts = $host_names
+          | each { |host|
+              [
+                $"CREATE USER IF NOT EXISTS '($x.name)'@'($host)' IDENTIFIED BY '($x.pass)';"
+                $"GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'($host)';"
+              ] | each { |x| $"\n    ($x)" }
+                | str join ""
+            }
           | str join ""
+        ($"\n    CREATE DATABASE IF NOT EXISTS ($x.name);"
+          + $hosts)
       }
     | str join "\n"
 
