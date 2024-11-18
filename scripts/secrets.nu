@@ -486,14 +486,14 @@ wsrep_node_name=\"($name)\""
 # outputs:
 #   ./name.db.sql 
 def "main db sql" [name: string]: nothing -> nothing {
-  let services = ls $env.FILE_PWD
+  let services = ls $env.PWD
     | where { |x| 
         let basename = $x.name | path basename
         ($x.type == "file") and ($basename | str ends-with ".db.svc")
       }
     | each { |x|
         let basename = $x.name | path basename
-        let name = $basename | parse "{name}.db.svc" | get name
+        let name = $basename | parse "{name}.db.svc" | get name | first
         let pass = open --raw $x.name
         {
           "name": $name,
@@ -501,14 +501,14 @@ def "main db sql" [name: string]: nothing -> nothing {
         }
       }
 
-  let users = ls $env.FILE_PWD
+  let users = ls $env.PWD
     | where { |x| 
         let basename = $x.name | path basename
         ($x.type == "file") and ($basename | str ends-with ".db.user")
       }
     | each { |x|
         let basename = $x.name | path basename
-        let name = $basename | parse "{name}.db.user" | get name
+        let name = $basename | parse "{name}.db.user" | get name | first
         let pass = open --raw $x.name
         let services = $services
           | each { |x| $"\n  GRANT ALL PRIVILEGES ON ($x.name).* TO '($name)'@'%';" }
@@ -523,9 +523,9 @@ def "main db sql" [name: string]: nothing -> nothing {
 
   let services = $services
     | each { |x|
-        $"\n  CREATE DATABASE IF NOT EXISTS ($x.name);"
+        ($"\n  CREATE DATABASE IF NOT EXISTS ($x.name);"
         + $"\n  CREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)';"
-        + $"\n  GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';"
+        + $"\n  GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';")
       }
     | str join "\n"
 
@@ -542,9 +542,9 @@ BEGIN
   CREATE DATABASE IF NOT EXISTS init;
   USE init;
   
-  CREATE TABLE IF NOT EXISTS init (
+  CREATE TABLE IF NOT EXISTS init \(
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
+  \);
   
   SELECT COUNT\(*\) INTO already_initialized FROM init;
   
@@ -556,10 +556,8 @@ BEGIN
   INSERT INTO init \(timestamp\)
     VALUES \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\);
   COMMIT;
-
-  ($services)
-
-  ($users)
+($services)
+($users)
 
   FLUSH PRIVILEGES;
 END$$
