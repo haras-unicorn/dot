@@ -97,7 +97,7 @@ def "main copy vals" []: nothing -> nothing {
 # to specified remote host
 # using ssh and scp
 # otherwise, copies the secret key to the current host
-def "main copy key" [--host: string, ...args]: nothing -> nothing {
+def --wrapped "main copy key" [--host: string, ...args]: nothing -> nothing {
   let this_host = open --raw /etc/hostname
   if (($host | is-empty) or ($host == $this_host)) {
     let host = $this_host
