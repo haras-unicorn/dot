@@ -464,7 +464,7 @@ def "main db cnf" [name: string, --coordinator]: nothing -> nothing {
 wsrep_cluster_address=\"gcomm://($cluster_ips)\"
 wsrep_cluster_name=\"cluster\"
 wsrep_node_address=\"($host_ip)\"
-wsrep_node_name=\"($name)\"
+wsrep_node_name=\"($name)\""
     | save -f $"($name).db.cnf"
   chmod 600 $"($name).db.cnf"
 }
