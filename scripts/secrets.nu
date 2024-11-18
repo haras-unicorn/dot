@@ -114,7 +114,7 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
     let pass = input -s $"gimme me the password for ($env.USER)@($host) pls\n"
     print "got it! now checking if its alright..."
     def rce [cmd: string]: nothing -> nothing { 
-      ssh ...($args) $host $"bash -c 'echo ($pass) | sudo -S ($cmd)'" o+e>| ignore
+      ssh ...($args) $host $"bash -c 'echo ($pass) | sudo -S ($cmd)'"
     }
     def rcp [origin: string, dest: string]: nothing -> nothing {
       scp ...($args) $origin $dest
@@ -144,7 +144,11 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
     let tmp_dest = [ "/home" $env.USER $tmp_file ] | path join
 
     try {
-      rcp $"($host):($dest)" $backup
+      rce $"mv -f ($dest) ($tmp_dest)"
+      rce $"chown ($env.USER):(id -gn) ($tmp_dest)"
+      rce $"chmod 400 ($tmp_dest)"
+      rcp $"($host):($tmp_dest)" $backup
+      rce $"rm -f ($tmp_dest)"
     } catch {
       if ($backup | path exists) {
         (print
