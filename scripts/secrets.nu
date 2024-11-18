@@ -104,7 +104,7 @@ def "main copy key" [--host: string, ...args]: nothing -> nothing {
     let origin = [ $env.PWD $"($host).scrt.key" ] | path join
     let dest_dir = [ "/root" ] | path join
     let dest = [ $dest_dir $"host.scrt.key" ] | path join
-    sudo mkdir $dest_dir
+    sudo mkdir -p $dest_dir
     sudo chown root:root $dest_dir
     sudo chmod 700 $dest_dir
     sudo cp -f $origin $dest
@@ -153,7 +153,7 @@ def "main copy key" [--host: string, ...args]: nothing -> nothing {
         exit 1
       }
     }
-    rce $"mkdir ($dest_dir)"
+    rce $"mkdir -p ($dest_dir)"
     rce $"chown root:root ($dest_dir)"
     rce $"chmod 700 ($dest_dir)"
     rcp $origin $"($host):($tmp_dest)"
