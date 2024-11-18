@@ -26,11 +26,18 @@ in
       services.mysql.initialScript = lib.mkIf isCoordinator "/etc/mysql/init.sql";
       services.mysql.configFile = pkgs.writeText "my.cnf" ''
         [mysqld]
-        wsrep_on=ON
-        wsrep_provider=${pkgs.mariadb-galera}/lib/libgalera_smm.so
-        wsrep_sst_method=mariabackup
-        wsrep_provider_options=${wsrepProviderOptions}
-        binlog_format=ROW
+        bind_address="0.0.0.0"
+
+        binlog_format="ROW"
+
+        enforce_storage_engine="InnoDB"
+        innodb_autoinc_lock_mode="2"
+
+        wsrep_on="ON"
+        wsrep_debug="NONE"
+        wsrep_provider="${pkgs.mariadb-galera}/lib/libgalera_smm.so"
+        wsrep_provider_options="${wsrepProviderOptions}"
+        wsrep_sst_method="mariabackup"
 
         !includedir /etc/mysql/conf.d/
       '';
@@ -64,6 +71,27 @@ in
         group = "mysql";
         mode = "0400";
       };
+
+      systemd.services.mysql = {
+        path = with pkgs; [
+          bash
+          gawk
+          gnutar
+          gzip
+          inetutils
+          iproute2
+          netcat
+          procps
+          pv
+          rsync
+          socat
+          stunnel
+          which
+        ];
+      };
+
+      networking.firewall.allowedTCPPorts = [ 3306 4444 4567 4568 ];
+      networking.firewall.allowedUDPPorts = [ 4567 ];
     };
   };
 }
