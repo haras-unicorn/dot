@@ -490,6 +490,14 @@ wsrep_node_name=\"($name)\""
 # outputs:
 #   ./name.db.sql 
 def "main db sql" [name: string]: nothing -> nothing {
+  let host_names = $env.DB_SQL_HOST_NAMES?
+  if ($host_names | is-empty) {
+    error make {
+      msg: "expected cluster ips provided via DB_SQL_HOST_NAMES"
+    }
+  }
+  let host_names = $host_names | split row ","
+
   let services = ls $env.PWD
     | where { |x| 
         let basename = $x.name | path basename
@@ -515,16 +523,23 @@ def "main db sql" [name: string]: nothing -> nothing {
         let name = $basename | parse "{name}.db.user" | get name | first
         let pass = open --raw $x.name
         let services = $services
-          | each { |x| $"GRANT ALL PRIVILEGES ON ($x.name).* TO '($name)'@'%';" }
-          | each { |x| $"\n    ($x)" }
+          | each { |service| 
+              $host_names
+                | each { |host| $"GRANT ALL PRIVILEGES ON ($service.name).* TO '($name)'@'($host)';"  }
+                | each { |x| $"\n    ($x)" }
+                | str join ""
+            }
           | str join ""
         if ($name == "root") {
           $"\n    ALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';"
         } else if ($name == "mysql") {
           $"\n    ALTER USER 'mysql'@'localhost' IDENTIFIED BY '($pass)';"
         } else {
-          ($"\n    CREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';"
-           + $services)
+          let hosts = $host_names
+            | each { |host| $"CREATE USER IF NOT EXISTS '($name)'@'($host)' IDENTIFIED BY '($pass)';" }
+            | each { |x| $"\n    ($x)" }
+            | str join ""
+          $hosts + $services
         }
       }
     | str join "\n"
