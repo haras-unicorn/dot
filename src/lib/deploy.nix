@@ -22,6 +22,4 @@
         path = deployPkgs.deploy-rs.lib.activate.nixos self.nixosConfigurations."${host}-${system}";
       };
     };
-
-  checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 }

@@ -10,14 +10,9 @@ default:
     @just --choose
 
 format:
-    cd '{{ root }}'; just --unstable --fmt
-    prettier --write '{{ root }}'
-    nixpkgs-fmt '{{ root }}'
+    nix fmt
 
-lint:
-    cd '{{ root }}'; just --unstable --fmt --check
-    prettier --check '{{ root }}'
-    nixpkgs-fmt --check '{{ root }}'
+check:
     nix flake check
 
 secrets *args:

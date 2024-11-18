@@ -83,6 +83,8 @@
 
       systemPart = flake-utils.lib.eachDefaultSystem (system: {
         devShells.default = self.lib.devShell.mkDevShell system;
+        formatter = self.lib.formatter.mkFormatter system;
+        checks = self.lib.checks.mkChecks system;
       });
 
       hostPart =
@@ -102,8 +104,6 @@
           hmModules = invokeForHostSystemMatrix self.lib.hmModule.mkHmModule;
           nixosConfigurations = invokeForHostSystemMatrix self.lib.nixosConfiguration.mkNixosConfiguration;
           deploy.nodes = invokeForHostSystemMatrix self.lib.deploy.mkDeploy;
-
-          checks = self.lib.deploy.checks;
         };
     in
     libPart // systemPart // hostPart;
