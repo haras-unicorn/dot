@@ -115,7 +115,7 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
     print "got it! now checking if its alright..."
 
     def rce [cmd: string]: nothing -> nothing { 
-      ssh ...($args) $host $"bash -c 'echo ($pass) | sudo -S ($cmd)'"
+      ssh ...($args) $host $"bash -c 'echo ($pass) | sudo -Sp \"\" ($cmd)'"
     }
     def rcp [origin: string, dest: string]: nothing -> nothing {
       scp ...($args) $origin $dest
@@ -142,20 +142,25 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
     let tmp_file = $"(random uuid)-($file)"
     let tmp_dest = [ "/home" $env.USER $tmp_file ] | path join
 
-    if ($backup | path exists) {
-      (print
-        $"backup file ($backup) already exists"
-        "can u pls just like move it or delete or sth"
-        "thx :)"
-        "ill exit now...")
-      exit 1
+    mut do_backup = false
+    try {
+      rce $"mv -f ($dest) ($tmp_dest)"
+      $do_backup = true
     }
-
-    rce $"mv -f ($dest) ($tmp_dest)"
-    rce $"chown ($env.USER):(id -gn) ($tmp_dest)"
-    rce $"chmod 400 ($tmp_dest)"
-    rcp $"($host):($tmp_dest)" $backup
-    rce $"rm -f ($tmp_dest)"
+    if $do_backup {
+      if ($backup | path exists) {
+        (print
+          $"backup file ($backup) already exists"
+          "can u pls just like move it or delete or sth"
+          "thx :)"
+          "ill exit now...")
+        exit 1
+      }
+      rce $"chown ($env.USER):(id -gn) ($tmp_dest)"
+      rce $"chmod 400 ($tmp_dest)"
+      rcp $"($host):($tmp_dest)" $backup
+      rce $"rm -f ($tmp_dest)"
+    }
 
     rce $"mkdir -p ($dest_dir)"
     rce $"chown root:root ($dest_dir)"
