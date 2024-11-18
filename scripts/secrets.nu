@@ -529,18 +529,18 @@ def "main db sql" [name: string]: nothing -> nothing {
       }
     | str join "\n"
 
-  let sql = $"DELIMITER $$
+  let sql = $"CREATE DATABASE IF NOT EXISTS init;
+USE init;
 
-DROP PROCEDURE IF EXISTS init$$
+DROP PROCEDURE IF EXISTS init;
+
+DELIMITER $$
 
 CREATE PROCEDURE init\(\)
 BEGIN
   DECLARE already_initialized INT DEFAULT 0;
   
   START TRANSACTION;
-  
-  CREATE DATABASE IF NOT EXISTS init;
-  USE init;
   
   CREATE TABLE IF NOT EXISTS init \(
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
