@@ -3,13 +3,13 @@
 use std
 
 # create secrets for all hosts and lock them
-def "main" [] {
+def "main" []: nothing -> nothing {
   main create
   main lock
 }
 
 # create secrets for all hosts
-def "main create" [] {
+def "main create" []: nothing -> nothing {
   main vpn ca shared
 
   main ssh key shared
@@ -67,7 +67,7 @@ def "main create" [] {
 }
 
 # lock secrets for all hosts
-def "main lock" [] {
+def "main lock" []: nothing -> nothing {
   let hosts = ls ([ ($env.FILE_PWD | path dirname) "src" "host" ] | path join)
     | each { |x| $x.name | path basename }
 
@@ -78,7 +78,7 @@ def "main lock" [] {
 }
 
 # copy secret values for all hosts
-def "main copy vals" [] {
+def "main copy vals" []: nothing -> nothing {
   let secrets = ls $env.PWD
     | where { |x| $x.name | str ends-with ".scrt.val.pub" }
     | each { |x| $x.name | path basename }
@@ -97,7 +97,7 @@ def "main copy vals" [] {
 # to specified remote host
 # using ssh and scp
 # otherwise, copies the secret key to the current host
-def "main copy key" [--host: string, ...args] {
+def "main copy key" [--host: string, ...args]: nothing -> nothing {
   let this_host = open --raw /etc/hostname
   if (($host | is-empty) or ($host == $this_host)) {
     let host = $this_host
@@ -112,14 +112,14 @@ def "main copy key" [--host: string, ...args] {
     sudo chmod 400 $dest
   } else {
     let pass = input -s $"gimme me the password for ($env.USER)@($host) pls\n"
-    def rce [cmd: string] { 
+    def rce [cmd: string]: nothing -> nothing { 
       echo $pass | ssh ...($args) -tt $host $"bash -c 'sudo ($cmd)'"
     }
-    def rcp [origin: string, dest: string] {
+    def rcp [origin: string, dest: string]: nothing -> nothing {
       scp ...($args) $origin $dest
     }
 
-    let result = null
+    mut result = null
     try {
       $result = rce "echo test"
     }
@@ -170,7 +170,7 @@ def "main copy key" [--host: string, ...args] {
 # outputs:
 #   ./name.scrt.key.pub
 #   ./name.scrt.key
-def "main scrt key" [name: string] {
+def "main scrt key" [name: string]: nothing -> nothing {
   age-keygen err> (std null-device) out> $"($name).scrt.key"
   chmod 600 $"($name).scrt.key"
 
@@ -196,7 +196,7 @@ def "main scrt key" [name: string] {
 # outputs:
 #   ./name.scrt.val.pub
 #   ./name.scrt.val
-def "main scrt val" [name: string] {
+def "main scrt val" [name: string]: nothing -> nothing {
   ls $env.PWD
     | where { |x| $x.type == "file" }
     | where { |x| 
@@ -250,7 +250,7 @@ def "main scrt val" [name: string] {
 # outputs:
 #   ./name.vpn.ca.pub
 #   ./name.vpn.ca
-def "main vpn ca" [name: string] {
+def "main vpn ca" [name: string]: nothing -> nothing {
   nebula-cert ca -name $name -duration $"(365 * 24 * 100)h"
 
   mv $"ca.crt" $"($name).vpn.ca.pub"
@@ -269,7 +269,7 @@ def "main vpn ca" [name: string] {
 # outputs:
 #   ./name.vpn.key.pub
 #   ./name.vpn.key
-def "main vpn key" [name: string, ca: path] {
+def "main vpn key" [name: string, ca: path]: nothing -> nothing {
   let ip_key = $"VPN_($name | str upcase)_IP"
   let ip = $env | default null $ip_key | get $ip_key
   if ($ip | is-empty) {
@@ -300,7 +300,7 @@ def "main vpn key" [name: string, ca: path] {
 #
 # outputs:
 #   ./name.vpn.cnf
-def "main vpn cnf" [name: string, --coordinator] {
+def "main vpn cnf" [name: string, --coordinator]: nothing -> nothing {
   let coordinators = $env.VPN_COORDINATORS?
   if ($coordinators | is-empty) {
     error make {
@@ -343,7 +343,7 @@ def "main vpn cnf" [name: string, --coordinator] {
 # outputs:
 #   ./name.ssh.key.pub
 #   ./name.ssh.key
-def "main ssh key" [name: string] {
+def "main ssh key" [name: string]: nothing -> nothing {
   ssh-keygen -q -a 100 -t ed25519 -N "" -C $name -f $"($name).ssh.key"
   chmod 644 $"($name).ssh.key.pub"
   chmod 600 $"($name).ssh.key"
@@ -358,7 +358,7 @@ def "main ssh key" [name: string] {
 #
 # outputs:
 #   ./name.ssh.auth.pub
-def "main ssh auth" [name: string] {
+def "main ssh auth" [name: string]: nothing -> nothing {
   ls $env.PWD
     | where { |x| $x.type == "file" }
     | where { |x| 
@@ -380,7 +380,7 @@ def "main ssh auth" [name: string] {
 # outputs:
 #   ./name.db.ca.pub
 #   ./name.db.ca
-def "main db ca" [name: string] {
+def "main db ca" [name: string]: nothing -> nothing {
   (openssl genpkey -algorithm ED25519
     -out $"($name).db.ca")
   chmod 600 $"($name).db.ca"
@@ -400,7 +400,7 @@ def "main db ca" [name: string] {
 # outputs:
 #   ./name.db.key.pub
 #   ./name.db.key
-def "main db key" [name: string, ca: path] {
+def "main db key" [name: string, ca: path]: nothing -> nothing {
   (openssl genpkey -algorithm ED25519
     -out $"($name).db.key")
   chmod 600 $"($name).db.key"
@@ -431,7 +431,7 @@ def "main db key" [name: string, ca: path] {
 #
 # outputs:
 #   ./name.db.cnf
-def "main db cnf" [name: string, --coordinator] {
+def "main db cnf" [name: string, --coordinator]: nothing -> nothing {
   let cluster_ips = $env.DB_CNF_CLUSTER_IPS?
   if ($cluster_ips | is-empty) {
     error make {
@@ -479,7 +479,7 @@ wsrep_provider_options=\"pc.weight=($weight)\""
 #
 # outputs:
 #   ./name.db.sql 
-def "main db sql" [name: string] {
+def "main db sql" [name: string]: nothing -> nothing {
   let services = ls $env.FILE_PWD
     | where { |x| 
         let basename = $x.name | path basename
@@ -553,7 +553,7 @@ COMMIT;"
 #
 # outputs:
 #   ./name.db.user
-def "main db user" [name: string] {
+def "main db user" [name: string]: nothing -> nothing {
   let key = random chars --length 32
   $key | save -f $"($name).db.user"
   chmod 600 $"($name).db.user"
@@ -563,7 +563,7 @@ def "main db user" [name: string] {
 #
 # outputs:
 #   ./name.db.svc
-def "main db svc" [name: string] {
+def "main db svc" [name: string]: nothing -> nothing {
   let key = random chars --length 32
   $key | save -f $"($name).db.svc"
   chmod 600 $"($name).db.svc"
@@ -574,7 +574,7 @@ def "main db svc" [name: string] {
 # outputs:
 #   ./name.pass.pub
 #   ./name.pass
-def "main pass" [name: string, length: int = 32] {
+def "main pass" [name: string, length: int = 32]: nothing -> nothing {
   let pass = random chars --length $length
   $pass | save -f $"($name).pass"
   chmod 644 $"($name).pass"
@@ -594,7 +594,7 @@ def "main pass" [name: string, length: int = 32] {
 #
 # outputs:
 #   ./name.ddns
-def "main ddns" [name: string] {
+def "main ddns" [name: string]: nothing -> nothing {
   let token_key = $"DDNS_($name | str upcase)_TOKEN"
   let token = $env | default null $token_key | get $token_key
   if ($token | is-empty) {
@@ -632,7 +632,7 @@ def "main ddns" [name: string] {
 #
 # outputs:
 #   ./name.geo
-def "main geo" [name: string] {
+def "main geo" [name: string]: nothing -> nothing {
   let key_key = $"GEO_($name | str upcase)_API_KEY"
   let key = $env | default null $key_key | get $key_key
   if ($key | is-empty) {
@@ -651,7 +651,7 @@ def "main geo" [name: string] {
 #
 # outputs:
 #   ./name.key
-def "main key" [name: string, length: number = 32] {
+def "main key" [name: string, length: number = 32]: nothing -> nothing {
   let key = random chars --length $length
   $key | save -f $"($name).key"
   chmod 600 $"($name).key"
