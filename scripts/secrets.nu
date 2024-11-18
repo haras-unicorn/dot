@@ -15,11 +15,13 @@ def "main create" []: nothing -> nothing {
   main ssh key shared
 
   main db ca shared
-  main db svc vault
   main db user root
   main db user mysql
   main db user sst
   main db user haras
+
+  main db svc vault
+  main vault shared
 
   main scrt key shared
 
@@ -624,6 +626,20 @@ def "main db svc" [name: string]: nothing -> nothing {
   let key = random chars --length 32
   $key | save -f $"($name).db.svc"
   chmod 600 $"($name).db.svc"
+}
+
+# create vault service settings
+#
+# outputs:
+#   ./name.vault
+def "main vault" [name: string]: nothing -> nothing {
+  let settings = $"storage \"mysql\" {
+  username = \"vault\"
+  password = \"(open --raw "vault.db.svc")\"
+  database = \"vault\"
+}"
+  $settings | save -f $"($name).vault"
+  chmod 600 $"($name).vault"
 }
 
 # create a linux user password
