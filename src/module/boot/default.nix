@@ -16,14 +16,9 @@ in
     boot.loader.grub.useOSProber = true;
     boot.loader.generic-extlinux-compatible.enable = isRpi4;
 
-    boot.binfmt.emulatedSystems = lib.mkMerge [
-      (lib.mkIf
-        (pkgs.system == "x86_64-linux")
-        [ "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ])
-      (lib.mkIf
-        (pkgs.system == "x86_64-darwin")
-        [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ])
-    ];
+    boot.binfmt.emulatedSystems = (lib.mkIf
+      (pkgs.system == "x86_64-linux")
+      [ "aarch64-linux" ]);
 
     boot.kernelPackages =
       if isRpi4

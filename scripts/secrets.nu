@@ -482,6 +482,9 @@ wsrep_node_name=\"($name)\""
 # with all permissions for all service databases 
 # in the database cluster
 #
+# expects user host names in the DB_SQL_HOST_NAMES env var
+# with format hostname1,hostname2,...
+#
 # assumes that a mariadb galera cluster is used
 #
 # outputs:
