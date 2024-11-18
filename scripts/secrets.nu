@@ -461,7 +461,7 @@ def "main db cnf" [name: string, --coordinator]: nothing -> nothing {
   }
 
   $"[mysqld]
-wsrep_cluster_address=\"gcomm://localhost,($cluster_ips)\"
+wsrep_cluster_address=\"gcomm://($cluster_ips)\"
 wsrep_cluster_name=\"cluster\"
 wsrep_node_address=\"($host_ip)\"
 wsrep_node_name=\"($name)\""
