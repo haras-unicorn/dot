@@ -8,6 +8,7 @@ let
     "socket.ssl_ca=/etc/mysql/ca.crt"
     "socket.ssl_cert=/etc/mysql/host.crt"
     "socket.ssl_key=/etc/mysql/host.key"
+    "pc.weight=${if isCoordinator then 100 else 1}"
   ];
 in
 {
@@ -28,7 +29,7 @@ in
         wsrep_on=ON
         wsrep_provider=${pkgs.mariadb-galera}/lib/libgalera_smm.so
         wsrep_sst_method=mariabackup
-        wsrep_provider_options=${wsrepProviderOptions}
+        wsrep_provider_options="${wsrepProviderOptions}"
 
         !includedir /etc/mysql/conf.d/
       '';

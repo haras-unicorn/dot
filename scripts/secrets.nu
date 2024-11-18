@@ -460,14 +460,11 @@ def "main db cnf" [name: string, --coordinator]: nothing -> nothing {
     }
   }
 
-  let weight = if $coordinator { 100 } else { 1 }
-
   $"[mysqld]
 wsrep_cluster_address=\"gcomm://($cluster_ips)\"
 wsrep_cluster_name=\"cluster\"
 wsrep_node_address=\"($host_ip)\"
 wsrep_node_name=\"($name)\"
-wsrep_provider_options=\"pc.weight=($weight)\""
     | save -f $"($name).db.cnf"
   chmod 600 $"($name).db.cnf"
 }
