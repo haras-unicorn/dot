@@ -17,6 +17,7 @@ def "main create" []: nothing -> nothing {
   main db ca shared
   main db svc vault
   main db user root
+  main db user mysql
   main db user haras
 
   main scrt key shared
@@ -511,21 +512,27 @@ def "main db sql" [name: string]: nothing -> nothing {
         let name = $basename | parse "{name}.db.user" | get name | first
         let pass = open --raw $x.name
         let services = $services
-          | each { |x| $"\n  GRANT ALL PRIVILEGES ON ($x.name).* TO '($name)'@'%'" }
+          | each { |x| $"GRANT ALL PRIVILEGES ON ($x.name).* TO '($name)'@'%';" }
+          | each { |x| $"\n    ($x)" }
           | str join ""
         if ($name == "root") {
-          $"\n  ALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)'"
+          $"\n    ALTER USER 'root'@'localhost' IDENTIFIED BY '($pass)';"
+        } else if ($name == "mysql") {
+          $"\n    ALTER USER 'mysql'@'localhost' IDENTIFIED BY '($pass)';"
         } else {
-          $"\n  CREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)'($services)"
+          ($"\n    CREATE USER IF NOT EXISTS '($name)'@'%' IDENTIFIED BY '($pass)';"
+           + $services)
         }
       }
     | str join "\n"
 
   let services = $services
     | each { |x|
-        ($"\n  CREATE DATABASE IF NOT EXISTS ($x.name)"
-        + $"\n  CREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)'"
-        + $"\n  GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%'")
+        [
+          $"CREATE DATABASE IF NOT EXISTS ($x.name);"
+          $"CREATE USER IF NOT EXISTS '($x.name)'@'%' IDENTIFIED BY '($x.pass)';"
+          $"GRANT ALL PRIVILEGES ON ($x.name).* TO '($x.name)'@'%';"
+        ] | each { |x| $"\n    ($x)" }
       }
     | str join "\n"
 
@@ -534,29 +541,37 @@ USE init;
 
 DROP PROCEDURE IF EXISTS init;
 
+DELIMITER $$
 CREATE PROCEDURE init\(\)
 BEGIN
-  DECLARE already_initialized INT DEFAULT 0
+  return_label: BEGIN
+    DECLARE already_initialized INT DEFAULT 0;
   
-  START TRANSACTION
+    START TRANSACTION;
   
-  CREATE TABLE IF NOT EXISTS init \(timestamp DATETIME DEFAULT CURRENT_TIMESTAMP\)
+    CREATE TABLE IF NOT EXISTS init \(
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    \);
   
-  SELECT COUNT\(*\) INTO already_initialized FROM init
+    SELECT COUNT\(*\) INTO already_initialized FROM init;
   
-  IF already_initialized > 0 THEN
-    ROLLBACK
-    RETURN
-  END IF
+    IF already_initialized > 0 THEN
+      ROLLBACK;
+      LEAVE return_label;
+    END IF;
 
-  INSERT INTO init \(timestamp\) VALUES \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\)
+    INSERT INTO init \(timestamp\) VALUES
+      \(CONVERT_TZ\(CURRENT_TIMESTAMP, '+00:00', '+00:00'\)\)
+    ;
 
-  COMMIT
+    COMMIT;
 ($services)
 ($users)
 
-  FLUSH PRIVILEGES
-END;
+    FLUSH PRIVILEGES;
+  END return_label;
+END$$
+DELIMITER ;
 
 CALL init\(\);"
 
