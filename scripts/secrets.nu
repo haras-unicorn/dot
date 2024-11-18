@@ -118,7 +118,7 @@ def --wrapped "main copy key" [--host: string, ...args]: nothing -> string {
       ssh ...($args) $host $"bash -c 'echo ($pass) | sudo -Sp \"\" ($cmd)'"
     }
     def rcp [origin: string, dest: string]: nothing -> nothing {
-      scp ...($args) $origin $dest
+      scp ...($args) -q $origin $dest
     }
 
     mut result = null
