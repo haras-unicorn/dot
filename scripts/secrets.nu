@@ -539,7 +539,7 @@ def "main db sql" [name: string]: nothing -> nothing {
           $"\n    ALTER USER 'mysql'@'localhost' IDENTIFIED BY '($pass)';"
         } else if ($name == "sst") {
           ($"\n    CREATE USER IF NOT EXISTS 'sst'@'localhost' IDENTIFIED BY '($pass)';"
-            + $"\n    GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT, SUPER ON *.* TO 'sst'@'localhost';")
+            + $"\n    GRANT RELOAD, LOCK TABLES, REPLICATION CLIENT, PROCESS, SLAVE MONITOR ON *.* TO 'sst'@'localhost';")
 
         } else {
           let hosts = $host_names
