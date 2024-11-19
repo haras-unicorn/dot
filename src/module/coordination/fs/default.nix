@@ -1,8 +1,7 @@
-{ pkgs, config, lib, ... }:
+{ config, lib, ... }:
 
 let
   hasNetwork = config.dot.hardware.network.enable;
-  isCoordinator = config.dot.nfs.coordinator.enable;
 in
 {
   options = {
@@ -13,10 +12,6 @@ in
   };
 
   config = lib.mkIf hasNetwork {
-    system = {
-      environment.systemPackages = [
-        pkgs.seaweedfs
-      ];
-    };
+    system = { };
   };
 }
