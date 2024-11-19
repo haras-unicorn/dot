@@ -6,6 +6,8 @@ in
 {
   system = lib.mkIf hasNetwork {
     services.vault.enable = true;
+    systemd.services.vault.after = [ "mysql.service" ];
+    systemd.services.vault.wants = [ "mysql.service" ];
     services.vault.package = pkgs.vault-bin;
     services.vault.extraSettingsPaths = [ "/etc/vault/settings.hcl" ];
     services.vault.storageBackend = "mysql";

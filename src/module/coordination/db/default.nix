@@ -21,7 +21,31 @@ in
 
   config = {
     system = lib.mkIf (hasNetwork) {
+
+      systemd.services.mysql = {
+        path = with pkgs; [
+          bash
+          gawk
+          gnutar
+          gzip
+          inetutils
+          iproute2
+          netcat
+          procps
+          pv
+          rsync
+          socat
+          stunnel
+          which
+        ];
+      };
+
+      networking.firewall.allowedTCPPorts = [ 3306 4444 4567 4568 ];
+      networking.firewall.allowedUDPPorts = [ 4567 ];
+
       services.mysql.enable = true;
+      systemd.services.mysql.after = [ "nebula@nebula.service" ];
+      systemd.services.mysql.wants = [ "nebula@nebula.service" ];
       services.mysql.package = pkgs.mariadb;
       services.mysql.initialScript = lib.mkIf isCoordinator "/etc/mysql/init.sql";
       services.mysql.configFile = pkgs.writeText "my.cnf" ''
@@ -70,27 +94,6 @@ in
         group = "mysql";
         mode = "0400";
       };
-
-      systemd.services.mysql = {
-        path = with pkgs; [
-          bash
-          gawk
-          gnutar
-          gzip
-          inetutils
-          iproute2
-          netcat
-          procps
-          pv
-          rsync
-          socat
-          stunnel
-          which
-        ];
-      };
-
-      networking.firewall.allowedTCPPorts = [ 3306 4444 4567 4568 ];
-      networking.firewall.allowedUDPPorts = [ 4567 ];
     };
   };
 }
