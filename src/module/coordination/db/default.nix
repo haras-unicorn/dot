@@ -1,5 +1,7 @@
 { pkgs, host, lib, config, ... }:
 
+# TODO: mysqlbackup
+
 let
   hasNetwork = config.dot.hardware.network.enable;
   isCoordinator = config.dot.db.coordinator.enable;
