@@ -47,6 +47,7 @@ in
           lookup_timeout: 10s
         handshakes:
           try_interval: 1s
+        preferred_ranges: [ '192.168.1.0/24' ]
         firewall:
           outbound:
             - port: any

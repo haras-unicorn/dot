@@ -84,8 +84,8 @@ in
       allowUnfree = true;
       nvidia.acceptLicense = config.dot.hardware.graphics.driver == "nvidia";
       cudaSupport = (config.dot.hardware.graphics.driver == "nvidia")
-        && (config.dot.hardware.graphics.driver == "latest"
-        || config.dot.hardware.graphics.driver == "production");
+        && ((config.dot.hardware.graphics.version == "latest")
+        || (config.dot.hardware.graphics.version == "production"));
       rocmSupport = config.dot.hardware.graphics.driver == "amdgpu";
     };
 
