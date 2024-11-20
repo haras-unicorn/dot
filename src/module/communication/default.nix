@@ -85,6 +85,7 @@ in
         progressbarAccentColor = bootstrap.primary.alternate.hex;
       });
     xdg.configFile."Ferdium/config/window-state.json".text = builtins.toJSON windowState;
+    xdg.configFile."Ferdium/window-state.json".text = builtins.toJSON windowState;
 
     xdg.configFile."teams-for-linux/config.json".text = builtins.toJSON {
       closeAppOnCross = true;
