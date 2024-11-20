@@ -45,6 +45,8 @@ in
         static_map:
           cadence: 5m
           lookup_timeout: 10s
+        handshakes:
+          try_interval: 1s
         firewall:
           outbound:
             - port: any
