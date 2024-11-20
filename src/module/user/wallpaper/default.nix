@@ -1,5 +1,7 @@
 { self, pkgs, lib, config, ... }:
 
+# FIXME: wallpaper on xserver
+
 # NOTE: wallpaper inpaint/outpaint script for all resolutions and select appropriate here
 
 let
