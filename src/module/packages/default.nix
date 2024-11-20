@@ -52,15 +52,6 @@ let
         "$@"
     '';
   };
-
-  graphics =
-    (builtins.hasAttr "graphics_card" config.facter.report.hardware) &&
-    ((builtins.length config.facter.report.hardware.graphics_card) > 0);
-
-  graphicsDriver =
-    if graphics then
-      (builtins.head config.facter.report.hardware.graphics_card).driver
-    else null;
 in
 {
 
@@ -91,9 +82,11 @@ in
 
     nixpkgs.config = {
       allowUnfree = true;
-      nvidia.acceptLicense = graphicsDriver == "nvidia";
-      cudaSupport = graphicsDriver == "nvidia";
-      rocmSupport = graphicsDriver == "amdgpu";
+      nvidia.acceptLicense = config.dot.hardware.graphics.driver == "nvidia";
+      cudaSupport = (config.dot.hardware.graphics.driver == "nvidia")
+        && (config.dot.hardware.graphics.driver == "latest"
+        || config.dot.hardware.graphics.driver == "production");
+      rocmSupport = config.dot.hardware.graphics.driver == "amdgpu";
     };
 
     nixpkgs.overlays = lib.mkIf config.dot.hardware.rpi."4".enable [
