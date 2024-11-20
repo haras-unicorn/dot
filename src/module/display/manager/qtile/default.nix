@@ -34,16 +34,16 @@ let
     '';
   };
 
-  startup = lib.strings.concatStringsSep
+  startup = ''
+    @hook.subscribe.startup_once
+    def startup_once():
+        lazy.spawn("systemctl --user import-environment PATH")
+        lazy.spawn("systemctl --user restart xdg-desktop-portal.service")
+  '' + (lib.strings.concatStringsSep
     "\n"
     (builtins.map
-      (command: ''
-        @hook.subscribe.startup_once
-        def startup_once():
-            lazy.spawn("${builtins.toString command}")
-
-      '')
-      cfg.sessionStartup);
+      (command: "    lazy.spawn(\"${builtins.toString command}\")")
+      cfg.sessionStartup));
 
   vars = lib.strings.concatStringsSep
     "\n"
@@ -148,11 +148,6 @@ in
               lazy.spawn("${switch-layout}/bin/switch-layout")
           )
       )
-
-      @hook.subscribe.startup_once
-      def startup_once():
-          lazy.spawn("systemctl --user import-environment PATH")
-          lazy.spawn("systemctl --user restart xdg-desktop-portal.service")
 
       ${startup}
 
