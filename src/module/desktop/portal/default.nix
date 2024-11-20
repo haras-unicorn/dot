@@ -22,7 +22,7 @@ in
       pkgs.xdg-desktop-portal-hyprland
     ] ++ [
       pkgs.xdg-desktop-portal-gtk
-      # pkgs.libsForQt5.xdg-desktop-portal-kde
+      pkgs.libsForQt5.xdg-desktop-portal-kde
     ];
   };
 }
