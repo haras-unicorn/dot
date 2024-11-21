@@ -14,13 +14,13 @@ def "main create" []: nothing -> nothing {
 
   main ssh key shared
 
-  main db ca shared
-  main db user root
-  main db user mysql
-  main db user sst
-  main db user haras
+  main ddb ca shared
+  main ddb user root
+  main ddb user mysql
+  main ddb user sst
+  main ddb user haras
 
-  main db svc vault
+  main ddb svc vault
   main vault shared
 
   main scrt key shared
@@ -43,12 +43,12 @@ def "main create" []: nothing -> nothing {
   for $host in $hosts {
     main scrt key $host.name
 
-    if ($host.scripts.ddnsCoordinator? | is-not-empty) {
+    if (($host.scripts.ddns? | default null "coordinator") == true) {
       main ddns $host.name
     }
 
     main vpn key $host.name shared
-    if ($host.scripts.vpnCoordinator? | is-not-empty) {
+    if (($host.scripts.vpn? | default null "coordinator") == true) {
       main vpn cnf $host.name --coordinator
     } else {
       main vpn cnf $host.name
@@ -56,13 +56,15 @@ def "main create" []: nothing -> nothing {
 
     main ssh key $host.name
 
-    main db key $host.name shared
-    if ($host.scripts.dbCoordinator? | is-not-empty) {
-      main db sql $host.name
-      main db cnf $host.name --coordinator
+    main ddb key $host.name shared
+    if (($host.scripts.ddb? | default null "coordinator") == true) {
+      main ddb sql $host.name
+      main ddb cnf $host.name --coordinator
     } else {
-      main db cnf $host.name
+      main ddb cnf $host.name
     }
+
+    main nfs $host.name
 
     main pass $host.name
 
@@ -386,69 +388,70 @@ def "main ssh auth" [name: string]: nothing -> nothing {
   chmod 644 $"($name).ssh.auth.pub"
 }
 
-# create the database ssl ca
+# create the distributed database ssl ca
 #
 # assumes that the database uses openssl keys
 #
 # outputs:
-#   ./name.db.ca.pub
-#   ./name.db.ca
-def "main db ca" [name: string]: nothing -> nothing {
+#   ./name.ddb.ca.pub
+#   ./name.ddb.ca
+def "main ddb ca" [name: string]: nothing -> nothing {
   (openssl genpkey -algorithm ED25519
-    -out $"($name).db.ca")
-  chmod 600 $"($name).db.ca"
+    -out $"($name).ddb.ca")
+  chmod 600 $"($name).ddb.ca"
 
   (openssl req -x509
-    -key $"($name).db.ca"
-    -out $"($name).db.ca.pub"
+    -key $"($name).ddb.ca"
+    -out $"($name).ddb.ca.pub"
     -subj $"/CN=($name)"
     -days 3650)
-  chmod 644 $"($name).db.ca.pub"
+  chmod 644 $"($name).ddb.ca.pub"
 }
 
-# create database ssl keys signed by a previously generated db ca
+# create distributed database ssl keys
+# signed by a previously generated db ca
 #
 # assumes that the database uses openssl keys
 #
 # outputs:
-#   ./name.db.key.pub
-#   ./name.db.key
-def "main db key" [name: string, ca: path]: nothing -> nothing {
+#   ./name.ddb.key.pub
+#   ./name.ddb.key
+def "main ddb key" [name: string, ca: path]: nothing -> nothing {
   (openssl genpkey -algorithm ED25519
-    -out $"($name).db.key")
-  chmod 600 $"($name).db.key"
+    -out $"($name).ddb.key")
+  chmod 600 $"($name).ddb.key"
 
   (openssl req -new
-    -key $"($name).db.key"
-    -out $"($name).db.key.req"
+    -key $"($name).ddb.key"
+    -out $"($name).ddb.key.req"
     -subj $"/CN=($name)")
   (openssl x509 -req
-    -in $"($name).db.key.req"
-    -CA $"($ca).db.ca.pub"
-    -CAkey $"($ca).db.ca"
+    -in $"($name).ddb.key.req"
+    -CA $"($ca).ddb.ca.pub"
+    -CAkey $"($ca).ddb.ca"
     -CAcreateserial
-    -out $"($name).db.key.pub"
+    -out $"($name).ddb.key.pub"
     -days 3650) err>| ignore
-  rm -f $"($name).db.key.req"
-  chmod 644 $"($name).db.key.pub"
+  rm -f $"($name).ddb.key.req"
+  chmod 644 $"($name).ddb.key.pub"
 }
 
-# create database cluster configuration
+# create distributed database configuration
 #
-# expects the cluster ip in the DB_CNF_CLUSTER_IPS env var
+# expects the cluster ip in the DDB_CNF_CLUSTER_IPS env var
 # with format ip1,ip2,ip3...
 # 
-# expects the host ip in the DB_CNF_`NAME`_IP env var
+# expects the host ip in the DDB_CNF_`NAME`_IP env var
 #
 # assumes that a mariadb galera cluster is used
 #
 # outputs:
-#   ./name.db.cnf
-def "main db cnf" [name: string, --coordinator]: nothing -> nothing {
-  let cluster_ips = $env.DB_CNF_CLUSTER_IPS?
+#   ./name.ddb.cnf
+def "main ddb cnf" [name: string, --coordinator]: nothing -> nothing {
+  let cluster_ips = $env.DDB_CNF_CLUSTER_IPS?
   if ($cluster_ips | is-empty) {
     error make {
-      msg: "expected cluster ips provided via DB_CNF_CLUSTER_IPS"
+      msg: "expected cluster ips provided via DDB_CNF_CLUSTER_IPS"
     }
   }
   let cluster_ips = $cluster_ips
@@ -456,11 +459,11 @@ def "main db cnf" [name: string, --coordinator]: nothing -> nothing {
     | where { |x| $x | is-not-empty }
     | str join "," 
 
-  let host_ip_key = $"DB_CNF_($name | str upcase)_IP"
+  let host_ip_key = $"DDB_CNF_($name | str upcase)_IP"
   let host_ip = $env | default null $host_ip_key | get $host_ip_key
   if ($host_ip | is-empty) {
     error make {
-      msg: "expected host ip provided via DB_CNF_`name`_IP"
+      msg: "expected host ip provided via DDB_CNF_`name`_IP"
     }
   }
 
@@ -470,35 +473,35 @@ wsrep_cluster_name=\"cluster\"
 wsrep_node_address=\"($host_ip)\"
 wsrep_node_name=\"($name)\"
 wsrep_sst_method=\"mariabackup\"
-wsrep_sst_auth=\"sst:(open --raw sst.db.user)\""
-    | save -f $"($name).db.cnf"
-  chmod 600 $"($name).db.cnf"
+wsrep_sst_auth=\"sst:(open --raw sst.ddb.user)\""
+    | save -f $"($name).ddb.cnf"
+  chmod 600 $"($name).ddb.cnf"
 }
 
-# create initial database cluster sql script
+# create initial distributed database sql script
 #
-# each file ending with .db.svc
+# each file ending with .ddb.svc
 # will be included as a corresponding service database
 # and user with all permissions to that database
 # in the database cluster
 #
-# each file ending with .db.user
+# each file ending with .ddb.user
 # will be included as a corresponding user
 # with all permissions for all service databases 
 # in the database cluster
 #
-# expects user host names in the DB_SQL_HOST_NAMES env var
+# expects user host names in the DDB_SQL_HOST_NAMES env var
 # with format hostname1,hostname2,...
 #
 # assumes that a mariadb galera cluster is used
 #
 # outputs:
-#   ./name.db.sql 
-def "main db sql" [name: string]: nothing -> nothing {
-  let host_names = $env.DB_SQL_HOST_NAMES?
+#   ./name.ddb.sql 
+def "main ddb sql" [name: string]: nothing -> nothing {
+  let host_names = $env.DDB_SQL_HOST_NAMES?
   if ($host_names | is-empty) {
     error make {
-      msg: "expected cluster ips provided via DB_SQL_HOST_NAMES"
+      msg: "expected cluster ips provided via DDB_SQL_HOST_NAMES"
     }
   }
   let host_names = $host_names | split row ","
@@ -506,11 +509,11 @@ def "main db sql" [name: string]: nothing -> nothing {
   let services = ls $env.PWD
     | where { |x| 
         let basename = $x.name | path basename
-        ($x.type == "file") and ($basename | str ends-with ".db.svc")
+        ($x.type == "file") and ($basename | str ends-with ".ddb.svc")
       }
     | each { |x|
         let basename = $x.name | path basename
-        let name = $basename | parse "{name}.db.svc" | get name | first
+        let name = $basename | parse "{name}.ddb.svc" | get name | first
         let pass = open --raw $x.name
         {
           "name": $name,
@@ -521,11 +524,11 @@ def "main db sql" [name: string]: nothing -> nothing {
   let users = ls $env.PWD
     | where { |x| 
         let basename = $x.name | path basename
-        ($x.type == "file") and ($basename | str ends-with ".db.user")
+        ($x.type == "file") and ($basename | str ends-with ".ddb.user")
       }
     | each { |x|
         let basename = $x.name | path basename
-        let name = $basename | parse "{name}.db.user" | get name | first
+        let name = $basename | parse "{name}.ddb.user" | get name | first
         let pass = open --raw $x.name
         let services = $services
           | each { |service| 
@@ -607,28 +610,42 @@ DELIMITER ;
 
 CALL init\(\);"
 
-  $sql | save -f $"($name).db.sql"
-  chmod 600 $"($name).db.sql"
+  $sql | save -f $"($name).ddb.sql"
+  chmod 600 $"($name).ddb.sql"
 }
 
-# create a database user password 
+# create a distributed database user password 
 #
 # outputs:
-#   ./name.db.user
-def "main db user" [name: string]: nothing -> nothing {
+#   ./name.ddb.user
+def "main ddb user" [name: string]: nothing -> nothing {
   let key = random chars --length 32
-  $key | save -f $"($name).db.user"
-  chmod 600 $"($name).db.user"
+  $key | save -f $"($name).ddb.user"
+  chmod 600 $"($name).ddb.user"
 }
 
-# create a database service password 
+# create a distributed database service password 
 #
 # outputs:
-#   ./name.db.svc
-def "main db svc" [name: string]: nothing -> nothing {
+#   ./name.ddb.svc
+def "main ddb svc" [name: string]: nothing -> nothing {
   let key = random chars --length 32
-  $key | save -f $"($name).db.svc"
-  chmod 600 $"($name).db.svc"
+  $key | save -f $"($name).ddb.svc"
+  chmod 600 $"($name).ddb.svc"
+}
+
+# create a nfs secrets environemnt file
+#
+# assumes that a garage cluster is used
+#
+# outputs:
+#   ./name.nfs
+def "main nfs" [name: string]: nothing -> nothing {
+  $"GARAGE_RPC_SECRET=\"(openssl rand -hex 32)\"
+GARAGE_ADMIN_TOKEN=\"(openssl rand -base64 32)\"
+GARAGE_METRICS_TOKEN=\"(openssl rand -base64 32)\""
+    | save -f $"($name).fs"  
+  chmod 600 $"($name).fs"
 }
 
 # create vault service settings
@@ -638,7 +655,7 @@ def "main db svc" [name: string]: nothing -> nothing {
 def "main vault" [name: string]: nothing -> nothing {
   let settings = $"storage \"mysql\" {
   username = \"vault\"
-  password = \"(open --raw "vault.db.svc")\"
+  password = \"(open --raw "vault.ddb.svc")\"
   database = \"vault\"
 }"
   $settings | save -f $"($name).vault"

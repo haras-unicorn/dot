@@ -4,7 +4,7 @@
 
 let
   hasNetwork = config.dot.hardware.network.enable;
-  isCoordinator = config.dot.db.coordinator.enable;
+  isCoordinator = config.dot.ddb.coordinator;
 
   wsrepProviderOptions = builtins.concatStringsSep ";" [
     "socket.ssl_ca=/etc/mysql/ca.crt"
@@ -15,7 +15,7 @@ let
 in
 {
   options = {
-    db.coordinator.enable = lib.mkOption {
+    ddb.coordinator = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };

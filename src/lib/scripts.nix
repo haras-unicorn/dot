@@ -1,30 +1,28 @@
 { nixpkgs, ... }:
 
 let
-  parseBool = expr: name: if builtins.hasAttr name expr then builtins.getAttr name expr else null;
+  parseBool = expr: path:
+    if builtins.hasAttr path expr
+    then nixpkgs.lib.attrByPath path null expr
+    else null;
+  mkBool = bool: nixpkgs.lib.mkIf (bool != null) bool;
+  mkParseBool = expr: path: mkBool (parseBool expr path);
 
-  parse = scripts:
+  mkModule = scripts:
     let
       expr = builtins.fromJSON (builtins.readFile scripts);
     in
     {
-      ddnsCoordinator = parseBool expr "ddnsCoordinator";
-      vpnCoordinator = parseBool expr "vpnCoordinator";
-      dbCoordinator = parseBool expr "dbCoordinator";
+      dot = {
+        ddns.coordinator = mkParseBool expr [ "ddns" "coordinator" ];
+        vpn.coordinator = mkParseBool expr [ "vpn" "coordinator" ];
+        ddb.coordinator = mkParseBool expr [ "ddb" "coordinator" ];
+        nfs.coordinator = mkParseBool expr [ "nfs" "coordinator" ];
+      };
     };
-
-  mkBool = bool: nixpkgs.lib.mkIf (bool != null) bool;
-
-  mkModule = parsed: {
-    dot = {
-      ddns.coordinator.enable = mkBool parsed.ddnsCoordinator;
-      vpn.coordinator.enable = mkBool parsed.vpnCoordinator;
-      db.coordinator.enable = mkBool parsed.dbCoordinator;
-    };
-  };
 in
 {
-  mkSystemModule = scripts: { imports = [ (mkModule (parse scripts)) ]; };
+  mkSystemModule = scripts: { imports = [ (mkModule scripts) ]; };
 
-  mkHomeModule = scripts: { imports = [ (mkModule (parse scripts)) ]; };
+  mkHomeModule = scripts: { imports = [ (mkModule scripts) ]; };
 }

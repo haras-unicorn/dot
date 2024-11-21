@@ -3,11 +3,11 @@
 let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
-  isCoordinator = config.dot.vpn.coordinator.enable;
+  isCoordinator = config.dot.ddns.coordinator;
 in
 {
   options = {
-    ddns.coordinator.enable = lib.mkOption {
+    ddns.coordinator = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };

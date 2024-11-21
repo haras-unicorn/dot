@@ -5,13 +5,16 @@
 
 let
   hasNetwork = config.dot.hardware.network.enable;
-  isCoordinator = config.dot.vpn.coordinator.enable;
+  isCoordinator = config.dot.vpn.coordinator;
 in
 {
   options = {
-    vpn.coordinator.enable = lib.mkOption {
+    vpn.coordinator = lib.mkOption {
       type = lib.types.bool;
       default = false;
+    };
+    vpn.ip = lib.mkOption {
+      type = lib.types.str;
     };
   };
 
