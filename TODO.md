@@ -8,6 +8,7 @@
   [comin](https://github.com/nlewo/comin)
 - use [nextcloud](https://github.com/nextcloud/server)
 - use [freshrss](https://freshrss.org/index.html)
+- use [searxng](https://github.com/searxng/searxng)
 - use [stylix](https://github.com/danth/stylix)
 - use [nh](https://github.com/viperML/nh)
 - use [lorri](https://github.com/nix-community/lorri/)
