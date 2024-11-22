@@ -644,8 +644,8 @@ def "main nfs" [name: string]: nothing -> nothing {
   $"GARAGE_RPC_SECRET=\"(openssl rand -hex 32)\"
 GARAGE_ADMIN_TOKEN=\"(openssl rand -base64 32)\"
 GARAGE_METRICS_TOKEN=\"(openssl rand -base64 32)\""
-    | save -f $"($name).fs"  
-  chmod 600 $"($name).fs"
+    | save -f $"($name).nfs"  
+  chmod 600 $"($name).nfs"
 }
 
 # create vault service settings

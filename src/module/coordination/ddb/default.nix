@@ -23,7 +23,6 @@ in
 
   config = {
     system = lib.mkIf (hasNetwork) {
-
       systemd.services.mysql = {
         path = with pkgs; [
           bash

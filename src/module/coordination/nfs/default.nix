@@ -20,7 +20,7 @@ in
     system = {
       services.garage.enable = true;
       services.garage.environmentFile = "/etc/garage/host.env";
-      sops.secrets."${host}.fs" = {
+      sops.secrets."${host}.nfs" = {
         path = "/etc/garage/host.env";
         owner = "garage";
         group = "garage";
