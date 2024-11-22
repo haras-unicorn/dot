@@ -23,8 +23,8 @@ in
         ++ (if builtins.pathExists sharedConfig
         then [ (self.lib.module.mkSystemModule (import sharedConfig)) ]
         else [ ])
-        ++ [ (self.lib.scripts.parseFile "${self}/src/host/${host}") ]
-        ++ [ (self.lib.scripts.parseFile "${self}/src/host") ]
+        ++ [{ dot = self.lib.scripts.parseFile "${self}/src/host/${host}"; }]
+        ++ [{ dot = self.lib.scripts.parseFile "${self}/src/host"; }]
       ;
 
       options = {
