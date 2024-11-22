@@ -10,7 +10,7 @@ in
     ];
 
     programs.nushell.environmentVariables = {
-      PROMPT_COMMAND_RIGHT = "{ || ${pkgs.mommy}/bin/mommy -1 -s $env.LAST_EXIT_CODE }";
+      PROMPT_COMMAND_RIGHT = "{ || ${pkgs.mommy}/bin/mommy -s $env.LAST_EXIT_CODE }";
     };
 
     programs.starship.enable = true;
