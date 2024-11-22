@@ -18,3 +18,29 @@ def "to pipe" [] {
   $it | save -f $file
   $file
 }
+
+def "to paths" [] {
+  $in
+    | transpose path value
+    | each { |x|
+        if (($x.value | describe) =~ "record"
+          and (($x.value | get path --ignore-errors) | is-empty)) {
+          $x.value
+            | to paths
+            | each { |y|
+                {
+                  path: $"($x.path).($y.path)",
+                  value: $y.value
+                }
+              }
+        } else {
+          [
+            {
+              path: $x.path
+              value: $x.value
+            }
+          ]
+        }
+      }
+    | flatten
+}

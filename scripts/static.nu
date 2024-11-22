@@ -1,48 +1,74 @@
-export def "static hosts" [] {
-  let host_schema = {
-   "ddns": {
-      "coordinator": {
-        "type": "bool"
-        "default": false
-      }
+let schema = {
+  "ddns": {
+    "coordinator": {
+      "type": "bool"
+      "default": false
     }
-    "vpn": {
-      "coordinator": {
-        "type": "bool"
-        "default": false
-      }
+  }
+  "vpn": {
+    "coordinator": {
+      "type": "bool"
+      "default": false
+    }
+    "ip": {
+      "type": "string"
+    }
+    "subnet": {
       "ip": {
         "type": "string"
       }
-      "subnet": {
-        "ip": {
-          "type": "string"
-        }
-        "bits": {
-          "type": "int"
-        }
-        "mask": {
-          "type": "string"
-        }
+      "bits": {
+        "type": "int"
       }
-    }
-    "ddb": {
-      "coordinator": {
-        "type": "bool"
-        "default": false
-      }
-    }
-    "nfs": {
-      "coordinator": {
-        "type": "bool"
-        "default": false
-      }
-      "node": {
+      "mask": {
         "type": "string"
       }
     }
   }
+  "ddb": {
+    "coordinator": {
+      "type": "bool"
+      "default": false
+    }
+  }
+  "nfs": {
+    "coordinator": {
+      "type": "bool"
+      "default": false
+    }
+    "node": {
+      "type": "string"
+    }
+  }
+}
 
+def "to paths" [] {
+  $in
+    | transpose path value
+    | each { |x|
+        if (($x.value | describe) =~ "record"
+          and (($x.value | get path --ignore-errors) | is-empty)) {
+          $x.value
+            | to paths
+            | each { |y|
+                {
+                  path: $"($x.path).($y.path)",
+                  value: $y.value
+                }
+              }
+        } else {
+          [
+            {
+              path: $x.path
+              value: $x.value
+            }
+          ]
+        }
+      }
+    | flatten
+}
+
+export def "static hosts" [] {
   ls ([ ($env.FILE_PWD | path dirname) "src" "host" ] | path join)
     | each { |x|
         def "parse" [x] {

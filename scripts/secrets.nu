@@ -1,7 +1,7 @@
 #!/usr/bin/env nu
 
 use std
-use static.nu *
+use ./static.nu *
 
 # create secrets for all hosts and lock them
 def "main" []: nothing -> nothing {

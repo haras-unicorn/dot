@@ -3,29 +3,7 @@
 let
   parseFile = dir:
     if builtins.pathExists "${dir}/static.json" then
-      let
-        expr = builtins.fromJSON (builtins.readFile "${dir}/static.json");
-
-        val = path:
-          let
-            val =
-              if builtins.hasAttr path expr
-              then nixpkgs.lib.attrByPath path null expr
-              else null;
-          in
-          nixpkgs.lib.mkIf (val != null) val;
-      in
-      {
-        ddns.coordinator = val [ "ddns" "coordinator" ];
-        vpn.coordinator = val [ "vpn" "coordinator" ];
-        vpn.ip = val [ "vpn" "ip" ];
-        vpn.subnet.ip = val [ "vpn" "subnet" "ip" ];
-        vpn.subnet.bits = val [ "vpn" "subnet" "bits" ];
-        vpn.subnet.mask = val [ "vpn" "subnet" "mask" ];
-        ddb.coordinator = val [ "ddb" "coordinator" ];
-        nfs.coordinator = val [ "nfs" "coordinator" ];
-        nfs.node = val [ "nfs" "node" ];
-      }
+      builtins.fromJSON (builtins.readFile "${dir}/static.json")
     else { };
 
   parseDir = dir:
