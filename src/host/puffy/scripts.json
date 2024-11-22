@@ -10,6 +10,7 @@
     "coordinator": true
   },
   "nfs": {
-    "coordinator": true
+    "coordinator": true,
+    "node": "86f0f26ae4afbd59aaf9cfb059eefac844951efd5b8caeec0d53f4ed6c85f332"
   }
 }

@@ -4,26 +4,46 @@ let
   user = self.lib.nixosConfiguration.user;
   version = self.lib.nixosConfiguration.version;
   modules = self.lib.nixosConfiguration.modules;
+
+  sharedConfig = "${self}/src/host/config.nix";
 in
 {
   mkHmModule = host: system:
     let
-      config = import "${self}/src/host/${host}/config.nix";
+      config = "${self}/src/host/${host}/config.nix";
       hardware = "${self}/src/host/${host}/hardware.json";
-      scripts = "${self}/src/host/${host}/scripts.json";
+      secrets = "${self}/src/host/${host}/secrets.yaml";
     in
-    {
+    ({ lib, ... }: {
       imports =
         (builtins.map self.lib.module.mkHomeModule modules)
-        ++ [ (self.lib.module.mkHomeModule config) ]
-        ++ (if builtins.pathExists scripts
-        then [ (self.lib.scripts.mkHomeModule scripts) ]
-        else [ ]);
+        ++ (if builtins.pathExists config
+        then [ (self.lib.module.mkHomeModule (import config)) ]
+        else [ ])
+        ++ (if builtins.pathExists sharedConfig
+        then [ (self.lib.module.mkHomeModule (import sharedConfig)) ]
+        else [ ])
+        ++ [ (self.lib.scripts.parseFile "${self}/src/host/${host}") ]
+        ++ [ (self.lib.scripts.parseFile "${self}/src/host") ]
+      ;
 
-      facter.reportPath = hardware;
+      options = {
+        dot.scripts = lib.mkOption {
+          type = lib.types.raw;
+        };
+      };
 
-      home.stateVersion = version;
-      home.username = "${user}";
-      home.homeDirectory = "/home/${user}";
-    };
+      config = {
+        dot.scripts = self.lib.scripts.parseDir "${self}/src/host";
+
+        facter.reportPath = hardware;
+
+        sops.defaultSopsFile = secrets;
+        sops.age.keyFile = "/root/host.scrt.key";
+
+        home.stateVersion = version;
+        home.username = "${user}";
+        home.homeDirectory = "/home/${user}";
+      };
+    });
 }

@@ -4,6 +4,7 @@
 , nixos-facter-modules
 , sops-nix
 , home-manager
+, nix-index-database
 , ...
 } @inputs:
 
@@ -34,6 +35,18 @@ in
         sops-nix.nixosModules.default
         home-manager.nixosModules.default
         self.nixosModules."${host}-${system}"
+        {
+          home-manager.backupFileExtension = "backup";
+          home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = specialArgs;
+          home-manager.sharedModules = [
+            nur.hmModules.nur
+            nix-index-database.hmModules.nix-index
+            nixos-facter-modules.hmModules.facter
+            sops-nix.homeManagerModules.sops
+          ];
+          home-manager.users."${user}" = self.hmModules."${host}-${system}";
+        }
       ];
     };
 }

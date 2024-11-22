@@ -1,8 +1,15 @@
 { host, config, lib, ... }:
 
 let
-  hasNetwork = config.dot.hardware.network.enable;
   rootDomain = "s3.garage";
+
+  hasNetwork = config.dot.hardware.network.enable;
+
+  ip = config.dot.vpn.ip;
+  rpcPort = 3900;
+
+  isCoordinator = config.dot.nfs.coordinator;
+  bindAddr = if isCoordinator then ip else "localhost";
 in
 {
   options = {
@@ -11,7 +18,11 @@ in
       default = false;
     };
     nfs.node = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.strMatching "[a-z0-9]+";
+      default = false;
+    };
+    nfs.rpcPort = lib.mkOption {
+      type = lib.types.ints.u16;
       default = false;
     };
   };
@@ -31,22 +42,22 @@ in
         db_engine = "sqlite";
         metadata_fsync = true;
         data_fsync = true;
-        rpc_bind_addr = "[::]:3900";
+        rpc_bind_addr = "${ip}:${builtins.toString rpcPort}";
         rpc_bind_outgoing = true;
-        rpc_public_addr = "";
-        bootstrap_peers = [
-          ""
-        ];
+        rpc_public_addr = "${ip}:${builtins.toString rpcPort}";
+        bootstrap_peers = builtins.map
+          (other: "${other.nfs.node}@${other.vpn.ip}:${builtins.toString rpcPort}")
+          config.dot.others;
         admin = {
-          api_bind_addr = "localhost:3901";
+          api_bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 1)}";
         };
         s3_api = {
-          api_bind_addr = "localhost:3902";
+          api_bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 1)}";
           s3_region = "garage";
           root_domain = rootDomain;
         };
         s3_web = {
-          bind_addr = "localhost:3902";
+          bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 1)}";
           root_domain = rootDomain;
         };
       };
