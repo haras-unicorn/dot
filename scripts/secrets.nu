@@ -1,6 +1,7 @@
 #!/usr/bin/env nu
 
 use std
+use static.nu *
 
 # create secrets for all hosts and lock them
 def "main" []: nothing -> nothing {
@@ -25,30 +26,15 @@ def "main create" []: nothing -> nothing {
 
   main scrt key shared
 
-  let hosts = ls ([ ($env.FILE_PWD | path dirname) "src" "host" ] | path join)
-    | each { |x|
-        let name = $x.name | path basename
-        let scripts_path = [ $x.name "scripts.json" ] | path join
-        let scripts = if ($scripts_path | path exists) {
-          open $scripts_path
-        } else {
-          { }
-        }
-        {
-          "name": $name,
-          "scripts": $scripts
-        }
-      }
-
-  for $host in $hosts {
+  for $host in (static hosts) {
     main scrt key $host.name
 
-    if (($host.scripts.ddns? | default null "coordinator") == true) {
+    if ($host.scripts.ddns.coordinator) {
       main ddns $host.name
     }
 
     main vpn key $host.name shared
-    if (($host.scripts.vpn? | default null "coordinator") == true) {
+    if ($host.static.vpn.coordinator) {
       main vpn cnf $host.name --coordinator
     } else {
       main vpn cnf $host.name
@@ -57,7 +43,7 @@ def "main create" []: nothing -> nothing {
     main ssh key $host.name
 
     main ddb key $host.name shared
-    if (($host.scripts.ddb? | default null "coordinator") == true) {
+    if ($host.scripts.ddb.coordinator) {
       main ddb sql $host.name
       main ddb cnf $host.name --coordinator
     } else {
@@ -74,12 +60,9 @@ def "main create" []: nothing -> nothing {
 
 # lock secrets for all hosts
 def "main lock" []: nothing -> nothing {
-  let hosts = ls ([ ($env.FILE_PWD | path dirname) "src" "host" ] | path join)
-    | each { |x| $x.name | path basename }
-
-  for $name in $hosts {
-    main ssh auth $name
-    main scrt val $name
+  for $host in (static hosts) {
+    main ssh auth $host.name
+    main scrt val $host.name
   }
 }
 

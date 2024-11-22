@@ -2,9 +2,9 @@
 
 let
   parseFile = dir:
-    if builtins.pathExists "${dir}/secrets.json" then
+    if builtins.pathExists "${dir}/static.json" then
       let
-        expr = builtins.fromJSON (builtins.readFile "${dir}/secrets.json");
+        expr = builtins.fromJSON (builtins.readFile "${dir}/static.json");
 
         val = path:
           let

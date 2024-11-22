@@ -23,18 +23,18 @@ in
         ++ (if builtins.pathExists sharedConfig
         then [ (self.lib.module.mkSystemModule (import sharedConfig)) ]
         else [ ])
-        ++ [{ dot = self.lib.scripts.parseFile "${self}/src/host/${host}"; }]
-        ++ [{ dot = self.lib.scripts.parseFile "${self}/src/host"; }]
+        ++ [{ dot = self.lib.static.parseFile "${self}/src/host/${host}"; }]
+        ++ [{ dot = self.lib.static.parseFile "${self}/src/host"; }]
       ;
 
       options = {
-        dot.scripts = lib.mkOption {
+        dot.static = lib.mkOption {
           type = lib.types.raw;
         };
       };
 
       config = {
-        dot.scripts = self.lib.scripts.parseDir "${self}/src/host";
+        dot.static = self.lib.static.parseDir "${self}/src/host";
 
         facter.reportPath = hardware;
 
