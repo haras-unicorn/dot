@@ -42,14 +42,13 @@ let schema = {
   }
 }
 
-def "to paths" [] {
+def "to paths" [when: closure] {
   $in
     | transpose path value
     | each { |x|
-        if (($x.value | describe) =~ "record"
-          and (($x.value | get path --ignore-errors) | is-empty)) {
+        if ((($x.value | describe) =~ "record|table") and (do $when $x.value)) {
           $x.value
-            | to paths
+            | to paths $when
             | each { |y|
                 {
                   path: $"($x.path).($y.path)",
@@ -68,32 +67,60 @@ def "to paths" [] {
     | flatten
 }
 
-export def "static hosts" [] {
-  ls ([ ($env.FILE_PWD | path dirname) "src" "host" ] | path join)
-    | each { |x|
-        def "parse" [x] {
-          # ddns.coordinator = val [ "ddns" "coordinator" ];
-          # vpn.coordinator = val [ "vpn" "coordinator" ];
-          # vpn.ip = val [ "vpn" "ip" ];
-          # vpn.subnet.ip = val [ "vpn" "subnet" "ip" ];
-          # vpn.subnet.bits = val [ "vpn" "subnet" "bits" ];
-          # vpn.subnet.mask = val [ "vpn" "subnet" "mask" ];
-          # ddb.coordinator = val [ "ddb" "coordinator" ];
-          # nfs.coordinator = val [ "nfs" "coordinator" ];
-          # nfs.node = val [ "nfs" "node" ];
-        }
-
-        let name = $x.name | path basename
-        let scripts_path = [ $x.name "scripts.json" ] | path join
-        let value = if ($scripts_path | path exists) {
-          open $scripts_path
+def "apply schema paths" [paths: table] {
+  $paths
+    | reduce --fold $in { |it, acc|
+        let default = $it.default?
+        if ($default | is-not-empty) {
+          try {
+            $acc | insert $it.path $default 
+          } catch {
+            $acc
+          }
         } else {
-          { }
-        }
-        {
-          "name": $name,
-          "value": $value
+          $acc
         }
       }
-    | reduce { |x, acc| $acc | insert $x.name $x.scripts }
+}
+
+def "apply static paths" [paths: table] {
+  $paths
+    | reduce --fold $in { |it, acc|
+        try {
+          $acc | update $it.path $it.value 
+        } catch {
+          $acc | insert $it.path $it.value 
+        }
+      }
+}
+
+def "open if exists" [path: path] {
+  if ($path | path exists) {
+    open $path
+  } else {
+    { }
+  }
+}
+
+export def "static hosts" [] {
+  let schema = $schema | to paths { |x| $x.type? != null }
+
+  let hosts = [ ($env.FILE_PWD | path dirname) "src" "host" ] | path join
+  let shared_static_path = [ $hosts "static.json" ] | path join
+  let shared_static = open if exists $shared_static_path
+
+  ls $hosts
+    | each { |x|
+        let host = $x.name | path basename
+        let static_path = [ $x.name "static.json" ] | path join
+        let static = open if exists $static_path
+        let result = $shared_static
+          | apply static paths ($static | to paths { |_| true })
+          | apply schema paths $schema
+        {
+          host: $host,
+          static: $static
+        }
+      }
+    | reduce { |it, acc| $acc | insert $it.host $it.static }
 }
