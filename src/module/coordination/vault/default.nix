@@ -2,6 +2,7 @@
 
 let
   hasNetwork = config.dot.hardware.network.enable;
+  hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
   system = lib.mkIf hasNetwork {
@@ -26,5 +27,13 @@ in
     home.packages = [
       pkgs.vault-bin
     ];
+
+    xdg.desktopEntries = lib.mkIf hasMonitor {
+      vault = {
+        name = "Vault";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8200";
+        terminal = false;
+      };
+    };
   };
 }
