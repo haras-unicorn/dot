@@ -14,10 +14,9 @@ let
           (name: value: {
             inherit name;
             type = value;
-            value = nixpkgs.lib.mkMerge [
+            value = nixpkgs.lib.recursiveUpdate
               (parseFile "${dir}")
-              (parseFile "${dir}/${name}")
-            ];
+              (parseFile "${dir}/${name}");
           })
           (builtins.readDir dir)));
 in
