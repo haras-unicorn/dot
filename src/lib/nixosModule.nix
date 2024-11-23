@@ -10,7 +10,7 @@ in
 {
   mkNixosModule = host: system:
     let
-      config = import "${self}/src/host/${host}/config.nix";
+      config = "${self}/src/host/${host}/config.nix";
       hardware = "${self}/src/host/${host}/hardware.json";
       secrets = "${self}/src/host/${host}/secrets.yaml";
     in

@@ -16,6 +16,15 @@ in
     vpn.ip = lib.mkOption {
       type = lib.types.str;
     };
+    vpn.subnet.ip = lib.mkOption {
+      type = lib.types.str;
+    };
+    vpn.subnet.bits = lib.mkOption {
+      type = lib.types.ints.u16;
+    };
+    vpn.subnet.mask = lib.mkOption {
+      type = lib.types.str;
+    };
   };
 
   config = {
