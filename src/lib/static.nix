@@ -10,7 +10,7 @@ let
     builtins.listToAttrs
       (builtins.filter
         ({ type, ... }: type == "directory")
-        (nixpkgs.mapAttrsToList
+        (nixpkgs.lib.mapAttrsToList
           (name: value: {
             inherit name;
             type = value;
