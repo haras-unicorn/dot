@@ -49,9 +49,9 @@ in
         rpc_bind_outgoing = true;
         rpc_public_addr = "${ip}:${builtins.toString rpcPort}";
         bootstrap_peers = builtins.map
-          (other:
+          (name:
             let
-              other = config.dot.static.${other};
+              other = config.dot.static.${name};
             in
             "${other.nfs.node}@${other.vpn.ip}:${builtins.toString rpcPort}")
           (builtins.filter
