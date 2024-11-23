@@ -11,7 +11,7 @@ let
   adminPort = rpcPort + 1;
 
   isCoordinator = config.dot.nfs.coordinator;
-  bindAddr = if isCoordinator then ip else "localhost";
+  bindAddr = if isCoordinator then ip else "127.0.0.1";
 in
 {
   options = {
