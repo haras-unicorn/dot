@@ -34,10 +34,12 @@ in
       services.garage.enable = true;
       services.garage.package = pkgs.garage;
       services.garage.environmentFile = "/etc/garage/host.env";
+      systemd.services.garage.after = [ "nebula@nebula.service" ];
+      systemd.services.garage.wants = [ "nebula@nebula.service" ];
       sops.secrets."${host}.nfs" = {
         path = "/etc/garage/host.env";
-        owner = "garage";
-        group = "garage";
+        owner = "root";
+        group = "root";
         mode = "0400";
       };
       services.garage.settings = {
