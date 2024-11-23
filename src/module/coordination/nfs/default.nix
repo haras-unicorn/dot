@@ -79,6 +79,10 @@ in
           root_domain = rootDomain;
         };
       };
+
+      environment.systemPackages = [
+        pkgs.rclone
+      ];
     };
 
     home = lib.mkIf hasNetwork {
