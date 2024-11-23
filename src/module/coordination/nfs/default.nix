@@ -9,6 +9,8 @@ let
   ip = config.dot.vpn.ip;
   rpcPort = 3900;
   adminPort = rpcPort + 1;
+  webPort = rpcPort + 2;
+  apiPort = rpcPort + 3;
 
   isCoordinator = config.dot.nfs.coordinator;
   bindAddr = if isCoordinator then ip else "127.0.0.1";
@@ -42,6 +44,9 @@ in
         group = "root";
         mode = "0400";
       };
+      networking.firewall.allowedUDPPorts = [ rpcPort ];
+      networking.firewall.allowedTCPPorts =
+        lib.mkIf isCoordinator [ adminPort webPort apiPort ];
       services.garage.settings = {
         replication_factor = 2;
         db_engine = "sqlite";
@@ -62,13 +67,13 @@ in
         admin = {
           api_bind_addr = "${bindAddr}:${builtins.toString adminPort}";
         };
-        s3_api = {
-          api_bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 2)}";
-          s3_region = "garage";
+        s3_web = {
+          bind_addr = "${bindAddr}:${builtins.toString webPort}";
           root_domain = rootDomain;
         };
-        s3_web = {
-          bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 3)}";
+        s3_api = {
+          api_bind_addr = "${bindAddr}:${builtins.toString apiPort}";
+          s3_region = "garage";
           root_domain = rootDomain;
         };
       };
@@ -76,9 +81,14 @@ in
 
     home = lib.mkIf hasNetwork {
       xdg.desktopEntries = lib.mkIf hasMonitor {
+        garage-admin = {
+          name = "Garage Admin";
+          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:${builtins.toString adminPort}";
+          terminal = false;
+        };
         garage = {
           name = "Garage";
-          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:${builtins.toString adminPort}";
+          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:${builtins.toString webPort}";
           terminal = false;
         };
       };
