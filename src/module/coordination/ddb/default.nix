@@ -2,6 +2,8 @@
 
 # TODO: mysqlbackup
 
+# NOTE: run `sudo galera_new_cluster` when all nodes are down
+
 let
   hasNetwork = config.dot.hardware.network.enable;
   isCoordinator = config.dot.ddb.coordinator;
