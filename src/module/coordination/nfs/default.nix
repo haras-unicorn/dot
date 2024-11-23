@@ -38,7 +38,7 @@ in
       services.garage.environmentFile = "/etc/garage/host.env";
       systemd.services.garage.after = [ "nebula@nebula.service" ];
       systemd.services.garage.wants = [ "nebula@nebula.service" ];
-      sops.secrets."${host}.nfs" = {
+      sops.secrets."shared.nfs" = {
         path = "/etc/garage/host.env";
         owner = "root";
         group = "root";
