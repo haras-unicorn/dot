@@ -27,7 +27,7 @@ def "main create" []: nothing -> nothing {
 
   main scrt key shared
 
-  for $host in $hosts {
+  for $host in ($hosts | transpose name static) {
     main scrt key $host.name
 
     if ($host.static.ddns.coordinator) {
@@ -61,7 +61,7 @@ def "main create" []: nothing -> nothing {
 
 # lock secrets for all hosts
 def "main lock" []: nothing -> nothing {
-  for $host in $hosts {
+  for $host in ($hosts | transpose name static) {
     main ssh auth $host.name
     main scrt val $host.name
   }
