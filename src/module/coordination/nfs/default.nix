@@ -4,9 +4,11 @@ let
   rootDomain = "s3.garage";
 
   hasNetwork = config.dot.hardware.network.enable;
+  hasMonitor = config.dot.hardware.monitor.enable;
 
   ip = config.dot.vpn.ip;
   rpcPort = 3900;
+  adminPort = rpcPort + 1;
 
   isCoordinator = config.dot.nfs.coordinator;
   bindAddr = if isCoordinator then ip else "localhost";
@@ -27,8 +29,8 @@ in
     };
   };
 
-  config = lib.mkIf hasNetwork {
-    system = {
+  config = {
+    system = lib.mkIf hasNetwork {
       services.garage.enable = true;
       services.garage.environmentFile = "/etc/garage/host.env";
       sops.secrets."${host}.nfs" = {
@@ -49,7 +51,7 @@ in
           (other: "${other.nfs.node}@${other.vpn.ip}:${builtins.toString rpcPort}")
           config.dot.others;
         admin = {
-          api_bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 1)}";
+          api_bind_addr = "${bindAddr}:${builtins.toString adminPort}";
         };
         s3_api = {
           api_bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 1)}";
@@ -59,6 +61,16 @@ in
         s3_web = {
           bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 1)}";
           root_domain = rootDomain;
+        };
+      };
+    };
+
+    home = lib.mkIf hasNetwork {
+      xdg.desktopEntries = lib.mkIf hasMonitor {
+        garage = {
+          name = "Garage";
+          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:${builtins.toString adminPort}";
+          terminal = false;
         };
       };
     };
