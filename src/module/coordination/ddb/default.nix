@@ -65,31 +65,31 @@ in
 
         !includedir /etc/mysql/conf.d/
       '';
-      sops.secrets."shared.db.ca.pub" = {
+      sops.secrets."shared.ddb.ca.pub" = {
         path = "/etc/mysql/ca.crt";
         owner = "mysql";
         group = "mysql";
         mode = "0400";
       };
-      sops.secrets."${host}.db.key.pub" = {
+      sops.secrets."${host}.ddb.key.pub" = {
         path = "/etc/mysql/host.crt";
         owner = "mysql";
         group = "mysql";
         mode = "0400";
       };
-      sops.secrets."${host}.db.key" = {
+      sops.secrets."${host}.ddb.key" = {
         path = "/etc/mysql/host.key";
         owner = "mysql";
         group = "mysql";
         mode = "0400";
       };
-      sops.secrets."${host}.db.cnf" = {
+      sops.secrets."${host}.ddb.cnf" = {
         path = "/etc/mysql/conf.d/host.cnf";
         owner = "mysql";
         group = "mysql";
         mode = "0400";
       };
-      sops.secrets."${host}.db.sql" = lib.mkIf isCoordinator {
+      sops.secrets."${host}.ddb.sql" = lib.mkIf isCoordinator {
         path = "/etc/mysql/init.sql";
         owner = "mysql";
         group = "mysql";
