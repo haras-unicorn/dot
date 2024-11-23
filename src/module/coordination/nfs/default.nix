@@ -63,12 +63,12 @@ in
           api_bind_addr = "${bindAddr}:${builtins.toString adminPort}";
         };
         s3_api = {
-          api_bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 1)}";
+          api_bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 2)}";
           s3_region = "garage";
           root_domain = rootDomain;
         };
         s3_web = {
-          bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 1)}";
+          bind_addr = "${bindAddr}:${builtins.toString (rpcPort + 3)}";
           root_domain = rootDomain;
         };
       };
