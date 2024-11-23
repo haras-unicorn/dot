@@ -452,7 +452,9 @@ def "main ddb cnf" [name: string, --coordinator]: nothing -> nothing {
     | str join "," 
 
   let host_ip_key = $"DDB_CNF_($name | str upcase)_IP"
-  let host_ip = $env | default null $host_ip_key | get $host_ip_key
+  let host_ip = $env | get $host_ip_key --ignore-errors
+    | default ($hosts
+       | get ([ $name "vpn" "ip" ] | into cell-path))
   if ($host_ip | is-empty) {
     error make {
       msg: "expected host ip provided via DDB_CNF_`name`_IP"
