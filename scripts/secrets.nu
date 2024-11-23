@@ -2,6 +2,7 @@
 
 use std
 use ./static.nu *
+let hosts = static hosts ([ ($env.FILE_PWD | path dirname) "src" "host" ] | path join)
 
 # create secrets for all hosts and lock them
 def "main" []: nothing -> nothing {
@@ -26,7 +27,7 @@ def "main create" []: nothing -> nothing {
 
   main scrt key shared
 
-  for $host in (static hosts) {
+  for $host in $hosts {
     main scrt key $host.name
 
     if ($host.static.ddns.coordinator) {
@@ -60,7 +61,7 @@ def "main create" []: nothing -> nothing {
 
 # lock secrets for all hosts
 def "main lock" []: nothing -> nothing {
-  for $host in (static hosts) {
+  for $host in $hosts {
     main ssh auth $host.name
     main scrt val $host.name
   }
@@ -269,7 +270,10 @@ def "main vpn ca" [name: string]: nothing -> nothing {
 #   ./name.vpn.key
 def "main vpn key" [name: string, ca: path]: nothing -> nothing {
   let ip_key = $"VPN_($name | str upcase)_IP"
-  let ip = $env | default null $ip_key | get $ip_key
+  let ip = $env | get $ip_key --ignore-errors
+    | default (($hosts | get ([ $name "vpn" "ip" ] | into cell-path))
+        + "/"
+        + ($hosts | get ([ $name "vpn" "subnet" "bits" ] | into cell-path)))
   if ($ip | is-empty) {
     error make {
       msg: "expected ip provided via VPN_`NAME`_IP"
@@ -432,6 +436,11 @@ def "main ddb key" [name: string, ca: path]: nothing -> nothing {
 #   ./name.ddb.cnf
 def "main ddb cnf" [name: string, --coordinator]: nothing -> nothing {
   let cluster_ips = $env.DDB_CNF_CLUSTER_IPS?
+    | default ($hosts
+      | reject hearth
+      | values
+      | get $.vpn.ip
+      | str join ",")
   if ($cluster_ips | is-empty) {
     error make {
       msg: "expected cluster ips provided via DDB_CNF_CLUSTER_IPS"
@@ -473,7 +482,7 @@ wsrep_sst_auth=\"sst:(open --raw sst.ddb.user)\""
 # with all permissions for all service databases 
 # in the database cluster
 #
-# expects user host names in the DDB_SQL_HOST_NAMES env var
+# can read user host names in the DDB_SQL_HOST_NAMES env var
 # with format hostname1,hostname2,...
 #
 # assumes that a mariadb galera cluster is used
@@ -482,6 +491,10 @@ wsrep_sst_auth=\"sst:(open --raw sst.ddb.user)\""
 #   ./name.ddb.sql 
 def "main ddb sql" [name: string]: nothing -> nothing {
   let host_names = $env.DDB_SQL_HOST_NAMES?
+    | default ("localhost,"
+      + ($hosts | get ([ $name "vpn" "subnet" "ip" ] | into cell-path))
+      + "/"
+      + ($hosts | get ([ $name "vpn" "subnet" "mask" ] | into cell-path)))
   if ($host_names | is-empty) {
     error make {
       msg: "expected cluster ips provided via DDB_SQL_HOST_NAMES"
