@@ -124,9 +124,9 @@ export def "static hosts" [hosts: path] {
           | apply static paths ($static | to paths { |_| true })
           | apply schema paths $schema_paths
         {
-          host: $host,
+          name: $host,
           static: $result
         }
       }
-    | reduce --fold { } { |it, acc| $acc | insert $it.host $it.static }
+    | reduce --fold { } { |it, acc| $acc | insert $it.name $it.static }
 }

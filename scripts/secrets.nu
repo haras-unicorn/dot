@@ -29,7 +29,7 @@ def "main create" []: nothing -> nothing {
   for $host in (static hosts) {
     main scrt key $host.name
 
-    if ($host.scripts.ddns.coordinator) {
+    if ($host.static.ddns.coordinator) {
       main ddns $host.name
     }
 
@@ -43,7 +43,7 @@ def "main create" []: nothing -> nothing {
     main ssh key $host.name
 
     main ddb key $host.name shared
-    if ($host.scripts.ddb.coordinator) {
+    if ($host.static.ddb.coordinator) {
       main ddb sql $host.name
       main ddb cnf $host.name --coordinator
     } else {
