@@ -1,4 +1,4 @@
-{ host, config, lib, ... }:
+{ pkgs, host, config, lib, ... }:
 
 let
   rootDomain = "s3.garage";
@@ -32,6 +32,7 @@ in
   config = {
     system = lib.mkIf hasNetwork {
       services.garage.enable = true;
+      services.garage.package = pkgs.garage;
       services.garage.environmentFile = "/etc/garage/host.env";
       sops.secrets."${host}.nfs" = {
         path = "/etc/garage/host.env";
