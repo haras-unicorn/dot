@@ -1,4 +1,4 @@
-let schema = {
+const schema = {
   "ddns": {
     "coordinator": {
       "type": "bool"
@@ -42,35 +42,40 @@ let schema = {
   }
 }
 
-def "to paths" [when: closure] {
-  $in
-    | transpose path value
-    | each { |x|
-        if ((($x.value | describe) =~ "record|table") and (do $when $x.value)) {
-          $x.value
-            | to paths $when
-            | each { |y|
-                {
-                  path: $"($x.path).($y.path)",
-                  value: $y.value
-                }
+def "to paths" [when] {
+  def recurse [when, curr = ""] {
+    $in
+      | transpose path value
+      | each { |x|
+          if ((($x.value | describe) =~ "record|table") and (do $when $x.value)) {
+            $x.value | recurse $when $x.path
+          } else {
+            [
+              {
+                path: $"($curr).($x.path)"
+                value: $x.value
               }
-        } else {
-          [
-            {
-              path: $x.path
-              value: $x.value
-            }
-          ]
+            ]
+          }
+        }
+      | flatten
+  }
+
+  $in
+    | recurse $when
+    | each { |x|
+        {
+          path: ($x.path | split row "." | into cell-path)
+          value: $x.value
         }
       }
-    | flatten
 }
 
-def "apply schema paths" [paths: table] {
+def "apply schema paths" [paths] {
+  let this_in = $in
   $paths
-    | reduce --fold $in { |it, acc|
-        let default = $it.default?
+    | reduce --fold $this_in { |it, acc|
+        let default = $it.value.default?
         if ($default | is-not-empty) {
           try {
             $acc | insert $it.path $default 
@@ -83,9 +88,10 @@ def "apply schema paths" [paths: table] {
       }
 }
 
-def "apply static paths" [paths: table] {
+def "apply static paths" [paths] {
+  let this_in = $in
   $paths
-    | reduce --fold $in { |it, acc|
+    | reduce --fold $this_in { |it, acc|
         try {
           $acc | update $it.path $it.value 
         } catch {
@@ -102,25 +108,25 @@ def "open if exists" [path: path] {
   }
 }
 
-export def "static hosts" [] {
-  let schema = $schema | to paths { |x| $x.type? != null }
+export def "static hosts" [hosts: path] {
+  let schema_paths = $schema | to paths { |x| $x.type? == null }
 
-  let hosts = [ ($env.FILE_PWD | path dirname) "src" "host" ] | path join
   let shared_static_path = [ $hosts "static.json" ] | path join
   let shared_static = open if exists $shared_static_path
 
   ls $hosts
+    | where $it.type == "dir"
     | each { |x|
         let host = $x.name | path basename
         let static_path = [ $x.name "static.json" ] | path join
         let static = open if exists $static_path
         let result = $shared_static
           | apply static paths ($static | to paths { |_| true })
-          | apply schema paths $schema
+          | apply schema paths $schema_paths
         {
           host: $host,
-          static: $static
+          static: $result
         }
       }
-    | reduce { |it, acc| $acc | insert $it.host $it.static }
+    | reduce --fold { } { |it, acc| $acc | insert $it.host $it.static }
 }
