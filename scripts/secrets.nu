@@ -25,6 +25,8 @@ def "main create" []: nothing -> nothing {
   main ddb svc vault
   main vault shared
 
+  main nfs shared
+
   main scrt key shared
 
   for $host in ($hosts | transpose name static) {
@@ -50,8 +52,6 @@ def "main create" []: nothing -> nothing {
     } else {
       main ddb cnf $host.name
     }
-
-    main nfs $host.name
 
     main pass $host.name
 
