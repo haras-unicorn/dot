@@ -45,8 +45,10 @@ in
         mode = "0400";
       };
       networking.firewall.allowedUDPPorts = [ rpcPort ];
-      networking.firewall.allowedTCPPorts =
-        lib.mkIf isCoordinator [ adminPort webPort apiPort ];
+      networking.firewall.allowedTCPPorts = lib.mkMerge [
+        [ rpcPort ]
+        (lib.mkIf isCoordinator [ adminPort webPort apiPort ])
+      ];
       services.garage.settings = {
         replication_factor = 2;
         db_engine = "sqlite";
