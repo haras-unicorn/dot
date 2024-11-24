@@ -22,10 +22,13 @@ def "main create" []: nothing -> nothing {
   main ddb user sst
   main ddb user haras
 
+  main nfs env shared
+
   main ddb svc vault
   main vault shared
 
-  main nfs env shared
+  main ddb svc warden
+  main warden shared
 
   main scrt key shared
 
@@ -52,6 +55,8 @@ def "main create" []: nothing -> nothing {
     } else {
       main ddb cnf $host.name
     }
+
+    main nfs cnf $host.name
 
     main pass $host.name
 
@@ -697,6 +702,18 @@ def "main vault" [name: string]: nothing -> nothing {
 }"
   $settings | save -f $"($name).vault"
   chmod 600 $"($name).vault"
+}
+
+# create vaultwarden service environment file
+#
+# outputs:
+#   ./name.warden
+def "main warden" [name: string]: nothing -> nothing {
+  let config = $"DATABASE_URL=\"mysql://warden:(open --raw "warden.ddb.svc")@localhost/warden\"
+ADMIN_TOKEN=\"(openssl rand -base64 48)\"
+DATA_FOLDER=\"/var/lib/vaultwarden\""
+  $config | save -f $"($name).warden"
+  chmod 600 $"($name).warden"
 }
 
 # create a linux user password

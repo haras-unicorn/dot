@@ -23,7 +23,7 @@ let
     "dir-perms=700"
     "file-perms=600"
   ];
-  # mkRootRcloneOption = uid: gid: mkRcloneOptions uid gid "/etc/rclone/rclone.conf";
+  mkRootRcloneOption = uid: gid: mkRcloneOptions uid gid "/etc/rclone/rclone.conf";
   userRcloneOptions = mkRcloneOptions uid gid "${config.home.homeDirectory}/.rclone.conf";
 
   pathToMountName = path:
@@ -100,6 +100,20 @@ in
       environment.systemPackages = [
         pkgs.rclone
       ];
+      systemd.mounts = {
+        ${pathToMountName "/var/lib/vaultwarden/attachments"} = {
+          description = "Mount garage:vaultwarden-attachments to /var/lib/vaultwarden/attachments";
+          after = [ "garage.service" ];
+          wants = [ "garage.service" ];
+          wantedBy = [ "default.target" ];
+          what = "garage:vaultwarden-attachments";
+          where = "/var/lib/vaultwarden/attachments";
+          type = "rclone";
+          options = mkRootRcloneOption
+            config.users.users.vaultwarden.uid
+            config.users.groups.vaultwarden.gid;
+        };
+      };
       sops.secrets."system-rclone-conf" = {
         key = "${host}.nfs.cnf";
         path = "/etc/rclone/rclone.conf";
