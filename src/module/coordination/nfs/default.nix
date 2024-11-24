@@ -1,4 +1,4 @@
-{ pkgs, host, config, uid, gid, lib, ... }:
+{ pkgs, host, config, user, group, uid, gid, lib, ... }:
 
 let
   rootDomain = "s3.garage";
@@ -24,7 +24,7 @@ let
     "file-perms=600"
   ];
   # mkRootRcloneOption = uid: gid: mkRcloneOptions uid gid "/etc/rclone/rclone.conf";
-  userRcloneOptions = mkRcloneOptions uid gid "${config.xdg.configHome}/rclone/rclone.conf";
+  userRcloneOptions = mkRcloneOptions uid gid "${config.user.users.${user}.home}/.rclone.conf";
 
   pathToMountName = path:
     (lib.replaceStrings
@@ -106,17 +106,18 @@ in
         group = "root";
         mode = "0400";
       };
+      sops.secrets."${host}.nfs.cnf" = {
+        path = "${config.user.users.${user}.home}/.rclone.conf";
+        owner = user;
+        group = group;
+        mode = "0400";
+      };
     };
 
     home = lib.mkIf hasNetwork {
       home.packages = [
         pkgs.rclone
       ];
-      sops.secrets."${host}.nfs.cnf" = {
-        path = "${config.xdg.configHome}/rclone/rclone.conf";
-        mode = "0400";
-      };
-
       systemd.user.mounts = {
         ${pathToMountName config.xdg.userDirs.documents} = lib.mkIf isTrusted {
           Unit = {
