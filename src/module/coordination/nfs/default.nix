@@ -107,7 +107,7 @@ in
       ];
 
       systemd.user.mounts = {
-        "documents.mount" = lib.mkIf isTrusted {
+        documents = lib.mkIf isTrusted {
           Unit = {
             Description = "Mount garage:documents as user documents directory";
             After = [ "garage.service" ];
@@ -121,7 +121,7 @@ in
             Options = userRcloneOptions;
           };
         };
-        "music.mount" = {
+        music = {
           Unit = {
             Description = "Mount garage:music as user music directory";
             After = [ "garage.service" ];
@@ -135,7 +135,7 @@ in
             Options = userRcloneOptions;
           };
         };
-        "pictures.mount" = lib.mkIf isTrusted {
+        pictures = lib.mkIf isTrusted {
           Unit = {
             Description = "Mount garage:pictures as user pictures directory";
             After = [ "garage.service" ];
@@ -149,7 +149,7 @@ in
             Options = userRcloneOptions;
           };
         };
-        "videos.mount" = lib.mkIf isTrusted {
+        videos = lib.mkIf isTrusted {
           Unit = {
             Description = "Mount garage:videos as user videos directory";
             After = [ "garage.service" ];
@@ -163,7 +163,7 @@ in
             Options = userRcloneOptions;
           };
         };
-        "data.mount" = {
+        data = {
           Unit = {
             Description = "Mount garage:data as user public share directory";
             After = [ "garage.service" ];
