@@ -17,8 +17,8 @@ in
     systemd.services.vaultwarden.serviceConfig.StateDirectoryMode = lib.mkForce "0700";
     sops.secrets."shared.warden" = {
       path = "/etc/vaultwarden/config.env";
-      owner = "vaultwarden";
-      group = "vaultwarden";
+      owner = "root";
+      group = "root";
       mode = "0400";
     };
   };
