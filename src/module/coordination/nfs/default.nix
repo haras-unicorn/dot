@@ -29,8 +29,7 @@ let
     (lib.replaceStrings
       [ "/" ]
       [ "-" ]
-      (lib.strings.removePrefix "/" path))
-    + ".mount";
+      (lib.strings.removePrefix "/" path));
 in
 {
   options = {
