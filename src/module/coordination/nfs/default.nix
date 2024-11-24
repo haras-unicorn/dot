@@ -114,8 +114,6 @@ in
       ];
       sops.secrets."${host}.nfs.cnf" = {
         path = "${config.xdg.configHome}/rclone/rclone.conf";
-        owner = user;
-        group = user;
         mode = "0400";
       };
 
