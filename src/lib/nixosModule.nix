@@ -2,6 +2,10 @@
 
 let
   user = self.lib.nixosConfiguration.user;
+  group = self.lib.nixosConfiguration.group;
+  uid = self.lib.nixosConfiguration.uid;
+  gid = self.lib.nixosConfiguration.gid;
+
   version = self.lib.nixosConfiguration.version;
   modules = self.lib.nixosConfiguration.modules;
 
@@ -45,7 +49,11 @@ in
         system.stateVersion = version;
 
         users.mutableUsers = false;
-        users.users."${user}" = {
+        users.groups.users.${group} = {
+          inherit gid;
+        };
+        users.users.${user} = {
+          inherit uid;
           home = "/home/${user}";
           createHome = true;
           isNormalUser = true;

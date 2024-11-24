@@ -1,10 +1,9 @@
-{ pkgs, host, config, lib, ... }:
+{ pkgs, host, config, uid, gid, lib, ... }:
 
 let
   rootDomain = "s3.garage";
 
   hasNetwork = config.dot.hardware.network.enable;
-  hasMonitor = config.dot.hardware.monitor.enable;
 
   ip = config.dot.vpn.ip;
   rpcPort = 3900;
@@ -14,6 +13,16 @@ let
 
   isCoordinator = config.dot.nfs.coordinator;
   bindAddr = if isCoordinator then ip else "127.0.0.1";
+
+  mkRcloneOptions = uid: gid: builtins.concatStringsSep "," [
+    "config=/etc/rclone/rclone.conf"
+    "vfs-cache-mode=writes"
+    "gid=${gid}"
+    "uid=${uid}"
+    "dir-perms=700"
+    "file-perms=600"
+  ];
+  userRcloneOptions = mkRcloneOptions uid gid;
 in
 {
   options = {
@@ -25,10 +34,6 @@ in
       type = lib.types.strMatching "[a-z0-9]+";
       default = false;
     };
-    nfs.rpcPort = lib.mkOption {
-      type = lib.types.ints.u16;
-      default = false;
-    };
   };
 
   config = {
@@ -38,7 +43,7 @@ in
       services.garage.environmentFile = "/etc/garage/host.env";
       systemd.services.garage.after = [ "nebula@nebula.service" ];
       systemd.services.garage.wants = [ "nebula@nebula.service" ];
-      sops.secrets."shared.nfs" = {
+      sops.secrets."shared.nfs.env" = {
         path = "/etc/garage/host.env";
         owner = "root";
         group = "root";
@@ -83,21 +88,56 @@ in
       environment.systemPackages = [
         pkgs.rclone
       ];
+      sops.secrets."${host}.nfs.cnf" = {
+        path = "/etc/rclone/rclone.conf";
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
     };
 
     home = lib.mkIf hasNetwork {
-      xdg.desktopEntries = lib.mkIf hasMonitor {
-        garage-admin = {
-          name = "Garage Admin";
-          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:${builtins.toString adminPort}";
-          terminal = false;
-        };
-        garage = {
-          name = "Garage";
-          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:${builtins.toString webPort}";
-          terminal = false;
-        };
-      };
+      home.packages = [
+        pkgs.rclone
+      ];
+
+      systemd.user.mounts = [
+        {
+          what = "garage:documents";
+          where = config.xdg.userDirs.documents;
+          type = "rclone";
+          options = userRcloneOptions;
+          wantedBy = [ "multi-user.target" ];
+        }
+        {
+          what = "garage:music";
+          where = config.xdg.userDirs.music;
+          type = "rclone";
+          options = userRcloneOptions;
+          wantedBy = [ "multi-user.target" ];
+        }
+        {
+          what = "garage:pictures";
+          where = config.xdg.userDirs.pictures;
+          type = "rclone";
+          options = userRcloneOptions;
+          wantedBy = [ "multi-user.target" ];
+        }
+        {
+          what = "garage:videos";
+          where = config.xdg.userDirs.videos;
+          type = "rclone";
+          options = userRcloneOptions;
+          wantedBy = [ "multi-user.target" ];
+        }
+        {
+          what = "garage:data";
+          where = config.xdg.userDirs.publicShare;
+          type = "rclone";
+          options = userRcloneOptions;
+          wantedBy = [ "multi-user.target" ];
+        }
+      ];
     };
   };
 }

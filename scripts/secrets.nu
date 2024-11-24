@@ -25,7 +25,7 @@ def "main create" []: nothing -> nothing {
   main ddb svc vault
   main vault shared
 
-  main nfs shared
+  main nfs env shared
 
   main scrt key shared
 
@@ -637,13 +637,52 @@ def "main ddb svc" [name: string]: nothing -> nothing {
 # assumes that a garage cluster is used
 #
 # outputs:
-#   ./name.nfs
-def "main nfs" [name: string]: nothing -> nothing {
+#   ./name.nfs.env
+def "main nfs env" [name: string]: nothing -> nothing {
   $"GARAGE_RPC_SECRET=\"(openssl rand -hex 32)\"
 GARAGE_ADMIN_TOKEN=\"(openssl rand -base64 32)\"
 GARAGE_METRICS_TOKEN=\"(openssl rand -base64 32)\""
-    | save -f $"($name).nfs"  
-  chmod 600 $"($name).nfs"
+    | save -f $"($name).nfs.env"  
+  chmod 600 $"($name).nfs.env"
+}
+
+# create a nfs secrets config file
+#
+# expects the host key id to be in the NFS_`NAME`_KEY_ID env var
+#
+# expects the host key to be in the NFS_`NAME`_KEY env var
+#
+# outputs:
+#   ./name.nfs.cnf
+def "main nfs cnf" [name: string]: nothing -> nothing {
+  let key_id_key = $"NFS_($name | str upcase)_KEY_ID"
+  let key_id = $env | get $key_id_key --ignore-errors
+  if ($key_id | is-empty) {
+    error make {
+      msg: "expected key id provided via NFS_`NAME`_KEY_ID"
+    }
+  }
+
+  let key_key = $"NFS_($name | str upcase)_KEY"
+  let key = $env | get $key_key --ignore-errors
+  if ($key | is-empty) {
+    error make {
+      msg: "expected key id provided via NFS_`NAME`_KEY"
+    }
+  }
+
+  $"[garage]
+type = s3
+provider = Other
+env_auth = false
+access_key_id = ($key_id)
+secret_access_key = ($key)
+region = garage
+endpoint = http://localhost:3903
+acl = private
+bucket_acl = private"
+    | save -f $"($name).nfs.cnf"
+  chmod 600 $"($name).nfs.cnf"
 }
 
 # create vault service settings

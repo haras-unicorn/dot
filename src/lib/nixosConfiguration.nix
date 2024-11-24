@@ -11,6 +11,9 @@
 let
   version = "24.05";
   user = "haras";
+  group = "users";
+  uid = 1000;
+  gid = 100;
 
   modules = builtins.map
     (x: x.__import.value)
@@ -21,11 +24,11 @@ let
         (self.lib.import.importDirMeta "${self}/src/module")));
 in
 {
-  inherit user version modules;
+  inherit user group uid gid version modules;
 
   mkNixosConfiguration = host: system:
     let
-      specialArgs = inputs // { inherit version host system user; };
+      specialArgs = inputs // { inherit version host system user group uid gid; };
     in
     nixpkgs.lib.nixosSystem {
       inherit system specialArgs;
