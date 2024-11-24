@@ -100,8 +100,8 @@ in
       environment.systemPackages = [
         pkgs.rclone
       ];
-      systemd.mounts = {
-        ${pathToMountName "/var/lib/vaultwarden/attachments"} = {
+      systemd.mounts = [
+        {
           description = "Mount garage:vaultwarden-attachments to /var/lib/vaultwarden/attachments";
           after = [ "garage.service" ];
           wants = [ "garage.service" ];
@@ -112,8 +112,8 @@ in
           options = mkRootRcloneOption
             config.users.users.vaultwarden.uid
             config.users.groups.vaultwarden.gid;
-        };
-      };
+        }
+      ];
       sops.secrets."system-rclone-conf" = {
         key = "${host}.nfs.cnf";
         path = "/etc/rclone/rclone.conf";
