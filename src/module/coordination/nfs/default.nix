@@ -24,6 +24,13 @@ let
     "file-perms=600"
   ];
   userRcloneOptions = mkRcloneOptions uid gid;
+
+  pathToMountName = path:
+    (lib.replaceStrings
+      [ "/" ]
+      [ "-" ]
+      (lib.strings.removePrefix "/" path))
+    + ".mount";
 in
 {
   options = {
@@ -107,7 +114,7 @@ in
       ];
 
       systemd.user.mounts = {
-        documents = lib.mkIf isTrusted {
+        ${pathToMountName config.xdg.userDirs.documents} = lib.mkIf isTrusted {
           Unit = {
             Description = "Mount garage:documents as user documents directory";
             After = [ "garage.service" ];
@@ -120,7 +127,7 @@ in
             Options = userRcloneOptions;
           };
         };
-        music = {
+        ${pathToMountName config.xdg.userDirs.music} = {
           Unit = {
             Description = "Mount garage:music as user music directory";
             After = [ "garage.service" ];
@@ -133,7 +140,7 @@ in
             Options = userRcloneOptions;
           };
         };
-        pictures = lib.mkIf isTrusted {
+        ${pathToMountName config.xdg.userDirs.pictures} = lib.mkIf isTrusted {
           Unit = {
             Description = "Mount garage:pictures as user pictures directory";
             After = [ "garage.service" ];
@@ -146,7 +153,7 @@ in
             Options = userRcloneOptions;
           };
         };
-        videos = lib.mkIf isTrusted {
+        ${pathToMountName config.xdg.userDirs.videos} = lib.mkIf isTrusted {
           Unit = {
             Description = "Mount garage:videos as user videos directory";
             After = [ "garage.service" ];
@@ -159,7 +166,7 @@ in
             Options = userRcloneOptions;
           };
         };
-        data = {
+        ${pathToMountName config.xdg.userDirs.publicShare} = {
           Unit = {
             Description = "Mount garage:data as user public share directory";
             After = [ "garage.service" ];
