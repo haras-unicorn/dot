@@ -100,13 +100,15 @@ in
       environment.systemPackages = [
         pkgs.rclone
       ];
-      sops.secrets."${host}.nfs.cnf" = {
+      sops.secrets."system-rclone-conf" = {
+        name = "${host}.nfs.cnf";
         path = "/etc/rclone/rclone.conf";
         owner = "root";
         group = "root";
         mode = "0400";
       };
-      sops.secrets."${host}.nfs.cnf" = {
+      sops.secrets."home-rclone-conf" = {
+        name = "${host}.nfs.cnf";
         path = "${config.user.users.${user}.home}/.rclone.conf";
         owner = user;
         group = group;
