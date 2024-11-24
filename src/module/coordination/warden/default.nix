@@ -6,8 +6,15 @@ in
 {
   system = lib.mkIf hasNetwork {
     services.vaultwarden.enable = true;
+    users.users.vaultwarden.uid = 988;
+    users.groups.vaultwarden.gid = 977;
     services.vaultwarden.dbBackend = "mysql";
     services.vaultwarden.environmentFile = "/etc/vaultwarden/config.env";
+    services.vaultwarden.config = {
+      DATA_FOLDER = "/var/lib/vaultwarden";
+    };
+    systemd.services.vaultwarden.serviceConfig.StateDirectory = lib.mkForce "/var/lib/vaultwarden";
+    systemd.services.vaultwarden.serviceConfig.StateDirectoryMode = lib.mkForce "0700";
     sops.secrets."shared.warden" = {
       path = "/etc/vaultwarden/config.env";
       owner = "vaultwarden";

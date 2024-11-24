@@ -7,8 +7,6 @@ in
 {
   system = lib.mkIf hasNetwork {
     services.vault.enable = true;
-    users.users.vaultwarden.uid = 977;
-    users.groups.vaultwarden.gid = 988;
     systemd.services.vault.after = [ "mysql.service" ];
     systemd.services.vault.wants = [ "mysql.service" ];
     services.vault.package = pkgs.vault-bin;

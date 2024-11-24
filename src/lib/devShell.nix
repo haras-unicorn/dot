@@ -34,6 +34,7 @@
         sops
         nebula
         deploy-rs
+        vaultwarden
       ];
     };
 }

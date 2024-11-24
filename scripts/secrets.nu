@@ -710,8 +710,7 @@ def "main vault" [name: string]: nothing -> nothing {
 #   ./name.warden
 def "main warden" [name: string]: nothing -> nothing {
   let config = $"DATABASE_URL=\"mysql://warden:(open --raw "warden.ddb.svc")@localhost/warden\"
-ADMIN_TOKEN=\"(openssl rand -base64 48)\"
-DATA_FOLDER=\"/var/lib/vaultwarden\""
+ADMIN_TOKEN=\"(openssl rand -base64 48)\""
   $config | save -f $"($name).warden"
   chmod 600 $"($name).warden"
 }
