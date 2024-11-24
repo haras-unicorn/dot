@@ -1,4 +1,4 @@
-{ pkgs, host, config, uid, gid, lib, ... }:
+{ pkgs, host, config, user, uid, gid, lib, ... }:
 
 let
   rootDomain = "s3.garage";
@@ -15,15 +15,16 @@ let
   isTrusted = config.dot.nfs.trusted;
   bindAddr = if isCoordinator then ip else "127.0.0.1";
 
-  mkRcloneOptions = uid: gid: builtins.concatStringsSep "," [
-    "config=/etc/rclone/rclone.conf"
+  mkRcloneOptions = uid: gid: conf: builtins.concatStringsSep "," [
+    "config=${conf}"
     "vfs-cache-mode=writes"
     "gid=${builtins.toString gid}"
     "uid=${builtins.toString uid}"
     "dir-perms=700"
     "file-perms=600"
   ];
-  userRcloneOptions = mkRcloneOptions uid gid;
+  # mkRootRcloneOption = uid: gid: mkRcloneOptions uid gid "/etc/rclone/rclone.conf";
+  userRcloneOptions = mkRcloneOptions uid gid "${config.xdg.configHome}/rclone/rclone.conf";
 
   pathToMountName = path:
     (lib.replaceStrings
@@ -111,6 +112,12 @@ in
       home.packages = [
         pkgs.rclone
       ];
+      sops.secrets."${host}.nfs.cnf" = {
+        path = "${config.xdg.configHome}/rclone/rclone.conf";
+        owner = user;
+        group = user;
+        mode = "0400";
+      };
 
       systemd.user.mounts = {
         ${pathToMountName config.xdg.userDirs.documents} = lib.mkIf isTrusted {
