@@ -133,6 +133,9 @@ in
             Type = "rclone";
             Options = userRcloneOptions;
           };
+          Install = {
+            WantedBy = [ "default.target" ];
+          };
         };
         ${pathToMountName config.xdg.userDirs.music} = {
           Unit = {
@@ -145,6 +148,9 @@ in
             Where = config.xdg.userDirs.music;
             Type = "rclone";
             Options = userRcloneOptions;
+          };
+          Install = {
+            WantedBy = [ "default.target" ];
           };
         };
         ${pathToMountName config.xdg.userDirs.pictures} = lib.mkIf isTrusted {
@@ -159,6 +165,9 @@ in
             Type = "rclone";
             Options = userRcloneOptions;
           };
+          Install = {
+            WantedBy = [ "default.target" ];
+          };
         };
         ${pathToMountName config.xdg.userDirs.videos} = lib.mkIf isTrusted {
           Unit = {
@@ -172,6 +181,9 @@ in
             Type = "rclone";
             Options = userRcloneOptions;
           };
+          Install = {
+            WantedBy = [ "default.target" ];
+          };
         };
         ${pathToMountName config.xdg.userDirs.publicShare} = {
           Unit = {
@@ -184,6 +196,9 @@ in
             Where = config.xdg.userDirs.publicShare;
             Type = "rclone";
             Options = userRcloneOptions;
+          };
+          Install = {
+            WantedBy = [ "default.target" ];
           };
         };
       };
