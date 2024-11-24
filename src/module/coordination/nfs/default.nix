@@ -24,7 +24,7 @@ let
     "file-perms=600"
   ];
   # mkRootRcloneOption = uid: gid: mkRcloneOptions uid gid "/etc/rclone/rclone.conf";
-  userRcloneOptions = mkRcloneOptions uid gid "${config.user.users.${user}.home}/.rclone.conf";
+  userRcloneOptions = mkRcloneOptions uid gid "${config.home.homeDirectory}/.rclone.conf";
 
   pathToMountName = path:
     (lib.replaceStrings
@@ -101,15 +101,15 @@ in
         pkgs.rclone
       ];
       sops.secrets."system-rclone-conf" = {
-        name = "${host}.nfs.cnf";
+        key = "${host}.nfs.cnf";
         path = "/etc/rclone/rclone.conf";
         owner = "root";
         group = "root";
         mode = "0400";
       };
       sops.secrets."home-rclone-conf" = {
-        name = "${host}.nfs.cnf";
-        path = "${config.user.users.${user}.home}/.rclone.conf";
+        key = "${host}.nfs.cnf";
+        path = "${config.users.users.${user}.home}/.rclone.conf";
         owner = user;
         group = group;
         mode = "0400";
