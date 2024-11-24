@@ -112,7 +112,6 @@ in
             Description = "Mount garage:documents as user documents directory";
             After = [ "garage.service" ];
             Wants = [ "garage.service" ];
-            WantedBy = [ "multi-user.target" ];
           };
           Mount = {
             What = "garage:documents";
@@ -126,7 +125,6 @@ in
             Description = "Mount garage:music as user music directory";
             After = [ "garage.service" ];
             Wants = [ "garage.service" ];
-            WantedBy = [ "multi-user.target" ];
           };
           Mount = {
             What = "garage:music";
@@ -140,7 +138,6 @@ in
             Description = "Mount garage:pictures as user pictures directory";
             After = [ "garage.service" ];
             Wants = [ "garage.service" ];
-            WantedBy = [ "multi-user.target" ];
           };
           Mount = {
             What = "garage:pictures";
@@ -154,7 +151,6 @@ in
             Description = "Mount garage:videos as user videos directory";
             After = [ "garage.service" ];
             Wants = [ "garage.service" ];
-            WantedBy = [ "multi-user.target" ];
           };
           Mount = {
             What = "garage:videos";
@@ -168,7 +164,6 @@ in
             Description = "Mount garage:data as user public share directory";
             After = [ "garage.service" ];
             Wants = [ "garage.service" ];
-            WantedBy = [ "multi-user.target" ];
           };
           Mount = {
             What = "garage:data";
