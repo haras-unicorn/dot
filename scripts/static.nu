@@ -39,6 +39,10 @@ const schema = {
     "node": {
       "type": "string"
     }
+    "trusted": {
+      "type": "bool"
+      "default": false
+    }
   }
 }
 

@@ -12,6 +12,7 @@ let
   apiPort = rpcPort + 3;
 
   isCoordinator = config.dot.nfs.coordinator;
+  isTrusted = config.dot.nfs.trusted;
   bindAddr = if isCoordinator then ip else "127.0.0.1";
 
   mkRcloneOptions = uid: gid: builtins.concatStringsSep "," [
@@ -32,6 +33,10 @@ in
     };
     nfs.node = lib.mkOption {
       type = lib.types.strMatching "[a-z0-9]+";
+      default = false;
+    };
+    nfs.trusted = lib.mkOption {
+      type = lib.types.bool;
       default = false;
     };
   };
@@ -101,43 +106,73 @@ in
         pkgs.rclone
       ];
 
-      systemd.user.mounts = [
-        {
-          what = "garage:documents";
-          where = config.xdg.userDirs.documents;
-          type = "rclone";
-          options = userRcloneOptions;
-          wantedBy = [ "multi-user.target" ];
-        }
-        {
-          what = "garage:music";
-          where = config.xdg.userDirs.music;
-          type = "rclone";
-          options = userRcloneOptions;
-          wantedBy = [ "multi-user.target" ];
-        }
-        {
-          what = "garage:pictures";
-          where = config.xdg.userDirs.pictures;
-          type = "rclone";
-          options = userRcloneOptions;
-          wantedBy = [ "multi-user.target" ];
-        }
-        {
-          what = "garage:videos";
-          where = config.xdg.userDirs.videos;
-          type = "rclone";
-          options = userRcloneOptions;
-          wantedBy = [ "multi-user.target" ];
-        }
-        {
-          what = "garage:data";
-          where = config.xdg.userDirs.publicShare;
-          type = "rclone";
-          options = userRcloneOptions;
-          wantedBy = [ "multi-user.target" ];
-        }
-      ];
+      systemd.user.mounts = {
+        "documents.mount" = lib.mkIf isTrusted {
+          Unit = {
+            Description = "Mount garage:documents as user documents directory";
+            After = [ "garage.service" ];
+            WantedBy = [ "multi-user.target" ];
+          };
+          Mount = {
+            What = "garage:documents";
+            Where = config.xdg.userDirs.documents;
+            Type = "rclone";
+            Options = userRcloneOptions;
+          };
+        };
+        "music.mount" = {
+          Unit = {
+            Description = "Mount garage:music as user music directory";
+            After = [ "garage.service" ];
+            WantedBy = [ "multi-user.target" ];
+          };
+          Mount = {
+            What = "garage:music";
+            Where = config.xdg.userDirs.music;
+            Type = "rclone";
+            Options = userRcloneOptions;
+          };
+        };
+        "pictures.mount" = lib.mkIf isTrusted {
+          Unit = {
+            Description = "Mount garage:pictures as user pictures directory";
+            After = [ "garage.service" ];
+            WantedBy = [ "multi-user.target" ];
+          };
+          Mount = {
+            What = "garage:pictures";
+            Where = config.xdg.userDirs.pictures;
+            Type = "rclone";
+            Options = userRcloneOptions;
+          };
+        };
+        "videos.mount" = lib.mkIf isTrusted {
+          Unit = {
+            Description = "Mount garage:videos as user videos directory";
+            After = [ "garage.service" ];
+            WantedBy = [ "multi-user.target" ];
+          };
+          Mount = {
+            What = "garage:videos";
+            Where = config.xdg.userDirs.videos;
+            Type = "rclone";
+            Options = userRcloneOptions;
+          };
+        };
+        "data.mount" = {
+          Unit = {
+            Description = "Mount garage:data as user public share directory";
+            After = [ "garage.service" ];
+            WantedBy = [ "multi-user.target" ];
+          };
+          Mount = {
+            What = "garage:data";
+            Where = config.xdg.userDirs.publicShare;
+            Type = "rclone";
+            Options = userRcloneOptions;
+          };
+        };
+      };
     };
   };
 }
