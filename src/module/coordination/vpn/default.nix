@@ -38,6 +38,7 @@ in
         ca = "/etc/nebula/ca.crt";
       };
       systemd.services."nebula@nebula" = {
+        after = lib.mkForce [ "basic.target" "network-online.target" ];
         serviceConfig = {
           ExecStart = lib.mkForce "${pkgs.nebula}/bin/nebula -config /etc/nebula/config.d";
         };
