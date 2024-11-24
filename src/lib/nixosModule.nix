@@ -49,7 +49,7 @@ in
         system.stateVersion = version;
 
         users.mutableUsers = false;
-        users.groups.users.${group} = {
+        users.groups.${group} = {
           inherit gid;
         };
         users.users.${user} = {

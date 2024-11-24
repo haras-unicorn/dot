@@ -111,6 +111,7 @@ in
           Unit = {
             Description = "Mount garage:documents as user documents directory";
             After = [ "garage.service" ];
+            Wants = [ "garage.service" ];
             WantedBy = [ "multi-user.target" ];
           };
           Mount = {
@@ -124,6 +125,7 @@ in
           Unit = {
             Description = "Mount garage:music as user music directory";
             After = [ "garage.service" ];
+            Wants = [ "garage.service" ];
             WantedBy = [ "multi-user.target" ];
           };
           Mount = {
@@ -137,6 +139,7 @@ in
           Unit = {
             Description = "Mount garage:pictures as user pictures directory";
             After = [ "garage.service" ];
+            Wants = [ "garage.service" ];
             WantedBy = [ "multi-user.target" ];
           };
           Mount = {
@@ -150,6 +153,7 @@ in
           Unit = {
             Description = "Mount garage:videos as user videos directory";
             After = [ "garage.service" ];
+            Wants = [ "garage.service" ];
             WantedBy = [ "multi-user.target" ];
           };
           Mount = {
@@ -163,6 +167,7 @@ in
           Unit = {
             Description = "Mount garage:data as user public share directory";
             After = [ "garage.service" ];
+            Wants = [ "garage.service" ];
             WantedBy = [ "multi-user.target" ];
           };
           Mount = {
