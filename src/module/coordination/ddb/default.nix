@@ -13,6 +13,7 @@ let
     "socket.ssl_cert=/etc/mysql/host.crt"
     "socket.ssl_key=/etc/mysql/host.key"
     "pc.weight=${builtins.toString (if isCoordinator then 100 else 1)}"
+    "pc.announce_timeout=PT10S"
   ];
 in
 {
