@@ -17,8 +17,8 @@ let
   mkRcloneOptions = uid: gid: builtins.concatStringsSep "," [
     "config=/etc/rclone/rclone.conf"
     "vfs-cache-mode=writes"
-    "gid=${gid}"
-    "uid=${uid}"
+    "gid=${builtins.toString gid}"
+    "uid=${builtins.toString uid}"
     "dir-perms=700"
     "file-perms=600"
   ];
