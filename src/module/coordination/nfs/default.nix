@@ -1,4 +1,4 @@
-{ pkgs, host, config, user, uid, gid, lib, ... }:
+{ pkgs, host, config, uid, gid, lib, ... }:
 
 let
   rootDomain = "s3.garage";
