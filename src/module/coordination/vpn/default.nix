@@ -2,6 +2,7 @@
 
 # TODO: convert firewall rules to nebula firewall rules
 # TODO: disable all traffic from outside vpn
+# TODO: nebula-wait-online.service and nebula-online.target
 
 let
   hasNetwork = config.dot.hardware.network.enable;
