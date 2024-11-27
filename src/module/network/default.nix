@@ -26,10 +26,6 @@ in
     networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
     networking.networkmanager.dns = "none";
 
-    # NOTE: it usually just waits for NetworkManager
-    # i want it to wait for an active connection
-    systemd.services.NetworkManager-wait-online.serviceConfig.ExecStart = "${pkgs.networkmanager}/bin/nm-online -q";
-
     # NOTE: https://github.com/NixOS/nixpkgs/issues/231038
     environment.etc."ppp/options".text = ''
       ipcp-accept-remote
