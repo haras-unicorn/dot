@@ -2,6 +2,7 @@
 
 # TODO: convert firewall rules to nebula firewall rules
 # TODO: disable all traffic from outside vpn
+# TODO: service that checks if it can reach the lighthouse - something line nebula-pre.service and nebula-pre.target
 # TODO: nebula-wait-online.service and nebula-online.target
 
 let
