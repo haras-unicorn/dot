@@ -1,5 +1,7 @@
 { pkgs, host, config, user, group, uid, gid, lib, ... }:
 
+# FIXME: /var/lib/ mount creates dependency cycle
+
 let
   rootDomain = "s3.garage";
 
@@ -23,7 +25,7 @@ let
     "dir-perms=700"
     "file-perms=600"
   ];
-  mkRootRcloneOption = uid: gid: mkRcloneOptions uid gid "/etc/rclone/rclone.conf";
+  # mkRootRcloneOption = uid: gid: mkRcloneOptions uid gid "/etc/rclone/rclone.conf";
   userRcloneOptions = mkRcloneOptions uid gid "${config.home.homeDirectory}/.rclone.conf";
 
   pathToMountName = path:
