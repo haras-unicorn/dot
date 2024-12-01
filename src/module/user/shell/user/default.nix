@@ -35,8 +35,8 @@ in
       programs.nushell.enable = true;
 
       programs.nushell.environmentVariables = {
-        PROMPT_INDICATOR_VI_INSERT = "'󰞷 '";
-        PROMPT_INDICATOR_VI_NORMAL = "' '";
+        PROMPT_INDICATOR_VI_INSERT = "󰞷 ";
+        PROMPT_INDICATOR_VI_NORMAL = " ";
       };
 
       programs.nushell.envFile.text = ''
