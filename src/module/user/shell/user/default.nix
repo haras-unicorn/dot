@@ -1,5 +1,7 @@
 { pkgs, lib, config, ... }:
 
+# FIXME: completions
+
 # TODO: uncomment formatter when it gets better
 
 let
@@ -22,12 +24,29 @@ let
     (builtins.map
       (command: "${builtins.toString command}")
       cfg.sessionStartup);
+
+  # completions = lib.strings.concatStringsSep
+  #   "\n"
+  #   (builtins.map
+  #     (completion: "source ${completion}")
+  #     (builtins.filter
+  #       ({ completions, ... }: builtins.pathExists completions)
+  #       (builtins.map
+  #         (name: {
+  #           inherit name;
+  #           completions = "${pkgs.nu_scripts}/share/nu_scripts/custom-completions/${name}/${name}-completions.nu";
+  #         })
+  #         (builtins.attrNames
+  #           (builtins.readDir "${pkgs.nu_scripts}/share/nu_scripts/custom-completions")))));
 in
 {
   config = {
     shared = {
       dot = {
-        shell = { package = pkgs.nushell; bin = "nu"; };
+        shell = {
+          package = pkgs.nushell;
+          bin = "nu";
+        };
       };
     };
 
