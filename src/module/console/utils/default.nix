@@ -14,13 +14,32 @@ let
       while true; do "$@"; done
     '';
   };
+
+  nr = pkgs.writeShellApplication {
+    name = "nr";
+    text = ''
+      name="$1"
+      shift
+      exec nix run "nixpkgs#$name" -- "$@"
+    '';
+  };
+
+  ezdd = pkgs.writeShellApplication {
+    name = "ezdd";
+    text = ''
+      if="$1"
+      of="$2"
+      shift
+      shift
+      exec dd "if=$if" "of=$of" bs=4M conv=sync,noerror oflag=direct "$@"
+    '';
+  };
 in
 {
   shared.dot = {
     shell.aliases = {
       rm = "rm -i";
       mv = "mv -i";
-      dd = "ddrescue";
     };
   };
 
@@ -28,7 +47,8 @@ in
     home.packages = [
       run
       repeat
-      pkgs.ddrescue
+      nr
+      ezdd
       pkgs.htop
       pkgs.man-pages
       pkgs.man-pages-posix

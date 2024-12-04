@@ -3,6 +3,7 @@
 # FIXME: completions
 
 # TODO: uncomment formatter when it gets better
+# TODO: command_not_found hook with nix run or nix search
 
 let
   cfg = config.dot.shell;
