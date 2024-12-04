@@ -14,14 +14,6 @@ let
       while true; do "$@"; done
     '';
   };
-
-  ezdd = pkgs.writeShellApplication {
-    name = "ezdd";
-    runtimeInputs = [ pkgs.nushell pkgs.gum pkgs.pv ];
-    text = ''
-      nu ${./ezdd.nu} "$@"
-    '';
-  };
 in
 {
   shared.dot = {
@@ -35,7 +27,7 @@ in
     home.packages = [
       run
       repeat
-      ezdd
+      pkgs.ddrescue
       pkgs.htop
       pkgs.man-pages
       pkgs.man-pages-posix
