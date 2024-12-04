@@ -31,7 +31,7 @@ let
       of="$2"
       shift
       shift
-      exec dd "if=$if" "of=$of" bs=4M conv=sync,noerror oflag=direct "$@"
+      exec dd "if=$if" "of=$of" bs=4M conv=sync,noerror oflag=direct status=progress "$@"
     '';
   };
 in
