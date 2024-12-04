@@ -20,6 +20,7 @@ in
     shell.aliases = {
       rm = "rm -i";
       mv = "mv -i";
+      dd = "ddrescue";
     };
   };
 
