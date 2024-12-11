@@ -36,13 +36,6 @@ let
   };
 in
 {
-  shared.dot = {
-    shell.aliases = {
-      rm = "rm -i";
-      mv = "mv -i";
-    };
-  };
-
   home = {
     home.packages = [
       run
