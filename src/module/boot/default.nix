@@ -30,7 +30,7 @@ in
 
     boot.kernelPackages =
       if isRpi4 then pkgs.linuxKernel.packages.linux_rpi4
-      else if isLegacyNvidia then pkgs.linuxKernel.packages.linux_6_4
+      else if isLegacyNvidia then pkgs.linuxKernel.packages.linux_6_6
       else pkgs.linuxPackages;
 
     boot.initrd.kernelModules = [
