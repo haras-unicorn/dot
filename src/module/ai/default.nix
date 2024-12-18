@@ -94,6 +94,13 @@ in
     };
   };
 
+  system = {
+    networking.firewall.allowedTCPPorts = [
+      # comfyui
+      8188
+    ];
+  };
+
   home = {
     home.packages = lib.optionals hasAnyPlatform [
       comfyui
