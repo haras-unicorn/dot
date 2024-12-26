@@ -7,7 +7,6 @@
 
 let
   package = pkgs.eww;
-  bin = "${package}/bin/eww";
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
@@ -15,11 +14,16 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasKeyboard && hasMouse && hasWayland) {
-    dot = {
-      desktopEnvironment.sessionStartup = [
-        "${bin} daemon"
-      ];
+  system = {
+    systemd.user.services.eww = {
+      Unit = {
+        Description = "Eww daemon";
+        Requires = "tray.target";
+        After = [ "graphical-session-pre.target" "tray.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+      Service.ExecStart = "${package}/bin/eww daemon";
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 
