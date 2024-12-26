@@ -14,7 +14,7 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  system = {
+  home = lib.mkIf (hasMonitor && hasKeyboard && hasMouse && hasWayland) {
     systemd.user.services.eww = {
       Unit = {
         Description = "Eww daemon";
@@ -25,9 +25,7 @@ in
       Service.ExecStart = "${package}/bin/eww daemon";
       Install.WantedBy = [ "graphical-session.target" ];
     };
-  };
 
-  home = lib.mkIf (hasMonitor && hasKeyboard && hasMouse && hasWayland) {
     home.packages = [
       package
     ];
