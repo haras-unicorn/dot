@@ -2,6 +2,7 @@
 
 # TODO: grub theming
 # TODO: use iso generator and put firmware on sd card for rpi 4
+# TODO: laptop battery saving
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;

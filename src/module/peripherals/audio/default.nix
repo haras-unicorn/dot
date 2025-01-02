@@ -1,5 +1,7 @@
 { pkgs, lib, config, user, musnix, ... }:
 
+# TODO: laptop battery saving
+
 let
   hasSound = config.dot.hardware.sound.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
