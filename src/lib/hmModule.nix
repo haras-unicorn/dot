@@ -7,7 +7,7 @@ let
   version = self.lib.nixosConfiguration.version;
 
   modules = builtins.map
-    (x: self.lib.module.mkHomeModule x.__import.value x.__import.path)
+    (x: self.lib.module.mkHomeModule x.__import.path)
     (builtins.filter
       (x: x.__import.type == "default")
       (nixpkgs.lib.collect
