@@ -8,18 +8,16 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
-    system = {
-      environment.systemPackages = [
-        pkgs.libsForQt5.qt5.qtgraphicaleffects
-        pkgs.libsForQt5.plasma-framework
-      ];
+  system = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
+    environment.systemPackages = [
+      pkgs.libsForQt5.qt5.qtgraphicaleffects
+      pkgs.libsForQt5.plasma-framework
+    ];
 
-      services.displayManager.sddm.enable = true;
-      services.displayManager.sddm.autoNumlock = true;
-      services.displayManager.sddm.theme = "${pkgs.sweet-nova.src}/kde/sddm";
-      services.displayManager.defaultSession = "${cfg.startup}";
-      security.pam.services.sddm.enableGnomeKeyring = true;
-    };
+    services.displayManager.sddm.enable = true;
+    services.displayManager.sddm.autoNumlock = true;
+    services.displayManager.sddm.theme = "${pkgs.sweet-nova.src}/kde/sddm";
+    services.displayManager.defaultSession = "${cfg.startup}";
+    security.pam.services.sddm.enableGnomeKeyring = true;
   };
 }
