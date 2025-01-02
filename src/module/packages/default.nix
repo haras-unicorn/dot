@@ -97,14 +97,14 @@ let
   };
 in
 {
-  system = lib.mkMerge [
+  system.config = lib.mkMerge [
     shared
     {
       nix.package = pkgs.nixVersions.stable;
     }
   ];
 
-  home = lib.mkMerge [
+  home.config = lib.mkMerge [
     shared
     {
       home.packages = [ rebuild rebuild-wip rebuild-trace ];
