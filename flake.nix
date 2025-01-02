@@ -41,6 +41,9 @@
     nix-comfyui.url = "github:haras-unicorn/nix-comfyui/dev";
     nix-comfyui.inputs.nixpkgs.follows = "nixpkgs";
     nix-comfyui.inputs.flake-utils.follows = "flake-utils";
+
+    musnix.url = "github:musnix/musnix";
+    musnix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

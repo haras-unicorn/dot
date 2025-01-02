@@ -19,8 +19,8 @@ in
       Unit = {
         Description = "Eww daemon";
         Requires = "tray.target";
-        After = [ "graphical-session-pre.target" "tray.target" ];
         PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session-pre.target" ];
       };
       Service.ExecStart = "${package}/bin/eww daemon";
       Install.WantedBy = [ "graphical-session.target" ];

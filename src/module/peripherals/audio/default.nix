@@ -1,4 +1,4 @@
-{ pkgs, lib, config, user, ... }:
+{ pkgs, lib, config, user, musnix, ... }:
 
 let
   hasSound = config.dot.hardware.sound.enable;
@@ -18,6 +18,8 @@ in
   };
 
   system = lib.mkIf hasSound {
+    imports = [ musnix.nixosModules.musnix ];
+
     services.pipewire.enable = true;
     services.pipewire.wireplumber.enable = true;
     services.pipewire.alsa.enable = true;
@@ -32,6 +34,7 @@ in
     users.users.${user}.extraGroups = [
       "audio"
     ];
+    musnix.enable = true;
   };
 
   home = lib.mkIf (hasSound && hasMonitor) {
