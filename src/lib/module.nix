@@ -70,6 +70,7 @@ let
     {
       imports = imports ++ [ module ];
       inherit config options;
+      _file = path;
     };
 
   # NOTE: if pkgs here not demanded other modules don't get access...
@@ -85,6 +86,7 @@ let
     {
       imports = imports ++ [ module ];
       inherit options config;
+      _file = path;
     };
 in
 {
