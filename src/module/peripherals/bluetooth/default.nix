@@ -5,7 +5,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  shared.dot = lib.mkIf hasBluetooth {
+  config = lib.mkIf hasBluetooth {
     desktopEnvironment.windowrules = lib.mkIf hasMonitor [{
       rule = "float";
       selector = "class";

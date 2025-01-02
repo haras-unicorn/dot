@@ -9,7 +9,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared.dot = lib.mkIf (hasNetwork && hasMonitor && hasKeyboard) {
+  config = lib.mkIf (hasNetwork && hasMonitor && hasKeyboard) {
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";

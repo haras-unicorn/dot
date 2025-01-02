@@ -8,7 +8,7 @@ let
   };
 in
 {
-  shared.dot = lib.mkIf hasMonitor {
+  config = lib.mkIf hasMonitor {
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  shared.dot = {
+  config = {
     shell.aliases = {
       cat = "${pkgs.bat}/bin/bat";
     };
