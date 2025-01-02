@@ -74,10 +74,8 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  shared = {
-    dot = {
-      browser = { package = pkgs.firefox-bin; bin = "firefox"; };
-    };
+  config = {
+    browser = { package = pkgs.firefox-bin; bin = "firefox"; };
   };
 
   home = lib.mkIf (hasMonitor) {

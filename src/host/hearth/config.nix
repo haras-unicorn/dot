@@ -1,10 +1,8 @@
 {
-  shared = {
-    dot = {
-      hardware = {
-        temp = "/sys/class/hwmon/hwmon2/temp1_input";
-        monitor.main = "DP-1";
-      };
+  config = {
+    hardware = {
+      temp = "/sys/class/hwmon/hwmon2/temp1_input";
+      monitor.main = "DP-1";
     };
   };
 }

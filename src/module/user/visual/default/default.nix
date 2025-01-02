@@ -34,11 +34,9 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasKeyboard) {
-    dot = {
-      shell.aliases = {
-        code = "${alias}/bin/code";
-      };
+  config = lib.mkIf (hasMonitor && hasKeyboard) {
+    shell.aliases = {
+      code = "${alias}/bin/code";
     };
   };
 

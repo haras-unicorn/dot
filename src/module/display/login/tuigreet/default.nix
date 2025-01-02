@@ -6,10 +6,8 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
-    dot = {
-      desktopEnvironment.login =
-        "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd '${config.dot.desktopEnvironment.startup}'";
-    };
+  config = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
+    desktopEnvironment.login =
+      "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd '${config.dot.desktopEnvironment.startup}'";
   };
 }

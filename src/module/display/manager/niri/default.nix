@@ -79,10 +79,8 @@ in
 {
   disabled = true;
 
-  shared = lib.mkIf (hasMonitor && hasWayland) {
-    dot = {
-      desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
-    };
+  config = lib.mkIf (hasMonitor && hasWayland) {
+    desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
   };
 
   home = lib.mkIf (hasMonitor && hasWayland) {

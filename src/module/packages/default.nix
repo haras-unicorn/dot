@@ -52,8 +52,6 @@ let
         "$@"
     '';
   };
-in
-{
 
   shared = {
     nix.extraOptions = "experimental-features = nix-command flakes";
@@ -97,16 +95,22 @@ in
       })
     ];
   };
+in
+{
+  system = lib.mkMerge [
+    shared
+    {
+      nix.package = pkgs.nixVersions.stable;
+    }
+  ];
 
-  home = {
-    home.packages = [ rebuild rebuild-wip rebuild-trace ];
-
-    home.activation = {
-      ensurePulledAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ensure;
-    };
-  };
-
-  system = {
-    nix.package = pkgs.nixVersions.stable;
-  };
+  home = lib.mkMerge [
+    shared
+    {
+      home.packages = [ rebuild rebuild-wip rebuild-trace ];
+      home.activation = {
+        ensurePulledAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ensure;
+      };
+    }
+  ];
 }

@@ -38,18 +38,16 @@ in
     };
   };
 
-  shared = {
-    dot = {
-      desktopEnvironment.sessionStartup = lib.mkMerge [
-        (lib.mkIf (hasMonitor && !hasWayland) [
-          "${pkgs.feh}/bin/feh --bg-fill '${wallpaper}'"
-        ])
-        (lib.mkIf (hasMonitor && hasWayland) [
-          "${pkgs.swww}/bin/swww-daemon"
-          "${pkgs.swww}/bin/swww img '${wallpaper}'"
-        ])
-      ];
-    };
+  config = {
+    desktopEnvironment.sessionStartup = lib.mkMerge [
+      (lib.mkIf (hasMonitor && !hasWayland) [
+        "${pkgs.feh}/bin/feh --bg-fill '${wallpaper}'"
+      ])
+      (lib.mkIf (hasMonitor && hasWayland) [
+        "${pkgs.swww}/bin/swww-daemon"
+        "${pkgs.swww}/bin/swww img '${wallpaper}'"
+      ])
+    ];
   };
 
   home = {

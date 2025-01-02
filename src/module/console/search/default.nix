@@ -3,13 +3,11 @@
 # TODO: colors
 
 {
-  shared = {
-    dot = {
-      shell.aliases = {
-        grep = "${pkgs.ripgrep}/bin/rg";
-        la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
-        tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
-      };
+  config = {
+    shell.aliases = {
+      grep = "${pkgs.ripgrep}/bin/rg";
+      la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
+      tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
     };
   };
 

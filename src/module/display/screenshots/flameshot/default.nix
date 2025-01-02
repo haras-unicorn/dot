@@ -7,16 +7,14 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasKeyboard && hasMouse && (!hasWayland)) {
-    dot = {
-      desktopEnvironment.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "Print";
-          command = "${pkgs.flameshot}/bin/flameshot gui -p '${config.xdg.userDirs.pictures}/screenshots'";
-        }
-      ];
-    };
+  config = lib.mkIf (hasMonitor && hasKeyboard && hasMouse && (!hasWayland)) {
+    desktopEnvironment.keybinds = [
+      {
+        mods = [ "super" ];
+        key = "Print";
+        command = "${pkgs.flameshot}/bin/flameshot gui -p '${config.xdg.userDirs.pictures}/screenshots'";
+      }
+    ];
   };
 
   home = lib.mkIf (hasMonitor && !hasWayland) {

@@ -1,11 +1,9 @@
 { pkgs, ... }:
 
 {
-  shared = {
-    dot = {
-      shell.aliases = {
-        bruh = "${pkgs.lazygit}/bin/lazygit";
-      };
+  config = {
+    shell.aliases = {
+      bruh = "${pkgs.lazygit}/bin/lazygit";
     };
   };
 

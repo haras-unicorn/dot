@@ -32,32 +32,30 @@ let
   };
 in
 {
-  shared = lib.mkIf hasMonitor {
-    dot = {
-      desktopEnvironment.windowrules = [
-        {
-          rule = "float";
-          selector = "class";
-          xselector = "wm_class";
-          arg = "ferdium";
-          xarg = "ferdium";
-        }
-        {
-          rule = "float";
-          selector = "class";
-          xselector = "wm_class";
-          arg = "teams-for-linux";
-          xarg = "teams-for-linux";
-        }
-        {
-          rule = "float";
-          selector = "class";
-          xselector = "wm_class";
-          arg = "vesktop";
-          xarg = "vesktop";
-        }
-      ];
-    };
+  config = lib.mkIf hasMonitor {
+    desktopEnvironment.windowrules = [
+      {
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "ferdium";
+        xarg = "ferdium";
+      }
+      {
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "teams-for-linux";
+        xarg = "teams-for-linux";
+      }
+      {
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "vesktop";
+        xarg = "vesktop";
+      }
+    ];
   };
 
   home = lib.mkIf hasMonitor {

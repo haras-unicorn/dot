@@ -121,45 +121,41 @@ in
     };
   };
 
-  config = {
-    shared = lib.mkIf hasMonitor {
-      dot = {
-        desktopEnvironment.sessionVariables = {
-          GTK_USE_PORTAL = 1;
-          GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
-          QT_QPA_PLATFORMTHEME = "gtk2";
-        };
-      };
+  config = lib.mkIf hasMonitor {
+    desktopEnvironment.sessionVariables = {
+      GTK_USE_PORTAL = 1;
+      GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
+      QT_QPA_PLATFORMTHEME = "gtk2";
+    };
+  };
+
+  home = lib.mkIf hasMonitor {
+    xdg.configFile."gtk-2.0/settings.ini".text = ini2;
+    xdg.configFile."gtk-3.0/settings.ini".text = ini3;
+    xdg.configFile."gtk-4.0/settings.ini".text = ini4;
+
+    dconf.settings."org/gnome/desktop/interface" = dconf;
+
+    home.packages = [
+      colors
+      inspect-gtk
+      pkgs.libsForQt5.qtstyleplugins
+      pkgs.qt6Packages.qt6gtk2
+      pkgs.gnome-themes-extra
+      config.dot.cursor-theme.package
+      config.dot.icon-theme.package
+    ];
+
+    home.pointerCursor = {
+      package = config.dot.cursor-theme.package;
+      name = config.dot.cursor-theme.name;
+      size = config.dot.cursor-theme.size;
     };
 
-    home = lib.mkIf hasMonitor {
-      xdg.configFile."gtk-2.0/settings.ini".text = ini2;
-      xdg.configFile."gtk-3.0/settings.ini".text = ini3;
-      xdg.configFile."gtk-4.0/settings.ini".text = ini4;
-
-      dconf.settings."org/gnome/desktop/interface" = dconf;
-
-      home.packages = [
-        colors
-        inspect-gtk
-        pkgs.libsForQt5.qtstyleplugins
-        pkgs.qt6Packages.qt6gtk2
-        pkgs.gnome-themes-extra
-        config.dot.cursor-theme.package
-        config.dot.icon-theme.package
-      ];
-
-      home.pointerCursor = {
-        package = config.dot.cursor-theme.package;
-        name = config.dot.cursor-theme.name;
-        size = config.dot.cursor-theme.size;
-      };
-
-      xdg.configFile."Trolltech.conf".text = ''
-        [Qt]
-        style=GTK+    
-      '';
-    };
+    xdg.configFile."Trolltech.conf".text = ''
+      [Qt]
+      style=GTK+    
+    '';
   };
 }
 

@@ -8,12 +8,10 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
-    dot = {
-      desktopEnvironment.sessionStartup = [
-        "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${config.dot.wallpaper}'"
-      ];
-    };
+  config = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
+    desktopEnvironment.sessionStartup = [
+      "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${config.dot.wallpaper}'"
+    ];
   };
 
   home = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {

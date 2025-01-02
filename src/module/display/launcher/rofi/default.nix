@@ -8,31 +8,29 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
-    dot = {
-      desktopEnvironment.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "return";
-          command = "${pkgs.rofi}/bin/rofi -show drun -modi run,drun,window -config '${config.xdg.configHome}/rofi/launcher.rasi'";
-        }
-        {
-          mods = [ "super" ];
-          key = "p";
-          command = "${pkgs.keepmenu}/bin/keepmenu";
-        }
-        {
-          mods = [ "super" "shift" ];
-          key = "p";
-          command = "${pkgs.keepmenu}/bin/keepmenu -a '{PASSWORD}'";
-        }
-        {
-          mods = [ "super" "alt" ];
-          key = "p";
-          command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
-        }
-      ];
-    };
+  config = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
+    desktopEnvironment.keybinds = [
+      {
+        mods = [ "super" ];
+        key = "return";
+        command = "${pkgs.rofi}/bin/rofi -show drun -modi run,drun,window -config '${config.xdg.configHome}/rofi/launcher.rasi'";
+      }
+      {
+        mods = [ "super" ];
+        key = "p";
+        command = "${pkgs.keepmenu}/bin/keepmenu";
+      }
+      {
+        mods = [ "super" "shift" ];
+        key = "p";
+        command = "${pkgs.keepmenu}/bin/keepmenu -a '{PASSWORD}'";
+      }
+      {
+        mods = [ "super" "alt" ];
+        key = "p";
+        command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
+      }
+    ];
   };
 
   home = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {

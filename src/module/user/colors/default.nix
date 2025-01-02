@@ -74,16 +74,12 @@ in
   };
 
   config = {
-    shared = {
-      dot = {
-        inherit colors;
-      };
-    };
+    inherit colors;
+  };
 
-    home = {
-      home.packages = [ tint-gear.packages."${system}".default ];
+  home = {
+    home.packages = [ tint-gear.packages."${system}".default ];
 
-      xdg.configFile."tint-gear/colors.json".text = builtins.toJSON original;
-    };
+    xdg.configFile."tint-gear/colors.json".text = builtins.toJSON original;
   };
 }

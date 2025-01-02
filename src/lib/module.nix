@@ -28,16 +28,24 @@ let
     then { dot = dotObject.options; }
     else { };
 
-  mkConfig = { lib, ... }: path: dotObject:
+  # TODO: when not containing config, use top level with stripped attrs
+  mkConfig = specialArgs: dotObject:
     if builtins.hasAttr "disabled" dotObject
     then { }
     else if builtins.hasAttr "config" dotObject
+    then { dot = dotObject.config; }
+    else { };
+
+  mkModule = { lib, ... }: path: dotObject:
+    if builtins.hasAttr "disabled" dotObject
+    then { }
+    else if builtins.hasAttr "modules" dotObject
     then
       let
-        configObject = dotObject.config;
+        moduleObject = dotObject.modules;
       in
-      if lib.hasAttrByPath path configObject
-      then lib.getAttrFromPath path configObject
+      if lib.hasAttrByPath path moduleObject
+      then lib.getAttrFromPath path moduleObject
       else { }
     else
       if lib.hasAttrByPath path dotObject
@@ -50,11 +58,12 @@ let
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports mkSystemModule specialArgs dotObject;
       options = mkOptions specialArgs dotObject;
-      config = mkConfig specialArgs [ "system" ] dotObject;
-      sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
+      config = mkConfig specialArgs dotObject;
+      module = mkModule specialArgs [ "system" ] dotObject;
     in
     {
-      imports = imports ++ [ sharedConfig config { inherit options; } ];
+      imports = imports ++ [ module ];
+      inherit config options;
     };
 
   # NOTE: if pkgs here not demanded other modules don't get access...
@@ -63,11 +72,12 @@ let
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports mkHomeModule specialArgs dotObject;
       options = mkOptions specialArgs dotObject;
-      config = mkConfig specialArgs [ "home" ] dotObject;
-      sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
+      config = mkConfig specialArgs dotObject;
+      module = mkModule specialArgs [ "home" ] dotObject;
     in
     {
-      imports = imports ++ [ sharedConfig config { inherit options; } ];
+      imports = imports ++ [ module ];
+      inherit options config;
     };
 in
 {

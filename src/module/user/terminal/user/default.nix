@@ -22,10 +22,8 @@ let
   terminal = config.dot.colors.terminal;
 in
 {
-  shared = {
-    dot = {
-      terminal = { package = pkgs.kitty; bin = "kitty"; };
-    };
+  config = {
+    terminal = { package = pkgs.kitty; bin = "kitty"; };
   };
 
   config = {

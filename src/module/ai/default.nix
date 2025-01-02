@@ -82,16 +82,14 @@ let
   };
 in
 {
-  shared = {
-    dot = {
-      desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
-        {
-          mods = [ "super" ];
-          key = "s";
-          command = "${read}/bin/read";
-        }
-      ];
-    };
+  config = {
+    desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
+      {
+        mods = [ "super" ];
+        key = "s";
+        command = "${read}/bin/read";
+      }
+    ];
   };
 
   system = {

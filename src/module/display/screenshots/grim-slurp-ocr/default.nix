@@ -42,26 +42,24 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasWayland && hasKeyboard && hasMouse) {
-    dot = {
-      desktopEnvironment.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "Print";
-          command = "${screenshot}/bin/screenshot";
-        }
-        {
-          mods = [ "shift" ];
-          key = "Print";
-          command = "${screenshot}/bin/screenshot --region";
-        }
-        {
-          mods = [ "control" ];
-          key = "Print";
-          command = "${screenshot}/bin/screenshot --region --ocr";
-        }
-      ];
-    };
+  config = lib.mkIf (hasMonitor && hasWayland && hasKeyboard && hasMouse) {
+    desktopEnvironment.keybinds = [
+      {
+        mods = [ "super" ];
+        key = "Print";
+        command = "${screenshot}/bin/screenshot";
+      }
+      {
+        mods = [ "shift" ];
+        key = "Print";
+        command = "${screenshot}/bin/screenshot --region";
+      }
+      {
+        mods = [ "control" ];
+        key = "Print";
+        command = "${screenshot}/bin/screenshot --region --ocr";
+      }
+    ];
   };
 
   home = lib.mkIf (hasMonitor && hasWayland) {

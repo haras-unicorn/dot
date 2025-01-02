@@ -8,21 +8,19 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
-    dot = {
-      desktopEnvironment.windowrules = [{
-        rule = "float";
-        selector = "class";
-        xselector = "wm_class";
-        arg = "steam";
-        xarg = "steam";
-      }];
+  config = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
+    desktopEnvironment.windowrules = [{
+      rule = "float";
+      selector = "class";
+      xselector = "wm_class";
+      arg = "steam";
+      xarg = "steam";
+    }];
 
-      # NOTE: programs.mangohud.enableSessionWide doesn't work for some reason
-      desktopEnvironment.sessionVariables = {
-        MANGOHUD = 1;
-        MANGOHUD_DLSYM = 1;
-      };
+    # NOTE: programs.mangohud.enableSessionWide doesn't work for some reason
+    desktopEnvironment.sessionVariables = {
+      MANGOHUD = 1;
+      MANGOHUD_DLSYM = 1;
     };
   };
 

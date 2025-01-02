@@ -98,10 +98,8 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  shared = lib.mkIf (hasMonitor && !hasWayland) {
-    dot = {
-      desktopEnvironment.startup = "qtile";
-    };
+  config = lib.mkIf (hasMonitor && !hasWayland) {
+    desktopEnvironment.startup = "qtile";
   };
 
   system = lib.mkIf (hasMonitor && !hasWayland) {

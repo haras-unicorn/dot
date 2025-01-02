@@ -10,10 +10,8 @@ let
   bootstrap = config.dot.colors.bootstrap;
 in
 {
-  shared = {
-    dot = {
-      editor = { package = pkgs.helix; bin = "hx"; };
-    };
+  config = {
+    editor = { package = pkgs.helix; bin = "hx"; };
   };
 
   home = {

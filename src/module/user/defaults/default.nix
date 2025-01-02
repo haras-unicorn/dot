@@ -129,58 +129,54 @@ in
   };
 
   config = {
-    shared = {
-      dot = {
-        desktopEnvironment.keybinds = lib.mkMerge [
-          (lib.mkIf hasMonitor [{
-            mods = [ "super" ];
-            key = "w";
-            command = "${browser}";
-          }])
-          (lib.mkIf (hasMonitor && hasKeyboard) [{
-            mods = [ "super" ];
-            key = "t";
-            command = "${terminal} ${shell}";
-          }])
-        ];
-      };
-    };
+    desktopEnvironment.keybinds = lib.mkMerge [
+      (lib.mkIf hasMonitor [{
+        mods = [ "super" ];
+        key = "w";
+        command = "${browser}";
+      }])
+      (lib.mkIf (hasMonitor && hasKeyboard) [{
+        mods = [ "super" ];
+        key = "t";
+        command = "${terminal} ${shell}";
+      }])
+    ];
+  };
 
-    home = {
-      home.packages = [
-        pkgs.xdg-user-dirs
-        pkgs.xdg-utils
-        pkgs.shared-mime-info
-      ];
+  home = {
+    home.packages = [
+      pkgs.xdg-user-dirs
+      pkgs.xdg-utils
+      pkgs.shared-mime-info
+    ];
 
-      home.sessionVariables = lib.mkMerge [
-        (lib.mkIf hasMonitor {
-          BROWSER = "${browser}";
-        })
-        (lib.mkIf (hasMonitor && hasKeyboard) {
-          VISUAL = "${visual}";
-        })
-        (lib.mkIf hasKeyboard {
-          EDITOR = "${editor}";
-        })
-      ];
+    home.sessionVariables = lib.mkMerge [
+      (lib.mkIf hasMonitor {
+        BROWSER = "${browser}";
+      })
+      (lib.mkIf (hasMonitor && hasKeyboard) {
+        VISUAL = "${visual}";
+      })
+      (lib.mkIf hasKeyboard {
+        EDITOR = "${editor}";
+      })
+    ];
 
-      xdg.mime.enable = true;
-      xdg.mimeApps.enable = true;
-      xdg.mimeApps.associations.added = mime;
-      xdg.mimeApps.defaultApplications = mime;
+    xdg.mime.enable = true;
+    xdg.mimeApps.enable = true;
+    xdg.mimeApps.associations.added = mime;
+    xdg.mimeApps.defaultApplications = mime;
 
-      xdg.enable = true;
-      xdg.userDirs.enable = true;
-      xdg.userDirs.createDirectories = true;
-      xdg.userDirs.desktop = "${config.home.homeDirectory}/desktop";
-      xdg.userDirs.download = "${config.home.homeDirectory}/download";
-      xdg.userDirs.music = "${config.home.homeDirectory}/music";
-      xdg.userDirs.pictures = "${config.home.homeDirectory}/pictures";
-      xdg.userDirs.videos = "${config.home.homeDirectory}/videos";
-      xdg.userDirs.templates = "${config.home.homeDirectory}/templates";
-      xdg.userDirs.documents = "${config.home.homeDirectory}/documents";
-      xdg.userDirs.publicShare = "${config.home.homeDirectory}/public";
-    };
+    xdg.enable = true;
+    xdg.userDirs.enable = true;
+    xdg.userDirs.createDirectories = true;
+    xdg.userDirs.desktop = "${config.home.homeDirectory}/desktop";
+    xdg.userDirs.download = "${config.home.homeDirectory}/download";
+    xdg.userDirs.music = "${config.home.homeDirectory}/music";
+    xdg.userDirs.pictures = "${config.home.homeDirectory}/pictures";
+    xdg.userDirs.videos = "${config.home.homeDirectory}/videos";
+    xdg.userDirs.templates = "${config.home.homeDirectory}/templates";
+    xdg.userDirs.documents = "${config.home.homeDirectory}/documents";
+    xdg.userDirs.publicShare = "${config.home.homeDirectory}/public";
   };
 }

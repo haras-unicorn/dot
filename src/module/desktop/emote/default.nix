@@ -6,24 +6,22 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  shared = (lib.mkIf (hasMonitor && hasKeyboard)) {
-    dot = {
-      desktopEnvironment.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "e";
-          command = "${pkgs.smile}/bin/smile";
-        }
-      ];
+  config = (lib.mkIf (hasMonitor && hasKeyboard)) {
+    desktopEnvironment.keybinds = [
+      {
+        mods = [ "super" ];
+        key = "e";
+        command = "${pkgs.smile}/bin/smile";
+      }
+    ];
 
-      desktopEnvironment.windowrules = [{
-        rule = "float";
-        selector = "class";
-        xselector = "wm_class";
-        arg = "it.mijorus.smile";
-        xarg = "smile";
-      }];
-    };
+    desktopEnvironment.windowrules = [{
+      rule = "float";
+      selector = "class";
+      xselector = "wm_class";
+      arg = "it.mijorus.smile";
+      xarg = "smile";
+    }];
   };
 
   home = (lib.mkIf (hasMonitor && hasKeyboard)) {

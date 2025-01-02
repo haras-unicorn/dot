@@ -201,15 +201,11 @@ in
   };
 
   config = {
-    shared = {
-      dot = {
-        hardware.check =
-          builtins.trace
-            (lib.assertMsg
-              (config.facter.report.hardware.version == "1")
-              "Only facter report version 1 supported")
-            false;
-      };
-    };
+    hardware.check =
+      builtins.trace
+        (lib.assertMsg
+          (config.facter.report.hardware.version == "1")
+          "Only facter report version 1 supported")
+        false;
   };
 }

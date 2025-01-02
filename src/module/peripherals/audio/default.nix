@@ -7,16 +7,14 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  shared = lib.mkIf (hasSound && hasMonitor) {
-    dot = {
-      desktopEnvironment.windowrules = [{
-        rule = "float";
-        selector = "class";
-        xselector = "wm_class";
-        arg = "com.saivert.pwvucontrol";
-        xarg = "pwvucontrol";
-      }];
-    };
+  config = lib.mkIf (hasSound && hasMonitor) {
+    desktopEnvironment.windowrules = [{
+      rule = "float";
+      selector = "class";
+      xselector = "wm_class";
+      arg = "com.saivert.pwvucontrol";
+      xarg = "pwvucontrol";
+    }];
   };
 
   system = {

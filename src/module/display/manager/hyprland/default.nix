@@ -62,17 +62,15 @@ let
   floatingSizeString = builtins.toString (config.dot.hardware.monitor.height / 2);
 in
 {
-  shared = lib.mkIf (hasMonitor && hasWayland) {
-    dot = {
-      desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
-      desktopEnvironment.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "c";
-          command = "${pkgs.hyprpicker}/bin/hyprpicker --no-fancy | ${pkgs.wl-clipboard}/bin/wl-copy";
-        }
-      ];
-    };
+  config = lib.mkIf (hasMonitor && hasWayland) {
+    desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
+    desktopEnvironment.keybinds = [
+      {
+        mods = [ "super" ];
+        key = "c";
+        command = "${pkgs.hyprpicker}/bin/hyprpicker --no-fancy | ${pkgs.wl-clipboard}/bin/wl-copy";
+      }
+    ];
   };
 
   system = lib.mkIf (hasMonitor && hasWayland) {

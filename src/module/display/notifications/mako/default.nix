@@ -7,10 +7,8 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  shared = lib.mkIf (hasMonitor && hasWayland) {
-    dot = {
-      desktopEnvironment.sessionStartup = [ "${pkgs.mako}/bin/mako" ];
-    };
+  config = lib.mkIf (hasMonitor && hasWayland) {
+    desktopEnvironment.sessionStartup = [ "${pkgs.mako}/bin/mako" ];
   };
 
   home = lib.mkIf (hasMonitor && hasWayland) {
