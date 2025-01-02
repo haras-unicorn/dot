@@ -25,10 +25,10 @@ in
       imports =
         modules
         ++ (if builtins.pathExists config
-        then [ (self.lib.module.mkHomeModule (import config)) ]
+        then [ (self.lib.module.mkHomeModule config) ]
         else [ ])
         ++ (if builtins.pathExists sharedConfig
-        then [ (self.lib.module.mkHomeModule (import sharedConfig)) ]
+        then [ (self.lib.module.mkHomeModule sharedConfig) ]
         else [ ])
         ++ [{ dot = self.lib.static.parseFile "${self}/src/host/${host}"; }]
         ++ [{ dot = self.lib.static.parseFile "${self}/src/host"; }]
