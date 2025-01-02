@@ -1,4 +1,4 @@
-{ ... }:
+{ nixpkgs, ... }:
 
 let
   mkDotObject = specialArgs: dotModule:
@@ -11,12 +11,17 @@ let
       if (builtins.isPath maybeImport) || (builtins.isString maybeImport)
       then
         let
+          path = maybeImport;
           module = (mkModule (import maybeImport) specialArgs);
         in
         if builtins.isAttrs module
-        then module // { _file = maybeImport; }
+        then module // { _file = path; }
         else module
-      else mkModule maybeImport specialArgs)
+      else
+        let
+          module = maybeImport;
+        in
+        mkModule module specialArgs)
     (if builtins.hasAttr "imports" dotObject
     then dotObject.imports
     else [ ]);
@@ -36,7 +41,7 @@ let
     then { dot = dotObject.config; }
     else { };
 
-  mkModule = { lib, ... }: path: dotObject:
+  mkModule = path: dotObject:
     if builtins.hasAttr "disabled" dotObject
     then { }
     else if builtins.hasAttr "modules" dotObject
@@ -44,12 +49,12 @@ let
       let
         moduleObject = dotObject.modules;
       in
-      if lib.hasAttrByPath path moduleObject
-      then lib.getAttrFromPath path moduleObject
+      if nixpkgs.lib.hasAttrByPath path moduleObject
+      then nixpkgs.lib.getAttrFromPath path moduleObject
       else { }
     else
-      if lib.hasAttrByPath path dotObject
-      then lib.getAttrFromPath path dotObject
+      if nixpkgs.lib.hasAttrByPath path dotObject
+      then nixpkgs.lib.getAttrFromPath path dotObject
       else { };
 
   # NOTE: if pkgs here not demanded other modules don't get access...
@@ -59,11 +64,12 @@ let
       imports = mkImports mkSystemModule specialArgs dotObject;
       options = mkOptions specialArgs dotObject;
       config = mkConfig specialArgs dotObject;
-      module = mkModule specialArgs [ "system" ] dotObject;
+      module = mkModule [ "system" ] dotObject;
     in
     {
       imports = imports ++ [ module ];
       inherit config options;
+      _file = path;
     };
 
   # NOTE: if pkgs here not demanded other modules don't get access...
@@ -73,11 +79,12 @@ let
       imports = mkImports mkHomeModule specialArgs dotObject;
       options = mkOptions specialArgs dotObject;
       config = mkConfig specialArgs dotObject;
-      module = mkModule specialArgs [ "home" ] dotObject;
+      module = mkModule [ "home" ] dotObject;
     in
     {
       imports = imports ++ [ module ];
       inherit options config;
+      _file = path;
     };
 in
 {
