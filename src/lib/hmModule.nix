@@ -3,7 +3,7 @@
 let
   user = self.lib.nixosConfiguration.user;
   version = self.lib.nixosConfiguration.version;
-  modules = self.lib.nixosConfiguration.modules;
+  mkModules = self.lib.nixosConfiguration.mkModules;
 
   sharedConfig = "${self}/src/host/config.nix";
 in
@@ -16,7 +16,7 @@ in
     in
     ({ lib, ... }: {
       imports =
-        (builtins.map self.lib.module.mkHomeModule modules)
+        (mkModules self.lib.module.mkHomeModule)
         ++ (if builtins.pathExists config
         then [ (self.lib.module.mkHomeModule (import config)) ]
         else [ ])

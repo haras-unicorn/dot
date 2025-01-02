@@ -15,8 +15,8 @@ let
   uid = 1000;
   gid = 100;
 
-  modules = builtins.map
-    (x: x.__import.value)
+  mkModules = mkModule: builtins.map
+    (x: mkModule x.__import.value x.__import.path)
     (builtins.filter
       (x: x.__import.type == "default")
       (nixpkgs.lib.collect
@@ -24,7 +24,7 @@ let
         (self.lib.import.importDirMeta "${self}/src/module")));
 in
 {
-  inherit user group uid gid version modules;
+  inherit user group uid gid version mkModules;
 
   mkNixosConfiguration = host: system:
     let

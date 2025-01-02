@@ -53,7 +53,7 @@ let
       else { };
 
   # NOTE: if pkgs here not demanded other modules don't get access...
-  mkSystemModule = mkSystemModule: dotModule: { pkgs, ... } @specialArgs:
+  mkSystemModule = mkSystemModule: dotModule: path: { pkgs, ... } @specialArgs:
     let
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports mkSystemModule specialArgs dotObject;
@@ -64,10 +64,11 @@ let
     {
       imports = imports ++ [ module ];
       inherit config options;
+      _file = path;
     };
 
   # NOTE: if pkgs here not demanded other modules don't get access...
-  mkHomeModule = mkHomeModule: dotModule: { pkgs, ... } @specialArgs:
+  mkHomeModule = mkHomeModule: dotModule: path: { pkgs, ... } @specialArgs:
     let
       dotObject = mkDotObject specialArgs dotModule;
       imports = mkImports mkHomeModule specialArgs dotObject;
@@ -78,6 +79,7 @@ let
     {
       imports = imports ++ [ module ];
       inherit options config;
+      _file = path;
     };
 in
 {
