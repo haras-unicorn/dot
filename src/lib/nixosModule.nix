@@ -1,14 +1,21 @@
-{ self, ... }:
+{ self, nixpkgs, ... }:
 
 let
+  sharedConfig = "${self}/src/host/config.nix";
+
   user = self.lib.nixosConfiguration.user;
   group = self.lib.nixosConfiguration.group;
   uid = self.lib.nixosConfiguration.uid;
   gid = self.lib.nixosConfiguration.gid;
   version = self.lib.nixosConfiguration.version;
-  mkModules = self.lib.nixosConfiguration.mkModules;
 
-  sharedConfig = "${self}/src/host/config.nix";
+  modules = builtins.map
+    (x: self.lib.module.mkSystemModule x.__import.value x.__import.path)
+    (builtins.filter
+      (x: x.__import.type == "default")
+      (nixpkgs.lib.collect
+        (builtins.hasAttr "__import")
+        (self.lib.import.importDirMeta "${self}/src/module")));
 in
 {
   mkNixosModule = host: system:
@@ -19,7 +26,7 @@ in
     in
     ({ lib, ... }: {
       imports =
-        (mkModules self.lib.module.mkSystemModule)
+        modules
         ++ (if builtins.pathExists config
         then [ (self.lib.module.mkSystemModule (import config)) ]
         else [ ])
