@@ -59,32 +59,30 @@ in
     };
   };
 
-  config = {
-    system = lib.mkIf hasMonitor {
-      fonts.fontDir.enable = true;
-      fonts.packages = [
-        (pkgs.nerdfonts.override { fonts = [ config.dot.font.nerd.label ]; })
-        config.dot.font.mono.package
-        config.dot.font.slab.package
-        config.dot.font.sans.package
-        config.dot.font.serif.package
-        config.dot.font.script.package
-        config.dot.font.emoji.package
-      ] ++ config.dot.font.extra;
-      fonts.enableDefaultPackages = true;
-      fonts.enableGhostscriptFonts = true;
-    };
+  system = lib.mkIf hasMonitor {
+    fonts.fontDir.enable = true;
+    fonts.packages = [
+      (pkgs.nerdfonts.override { fonts = [ config.dot.font.nerd.label ]; })
+      config.dot.font.mono.package
+      config.dot.font.slab.package
+      config.dot.font.sans.package
+      config.dot.font.serif.package
+      config.dot.font.script.package
+      config.dot.font.emoji.package
+    ] ++ config.dot.font.extra;
+    fonts.enableDefaultPackages = true;
+    fonts.enableGhostscriptFonts = true;
+  };
 
-    home = lib.mkIf hasMonitor {
-      fonts.fontconfig.enable = true;
-      fonts.fontconfig.defaultFonts.sansSerif = [ config.dot.font.sans.name ];
-      fonts.fontconfig.defaultFonts.serif = [ config.dot.font.serif.name ];
-      fonts.fontconfig.defaultFonts.emoji = [ config.dot.font.emoji.name ];
-      fonts.fontconfig.defaultFonts.monospace = [ config.dot.font.mono.name ];
-      home.packages = [
-        pkgs.fontfor
-        pkgs.fontpreview
-      ];
-    };
+  home = lib.mkIf hasMonitor {
+    fonts.fontconfig.enable = true;
+    fonts.fontconfig.defaultFonts.sansSerif = [ config.dot.font.sans.name ];
+    fonts.fontconfig.defaultFonts.serif = [ config.dot.font.serif.name ];
+    fonts.fontconfig.defaultFonts.emoji = [ config.dot.font.emoji.name ];
+    fonts.fontconfig.defaultFonts.monospace = [ config.dot.font.mono.name ];
+    home.packages = [
+      pkgs.fontfor
+      pkgs.fontpreview
+    ];
   };
 }
