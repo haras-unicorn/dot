@@ -19,24 +19,26 @@ in
     };
   };
 
-  system = lib.mkIf hasSound {
+  system = {
     imports = [ musnix.nixosModules.musnix ];
 
-    services.pipewire.enable = true;
-    services.pipewire.wireplumber.enable = true;
-    services.pipewire.alsa.enable = true;
-    services.pipewire.alsa.support32Bit = true;
-    services.pipewire.jack.enable = true;
-    services.pipewire.pulse.enable = true;
+    config = lib.mkIf hasSound {
+      services.pipewire.enable = true;
+      services.pipewire.wireplumber.enable = true;
+      services.pipewire.alsa.enable = true;
+      services.pipewire.alsa.support32Bit = true;
+      services.pipewire.jack.enable = true;
+      services.pipewire.pulse.enable = true;
 
-    programs.dconf.enable = true;
+      programs.dconf.enable = true;
 
-    security.rtkit.enable = true;
+      security.rtkit.enable = true;
 
-    users.users.${user}.extraGroups = [
-      "audio"
-    ];
-    musnix.enable = true;
+      users.users.${user}.extraGroups = [
+        "audio"
+      ];
+      musnix.enable = true;
+    };
   };
 
   home = lib.mkIf (hasSound && hasMonitor) {

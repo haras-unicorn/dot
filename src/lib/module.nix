@@ -54,8 +54,7 @@ let
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
     {
-      imports = imports ++ [ sharedConfig ];
-      inherit options config;
+      imports = imports ++ [ sharedConfig config { inherit options; } ];
     };
 
   # NOTE: if pkgs here not demanded other modules don't get access...
@@ -68,8 +67,7 @@ let
       sharedConfig = mkConfig specialArgs [ "shared" ] dotObject;
     in
     {
-      imports = imports ++ [ sharedConfig ];
-      inherit options config;
+      imports = imports ++ [ sharedConfig config { inherit options; } ];
     };
 in
 {
