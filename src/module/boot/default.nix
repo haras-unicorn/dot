@@ -34,7 +34,7 @@ in
       else if isLegacyNvidia then pkgs.linuxKernel.packages.linux_6_6
       else pkgs.linuxPackages_zen;
     services.ananicy.enable = true;
-    services.ananicy.packages = pkgs.ananicy-cpp;
+    services.ananicy.package = pkgs.ananicy-cpp;
     services.preload.enable = true;
 
     boot.initrd.kernelModules = [
