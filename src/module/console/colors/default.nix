@@ -4,11 +4,9 @@ let
   terminal = config.dot.colors.terminal;
 in
 {
-  shared = {
-    dot = {
-      shell.sessionVariables = {
-        LS_COLORS = "vivid generate ${config.xdg.configHome}/vivid/themes/colors.yaml";
-      };
+  config = {
+    shell.sessionVariables = {
+      LS_COLORS = "vivid generate ${config.xdg.configHome}/vivid/themes/colors.yaml";
     };
   };
 
