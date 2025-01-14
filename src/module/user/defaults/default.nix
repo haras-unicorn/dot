@@ -143,7 +143,7 @@ in
     ];
   };
 
-  # NOTE: https://github.com/NixOS/nixpkgs/issues/189851#issuecomment-1759954096
+  # NOTE: this is a clusterfuck anyway
   system = {
     systemd.user.extraConfig = ''
       DefaultEnvironment="PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
@@ -155,6 +155,13 @@ in
       pkgs.xdg-user-dirs
       pkgs.xdg-utils
       pkgs.shared-mime-info
+      (pkgs.writeShellApplication {
+        name = "xdg-open";
+        runtimeInputs = [ pkgs.handlr ];
+        text = ''
+          handlr open "$@"
+        '';
+      })
     ];
 
     home.sessionVariables = lib.mkMerge [
