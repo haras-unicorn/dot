@@ -35,7 +35,7 @@ in
           home-manager.useUserPackages = true;
           home-manager.extraSpecialArgs = specialArgs;
           home-manager.sharedModules = [
-            nur.hmModules.nur
+            nur.modules.homeManager.default
             nix-index-database.hmModules.nix-index
             nixos-facter-modules.hmModules.facter
             sops-nix.homeManagerModules.sops
