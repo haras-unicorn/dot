@@ -25,7 +25,7 @@ in
     nixpkgs.lib.nixosSystem {
       inherit system specialArgs;
       modules = [
-        nur.modules.nixos.nur
+        nur.modules.nixos.default
         nixos-facter-modules.nixosModules.facter
         sops-nix.nixosModules.default
         home-manager.nixosModules.default
