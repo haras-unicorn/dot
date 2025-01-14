@@ -87,10 +87,10 @@ in
         name = "personal";
         isDefault = true;
         extensions = [
-          config.nur.repos.rycee.firefox-addons.ublock-origin
-          config.nur.repos.rycee.firefox-addons.darkreader
-          config.nur.repos.rycee.firefox-addons.vimium-c
-          config.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
+          pkgs.nur.repos.rycee.firefox-addons.ublock-origin
+          pkgs.nur.repos.rycee.firefox-addons.darkreader
+          pkgs.nur.repos.rycee.firefox-addons.vimium-c
+          pkgs.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
         ];
       };
     };
