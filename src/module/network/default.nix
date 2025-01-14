@@ -24,7 +24,6 @@ in
     networking.firewall.enable = true;
     networking.networkmanager.enable = true;
     networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
-    networking.networkmanager.dns = "none";
 
     # NOTE: https://github.com/NixOS/nixpkgs/issues/231038
     environment.etc."ppp/options".text = ''
