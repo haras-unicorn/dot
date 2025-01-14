@@ -153,7 +153,7 @@ in
   home = {
     home.packages = [
       pkgs.xdg-user-dirs
-      pkgs.xdg-utils
+      # pkgs.xdg-utils
       pkgs.shared-mime-info
       (pkgs.writeShellApplication {
         name = "xdg-open";
