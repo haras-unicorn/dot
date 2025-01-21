@@ -100,7 +100,7 @@ let
       runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
       server = "comfyui --port ${builtins.toString port}";
       client = "chromium"
-        + " --user-data-dir=$(mktemp -d)"
+        + " --user-data-dir=${config.xdg.dataHome}/comfyui/session"
         + " --app=http://localhost:${builtins.toString port}";
     };
 in
