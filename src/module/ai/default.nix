@@ -134,8 +134,8 @@ in
     ];
 
     xdg.desktopEntries = {
-      myfooddata = {
-        name = "Comfyui";
+      comfyui = {
+        name = "ComfyUI";
         exec = "${comfyuiApp}/bin/comfyui-app";
         terminal = false;
       };
