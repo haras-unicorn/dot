@@ -23,11 +23,11 @@ let
 
   hasSound = config.dot.hardware.sound.enable;
 
-  package = nix-comfyui.packages.${pkgs.system}.${packageName};
+  comfyuiPackage = nix-comfyui.packages.${pkgs.system}.${packageName};
 
   comfyui = pkgs.writeShellApplication {
     name = "comfyui";
-    runtimeInputs = [ package ];
+    runtimeInputs = [ comfyuiPackage ];
     text = ''
       mkdir -p "${config.xdg.dataHome}/comfyui"
       cd "${config.xdg.dataHome}/comfyui"
@@ -80,6 +80,29 @@ let
       else "xclip -o"} | speak
     '';
   };
+
+  serverClientApp = { server, client, ... }@args: pkgs.writeShellApplication
+    ((builtins.removeAttrs args [ "server" "client" ]) // {
+      text = ''
+        ${server} "$@" &
+        server=$!
+        ${client}
+        kill $server 2>/dev/null
+      '';
+    });
+
+  comfyuiApp =
+    let
+      port = 8108;
+    in
+    serverClientApp {
+      name = "comfyui-app";
+      runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
+      server = "comfyui --port ${builtins.toString port}";
+      client = "chromium"
+        + " --user-data-dir=$(mktemp -d)"
+        + " --app=http://localhost:${builtins.toString port}";
+    };
 in
 {
   config = {
@@ -109,5 +132,13 @@ in
       pkgs.openai-whisper-cpp
       speak
     ];
+
+    xdg.desktopEntries = {
+      myfooddata = {
+        name = "Comfyui";
+        exec = "${comfyuiApp}/bin/comfyui-app";
+        terminal = false;
+      };
+    };
   };
 }
