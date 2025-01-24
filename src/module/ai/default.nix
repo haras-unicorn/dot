@@ -85,9 +85,9 @@ let
     ((builtins.removeAttrs args [ "server" "wait" "client" ]) // {
       runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
       text = ''
-        port=$(shuf -i 1024-65535 -n 1)
-        while ss -tulwn | grep -q ":$randomPort "; do
-          port=$(shuf -i 1024-65535 -n 1)
+        port=$(shuf -i 32768-65535 -n 1)
+        while ss -tulwn | grep -q ":$port "; do
+          port=$(shuf -i 32768-65535 -n 1)
         done
 
         systemd-run --user --scope --unit=${name}-server ${server} "$@" &
