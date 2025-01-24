@@ -86,7 +86,6 @@ let
       runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
       text = ''
         systemd-run --user --scope --unit=${name}-server ${server} "$@" &
-        # Show a spinner while waiting for the server to start
         (
           echo "Waiting for the ${name} server to start..."
           while ! ${wait} > /dev/null; do
