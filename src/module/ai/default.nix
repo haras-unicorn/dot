@@ -81,38 +81,46 @@ let
     '';
   };
 
-  serverClientApp = { name, server, wait, client, runtimeInputs ? [ ], ... }@args: pkgs.writeShellApplication
-    ((builtins.removeAttrs args [ "server" "wait" "client" ]) // {
-      runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
-      text = ''
-        port=$(shuf -i 32768-65535 -n 1)
-        while ss -tulwn | grep -q ":$port "; do
+  serverClientApp =
+    { name
+    , speed ? 1
+    , server
+    , wait
+    , client
+    , runtimeInputs ? [ ]
+    , ...
+    }@args: pkgs.writeShellApplication
+      ((builtins.removeAttrs args [ "server" "wait" "client" ]) // {
+        runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
+        text = ''
           port=$(shuf -i 32768-65535 -n 1)
-        done
-
-        systemd-run --user --scope --unit=${name}-server ${server} "$@" &
-        echo "Waiting for the ${name} server to start..."
-        (
-          progress=0
-          while ! ${wait} > /dev/null; do
-            sleep 0.2
-            progress=$(( (progress + 100) / 2 ))
-            [ $progress -ge 99 ] && progress=99
-            echo "$progress"
+          while ss -tulwn | grep -q ":$port "; do
+            port=$(shuf -i 32768-65535 -n 1)
           done
-          echo 100
-        ) | zenity \
-          --progress \
-          --no-cancel \
-          --auto-close \
-          --title="Starting ${name}" \
-          --text="Initializing server..."
 
-        ${client}
+          systemd-run --user --scope --unit=${name}-server ${server} "$@" &
+          echo "Waiting for the ${name} server to start..."
+          (
+            progress=0
+            while ! ${wait} > /dev/null; do
+              sleep ${builtins.toString speed}
+              progress=$(( (progress + 100) / 2 ))
+              [ $progress -ge 99 ] && progress=99
+              echo "$progress"
+            done
+            echo 100
+          ) | zenity \
+            --progress \
+            --no-cancel \
+            --auto-close \
+            --title="Starting ${name}" \
+            --text="Initializing server..."
 
-        systemctl stop --user ${name}-server.scope
-      '';
-    });
+          ${client}
+
+          systemctl stop --user ${name}-server.scope
+        '';
+      });
 
   comfyuiApp = serverClientApp {
     name = "comfyui-app";
