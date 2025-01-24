@@ -85,6 +85,11 @@ let
     ((builtins.removeAttrs args [ "server" "wait" "client" ]) // {
       runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
       text = ''
+        port=$(shuf -i 1024-65535 -n 1)
+        while ss -tulwn | grep -q ":$randomPort "; do
+          port=$(shuf -i 1024-65535 -n 1)
+        done
+
         systemd-run --user --scope --unit=${name}-server ${server} "$@" &
         (
           echo "Waiting for the ${name} server to start..."
@@ -105,19 +110,15 @@ let
       '';
     });
 
-  comfyuiApp =
-    let
-      port = 8108;
-    in
-    serverClientApp {
-      name = "comfyui-app";
-      runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
-      wait = "curl -s http://localhost:${builtins.toString port}";
-      server = "comfyui --port ${builtins.toString port}";
-      client = "chromium"
-        + " --user-data-dir=${config.xdg.dataHome}/comfyui/session"
-        + " --app=http://localhost:${builtins.toString port}";
-    };
+  comfyuiApp = serverClientApp {
+    name = "comfyui-app";
+    runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
+    server = "comfyui --port \"$port\"";
+    wait = "curl -s \"http://localhost:$port\"";
+    client = "chromium"
+      + " --user-data-dir=${config.xdg.dataHome}/comfyui/session"
+      + " \"--app=http://localhost:$port\"";
+  };
 in
 {
   config = {
