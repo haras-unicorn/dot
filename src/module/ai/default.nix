@@ -87,7 +87,7 @@ let
         ${server} "$@" &
         server=$!
         ${client}
-        kill $server 2>/dev/null
+        kill -$server 2>/dev/null
       '';
     });
 
