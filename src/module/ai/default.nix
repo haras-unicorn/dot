@@ -84,9 +84,9 @@ let
   serverClientApp = { name, server, client, ... }@args: pkgs.writeShellApplication
     ((builtins.removeAttrs args [ "server" "client" ]) // {
       text = ''
-        systemd-run --scope --unit=${name} ${server} "$@" &
+        systemd-run --scope --unit=${name}-server ${server} "$@" &
         ${client}
-        systemctl stop ${name}.scope
+        systemctl stop ${name}-server.scope
       '';
     });
 
