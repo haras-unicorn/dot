@@ -20,8 +20,10 @@ in
 
   system = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.steam.package = pkgs.steam.override {
-      MANGOHUD = "1";
-      MANGOHUD_DLSYM = "1";
+      extraEnv = {
+        MANGOHUD = "1";
+        MANGOHUD_DLSYM = "1";
+      };
     };
     programs.steam.enable = true;
     programs.steam.extest.enable = true;
