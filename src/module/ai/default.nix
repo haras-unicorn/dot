@@ -81,16 +81,12 @@ let
     '';
   };
 
-  serverClientApp = { server, client, ... }@args: pkgs.writeShellApplication
+  serverClientApp = { name, server, client, ... }@args: pkgs.writeShellApplication
     ((builtins.removeAttrs args [ "server" "client" ]) // {
       text = ''
-        ${server} "$@" &
-        server=$!
-        # shellcheck disable=SC2064
-        trap "kill -- -$server 2>/dev/null" EXIT
+        systemd-run --scope --unit=${name} ${server} "$@" &
         ${client}
-        kill -- -$server 2>/dev/null
-        wait $server 2>/dev/null
+        systemctl stop ${name}.scope
       '';
     });
 
