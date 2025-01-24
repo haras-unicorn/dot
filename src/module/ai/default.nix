@@ -81,11 +81,27 @@ let
     '';
   };
 
-  serverClientApp = { name, server, client, ... }@args: pkgs.writeShellApplication
-    ((builtins.removeAttrs args [ "server" "client" ]) // {
+  serverClientApp = { name, server, wait, client, runtimeInputs ? [ ], ... }@args: pkgs.writeShellApplication
+    ((builtins.removeAttrs args [ "server" "wait" "client" ]) // {
+      runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
       text = ''
         systemd-run --user --scope --unit=${name}-server ${server} "$@" &
+        # Show a spinner while waiting for the server to start
+        (
+          echo "Waiting for the ${name} server to start..."
+          while ! ${wait} > /dev/null; do
+            sleep 0.2
+          done
+          echo 100
+        ) | zenity \
+          --progress \
+          --no-cancel \
+          --auto-close \
+          --title="Starting ${name}" \
+          --text="Initializing server..."
+
         ${client}
+
         systemctl stop --user ${name}-server.scope
       '';
     });
@@ -97,6 +113,7 @@ let
     serverClientApp {
       name = "comfyui-app";
       runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
+      wait = "curl -s http://localhost:${builtins.toString port}";
       server = "comfyui --port ${builtins.toString port}";
       client = "chromium"
         + " --user-data-dir=${config.xdg.dataHome}/comfyui/session"
