@@ -86,7 +86,8 @@ let
       text = ''
         ${server} "$@" &
         server=$!
-        trap "kill -- '-$server' 2>/dev/null" EXIT
+        # shellcheck disable=SC2064
+        trap "kill -- -$server 2>/dev/null" EXIT
         ${client}
         kill -- -$server 2>/dev/null
         wait $server 2>/dev/null
