@@ -22,7 +22,6 @@ in
     programs.steam.package = pkgs.steam.override {
       extraEnv = {
         MANGOHUD = "1";
-        MANGOHUD_DLSYM = "1";
       };
     };
     programs.steam.enable = true;
