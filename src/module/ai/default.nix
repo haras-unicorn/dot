@@ -91,10 +91,14 @@ let
         done
 
         systemd-run --user --scope --unit=${name}-server ${server} "$@" &
+        echo "Waiting for the ${name} server to start..."
         (
-          echo "Waiting for the ${name} server to start..."
+          progress=0
           while ! ${wait} > /dev/null; do
             sleep 0.2
+            progress=$(( (progress + 100) / 2 ))
+            [ $progress -ge 99 ] && progress=99
+            echo "$progress"
           done
           echo 100
         ) | zenity \
