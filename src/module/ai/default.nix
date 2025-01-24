@@ -29,8 +29,18 @@ let
     name = "comfyui";
     runtimeInputs = [ comfyuiPackage ];
     text = ''
-      mkdir -p "${config.xdg.dataHome}/comfyui"
-      cd "${config.xdg.dataHome}/comfyui"
+      mkdir -p "${config.xdg.dataHome}/comfyui/personal"
+      cd "${config.xdg.dataHome}/comfyui/personal"
+      comfyui --preview-method taesd "$@"
+    '';
+  };
+
+  comfyuiAlternative = pkgs.writeShellApplication {
+    name = "comfyui-alternative";
+    runtimeInputs = [ comfyuiPackage ];
+    text = ''
+      mkdir -p "${config.xdg.dataHome}/comfyui/alternative"
+      cd "${config.xdg.dataHome}/comfyui/alternative"
       comfyui --preview-method taesd "$@"
     '';
   };
@@ -128,7 +138,17 @@ let
     server = "comfyui --port \"$port\"";
     wait = "curl -s \"http://localhost:$port\"";
     client = "chromium"
-      + " --user-data-dir=${config.xdg.dataHome}/comfyui/session"
+      + " --user-data-dir=${config.xdg.dataHome}/comfyui/personal/session"
+      + " \"--app=http://localhost:$port\"";
+  };
+
+  comfyuiAlternativeApp = serverClientApp {
+    name = "comfyui-app-alternative";
+    runtimeInputs = [ comfyuiAlternative pkgs.ungoogled-chromium ];
+    server = "comfyui --port \"$port\"";
+    wait = "curl -s \"http://localhost:$port\"";
+    client = "chromium"
+      + " --user-data-dir=${config.xdg.dataHome}/comfyui/alternative/session"
       + " \"--app=http://localhost:$port\"";
   };
 in
@@ -155,6 +175,7 @@ in
       comfyui
     ] ++ lib.optionals hasMonitor [
       comfyuiApp
+      comfyuiAlternativeApp
       pkgs.gpt4all
     ] ++ lib.optionals hasSound [
       pkgs.piper-tts

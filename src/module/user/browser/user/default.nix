@@ -93,6 +93,16 @@ in
           pkgs.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
         ];
       };
+      alternarive = {
+        id = 1;
+        name = "alternative";
+        extensions = [
+          pkgs.nur.repos.rycee.firefox-addons.ublock-origin
+          pkgs.nur.repos.rycee.firefox-addons.darkreader
+          pkgs.nur.repos.rycee.firefox-addons.vimium-c
+          pkgs.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
+        ];
+      };
     };
     home.file.".mozilla/firefox/personal/chrome".source = "${firefox-gx-updated}/chrome";
     home.file.".mozilla/firefox/personal/user.js".text = ''
