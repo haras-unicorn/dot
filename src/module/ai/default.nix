@@ -143,7 +143,7 @@ let
   };
 
   comfyuiAlternativeApp = serverClientApp {
-    name = "comfyui-app-alternative";
+    name = "comfyui-alternative-app";
     runtimeInputs = [ comfyuiAlternative pkgs.ungoogled-chromium ];
     server = "comfyui --port \"$port\"";
     wait = "curl -s \"http://localhost:$port\"";
