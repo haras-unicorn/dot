@@ -16,15 +16,13 @@ in
       arg = "steam";
       xarg = "steam";
     }];
-
-    # NOTE: programs.mangohud.enableSessionWide doesn't work for some reason
-    desktopEnvironment.sessionVariables = {
-      MANGOHUD = 1;
-      MANGOHUD_DLSYM = 1;
-    };
   };
 
   system = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
+    programs.steam.package = pkgs.steam.override {
+      MANGOHUD = "1";
+      MANGOHUD_DLSYM = "1";
+    };
     programs.steam.enable = true;
     programs.steam.extest.enable = true;
     programs.steam.protontricks.enable = true;

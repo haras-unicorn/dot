@@ -7,7 +7,8 @@
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/${bin} \
-        --set MANGOHUD ${if value then "1" else "0"}
+        --set MANGOHUD ${if value then "1" else "0"} \
+        --set MANGOHUD_DLSYM ${if value then "1" else "0"}
     '';
   };
 }
