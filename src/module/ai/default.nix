@@ -126,6 +126,7 @@ in
     home.packages = lib.optionals hasAnyPlatform [
       comfyui
     ] ++ lib.optionals hasMonitor [
+      comfyuiApp
       pkgs.gpt4all
     ] ++ lib.optionals hasSound [
       pkgs.piper-tts
