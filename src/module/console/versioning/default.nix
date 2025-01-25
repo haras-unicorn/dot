@@ -10,6 +10,7 @@
   home = {
     home.packages = [
       pkgs.delta
+      pkgs.git-credential-manager
     ];
 
     programs.git.enable = true;
