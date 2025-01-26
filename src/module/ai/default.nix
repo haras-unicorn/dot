@@ -173,6 +173,7 @@ in
   home = {
     home.packages = lib.optionals hasAnyPlatform [
       comfyui
+      comfyuiAlternative
     ] ++ lib.optionals hasMonitor [
       comfyuiApp
       comfyuiAlternativeApp
