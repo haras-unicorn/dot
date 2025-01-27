@@ -24,6 +24,16 @@ let
     '';
   };
 
+  nru = pkgs.writeShellApplication {
+    name = "nru";
+    text = ''
+      export NIXPKGS_ALLOW_UNFREE=1
+      name="$1"
+      shift
+      exec nix run --impure "nixpkgs#$name" -- "$@"
+    '';
+  };
+
   ezdd = pkgs.writeShellApplication {
     name = "ezdd";
     text = ''
@@ -41,6 +51,7 @@ in
       run
       repeat
       nr
+      nru
       ezdd
       pkgs.htop
       pkgs.man-pages
