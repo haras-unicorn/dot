@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
 # FIXME: hardware acceleration
-# FIXME: chromium extensions https://github.com/NixOS/nixpkgs/issues/158449
+# TODO: idk what to do with extensions
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -13,15 +13,15 @@ in
     programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
       en_US
     ];
-    programs.chromium.extensions = [
-      # ublock origin
-      { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
-      # dark reader
-      { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
-      # vimium c
-      { id = "hfjbmagddngcpeloejdejnfgbamkjaeg"; }
-      # vimium c new tab
-      { id = "cglpcedifkgalfdklahhcchnjepcckfn"; }
-    ];
+    # programs.chromium.extensions = [
+    #   # ublock origin
+    #   { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
+    #   # dark reader
+    #   { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
+    #   # vimium c
+    #   { id = "hfjbmagddngcpeloejdejnfgbamkjaeg"; }
+    #   # vimium c new tab
+    #   { id = "cglpcedifkgalfdklahhcchnjepcckfn"; }
+    # ];
   };
 }
