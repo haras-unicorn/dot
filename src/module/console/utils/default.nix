@@ -34,6 +34,16 @@ let
     '';
   };
 
+  nruu = pkgs.writeShellApplication {
+    name = "nruu";
+    text = ''
+      export NIXPKGS_ALLOW_UNFREE=1
+      name="$1"
+      shift
+      exec nix run --impure "github:nixos/nixpkgs/nixos-unstable#$name" -- "$@"
+    '';
+  };
+
   ezdd = pkgs.writeShellApplication {
     name = "ezdd";
     text = ''
@@ -52,6 +62,7 @@ in
       repeat
       nr
       nru
+      nruu
       ezdd
       pkgs.htop
       pkgs.man-pages
