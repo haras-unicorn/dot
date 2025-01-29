@@ -221,7 +221,7 @@ let
   comfyuiApp = serverClientApp {
     name = "comfyui-app";
     runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
-    servers = [ "comfyui --port \"$port0\"" ];
+    servers = [ "comfyui --port '$port0'" ];
     waits = [ ''curl -s "http://localhost:$port0"'' ];
     client = "chromium"
       + " --user-data-dir=${config.xdg.dataHome}/comfyui/personal/session"
