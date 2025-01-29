@@ -81,6 +81,10 @@ let
     text = ''
       mkdir -p "${config.xdg.dataHome}/ollama/personal/ui"
       cd "${config.xdg.dataHome}/ollama/personal/ui"
+      export STATIC_DIR="${config.xdg.dataHome}/ollama/personal/ui"
+      export DATA_DIR="${config.xdg.dataHome}/ollama/personal/ui"
+      export HF_HOME="${config.xdg.dataHome}/ollama/personal/ui"
+      export SENTENCE_TRANSFORMERS_HOME="${config.xdg.dataHome}/ollama/personal/ui"
       open-webui serve "$@"
     '';
   };
@@ -91,6 +95,10 @@ let
     text = ''
       mkdir -p "${config.xdg.dataHome}/ollama/alternative/ui"
       cd "${config.xdg.dataHome}/ollama/alternative/ui"
+      export STATIC_DIR="${config.xdg.dataHome}/ollama/personal/ui"
+      export DATA_DIR="${config.xdg.dataHome}/ollama/personal/ui"
+      export HF_HOME="${config.xdg.dataHome}/ollama/personal/ui"
+      export SENTENCE_TRANSFORMERS_HOME="${config.xdg.dataHome}/ollama/personal/ui"
       open-webui serve "$@"
     '';
   };
@@ -153,6 +161,7 @@ let
       ((builtins.removeAttrs args [ "servers" "waits" "speed" "client" ]) // (
         let
           ports = builtins.concatStringsSep
+            "\n"
             (builtins.genList
               (num: ''
                 port${num}=$(shuf -i 32768-65535 -n 1)
@@ -160,20 +169,19 @@ let
                   port${num}=$(shuf -i 32768-65535 -n 1)
                 done
               '')
-              (builtins.length servers))
-            "\n";
+              (builtins.length servers));
 
           scope = builtins.concatStringsSep
+            "; "
             (builtins.map
               (server: "${server} &")
-              servers)
-            "; ";
+              servers);
 
           wait = builtins.concatStringsSep
+            " && "
             (builtins.map
               (x: "${x} > /dev/null")
-              waits)
-            " && ";
+              waits);
         in
         {
           runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
