@@ -164,9 +164,9 @@ let
             "\n"
             (builtins.genList
               (num: ''
-                port${num}=$(shuf -i 32768-65535 -n 1)
-                while ss -tulwn | grep -q ":$port${num} "; do
-                  port${num}=$(shuf -i 32768-65535 -n 1)
+                port${builtins.toString num}=$(shuf -i 32768-65535 -n 1)
+                while ss -tulwn | grep -q ":$port${builtins.toString num} "; do
+                  port${builtins.toString num}=$(shuf -i 32768-65535 -n 1)
                 done
               '')
               (builtins.length servers));
@@ -221,21 +221,21 @@ let
   comfyuiApp = serverClientApp {
     name = "comfyui-app";
     runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
-    servers = [ "comfyui --port \"$port1\"" ];
-    waits = [ "curl -s \"http://localhost:$port1\"" ];
+    servers = [ "comfyui --port \"$port0\"" ];
+    waits = [ "curl -s \"http://localhost:$port0\"" ];
     client = "chromium"
       + " --user-data-dir=${config.xdg.dataHome}/comfyui/personal/session"
-      + " \"--app=http://localhost:$port1\"";
+      + " \"--app=http://localhost:$port0\"";
   };
 
   comfyuiAlternativeApp = serverClientApp {
     name = "comfyui-alternative-app";
     runtimeInputs = [ comfyuiAlternative pkgs.ungoogled-chromium ];
-    servers = [ "comfyui-alternative --port \"$port1\"" ];
-    waits = [ "curl -s \"http://localhost:$port1\"" ];
+    servers = [ "comfyui-alternative --port \"$port0\"" ];
+    waits = [ "curl -s \"http://localhost:$port0\"" ];
     client = "chromium"
       + " --user-data-dir=${config.xdg.dataHome}/comfyui/alternative/session"
-      + " \"--app=http://localhost:$port1\"";
+      + " \"--app=http://localhost:$port0\"";
   };
 
   ollamaApp = serverClientApp {
@@ -246,16 +246,16 @@ let
       pkgs.ungoogled-chromium
     ];
     servers = [
-      ''env OLLAMA_HOST="http://127.0.0.1/$port1" ollama serve''
-      ''env OLLAMA_BASE_URL="http://127.0.0.1/$port1" open-webui serve --host 127.0.0.1 --port "$port2"''
+      ''env OLLAMA_HOST="http://127.0.0.1/$port0" ollama serve''
+      ''env OLLAMA_BASE_URL="http://127.0.0.1/$port0" open-webui serve --host 127.0.0.1 --port "$port1"''
     ];
     waits = [
+      ''curl -s "http://localhost:$port0"''
       ''curl -s "http://localhost:$port1"''
-      ''curl -s "http://localhost:$port2"''
     ];
     client = "chromium"
       + " --user-data-dir=${config.xdg.dataHome}/ollama/personal/session"
-      + " \"--app=http://localhost:$port2\"";
+      + " \"--app=http://localhost:$port1\"";
   };
 
   ollamaAlternativeApp = serverClientApp {
@@ -266,16 +266,16 @@ let
       pkgs.ungoogled-chromium
     ];
     servers = [
-      ''env OLLAMA_HOST="http://127.0.0.1/$port1" ollama-alternative serve''
-      ''env OLLAMA_BASE_URL="http://127.0.0.1/$port1" open-webui-alternative serve --host 127.0.0.1 --port "$port2"''
+      ''env OLLAMA_HOST="http://127.0.0.1/$port0" ollama-alternative serve''
+      ''env OLLAMA_BASE_URL="http://127.0.0.1/$port0" open-webui-alternative serve --host 127.0.0.1 --port "$port1"''
     ];
     waits = [
+      ''curl -s "http://localhost:$port0"''
       ''curl -s "http://localhost:$port1"''
-      ''curl -s "http://localhost:$port2"''
     ];
     client = "chromium"
       + " --user-data-dir=${config.xdg.dataHome}/ollama/alternative/session"
-      + " \"--app=http://localhost:$port1\"";
+      + " \"--app=http://localhost:$port0\"";
   };
 in
 {
