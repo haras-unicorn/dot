@@ -143,14 +143,14 @@ let
 
   serverClientApp =
     { name
-    , speed ? 1
     , servers
     , waits
+    , speed ? 1
     , client
     , runtimeInputs ? [ ]
     , ...
     }@args: pkgs.writeShellApplication
-      ((builtins.removeAttrs args [ "server" "wait" "client" ]) // (
+      ((builtins.removeAttrs args [ "servers" "waits" "speed" "client" ]) // (
         let
           ports = builtins.genList
             (num: ''
