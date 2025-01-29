@@ -222,7 +222,7 @@ let
     name = "comfyui-app";
     runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
     servers = [ "comfyui --port \"$port0\"" ];
-    waits = [ "curl -s \"http://localhost:$port0\"" ];
+    waits = [ ''curl -s "http://localhost:$port0"'' ];
     client = "chromium"
       + " --user-data-dir=${config.xdg.dataHome}/comfyui/personal/session"
       + " \"--app=http://localhost:$port0\"";
@@ -232,7 +232,7 @@ let
     name = "comfyui-alternative-app";
     runtimeInputs = [ comfyuiAlternative pkgs.ungoogled-chromium ];
     servers = [ "comfyui-alternative --port '$port0'" ];
-    waits = [ "curl -s 'http://localhost:$port0'" ];
+    waits = [ ''curl -s "http://localhost:$port0"'' ];
     client = ''
       chromium \
         "--user-data-dir=${config.xdg.dataHome}/comfyui/alternative/session" \
@@ -252,8 +252,8 @@ let
       "env OLLAMA_BASE_URL='http://127.0.0.1/$port0' open-webui serve --host 127.0.0.1 --port '$port1'"
     ];
     waits = [
-      "curl -s 'http://localhost:$port0'"
-      "curl -s 'http://localhost:$port1'"
+      ''curl -s "http://localhost:$port0"''
+      ''curl -s "http://localhost:$port1"''
     ];
     client = ''
       chromium \
@@ -274,8 +274,8 @@ let
       "env OLLAMA_BASE_URL='http://127.0.0.1/$port0' open-webui-alternative serve --host 127.0.0.1 --port '$port1'"
     ];
     waits = [
-      "curl -s 'http://localhost:$port0'"
-      "curl -s 'http://localhost:$port1'"
+      ''curl -s "http://localhost:$port0"''
+      ''curl -s "http://localhost:$port1"''
     ];
     client = ''
       chromium \
