@@ -152,14 +152,16 @@ let
     }@args: pkgs.writeShellApplication
       ((builtins.removeAttrs args [ "servers" "waits" "speed" "client" ]) // (
         let
-          ports = builtins.genList
-            (num: ''
-              port${num}=$(shuf -i 32768-65535 -n 1)
-              while ss -tulwn | grep -q ":$port${num} "; do
+          ports = builtins.concatStringsSep
+            (builtins.genList
+              (num: ''
                 port${num}=$(shuf -i 32768-65535 -n 1)
-              done
-            '')
-            (builtins.length servers);
+                while ss -tulwn | grep -q ":$port${num} "; do
+                  port${num}=$(shuf -i 32768-65535 -n 1)
+                done
+              '')
+              (builtins.length servers))
+            "\n";
 
           scope =
             builtins.concatStringsSep
