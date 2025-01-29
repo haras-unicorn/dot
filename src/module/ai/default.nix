@@ -1,5 +1,7 @@
 { nix-comfyui, pkgs, config, lib, ... }:
 
+# TODO: listen command with openai-whisper-cpp
+
 let
   packageName =
     if builtins.hasAttr "cudaSupport" config.nixpkgs.config then
@@ -25,6 +27,10 @@ let
 
   comfyuiPackage = nix-comfyui.packages.${pkgs.system}.${packageName};
 
+  ollamaPackage = pkgs.ollama;
+
+  openWebuiPackage = pkgs.open-webui;
+
   comfyui = pkgs.writeShellApplication {
     name = "comfyui";
     runtimeInputs = [ comfyuiPackage ];
@@ -42,6 +48,50 @@ let
       mkdir -p "${config.xdg.dataHome}/comfyui/alternative"
       cd "${config.xdg.dataHome}/comfyui/alternative"
       comfyui --preview-method taesd "$@"
+    '';
+  };
+
+  ollama = pkgs.writeShellApplication {
+    name = "ollama";
+    runtimeInputs = [ ollamaPackage ];
+    text = ''
+      mkdir -p "${config.xdg.dataHome}/ollama/personal"
+      cd "${config.xdg.dataHome}/ollama/personal"
+      export HOME="${config.xdg.dataHome}/ollama/personal"
+      export OLLAMA_MODELS="${config.xdg.dataHome}/ollama/personal/models"
+      ollama serve "$@"
+    '';
+  };
+
+  ollamaAlternative = pkgs.writeShellApplication {
+    name = "ollama-alternative";
+    runtimeInputs = [ ollamaPackage ];
+    text = ''
+      mkdir -p "${config.xdg.dataHome}/ollama/alternative"
+      cd "${config.xdg.dataHome}/ollama/alternative"
+      export HOME="${config.xdg.dataHome}/ollama/alternative"
+      export OLLAMA_MODELS="${config.xdg.dataHome}/ollama/alternative/models"
+      ollama serve "$@"
+    '';
+  };
+
+  openWebui = pkgs.writeShellApplication {
+    name = "open-webui";
+    runtimeInputs = [ openWebuiPackage ];
+    text = ''
+      mkdir -p "${config.xdg.dataHome}/ollama/personal/ui"
+      cd "${config.xdg.dataHome}/ollama/personal/ui"
+      open-webui serve "$@"
+    '';
+  };
+
+  openWebuiAlternative = pkgs.writeShellApplication {
+    name = "open-webui-alternative";
+    runtimeInputs = [ openWebuiPackage ];
+    text = ''
+      mkdir -p "${config.xdg.dataHome}/ollama/alternative/ui"
+      cd "${config.xdg.dataHome}/ollama/alternative/ui"
+      open-webui serve "$@"
     '';
   };
 
@@ -94,62 +144,129 @@ let
   serverClientApp =
     { name
     , speed ? 1
-    , server
-    , wait
+    , servers
+    , waits
     , client
     , runtimeInputs ? [ ]
     , ...
     }@args: pkgs.writeShellApplication
-      ((builtins.removeAttrs args [ "server" "wait" "client" ]) // {
-        runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
-        text = ''
-          port=$(shuf -i 32768-65535 -n 1)
-          while ss -tulwn | grep -q ":$port "; do
-            port=$(shuf -i 32768-65535 -n 1)
-          done
+      ((builtins.removeAttrs args [ "server" "wait" "client" ]) // (
+        let
+          ports = builtins.genList
+            (num: ''
+              port${num}=$(shuf -i 32768-65535 -n 1)
+              while ss -tulwn | grep -q ":$port${num} "; do
+                port${num}=$(shuf -i 32768-65535 -n 1)
+              done
+            '')
+            (builtins.length servers);
 
-          systemd-run --user --scope --unit=${name}-server ${server} "$@" &
-          echo "Waiting for the ${name} server to start..."
-          (
-            progress=0
-            while ! ${wait} > /dev/null; do
-              sleep ${builtins.toString speed}
-              progress=$(( (progress + 100) / 2 ))
-              [ $progress -ge 99 ] && progress=99
-              echo "$progress"
-            done
-            echo 100
-          ) | zenity \
-            --progress \
-            --no-cancel \
-            --auto-close \
-            --title="Starting ${name}" \
-            --text="Initializing server..."
+          scope =
+            builtins.concatStringsSep
+              (builtins.map
+                (server: "${server} &")
+                servers)
+              "; ";
 
-          ${client}
+          wait = builtins.concatStringsSep
+            (builtins.map
+              (x: "${x} > /dev/null")
+              waits)
+            " && ";
+        in
+        {
+          runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
+          text = ''
+            ${ports}
 
-          systemctl stop --user ${name}-server.scope
-        '';
-      });
+            systemd-run \
+              --user \
+              --scope \
+              --unit=${name}-servers \
+              sh -c "${scope}; wait"
+
+            echo "Waiting for the ${name} server to start..."
+            (
+              progress=0
+              while ! (${wait}); do
+                sleep ${builtins.toString speed}
+                progress=$(( (progress + 100) / 2 ))
+                [ $progress -ge 99 ] && progress=99
+                echo "$progress"
+              done
+              echo 100
+            ) | zenity \
+              --progress \
+              --no-cancel \
+              --auto-close \
+              --title="Starting ${name}" \
+              --text="Initializing server..."
+
+            ${client}
+
+            systemctl stop --user ${name}-servers.scope
+          '';
+        }
+      ));
 
   comfyuiApp = serverClientApp {
     name = "comfyui-app";
     runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
-    server = "comfyui --port \"$port\"";
-    wait = "curl -s \"http://localhost:$port\"";
+    servers = [ "comfyui --port \"$port1\"" ];
+    waits = [ "curl -s \"http://localhost:$port1\"" ];
     client = "chromium"
       + " --user-data-dir=${config.xdg.dataHome}/comfyui/personal/session"
-      + " \"--app=http://localhost:$port\"";
+      + " \"--app=http://localhost:$port1\"";
   };
 
   comfyuiAlternativeApp = serverClientApp {
     name = "comfyui-alternative-app";
     runtimeInputs = [ comfyuiAlternative pkgs.ungoogled-chromium ];
-    server = "comfyui-alternative --port \"$port\"";
-    wait = "curl -s \"http://localhost:$port\"";
+    servers = [ "comfyui-alternative --port \"$port1\"" ];
+    waits = [ "curl -s \"http://localhost:$port1\"" ];
     client = "chromium"
       + " --user-data-dir=${config.xdg.dataHome}/comfyui/alternative/session"
-      + " \"--app=http://localhost:$port\"";
+      + " \"--app=http://localhost:$port1\"";
+  };
+
+  ollamaApp = serverClientApp {
+    name = "ollama-app";
+    runtimeInputs = [
+      ollama
+      openWebui
+      pkgs.ungoogled-chromium
+    ];
+    servers = [
+      ''env OLLAMA_HOST="http://127.0.0.1/$port1" ollama serve''
+      ''env OLLAMA_BASE_URL="http://127.0.0.1/$port1" open-webui serve --host 127.0.0.1 --port "$port2"''
+    ];
+    waits = [
+      ''curl -s "http://localhost:$port1"''
+      ''curl -s "http://localhost:$port2"''
+    ];
+    client = "chromium"
+      + " --user-data-dir=${config.xdg.dataHome}/ollama/personal/session"
+      + " \"--app=http://localhost:$port2\"";
+  };
+
+  ollamaAlternativeApp = serverClientApp {
+    name = "ollama-alternative-app";
+    runtimeInputs = [
+      ollamaAlternative
+      openWebuiAlternative
+      pkgs.ungoogled-chromium
+    ];
+    servers = [
+      ''env OLLAMA_HOST="http://127.0.0.1/$port1" ollama-alternative serve''
+      ''env OLLAMA_BASE_URL="http://127.0.0.1/$port1" open-webui-alternative serve --host 127.0.0.1 --port "$port2"''
+    ];
+    waits = [
+      ''curl -s "http://localhost:$port1"''
+      ''curl -s "http://localhost:$port2"''
+    ];
+    client = "chromium"
+      + " --user-data-dir=${config.xdg.dataHome}/ollama/alternative/session"
+      + " \"--app=http://localhost:$port1\"";
   };
 in
 {
@@ -163,24 +280,20 @@ in
     ];
   };
 
-  system = {
-    networking.firewall.allowedTCPPorts = [
-      # comfyui
-      8188
-    ];
-  };
-
   home = {
     home.packages = lib.optionals hasAnyPlatform [
       comfyui
       comfyuiAlternative
+      ollama
+      ollamaAlternative
+      openWebui
+      openWebuiAlternative
     ] ++ lib.optionals hasMonitor [
       comfyuiApp
       comfyuiAlternativeApp
-      pkgs.gpt4all
+      ollamaApp
+      ollamaAlternativeApp
     ] ++ lib.optionals hasSound [
-      pkgs.piper-tts
-      pkgs.openai-whisper-cpp
       speak
     ];
 
@@ -188,6 +301,11 @@ in
       comfyui = {
         name = "ComfyUI";
         exec = "${comfyuiApp}/bin/comfyui-app";
+        terminal = false;
+      };
+      ollama = {
+        name = "Ollama";
+        exec = "${ollamaApp}/bin/ollama-app";
         terminal = false;
       };
     };
