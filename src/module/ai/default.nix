@@ -83,6 +83,7 @@ let
       export DATA_DIR="${config.xdg.dataHome}/ollama/personal/ui"
       export HF_HOME="${config.xdg.dataHome}/ollama/personal/ui"
       export SENTENCE_TRANSFORMERS_HOME="${config.xdg.dataHome}/ollama/personal/ui"
+      export ENV=prod
       open-webui "$@"
     '';
   };
@@ -97,6 +98,7 @@ let
       export DATA_DIR="${config.xdg.dataHome}/ollama/personal/ui"
       export HF_HOME="${config.xdg.dataHome}/ollama/personal/ui"
       export SENTENCE_TRANSFORMERS_HOME="${config.xdg.dataHome}/ollama/personal/ui"
+      export ENV=prod
       open-webui "$@"
     '';
   };
