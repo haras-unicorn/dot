@@ -249,7 +249,7 @@ let
     ];
     servers = [
       "env OLLAMA_HOST=http://127.0.0.1:$port0 ollama serve"
-      "env OLLAMA_BASE_URL=http://127.0.0.1:$port0 open-webui serve --host 127.0.0.1 --port $port1"
+      "env OLLAMA_BASE_URL=http://127.0.0.1:$port0 WEBUI_AUTH=False open-webui serve --host 127.0.0.1 --port $port1"
     ];
     waits = [
       ''curl -s "http://localhost:$port0"''
@@ -271,7 +271,7 @@ let
     ];
     servers = [
       "env OLLAMA_HOST=http://127.0.0.1:$port0 ollama-alternative serve"
-      "env OLLAMA_BASE_URL=http://127.0.0.1:$port0 open-webui-alternative serve --host 127.0.0.1 --port $port1"
+      "env OLLAMA_BASE_URL=http://127.0.0.1:$port0 WEBUI_AUTH=False open-webui-alternative serve --host 127.0.0.1 --port $port1"
     ];
     waits = [
       ''curl -s "http://localhost:$port0"''
