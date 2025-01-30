@@ -1,6 +1,7 @@
 { nix-comfyui, pkgs, config, lib, ... }:
 
 # TODO: listen command with openai-whisper-cpp
+# TODO: use open-webui from nixpkgs-unstable
 
 let
   packageName =
