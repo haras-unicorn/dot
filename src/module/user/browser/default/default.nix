@@ -5,11 +5,13 @@
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
+
+  package = self.lib.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
 in
 {
   home = lib.mkIf hasMonitor {
     programs.chromium.enable = true;
-    programs.chromium.package = self.lib.chromium.wrap pkgs.ungoogled-chromium "chromium";
+    programs.chromium.package = package;
     programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
       en_US
     ];

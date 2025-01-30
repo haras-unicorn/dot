@@ -1,4 +1,4 @@
-{ nix-comfyui, pkgs, config, lib, ... }:
+{ self, nix-comfyui, pkgs, config, lib, ... }:
 
 # TODO: listen command with openai-whisper-cpp
 # TODO: use open-webui from nixpkgs-unstable
@@ -25,6 +25,8 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 
   hasSound = config.dot.hardware.sound.enable;
+
+  chromium = self.lib.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
 
   comfyuiPackage = nix-comfyui.packages.${pkgs.system}.${packageName};
 
@@ -219,7 +221,7 @@ let
 
   comfyuiApp = serverClientApp {
     name = "comfyui-app";
-    runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
+    runtimeInputs = [ comfyui chromium ];
     servers = [ "comfyui --preview-method taesd --port $port0" ];
     waits = [ ''curl -s "http://localhost:$port0"'' ];
     client = ''
@@ -231,7 +233,7 @@ let
 
   comfyuiAlternativeApp = serverClientApp {
     name = "comfyui-alternative-app";
-    runtimeInputs = [ comfyuiAlternative pkgs.ungoogled-chromium ];
+    runtimeInputs = [ comfyuiAlternative chromium ];
     servers = [ "comfyui-alternative --preview-method taesd --port $port0" ];
     waits = [ ''curl -s "http://localhost:$port0"'' ];
     client = ''
@@ -246,7 +248,7 @@ let
     runtimeInputs = [
       ollama
       openWebui
-      pkgs.ungoogled-chromium
+      chromium
     ];
     servers = [
       "env OLLAMA_HOST=http://127.0.0.1:$port0 ollama serve"
@@ -268,7 +270,7 @@ let
     runtimeInputs = [
       ollamaAlternative
       openWebuiAlternative
-      pkgs.ungoogled-chromium
+      chromium
     ];
     servers = [
       "env OLLAMA_HOST=http://127.0.0.1:$port0 ollama-alternative serve"
