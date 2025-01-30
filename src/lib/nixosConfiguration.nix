@@ -1,5 +1,6 @@
 { self
 , nixpkgs
+, nixpkgs-unstable
 , nur
 , nixos-facter-modules
 , sops-nix
@@ -20,11 +21,25 @@ in
 
   mkNixosConfiguration = host: system:
     let
+      unstablePkgs = ({ lib, config, ... }: {
+        options = {
+          unstablePkgs = lib.mkOption {
+            type = lib.types.raw;
+          };
+        };
+        config = {
+          unstablePkgs = import nixpkgs-unstable {
+            inherit system;
+            config = config.nixpkgs.config;
+          };
+        };
+      });
       specialArgs = inputs // { inherit version host system user group uid gid; };
     in
     nixpkgs.lib.nixosSystem {
       inherit system specialArgs;
       modules = [
+        unstablePkgs
         nur.modules.nixos.default
         nixos-facter-modules.nixosModules.facter
         sops-nix.nixosModules.default

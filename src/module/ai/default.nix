@@ -30,9 +30,9 @@ let
 
   comfyuiPackage = nix-comfyui.packages.${pkgs.system}.${packageName};
 
-  ollamaPackage = pkgs.ollama;
+  ollamaPackage = config.unstablePkgs.ollama;
 
-  openWebuiPackage = pkgs.open-webui;
+  openWebuiPackage = config.unstablePkgs.open-webui;
 
   comfyui = pkgs.writeShellApplication {
     name = "comfyui";
