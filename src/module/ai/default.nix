@@ -172,10 +172,8 @@ let
               (builtins.length servers));
 
           scope = builtins.concatStringsSep
-            "; "
-            (builtins.map
-              (server: "${server} &")
-              servers);
+            " & "
+            servers;
 
           wait = builtins.concatStringsSep
             " && "
@@ -192,7 +190,7 @@ let
               --user \
               --scope \
               --unit=${name}-servers \
-              sh -c "${scope}; wait"
+              sh -c "${scope} & wait"
 
             echo "Waiting for the ${name} servers to start..."
             (
