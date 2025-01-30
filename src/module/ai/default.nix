@@ -37,7 +37,7 @@ let
     text = ''
       mkdir -p "${config.xdg.dataHome}/comfyui/personal"
       cd "${config.xdg.dataHome}/comfyui/personal"
-      comfyui --preview-method taesd "$@"
+      comfyui "$@"
     '';
   };
 
@@ -47,7 +47,7 @@ let
     text = ''
       mkdir -p "${config.xdg.dataHome}/comfyui/alternative"
       cd "${config.xdg.dataHome}/comfyui/alternative"
-      comfyui --preview-method taesd "$@"
+      comfyui "$@"
     '';
   };
 
@@ -59,7 +59,7 @@ let
       cd "${config.xdg.dataHome}/ollama/personal"
       export HOME="${config.xdg.dataHome}/ollama/personal"
       export OLLAMA_MODELS="${config.xdg.dataHome}/ollama/personal/models"
-      ollama serve "$@"
+      ollama "$@"
     '';
   };
 
@@ -71,7 +71,7 @@ let
       cd "${config.xdg.dataHome}/ollama/alternative"
       export HOME="${config.xdg.dataHome}/ollama/alternative"
       export OLLAMA_MODELS="${config.xdg.dataHome}/ollama/alternative/models"
-      ollama serve "$@"
+      ollama "$@"
     '';
   };
 
@@ -85,7 +85,7 @@ let
       export DATA_DIR="${config.xdg.dataHome}/ollama/personal/ui"
       export HF_HOME="${config.xdg.dataHome}/ollama/personal/ui"
       export SENTENCE_TRANSFORMERS_HOME="${config.xdg.dataHome}/ollama/personal/ui"
-      open-webui serve "$@"
+      open-webui "$@"
     '';
   };
 
@@ -99,7 +99,7 @@ let
       export DATA_DIR="${config.xdg.dataHome}/ollama/personal/ui"
       export HF_HOME="${config.xdg.dataHome}/ollama/personal/ui"
       export SENTENCE_TRANSFORMERS_HOME="${config.xdg.dataHome}/ollama/personal/ui"
-      open-webui serve "$@"
+      open-webui "$@"
     '';
   };
 
@@ -219,17 +219,19 @@ let
   comfyuiApp = serverClientApp {
     name = "comfyui-app";
     runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
-    servers = [ "comfyui --port '$port0'" ];
+    servers = [ "comfyui --preview-method taesd --port '$port0'" ];
     waits = [ ''curl -s "http://localhost:$port0"'' ];
-    client = "chromium"
-      + " --user-data-dir=${config.xdg.dataHome}/comfyui/personal/session"
-      + " \"--app=http://localhost:$port0\"";
+    client = ''
+      chromium \
+        "--user-data-dir=${config.xdg.dataHome}/comfyui/personal/session" \
+        "--app=http://localhost:$port0"
+    '';
   };
 
   comfyuiAlternativeApp = serverClientApp {
     name = "comfyui-alternative-app";
     runtimeInputs = [ comfyuiAlternative pkgs.ungoogled-chromium ];
-    servers = [ "comfyui-alternative --port '$port0'" ];
+    servers = [ "comfyui-alternative --preview-method taesd --port '$port0'" ];
     waits = [ ''curl -s "http://localhost:$port0"'' ];
     client = ''
       chromium \
