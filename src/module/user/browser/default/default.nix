@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ self, pkgs, lib, config, ... }:
 
 # FIXME: hardware acceleration
 # TODO: idk what to do with extensions
@@ -9,7 +9,7 @@ in
 {
   home = lib.mkIf hasMonitor {
     programs.chromium.enable = true;
-    programs.chromium.package = pkgs.ungoogled-chromium;
+    programs.chromium.package = self.lib.chromium.wrap pkgs.ungoogled-chromium "chromium";
     programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
       en_US
     ];

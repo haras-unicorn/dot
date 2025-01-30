@@ -11,10 +11,10 @@ let
   monitorWidth = config.dot.hardware.monitor.width;
   monitorHeight = config.dot.hardware.monitor.height;
 
-  ferdium = self.lib.electron.wrap pkgs pkgs.ferdium "ferdium";
-  slack = self.lib.electron.wrap pkgs pkgs.slack "slack";
-  teams = self.lib.electron.wrap pkgs pkgs.teams-for-linux "teams-for-linux";
-  vesktop = self.lib.electron.wrap pkgs pkgs.vesktop "vesktop";
+  ferdium = self.lib.chromium.wrap pkgs pkgs.ferdium "ferdium";
+  slack = self.lib.chromium.wrap pkgs pkgs.slack "slack";
+  teams = self.lib.chromium.wrap pkgs pkgs.teams-for-linux "teams-for-linux";
+  vesktop = self.lib.chromium.wrap pkgs pkgs.vesktop "vesktop";
 
   windowState = {
     width = monitorWidth * 3 / 4;

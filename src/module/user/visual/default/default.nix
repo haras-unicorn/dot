@@ -11,10 +11,10 @@
 # TODO: vscodium
 
 let
-  # # package = self.lib.electron.wrap pkgs pkgs.vscodium "codium";
+  # # package = self.lib.chromium.wrap pkgs pkgs.vscodium "codium";
   # package = pkgs.vscodium;
 
-  # package = self.lib.electron.wrap pkgs pkgs.vscode "code";
+  # package = self.lib.chromium.wrap pkgs pkgs.vscode "code";
   package = pkgs.vscode;
 
   alias = pkgs.writeShellApplication {
