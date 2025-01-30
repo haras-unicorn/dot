@@ -10,7 +10,7 @@
         --append-flags --enable-features=WebRTCPipeWireCapturer \
         --append-flags --enable-features=UseOzonePlatform \
         --append-flags --ozone-platform-hint=auto \
-        --append-flags --use-gl=desktop
+        --append-flags --use-gl=egl
     '';
   };
 }
