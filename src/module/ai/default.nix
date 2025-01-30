@@ -190,7 +190,7 @@ let
               --user \
               --scope \
               --unit=${name}-servers \
-              sh -c "${scope} & wait"
+              sh -c "${scope} & wait" &
 
             echo "Waiting for the ${name} servers to start..."
             (
@@ -219,7 +219,7 @@ let
   comfyuiApp = serverClientApp {
     name = "comfyui-app";
     runtimeInputs = [ comfyui pkgs.ungoogled-chromium ];
-    servers = [ "comfyui --preview-method taesd --port '$port0'" ];
+    servers = [ "comfyui --preview-method taesd --port $port0" ];
     waits = [ ''curl -s "http://localhost:$port0"'' ];
     client = ''
       chromium \
@@ -231,7 +231,7 @@ let
   comfyuiAlternativeApp = serverClientApp {
     name = "comfyui-alternative-app";
     runtimeInputs = [ comfyuiAlternative pkgs.ungoogled-chromium ];
-    servers = [ "comfyui-alternative --preview-method taesd --port '$port0'" ];
+    servers = [ "comfyui-alternative --preview-method taesd --port $port0" ];
     waits = [ ''curl -s "http://localhost:$port0"'' ];
     client = ''
       chromium \
@@ -248,8 +248,8 @@ let
       pkgs.ungoogled-chromium
     ];
     servers = [
-      "env OLLAMA_HOST='http://127.0.0.1/$port0' ollama serve"
-      "env OLLAMA_BASE_URL='http://127.0.0.1/$port0' open-webui serve --host 127.0.0.1 --port '$port1'"
+      "env OLLAMA_HOST=http://127.0.0.1:$port0 ollama serve"
+      "env OLLAMA_BASE_URL=http://127.0.0.1:$port0 open-webui serve --host 127.0.0.1 --port $port1"
     ];
     waits = [
       ''curl -s "http://localhost:$port0"''
@@ -270,8 +270,8 @@ let
       pkgs.ungoogled-chromium
     ];
     servers = [
-      "env OLLAMA_HOST='http://127.0.0.1/$port0' ollama-alternative serve"
-      "env OLLAMA_BASE_URL='http://127.0.0.1/$port0' open-webui-alternative serve --host 127.0.0.1 --port '$port1'"
+      "env OLLAMA_HOST=http://127.0.0.1:$port0 ollama-alternative serve"
+      "env OLLAMA_BASE_URL=http://127.0.0.1:$port0 open-webui-alternative serve --host 127.0.0.1 --port $port1"
     ];
     waits = [
       ''curl -s "http://localhost:$port0"''
