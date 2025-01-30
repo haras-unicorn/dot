@@ -58,7 +58,6 @@ let
       mkdir -p "${config.xdg.dataHome}/ollama/personal"
       cd "${config.xdg.dataHome}/ollama/personal"
       export HOME="${config.xdg.dataHome}/ollama/personal"
-      export OLLAMA_MODELS="${config.xdg.dataHome}/ollama/personal/models"
       ollama "$@"
     '';
   };
@@ -70,7 +69,6 @@ let
       mkdir -p "${config.xdg.dataHome}/ollama/alternative"
       cd "${config.xdg.dataHome}/ollama/alternative"
       export HOME="${config.xdg.dataHome}/ollama/alternative"
-      export OLLAMA_MODELS="${config.xdg.dataHome}/ollama/alternative/models"
       ollama "$@"
     '';
   };
