@@ -58,6 +58,7 @@ let
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
+  hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
 
   floatingSizeString = builtins.toString (config.dot.hardware.monitor.height / 2);
 in
@@ -77,6 +78,9 @@ in
     programs.hyprland.enable = true;
     programs.hyprland.xwayland.enable = true;
     programs.hyprland.systemd.setPath.enable = true;
+
+    environeent.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".source =
+      lib.mkIf hasNvidia ./50-limit-free-buffer-pool-in-wayland-compositors.json;
   };
 
   home = lib.mkIf (hasMonitor && hasWayland) {
