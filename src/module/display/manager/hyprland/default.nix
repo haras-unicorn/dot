@@ -1,7 +1,6 @@
 { pkgs, lib, config, ... }:
 
-# FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
-# TODO: try https://github.com/hyprwm/Hyprland/issues/7252#issuecomment-2345792172
+# FIXME: https://github.com/NVIDIA/egl-wayland/issues/126#issuecomment-2594012291
 
 let
   cfg = config.dot.desktopEnvironment;
@@ -58,7 +57,9 @@ let
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
-  hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
+
+  # hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
+  # nvidiaVersion = config.dot.hardware.graphics.version;
 
   floatingSizeString = builtins.toString (config.dot.hardware.monitor.height / 2);
 in
@@ -79,8 +80,22 @@ in
     programs.hyprland.xwayland.enable = true;
     programs.hyprland.systemd.setPath.enable = true;
 
-    environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".source =
-      lib.mkIf hasNvidia ./50-limit-free-buffer-pool-in-wayland-compositors.json;
+    # hardware.nvidia.package = lib.mkIf hasNvidia
+    #   (lib.mkForce (
+    #     if nvidiaVersion != "latest"
+    #     then config.boot.kernelPackages.nvidiaPackages."${nvidiaVersion}"
+    #     else
+    #       config.boot.kernelPackages.nvidiaPackages.mkDriver {
+    #         version = "560.35.03";
+    #         sha256_64bit = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
+    #         sha256_aarch64 = "sha256-s8ZAVKvRNXpjxRYqM3E5oss5FdqW+tv1qQC2pDjfG+s=";
+    #         openSha256 = "sha256-/32Zf0dKrofTmPZ3Ratw4vDM7B+OgpC4p7s+RHUjCrg=";
+    #         settingsSha256 = "sha256-kQsvDgnxis9ANFmwIwB7HX5MkIAcpEEAHc8IBOLdXvk=";
+    #         persistencedSha256 = "sha256-E2J2wYYyRu7Kc3MMZz/8ZIemcZg68rkzvqEwFAL3fFs=";
+    #       }
+    #   ));
+    # environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".source =
+    #   lib.mkIf hasNvidia ./50-limit-free-buffer-pool-in-wayland-compositors.json;
   };
 
   home = lib.mkIf (hasMonitor && hasWayland) {
