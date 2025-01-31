@@ -37,7 +37,6 @@ in
       libva-utils # NOTE: vainfo
       vulkan-tools # NOTE: vulkaninfo
       glxinfo # NOTE: glxinfo and eglinfo
-      e
     ];
 
     environment.sessionVariables = {
