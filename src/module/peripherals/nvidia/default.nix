@@ -4,6 +4,7 @@
 
 let
   hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
+  version = config.dot.hardware.graphics.version;
 in
 {
   system = lib.mkIf hasNvidia {
@@ -16,7 +17,19 @@ in
     hardware.nvidia.modesetting.enable = true;
     hardware.nvidia.nvidiaSettings = true;
     hardware.nvidia.open = config.dot.hardware.graphics.open;
-    hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${config.dot.hardware.graphics.version}";
+    hardware.nvidia.package =
+      if version != "latest"
+      then config.boot.kernelPackages.nvidiaPackages."${version}"
+      else
+      # NOTE: https://github.com/NVIDIA/egl-wayland/issues/126#issuecomment-2594012291
+        config.boot.kernelPackages.nvidiaPackages.mkDriver {
+          version = "560.35.03";
+          sha256_64bit = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
+          sha256_aarch64 = "sha256-s8ZAVKvRNXpjxRYqM3E5oss5FdqW+tv1qQC2pDjfG+s=";
+          openSha256 = "sha256-/32Zf0dKrofTmPZ3Ratw4vDM7B+OgpC4p7s+RHUjCrg=";
+          settingsSha256 = "sha256-kQsvDgnxis9ANFmwIwB7HX5MkIAcpEEAHc8IBOLdXvk=";
+          persistencedSha256 = "sha256-E2J2wYYyRu7Kc3MMZz/8ZIemcZg68rkzvqEwFAL3fFs=";
+        };
 
     hardware.graphics.enable = true;
     hardware.graphics.enable32Bit = true;
