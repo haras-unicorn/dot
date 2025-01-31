@@ -37,7 +37,7 @@ in
       libva-utils # NOTE: vainfo
       vulkan-tools # NOTE: vulkaninfo
       glxinfo # NOTE: glxinfo and eglinfo
-      nvtopPackages.full # NOTE: check GPU usage
+      e
     ];
 
     environment.sessionVariables = {
