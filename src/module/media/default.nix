@@ -84,6 +84,7 @@ in
       pkgs.gimp
       pkgs.inkscape
       pkgs.pencil
+      (pkgs.feh.override { imlib2 = pkgs.imlib2Full; })
     ];
 
     xdg.mime.enable = true;
