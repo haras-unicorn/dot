@@ -47,7 +47,7 @@ let
   mkExpr = name: html: script:
     pkgs.lib.splitString "\n"
       (builtins.readFile
-        ((x: builtins.trace x x)
+        (
           "${pkgs.runCommand "nvidia-${name}-text"
           {
             buildInputs = [ pkgs.nushell ];
