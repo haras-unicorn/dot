@@ -84,7 +84,11 @@ let
       cudaSupport = (config.dot.hardware.graphics.driver == "nvidia")
         && ((config.dot.hardware.graphics.version == "latest")
         || (config.dot.hardware.graphics.version == "production"));
-      rocmSupport = config.dot.hardware.graphics.driver == "amdgpu";
+      rocmSupport =
+        # NOTE: lots of packages broken right now
+        # config.dot.hardware.graphics.driver == "amdgpu"
+        false
+      ;
     };
 
     nixpkgs.overlays = lib.mkIf config.dot.hardware.rpi."4".enable [
