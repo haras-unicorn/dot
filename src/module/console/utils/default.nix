@@ -68,6 +68,7 @@ in
       pkgs.nvtopPackages.full
       pkgs.man-pages
       pkgs.man-pages-posix
+      pkgs.rustscan
     ];
   };
 }
