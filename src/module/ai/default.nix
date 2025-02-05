@@ -315,7 +315,7 @@ in
       speak
     ];
 
-    xdg.desktopEntries = {
+    xdg.desktopEntries = lib.mkIf hasAnyPlatform {
       comfyui = {
         name = "ComfyUI";
         exec = "${comfyuiApp}/bin/comfyui-app";
