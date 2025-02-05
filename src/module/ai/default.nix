@@ -299,23 +299,23 @@ in
   };
 
   home = {
-    home.packages = lib.optionals hasAnyPlatform [
+    home.packages = (lib.optionals hasAnyPlatform [
       comfyui
       comfyuiAlternative
       ollama
       ollamaAlternative
       openWebui
       openWebuiAlternative
-    ] ++ lib.optionals (hasAnyPlatform && hasMonitor) [
+    ]) ++ (lib.optionals (hasAnyPlatform && hasMonitor) [
       comfyuiApp
       comfyuiAlternativeApp
       ollamaApp
       ollamaAlternativeApp
-    ] ++ lib.optionals hasSound [
+    ]) ++ (lib.optionals hasSound [
       speak
-    ];
+    ]);
 
-    xdg.desktopEntries = lib.mkIf hasAnyPlatform {
+    xdg.desktopEntries = lib.mkIf (hasAnyPlatform && hasMonitor) {
       comfyui = {
         name = "ComfyUI";
         exec = "${comfyuiApp}/bin/comfyui-app";
