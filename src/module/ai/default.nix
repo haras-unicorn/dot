@@ -306,7 +306,7 @@ in
       ollamaAlternative
       openWebui
       openWebuiAlternative
-    ] ++ lib.optionals hasMonitor [
+    ] ++ lib.optionals (hasAnyPlatform && hasMonitor) [
       comfyuiApp
       comfyuiAlternativeApp
       ollamaApp
