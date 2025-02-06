@@ -58,8 +58,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 
-  # hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
-  # nvidiaVersion = config.dot.hardware.graphics.version;
+  hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
 
   floatingSizeString = builtins.toString (config.dot.hardware.monitor.height / 2);
 in
@@ -80,22 +79,8 @@ in
     programs.hyprland.xwayland.enable = true;
     programs.hyprland.systemd.setPath.enable = true;
 
-    # hardware.nvidia.package = lib.mkIf hasNvidia
-    #   (lib.mkForce (
-    #     if nvidiaVersion != "latest"
-    #     then config.boot.kernelPackages.nvidiaPackages."${nvidiaVersion}"
-    #     else
-    #       config.boot.kernelPackages.nvidiaPackages.mkDriver {
-    #         version = "560.35.03";
-    #         sha256_64bit = "sha256-8pMskvrdQ8WyNBvkU/xPc/CtcYXCa7ekP73oGuKfH+M=";
-    #         sha256_aarch64 = "sha256-s8ZAVKvRNXpjxRYqM3E5oss5FdqW+tv1qQC2pDjfG+s=";
-    #         openSha256 = "sha256-/32Zf0dKrofTmPZ3Ratw4vDM7B+OgpC4p7s+RHUjCrg=";
-    #         settingsSha256 = "sha256-kQsvDgnxis9ANFmwIwB7HX5MkIAcpEEAHc8IBOLdXvk=";
-    #         persistencedSha256 = "sha256-E2J2wYYyRu7Kc3MMZz/8ZIemcZg68rkzvqEwFAL3fFs=";
-    #       }
-    #   ));
-    # environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".source =
-    #   lib.mkIf hasNvidia ./50-limit-free-buffer-pool-in-wayland-compositors.json;
+    environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".source =
+      lib.mkIf hasNvidia ./50-limit-free-buffer-pool-in-wayland-compositors.json;
   };
 
   home = lib.mkIf (hasMonitor && hasWayland) {

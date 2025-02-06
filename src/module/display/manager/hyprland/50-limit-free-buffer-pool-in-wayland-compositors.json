@@ -2,7 +2,7 @@
   "rules": [
     {
       "pattern": {
-        "feature": "procname",
+        "feature": "cmdline",
         "matches": "Hyprland"
       },
       "profile": "Limit Free Buffer Pool On Wayland Compositors"
