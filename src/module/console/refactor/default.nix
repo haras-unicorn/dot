@@ -18,8 +18,8 @@ let
         exit 1
       fi
 
-      COMMAND=$1
-      NAME=$2
+      COMMAND=''${1:-}
+      NAME=''${2:-}
 
       REPO_PATH="$(git rev-parse --show-toplevel 2>/dev/null || echo "")"
       if [ -z "$REPO_PATH" ]; then
