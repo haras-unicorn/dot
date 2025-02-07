@@ -53,7 +53,7 @@ let
           echo "def main [repo: string]: nothing -> nothing {" >> "$SCRIPT_PATH"
           echo "}" >> "$SCRIPT_PATH"
 
-          "$${EDITOR}" "$SCRIPT_PATH"
+          "''${EDITOR}" "$SCRIPT_PATH"
           ;;
         apply)
           if [ -z "$NAME" ]; then
