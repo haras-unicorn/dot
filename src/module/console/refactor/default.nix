@@ -28,7 +28,7 @@ let
       fi
 
       REPO_NAME="$(basename "$REPO_PATH" || echo "unknown")"
-      REF_DIR="${config.xdg.dataDir}/refactor/$REPO_NAME"
+      REF_DIR="${config.xdg.dataHome}/refactor/$REPO_NAME"
       SCRIPT_PATH="$REF_DIR/$NAME"
 
       case "$COMMAND" in
