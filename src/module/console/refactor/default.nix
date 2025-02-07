@@ -5,6 +5,7 @@
     home.packages = [
       pkgs.rnr
       pkgs.fastmod
+      pkgs.ast-grep
       (pkgs.rustPlatform.buildRustPackage (
         let
           version = "1.3.0";

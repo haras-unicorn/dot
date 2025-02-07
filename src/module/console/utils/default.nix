@@ -65,6 +65,7 @@ in
       nruu
       ezdd
       pkgs.htop
+      pkgs.duf
       pkgs.nvtopPackages.full
       pkgs.man-pages
       pkgs.man-pages-posix
