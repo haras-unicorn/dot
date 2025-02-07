@@ -1,8 +1,93 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
+let
+  refactor = pkgs.writeShellApplication {
+    name = "refactor";
+    runtimeInputs = [ pkgs.git ];
+    text = ''
+      USAGE="Usage: refactor <command> [name]
+      Commands:
+        create <name>  - Create a new refactoring script
+        apply <name>   - Apply the specified refactoring script
+        help           - Show this help message
+      "
+
+      if [ "$#" -lt 1 ]; then
+        echo "Error: No command provided."
+        echo "$USAGE"
+        exit 1
+      fi
+
+      COMMAND=$1
+      NAME=$2
+
+      REPO_PATH="$(git rev-parse --show-toplevel 2>/dev/null || echo "")"
+      if [ -z "$REPO_PATH" ]; then
+        echo "Error: Not inside a git repository."
+        exit 1
+      fi
+
+      REPO_NAME="$(basename "$REPO_PATH" || echo "unknown")"
+      REF_DIR="${config.xdg.dataDir}/refactor/$REPO_NAME"
+      SCRIPT_PATH="$REF_DIR/$NAME"
+
+      case "$COMMAND" in
+        create)
+          if [ -z "$NAME" ]; then
+              echo "Error: No script name provided."
+              echo "$USAGE"
+              exit 1
+          fi
+
+          if [ -f "$SCRIPT_PATH" ]; then
+              echo "Error: Script '$NAME' already exists."
+              exit 1
+          fi
+
+          mkdir -p "$REF_DIR"
+          touch "$SCRIPT_PATH"
+          chmod +x "$SCRIPT_PATH"
+
+          cat << EOF > "$SCRIPT_PATH"
+          #!/usr/bin/env nu
+
+          def main [repo: string]: nothing -> nothing {
+          }
+          EOF
+
+          "$${EDITOR}" "$SCRIPT_PATH"
+          ;;
+        apply)
+          if [ -z "$NAME" ]; then
+              echo "Error: No script name provided."
+              echo "$USAGE"
+              exit 1
+          fi
+
+          if [ ! -f "$SCRIPT_PATH" ]; then
+              echo "Error: Script '$NAME' does not exist."
+              exit 1
+          fi
+
+          echo "Applying refactor script: $SCRIPT_PATH"
+          "$SCRIPT_PATH" "$REPO_PATH"
+          ;;
+        help)
+          echo "$USAGE"
+          ;;
+        *)
+          echo "Error: Unknown command '$COMMAND'."
+          echo "$USAGE"
+          exit 1
+          ;;
+      esac
+    '';
+  };
+in
 {
   home = {
     home.packages = [
+      refactor
       pkgs.rnr
       pkgs.fastmod
       pkgs.ast-grep
