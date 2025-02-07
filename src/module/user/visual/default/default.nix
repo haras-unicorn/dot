@@ -64,6 +64,7 @@ in
       usernamehw.errorlens
       wayou.vscode-todo-highlight
       naumovs.color-highlight
+      ast-grep.ast-grep-vscode
 
       # theme
       akamud.vscode-theme-onedark
