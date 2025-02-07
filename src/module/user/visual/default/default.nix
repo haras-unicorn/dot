@@ -15,7 +15,10 @@ let
   # package = pkgs.vscodium;
 
   # package = self.lib.chromium.wrap pkgs pkgs.vscode "code";
-  package = pkgs.vscode;
+  # package = pkgs.vscode;
+
+  # package = self.lib.chromium.wrap pkgs pkgs.vscode "code";
+  package = config.unstablePkgs.vscode;
 
   alias = pkgs.writeShellApplication {
     name = "code";
