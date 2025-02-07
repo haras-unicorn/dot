@@ -50,7 +50,7 @@ let
 
           echo "#!/usr/bin/env nu" > "$SCRIPT_PATH"
           echo "" >> "$SCRIPT_PATH"
-          echo "def main [repo: string]: nothing -> nothing {" >> "$SCRIPT_PATH"
+          echo "def main [repo: string] {" >> "$SCRIPT_PATH"
           echo "}" >> "$SCRIPT_PATH"
 
           "''${EDITOR}" "$SCRIPT_PATH"
