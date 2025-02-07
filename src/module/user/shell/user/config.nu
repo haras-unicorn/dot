@@ -12,7 +12,7 @@ $env.config = {
   }
 }
 
-def "to pipe" [] {
+def "to temp" [] {
   let it = $in
   let file = mktemp -t
   $it | save -f $file
