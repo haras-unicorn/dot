@@ -48,12 +48,10 @@ let
           touch "$SCRIPT_PATH"
           chmod +x "$SCRIPT_PATH"
 
-          cat << EOF > "$SCRIPT_PATH"
-          #!/usr/bin/env nu
-
-          def main [repo: string]: nothing -> nothing {
-          }
-          EOF
+          echo "#!/usr/bin/env nu" > "$SCRIPT_PATH"
+          echo "" >> "$SCRIPT_PATH"
+          echo "def main [repo: string]: nothing -> nothing {" >> "$SCRIPT_PATH"
+          echo "}" >> "$SCRIPT_PATH"
 
           "$${EDITOR}" "$SCRIPT_PATH"
           ;;
