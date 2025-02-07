@@ -1,48 +1,23 @@
 { pkgs
-  # , self
+, self
 , config
 , lib
 , nix-vscode-extensions
 , ...
 }:
 
-# FIXME: electron wrapper
 # TODO: extensions in projects
 # TODO: vscodium
 
 let
-  # # package = self.lib.chromium.wrap pkgs pkgs.vscodium "codium";
-  # package = pkgs.vscodium;
-
-  # package = self.lib.chromium.wrap pkgs pkgs.vscode "code";
-  # package = pkgs.vscode;
-
-  # package = self.lib.chromium.wrap pkgs pkgs.vscode "code";
-  package = config.unstablePkgs.vscode;
-
-  alias = pkgs.writeShellApplication {
-    name = "code";
-    runtimeInputs = [ package ];
-    text = ''
-      code \
-        --enable-features=WebRTCPipeWireCapturer \
-        --enable-features=UseOzonePlatform \
-        --ozone-platform-hint=auto \
-        --disable-gpu-compositing \
-        "$@"
-    '';
+  package = config.unstablePkgs.vscode.override {
+    commandLineArgs = self.lib.chromium.args;
   };
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = lib.mkIf (hasMonitor && hasKeyboard) {
-    shell.aliases = {
-      code = "${alias}/bin/code";
-    };
-  };
-
   home = lib.mkIf (hasMonitor && hasKeyboard) {
     nixpkgs.overlays = [
       nix-vscode-extensions.overlays.default
