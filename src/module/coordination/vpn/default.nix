@@ -30,7 +30,7 @@ in
   };
 
   system = lib.mkIf hasNetwork {
-    # NOTE: these values are not used but nix evaluates them for some reason
+    # NOTE: these values are not used but nix evaluates them
     services.nebula.networks.nebula = {
       enable = true;
       isLighthouse = isCoordinator;

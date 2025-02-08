@@ -23,6 +23,7 @@ in
     networking.nftables.enable = true;
     networking.firewall.enable = true;
     networking.networkmanager.enable = true;
+    systemd.network.wait-online.enable = false;
     networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
 
     # NOTE: https://github.com/NixOS/nixpkgs/issues/231038
