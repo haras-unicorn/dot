@@ -23,12 +23,13 @@ in
     programs.firefox.enable = true;
     programs.firefox.package = pkgs.firefox-bin;
 
-    stylix.targets.firefox.profileNames = [ "personal" "alternative" ];
+    stylix.targets.firefox.profileNames = [ "personal" ];
+    stylix.targets.firefox.firefoxGnomeTheme.enable = true;
     programs.firefox.profiles = {
       personal = {
+        name = "personal";
         id = lib.mkForce 0;
         isDefault = lib.mkForce true;
-        name = "personal";
         extensions = [
           pkgs.nur.repos.rycee.firefox-addons.ublock-origin
           pkgs.nur.repos.rycee.firefox-addons.darkreader
@@ -37,9 +38,9 @@ in
         ];
       };
       alternarive = {
+        name = "alternative";
         id = lib.mkForce 1;
         isDefault = lib.mkForce false;
-        name = "alternative";
         extensions = [
           pkgs.nur.repos.rycee.firefox-addons.ublock-origin
           pkgs.nur.repos.rycee.firefox-addons.darkreader
