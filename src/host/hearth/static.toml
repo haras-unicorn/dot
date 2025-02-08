@@ -1,0 +1,6 @@
+[vpn]
+ip = "10.69.42.2"
+
+[nfs]
+node = "db4ac8bea408984bc4c6a406df6dd6d4c043f1319774e069e787ab76e48236af"
+trusted = true

@@ -1,0 +1,14 @@
+[ddns]
+coordinator = true
+
+[vpn]
+coordinator = true
+ip = "10.69.42.1"
+
+[ddb]
+coordinator = true
+
+[nfs]
+coordinator = true
+node = "9c4ec6ec6bab4a40bd0c93044b0a0b23b7301bc6a8d775d357e2ef00305accaa"
+trusted = true

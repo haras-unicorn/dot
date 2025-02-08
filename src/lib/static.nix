@@ -4,6 +4,8 @@ let
   parseFile = dir:
     if builtins.pathExists "${dir}/static.json" then
       builtins.fromJSON (builtins.readFile "${dir}/static.json")
+    else if builtins.pathExists "${dir}/static.toml" then
+      builtins.fromTOML (builtins.readFile "${dir}/static.toml")
     else { };
 
   parseDir = dir:

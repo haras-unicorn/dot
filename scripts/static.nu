@@ -105,8 +105,10 @@ def "apply static paths" [paths] {
 }
 
 def "open if exists" [path: path] {
-  if ($path | path exists) {
-    open $path
+  if ($"($path).json" | path exists) {
+    open $"($path).json"
+  } else if ($"($path).toml" | path exists) {
+    open $"($path).toml"
   } else {
     { }
   }
@@ -115,14 +117,14 @@ def "open if exists" [path: path] {
 export def "static hosts" [hosts: path] {
   let schema_paths = $schema | to paths { |x| $x.type? == null }
 
-  let shared_static_path = [ $hosts "static.json" ] | path join
+  let shared_static_path = [ $hosts "static" ] | path join
   let shared_static = open if exists $shared_static_path
 
   ls $hosts
     | where $it.type == "dir"
     | each { |x|
         let host = $x.name | path basename
-        let static_path = [ $x.name "static.json" ] | path join
+        let static_path = [ $x.name "static" ] | path join
         let static = open if exists $static_path
         let result = $shared_static
           | apply static paths ($static | to paths { |_| true })
