@@ -22,6 +22,8 @@ in
   home = lib.mkIf (hasMonitor) {
     programs.firefox.enable = true;
     programs.firefox.package = pkgs.firefox-bin;
+
+    stylix.targets.firefox.profileNames = [ "personal" "alternative" ];
     programs.firefox.profiles = {
       personal = {
         id = lib.mkForce 0;
@@ -54,7 +56,6 @@ in
       ${builtins.readFile "${arkenfox-userjs}/user.js"}
       ${builtins.readFile ./user-overrides.js}
     '';
-    stylix.targets.firefox.profileNames = [ "personal" "alternative" ];
 
     xdg.desktopEntries = {
       myfooddata = {
