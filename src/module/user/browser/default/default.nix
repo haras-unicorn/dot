@@ -1,7 +1,6 @@
 { self, pkgs, lib, config, ... }:
 
 # FIXME: hardware acceleration
-# TODO: idk what to do with extensions
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -15,6 +14,7 @@ in
     programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
       en_US
     ];
+    # NOTE: keeping here just in case i need them again
     # programs.chromium.extensions = [
     #   # ublock origin
     #   { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
