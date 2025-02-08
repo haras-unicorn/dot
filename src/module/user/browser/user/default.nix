@@ -53,7 +53,7 @@ in
       ${builtins.readFile "${arkenfox-userjs}/user.js"}
       ${builtins.readFile ./user-overrides.js}
     '';
-    stylix.firefox.profileNames = [ "personal" "alternative" ];
+    stylix.targets.firefox.profileNames = [ "personal" "alternative" ];
 
     xdg.desktopEntries = {
       myfooddata = {
