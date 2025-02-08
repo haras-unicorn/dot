@@ -84,5 +84,6 @@ in
 
     stylix.enable = true;
     stylix.image = config.dot.wallpaper;
+    stylix.polarity = "dark";
   };
 }
