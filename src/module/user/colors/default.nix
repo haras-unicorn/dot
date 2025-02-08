@@ -75,6 +75,9 @@ in
 
   config = {
     inherit colors;
+
+    stylix.enable = true;
+    stylix.image = config.dot.wallpaper;
   };
 
   home = {

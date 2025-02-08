@@ -3,9 +3,6 @@
 let
   sharedConfig = "${self}/src/host/config.nix";
 
-  user = self.lib.nixosConfiguration.user;
-  version = self.lib.nixosConfiguration.version;
-
   modules = builtins.map
     (x: self.lib.module.mkHomeModule x.__import.path)
     (builtins.filter
@@ -21,7 +18,7 @@ in
       hardware = "${self}/src/host/${host}/hardware.json";
       secrets = "${self}/src/host/${host}/secrets.yaml";
     in
-    ({ lib, ... }: {
+    ({ user, version, lib, ... }: {
       imports =
         modules
         ++ (if builtins.pathExists config

@@ -4,6 +4,8 @@ let
   hasNetwork = config.dot.hardware.network.enable;
 in
 {
+  disabled = true;
+
   system = lib.mkIf hasNetwork {
     services.vaultwarden.enable = true;
     users.users.vaultwarden.uid = 988;

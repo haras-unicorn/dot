@@ -17,6 +17,8 @@ let
   ];
 in
 {
+  disabled = true;
+
   options = {
     ddb.coordinator = lib.mkOption {
       type = lib.types.bool;

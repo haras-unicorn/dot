@@ -35,6 +35,8 @@ let
       (lib.strings.removePrefix "/" path));
 in
 {
+  disabled = true;
+
   options = {
     nfs.coordinator = lib.mkOption {
       type = lib.types.bool;

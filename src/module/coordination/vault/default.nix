@@ -5,6 +5,8 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
+  disabled = true;
+
   system = lib.mkIf hasNetwork {
     services.vault.enable = true;
     systemd.services.vault.after = [ "mysql.service" ];

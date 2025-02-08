@@ -6,6 +6,7 @@
 , sops-nix
 , home-manager
 , nix-index-database
+, stylix
 , ...
 } @inputs:
 
@@ -17,8 +18,6 @@ let
   gid = 100;
 in
 {
-  inherit user group uid gid version;
-
   mkNixosConfiguration = host: system:
     let
       unstablePkgs = ({ lib, config, ... }: {
@@ -44,6 +43,7 @@ in
         nixos-facter-modules.nixosModules.facter
         sops-nix.nixosModules.default
         home-manager.nixosModules.default
+        stylix.nixosModules.stylix
         self.nixosModules."${host}-${system}"
         {
           home-manager.backupFileExtension = "backup";
@@ -55,6 +55,7 @@ in
             nix-index-database.hmModules.nix-index
             nixos-facter-modules.hmModules.facter
             sops-nix.homeManagerModules.sops
+            stylix.homeManagerModules.stylix
           ];
           home-manager.users."${user}" = self.hmModules."${host}-${system}";
         }
