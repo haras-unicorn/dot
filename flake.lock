@@ -160,23 +160,6 @@
         "type": "github"
       }
     },
-    "firefox-gx": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1708376786,
-        "narHash": "sha256-xECzIpSr923mlUc5Pk/y0d2BrXVECow2NaL4p79i+/U=",
-        "owner": "Godiesc",
-        "repo": "firefox-gx",
-        "rev": "fd5d51fc9986e854093ff162237281d2fd067e53",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Godiesc",
-        "ref": "refs/tags/v.9.0",
-        "repo": "firefox-gx",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -939,7 +922,6 @@
       "inputs": {
         "arkenfox-userjs": "arkenfox-userjs",
         "deploy-rs": "deploy-rs",
-        "firefox-gx": "firefox-gx",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",

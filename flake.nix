@@ -28,11 +28,9 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    # TODO: with fetchurl
     arkenfox-userjs.url = "github:arkenfox/user.js/refs/tags/v110.0";
     arkenfox-userjs.flake = false;
-
-    firefox-gx.url = "github:Godiesc/firefox-gx/refs/tags/v.9.0";
-    firefox-gx.flake = false;
 
     tint-gear.url = "github:haras-unicorn/tint-gear";
     tint-gear.inputs.nixpkgs.follows = "nixpkgs";
