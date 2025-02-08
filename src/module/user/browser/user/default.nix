@@ -24,9 +24,9 @@ in
     programs.firefox.package = pkgs.firefox-bin;
     programs.firefox.profiles = {
       personal = {
-        id = 0;
+        id = lib.mkForce 0;
+        isDefault = lib.mkForce true;
         name = "personal";
-        isDefault = true;
         extensions = [
           pkgs.nur.repos.rycee.firefox-addons.ublock-origin
           pkgs.nur.repos.rycee.firefox-addons.darkreader
@@ -35,7 +35,8 @@ in
         ];
       };
       alternarive = {
-        id = 1;
+        id = lib.mkForce 1;
+        isDefault = lib.mkForce true;
         name = "alternative";
         extensions = [
           pkgs.nur.repos.rycee.firefox-addons.ublock-origin
