@@ -43,7 +43,6 @@ in
         nixos-facter-modules.nixosModules.facter
         sops-nix.nixosModules.default
         home-manager.nixosModules.default
-        stylix.nixosModules.stylix
         self.nixosModules."${host}-${system}"
         {
           home-manager.backupFileExtension = "backup";

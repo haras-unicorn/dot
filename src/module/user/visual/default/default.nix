@@ -6,6 +6,7 @@
 , ...
 }:
 
+# FIXME: conflicts with stylix
 # TODO: extensions in projects
 # TODO: vscodium
 
@@ -28,12 +29,12 @@ in
 
     programs.vscode.keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
     programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {
-      "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';
-      "debug.console.fontFamily" = ''"${config.dot.font.nerd.name}"'';
-      "terminal.integrated.fontFamily" = ''"${config.dot.font.nerd.name}"'';
-      "editor.fontSize" = config.dot.font.size.medium + 1;
-      "debug.console.fontSize" = config.dot.font.size.small + 1;
-      "terminal.integrated.fontSize" = config.dot.font.size.small + 1;
+      # "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';
+      # "debug.console.fontFamily" = ''"${config.dot.font.nerd.name}"'';
+      # "terminal.integrated.fontFamily" = ''"${config.dot.font.nerd.name}"'';
+      # "editor.fontSize" = config.dot.font.size.medium + 1;
+      # "debug.console.fontSize" = config.dot.font.size.small + 1;
+      # "terminal.integrated.fontSize" = config.dot.font.size.small + 1;
       "terminal.external.linuxExec" = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
       "terminal.integrated.profiles.linux" = {
         "${config.dot.shell.bin}" = {
@@ -48,7 +49,7 @@ in
       "terminal.integrated.automationProfile.linux" = {
         "path" = "${pkgs.bashInteractive}/bin/bash";
       };
-      "workbench.colorTheme" = "Atom One Dark";
+      # "workbench.colorTheme" = "Atom One Dark";
       "workbench.iconTheme" = "material-icon-theme";
     };
 

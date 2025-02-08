@@ -77,11 +77,6 @@ in
     inherit colors;
   };
 
-  system = {
-    stylix.enable = true;
-    stylix.image = config.dot.wallpaper;
-  };
-
   home = {
     home.packages = [ tint-gear.packages."${system}".default ];
 

@@ -1,5 +1,6 @@
 { lib, pkgs, config, ... }:
 
+# FIXME: stylix conflicts
 # TODO: proper theming as explained here: https://docs.helix-editor.com/themes.html
 
 let
@@ -17,7 +18,9 @@ in
   home = {
     programs.helix.enable = true;
 
-    programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
+    programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml) // {
+      # theme = "colors";
+    };
 
     home.activation = {
       helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

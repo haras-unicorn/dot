@@ -1,5 +1,7 @@
 { pkgs, lib, config, ... }:
 
+# FIXME: conflicts with stylix
+
 let
   bootstrap = config.dot.colors.bootstrap;
 
@@ -62,20 +64,20 @@ in
       allow_markup = true;
     };
 
-    programs.wofi.style = ''
-      @define-color background ${bootstrap.background.normal.hex};
-      @define-color transparent ${bootstrap.background.normal.rgba 0.8};
-      @define-color text ${bootstrap.text.normal.hex};
-      @define-color accent ${bootstrap.accent.normal.hex};
-      @define-color primary ${bootstrap.primary.normal.hex};
-      @define-color selection ${bootstrap.selection.normal.hex};
+    # programs.wofi.style = ''
+    #   @define-color background ${bootstrap.background.normal.hex};
+    #   @define-color transparent ${bootstrap.background.normal.rgba 0.8};
+    #   @define-color text ${bootstrap.text.normal.hex};
+    #   @define-color accent ${bootstrap.accent.normal.hex};
+    #   @define-color primary ${bootstrap.primary.normal.hex};
+    #   @define-color selection ${bootstrap.selection.normal.hex};
 
-      * {
-        font-family: '${config.dot.font.sans.name}';
-        font-size: ${builtins.toString config.dot.font.size.large}pt;
-      }
+    #   * {
+    #     font-family: '${config.dot.font.sans.name}';
+    #     font-size: ${builtins.toString config.dot.font.size.large}pt;
+    #   }
 
-      ${builtins.readFile ./style.css}
-    '';
+    #   ${builtins.readFile ./style.css}
+    # '';
   };
 }

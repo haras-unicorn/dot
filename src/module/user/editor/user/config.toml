@@ -1,5 +1,3 @@
-theme = "colors"
-
 [editor]
 true-color = true
 scrolloff = 999

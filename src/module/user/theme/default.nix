@@ -1,5 +1,7 @@
 { config, pkgs, lib, ... }:
 
+# FIXME: stylix conflicts
+
 let
   theme_name = "colors";
 
@@ -124,7 +126,7 @@ in
   config = lib.mkIf hasMonitor {
     desktopEnvironment.sessionVariables = {
       GTK_USE_PORTAL = 1;
-      GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
+      # GTK2_RC_FILES = "${config.xdg.configHome}/gtk-2.0/settings.ini";
       QT_QPA_PLATFORMTHEME = "gtk2";
     };
   };
@@ -134,7 +136,7 @@ in
     xdg.configFile."gtk-3.0/settings.ini".text = ini3;
     xdg.configFile."gtk-4.0/settings.ini".text = ini4;
 
-    dconf.settings."org/gnome/desktop/interface" = dconf;
+    # dconf.settings."org/gnome/desktop/interface" = dconf;
 
     home.packages = [
       colors
@@ -147,9 +149,9 @@ in
     ];
 
     home.pointerCursor = {
-      package = config.dot.cursor-theme.package;
-      name = config.dot.cursor-theme.name;
-      size = config.dot.cursor-theme.size;
+      # package = config.dot.cursor-theme.package;
+      # name = config.dot.cursor-theme.name;
+      # size = config.dot.cursor-theme.size;
     };
 
     xdg.configFile."Trolltech.conf".text = ''
