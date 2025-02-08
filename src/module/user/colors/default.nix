@@ -75,7 +75,9 @@ in
 
   config = {
     inherit colors;
+  };
 
+  system = {
     stylix.enable = true;
     stylix.image = config.dot.wallpaper;
   };
@@ -84,5 +86,8 @@ in
     home.packages = [ tint-gear.packages."${system}".default ];
 
     xdg.configFile."tint-gear/colors.json".text = builtins.toJSON original;
+
+    stylix.enable = true;
+    stylix.image = config.dot.wallpaper;
   };
 }
