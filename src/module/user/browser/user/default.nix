@@ -36,7 +36,7 @@ in
       };
       alternarive = {
         id = lib.mkForce 1;
-        isDefault = lib.mkForce true;
+        isDefault = lib.mkForce false;
         name = "alternative";
         extensions = [
           pkgs.nur.repos.rycee.firefox-addons.ublock-origin
