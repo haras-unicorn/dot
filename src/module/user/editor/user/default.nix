@@ -7,8 +7,6 @@ let
   cfg = config.dot.editor;
 
   editor = "${cfg.package}/bin/${cfg.bin}";
-
-  bootstrap = config.dot.colors.bootstrap;
 in
 {
   config = {
@@ -18,33 +16,13 @@ in
   home = {
     programs.helix.enable = true;
 
-    programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml) // {
-      # theme = "colors";
-    };
+    programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);
 
     home.activation = {
       helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "${cfg.bin}" || true
       '';
     };
-
-    xdg.configFile."helix/themes/colors.toml".text = ''
-      ${builtins.readFile ./colors.toml}
-
-      [palette]
-
-      transparent = "${bootstrap.background.normal.hex}"
-
-      background = "${bootstrap.background.normal.hex}"
-      backgroundAlternate = "${bootstrap.background.alternate.hex}"
-
-      text = "${bootstrap.text.normal.hex}"
-      textAlternate = "${bootstrap.text.alternate.hex}"
-
-      primary = "${bootstrap.primary.normal.hex}"
-      secondary = "${bootstrap.secondary.normal.hex}"
-      accent = "${bootstrap.accent.normal.hex}"
-    '';
 
     programs.helix.languages = {
       language-server = {
