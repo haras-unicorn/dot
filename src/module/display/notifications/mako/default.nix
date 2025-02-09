@@ -5,21 +5,11 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  config = lib.mkIf (hasMonitor && hasWayland) {
-    desktopEnvironment.sessionStartup = [ "${pkgs.mako}/bin/mako" ];
-  };
-
   home = lib.mkIf (hasMonitor && hasWayland) {
-    home.packages = [
-      pkgs.libnotify
-      pkgs.mako
-    ];
-
-    xdg.configFile."mako/config".text = ''
-      font="${config.dot.font.sans.name}" ${builtins.toString config.dot.font.size.large}
+    services.mako.enable = true;
+    services.mako.extraConfig = ''
       width=512
       height=256
-
       margin=0,0,32,32
       padding=8
       border-size=2

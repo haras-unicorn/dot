@@ -18,6 +18,10 @@ in
   };
 
   home = lib.mkIf hasMonitor {
+    home.packages = [
+      pkgs.libnotify
+    ];
+
     xdg.portal.enable = true;
     xdg.portal.xdgOpenUsePortal = true;
 
