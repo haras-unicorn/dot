@@ -1,8 +1,6 @@
 { pkgs, lib, config, ... }:
 
 let
-  bootstrap = config.dot.colors.bootstrap;
-
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 in
@@ -22,7 +20,7 @@ in
       width=512
       height=256
 
-      margin=32
+      margin=0,0,32,32
       padding=8
       border-size=2
       border-radius=4
@@ -30,11 +28,6 @@ in
       max-icon-size=128
       default-timeout=10000
       anchor=bottom-right
-
-      background-color=${bootstrap.background.normal.makoa "AA"}
-      text-color=${bootstrap.text.normal.mako}
-      border-color=${bootstrap.accent.normal.mako}
-      progress-color=${bootstrap.success.normal.mako}
     '';
 
 

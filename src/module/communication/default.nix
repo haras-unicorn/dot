@@ -4,8 +4,6 @@
 # NOTE: ferdium outlook - Self Hosted at https://outlook.office.com/mail/
 
 let
-  isLightTheme = config.dot.colors.isLightTheme;
-
   hasMonitor = config.dot.hardware.monitor.enable;
   monitorWidth = config.dot.hardware.monitor.width;
   monitorHeight = config.dot.hardware.monitor.height;
