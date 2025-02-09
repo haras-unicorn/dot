@@ -8,7 +8,7 @@ let
     name = "wallpaper";
     runtimeInputs = [ pkgs.feh ];
     text = ''
-      feh --bg-fill "$1"
+      feh --bg-fill "$@"
     '';
   };
 
@@ -18,7 +18,7 @@ let
     text = ''
       mpvpaper \
         -o "video-unscaled=yes no-audio --loop-playlist" \
-        '*' "$1"
+        '*' "$@"
     '';
   };
 in
