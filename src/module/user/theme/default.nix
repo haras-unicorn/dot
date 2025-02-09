@@ -26,7 +26,7 @@ in
     stylix.cursor.package = pkgs.pokemon-cursor;
     stylix.cursor.name = "Pokemon";
     stylix.iconTheme.enable = true;
-    stylix.icontheme.package = pkgs.beauty-line-icon-theme;
+    stylix.iconTheme.package = pkgs.beauty-line-icon-theme;
     stylix.iconTheme.dark = "BeautyLine";
     stylix.iconTheme.light = "BeautyLine";
   };
