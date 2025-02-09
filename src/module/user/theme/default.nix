@@ -35,7 +35,7 @@ in
     ];
 
     stylix.enable = true;
-    config.stylix.targets.qt.enable = true;
+    stylix.targets.qt.enable = true;
     stylix.image = "${wallpaper}/image.png";
     stylix.imageScalingMode = "fill";
     stylix.polarity = "dark";
