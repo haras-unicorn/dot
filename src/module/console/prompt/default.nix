@@ -1,7 +1,7 @@
 { pkgs, config, lib, ... }:
 
 let
-  bootstrap = config.dot.colors.bootstrap;
+  colors = config.lib.stylix.colors.withHashtag;
   nsfw = config.dot.prompt.nsfw;
 in
 {
@@ -34,15 +34,15 @@ in
       # TODO: fix how slow python is
       # $python\
       format = """\
-      [╭─](bold fg:${bootstrap.accent.normal.hex})\
+      [╭─](bold fg:${colors.cyan})\
 
-      $username[@](bold fg:${bootstrap.accent.normal.hex})$hostname\
-      [\\(](bold fg:${bootstrap.accent.normal.hex})\
+      $username[@](bold fg:${colors.cyan})$hostname\
+      [\\(](bold fg:${colors.cyan})\
       $localip\
-      [\\)](bold fg:${bootstrap.accent.normal.hex}) \
+      [\\)](bold fg:${colors.cyan}) \
 
-      [using](italic fg:${bootstrap.text.alternate.hex}) $shlvl$shell \
-      [\\(](bold fg:${bootstrap.accent.normal.hex}) \
+      [using](italic fg:${colors.white}) $shlvl$shell \
+      [\\(](bold fg:${colors.cyan}) \
       $aws\
       $azure\
       $gcloud\
@@ -54,7 +54,7 @@ in
       $terraform\
       $nix_shell\
       $conda\
-      [\\)](bold fg:${bootstrap.accent.normal.hex}) \
+      [\\)](bold fg:${colors.cyan}) \
 
       $jobs\
       $time\
@@ -66,12 +66,12 @@ in
 
       $line_break\
 
-      [│](bold fg:${bootstrap.accent.normal.hex}) \
+      [│](bold fg:${colors.cyan}) \
 
-      [in](italic fg:${bootstrap.text.alternate.hex}) $directory\
+      [in](italic fg:${colors.white}) $directory\
 
       $package\
-      [\\[](bold fg:${bootstrap.accent.normal.hex}) \
+      [\\[](bold fg:${colors.cyan}) \
       $helm\
       $cmake\
       $cobol\
@@ -102,14 +102,14 @@ in
       $vagrant\
       $zig\
       $crystal\
-      [\\]](bold fg:${bootstrap.accent.normal.hex}) \
+      [\\]](bold fg:${colors.cyan}) \
 
       $git_branch$hg_branch\
       $git_commit$git_state$git_metrics$git_status\
 
       $line_break\
 
-      [╰─](bold fg:${bootstrap.accent.normal.hex})\
+      [╰─](bold fg:${colors.cyan})\
       """
 
       scan_timeout = 1000
@@ -118,27 +118,27 @@ in
 
       [username]
       format = "[$user]($style)"
-      style_user = "bold fg:${bootstrap.primary.normal.hex}"
-      style_root = "bold fg:${bootstrap.warning.normal.hex}"
+      style_user = "bold fg:${colors.magenta}"
+      style_root = "bold fg:${colors.yellow}"
       show_always = true
 
       [hostname]
       format = "[$hostname]($style)"
-      style = "bold fg:${bootstrap.secondary.normal.hex}"
+      style = "bold fg:${colors.magenta}"
       trim_at = "-"
       ssh_only = false
       disabled = false
 
       [localip]
       format = "[$localipv4]($style)"
-      style = "bold fg:${bootstrap.secondary.normal.hex}"
+      style = "bold fg:${colors.magenta}"
       disabled = false
 
       [shell]
       format = "[$indicator]($style)"
       fish_indicator = "󰈺 "
       bash_indicator = " "
-      style = "bold fg:${config.dot.colors.terminal.blue.normal.hex}"
+      style = "bold fg:${colors.blue}"
       disabled = false
 
       [shlvl]
@@ -146,7 +146,7 @@ in
       format = "[$symbol]($style)"
       symbol = ""
       repeat = true
-      style = "bold fg:${bootstrap.text.normal.hex}"
+      style = "bold fg:${colors.white}"
       disabled = false
 
       [aws]
@@ -242,26 +242,26 @@ in
       symbol = " "
 
       [time]
-      format = "[at](italic fg:${bootstrap.text.alternate.hex}) [$time]($style) "
-      style = "bold fg:${bootstrap.info.normal.hex}"
+      format = "[at](italic fg:${colors.white}) [$time]($style) "
+      style = "bold fg:${colors.blue}"
       disabled = false
 
       [cmd_duration]
       min_time = 1
-      format = "[took](italic fg:${bootstrap.text.alternate.hex}) [$duration]($style)"
+      format = "[took](italic fg:${colors.white}) [$duration]($style)"
       disabled = false
-      style = "underline bold fg:${bootstrap.info.normal.hex}"
+      style = "underline bold fg:${colors.blue}"
 
       [status]
       symbol = " "
-      style = "fg:${bootstrap.danger.normal.hex}"
+      style = "fg:${colors.red}"
       format = """ \
-      [[{](bold fg:${bootstrap.accent.normal.hex})\
+      [[{](bold fg:${colors.cyan})\
       $symbol\
       $status_common_meaning\
       $status_signal_name\
       $status_maybe_int\
-      [}](bold fg:${bootstrap.accent.normal.hex})]\
+      [}](bold fg:${colors.cyan})]\
       ($style)"""
       map_symbol = true
       disabled = false
@@ -271,28 +271,28 @@ in
       format = "[$symbol$version]($style) "
 
       [directory]
-      style = "bold fg:${bootstrap.text.alternate.hex}"
+      style = "bold fg:${colors.white}"
       read_only = " "
       truncation_length = 3
       truncate_to_repo = true
 
       [git_branch]
-      format = "[on](italic fg:${bootstrap.text.alternate.hex}) [$symbol $branch]($style)"
-      style = "bold fg:${bootstrap.info.normal.hex}"
+      format = "[on](italic fg:${colors.white}) [$symbol $branch]($style)"
+      style = "bold fg:${colors.blue}"
       symbol = ""
 
       [hg_branch]
-      format = "[on](italic fg:${bootstrap.text.alternate.hex}) [$symbol $branch]($style)"
-      style = "bold fg:${bootstrap.info.normal.hex}"
+      format = "[on](italic fg:${colors.white}) [$symbol $branch]($style)"
+      style = "bold fg:${colors.blue}"
       symbol = ""
 
       [git_status]
-      style = "bold fg:${bootstrap.warning.normal.hex}"
+      style = "bold fg:${colors.yellow}"
       format = """ \
-      [[{](bold fg:${bootstrap.accent.normal.hex})\
+      [[{](bold fg:${colors.cyan})\
       $all_status\
       $ahead_behind\
-      [}](bold fg:${bootstrap.accent.normal.hex})]\
+      [}](bold fg:${colors.cyan})]\
       ($style)"""
       ahead = "''${count}"
       diverged = "󰹺''${ahead_count}''${behind_count}"
@@ -300,9 +300,9 @@ in
       deleted = "x"
 
       [character]
-      success_symbol = "[󰞷](bold fg:${bootstrap.success.normal.hex})"
-      vicmd_symbol = "[ ](bold fg:${bootstrap.success.normal.hex})"
-      error_symbol = "[ ](bold fg:${bootstrap.danger.normal.hex})"
+      success_symbol = "[󰞷](bold fg:${colors.green})"
+      vicmd_symbol = "[ ](bold fg:${colors.green})"
+      error_symbol = "[ ](bold fg:${colors.red})"
 
       [battery]
       format = " [$symbol$percentage]($style)"
