@@ -42,7 +42,9 @@ let
     runtimeInputs = [ pkgs.clipnotify pkgs.wl-clipboard pkgs.xclip ];
     text = ''
       while clipnotify; do
-        xclip -o -sel clipboard | wl-copy
+        if [ "$(xclip -o -sel clipboard)" != "$(wl-paste)" ]; then
+          xclip -o -sel clipboard | wl-copy
+        fi
       done
     '';
   };
