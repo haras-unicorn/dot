@@ -5,7 +5,6 @@
 
 let
   isLightTheme = config.dot.colors.isLightTheme;
-  bootstrap = config.dot.colors.bootstrap;
 
   hasMonitor = config.dot.hardware.monitor.enable;
   monitorWidth = config.dot.hardware.monitor.width;
@@ -79,8 +78,8 @@ in
     xdg.configFile."Ferdium/config/settings.json".text = builtins.toJSON
       ((builtins.fromJSON (builtins.readFile ./ferdium.json)) // {
         darkMode = !isLightTheme;
-        accentColor = bootstrap.primary.normal.hex;
-        progressbarAccentColor = bootstrap.primary.alternate.hex;
+        accentColor = config.lib.stylix.colors.withHashtag.magenta;
+        progressbarAccentColor = config.lib.stylix.colors.withHashtag.cyan;
       });
     xdg.configFile."Ferdium/config/window-state.json".text = builtins.toJSON windowState;
     xdg.configFile."Ferdium/window-state.json".text = builtins.toJSON windowState;
