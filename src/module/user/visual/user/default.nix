@@ -6,7 +6,7 @@ let
 in
 {
   home = lib.mkIf (hasMonitor && hasKeyboard) {
-    stylix.targets.zed.enable = true;
+    stylix.targets.qt.enable = true;
     programs.zed-editor.enable = true;
     programs.zed-editor.userSettings = {
       autosave = "on_window_change";
