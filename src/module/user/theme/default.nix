@@ -1,5 +1,7 @@
 { config, pkgs, lib, ... }:
 
+# TODO: https://github.com/danth/stylix/pull/847
+
 let
   hasMonitor = config.dot.hardware.monitor.enable;
 
@@ -33,6 +35,7 @@ in
     ];
 
     stylix.enable = true;
+    config.stylix.targets.qt.enable = true;
     stylix.image = "${wallpaper}/image.png";
     stylix.imageScalingMode = "fill";
     stylix.polarity = "dark";
