@@ -27,7 +27,6 @@ in
       cursor_shape beam
       cursor_blink_interval 0
       enable_audio_bell no
-      background_opacity 0.75
 
       shell ${shell.package}/bin/${shell.bin}
       editor  ${editor.package}/bin/${editor.bin}

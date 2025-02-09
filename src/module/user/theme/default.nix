@@ -29,6 +29,10 @@ in
     stylix.iconTheme.package = pkgs.beauty-line-icon-theme;
     stylix.iconTheme.dark = "BeautyLine";
     stylix.iconTheme.light = "BeautyLine";
+    stylix.opacity.applications = 0.9;
+    stylix.opacity.desktop = 0;
+    stylix.opacity.terminal = 0.75;
+    stylix.opacity.popups = 1;
   };
 }
 
