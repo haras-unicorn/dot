@@ -3,11 +3,15 @@
 # FIXME: conflicts with stylix
 
 let
-  bootstrap = config.dot.colors.bootstrap;
-
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
   hasKeyboard = config.dot.hardware.keyboard.enable;
+
+  paste-type = pkgs.writeShellApplication {
+    name = "paste-type"
+      runtimeInputs = [ pkgs.wtype pkgs.wl-clipboard ];
+    text = ''wtype "$(wl-paste)"'';
+  };
 in
 {
   config = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
@@ -31,6 +35,11 @@ in
         mods = [ "super" "alt" ];
         key = "p";
         command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
+      }
+      {
+        mods = [ "ctrl" "shift" ];
+        key = "v";
+        command = "${paste-type}/bin/paste-type";
       }
     ];
   };
