@@ -1,15 +1,6 @@
 { self, pkgs, lib, config, ... }:
 
-# FIXME: wallpaper on xserver
-
-# NOTE: wallpaper inpaint/outpaint script for all resolutions and select appropriate here
-
 let
-  name = "elden-ring";
-
-  default = "${self}/assets/wallpapers/${name}.png";
-  wallpaper = config.dot.wallpaper;
-
   hasWayland = config.dot.hardware.graphics.wayland;
   hasMonitor = config.dot.hardware.monitor.enable;
 
@@ -23,9 +14,11 @@ let
 
   setWallpaperWayland = pkgs.writeShellApplication {
     name = "wallpaper";
-    runtimeInputs = [ pkgs.swww ];
+    runtimeInputs = [ pkgs.mpvpaper ];
     text = ''
-      swww img "$1"
+      mpvpaper \
+        -o "video-unscaled=yes no-audio --loop-playlist" \
+        '*' "$1"
     '';
   };
 in
@@ -33,24 +26,19 @@ in
   options = {
     wallpaper = lib.mkOption {
       type = lib.types.str;
-      default = default;
-      example = default;
+      default = "${self}/assets/wallpaper.mp4";
     };
   };
 
   config = {
-    desktopEnvironment.sessionStartup = lib.mkMerge [
-      (lib.mkIf (hasMonitor && !hasWayland) [
-        "${pkgs.feh}/bin/feh --bg-fill '${wallpaper}'"
-      ])
-      (lib.mkIf (hasMonitor && hasWayland) [
-        "${pkgs.swww}/bin/swww-daemon"
-        "${pkgs.swww}/bin/swww img '${wallpaper}'"
-      ])
-    ];
+    desktopEnvironment.sessionStartup =
+      lib.mkIf (hasMonitor && hasWayland) [
+        ''${setWallpaperWayland}/bin/wallpaper ${config.dot.wallpaper}''
+      ];
   };
 
   home = {
+    stylix.targets.hyprpaper.enable = false;
     home.packages = lib.mkMerge [
       (lib.mkIf (hasMonitor && hasWayland) [ setWallpaperWayland ])
       (lib.mkIf (hasMonitor && !hasWayland) [ setWallpaperXorg ])

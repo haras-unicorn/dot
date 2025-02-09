@@ -10,7 +10,7 @@ in
 {
   config = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
     desktopEnvironment.sessionStartup = [
-      "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${config.dot.wallpaper}'"
+      "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${config.stylix.image}'"
     ];
   };
 
