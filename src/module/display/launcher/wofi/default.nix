@@ -37,7 +37,7 @@ in
         command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
       }
       {
-        mods = [ "ctrl" "shift" ];
+        mods = [ "ctrl" "alt" ];
         key = "v";
         command = "${paste-type}/bin/paste-type";
       }
