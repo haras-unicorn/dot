@@ -4,10 +4,6 @@
   padding: 0;
 }
 
-window {
-  background-color: rgba(0, 0, 0, 0);
-}
-
 #tray,
 #custom-powermenu,
 #custom-layout,
@@ -20,7 +16,6 @@ window {
 #pulseaudio,
 #network,
 #battery {
-  background-color: rgba(0, 0, 0, 0);
   border-radius: 8px;
   padding: 4px 16px;
   margin: 4px 4px;
