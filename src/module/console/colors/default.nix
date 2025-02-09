@@ -10,7 +10,7 @@
   home = {
     xdg.configFile."vivid/themes/colors.yaml".text = ''
       colors:
-        black: "${config.lib.stylix.colors.black}"
+        black: "${config.lib.stylix.colors.base00}"
         green: "${config.lib.stylix.colors.green}"
         purple: "${config.lib.stylix.colors.purple}"
         red: "${config.lib.stylix.colors.red}"
@@ -18,7 +18,7 @@
         cyan: "${config.lib.stylix.colors.cyan}"
         pink: "${config.lib.stylix.colors.pink}"
         orange: "${config.lib.stylix.colors.orange}"
-        white: "${config.lib.stylix.colors.white}"
+        white: "${config.lib.stylix.colors.base15}"
         base01: "${config.lib.stylix.colors.base01}"
 
       ${builtins.readFile ./colors.yaml}
