@@ -6,10 +6,10 @@ core:
     foreground: white
 
   reset_to_normal:
-    foreground: orange
+    foreground: brown
 
   directory:
-    foreground: purple
+    foreground: magenta
 
   symlink:
     foreground: cyan
@@ -21,12 +21,12 @@ core:
     background: black
 
   socket:
-    foreground: pink
+    foreground: blue
     background: black
     font-style: bold
 
   door:
-    foreground: pink
+    foreground: blue
     background: black
     font-style: bold
 
@@ -64,58 +64,58 @@ core:
     background: green
 
   other_writable:
-    foreground: purple
+    foreground: magenta
     background: green
 
   sticky:
     foreground: white
-    background: purple
+    background: magenta
 
   executable_file:
     foreground: green
 
 text:
   special:
-    foreground: orange
+    foreground: brown
 
   todo:
-    foreground: orange
+    foreground: brown
     font-style: bold
 
   licenses:
-    foreground: orange
+    foreground: brown
 
   configuration:
-    foreground: orange
+    foreground: brown
 
   other:
-    foreground: orange
+    foreground: brown
 
 markup:
-  foreground: orange
+  foreground: brown
 
 programming:
-  foreground: orange
+  foreground: brown
 
 media:
   image:
-    foreground: pink
+    foreground: blue
 
   audio:
     foreground: cyan
 
   video:
-    foreground: orange
+    foreground: brown
     font-style: bold
 
   fonts:
-    foreground: orange
+    foreground: brown
 
   3d:
-    foreground: pink
+    foreground: blue
 
 office:
-  foreground: orange
+  foreground: brown
 
 archives:
   foreground: red
@@ -125,4 +125,4 @@ executable:
   foreground: green
 
 unimportant:
-  foreground: base01
+  foreground: white
