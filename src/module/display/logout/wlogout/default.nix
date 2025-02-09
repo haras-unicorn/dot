@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
 let
-  bootstrap = config.dot.colors.bootstrap;
+  colors = config.lib.stylix.colors.withHashtag;
 
   logout = pkgs.writeShellApplication {
     name = "logout";
@@ -91,8 +91,8 @@ in
         background-image: image(url("${./reboot.svg}"));
       }
 
-      @define-color background ${bootstrap.text.normal.hex};
-      @define-color foreground ${bootstrap.background.normal.hex};
+      @define-color background ${colors.base00};
+      @define-color foreground ${colors.cyan};
 
       ${builtins.readFile ./style.css}
     '';
