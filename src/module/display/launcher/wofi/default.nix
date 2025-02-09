@@ -8,8 +8,8 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 
   paste-type = pkgs.writeShellApplication {
-    name = "paste-type"
-      runtimeInputs = [ pkgs.wtype pkgs.wl-clipboard ];
+    name = "paste-type";
+    runtimeInputs = [ pkgs.wtype pkgs.wl-clipboard ];
     text = ''wtype "$(wl-paste)"'';
   };
 in
