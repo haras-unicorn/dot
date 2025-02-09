@@ -87,7 +87,6 @@ in
     stylix.polarity = "dark";
     stylix.fonts.monospace.name = "JetBrainsMono Nerd Font";
     stylix.fonts.monospace.package = config.unstablePkgs.nerd-fonts.jetbrains-mono;
-    stylix.targets.qt.platform = "gtk2";
     stylix.cursor.package = pkgs.pokemon-cursor;
     stylix.cursor.name = "Pokemon";
   };
