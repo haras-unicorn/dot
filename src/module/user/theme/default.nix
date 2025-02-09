@@ -22,7 +22,7 @@ let
       if file --mime-type "$prev" | grep -qE 'video/'; then
         ffmpeg -i "$prev" -vf "select=eq(n\,0)" -vsync vfr -q:v 2 "$out/image.png"
       else
-        convert "$prev" "$out/image.png"
+        magick convert "$prev" "$out/image.png"
       fi
     '';
 in
