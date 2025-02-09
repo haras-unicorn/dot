@@ -5,7 +5,7 @@ let
     name = "copy";
     runtimeInputs = [ pkgs.xclip ];
     text = ''
-      cat | xclip -sel clip "$@"
+      cat | xclip -sel clip
     '';
   };
 
@@ -13,18 +13,35 @@ let
     name = "paste";
     runtimeInputs = [ pkgs.xclip ];
     text = ''
-      xclip -o -sel clip "$@"
+      xclip -o -sel clip
+    '';
+  };
+
+  pastedo = pkgs.writeShellApplication {
+    name = "pastex";
+    runtimeInputs = [ pkgs.xclip pkgs.dotool ];
+    text = ''
+      echo "type $(xclip -o -sel clip)" | dotool 
     '';
   };
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
   config = lib.mkIf (hasMonitor && !hasWayland) {
     desktopEnvironment.sessionVariables = {
       QT_QPA_PLATFORM = "xcb";
     };
+
+    desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
+      {
+        mods = [ "ctrl" "alt" ];
+        key = "v";
+        command = "${pastedo}/bin/pastedo";
+      }
+    ];
   };
 
   system = lib.mkIf (hasMonitor && !hasWayland) {

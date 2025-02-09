@@ -5,9 +5,11 @@ let
 
   copy = pkgs.writeShellApplication {
     name = "copy";
-    runtimeInputs = [ pkgs.wl-clipboard ];
+    runtimeInputs = [ pkgs.wl-clipboard pkgs.xclip ];
     text = ''
-      cat | wl-copy "$@"
+      to_copy="$(cat)"
+      "$to_copy" | wl-copy
+      "$to_copy" | xclip -sel clipboard
     '';
   };
 
@@ -15,11 +17,38 @@ let
     name = "paste";
     runtimeInputs = [ pkgs.wl-clipboard ];
     text = ''
-      wl-paste "$@"
+      wl-paste
+    '';
+  };
+
+  pastedo = pkgs.writeShellApplication {
+    name = "pastex";
+    runtimeInputs = [ pkgs.xclip pkgs.dotool ];
+    text = ''
+      echo "type $(wl-paste)" | dotool 
+    '';
+  };
+
+  wclipwatch = pkgs.writeShellApplication {
+    name = "wclipwatch";
+    runtimeInputs = [ pkgs.wl-clipboard pkgs.xclip ];
+    text = ''
+      wl-paste --type text --watch xclip -sel clipboard
+    '';
+  };
+
+  xclipwatch = pkgs.writeShellApplication {
+    name = "xclipwatch";
+    runtimeInputs = [ pkgs.clipnotify pkgs.wl-clipboard pkgs.xclip ];
+    text = ''
+      while clipnotify; do
+        xclip -o -sel clipboard | wl-copy
+      done
     '';
   };
 
   hasMonitor = config.dot.hardware.monitor.enable;
+  hasKeyboard = config.dot.hardware.keyboard.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
@@ -36,6 +65,19 @@ in
       SDL_VIDEODRIVER = "wayland,x11";
       _JAVA_AWT_WM_NONREPARENTING = "1";
     };
+
+    desktopEnvironment.sessionStartup = [
+      "${wclipwatch}/bin/wclipwatch"
+      "${xclipwatch}/bin/xclipwatch"
+    ];
+
+    desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
+      {
+        mods = [ "ctrl" "alt" ];
+        key = "v";
+        command = "${pastedo}/bin/pastedo";
+      }
+    ];
   };
 
   system = lib.mkIf (hasMonitor && hasWayland) {
