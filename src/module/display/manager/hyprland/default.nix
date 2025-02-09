@@ -108,12 +108,6 @@ in
       env = XDG_CURRENT_DESKTOP, Hyprland
       env = XDG_SESSION_DESKTOP, Hyprland
 
-      env = HYPRCURSOR_THEME,${config.dot.cursor-theme.name}
-      env = HYPRCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.size}
-
-      env = XCURSOR_THEME,${config.dot.cursor-theme.name}
-      env = XCURSOR_SIZE,${builtins.toString config.dot.cursor-theme.size}
-
       general {
         col.active_border = ${bootstrap.primary.normal.hypr} ${bootstrap.accent.normal.hypr}
         col.inactive_border = ${bootstrap.secondary.normal.hypr}
