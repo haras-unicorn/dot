@@ -10,7 +10,8 @@ in
     services.mako.extraConfig = ''
       width=512
       height=256
-      margin=0,0,32,32
+      outer-margin=32
+      margin=8
       padding=8
       border-size=2
       border-radius=4
