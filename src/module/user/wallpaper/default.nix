@@ -26,7 +26,7 @@ in
   options = {
     wallpaper = lib.mkOption {
       type = lib.types.str;
-      default = "${self}/assets/wallpaper.mp4";
+      default = "${self}/assets/kuromi.mp4";
     };
   };
 
