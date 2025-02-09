@@ -53,8 +53,6 @@ let
         + ", ${windowrule.selector}:(${windowrule.arg})")
       cfg.windowrules);
 
-  bootstrap = config.dot.colors.bootstrap;
-
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 
@@ -107,11 +105,6 @@ in
 
       env = XDG_CURRENT_DESKTOP, Hyprland
       env = XDG_SESSION_DESKTOP, Hyprland
-
-      general {
-        col.active_border = ${bootstrap.primary.normal.hypr} ${bootstrap.accent.normal.hypr}
-        col.inactive_border = ${bootstrap.secondary.normal.hypr}
-      }
 
       windowrulev2=size ${floatingSizeString} ${floatingSizeString},floating:1
 
