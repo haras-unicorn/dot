@@ -1,7 +1,5 @@
 { pkgs, lib, config, ... }:
 
-# FIXME: conflicts with stylix
-
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
