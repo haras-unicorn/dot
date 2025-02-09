@@ -92,7 +92,7 @@ in
       }
 
       @define-color background ${colors.base00};
-      @define-color foreground ${colors.cyan};
+      @define-color foreground ${colors.yellow};
 
       ${builtins.readFile ./style.css}
     '';
