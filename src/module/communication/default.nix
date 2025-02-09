@@ -77,7 +77,7 @@ in
     };
     xdg.configFile."Ferdium/config/settings.json".text = builtins.toJSON
       ((builtins.fromJSON (builtins.readFile ./ferdium.json)) // {
-        darkMode = !isLightTheme;
+        darkMode = config.stylix.polarity == "dark";
         accentColor = config.lib.stylix.colors.withHashtag.magenta;
         progressbarAccentColor = config.lib.stylix.colors.withHashtag.cyan;
       });
