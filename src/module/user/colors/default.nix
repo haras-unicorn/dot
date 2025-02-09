@@ -85,5 +85,7 @@ in
     stylix.enable = true;
     stylix.image = config.dot.wallpaper;
     stylix.polarity = "dark";
+    stylix.fonts.monospace.name = "JetBrainsMono Nerd Font";
+    stylix.fonts.monospace.package = config.unstablePkgs.nerd-fonts.jetbrains-mono;
   };
 }
