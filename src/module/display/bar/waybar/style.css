@@ -20,7 +20,7 @@ window {
 #pulseaudio,
 #network,
 #battery {
-  background-color: @transparent;
+  background-color: rgba(0, 0, 0, 0);
   border-radius: 8px;
   padding: 4px 16px;
   margin: 4px 4px;
@@ -32,54 +32,37 @@ window {
   margin-left: 2px;
   margin-right: 2px;
   border-radius: 8px;
-  color: @text;
-}
-
-#workspaces button.active label {
-  color: @accent;
-}
-
-#battery {
-  color: @text;
 }
 
 #custom-powermenu {
-  color: @secondary;
   padding-right: 20px;
   padding-bottom: 6px;
   margin-right: 8px;
 }
 
 #pulseaudio {
-  color: @text-alternate;
   padding-right: 14px;
 }
 
 #cpu {
-  color: @text-alternate;
   min-width: 48px;
 }
 
 #temperature {
-  color: @text-alternate;
 }
 
 #memory {
-  color: @text-alternate;
 }
 
 #network {
-  color: @text-alternate;
   min-width: 256px;
 }
 
 #clock {
-  color: @text;
   margin-left: 8px;
 }
 
 #custom-layout {
-  color: @primary;
   margin-left: 8px;
   min-width: 128px;
 }

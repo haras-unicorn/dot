@@ -34,24 +34,6 @@ in
         })
     ];
 
-    programs.waybar.style = ''
-      @import "${config.xdg.configHome}/waybar/colors.css";
-
-      * {
-        font-family: '${config.dot.font.sans.name}';
-        font-size: ${builtins.toString config.dot.font.size.large}pt;
-      }
-
-      ${builtins.readFile ./style.css}
-    '';
-
-    xdg.configFile."waybar/colors.css".text = ''
-      @define-color transparent ${bootstrap.background.normal.rgba 0.4};
-      @define-color text ${bootstrap.text.normal.hex};
-      @define-color text-alternate ${bootstrap.text.alternate.hex};
-      @define-color primary ${bootstrap.primary.normal.hex};
-      @define-color secondary ${bootstrap.secondary.normal.hex};
-      @define-color accent ${bootstrap.accent.normal.hex};
-    '';
+    programs.waybar.style = builtins.readFile ./style.css;
   };
 }
