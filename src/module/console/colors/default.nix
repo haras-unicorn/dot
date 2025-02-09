@@ -1,8 +1,5 @@
 { pkgs, config, ... }:
 
-let
-  terminal = config.dot.colors.terminal;
-in
 {
   config = {
     shell.sessionVariables = {
@@ -13,16 +10,16 @@ in
   home = {
     xdg.configFile."vivid/themes/colors.yaml".text = ''
       colors:
-        black: "${terminal.black.normal.vivid}"
-        green: "${terminal.green.normal.vivid}"
-        purple: "${terminal.magenta.normal.vivid}"
-        red: "${terminal.red.normal.vivid}"
-        yellow: "${terminal.brightYellow.normal.vivid}"
-        cyan: "${terminal.cyan.normal.vivid}"
-        pink: "${terminal.brightMagenta.normal.vivid}"
-        orange: "${terminal.yellow.normal.vivid}"
-        white: "${terminal.brightWhite.normal.vivid}"
-        base01: "${terminal.white.normal.vivid}"
+        black: "${config.lib.stylix.colors.black}"
+        green: "${config.lib.stylix.colors.green}"
+        purple: "${config.lib.stylix.colors.purple}"
+        red: "${config.lib.stylix.colors.red}"
+        yellow: "${config.lib.stylix.colors.yellow}"
+        cyan: "${config.lib.stylix.colors.cyan}"
+        pink: "${config.lib.stylix.colors.pink}"
+        orange: "${config.lib.stylix.colors.orange}"
+        white: "${config.lib.stylix.colors.white}"
+        base01: "${config.lib.stylix.colors.base01}"
 
       ${builtins.readFile ./colors.yaml}
     '';

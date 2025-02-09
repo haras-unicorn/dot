@@ -67,21 +67,7 @@ let
   colors = transformColors original;
 in
 {
-  options = {
-    colors = lib.mkOption {
-      default = { };
-    };
-  };
-
-  config = {
-    inherit colors;
-  };
-
   home = {
-    home.packages = [ tint-gear.packages."${system}".default ];
-
-    xdg.configFile."tint-gear/colors.json".text = builtins.toJSON original;
-
     stylix.enable = true;
     stylix.image = config.dot.wallpaper;
     stylix.polarity = "dark";
