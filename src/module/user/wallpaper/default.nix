@@ -38,7 +38,7 @@ in
   };
 
   home = {
-    stylix.targets.hyprpaper.enable = false;
+    stylix.targets.hyprpaper.enable = lib.mkForce false;
     home.packages = lib.mkMerge [
       (lib.mkIf (hasMonitor && hasWayland) [ setWallpaperWayland ])
       (lib.mkIf (hasMonitor && !hasWayland) [ setWallpaperXorg ])
