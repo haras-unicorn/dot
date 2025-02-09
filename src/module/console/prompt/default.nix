@@ -41,7 +41,7 @@ in
       $localip\
       [\\)](bold fg:${colors.cyan}) \
 
-      [using](italic fg:${colors.white}) $shlvl$shell \
+      [using](italic fg:${colors.base00}) $shlvl$shell \
       [\\(](bold fg:${colors.cyan}) \
       $aws\
       $azure\
@@ -68,7 +68,7 @@ in
 
       [│](bold fg:${colors.cyan}) \
 
-      [in](italic fg:${colors.white}) $directory\
+      [in](italic fg:${colors.base00}) $directory\
 
       $package\
       [\\[](bold fg:${colors.cyan}) \
@@ -146,7 +146,7 @@ in
       format = "[$symbol]($style)"
       symbol = ""
       repeat = true
-      style = "bold fg:${colors.white}"
+      style = "bold fg:${colors.base00}"
       disabled = false
 
       [aws]
@@ -242,13 +242,13 @@ in
       symbol = " "
 
       [time]
-      format = "[at](italic fg:${colors.white}) [$time]($style) "
+      format = "[at](italic fg:${colors.base00}) [$time]($style) "
       style = "bold fg:${colors.blue}"
       disabled = false
 
       [cmd_duration]
       min_time = 1
-      format = "[took](italic fg:${colors.white}) [$duration]($style)"
+      format = "[took](italic fg:${colors.base00}) [$duration]($style)"
       disabled = false
       style = "underline bold fg:${colors.blue}"
 
@@ -271,18 +271,18 @@ in
       format = "[$symbol$version]($style) "
 
       [directory]
-      style = "bold fg:${colors.white}"
+      style = "bold fg:${colors.base00}"
       read_only = " "
       truncation_length = 3
       truncate_to_repo = true
 
       [git_branch]
-      format = "[on](italic fg:${colors.white}) [$symbol $branch]($style)"
+      format = "[on](italic fg:${colors.base00}) [$symbol $branch]($style)"
       style = "bold fg:${colors.blue}"
       symbol = ""
 
       [hg_branch]
-      format = "[on](italic fg:${colors.white}) [$symbol $branch]($style)"
+      format = "[on](italic fg:${colors.base00}) [$symbol $branch]($style)"
       style = "bold fg:${colors.blue}"
       symbol = ""
 
