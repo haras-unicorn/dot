@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ config, lib, ... }:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -6,11 +6,8 @@ let
 in
 {
   home = lib.mkIf (hasMonitor && hasKeyboard) {
-    home.packages = [
-      pkgs.zed-editor
-    ];
-
-    xdg.configFile."zed/settings.json".text = builtins.toJSON {
+    programs.zed-editor.enable = true;
+    programs.zed-editor.userSettings = {
       autosave = "on_window_change";
       vim_mode = true;
       load_direnv = "direct";
