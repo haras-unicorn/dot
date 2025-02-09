@@ -18,7 +18,6 @@
         yellow: "${config.lib.stylix.colors.yellow}"
         cyan: "${config.lib.stylix.colors.cyan}"
         brown: "${config.lib.stylix.colors.brown}"
-        white: "${config.lib.stylix.colors.base08}"
 
       ${builtins.readFile ./colors.yaml}
     '';

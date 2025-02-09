@@ -1,9 +1,9 @@
 core:
   normal_text:
-    foreground: white
+    foreground: yellow
 
   regular_file:
-    foreground: white
+    foreground: yellow
 
   reset_to_normal:
     foreground: brown
@@ -50,7 +50,7 @@ core:
     background: black
 
   setuid:
-    foreground: white
+    foreground: yellow
     background: red
 
   setgid:
@@ -68,7 +68,7 @@ core:
     background: green
 
   sticky:
-    foreground: white
+    foreground: yellow
     background: magenta
 
   executable_file:
@@ -125,4 +125,4 @@ executable:
   foreground: green
 
 unimportant:
-  foreground: white
+  foreground: yellow
