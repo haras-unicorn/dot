@@ -34,37 +34,36 @@ let
       case "$COMMAND" in
         create)
           if [ -z "$NAME" ]; then
-              echo "Error: No script name provided."
-              echo "$USAGE"
-              exit 1
+            echo "Error: No script name provided."
+            echo "$USAGE"
+            exit 1
           fi
 
-          if [ -f "$SCRIPT_PATH" ]; then
-              echo "Error: Script '$NAME' already exists."
-              exit 1
+          if [ ! -f "$SCRIPT_PATH" ]; then
+            mkdir -p "$REF_DIR"
+            touch "$SCRIPT_PATH"
+            chmod +x "$SCRIPT_PATH"
+
+            echo "#!/usr/bin/env nu" > "$SCRIPT_PATH"
+            echo "" >> "$SCRIPT_PATH"
+            echo "def main [repo: string] {" >> "$SCRIPT_PATH"
+            echo "}" >> "$SCRIPT_PATH"
+
+            exit 1
           fi
-
-          mkdir -p "$REF_DIR"
-          touch "$SCRIPT_PATH"
-          chmod +x "$SCRIPT_PATH"
-
-          echo "#!/usr/bin/env nu" > "$SCRIPT_PATH"
-          echo "" >> "$SCRIPT_PATH"
-          echo "def main [repo: string] {" >> "$SCRIPT_PATH"
-          echo "}" >> "$SCRIPT_PATH"
 
           "''${EDITOR}" "$SCRIPT_PATH"
           ;;
         apply)
           if [ -z "$NAME" ]; then
-              echo "Error: No script name provided."
-              echo "$USAGE"
-              exit 1
+            echo "Error: No script name provided."
+            echo "$USAGE"
+            exit 1
           fi
 
           if [ ! -f "$SCRIPT_PATH" ]; then
-              echo "Error: Script '$NAME' does not exist."
-              exit 1
+            echo "Error: Script '$NAME' does not exist."
+            exit 1
           fi
 
           echo "Applying refactor script: $SCRIPT_PATH"
