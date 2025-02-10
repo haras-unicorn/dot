@@ -44,10 +44,12 @@ let
             touch "$SCRIPT_PATH"
             chmod +x "$SCRIPT_PATH"
 
-            echo "#!/usr/bin/env nu" > "$SCRIPT_PATH"
-            echo "" >> "$SCRIPT_PATH"
-            echo "def main [repo: string] {" >> "$SCRIPT_PATH"
-            echo "}" >> "$SCRIPT_PATH"
+            {
+              echo "#!/usr/bin/env nu"
+              echo ""
+              echo "def main [repo: string] {"
+              echo "}"
+            } > "$SCRIPT_PATH"
 
             exit 1
           fi
