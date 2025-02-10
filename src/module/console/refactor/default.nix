@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 
+# FIXME: tree-sitter not finding grammars
+
 let
   refactor = pkgs.writeShellApplication {
     name = "refactor";
@@ -90,6 +92,7 @@ in
         (pkgs.tree-sitter.withPlugins (p: builtins.attrValues p))
       ];
     };
+
     home.packages = [
       refactor
       pkgs.rnr
