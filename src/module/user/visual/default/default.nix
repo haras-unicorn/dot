@@ -64,7 +64,7 @@ in
 
       # ai
       supermaven.supermaven
-      continue.continue
+      # continue.continue
 
       # nix
       bbenoist.nix
@@ -74,7 +74,7 @@ in
       rust-lang.rust-analyzer
 
       # csharp
-      # ms-dotnettools.vscode-dotnet-runtime
+      ms-dotnettools.vscode-dotnet-runtime
       selcukermaya.se-csproj-extensions
       pkgs.open-vsx.muhammad-sammy.csharp
       # pkgs.vscode-extensions.ms-dotnettools.csdevkit

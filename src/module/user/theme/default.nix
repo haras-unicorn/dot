@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ stylix, config, pkgs, lib, system, ... }:
 
 # TODO: https://github.com/danth/stylix/pull/847
 
@@ -32,6 +32,7 @@ in
   home = lib.mkIf hasMonitor {
     home.packages = [
       inspect-gtk
+      stylix.packages.${system}.palette-generator
     ];
 
     stylix.enable = true;
