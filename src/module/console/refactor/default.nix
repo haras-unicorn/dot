@@ -91,6 +91,7 @@ in
       pkgs.fastmod
       pkgs.ast-grep
       pkgs.tree-sitter
+      pkgs.mo
       (pkgs.rustPlatform.buildRustPackage (
         let
           version = "1.3.0";
