@@ -47,87 +47,86 @@ in
     programs.vscode.enableExtensionUpdateCheck = false;
     programs.vscode.enableUpdateCheck = false;
     programs.vscode.mutableExtensionsDir = false;
-    programs.vscode.extensions = (with pkgs.vscode-marketplace; [
+    programs.vscode.extensions = [
       # keybindings
       # jasew.vscode-helix-emulation
-      vscodevim.vim
+      pkgs.vscode-marketplace.vscodevim.vim
 
       # ui
-      usernamehw.errorlens
-      wayou.vscode-todo-highlight
-      naumovs.color-highlight
-      ast-grep.ast-grep-vscode
+      pkgs.vscode-marketplace.usernamehw.errorlens
+      pkgs.vscode-marketplace.wayou.vscode-todo-highlight
+      pkgs.vscode-marketplace.naumovs.color-highlight
+      pkgs.vscode-marketplace.ast-grep.ast-grep-vscode
 
       # theme
-      akamud.vscode-theme-onedark
-      pkief.material-icon-theme
+      pkgs.vscode-marketplace.material-icon-theme
 
       # ai
-      supermaven.supermaven
-      # continue.continue
+      pkgs.vscode-marketplace.supermaven.supermaven
+      # pkgs.vscode-marketplace.continue.continue
 
       # nix
-      bbenoist.nix
+      pkgs.vscode-marketplace.bbenoist.nix
 
       # rust
       pkgs.vscode-extensions.vadimcn.vscode-lldb
-      rust-lang.rust-analyzer
+      pkgs.vscode-marketplace.rust-lang.rust-analyzer
 
       # csharp
-      ms-dotnettools.vscode-dotnet-runtime
-      selcukermaya.se-csproj-extensions
+      pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-runtime
+      pkgs.vscode-marketplace.selcukermaya.se-csproj-extensions
       pkgs.open-vsx.muhammad-sammy.csharp
       # pkgs.vscode-extensions.ms-dotnettools.csdevkit
       # pkgs.vscode-extensions.ms-dotnettools.csharp
 
       # python
-      charliermarsh.ruff
-      eeyore.yapf
-      ms-pyright.pyright
-      ms-python.debugpy
-      ms-python.python
-      # ms-toolsai.jupyter
+      pkgs.vscode-marketplace.charliermarsh.ruff
+      pkgs.vscode-marketplace.eeyore.yapf
+      pkgs.vscode-marketplace.ms-pyright.pyright
+      pkgs.vscode-marketplace.ms-python.debugpy
+      pkgs.vscode-marketplace.ms-python.python
+      # pkgs.vscode-marketplace.ms-toolsai.jupyter
 
       # shell
-      bmalehorn.shell-syntax
-      foxundermoon.shell-format
-      ms-vscode.powershell
-      thenuprojectcontributors.vscode-nushell-lang
-      timonwong.shellcheck
+      pkgs.vscode-marketplace.bmalehorn.shell-syntax
+      pkgs.vscode-marketplace.foxundermoon.shell-format
+      pkgs.vscode-marketplace.ms-vscode.powershell
+      pkgs.vscode-marketplace.thenuprojectcontributors.vscode-nushell-lang
+      pkgs.vscode-marketplace.timonwong.shellcheck
 
       # markdown
-      shd101wyy.markdown-preview-enhanced
-      davidanson.vscode-markdownlint
-      unifiedjs.vscode-mdx
-      esbenp.prettier-vscode
+      pkgs.vscode-marketplace.shd101wyy.markdown-preview-enhanced
+      pkgs.vscode-marketplace.davidanson.vscode-markdownlint
+      pkgs.vscode-marketplace.unifiedjs.vscode-mdx
+      pkgs.vscode-marketplace.esbenp.prettier-vscode
 
       # web
-      # gamunu.vscode-yarn
-      # arcanis.vscode-zipfs
-      # dbaeumer.vscode-eslint
-      # graphql.vscode-graphql
-      # graphql.vscode-graphql-syntax
-      # meganrogge.template-string-converter
-      # sissel.shopify-liquid
-      # styled-components.vscode-styled-components
-      # stylelint.vscode-stylelint
+      # pkgs.vscode-marketplace.gamunu.vscode-yarn
+      # pkgs.vscode-marketplace.arcanis.vscode-zipfs
+      # pkgs.vscode-marketplace.dbaeumer.vscode-eslint
+      # pkgs.vscode-marketplace.graphql.vscode-graphql
+      # pkgs.vscode-marketplace.graphql.vscode-graphql-syntax
+      # pkgs.vscode-marketplace.meganrogge.template-string-converter
+      # pkgs.vscode-marketplace.sissel.shopify-liquid
+      # pkgs.vscode-marketplace.styled-components.vscode-styled-components
+      # pkgs.vscode-marketplace.stylelint.vscode-stylelint
 
       # content
-      ctcuff.font-preview
-      davidwang.ini-for-vscode
-      codezombiech.gitignore
-      editorconfig.editorconfig
-      emilast.logfilehighlighter
-      jock.svg
-      ms-vscode.hexeditor
-      redhat.vscode-yaml
-      skellock.just
-      tamasfe.even-better-toml
-      tomoki1207.pdf
+      pkgs.vscode-marketplace.ctcuff.font-preview
+      pkgs.vscode-marketplace.davidwang.ini-for-vscode
+      pkgs.vscode-marketplace.codezombiech.gitignore
+      pkgs.vscode-marketplace.editorconfig.editorconfig
+      pkgs.vscode-marketplace.emilast.logfilehighlighter
+      pkgs.vscode-marketplace.jock.svg
+      pkgs.vscode-marketplace.ms-vscode.hexeditor
+      pkgs.vscode-marketplace.redhat.vscode-yaml
+      pkgs.vscode-marketplace.skellock.just
+      pkgs.vscode-marketplace.tamasfe.even-better-toml
+      pkgs.vscode-marketplace.tomoki1207.pdf
 
       # spelling
-      streetsidesoftware.code-spell-checker
-      streetsidesoftware.code-spell-checker-croatian
-    ]);
+      pkgs.vscode-marketplace.streetsidesoftware.code-spell-checker
+      pkgs.vscode-marketplace.streetsidesoftware.code-spell-checker-croatian
+    ];
   };
 }
