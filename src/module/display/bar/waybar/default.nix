@@ -4,8 +4,6 @@
 # TODO: switch-layout, current-layout and logout should be through nix
 
 let
-  bootstrap = config.dot.colors.bootstrap;
-
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 in
@@ -25,9 +23,6 @@ in
         {
           output = config.dot.hardware.monitor.main;
           network = { interface = config.dot.hardware.network.interface; };
-          tray = {
-            icon-size = config.dot.font.size.large;
-          };
           temperature = {
             hwmon-path = config.dot.hardware.temp;
           };
