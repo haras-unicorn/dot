@@ -75,12 +75,11 @@ in
       # csharp
       pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-runtime
       pkgs.vscode-marketplace.selcukermaya.se-csproj-extensions
-      pkgs.open-vsx.muhammad-sammy.csharp.overrideAttrs
-      (final: prev: {
+      (pkgs.open-vsx.muhammad-sammy.csharp.overrideAttrs (final: prev: {
         postPatch = (prev.postPatch or "") ++ ''
           mv $out/.razor $out/.razoromnisharp
         '';
-      })
+      }))
       # pkgs.vscode-extensions.ms-dotnettools.csdevkit
       # pkgs.vscode-extensions.ms-dotnettools.csharp
 
