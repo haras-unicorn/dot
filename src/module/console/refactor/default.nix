@@ -90,7 +90,10 @@ in
       pkgs.rnr
       pkgs.fastmod
       pkgs.ast-grep
-      (pkgs.tree-sitter.withPlugins (p: builtins.attrValues p))
+      (pkgs.tree-sitter.override {
+        extraGrammars = pkgs.tree-sitter.withPlugins
+          (p: builtins.attrValues p);
+      })
       pkgs.mo
       (pkgs.rustPlatform.buildRustPackage (
         let
