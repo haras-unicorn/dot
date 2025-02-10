@@ -63,8 +63,8 @@ in
 
     programs.wlogout.style = ''
       * {
-        font-family: '${config.dot.font.sans.name}';
-        font-size: ${builtins.toString config.dot.font.size.large}pt;
+        font-family: '${config.stylix.fonts.sansSerif.name}';
+        font-size: ${builtins.toString config.stylix.fonts.sizes.desktop}pt;
       }
 
       #lock {
