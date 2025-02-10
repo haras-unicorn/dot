@@ -9,7 +9,7 @@
 # TODO: extensions in projects
 
 let
-  package = config.unstablePkgs.vscodium.override {
+  package = pkgs.vscode.override {
     commandLineArgs = self.lib.chromium.args;
   };
 
