@@ -77,6 +77,7 @@ in
       pkgs.vscode-marketplace.selcukermaya.se-csproj-extensions
       (pkgs.open-vsx.muhammad-sammy.csharp.overrideAttrs (final: prev: {
         postPatch = (prev.postPatch or "") + ''
+          ls $out
           mv $out/.razor $out/.razoromnisharp
         '';
       }))
