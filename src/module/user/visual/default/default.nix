@@ -59,7 +59,7 @@ in
       pkgs.vscode-marketplace.ast-grep.ast-grep-vscode
 
       # theme
-      pkgs.vscode-marketplace.material-icon-theme
+      pkgs.vscode-marketplace.pkief.material-icon-theme
 
       # ai
       pkgs.vscode-marketplace.supermaven.supermaven
