@@ -90,7 +90,7 @@ in
       pkgs.rnr
       pkgs.fastmod
       pkgs.ast-grep
-      pkgs.tree-sitter
+      (pkgs.tree-sitter.withPlugins (p: p.allGrammars))
       pkgs.mo
       (pkgs.rustPlatform.buildRustPackage (
         let
