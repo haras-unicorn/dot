@@ -85,15 +85,17 @@ let
 in
 {
   home = {
+    xdg.configFile."tree-sitter/config.json".text = builtins.toJSON {
+      "parser-directories" = [
+        (pkgs.tree-sitter.withPlugins (p: builtins.attrValues p))
+      ];
+    };
     home.packages = [
       refactor
       pkgs.rnr
       pkgs.fastmod
       pkgs.ast-grep
-      (pkgs.tree-sitter.override {
-        extraGrammars = pkgs.tree-sitter.withPlugins
-          (p: builtins.attrValues p);
-      })
+      pkgs.tree-sitter
       pkgs.mo
       (pkgs.rustPlatform.buildRustPackage (
         let
