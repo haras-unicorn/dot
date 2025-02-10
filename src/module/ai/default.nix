@@ -312,6 +312,7 @@ in
       ollamaAlternativeApp
     ]) ++ (lib.optionals hasSound [
       speak
+      pkgs.tts
     ]);
 
     xdg.desktopEntries = lib.mkIf (hasAnyPlatform && hasMonitor) {
