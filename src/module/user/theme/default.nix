@@ -41,6 +41,10 @@ in
     stylix.polarity = "dark";
     stylix.fonts.monospace.name = "JetBrainsMono Nerd Font";
     stylix.fonts.monospace.package = config.unstablePkgs.nerd-fonts.jetbrains-mono;
+    stylix.fonts.sansSerif.name = "Roboto";
+    stylix.fonts.sansSerif.package = pkgs.roboto;
+    stylix.fonts.serif.name = "Roboto Serif";
+    stylix.fonts.serif.package = pkgs.roboto-serif;
     stylix.cursor.package = pkgs.pokemon-cursor;
     stylix.cursor.name = "Pokemon";
     stylix.iconTheme.enable = true;
