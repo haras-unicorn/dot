@@ -6,12 +6,10 @@
 , ...
 }:
 
-# FIXME: conflicts with stylix
 # TODO: extensions in projects
-# TODO: vscodium
 
 let
-  package = config.unstablePkgs.vscode.override {
+  package = config.unstablePkgs.vscodium.override {
     commandLineArgs = self.lib.chromium.args;
   };
 
@@ -29,12 +27,6 @@ in
 
     programs.vscode.keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
     programs.vscode.userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {
-      # "editor.fontFamily" = ''"${config.dot.font.nerd.name}"'';
-      # "debug.console.fontFamily" = ''"${config.dot.font.nerd.name}"'';
-      # "terminal.integrated.fontFamily" = ''"${config.dot.font.nerd.name}"'';
-      # "editor.fontSize" = config.dot.font.size.medium + 1;
-      # "debug.console.fontSize" = config.dot.font.size.small + 1;
-      # "terminal.integrated.fontSize" = config.dot.font.size.small + 1;
       "terminal.external.linuxExec" = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
       "terminal.integrated.profiles.linux" = {
         "${config.dot.shell.bin}" = {
@@ -49,7 +41,6 @@ in
       "terminal.integrated.automationProfile.linux" = {
         "path" = "${pkgs.bashInteractive}/bin/bash";
       };
-      # "workbench.colorTheme" = "Atom One Dark";
       "workbench.iconTheme" = "material-icon-theme";
     };
 
@@ -83,10 +74,11 @@ in
       rust-lang.rust-analyzer
 
       # csharp
-      ms-dotnettools.vscode-dotnet-runtime
+      # ms-dotnettools.vscode-dotnet-runtime
       selcukermaya.se-csproj-extensions
-      pkgs.vscode-extensions.ms-dotnettools.csdevkit
-      pkgs.vscode-extensions.ms-dotnettools.csharp
+      pkgs.open-vsx.muhammad-sammy.csharp
+      # pkgs.vscode-extensions.ms-dotnettools.csdevkit
+      # pkgs.vscode-extensions.ms-dotnettools.csharp
 
       # python
       charliermarsh.ruff
@@ -136,11 +128,6 @@ in
       # spelling
       streetsidesoftware.code-spell-checker
       streetsidesoftware.code-spell-checker-croatian
-    ]) ++ (
-      # with pkgs.open-vsx; 
-      [
-        # csharp
-        # muhammad-sammy.csharp
-      ]);
+    ]);
   };
 }
