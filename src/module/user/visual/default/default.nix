@@ -75,9 +75,9 @@ in
       # csharp
       pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-runtime
       pkgs.vscode-marketplace.selcukermaya.se-csproj-extensions
-      pkgs.open-vsx.muhammad-sammy.csharp
-      # pkgs.vscode-extensions.ms-dotnettools.csdevkit
-      # pkgs.vscode-extensions.ms-dotnettools.csharp
+      # pkgs.open-vsx.muhammad-sammy.csharp
+      pkgs.vscode-extensions.ms-dotnettools.csdevkit
+      pkgs.vscode-extensions.ms-dotnettools.csharp
 
       # python
       pkgs.vscode-marketplace.charliermarsh.ruff
