@@ -7,6 +7,7 @@
 }:
 
 # TODO: extensions in projects
+# FIXME: shell-format making stuff hang forever
 
 let
   package = pkgs.vscode.override {
@@ -89,7 +90,7 @@ in
 
       # shell
       pkgs.vscode-marketplace.bmalehorn.shell-syntax
-      pkgs.vscode-marketplace.foxundermoon.shell-format
+      # pkgs.vscode-marketplace.foxundermoon.shell-format
       pkgs.vscode-marketplace.ms-vscode.powershell
       pkgs.vscode-marketplace.thenuprojectcontributors.vscode-nushell-lang
       pkgs.vscode-marketplace.timonwong.shellcheck
