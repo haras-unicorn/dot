@@ -4,11 +4,11 @@
 # TODO: switch-layout, current-layout and logout should be through nix
 
 let
-  bootstrap = config.dot.colors.bootstrap;
+  colors = config.lib.stylix.colors.withHashtag;
 
   package = pkgs.polybarFull;
 
-  fontSizePt = config.dot.font.size.large;
+  fontSizePt = config.stylix.fonts.sizes.desktop;
   fontSizePx = fontSizePt * config.dot.hardware.monitor.dpi / 72;
 
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -29,32 +29,32 @@ in
     services.polybar.settings = rec {
       nix = {
         width = "${builtins.toString (config.dot.hardware.monitor.width - 16)}px";
-        transparent = bootstrap.background.normal.ahex "44";
-        background = bootstrap.background.normal.hex;
-        background-alternate = bootstrap.background.alternate.hex;
-        background-inverted = bootstrap.background.inverted.hex;
-        text = bootstrap.text.normal.hex;
-        text-alternate = bootstrap.text.alternate.hex;
-        primary = bootstrap.primary.normal.hex;
-        secondary = bootstrap.secondary.normal.hex;
-        accent = bootstrap.accent.normal.hex;
-        danger = bootstrap.danger.normal.hex;
+        transparent = "#44${config.lib.stylix.colors.base00}";
+        background = colors.base00;
+        background-alternate = colors.base01;
+        background-inverted = colors.bae08;
+        text = colors.base09;
+        text-alternate = colors.base10;
+        primary = colors.base02;
+        secondary = colors.base03;
+        accent = colors.base06;
+        danger = colors.red;
         monitor = config.dot.hardware.monitor.main;
         network-interface = config.dot.hardware.network.interface;
         cpu-hwmon = config.dot.hardware.temp;
-        font = (builtins.toString config.dot.font.sans.name)
+        font = (builtins.toString config.stylix.fonts.sansSerif.name)
           + ":size="
           + (builtins.toString fontSizePt)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2 - 2))
           + "px";
-        font2 = (builtins.toString config.dot.font.nerd.name)
+        font2 = (builtins.toString config.stylix.fonts.nerd.name)
           + ":size="
           + (builtins.toString fontSizePt)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2 - 2))
           + "px";
-        font3 = (builtins.toString config.dot.font.emoji.name)
+        font3 = (builtins.toString config.stylix.fonts.emoji.name)
           + ":size="
           + (builtins.toString fontSizePt)
           + ";"
