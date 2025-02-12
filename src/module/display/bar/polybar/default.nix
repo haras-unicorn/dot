@@ -48,7 +48,7 @@ in
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2 - 2))
           + "px";
-        font2 = (builtins.toString config.stylix.fonts.nerd.name)
+        font2 = (builtins.toString config.stylix.fonts.monospace.name)
           + ":size="
           + (builtins.toString fontSizePt)
           + ";"
