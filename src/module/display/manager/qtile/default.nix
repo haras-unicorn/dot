@@ -8,7 +8,7 @@
 let
   cfg = config.dot.desktopEnvironment;
 
-  bootstrap = config.dot.colors.bootstrap;
+  colors = config.lib.stylix.colors.withHashtag;
 
   package = pkgs.qtile-unwrapped;
 
@@ -125,12 +125,12 @@ in
 
     xdg.configFile."qtile/config.py".text = ''
       colors = {
-        "background": "${bootstrap.background.normal.hex}",
-        "text": "${bootstrap.text.normal.hex}",
-        "danger": "${bootstrap.danger.normal.hex}",
-        "danger-alternate": "${bootstrap.danger.alternate.hex}",
-        "primary": "${bootstrap.primary.normal.hex}",
-        "accent": "${bootstrap.accent.normal.hex}"
+        "background": "${colors.base00}",
+        "text": "${colors.base08}",
+        "danger": "${colors.red}",
+        "danger-alternate": "${colors.brown}",
+        "primary": "${colors.base09}",
+        "accent": "${colors.base10}"
       }
 
       ${builtins.readFile ./config.py}
