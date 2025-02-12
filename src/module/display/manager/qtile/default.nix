@@ -9,6 +9,7 @@ let
   cfg = config.dot.desktopEnvironment;
 
   colors = config.lib.stylix.colors.withHashtag;
+  fonts = config.stylix.fonts;
 
   package = pkgs.qtile-unwrapped;
 
@@ -135,9 +136,9 @@ in
 
       ${builtins.readFile ./config.py}
 
-      widget_defaults["font"] = "${builtins.toString config.dot.font.sans.name}"
-      widget_defaults["fontsize"] = ${builtins.toString config.dot.font.size.medium}
-      widget_defaults["icon_size"] = ${builtins.toString config.dot.font.size.medium}
+      widget_defaults["font"] = "${fonts.sansSerif.name}"
+      widget_defaults["fontsize"] = ${fonts.sizes.desktop}
+      widget_defaults["icon_size"] = ${fonts.sizes.desktop}
 
       keys.append(
           Key(
