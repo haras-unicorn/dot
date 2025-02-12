@@ -65,7 +65,7 @@ let
                 "mod4"
               else if mod == "alt" then
                 "mod1"
-              else if mod == "crtl" then
+              else if mod == "ctrl" then
                 "control"
               else
                 mod)
