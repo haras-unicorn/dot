@@ -3,7 +3,7 @@
 # TODO: use window rules from dot config
 
 let
-  bootstrap = config.dot.colors.bootstrap;
+  colors = config.lib.stylix.colors.withHashtag;
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
@@ -22,7 +22,7 @@ in
     xdg.configFile."picom/picom.conf".text = ''
       ${builtins.readFile ./picom.conf}
 
-      shadow-color = "${bootstrap.background.normal.hex}";
+      shadow-color = "${colors.base00}";
     '';
   };
 }
