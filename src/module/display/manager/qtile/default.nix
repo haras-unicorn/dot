@@ -63,11 +63,12 @@ let
             (mod:
               if mod == "super" then
                 "mod4"
+              else if mod == "alt" then
+                "mod1"
+              else if mod == "crtl" then
+                "control"
               else
-                if mod == "alt" then
-                  "mod1"
-                else
-                  mod)
+                mod)
             bind.mods;
 
           modString =
