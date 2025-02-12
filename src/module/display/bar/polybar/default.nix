@@ -32,7 +32,7 @@ in
         transparent = "#44${config.lib.stylix.colors.base00}";
         background = colors.base00;
         background-alternate = colors.base01;
-        background-inverted = colors.bae08;
+        background-inverted = colors.base08;
         text = colors.base09;
         text-alternate = colors.base10;
         primary = colors.base02;
