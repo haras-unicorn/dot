@@ -137,8 +137,8 @@ in
       ${builtins.readFile ./config.py}
 
       widget_defaults["font"] = "${fonts.sansSerif.name}"
-      widget_defaults["fontsize"] = ${fonts.sizes.desktop}
-      widget_defaults["icon_size"] = ${fonts.sizes.desktop}
+      widget_defaults["fontsize"] = ${builtins.toString fonts.sizes.desktop}
+      widget_defaults["icon_size"] = ${builtins.toString fonts.sizes.desktop}
 
       keys.append(
           Key(
