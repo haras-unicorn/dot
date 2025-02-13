@@ -314,6 +314,7 @@ in
       ollamaAlternativeApp
     ]) ++ (lib.optionals hasSound [
       speak
+      pkgs.openai-whisper-cpp
     ]);
 
     xdg.desktopEntries = lib.mkIf (hasAnyPlatform && hasMonitor) {
