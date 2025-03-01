@@ -1,7 +1,6 @@
 { pkgs
 , config
 , lib
-, arkenfox-userjs
 , ...
 }:
 
@@ -17,6 +16,13 @@ let
     bin = "floorp";
     stylix = "floorp";
     home = "floorp";
+  };
+
+  arkenfox-userjs = lib.fetchFromGitHub {
+    owner = "arkenfox";
+    repo = "user.js";
+    rev = "v110.0";
+    sha256 = "";
   };
 in
 {

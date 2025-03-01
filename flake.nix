@@ -28,13 +28,6 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # TODO: with fetchurl
-    arkenfox-userjs.url = "github:arkenfox/user.js/refs/tags/v110.0";
-    arkenfox-userjs.flake = false;
-
-    tint-gear.url = "github:haras-unicorn/tint-gear";
-    tint-gear.inputs.nixpkgs.follows = "nixpkgs";
-
     nix-colors.url = "github:Misterio77/nix-colors";
 
     nix-comfyui.url = "github:haras-unicorn/nix-comfyui/dev";
