@@ -56,7 +56,7 @@ in
             pkgs.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
           ];
         };
-        alternarive = {
+        alternative = {
           name = "alternative";
           id = lib.mkForce 1;
           isDefault = lib.mkForce false;
