@@ -78,10 +78,20 @@ in
       ".mozilla/firefox/personal/user.js".text = ''
         ${builtins.readFile "${arkenfox-userjs}/user.js"}
         ${builtins.readFile ./user-overrides.js}
+
+        ${if config.stylix.polarity == "dark" then ''
+        // Set dark theme same as stylix
+        user_pref("ui.systemUsesDarkTheme", 1);
+        '' else ""}
       '';
       ".mozilla/firefox/alternative/user.js".text = ''
         ${builtins.readFile "${arkenfox-userjs}/user.js"}
         ${builtins.readFile ./user-overrides.js}
+
+        ${if config.stylix.polarity == "dark" then ''
+        // Set dark theme same as stylix
+        user_pref("ui.systemUsesDarkTheme", 1);
+        '' else ""}
       '';
     };
 
