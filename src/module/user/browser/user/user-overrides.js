@@ -37,4 +37,4 @@ user_pref("privacy.resistFingerprinting.pbmode", false);
 user_pref("privacy.fingerprintingProtection", true);
 user_pref("privacy.fingerprintingProtection.pbmode", true);
 
-user_pref("privacy.fingerprintingProtection.overrides", "+AllTargets,-CSSPrefersColorScheme,-WebGLRenderCapability");
+user_pref("privacy.fingerprintingProtection.overrides", "+AllTargets,-CSSPrefersColorScheme,-WebGLRenderCapability,-CanvasRandomization");
