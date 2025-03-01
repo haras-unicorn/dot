@@ -5,7 +5,6 @@
 , ...
 }:
 
-# FIXME: openai login
 # FIXME: hardware acceleration
 # FIXME: duckduckgo - note that last time it was overwriting it
 # NOTE: https://github.com/arkenfox/user.js/wiki
@@ -13,19 +12,26 @@
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
+  fork = {
+    package = pkgs.floorp;
+    bin = "floorp";
+    stylix = "floorp";
+    home = "floorp";
+  };
 in
 {
   config = {
-    browser = { package = pkgs.librewolf; bin = "librewolf"; };
+    browser = { package = pkgs.${fork.package}; bin = fork.bin; };
   };
 
   home = lib.mkIf (hasMonitor) {
-    programs.firefox.enable = true;
-    programs.firefox.package = pkgs.librewolf;
+    programs.${fork.home}.enable = true;
+    programs.${fork.home}.package = fork.package;
 
-    stylix.targets.firefox.profileNames = [ "personal" ];
-    stylix.targets.firefox.firefoxGnomeTheme.enable = true;
-    programs.firefox.profiles = {
+    stylix.targets.${fork.stylix}.profileNames = [ "personal" ];
+    stylix.targets.${fork.stylix}.floorpGnomeTheme.enable = true;
+
+    programs.${fork.home}.profiles = {
       personal = {
         name = "personal";
         id = lib.mkForce 0;
@@ -49,19 +55,22 @@ in
         ];
       };
     };
-    home.file.".mozilla/firefox/personal/user.js".text = ''
-      ${builtins.readFile "${arkenfox-userjs}/user.js"}
-      ${builtins.readFile ./user-overrides.js}
-    '';
-    home.file.".mozilla/firefox/alternative/user.js".text = ''
-      ${builtins.readFile "${arkenfox-userjs}/user.js"}
-      ${builtins.readFile ./user-overrides.js}
-    '';
+
+    home.file = lib.mkIf fork.home == "firefox" {
+      ".mozilla/firefox/personal/user.js".text = ''
+        ${builtins.readFile "${arkenfox-userjs}/user.js"}
+        ${builtins.readFile ./user-overrides.js}
+      '';
+      ".mozilla/firefox/alternative/user.js".text = ''
+        ${builtins.readFile "${arkenfox-userjs}/user.js"}
+        ${builtins.readFile ./user-overrides.js}
+      '';
+    };
 
     xdg.desktopEntries = {
       myfooddata = {
         name = "My Food Data";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} -ssb --new-window https://myfooddata.com";
+        exec = "${fork.package}/bin/${fork.bin} -ssb --new-window https://myfooddata.com";
         terminal = false;
       };
     };
