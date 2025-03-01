@@ -18,17 +18,6 @@ let
     stylixGnomeTheme = "firefoxGnomeTheme";
     home = "firefox";
   };
-
-  baseUserJs = pkgs.fetchFromGitHub {
-    owner = "arkenfox";
-    repo = "user.js";
-    rev = "v110.0";
-    sha256 = "sha256-pPJH69y29aV1fc3lrlPl5pMLB5ntem+DcAR3rx3gvDE=";
-  };
-
-  userJs = ''
-    ${builtins.readFile ./user-overrides.js}
-  '';
 in
 {
   config = {
@@ -71,8 +60,8 @@ in
     };
 
     home.file = lib.mkIf (fork.home == "firefox") {
-      ".mozilla/firefox/personal/user.js".text = userJs;
-      ".mozilla/firefox/alternative/user.js".text = userJs;
+      ".mozilla/firefox/personal/user.js".source = ./user.js;
+      ".mozilla/firefox/alternative/user.js".source = ./user.js;
     };
 
     xdg.desktopEntries = {
