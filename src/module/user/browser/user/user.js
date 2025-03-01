@@ -26,8 +26,10 @@ user_pref("extensions.pocket.enabled", false);
 // disable the would you like to save the login credentials prompt
 user_pref("signon.rememberSignons", false);
 
-// disable welcomes
+// disable welcome
 user_pref("browser.startup.homepage_override.mstone", "ignore");
+
+// disable whats new
 user_pref("browser.messaging-system.whatsNewPanel.enabled", false);
 
 // default zoom
