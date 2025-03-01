@@ -38,6 +38,35 @@ user_pref("layout.css.devPixelsPerPx", "1.5");
 // disable default browser dialog
 user_pref("browser.shell.checkDefaultBrowser", false);
 
+// search suggestions
+user_pref("browser.search.suggest.enabled", true);
+user_pref("browser.urlbar.suggest.history", true);
+user_pref("browser.urlbar.suggest.searches", true);
+user_pref("browser.urlbar.suggest.recentsearches", true);
+user_pref("browser.urlbar.suggest.engines", true);
+user_pref("browser.urlbar.suggest.addons", false);
+user_pref("browser.urlbar.suggest.bookmark", false);
+user_pref("browser.urlbar.suggest.calculator", false);
+user_pref("browser.urlbar.suggest.clipboard", false);
+user_pref("browser.urlbar.suggest.fakespot", false);
+user_pref("browser.urlbar.suggest.mdn", false);
+user_pref("browser.urlbar.suggest.openpage", false);
+user_pref("browser.urlbar.suggest.pocket", false);
+user_pref("browser.urlbar.suggest.quickactions", false);
+user_pref("browser.urlbar.suggest.remotetab", false);
+user_pref("browser.urlbar.suggest.topsites", false);
+user_pref("browser.urlbar.suggest.trending", false);
+user_pref("browser.urlbar.suggest.weather", false);
+user_pref("browser.urlbar.suggest.yelp", false);
+
+// keep logins, history, site settings, cookies
+user_pref("privacy.clearOnShutdown.cookies", false);
+user_pref("privacy.clearOnShutdown.sessions", false);
+user_pref("privacy.clearOnShutdown.siteSettings", false);
+user_pref("privacy.clearOnShutdown_v2.cookiesAndStorage", false);
+user_pref("privacy.clearOnShutdown_v2.siteSettings", false);
+user_pref("privacy.clearOnShutdown.history", false);
+
 // ----------------------------------------------------------------------------
 // HARDENING
 // concerned with how certain protocols behave
@@ -203,8 +232,6 @@ user_pref("network.connectivity-service.enabled", false);
 // dont leak search stuff
 user_pref("keyword.enabled", false);
 user_pref("browser.fixup.alternate.enabled", false);
-user_pref("browser.search.suggest.enabled", false);
-user_pref("browser.urlbar.suggest.searches", false);
 user_pref("browser.urlbar.speculativeConnect.enabled", false);
 user_pref("browser.urlbar.dnsResolveSingleWordsAfterSearch", 0);
 user_pref("browser.urlbar.suggest.quicksuggest.nonsponsored", false);
@@ -218,7 +245,6 @@ user_pref("signon.formlessCapture.enabled", false);
 
 // disable disk cache
 user_pref("browser.privatebrowsing.forceMediaMemoryCache", true);
-user_pref("privacy.clearOnShutdown.cache", true);
 
 // tracking protection
 user_pref("browser.contentblocking.category", "strict");
@@ -236,8 +262,10 @@ user_pref("privacy.sanitize.sanitizeOnShutdown", true);
 user_pref("privacy.clearOnShutdown.cache", true);
 user_pref("privacy.clearOnShutdown.downloads", true);
 user_pref("privacy.clearOnShutdown.formdata", true);
-user_pref("privacy.clearOnShutdown.sessions", true);
+user_pref("privacy.clearOnShutdown.offlineApps", true);
 user_pref("privacy.clearOnShutdown.openWindows", true);
+user_pref("privacy.clearOnShutdown_v2.cache", true);
+user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", true);
 user_pref("privacy.clearsitedata.cache.enabled", true);
 user_pref("browser.helperApps.deleteTempFileOnExit", true);
 
