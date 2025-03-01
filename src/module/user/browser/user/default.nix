@@ -20,42 +20,15 @@ let
   };
 
   baseUserJs = pkgs.fetchFromGitHub {
-    owner = "pyllyukko";
+    owner = "arkenfox";
     repo = "user.js";
-    rev = "2fb67fb8485cdfbd1fe1b9543cf04c789b6e63a9";
-    sha256 = "sha256-g5zIPFUFrxOb09BnlJymzcZL8AiNe064JcJG8LMSdlI=";
+    rev = "v110.0";
+    sha256 = "sha256-pPJH69y29aV1fc3lrlPl5pMLB5ntem+DcAR3rx3gvDE=";
   };
 
   userJs = ''
     ${builtins.readFile "${baseUserJs}/user.js"}
     ${builtins.readFile ./user-overrides.js}
-
-    // set ui dark theme same as stylix
-    ${if config.stylix.polarity == "dark" then ''
-    user_pref("ui.systemUsesDarkTheme", 1);
-    '' else ''
-    user_pref("ui.systemUsesDarkTheme", 0);
-    ''}
-
-    // enable userContent.css
-    user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-  '';
-
-  userContentCss = ''
-    // set dark theme same as stylix
-    ${if config.stylix.polarity == "dark" then ''
-    @-moz-document url-prefix("http"), url-prefix("https") {
-      html {
-        color-scheme: dark !important;
-      }
-    }
-    '' else ''
-    @-moz-document url-prefix("http"), url-prefix("https") {
-      html {
-        color-scheme: light !important;
-      }
-    }
-    ''}
   '';
 in
 {
@@ -101,9 +74,6 @@ in
     home.file = lib.mkIf (fork.home == "firefox") {
       ".mozilla/firefox/personal/user.js".text = userJs;
       ".mozilla/firefox/alternative/user.js".text = userJs;
-
-      ".mozilla/firefox/personal/userContent.css".text = userContentCss;
-      ".mozilla/firefox/alternative/userContent.css".text = userContentCss;
     };
 
     xdg.desktopEntries = {
