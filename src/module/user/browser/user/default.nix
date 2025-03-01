@@ -22,7 +22,7 @@ let
   baseUserJs = pkgs.fetchFromGitHub {
     owner = "pyllyukko";
     repo = "user.js";
-    rev = "master";
+    rev = "2fb67fb8485cdfbd1fe1b9543cf04c789b6e63a9";
     sha256 = "";
   };
 
