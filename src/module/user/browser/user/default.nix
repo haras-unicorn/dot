@@ -15,6 +15,7 @@ let
     package = pkgs.floorp;
     bin = "floorp";
     stylix = "floorp";
+    stylixGnomeTheme = "firefoxGnomeTheme";
     home = "floorp";
   };
 
@@ -33,7 +34,7 @@ in
   home = lib.mkIf (hasMonitor) {
     stylix.targets.${fork.stylix} = {
       profileNames = [ "personal" ];
-      floorpGnomeTheme.enable = true;
+      ${fork.stylixGnomeTheme}.enable = true;
     };
 
     programs.${fork.home} = {
