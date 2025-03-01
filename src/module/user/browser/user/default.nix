@@ -16,12 +16,12 @@ let
 in
 {
   config = {
-    browser = { package = pkgs.firefox-bin; bin = "firefox"; };
+    browser = { package = pkgs.librewolf; bin = "librewolf"; };
   };
 
   home = lib.mkIf (hasMonitor) {
     programs.firefox.enable = true;
-    programs.firefox.package = pkgs.firefox-bin;
+    programs.firefox.package = pkgs.librewolf;
 
     stylix.targets.firefox.profileNames = [ "personal" ];
     stylix.targets.firefox.firefoxGnomeTheme.enable = true;
