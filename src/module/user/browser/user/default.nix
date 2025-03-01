@@ -12,11 +12,11 @@
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   fork = {
-    package = pkgs.floorp;
-    bin = "floorp";
-    stylix = "floorp";
+    package = pkgs.firefox;
+    bin = "firefox";
+    stylix = "firefox";
     stylixGnomeTheme = "firefoxGnomeTheme";
-    home = "floorp";
+    home = "firefox";
   };
 
   arkenfox-userjs = lib.fetchFromGitHub {
