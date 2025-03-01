@@ -28,3 +28,13 @@ user_pref("webgl.disabled", false);
 user_pref("gfx.webrender.all", true);
 user_pref("media.ffmpeg.vaapi.enabled", true);
 user_pref("media.hardware-video-decoding.force-enabled", true);
+
+// resistFingerprinting overrides fingerprintingProtection, so these must be disabled
+user_pref("privacy.resistFingerprinting", false);
+user_pref("privacy.resistFingerprinting.pbmode", false);
+
+// At least one of these two must be enabled
+user_pref("privacy.fingerprintingProtection", true);
+user_pref("privacy.fingerprintingProtection.pbmode", true);
+
+user_pref("privacy.fingerprintingProtection.overrides", "+AllTargets,-CSSPrefersColorScheme");
