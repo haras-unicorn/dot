@@ -25,6 +25,8 @@ user_pref("browser.download.useDownloadDir", true);
 
 // hardware acceleration
 user_pref("webgl.disabled", false);
+user_pref("webgl.enable-webgl2", true);
+user_pref("webgl.force-enabled", true);
 user_pref("gfx.webrender.all", true);
 user_pref("media.ffmpeg.vaapi.enabled", true);
 user_pref("media.hardware-video-decoding.force-enabled", true);

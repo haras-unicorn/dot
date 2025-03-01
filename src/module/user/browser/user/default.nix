@@ -27,7 +27,6 @@ let
   };
 
   userJs = ''
-    ${builtins.readFile "${baseUserJs}/user.js"}
     ${builtins.readFile ./user-overrides.js}
   '';
 in
