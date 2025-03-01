@@ -34,3 +34,6 @@ user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
 // enable single-site browser
 user_pref("browser.ssb.enabled", true);
+
+// enable using system colors
+user_pref("browser.display.use_system_colors", true);
