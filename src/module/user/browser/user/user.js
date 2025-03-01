@@ -23,16 +23,13 @@ user_pref("devtools.toolbox.host", "right");
 // remove pocket icon
 user_pref("extensions.pocket.enabled", false);
 
-// disable the would you like to save the login credentials prompt
-user_pref("signon.rememberSignons", false);
-
 // disable welcome
 user_pref("browser.startup.homepage_override.mstone", "ignore");
 
 // disable whats new
 user_pref("browser.messaging-system.whatsNewPanel.enabled", false);
 
-// default zoom
+// zoom
 user_pref("layout.css.devPixelsPerPx", "1.5");
 
 // disable default browser dialog
@@ -73,7 +70,7 @@ user_pref("privacy.clearOnShutdown.history", false);
 // if something breaks start by commenting out this entire section
 // ----------------------------------------------------------------------------
 
-// windows hardening
+// windows
 user_pref("security.family_safety.mode", 0);
 user_pref("network.http.windows-sso.enabled", false);
 user_pref("network.protocol-handler.external.ms-windows-store", false);
@@ -242,6 +239,7 @@ user_pref("browser.urlbar.showSearchTerms.enabled", false);
 user_pref("browser.formfill.enable", false);
 user_pref("signon.autofillForms", false);
 user_pref("signon.formlessCapture.enabled", false);
+user_pref("signon.rememberSignons", false);
 
 // disable disk cache
 user_pref("browser.privatebrowsing.forceMediaMemoryCache", true);
