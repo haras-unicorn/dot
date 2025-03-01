@@ -18,6 +18,17 @@ let
     stylixGnomeTheme = "firefoxGnomeTheme";
     home = "firefox";
   };
+
+  userjs = ''
+    ${builtins.readFile ./user.js}
+
+    // set ui dark theme same as stylix
+    ${if config.stylix.polarity == "dark" then ''
+    user_pref("ui.systemUsesDarkTheme", 1);
+    '' else ''
+    user_pref("ui.systemUsesDarkTheme", 0);
+    ''}
+  '';
 in
 {
   config = {
@@ -60,8 +71,8 @@ in
     };
 
     home.file = lib.mkIf (fork.home == "firefox") {
-      ".mozilla/firefox/personal/user.js".source = ./user.js;
-      ".mozilla/firefox/alternative/user.js".source = ./user.js;
+      ".mozilla/firefox/personal/user.js".text = userjs;
+      ".mozilla/firefox/alternative/user.js".text = userjs;
     };
 
     xdg.desktopEntries = {
