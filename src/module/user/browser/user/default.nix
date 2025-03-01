@@ -66,7 +66,7 @@ in
       };
     };
 
-    home.file = lib.mkIf fork.home == "firefox" {
+    home.file = lib.mkIf (fork.home == "firefox") {
       ".mozilla/firefox/personal/user.js".text = ''
         ${builtins.readFile "${arkenfox-userjs}/user.js"}
         ${builtins.readFile ./user-overrides.js}
