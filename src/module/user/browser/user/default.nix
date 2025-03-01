@@ -1,7 +1,6 @@
 { pkgs
 , config
 , lib
-, nixpkgs
 , ...
 }:
 
@@ -28,7 +27,7 @@ let
     home = "firefox";
   };
 
-  arkenfox-userjs = nixpkgs.fetchFromGitHub {
+  arkenfox-userjs = pkgs.fetchFromGitHub {
     owner = "arkenfox";
     repo = "user.js";
     rev = "v110.0";
