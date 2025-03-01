@@ -30,7 +30,7 @@ user_pref("browser.startup.homepage_override.mstone", "ignore");
 user_pref("browser.messaging-system.whatsNewPanel.enabled", false);
 
 // zoom
-user_pref("layout.css.devPixelsPerPx", "1.5");
+// user_pref("layout.css.devPixelsPerPx", "1.5");
 
 // disable default browser dialog
 user_pref("browser.shell.checkDefaultBrowser", false);
