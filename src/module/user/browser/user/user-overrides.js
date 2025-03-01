@@ -32,16 +32,17 @@ user_pref("media.hardware-video-decoding.force-enabled", true);
 // disable old resistFinerprinting for new fine-grained fingerprintingProtection
 user_pref("privacy.resistFingerprinting", false);
 user_pref("privacy.resistFingerprinting.pbmode", false);
-user_pref("privacy.fingerprintingProtection", true);
-user_pref("privacy.fingerprintingProtection.pbmode", true);
+// user_pref("privacy.fingerprintingProtection", true);
+// user_pref("privacy.fingerprintingProtection.pbmode", true);
 
-// enable fingerprinting protection overrides
-user_pref(
-  "privacy.fingerprintingProtection.overrides",
-  "+AllTargets"
-    // enable system color scheme detection
-    + ",-CSSPrefersColorScheme"
-    // enable gpu rendering
-    + ",-WebGLRenderCapability"
-    // disable canvas randomization
-    + ",-CanvasRandomization");
+// // enable fingerprinting protection overrides
+// user_pref(
+//   "privacy.fingerprintingProtection.overrides",
+//   "+AllTargets"
+//     // enable system color scheme detection
+//     + ",-CSSPrefersColorScheme"
+//     // enable gpu rendering
+//     + ",-WebGLRenderCapability"
+//     + ",-WebGLRenderInfo"
+//     // disable canvas randomization
+//     + ",-CanvasRandomization");
