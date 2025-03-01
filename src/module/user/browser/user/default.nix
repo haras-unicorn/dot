@@ -34,7 +34,7 @@ in
   home = lib.mkIf (hasMonitor) {
     stylix.targets.${fork.stylix} = {
       profileNames = [ "personal" ];
-      ${fork.stylixGnomeTheme}.enable = true;
+      ${fork.stylixGnomeTheme}.enable = fork.stylix != "floorp";
     };
 
     programs.${fork.home} = {
