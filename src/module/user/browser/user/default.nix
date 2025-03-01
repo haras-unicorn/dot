@@ -28,7 +28,7 @@ let
 in
 {
   config = {
-    browser = { package = pkgs.${fork.package}; bin = fork.bin; };
+    browser = { package = fork.package; bin = fork.bin; };
   };
 
   home = lib.mkIf (hasMonitor) {
@@ -45,7 +45,7 @@ in
           name = "personal";
           id = lib.mkForce 0;
           isDefault = lib.mkForce true;
-          extensions = [
+          extensions.packages = [
             pkgs.nur.repos.rycee.firefox-addons.ublock-origin
             pkgs.nur.repos.rycee.firefox-addons.darkreader
             pkgs.nur.repos.rycee.firefox-addons.vimium-c
@@ -56,7 +56,7 @@ in
           name = "alternative";
           id = lib.mkForce 1;
           isDefault = lib.mkForce false;
-          extensions = [
+          extensions.packages = [
             pkgs.nur.repos.rycee.firefox-addons.ublock-origin
             pkgs.nur.repos.rycee.firefox-addons.darkreader
             pkgs.nur.repos.rycee.firefox-addons.vimium-c
