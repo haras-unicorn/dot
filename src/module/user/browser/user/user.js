@@ -136,7 +136,6 @@ user_pref(
     + ",-CSSPrefersColorScheme"
     // enable gpu rendering
     + ",-WebGLRenderCapability"
-    + ",-WebGLRenderInfo"
     // disable canvas randomization
     + ",-CanvasRandomization");
 user_pref("browser.link.open_newwindow", 3);
