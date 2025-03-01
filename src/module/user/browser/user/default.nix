@@ -23,7 +23,7 @@ let
     owner = "pyllyukko";
     repo = "user.js";
     rev = "2fb67fb8485cdfbd1fe1b9543cf04c789b6e63a9";
-    sha256 = "";
+    sha256 = "sha256-g5zIPFUFrxOb09BnlJymzcZL8AiNe064JcJG8LMSdlI=";
   };
 
   userJs = ''
