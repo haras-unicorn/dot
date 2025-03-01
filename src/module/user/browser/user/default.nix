@@ -90,7 +90,7 @@ in
     xdg.desktopEntries = {
       myfooddata = {
         name = "My Food Data";
-        exec = "${fork.package}/bin/${fork.bin} -ssb --new-window https://myfooddata.com";
+        exec = "${fork.package}/bin/${fork.bin} --new-window https://myfooddata.com";
         terminal = false;
       };
     };
