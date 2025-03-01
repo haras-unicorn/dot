@@ -60,9 +60,10 @@ user_pref("browser.urlbar.suggest.yelp", false);
 user_pref("privacy.clearOnShutdown.cookies", false);
 user_pref("privacy.clearOnShutdown.sessions", false);
 user_pref("privacy.clearOnShutdown.siteSettings", false);
+user_pref("privacy.clearOnShutdown.history", false);
 user_pref("privacy.clearOnShutdown_v2.cookiesAndStorage", false);
 user_pref("privacy.clearOnShutdown_v2.siteSettings", false);
-user_pref("privacy.clearOnShutdown.history", false);
+user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", false);
 
 // ----------------------------------------------------------------------------
 // HARDENING
@@ -263,7 +264,6 @@ user_pref("privacy.clearOnShutdown.formdata", true);
 user_pref("privacy.clearOnShutdown.offlineApps", true);
 user_pref("privacy.clearOnShutdown.openWindows", true);
 user_pref("privacy.clearOnShutdown_v2.cache", true);
-user_pref("privacy.clearOnShutdown_v2.historyFormDataAndDownloads", true);
 user_pref("privacy.clearsitedata.cache.enabled", true);
 user_pref("browser.helperApps.deleteTempFileOnExit", true);
 
