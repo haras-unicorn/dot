@@ -41,7 +41,6 @@
     stylix.url = "github:danth/stylix/release-24.11";
     stylix.inputs.flake-utils.follows = "flake-utils";
     stylix.inputs.home-manager.follows = "home-manager";
-    stylix.inputs.nur.follows = "nur";
   };
 
   outputs =
