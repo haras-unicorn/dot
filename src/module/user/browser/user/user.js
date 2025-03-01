@@ -20,7 +20,7 @@ user_pref("toolkit.winRegisterApplicationRestart", false);
 // set devtools to right
 user_pref("devtools.toolbox.host", "right");
 
-// dumbass icon
+// remove pocket icon
 user_pref("extensions.pocket.enabled", false);
 
 // disable the would you like to save the login credentials prompt
