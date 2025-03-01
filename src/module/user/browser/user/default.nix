@@ -31,7 +31,7 @@ let
     owner = "arkenfox";
     repo = "user.js";
     rev = "v110.0";
-    sha256 = "";
+    sha256 = "sha256-pPJH69y29aV1fc3lrlPl5pMLB5ntem+DcAR3rx3gvDE=";
   };
 in
 {
