@@ -1,6 +1,7 @@
 { pkgs
 , config
 , lib
+, nixpkgs
 , ...
 }:
 
@@ -11,6 +12,14 @@
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
+
+  # fork = {
+  #   package = pkgs.floorp;
+  #   bin = "floorp";
+  #   stylix = "floorp";
+  #   stylixGnomeTheme = "firefoxGnomeTheme";
+  #   home = "floorp";
+  # };
   fork = {
     package = pkgs.firefox;
     bin = "firefox";
@@ -19,7 +28,7 @@ let
     home = "firefox";
   };
 
-  arkenfox-userjs = lib.fetchFromGitHub {
+  arkenfox-userjs = nixpkgs.fetchFromGitHub {
     owner = "arkenfox";
     repo = "user.js";
     rev = "v110.0";
