@@ -104,7 +104,7 @@ in
     desktopEnvironment.startup = "qtile";
   };
 
-  system = lib.mkIf (hasMonitor && !hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
     services.xserver.windowManager.qtile.enable = true;
     services.xserver.windowManager.qtile.package = package;
     services.xserver.windowManager.qtile.extraPackages =
@@ -113,7 +113,7 @@ in
       ];
   };
 
-  home = lib.mkIf (hasMonitor && !hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     home.packages = [
       switch-layout
       current-layout

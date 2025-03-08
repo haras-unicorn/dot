@@ -26,7 +26,7 @@ in
     };
   };
 
-  system = lib.mkIf (hasNetwork) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasNetwork) {
     systemd.services.mysql = {
       path = with pkgs; [
         bash

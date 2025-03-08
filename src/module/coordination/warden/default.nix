@@ -6,7 +6,7 @@ in
 {
   disabled = true;
 
-  system = lib.mkIf hasNetwork {
+  integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.vaultwarden.enable = true;
     users.users.vaultwarden.uid = 988;
     users.groups.vaultwarden.gid = 977;

@@ -7,7 +7,7 @@
     };
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     xdg.configFile."vivid/themes/colors.yaml".text = ''
       colors:
         black: "${config.lib.stylix.colors.base00}"

@@ -44,11 +44,11 @@ in
     ];
   };
 
-  system = lib.mkIf (hasMonitor && !hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
     services.xserver.enable = true;
   };
 
-  home = lib.mkIf (hasMonitor && !hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     home.packages = [
       pkgs.libsForQt5.qt5ct
 

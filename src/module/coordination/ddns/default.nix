@@ -13,7 +13,7 @@ in
     };
   };
 
-  system = lib.mkIf (hasNetwork && isCoordinator) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasNetwork && isCoordinator) {
     services.ddns-updater.enable = true;
     services.ddns-updater.environment = {
       CONFIG_FILEPATH = "/etc/ddns-updater/config.json";
@@ -40,7 +40,7 @@ in
     };
   };
 
-  home = lib.mkIf (hasNetwork && hasMonitor && isCoordinator) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor && isCoordinator) {
     xdg.desktopEntries = {
       ddns-updater = {
         name = "DDNS Updater";

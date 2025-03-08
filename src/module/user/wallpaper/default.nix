@@ -37,7 +37,7 @@ in
       ];
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     stylix.targets.hyprpaper.enable = lib.mkForce false;
     home.packages = lib.mkMerge [
       (lib.mkIf (hasMonitor && hasWayland) [ setWallpaperWayland ])

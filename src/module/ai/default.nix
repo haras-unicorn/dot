@@ -297,7 +297,7 @@ in
     ];
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     home.packages = (lib.optionals hasAnyPlatform [
       comfyui
       comfyuiAlternative

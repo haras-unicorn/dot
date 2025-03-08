@@ -13,7 +13,7 @@ in
     editor = { package = pkgs.helix; bin = "hx"; };
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     programs.helix.enable = true;
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);

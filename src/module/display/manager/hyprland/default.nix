@@ -72,7 +72,7 @@ in
     ];
   };
 
-  system = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
     programs.hyprland.enable = true;
     programs.hyprland.xwayland.enable = true;
     programs.hyprland.systemd.setPath.enable = true;
@@ -83,7 +83,7 @@ in
       };
   };
 
-  home = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 

@@ -5,7 +5,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  home = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     services.mako.enable = true;
     services.mako.extraConfig = ''
       width=512

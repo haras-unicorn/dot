@@ -7,13 +7,13 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  system = lib.mkIf hasNetwork {
+  integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
     networking.firewall.allowedTCPPorts = [
       8384
     ];
   };
 
-  home = lib.mkIf hasNetwork {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
     services.syncthing.enable = true;
     # services.syncthing.tray.enable = true;
 

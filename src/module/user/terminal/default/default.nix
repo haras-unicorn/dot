@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     home.packages = [
       # NOTE: install everywhere to enable full ssh compatibility
       pkgs.kitty

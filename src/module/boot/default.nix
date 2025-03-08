@@ -17,7 +17,7 @@ let
     && (version != "production"));
 in
 {
-  system = {
+  integrate.nixosModule.nixosModule = {
     boot.loader.efi.canTouchEfiVariables = false;
     boot.loader.grub.enable = !isRpi4;
     boot.loader.grub.device = "nodev";

@@ -28,7 +28,7 @@ in
     ];
   };
 
-  home = lib.mkIf hasSound {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasSound {
     home.packages = [
       pkgs.playerctl
     ];

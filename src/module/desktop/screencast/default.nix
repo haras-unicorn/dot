@@ -4,7 +4,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  home = lib.mkIf hasMonitor {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     programs.obs-studio.enable = true;
     programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
       wlrobs

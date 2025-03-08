@@ -48,7 +48,7 @@ in
     };
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     programs.nushell.enable = true;
 
     programs.nushell.environmentVariables = {

@@ -18,7 +18,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  home = lib.mkIf (hasMonitor && hasKeyboard) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard) {
     nixpkgs.overlays = [
       nix-vscode-extensions.overlays.default
     ];

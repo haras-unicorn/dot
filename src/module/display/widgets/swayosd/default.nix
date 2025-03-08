@@ -7,7 +7,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  system = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
     environment.systemPackages = [ pkgs.swayosd ];
     services.udev.packages = [ pkgs.swayosd ];
 
@@ -27,7 +27,7 @@ in
     };
   };
 
-  home = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     services.swayosd.enable = true;
     services.swayosd.display = config.dot.hardware.monitor.main;
   };

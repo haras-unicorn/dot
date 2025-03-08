@@ -42,7 +42,7 @@ in
     ];
   };
 
-  home = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     home.packages = [
       pkgs.keepmenu
       pkgs.wtype

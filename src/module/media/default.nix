@@ -70,7 +70,7 @@ let
   };
 in
 {
-  home = lib.mkIf config.dot.hardware.monitor.enable {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf config.dot.hardware.monitor.enable {
     home.packages = [
       pkgs.libreoffice-fresh
       pkgs.nomacs

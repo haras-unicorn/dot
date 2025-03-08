@@ -144,13 +144,13 @@ in
   };
 
   # NOTE: this is a clusterfuck anyway
-  system = {
+  integrate.nixosModule.nixosModule = {
     systemd.user.extraConfig = ''
       DefaultEnvironment="PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
     '';
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     home.packages = [
       pkgs.xdg-user-dirs
       pkgs.xdg-utils

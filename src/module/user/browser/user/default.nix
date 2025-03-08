@@ -16,7 +16,7 @@ let
     bin = "firefox";
     stylix = "firefox";
     stylixGnomeTheme = "firefoxGnomeTheme";
-    home = "firefox";
+    integrate.homeManagerModule.homeManagerModule = "firefox";
   };
 
   userjs = ''
@@ -35,7 +35,7 @@ in
     browser = { package = fork.package; bin = fork.bin; };
   };
 
-  home = lib.mkIf (hasMonitor) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor) {
     stylix.targets.${fork.stylix} = {
       profileNames = [ "personal" ];
       ${fork.stylixGnomeTheme}.enable = fork.stylix != "floorp";

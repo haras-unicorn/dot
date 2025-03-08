@@ -12,7 +12,7 @@ in
     };
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     home.packages = [
       pkgs.mommy
     ];

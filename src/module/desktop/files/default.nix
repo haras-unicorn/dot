@@ -18,11 +18,11 @@ in
     }];
   };
 
-  system = lib.mkIf hasMonitor {
+  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
     services.gvfs.enable = true;
   };
 
-  home = lib.mkIf hasMonitor {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [ pkgs.pcmanfm ];
 
     xdg.mimeApps.associations.added = mime;

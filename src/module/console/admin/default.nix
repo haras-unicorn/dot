@@ -3,7 +3,7 @@
 # TODO: please or doas
 
 {
-  system = {
+  integrate.nixosModule.nixosModule = {
     security.sudo.package = pkgs.sudo.override { withInsults = true; };
   };
 }

@@ -11,13 +11,13 @@ in
     };
   };
 
-  system = lib.mkIf hasMonitor {
+  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
     environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 
     programs.dconf.enable = true;
   };
 
-  home = lib.mkIf hasMonitor {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [
       pkgs.libnotify
     ];

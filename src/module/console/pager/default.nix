@@ -7,7 +7,7 @@
     };
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     home.sessionVariables = {
       PAGER = "${pkgs.bat}/bin/bat";
     };

@@ -18,7 +18,7 @@ in
     }];
   };
 
-  system = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.steam.package = pkgs.steam.override {
       extraEnv = {
         MANGOHUD = "1";
@@ -38,7 +38,7 @@ in
     programs.gamemode.enable = true;
   };
 
-  home = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.mangohud.enable = true;
 
     systemd.user.services.steam = {

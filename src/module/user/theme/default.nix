@@ -29,7 +29,7 @@ let
     '';
 in
 {
-  home = lib.mkIf hasMonitor {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [
       inspect-gtk
       stylix.packages.${system}.palette-generator

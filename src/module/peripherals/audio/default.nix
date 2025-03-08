@@ -17,7 +17,7 @@ in
     }];
   };
 
-  system = {
+  integrate.nixosModule.nixosModule = {
     imports = [ musnix.nixosModules.musnix ];
 
     config = lib.mkIf hasSound {
@@ -41,7 +41,7 @@ in
     };
   };
 
-  home = lib.mkIf (hasSound && hasMonitor) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasSound && hasMonitor) {
     home.packages = [
       pkgs.pwvucontrol
       pkgs.easyeffects

@@ -29,7 +29,7 @@ in
     };
   };
 
-  system = lib.mkIf hasNetwork {
+  integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
     # NOTE: these values are not used but nix evaluates them
     services.nebula.networks.nebula = {
       enable = true;

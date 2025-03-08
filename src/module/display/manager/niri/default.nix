@@ -83,7 +83,7 @@ in
     desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
   };
 
-  home = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 

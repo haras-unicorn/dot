@@ -7,7 +7,7 @@
     };
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     home.packages = [
       pkgs.delta
     ];

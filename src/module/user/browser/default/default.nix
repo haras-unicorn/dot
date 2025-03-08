@@ -8,7 +8,7 @@ let
   package = self.lib.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
 in
 {
-  home = lib.mkIf hasMonitor {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     programs.chromium.enable = true;
     programs.chromium.package = package;
     programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [

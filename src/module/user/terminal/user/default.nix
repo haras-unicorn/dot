@@ -20,7 +20,7 @@ in
     terminal = { package = pkgs.kitty; bin = "kitty"; };
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     stylix.targets.kitty.variant256Colors = true;
     programs.kitty.enable = true;
     programs.kitty.extraConfig = lib.mkIf (hasKeyboard && hasMonitor) ''

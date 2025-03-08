@@ -6,7 +6,7 @@ let
   hasNetwork = config.dot.hardware.network.enable;
 in
 {
-  system = lib.mkIf hasNetwork {
+  integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.openssh.enable = true;
     services.openssh.allowSFTP = true;
     services.openssh.settings.PermitRootLogin = "no";

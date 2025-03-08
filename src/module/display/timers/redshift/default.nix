@@ -5,12 +5,12 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  system = lib.mkIf (hasMonitor && !hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
     services.avahi.enable = true; # NOTE: https://github.com/NixOS/nixpkgs/issues/329522
     services.geoclue2.enable = true;
   };
 
-  home = lib.mkIf (hasMonitor && !hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     services.redshift.enable = true;
     services.redshift.provider = "geoclue2";
   };

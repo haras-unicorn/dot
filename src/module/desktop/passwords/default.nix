@@ -32,7 +32,7 @@ in
     }];
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     home.packages = lib.optionals hasMonitor [
       pkgs.pinentry-qt
     ] ++ lib.optionals (!hasMonitor) [

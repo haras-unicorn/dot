@@ -6,7 +6,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  system = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     security.pam.services.gtklock = { };
     services.systemd-lock-handler.enable = true;
 
@@ -22,7 +22,7 @@ in
     };
   };
 
-  home = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     home.packages = [
       pkgs.gtklock
     ];

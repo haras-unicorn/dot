@@ -55,7 +55,7 @@ in
     ];
   };
 
-  home = lib.mkIf hasMonitor {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [
       ferdium
       teams

@@ -82,7 +82,7 @@ in
     ];
   };
 
-  system = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
     services.greetd.enable = true;
     services.greetd.settings = {
       default_session = {
@@ -91,7 +91,7 @@ in
     };
   };
 
-  home = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     home.packages = [
       pkgs.egl-wayland
       pkgs.xwaylandvideobridge

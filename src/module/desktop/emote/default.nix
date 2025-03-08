@@ -24,7 +24,7 @@ in
     }];
   };
 
-  home = (lib.mkIf (hasMonitor && hasKeyboard)) {
+  integrate.homeManagerModule.homeManagerModule = (lib.mkIf (hasMonitor && hasKeyboard)) {
     home.packages = [
       pkgs.smile
     ];

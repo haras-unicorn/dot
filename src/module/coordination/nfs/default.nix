@@ -52,7 +52,7 @@ in
     };
   };
 
-  system = lib.mkIf hasNetwork {
+  integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.garage.enable = true;
     services.garage.package = pkgs.garage;
     services.garage.environmentFile = "/etc/garage/host.env";
@@ -133,7 +133,7 @@ in
     };
   };
 
-  home = lib.mkIf hasNetwork {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
     home.packages = [
       pkgs.rclone
     ];

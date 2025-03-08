@@ -20,7 +20,7 @@ in
     ];
   };
 
-  system = lib.mkIf hasMonitor {
+  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
     hardware.i2c.enable = true;
     services.ddccontrol.enable = true;
 
@@ -29,7 +29,7 @@ in
     ];
   };
 
-  home = lib.mkIf hasMonitor {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [
       pkgs.brightnessctl
       pkgs.ddcutil # NOTE: because ddccontrol might core dump with nvidia

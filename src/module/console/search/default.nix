@@ -11,7 +11,7 @@
     };
   };
 
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     home.packages = [ pkgs.fd ];
 
     programs.ripgrep.enable = true;

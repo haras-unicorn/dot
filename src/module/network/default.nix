@@ -19,7 +19,7 @@ in
     }];
   };
 
-  system = lib.mkIf hasNetwork {
+  integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
     networking.nftables.enable = true;
     networking.firewall.enable = true;
     networking.networkmanager.enable = true;
@@ -38,7 +38,7 @@ in
     ];
   };
 
-  home = lib.mkIf (hasNetwork && hasMonitor) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor) {
     services.network-manager-applet.enable = true;
   };
 }

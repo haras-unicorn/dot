@@ -15,12 +15,12 @@ in
     }];
   };
 
-  system = lib.mkIf hasBluetooth {
+  integrate.nixosModule.nixosModule = lib.mkIf hasBluetooth {
     hardware.bluetooth.enable = true;
     services.blueman.enable = true;
   };
 
-  home = lib.mkIf (hasBluetooth && hasMonitor) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasBluetooth && hasMonitor) {
     services.blueman-applet.enable = true;
   };
 }

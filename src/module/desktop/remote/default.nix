@@ -4,7 +4,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  home = lib.mkIf hasMonitor {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [
       pkgs.remmina
     ];

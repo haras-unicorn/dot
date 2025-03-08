@@ -62,7 +62,7 @@ in
     ];
   };
 
-  home = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     home.packages = [
       pkgs.grim
       pkgs.slurp

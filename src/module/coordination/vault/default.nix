@@ -7,7 +7,7 @@ in
 {
   disabled = true;
 
-  system = lib.mkIf hasNetwork {
+  integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.vault.enable = true;
     systemd.services.vault.after = [ "mysql.service" ];
     systemd.services.vault.wants = [ "mysql.service" ];
@@ -25,7 +25,7 @@ in
     };
   };
 
-  home = lib.mkIf hasNetwork {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
     home.packages = [
       pkgs.vault-bin
     ];

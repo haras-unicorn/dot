@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  home = {
+  integrate.homeManagerModule.homeManagerModule = {
     home.packages = [
       pkgs.vim
     ];

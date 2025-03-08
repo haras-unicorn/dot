@@ -7,7 +7,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  home = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     services.swayidle.enable = true;
     services.swayidle.timeouts = [
       {
