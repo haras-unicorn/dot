@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  options.desktopEnvironment = {
+  integrate.nixosModule.nixosModule.options.dot.desktopEnvironment = {
     login = lib.mkOption {
       type = lib.types.str;
       default = [ ];

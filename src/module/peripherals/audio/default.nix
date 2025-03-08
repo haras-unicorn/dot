@@ -7,16 +7,6 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  config = lib.mkIf (hasSound && hasMonitor) {
-    desktopEnvironment.windowrules = [{
-      rule = "float";
-      selector = "class";
-      xselector = "wm_class";
-      arg = "com.saivert.pwvucontrol";
-      xarg = "pwvucontrol";
-    }];
-  };
-
   integrate.nixosModule.nixosModule = {
     imports = [ musnix.nixosModules.musnix ];
 
@@ -42,6 +32,14 @@ in
   };
 
   integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasSound && hasMonitor) {
+    desktopEnvironment.windowrules = [{
+      rule = "float";
+      selector = "class";
+      xselector = "wm_class";
+      arg = "com.saivert.pwvucontrol";
+      xarg = "pwvucontrol";
+    }];
+
     home.packages = [
       pkgs.pwvucontrol
       pkgs.easyeffects

@@ -12,7 +12,7 @@ let
   };
 in
 {
-  config = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     desktopEnvironment.keybinds = [
       {
         mods = [ "super" ];
@@ -40,9 +40,7 @@ in
         command = "${paste-type}/bin/paste-type";
       }
     ];
-  };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     home.packages = [
       pkgs.keepmenu
       pkgs.wtype

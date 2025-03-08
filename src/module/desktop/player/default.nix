@@ -8,8 +8,8 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = lib.mkIf (hasSound && hasKeyboard) {
-    desktopEnvironment.keybinds = [
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasSound {
+    desktopEnvironment.keybinds = lib.mkIf (hasSound && hasKeyboard) [
       {
         mods = [ "super" ];
         key = "v";
@@ -26,9 +26,7 @@ in
         command = ''${pkgs.playerctl}/bin/playerctl volume 100.00'';
       }
     ];
-  };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasSound {
     home.packages = [
       pkgs.playerctl
     ];

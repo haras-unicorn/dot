@@ -1,13 +1,11 @@
 { pkgs, ... }:
 
 {
-  config = {
+  integrate.homeManagerModule.homeManagerModule = {
     shell.aliases = {
       bruh = "${pkgs.lazygit}/bin/lazygit";
     };
-  };
 
-  integrate.homeManagerModule.homeManagerModule = {
     home.packages = [
       pkgs.delta
     ];

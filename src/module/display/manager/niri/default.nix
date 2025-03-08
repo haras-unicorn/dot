@@ -79,7 +79,7 @@ in
 {
   disabled = true;
 
-  config = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
     desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
   };
 

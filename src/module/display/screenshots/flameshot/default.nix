@@ -7,17 +7,15 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  config = lib.mkIf (hasMonitor && hasKeyboard && hasMouse && (!hasWayland)) {
-    desktopEnvironment.keybinds = [
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
+    desktopEnvironment.keybinds = lib.mkIf (hasKeyboard && hasMouse) [
       {
         mods = [ "super" ];
         key = "Print";
         command = "${pkgs.flameshot}/bin/flameshot gui -p '${config.xdg.userDirs.pictures}/screenshots'";
       }
     ];
-  };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     services.flameshot.enable = true;
   };
 }

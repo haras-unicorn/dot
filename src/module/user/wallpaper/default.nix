@@ -23,25 +23,25 @@ let
   };
 in
 {
-  options = {
-    wallpaper = lib.mkOption {
-      type = lib.types.str;
-      default = "${self}/assets/kuromi.mp4";
-    };
-  };
-
-  config = {
-    desktopEnvironment.sessionStartup =
-      lib.mkIf (hasMonitor && hasWayland) [
-        ''${setWallpaperWayland}/bin/wallpaper ${config.dot.wallpaper}''
-      ];
-  };
-
   integrate.homeManagerModule.homeManagerModule = {
-    stylix.targets.hyprpaper.enable = lib.mkForce false;
-    home.packages = lib.mkMerge [
-      (lib.mkIf (hasMonitor && hasWayland) [ setWallpaperWayland ])
-      (lib.mkIf (hasMonitor && !hasWayland) [ setWallpaperXorg ])
-    ];
+    options.dot = {
+      wallpaper = lib.mkOption {
+        type = lib.types.str;
+        default = "${self}/assets/kuromi.mp4";
+      };
+    };
+
+    config = {
+      desktopEnvironment.sessionStartup =
+        lib.mkIf (hasMonitor && hasWayland) [
+          ''${setWallpaperWayland}/bin/wallpaper ${config.dot.wallpaper}''
+        ];
+
+      stylix.targets.hyprpaper.enable = lib.mkForce false;
+      home.packages = lib.mkMerge [
+        (lib.mkIf (hasMonitor && hasWayland) [ setWallpaperWayland ])
+        (lib.mkIf (hasMonitor && !hasWayland) [ setWallpaperXorg ])
+      ];
+    };
   };
 }

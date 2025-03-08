@@ -29,7 +29,7 @@ let
   };
 in
 {
-  config = lib.mkIf hasMonitor {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     desktopEnvironment.windowrules = [
       {
         rule = "float";
@@ -53,9 +53,7 @@ in
         xarg = "vesktop";
       }
     ];
-  };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [
       ferdium
       teams

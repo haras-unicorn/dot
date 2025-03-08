@@ -8,13 +8,11 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
     desktopEnvironment.sessionStartup = [
       "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${config.stylix.image}'"
     ];
-  };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
     services.betterlockscreen.enable = true;
   };
 }

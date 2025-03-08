@@ -41,14 +41,9 @@ let
   #           (builtins.readDir "${pkgs.nu_scripts}/share/nu_scripts/custom-completions")))));
 in
 {
-  config = {
-    shell = {
-      package = pkgs.nushell;
-      bin = "nu";
-    };
-  };
-
   integrate.homeManagerModule.homeManagerModule = {
+    shell = { package = pkgs.nushell; bin = "nu"; };
+
     programs.nushell.enable = true;
 
     programs.nushell.environmentVariables = {

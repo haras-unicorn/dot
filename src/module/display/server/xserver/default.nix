@@ -30,7 +30,11 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = lib.mkIf (hasMonitor && !hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
+    services.xserver.enable = true;
+  };
+
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     desktopEnvironment.sessionVariables = {
       QT_QPA_PLATFORM = "xcb";
     };
@@ -42,13 +46,7 @@ in
         command = "${pastedo}/bin/pastedo";
       }
     ];
-  };
 
-  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
-    services.xserver.enable = true;
-  };
-
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     home.packages = [
       pkgs.libsForQt5.qt5ct
 

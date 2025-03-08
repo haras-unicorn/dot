@@ -287,7 +287,7 @@ let
   };
 in
 {
-  config = {
+  integrate.homeManagerModule.homeManagerModule = {
     desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
       {
         mods = [ "super" ];
@@ -295,9 +295,7 @@ in
         command = "${read}/bin/read";
       }
     ];
-  };
 
-  integrate.homeManagerModule.homeManagerModule = {
     home.packages = (lib.optionals hasAnyPlatform [
       comfyui
       comfyuiAlternative

@@ -8,7 +8,11 @@ let
   };
 in
 {
-  config = lib.mkIf hasMonitor {
+  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
+    services.gvfs.enable = true;
+  };
+
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";
@@ -16,13 +20,7 @@ in
       arg = "pcmanfm";
       xarg = "pcmanfm";
     }];
-  };
 
-  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
-    services.gvfs.enable = true;
-  };
-
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [ pkgs.pcmanfm ];
 
     xdg.mimeApps.associations.added = mime;

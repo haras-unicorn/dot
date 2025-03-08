@@ -9,11 +9,9 @@ let
   editor = "${cfg.package}/bin/${cfg.bin}";
 in
 {
-  config = {
-    editor = { package = pkgs.helix; bin = "hx"; };
-  };
-
   integrate.homeManagerModule.homeManagerModule = {
+    editor = { package = pkgs.helix; bin = "hx"; };
+
     programs.helix.enable = true;
 
     programs.helix.settings = builtins.fromTOML (builtins.readFile ./config.toml);

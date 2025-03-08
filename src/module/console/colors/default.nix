@@ -1,13 +1,11 @@
 { pkgs, config, ... }:
 
 {
-  config = {
+  integrate.homeManagerModule.homeManagerModule = {
     shell.sessionVariables = {
       LS_COLORS = "vivid generate ${config.xdg.configHome}/vivid/themes/colors.yaml";
     };
-  };
 
-  integrate.homeManagerModule.homeManagerModule = {
     xdg.configFile."vivid/themes/colors.yaml".text = ''
       colors:
         black: "${config.lib.stylix.colors.base00}"

@@ -3,15 +3,13 @@
 # TODO: colors
 
 {
-  config = {
+  integrate.homeManagerModule.homeManagerModule = {
     shell.aliases = {
       grep = "${pkgs.ripgrep}/bin/rg";
       la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
       tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
     };
-  };
 
-  integrate.homeManagerModule.homeManagerModule = {
     home.packages = [ pkgs.fd ];
 
     programs.ripgrep.enable = true;

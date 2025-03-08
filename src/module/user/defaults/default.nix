@@ -33,116 +33,6 @@ let
   ];
 in
 {
-  options = {
-    shell = {
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.bashInteractive;
-        example = pkgs.nushell;
-      };
-      bin = lib.mkOption {
-        type = lib.types.str;
-        default = "bash";
-        example = "nu";
-      };
-      sessionVariables = lib.mkOption {
-        type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
-        default = { };
-        example = { EDITOR = "hx"; };
-        description = ''
-          Environment variables to set on session start with Nushell.
-        '';
-      };
-      aliases = lib.mkOption {
-        type = with lib.types; lazyAttrsOf str;
-        default = { };
-        example = { rm = "rm -i"; };
-        description = ''
-          Aliases to use in Nushell.
-        '';
-      };
-      sessionStartup = lib.mkOption {
-        type = with lib.types; listOf str;
-        default = [ ];
-        example = [ "fastfetch" ];
-        description = ''
-          Commands to execute on session start with Nushell.
-        '';
-      };
-    };
-    editor = {
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.vim;
-        example = pkgs.helix;
-      };
-      bin = lib.mkOption {
-        type = lib.types.str;
-        default = "vim";
-        example = "hx";
-      };
-    };
-    terminal = {
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.kitty;
-        example = pkgs.alacritty;
-      };
-      bin = lib.mkOption {
-        type = lib.types.str;
-        default = "kitty";
-        example = "alacritty";
-      };
-      sessionVariables = lib.mkOption {
-        type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
-        default = { };
-        example = { EDITOR = "hx"; };
-        description = ''
-          Environment variables to set with kitty.
-        '';
-      };
-    };
-    visual = {
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.vscode;
-        example = pkgs.vscodium;
-      };
-      bin = lib.mkOption {
-        type = lib.types.str;
-        default = "code";
-        example = "codium";
-      };
-    };
-    browser = {
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = pkgs.firefox-bin;
-        example = pkgs.vivaldi;
-      };
-      bin = lib.mkOption {
-        type = lib.types.str;
-        default = "firefox";
-        example = "vivaldi";
-      };
-    };
-  };
-
-  config = {
-    desktopEnvironment.keybinds = lib.mkMerge [
-      (lib.mkIf hasMonitor [{
-        mods = [ "super" ];
-        key = "w";
-        command = "${browser}";
-      }])
-      (lib.mkIf (hasMonitor && hasKeyboard) [{
-        mods = [ "super" ];
-        key = "t";
-        command = "${terminal} ${shell}";
-      }])
-    ];
-  };
-
   # NOTE: this is a clusterfuck anyway
   integrate.nixosModule.nixosModule = {
     systemd.user.extraConfig = ''
@@ -151,39 +41,148 @@ in
   };
 
   integrate.homeManagerModule.homeManagerModule = {
-    home.packages = [
-      pkgs.xdg-user-dirs
-      pkgs.xdg-utils
-      pkgs.shared-mime-info
-    ];
+    options.dot = {
+      shell = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.bashInteractive;
+          example = pkgs.nushell;
+        };
+        bin = lib.mkOption {
+          type = lib.types.str;
+          default = "bash";
+          example = "nu";
+        };
+        sessionVariables = lib.mkOption {
+          type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+          default = { };
+          example = { EDITOR = "hx"; };
+          description = ''
+            Environment variables to set on session start with Nushell.
+          '';
+        };
+        aliases = lib.mkOption {
+          type = with lib.types; lazyAttrsOf str;
+          default = { };
+          example = { rm = "rm -i"; };
+          description = ''
+            Aliases to use in Nushell.
+          '';
+        };
+        sessionStartup = lib.mkOption {
+          type = with lib.types; listOf str;
+          default = [ ];
+          example = [ "fastfetch" ];
+          description = ''
+            Commands to execute on session start with Nushell.
+          '';
+        };
+      };
+      editor = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.vim;
+          example = pkgs.helix;
+        };
+        bin = lib.mkOption {
+          type = lib.types.str;
+          default = "vim";
+          example = "hx";
+        };
+      };
+      terminal = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.kitty;
+          example = pkgs.alacritty;
+        };
+        bin = lib.mkOption {
+          type = lib.types.str;
+          default = "kitty";
+          example = "alacritty";
+        };
+        sessionVariables = lib.mkOption {
+          type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+          default = { };
+          example = { EDITOR = "hx"; };
+          description = ''
+            Environment variables to set with kitty.
+          '';
+        };
+      };
+      visual = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.vscode;
+          example = pkgs.vscodium;
+        };
+        bin = lib.mkOption {
+          type = lib.types.str;
+          default = "code";
+          example = "codium";
+        };
+      };
+      browser = {
+        package = lib.mkOption {
+          type = lib.types.package;
+          default = pkgs.firefox-bin;
+          example = pkgs.vivaldi;
+        };
+        bin = lib.mkOption {
+          type = lib.types.str;
+          default = "firefox";
+          example = "vivaldi";
+        };
+      };
+    };
 
-    home.sessionVariables = lib.mkMerge [
-      (lib.mkIf hasMonitor {
-        BROWSER = "${browser}";
-      })
-      (lib.mkIf (hasMonitor && hasKeyboard) {
-        VISUAL = "${visual}";
-      })
-      (lib.mkIf hasKeyboard {
-        EDITOR = "${editor}";
-      })
-    ];
+    config = {
+      desktopEnvironment.keybinds = lib.mkMerge [
+        (lib.mkIf hasMonitor [{
+          mods = [ "super" ];
+          key = "w";
+          command = "${browser}";
+        }])
+        (lib.mkIf (hasMonitor && hasKeyboard) [{
+          mods = [ "super" ];
+          key = "t";
+          command = "${terminal} ${shell}";
+        }])
+      ];
+      home.packages = [
+        pkgs.xdg-user-dirs
+        pkgs.xdg-utils
+        pkgs.shared-mime-info
+      ];
 
-    xdg.mime.enable = true;
-    xdg.mimeApps.enable = true;
-    xdg.mimeApps.associations.added = mime;
-    xdg.mimeApps.defaultApplications = mime;
+      home.sessionVariables = lib.mkMerge [
+        (lib.mkIf hasMonitor {
+          BROWSER = "${browser}";
+        })
+        (lib.mkIf (hasMonitor && hasKeyboard) {
+          VISUAL = "${visual}";
+        })
+        (lib.mkIf hasKeyboard {
+          EDITOR = "${editor}";
+        })
+      ];
 
-    xdg.enable = true;
-    xdg.userDirs.enable = true;
-    xdg.userDirs.createDirectories = true;
-    xdg.userDirs.desktop = "${config.home.homeDirectory}/desktop";
-    xdg.userDirs.download = "${config.home.homeDirectory}/download";
-    xdg.userDirs.music = "${config.home.homeDirectory}/music";
-    xdg.userDirs.pictures = "${config.home.homeDirectory}/pictures";
-    xdg.userDirs.videos = "${config.home.homeDirectory}/videos";
-    xdg.userDirs.templates = "${config.home.homeDirectory}/templates";
-    xdg.userDirs.documents = "${config.home.homeDirectory}/documents";
-    xdg.userDirs.publicShare = "${config.home.homeDirectory}/public";
+      xdg.mime.enable = true;
+      xdg.mimeApps.enable = true;
+      xdg.mimeApps.associations.added = mime;
+      xdg.mimeApps.defaultApplications = mime;
+
+      xdg.enable = true;
+      xdg.userDirs.enable = true;
+      xdg.userDirs.createDirectories = true;
+      xdg.userDirs.desktop = "${config.home.homeDirectory}/desktop";
+      xdg.userDirs.download = "${config.home.homeDirectory}/download";
+      xdg.userDirs.music = "${config.home.homeDirectory}/music";
+      xdg.userDirs.pictures = "${config.home.homeDirectory}/pictures";
+      xdg.userDirs.videos = "${config.home.homeDirectory}/videos";
+      xdg.userDirs.templates = "${config.home.homeDirectory}/templates";
+      xdg.userDirs.documents = "${config.home.homeDirectory}/documents";
+      xdg.userDirs.publicShare = "${config.home.homeDirectory}/public";
+    };
   };
 }

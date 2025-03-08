@@ -61,18 +61,9 @@ let
   floatingSizeString = builtins.toString (config.dot.hardware.monitor.height / 2);
 in
 {
-  config = lib.mkIf (hasMonitor && hasWayland) {
-    desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
-    desktopEnvironment.keybinds = [
-      {
-        mods = [ "super" ];
-        key = "c";
-        command = "${pkgs.hyprpicker}/bin/hyprpicker --no-fancy | ${pkgs.wl-clipboard}/bin/wl-copy";
-      }
-    ];
-  };
-
   integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
+    desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
+
     programs.hyprland.enable = true;
     programs.hyprland.xwayland.enable = true;
     programs.hyprland.systemd.setPath.enable = true;
@@ -84,6 +75,14 @@ in
   };
 
   integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
+    desktopEnvironment.keybinds = [
+      {
+        mods = [ "super" ];
+        key = "c";
+        command = "${pkgs.hyprpicker}/bin/hyprpicker --no-fancy | ${pkgs.wl-clipboard}/bin/wl-copy";
+      }
+    ];
+
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 

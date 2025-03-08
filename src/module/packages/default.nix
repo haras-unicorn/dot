@@ -101,14 +101,14 @@ let
   };
 in
 {
-  system.config = lib.mkMerge [
+  integrate.nixosModule.nixosModule.config = lib.mkMerge [
     shared
     {
       nix.package = pkgs.nixVersions.stable;
     }
   ];
 
-  home.config = lib.mkMerge [
+  integrate.homeManagerModule.homeManagerModule.config = lib.mkMerge [
     shared
     {
       home.packages = [ rebuild rebuild-wip rebuild-trace ];

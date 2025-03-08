@@ -85,9 +85,8 @@ let
   mouse = bluetooth ||
     ((builtins.hasAttr "mouse" config.facter.report.hardware) &&
       ((builtins.length config.facter.report.hardware.mouse) > 0));
-in
-{
-  options = {
+
+  thisOptions = {
     hardware = {
       rpi."4".enable = lib.mkOption {
         type = lib.types.bool;
@@ -200,12 +199,23 @@ in
     };
   };
 
-  config = {
+  thisConfig = {
     hardware.check =
       builtins.trace
         (lib.assertMsg
           (config.facter.report.hardware.version == "1")
           "Only facter report version 1 supported")
         false;
+  };
+in
+{
+  integrate.nixosModule.nixosModule = {
+    options.dot = thisOptions;
+    config = thisConfig;
+  };
+
+  integrate.homeManagerModule.homeManagerModule = {
+    options.dot = thisOptions;
+    config = thisConfig;
   };
 }

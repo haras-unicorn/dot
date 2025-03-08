@@ -100,11 +100,9 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  config = lib.mkIf (hasMonitor && !hasWayland) {
-    desktopEnvironment.startup = "qtile";
-  };
-
   integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
+    desktopEnvironment.startup = "qtile";
+
     services.xserver.windowManager.qtile.enable = true;
     services.xserver.windowManager.qtile.package = package;
     services.xserver.windowManager.qtile.extraPackages =

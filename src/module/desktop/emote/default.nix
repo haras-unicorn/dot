@@ -6,7 +6,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = (lib.mkIf (hasMonitor && hasKeyboard)) {
+  integrate.homeManagerModule.homeManagerModule = (lib.mkIf (hasMonitor && hasKeyboard)) {
     desktopEnvironment.keybinds = [
       {
         mods = [ "super" ];
@@ -22,9 +22,7 @@ in
       arg = "it.mijorus.smile";
       xarg = "smile";
     }];
-  };
 
-  integrate.homeManagerModule.homeManagerModule = (lib.mkIf (hasMonitor && hasKeyboard)) {
     home.packages = [
       pkgs.smile
     ];

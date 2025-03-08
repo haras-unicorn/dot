@@ -1,13 +1,11 @@
 { pkgs, ... }:
 
 {
-  config = {
+  integrate.homeManagerModule.homeManagerModule = {
     shell.aliases = {
       cat = "${pkgs.bat}/bin/bat";
     };
-  };
 
-  integrate.homeManagerModule.homeManagerModule = {
     home.sessionVariables = {
       PAGER = "${pkgs.bat}/bin/bat";
     };

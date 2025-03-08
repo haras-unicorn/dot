@@ -54,7 +54,16 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  config = lib.mkIf (hasMonitor && hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
+    services.greetd.enable = true;
+    services.greetd.settings = {
+      default_session = {
+        command = cfg.login;
+      };
+    };
+  };
+
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     desktopEnvironment.sessionVariables = {
       QT_QPA_PLATFORM = "wayland;xcb";
       NIXOS_OZONE_WL = "1";
@@ -80,18 +89,7 @@ in
         command = "${pastedo}/bin/pastedo";
       }
     ];
-  };
 
-  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
-    services.greetd.enable = true;
-    services.greetd.settings = {
-      default_session = {
-        command = cfg.login;
-      };
-    };
-  };
-
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     home.packages = [
       pkgs.egl-wayland
       pkgs.xwaylandvideobridge

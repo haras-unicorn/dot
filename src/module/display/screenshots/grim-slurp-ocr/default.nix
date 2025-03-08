@@ -42,8 +42,8 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  config = lib.mkIf (hasMonitor && hasWayland && hasKeyboard && hasMouse) {
-    desktopEnvironment.keybinds = [
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
+    desktopEnvironment.keybinds = lib.mkIf (hasKeyboard && hasMouse) [
       {
         mods = [ "super" ];
         key = "Print";
@@ -60,9 +60,7 @@ in
         command = "${screenshot}/bin/screenshot --region --ocr";
       }
     ];
-  };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     home.packages = [
       pkgs.grim
       pkgs.slurp

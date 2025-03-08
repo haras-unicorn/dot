@@ -6,7 +6,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
+  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     desktopEnvironment.login =
       "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd '${config.dot.desktopEnvironment.startup}'";
   };

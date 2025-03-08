@@ -8,16 +8,6 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
-    desktopEnvironment.windowrules = [{
-      rule = "float";
-      selector = "class";
-      xselector = "wm_class";
-      arg = "steam";
-      xarg = "steam";
-    }];
-  };
-
   integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.steam.package = pkgs.steam.override {
       extraEnv = {
@@ -39,6 +29,14 @@ in
   };
 
   integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
+    desktopEnvironment.windowrules = [{
+      rule = "float";
+      selector = "class";
+      xselector = "wm_class";
+      arg = "steam";
+      xarg = "steam";
+    }];
+
     programs.mangohud.enable = true;
 
     systemd.user.services.steam = {

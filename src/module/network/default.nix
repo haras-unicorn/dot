@@ -9,16 +9,6 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = lib.mkIf (hasNetwork && hasMonitor && hasKeyboard) {
-    desktopEnvironment.windowrules = [{
-      rule = "float";
-      selector = "class";
-      xselector = "wm_class";
-      arg = "nm-connection-editor";
-      xarg = "nm-connection-editor";
-    }];
-  };
-
   integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
     networking.nftables.enable = true;
     networking.firewall.enable = true;
@@ -39,6 +29,14 @@ in
   };
 
   integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor) {
+    desktopEnvironment.windowrules = lib.mkIf hasKeyboard [{
+      rule = "float";
+      selector = "class";
+      xselector = "wm_class";
+      arg = "nm-connection-editor";
+      xarg = "nm-connection-editor";
+    }];
+
     services.network-manager-applet.enable = true;
   };
 }

@@ -16,12 +16,11 @@ let
   editor = config.dot.editor;
 in
 {
-  config = {
-    terminal = { package = pkgs.kitty; bin = "kitty"; };
-  };
-
   integrate.homeManagerModule.homeManagerModule = {
+    terminal = { package = pkgs.kitty; bin = "kitty"; };
+
     stylix.targets.kitty.variant256Colors = true;
+
     programs.kitty.enable = true;
     programs.kitty.extraConfig = lib.mkIf (hasKeyboard && hasMonitor) ''
       cursor_shape beam

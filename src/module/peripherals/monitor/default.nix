@@ -5,8 +5,17 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  config = {
-    desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
+  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
+    hardware.i2c.enable = true;
+    services.ddccontrol.enable = true;
+
+    users.users.${user}.extraGroups = [
+      "i2c"
+    ];
+  };
+
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
+    desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
       {
         mods = [ "super" "shift" ];
         key = "b";
@@ -18,18 +27,7 @@ in
         command = ''${pkgs.brightnessctl}/bin/brightnessctl set 2%-'';
       }
     ];
-  };
 
-  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
-    hardware.i2c.enable = true;
-    services.ddccontrol.enable = true;
-
-    users.users.${user}.extraGroups = [
-      "i2c"
-    ];
-  };
-
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [
       pkgs.brightnessctl
       pkgs.ddcutil # NOTE: because ddccontrol might core dump with nvidia

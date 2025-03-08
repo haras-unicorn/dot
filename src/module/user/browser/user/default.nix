@@ -31,11 +31,9 @@ let
   '';
 in
 {
-  config = {
-    browser = { package = fork.package; bin = fork.bin; };
-  };
-
   integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor) {
+    browser = { package = fork.package; bin = fork.bin; };
+
     stylix.targets.${fork.stylix} = {
       profileNames = [ "personal" ];
       ${fork.stylixGnomeTheme}.enable = fork.stylix != "floorp";
