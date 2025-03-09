@@ -65,7 +65,7 @@ let
   open = mkExpr "open" openHtml openScript;
 in
 {
-  computed = {
+  flake.lib.nvidia.computed = {
     inherit
       legacy340
       legacy390
@@ -80,7 +80,7 @@ in
     ];
   };
 
-  frozen =
+  flake.lib.nvidia.frozen =
     let
       legacy340 = [ ];
 

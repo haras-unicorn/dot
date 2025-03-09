@@ -15,12 +15,12 @@ let
       args);
 in
 {
-  wrap = pkgs: package: bin: pkgs.symlinkJoin {
+  flake.lib.chromium.wrap = pkgs: package: bin: pkgs.symlinkJoin {
     name = bin;
     paths = [ package ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''wrapProgram $out/bin/${bin} ${flags}'';
   };
 
-  args = builtins.concatStringsSep " " args;
+  flake.lib.chromium.args = builtins.concatStringsSep " " args;
 }

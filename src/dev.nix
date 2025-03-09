@@ -1,12 +1,8 @@
-{ nixpkgs, ... }:
-
-# TODO: uncomment nufmt once it gets better
+{ pkgs, ... }:
 
 {
-  mkDevShell = system:
-    let
-      pkgs = import nixpkgs { inherit system; };
-    in
+  seal.defaults.devShell = "dev";
+  integrate.devShell.devShell =
     pkgs.mkShell {
       packages = with pkgs; [
         # Nix
