@@ -1,4 +1,4 @@
-{ pkgs, config, host, system, lib, ... }:
+{ pkgs, config, host, system, lib, nixpkgs-unstable, ... }:
 
 let
   path = "${config.xdg.dataHome}/dot";
@@ -53,7 +53,19 @@ let
     '';
   };
 
-  shared = {
+  thisOptions = {
+    unstablePkgs = lib.mkOption {
+      type = lib.types.raw;
+    };
+  };
+
+  thisConfig = {
+    unstablePkgs = import nixpkgs-unstable {
+      cystem = pkgs.system;
+      config = config.nixpkgs.config;
+      overlays = config.nixpkgs.overlays;
+    };
+
     nix.extraOptions = "experimental-features = nix-command flakes";
     nix.gc.automatic = true;
     nix.gc.options = "--delete-older-than 30d";
@@ -101,20 +113,28 @@ let
   };
 in
 {
-  integrate.nixosModule.nixosModule.config = lib.mkMerge [
-    shared
-    {
-      nix.package = pkgs.nixVersions.stable;
-    }
-  ];
+  integrate.nixosModule.nixosModule = {
+    options = thisOptions;
 
-  integrate.homeManagerModule.homeManagerModule.config = lib.mkMerge [
-    shared
-    {
-      home.packages = [ rebuild rebuild-wip rebuild-trace ];
-      home.activation = {
-        ensurePulledAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ensure;
-      };
-    }
-  ];
+    config = lib.mkMerge [
+      thisConfig
+      {
+        nix.package = pkgs.nixVersions.stable;
+      }
+    ];
+  };
+
+  integrate.homeManagerModule.homeManagerModule = {
+    options = thisOptions;
+
+    config = lib.mkMerge [
+      thisConfig
+      {
+        home.packages = [ rebuild rebuild-wip rebuild-trace ];
+        home.activation = {
+          ensurePulledAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ensure;
+        };
+      }
+    ];
+  };
 }

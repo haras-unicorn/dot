@@ -76,15 +76,6 @@ in
         rpc_bind_addr = "${ip}:${builtins.toString rpcPort}";
         rpc_bind_outgoing = true;
         rpc_public_addr = "${ip}:${builtins.toString rpcPort}";
-        bootstrap_peers = builtins.map
-          (name:
-            let
-              other = config.dot.static.${name};
-            in
-            "${other.nfs.node}@${other.vpn.ip}:${builtins.toString rpcPort}")
-          (builtins.filter
-            (other: other != host)
-            (builtins.attrNames config.dot.static));
         admin = {
           api_bind_addr = "${bindAddr}:${builtins.toString adminPort}";
         };
