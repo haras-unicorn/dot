@@ -1,4 +1,4 @@
-{ self, pkgs, config, lib, ... }:
+{ self, config, lib, ... }:
 
 # TODO: temp and monitor id from facter
 
@@ -54,7 +54,7 @@ let
       (builtins.head config.facter.report.hardware.graphics_card).driver
     else null;
 
-  nvidia = (self.lib.nvidia pkgs).frozen;
+  nvidia = self.lib.nvidia.frozen;
 
   matchNvidiaList = list:
     if graphics then
@@ -86,136 +86,132 @@ let
     ((builtins.hasAttr "mouse" config.facter.report.hardware) &&
       ((builtins.length config.facter.report.hardware.mouse) > 0));
 
-  thisOptions = {
-    hardware = {
-      rpi."4".enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
+  thisOptions.dot.hardware = {
+    rpi."4".enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
 
-      memory = lib.mkOption {
-        type = lib.types.ints.unsigned;
-        default = memoryInBytes;
-      };
+    memory = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      default = memoryInBytes;
+    };
 
-      temp = lib.mkOption {
-        type = lib.types.str;
-        default = "/sys/class/hwmon/hwmon0/temp1_input";
-        description = ''
-          cat /sys/class/hwmon/hwmon*/name
-          k10temp or coretemp then temp1_input
-        '';
-      };
+    temp = lib.mkOption {
+      type = lib.types.str;
+      default = "/sys/class/hwmon/hwmon0/temp1_input";
+      description = ''
+        cat /sys/class/hwmon/hwmon*/name
+        k10temp or coretemp then temp1_input
+      '';
+    };
 
-      network.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = network;
-      };
+    network.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = network;
+    };
 
-      network.interface = lib.mkOption {
-        type = lib.types.str;
-        default = networkInterface;
-      };
+    network.interface = lib.mkOption {
+      type = lib.types.str;
+      default = networkInterface;
+    };
 
-      bluetooth.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = bluetooth;
-      };
+    bluetooth.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = bluetooth;
+    };
 
-      sound.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = sound;
-      };
+    sound.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = sound;
+    };
 
-      monitor.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = monitor;
-      };
+    monitor.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = monitor;
+    };
 
-      monitor.width = lib.mkOption {
-        type = lib.types.ints.unsigned;
-        default = monitorWidth;
-      };
+    monitor.width = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      default = monitorWidth;
+    };
 
-      monitor.height = lib.mkOption {
-        type = lib.types.ints.unsigned;
-        default = monitorHeight;
-      };
+    monitor.height = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      default = monitorHeight;
+    };
 
-      monitor.dpi = lib.mkOption {
-        type = lib.types.float;
-        default = monitorDpi;
-      };
+    monitor.dpi = lib.mkOption {
+      type = lib.types.float;
+      default = monitorDpi;
+    };
 
-      monitor.main = lib.mkOption {
-        type = lib.types.str;
-        default = "DP-1";
-        description = ''
-          xrandr --query
-          hyprctl monitors
-          swaymsg -t get_outputs
-        '';
-      };
+    monitor.main = lib.mkOption {
+      type = lib.types.str;
+      default = "DP-1";
+      description = ''
+        xrandr --query
+        hyprctl monitors
+        swaymsg -t get_outputs
+      '';
+    };
 
-      graphics.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = graphics;
-      };
+    graphics.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = graphics;
+    };
 
-      graphics.driver = lib.mkOption {
-        type = lib.types.nullOr (lib.types.enum [ "nvidia" "amdgpu" ]);
-        default = graphicsDriver;
-      };
+    graphics.driver = lib.mkOption {
+      type = lib.types.nullOr (lib.types.enum [ "nvidia" "amdgpu" ]);
+      default = graphicsDriver;
+    };
 
-      graphics.wayland = lib.mkOption {
-        type = lib.types.bool;
-        default = graphicsWayland;
-      };
+    graphics.wayland = lib.mkOption {
+      type = lib.types.bool;
+      default = graphicsWayland;
+    };
 
-      graphics.version = lib.mkOption {
-        type = lib.types.str;
-        default = graphicsVersion;
-      };
+    graphics.version = lib.mkOption {
+      type = lib.types.str;
+      default = graphicsVersion;
+    };
 
-      graphics.open = lib.mkOption {
-        type = lib.types.bool;
-        default = graphicsOpen;
-      };
+    graphics.open = lib.mkOption {
+      type = lib.types.bool;
+      default = graphicsOpen;
+    };
 
-      keyboard.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = keyboard;
-      };
+    keyboard.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = keyboard;
+    };
 
-      mouse.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = mouse;
-      };
+    mouse.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = mouse;
+    };
 
-      check = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-      };
+    check = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
     };
   };
 
-  thisConfig = {
-    hardware.check =
-      builtins.trace
-        (lib.assertMsg
-          (config.facter.report.hardware.version == "1")
-          "Only facter report version 1 supported")
-        false;
-  };
+  thisConfig.dot.hardware.check =
+    builtins.trace
+      (lib.assertMsg
+        (config.facter.report.version == "1")
+        "Only facter report version 1 supported")
+      false;
 in
 {
   branch.nixosModule.nixosModule = {
-    options.dot = thisOptions;
+    options = thisOptions;
     config = thisConfig;
   };
 
   branch.homeManagerModule.homeManagerModule = {
-    options.dot = thisOptions;
+    options = thisOptions;
     config = thisConfig;
   };
 }

@@ -1,8 +1,15 @@
-{ pkgs, host, config, user, group, uid, gid, lib, ... }:
+{ pkgs, config, lib, ... }:
 
 # FIXME: /var/lib/ mount creates dependency cycle
 
 let
+  host = config.dot.host;
+  user = config.dot.user;
+  group = user;
+
+  uid = config.users.users.${user}.uid;
+  gid = config.users.gropus.${group}.gid;
+
   rootDomain = "s3.garage";
 
   hasNetwork = config.dot.hardware.network.enable;
@@ -35,7 +42,7 @@ let
       (lib.strings.removePrefix "/" path));
 in
 {
-  branch.nixosModule.nixosModule = lib.mkIf false {
+  branch.nixosModule.nixosModule = {
     options.dot = {
       nfs.coordinator = lib.mkOption {
         type = lib.types.bool;
@@ -51,7 +58,7 @@ in
       };
     };
 
-    config = lib.mkIf hasNetwork {
+    config = lib.mkIf (hasNetwork && false) {
       services.garage.enable = true;
       services.garage.package = pkgs.garage;
       services.garage.environmentFile = "/etc/garage/host.env";
@@ -122,8 +129,25 @@ in
         mode = "0400";
       };
     };
+  };
 
-    branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && false) {
+  branch.homeManagerModule.homeManagerModule = {
+    options.dot = {
+      nfs.coordinator = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+      nfs.node = lib.mkOption {
+        type = lib.types.strMatching "[a-z0-9]+";
+        default = false;
+      };
+      nfs.trusted = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+    };
+
+    config = lib.mkIf (hasNetwork && false) {
       home.packages = [
         pkgs.rclone
       ];

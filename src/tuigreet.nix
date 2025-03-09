@@ -7,7 +7,7 @@ let
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
-    desktopEnvironment.login =
+    dot.desktopEnvironment.login =
       "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd '${config.dot.desktopEnvironment.startup}'";
   };
 }

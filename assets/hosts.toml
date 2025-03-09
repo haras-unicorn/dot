@@ -9,12 +9,14 @@ ip = "10.69.42.1"
 
 [hosts.system]
 networking.hostName = "officer"
-system = "aarch64-linux"
+nixpkgs.system = "aarch64-linux"
 dot.ddns.coordinator = true
 dot.vpn.ip = "10.69.42.1"
 dot.vpn.subnet.ip = "10.69.42.0"
 dot.vpn.subnet.bits = "24"
 dot.vpn.subnet.mask = "255.255.255.0"
+dot.hardware.rpi."4".enable = true
+dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
 
 [hosts.home]
 dot.hardware.rpi."4".enable = true
@@ -26,11 +28,13 @@ ip = "10.69.42.3"
 
 [hosts.system]
 networking.hostName = "workbug"
-system = "x86_64-linux"
+nixpkgs.system = "x86_64-linux"
 dot.vpn.ip = "10.69.42.3"
 dot.vpn.subnet.ip = "10.69.42.0"
 dot.vpn.subnet.bits = "24"
 dot.vpn.subnet.mask = "255.255.255.0"
+dot.hardware.temp = "/sys/class/hwmon/hwmon3/temp1_input"
+dot.hardware.monitor.main = "eDP-1"
 
 [hosts.home]
 dot.prompt.nsfw = false
@@ -43,11 +47,13 @@ ip = "10.69.42.2"
 
 [hosts.system]
 networking.hostName = "hearth"
-system = "x86_64-linux"
+nixpkgs.system = "x86_64-linux"
 dot.vpn.ip = "10.69.42.2"
 dot.vpn.subnet.ip = "10.69.42.0"
 dot.vpn.subnet.bits = "24"
 dot.vpn.subnet.mask = "255.255.255.0"
+dot.hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input"
+dot.hardware.monitor.main = "DP-1"
 
 [hosts.home]
 dot.hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input"
@@ -59,11 +65,13 @@ ip = "10.69.42.4"
 
 [hosts.system]
 networking.hostName = "officer"
-system = "x86_64-linux"
+nixpkgs.system = "x86_64-linux"
 dot.vpn.ip = "10.69.42.4"
 dot.vpn.subnet.ip = "10.69.42.0"
 dot.vpn.subnet.bits = "24"
 dot.vpn.subnet.mask = "255.255.255.0"
+dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
+dot.hardware.monitor.main = "DVI-D-0"
 
 [hosts.home]
 dot.prompt.nsfw = false

@@ -35,11 +35,11 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
-    desktopEnvironment.sessionVariables = {
+    dot.desktopEnvironment.sessionVariables = {
       QT_QPA_PLATFORM = "xcb";
     };
 
-    desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
+    dot.desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
       {
         mods = [ "ctrl" "alt" ];
         key = "v";

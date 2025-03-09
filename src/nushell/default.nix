@@ -42,7 +42,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = {
-    shell = { package = pkgs.nushell; bin = "nu"; };
+    dot.shell = { package = pkgs.nushell; bin = "nu"; };
 
     programs.nushell.enable = true;
 

@@ -7,7 +7,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = (lib.mkIf (hasMonitor && hasKeyboard)) {
-    desktopEnvironment.keybinds = [
+    dot.desktopEnvironment.keybinds = [
       {
         mods = [ "super" ];
         key = "e";
@@ -15,7 +15,7 @@ in
       }
     ];
 
-    desktopEnvironment.windowrules = [{
+    dot.desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";
       xselector = "wm_class";

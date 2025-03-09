@@ -1,8 +1,10 @@
-{ pkgs, lib, config, user, musnix, ... }:
+{ pkgs, lib, config, musnix, ... }:
 
 # TODO: laptop battery saving
 
 let
+  user = config.dot.user;
+
   hasSound = config.dot.hardware.sound.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
 in
@@ -32,7 +34,7 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasSound && hasMonitor) {
-    desktopEnvironment.windowrules = [{
+    dot.desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";
       xselector = "wm_class";

@@ -24,7 +24,7 @@ in
     };
 
     config = {
-      desktopEnvironment.windowrules = lib.mkIf (hasMonitor && hasKeyboard) [{
+      dot.desktopEnvironment.windowrules = lib.mkIf (hasMonitor && hasKeyboard) [{
         rule = "float";
         selector = "class";
         xselector = "wm_class";

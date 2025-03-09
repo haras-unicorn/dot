@@ -101,7 +101,7 @@ let
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
-    desktopEnvironment.startup = "qtile";
+    dot.desktopEnvironment.startup = "qtile";
 
     services.xserver.windowManager.qtile.enable = true;
     services.xserver.windowManager.qtile.package = package;

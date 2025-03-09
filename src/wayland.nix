@@ -64,7 +64,7 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
-    desktopEnvironment.sessionVariables = {
+    dot.desktopEnvironment.sessionVariables = {
       QT_QPA_PLATFORM = "wayland;xcb";
       NIXOS_OZONE_WL = "1";
       WLR_NO_HARDWARE_CURSORS = "1";
@@ -77,12 +77,12 @@ in
       _JAVA_AWT_WM_NONREPARENTING = "1";
     };
 
-    desktopEnvironment.sessionStartup = [
+    dot.desktopEnvironment.sessionStartup = [
       "${wclipwatch}/bin/wclipwatch"
       "${xclipwatch}/bin/xclipwatch"
     ];
 
-    desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
+    dot.desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
       {
         mods = [ "ctrl" "alt" ];
         key = "v";

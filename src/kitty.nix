@@ -17,7 +17,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = {
-    terminal = { package = pkgs.kitty; bin = "kitty"; };
+    dot.terminal = { package = pkgs.kitty; bin = "kitty"; };
 
     stylix.targets.kitty.variant256Colors = true;
 

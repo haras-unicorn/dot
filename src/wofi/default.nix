@@ -13,7 +13,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
-    desktopEnvironment.keybinds = [
+    dot.desktopEnvironment.keybinds = [
       {
         mods = [ "super" ];
         key = "return";

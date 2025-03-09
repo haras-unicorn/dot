@@ -9,7 +9,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasSound {
-    desktopEnvironment.keybinds = lib.mkIf (hasSound && hasKeyboard) [
+    dot.desktopEnvironment.keybinds = lib.mkIf (hasSound && hasKeyboard) [
       {
         mods = [ "super" ];
         key = "v";

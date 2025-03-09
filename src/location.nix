@@ -1,17 +1,17 @@
-{ host
-  # , config
-, ...
-}:
+{ config, ... }:
 
 # TODO: find mepo alternative
 
+let
+  host = config.dot.host;
+in
 {
   branch.nixosModule.nixosModule = {
     # NOTE: https://github.com/NixOS/nixpkgs/issues/329522
     services.avahi.enable = true;
     services.geoclue2.enable = true;
     # NOTE: https://github.com/NixOS/nixpkgs/issues/293212#issuecomment-2319051915
-    sops.secrets."${host}.geo" = {
+    sops.secrets."${host.name}.geo" = {
       path = "/etc/geoclue/conf.d/provider.conf";
       owner = "geoclue";
       group = "geoclue";

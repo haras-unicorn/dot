@@ -1,8 +1,10 @@
-{ pkgs, config, lib, user, ... }:
+{ pkgs, config, lib, ... }:
 
 # TODO: lutris packages
 
 let
+  user = config.dot.user;
+
   hasMonitor = config.dot.hardware.monitor.enable;
   hasMouse = config.dot.hardware.mouse.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
@@ -29,7 +31,7 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
-    desktopEnvironment.windowrules = [{
+    dot.desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";
       xselector = "wm_class";

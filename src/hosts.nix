@@ -40,10 +40,23 @@ in
                 root
                 "assets/secrets/${host.name}.yaml";
 
+            userHostModule.options = {
+              dot.user = lib.mkOption {
+                type = lib.types.str;
+                default = user;
+              };
+              dot.host.name = lib.mkOption {
+                type = lib.types.str;
+                default = host.name;
+              };
+              dot.host.ip = lib.mkOption {
+                type = lib.types.str;
+                default = host.ip;
+              };
+            };
+
             nixosModule = {
               system.stateVersion = version;
-
-              networking.hostName = host.name;
 
               facter.reportPath = facterPath;
 
@@ -57,6 +70,7 @@ in
                 isNormalUser = true;
                 extraGroups = [ "wheel" "dialout" ];
                 home = "/home/${user}";
+                initialPassword = user;
                 createHome = true;
               };
 
@@ -67,14 +81,15 @@ in
                 nixos-facter-modules.hmModules.facter
                 sops-nix.homeManagerModules.sops
                 stylix.homeManagerModules.stylix
-                homeModule
+                userHostModule
+                homeManagerModule
                 host.home
               ];
               home-manager.users.${user} =
                 self.homeManagerModules.default;
             };
 
-            homeModule = {
+            homeManagerModule = {
               home.stateVersion = version;
 
               home.username = user;
@@ -87,7 +102,7 @@ in
             };
           in
           {
-            name = "${host.name}-${host.system.system}";
+            name = "${host.name}-${host.system.nixpkgs.system}";
             value = nixpkgs.lib.nixosSystem {
               inherit specialArgs;
               modules = [
@@ -96,6 +111,7 @@ in
                 sops-nix.nixosModules.default
                 home-manager.nixosModules.default
                 self.nixosModules.default
+                userHostModule
                 nixosModule
                 host.system
               ];

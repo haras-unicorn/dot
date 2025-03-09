@@ -1,4 +1,4 @@
-{ stylix, config, pkgs, lib, system, ... }:
+{ stylix, config, pkgs, lib, unstablePkgs, ... }:
 
 # TODO: https://github.com/danth/stylix/pull/847
 
@@ -32,7 +32,7 @@ in
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [
       inspect-gtk
-      stylix.packages.${system}.palette-generator
+      stylix.packages.${pkgs.system}.palette-generator
     ];
 
     stylix.enable = true;
@@ -40,7 +40,7 @@ in
     stylix.imageScalingMode = "fill";
     stylix.polarity = "dark";
     stylix.fonts.monospace.name = "JetBrainsMono Nerd Font";
-    stylix.fonts.monospace.package = config.unstablePkgs.nerd-fonts.jetbrains-mono;
+    stylix.fonts.monospace.package = unstablePkgs.nerd-fonts.jetbrains-mono;
     stylix.fonts.sansSerif.name = "Roboto";
     stylix.fonts.sansSerif.package = pkgs.roboto;
     stylix.fonts.serif.name = "Roboto Serif";

@@ -32,7 +32,7 @@ in
     };
 
     config = {
-      desktopEnvironment.sessionStartup =
+      dot.desktopEnvironment.sessionStartup =
         lib.mkIf (hasMonitor && hasWayland) [
           ''${setWallpaperWayland}/bin/wallpaper ${config.dot.wallpaper}''
         ];

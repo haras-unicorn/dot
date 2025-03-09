@@ -16,7 +16,7 @@ let
     bin = "firefox";
     stylix = "firefox";
     stylixGnomeTheme = "firefoxGnomeTheme";
-    branch.homeManagerModule.homeManagerModule = "firefox";
+    home = "firefox";
   };
 
   userjs = ''
@@ -32,7 +32,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor) {
-    browser = { package = fork.package; bin = fork.bin; };
+    dot.browser = { package = fork.package; bin = fork.bin; };
 
     stylix.targets.${fork.stylix} = {
       profileNames = [ "personal" ];

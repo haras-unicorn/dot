@@ -1,6 +1,10 @@
-{ pkgs, config, host, system, lib, nixpkgs-unstable, ... }:
+{ pkgs, config, lib, nixpkgs-unstable, ... }:
 
 let
+  host = config.dot.host;
+
+  system = pkgs.system;
+
   path = "${config.xdg.dataHome}/dot";
 
   ensure = ''
@@ -19,7 +23,7 @@ let
     text = ''
       ${ensure}
       sudo nixos-rebuild switch \
-        --flake "${path}#${host}-${system}" \
+        --flake "${path}#${host.name}-${system}" \
         "$@"
     '';
   };
@@ -35,7 +39,7 @@ let
       cd "${path}" && ${pkgs.git}/bin/git push
 
       sudo nixos-rebuild switch \
-        --flake "${path}#${host}-${system}" \
+        --flake "${path}#${host.name}-${system}" \
         "$@"
     '';
   };
@@ -46,7 +50,7 @@ let
     text = ''
       ${ensure}
       sudo nixos-rebuild switch \
-        --flake "${path}#${host}-${system}" \
+        --flake "${path}#${host.name}-${system}" \
         --show-trace \
         --option eval-cache false \
         "$@"
@@ -60,8 +64,8 @@ let
   };
 
   thisConfig = {
-    unstablePkgs = import nixpkgs-unstable {
-      cystem = pkgs.system;
+    _module.args.unstablePkgs = import nixpkgs-unstable {
+      system = pkgs.system;
       config = config.nixpkgs.config;
       overlays = config.nixpkgs.overlays;
     };

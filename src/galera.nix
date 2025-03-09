@@ -1,10 +1,12 @@
-{ pkgs, host, lib, config, ... }:
+{ pkgs, lib, config, ... }:
 
 # TODO: mysqlbackup
 
 # NOTE: run `sudo galera_new_cluster` when all nodes are down
 
 let
+  host = config.dot.host;
+
   hasNetwork = config.dot.hardware.network.enable;
   isCoordinator = config.dot.ddb.coordinator;
 
@@ -17,7 +19,7 @@ let
   ];
 in
 {
-  branch.nixosModule.nixosModule = lib.mkIf false {
+  branch.nixosModule.nixosModule = {
     options.dot = {
       ddb.coordinator = lib.mkOption {
         type = lib.types.bool;
@@ -25,7 +27,7 @@ in
       };
     };
 
-    config = lib.mkIf hasNetwork {
+    config = lib.mkIf (hasNetwork && false) {
       systemd.services.mysql = {
         path = with pkgs; [
           bash

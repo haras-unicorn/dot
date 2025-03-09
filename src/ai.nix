@@ -1,4 +1,4 @@
-{ self, nix-comfyui, pkgs, config, lib, ... }:
+{ self, nix-comfyui, pkgs, unstablePkgs, config, lib, ... }:
 
 # TODO: listen command with openai-whisper-cpp
 
@@ -29,9 +29,9 @@ let
 
   comfyuiPackage = nix-comfyui.packages.${pkgs.system}.${packageName};
 
-  ollamaPackage = config.unstablePkgs.ollama;
+  ollamaPackage = unstablePkgs.ollama;
 
-  openWebuiPackage = config.unstablePkgs.open-webui;
+  openWebuiPackage = unstablePkgs.open-webui;
 
   comfyui = pkgs.writeShellApplication {
     name = "comfyui";
@@ -288,7 +288,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = {
-    desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
+    dot.desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
       {
         mods = [ "super" ];
         key = "s";

@@ -1,8 +1,11 @@
-{ lib, user, host, config, ... }:
+{ lib, config, ... }:
 
 # TODO: only allow from vpn
 
 let
+  user = config.dot.user;
+  host = config.dot.host;
+
   hasNetwork = config.dot.hardware.network.enable;
 in
 {
@@ -12,19 +15,19 @@ in
     services.openssh.settings.PermitRootLogin = "no";
     services.openssh.settings.PasswordAuthentication = false;
     services.openssh.settings.KbdInteractiveAuthentication = false;
-    sops.secrets."${host}.ssh.auth.pub" = {
+    sops.secrets."${host.name}.ssh.auth.pub" = {
       path = "/home/${user}/.ssh/authorized_keys";
       owner = user;
       group = "users";
       mode = "0644";
     };
-    sops.secrets."${host}.ssh.key.pub" = {
+    sops.secrets."${host.name}.ssh.key.pub" = {
       path = "/home/${user}/.ssh/id.pub";
       owner = user;
       group = "users";
       mode = "0644";
     };
-    sops.secrets."${host}.ssh.key" = {
+    sops.secrets."${host.name}.ssh.key" = {
       path = "/home/${user}/.ssh/id";
       owner = user;
       group = "users";

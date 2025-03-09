@@ -30,7 +30,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
-    desktopEnvironment.windowrules = [
+    dot.desktopEnvironment.windowrules = [
       {
         rule = "float";
         selector = "class";

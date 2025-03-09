@@ -2,7 +2,7 @@
 
 {
   branch.homeManagerModule.homeManagerModule = {
-    shell.aliases = {
+    dot.shell.aliases = {
       cat = "${pkgs.bat}/bin/bat";
     };
 

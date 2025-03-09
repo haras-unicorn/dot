@@ -2,7 +2,7 @@
 
 {
   branch.homeManagerModule.homeManagerModule = {
-    shell.sessionVariables = {
+    dot.shell.sessionVariables = {
       LS_COLORS = "vivid generate ${config.xdg.configHome}/vivid/themes/colors.yaml";
     };
 

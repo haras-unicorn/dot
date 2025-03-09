@@ -78,7 +78,7 @@ let
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland && false) {
-    desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
+    dot.desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland && false) {

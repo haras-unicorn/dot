@@ -10,7 +10,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = {
-    editor = { package = pkgs.helix; bin = "hx"; };
+    dot.editor = { package = pkgs.helix; bin = "hx"; };
 
     programs.helix.enable = true;
 

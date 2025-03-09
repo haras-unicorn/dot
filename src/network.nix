@@ -29,7 +29,7 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor) {
-    desktopEnvironment.windowrules = lib.mkIf hasKeyboard [{
+    dot.desktopEnvironment.windowrules = lib.mkIf hasKeyboard [{
       rule = "float";
       selector = "class";
       xselector = "wm_class";

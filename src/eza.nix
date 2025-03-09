@@ -2,7 +2,7 @@
 
 {
   branch.homeManagerModule.homeManagerModule = {
-    shell.aliases = {
+    dot.shell.aliases = {
       la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
       tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
     };

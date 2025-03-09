@@ -1,7 +1,6 @@
 { pkgs
 , lib
 , config
-, user
 , ...
 }:
 
@@ -13,6 +12,8 @@
 # TODO: wine packages
 
 let
+  user = config.dot.user;
+
   hasMonitor = config.dot.hardware.monitor.enable;
 
   bridgeGns3 =

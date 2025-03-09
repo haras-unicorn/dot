@@ -1,8 +1,9 @@
-{ lib, config, host, ... }:
+{ lib, config, ... }:
 
 let
+  host = config.dot.host;
+
   hasNetwork = config.dot.hardware.network.enable;
-  hasMonitor = config.dot.hardware.monitor.enable;
   isCoordinator = config.dot.ddns.coordinator;
 in
 {
@@ -38,16 +39,6 @@ in
         owner = "ddns-updater";
         group = "ddns-updater";
         mode = "0400";
-      };
-    };
-
-    branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor && isCoordinator) {
-      xdg.desktopEntries = {
-        ddns-updater = {
-          name = "DDNS Updater";
-          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8000";
-          terminal = false;
-        };
       };
     };
   };

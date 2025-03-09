@@ -9,7 +9,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
-    desktopEnvironment.sessionStartup = [
+    dot.desktopEnvironment.sessionStartup = [
       "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${config.stylix.image}'"
     ];
 

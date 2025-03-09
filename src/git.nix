@@ -2,7 +2,7 @@
 
 {
   branch.homeManagerModule.homeManagerModule = {
-    shell.aliases = {
+    dot.shell.aliases = {
       bruh = "${pkgs.lazygit}/bin/lazygit";
     };
 

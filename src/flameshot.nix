@@ -8,7 +8,7 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
-    desktopEnvironment.keybinds = lib.mkIf (hasKeyboard && hasMouse) [
+    dot.desktopEnvironment.keybinds = lib.mkIf (hasKeyboard && hasMouse) [
       {
         mods = [ "super" ];
         key = "Print";

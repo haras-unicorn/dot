@@ -1,6 +1,8 @@
-{ pkgs, lib, config, user, ... }:
+{ pkgs, lib, config, ... }:
 
 let
+  user = config.dot.user;
+
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
@@ -15,7 +17,7 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
-    desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
+    dot.desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
       {
         mods = [ "super" "shift" ];
         key = "b";

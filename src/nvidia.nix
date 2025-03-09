@@ -1,10 +1,12 @@
-{ nixpkgs, pkgs, lib, config, user, ... }:
+{ nixpkgs, pkgs, lib, config, ... }:
 
 # TODO: fix 340
 # FIXME: https://github.com/NixOS/nixpkgs/issues/306276
 
 (
   let
+    user = config.dot.user;
+
     hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
     version = config.dot.hardware.graphics.version;
   in

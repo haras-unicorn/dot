@@ -137,7 +137,7 @@ in
     };
 
     config = {
-      desktopEnvironment.keybinds = lib.mkMerge [
+      dot.desktopEnvironment.keybinds = lib.mkMerge [
         (lib.mkIf hasMonitor [{
           mods = [ "super" ];
           key = "w";

@@ -12,7 +12,7 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
-    desktopEnvironment.sessionVariables = {
+    dot.desktopEnvironment.sessionVariables = {
       GTK_USE_PORTAL = "1";
     };
 

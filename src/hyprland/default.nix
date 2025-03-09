@@ -62,7 +62,7 @@ let
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
-    desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
+    dot.desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
 
     programs.hyprland.enable = true;
     programs.hyprland.xwayland.enable = true;
@@ -75,7 +75,7 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
-    desktopEnvironment.keybinds = [
+    dot.desktopEnvironment.keybinds = [
       {
         mods = [ "super" ];
         key = "c";

@@ -1,4 +1,4 @@
-{ pkgs, lib, host, config, ... }:
+{ pkgs, lib, config, ... }:
 
 # TODO: convert firewall rules to nebula firewall rules
 # TODO: disable all traffic from outside vpn
@@ -6,6 +6,8 @@
 # TODO: nebula-wait-online.service and nebula-online.target
 
 let
+  host = config.dot.host;
+
   hasNetwork = config.dot.hardware.network.enable;
   isCoordinator = config.dot.vpn.coordinator;
 in
@@ -80,19 +82,19 @@ in
         group = "nebula-nebula";
         mode = "0644";
       };
-      sops.secrets."${host}.vpn.key.pub" = {
+      sops.secrets."${host.name}.vpn.key.pub" = {
         path = "/etc/nebula/host.crt";
         owner = "nebula-nebula";
         group = "nebula-nebula";
         mode = "0644";
       };
-      sops.secrets."${host}.vpn.key" = {
+      sops.secrets."${host.name}.vpn.key" = {
         path = "/etc/nebula/host.key";
         owner = "nebula-nebula";
         group = "nebula-nebula";
         mode = "0400";
       };
-      sops.secrets."${host}.vpn.cnf" = {
+      sops.secrets."${host.name}.vpn.cnf" = {
         path = "/etc/nebula/config.d/lighthouse.yaml";
         owner = "nebula-nebula";
         group = "nebula-nebula";
