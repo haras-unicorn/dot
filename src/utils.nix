@@ -70,6 +70,12 @@ in
       pkgs.man-pages
       pkgs.man-pages-posix
       pkgs.rustscan
+      pkgs.fd
+      pkgs.watchexec
+      pkgs.systemfd
+      pkgs.vim
+      pkgs.kitty # NOTE: install everywhere for terminal compatibility
+      pkgs.xfce.xfce4-terminal
     ];
   };
 }

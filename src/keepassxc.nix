@@ -47,7 +47,29 @@ in
         ];
 
       xdg.configFile."keepassxc/keepassxc.ini" = lib.mkIf (hasMonitor && hasKeyboard) {
-        source = ./keepassxc.ini;
+        text = ''
+          [General]
+          ConfigVersion=2
+          NumberOfRememberedLastDatabases=1
+
+          [GUI]
+          ApplicationTheme=classic
+          ColorPasswords=true
+          MinimizeOnClose=true
+          MinimizeToTray=true
+          MinimizeOnStartup=true
+          MonospaceNotes=true
+          ShowTrayIcon=true
+          TrayIconAppearance=monochrome-light
+
+          [PasswordGenerator]
+          AdvancedMode=true
+          Length=32
+          Logograms=true
+
+          [Security]
+          Security_HideNotes=true
+        '';
       };
 
       systemd.user.services.keepassxc = lib.mkIf (hasMonitor && hasKeyboard) {

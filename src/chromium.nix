@@ -1,4 +1,6 @@
-{ ... }:
+{ config, self, pkgs, lib, ... }:
+
+# FIXME: hardware acceleration
 
 let
   args = [
@@ -13,6 +15,10 @@ let
     (builtins.map
       (x: "--append-flags ${x}")
       args);
+
+  hasMonitor = config.dot.hardware.monitor.enable;
+
+  package = self.lib.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
 in
 {
   flake.lib.chromium.wrap = pkgs: package: bin: pkgs.symlinkJoin {
@@ -23,4 +29,23 @@ in
   };
 
   flake.lib.chromium.args = builtins.concatStringsSep " " args;
+
+  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
+    programs.chromium.enable = true;
+    programs.chromium.package = package;
+    programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
+      en_US
+    ];
+    # NOTE: keeping here just in case i need them again
+    # programs.chromium.extensions = [
+    #   # ublock origin
+    #   { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
+    #   # dark reader
+    #   { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
+    #   # vimium c
+    #   { id = "hfjbmagddngcpeloejdejnfgbamkjaeg"; }
+    #   # vimium c new tab
+    #   { id = "cglpcedifkgalfdklahhcchnjepcckfn"; }
+    # ];
+  };
 }
