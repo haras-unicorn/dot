@@ -1,0 +1,38 @@
+[vpn]
+ip = "10.69.42.0"
+bits = "24"
+mask = "255.255.255.0"
+
+[[hosts]]
+hostname = "hearth"
+
+[hosts.config.dot]
+vpn.ip = "10.69.42.2"
+hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input"
+hardware.monitor.main = "DP-1"
+
+[[hosts]]
+hostname = "officer"
+
+[hosts.config.dot]
+vpn.ip = "10.69.42.4"
+prompt.nsfw = false
+hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
+hardware.monitor.main = "DVI-D-0"
+
+[[hosts]]
+hostname = "puffy"
+
+[hosts.config.dot]
+hardware.rpi."4".enable = true
+hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
+vpn.ip = "10.69.42.1"
+
+[[hosts]]
+hostname = "workbug"
+
+[hosts.config.dot]
+prompt.nsfw = false
+hardware.temp = "/sys/class/hwmon/hwmon3/temp1_input"
+hardware.monitor.main = "eDP-1"
+vpn.ip = "10.69.42.3"
