@@ -8,7 +8,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasSound {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasSound {
     desktopEnvironment.keybinds = lib.mkIf (hasSound && hasKeyboard) [
       {
         mods = [ "super" ];

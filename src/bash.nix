@@ -24,12 +24,12 @@ let
       cfg.sessionStartup);
 in
 {
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     environment.shells = [ "${pkgs.bashInteractive}/bin/bash" ];
     users.defaultUserShell = "${pkgs.bashInteractive}/bin/bash";
   };
 
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     programs.bash.enable = true;
     programs.bash.enableCompletion = true;
 

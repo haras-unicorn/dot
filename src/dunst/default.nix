@@ -7,7 +7,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     home.packages = [
       pkgs.libnotify
     ];

@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     shell.sessionVariables = {
       LS_COLORS = "vivid generate ${config.xdg.configHome}/vivid/themes/colors.yaml";
     };

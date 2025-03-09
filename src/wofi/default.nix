@@ -12,7 +12,7 @@ let
   };
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
     desktopEnvironment.keybinds = [
       {
         mods = [ "super" ];

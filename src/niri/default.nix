@@ -77,11 +77,11 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland && false) {
+  branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland && false) {
     desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland && false) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland && false) {
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 

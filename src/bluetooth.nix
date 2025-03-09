@@ -5,12 +5,12 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf hasBluetooth {
+  branch.nixosModule.nixosModule = lib.mkIf hasBluetooth {
     hardware.bluetooth.enable = true;
     services.blueman.enable = true;
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasBluetooth && hasMonitor) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasBluetooth && hasMonitor) {
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";

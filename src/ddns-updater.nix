@@ -6,7 +6,7 @@ let
   isCoordinator = config.dot.ddns.coordinator;
 in
 {
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     options.dot = {
       ddns.coordinator = lib.mkOption {
         type = lib.types.bool;
@@ -41,7 +41,7 @@ in
       };
     };
 
-    integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor && isCoordinator) {
+    branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor && isCoordinator) {
       xdg.desktopEntries = {
         ddns-updater = {
           name = "DDNS Updater";

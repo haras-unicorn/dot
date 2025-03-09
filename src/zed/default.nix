@@ -5,7 +5,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard) {
     programs.zed-editor.enable = true;
     programs.zed-editor.userSettings = {
       autosave = "on_window_change";

@@ -5,7 +5,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf (hasNetwork && false) {
+  branch.nixosModule.nixosModule = lib.mkIf (hasNetwork && false) {
     services.vault.enable = true;
     systemd.services.vault.after = [ "mysql.service" ];
     systemd.services.vault.wants = [ "mysql.service" ];
@@ -23,7 +23,7 @@ in
     };
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && false) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && false) {
     home.packages = [
       pkgs.vault-bin
     ];

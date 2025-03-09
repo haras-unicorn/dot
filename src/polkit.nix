@@ -4,7 +4,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
+  branch.nixosModule.nixosModule = lib.mkIf hasMonitor {
     security.polkit.enable = true;
 
     environment.systemPackages = [

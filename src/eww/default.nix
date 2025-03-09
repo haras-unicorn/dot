@@ -14,7 +14,7 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasMouse && hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasMouse && hasWayland) {
     systemd.user.services.eww = {
       Unit = {
         Description = "Eww daemon";

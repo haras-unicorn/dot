@@ -113,7 +113,7 @@ let
   };
 in
 {
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     options = thisOptions;
 
     config = lib.mkMerge [
@@ -124,7 +124,7 @@ in
     ];
   };
 
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     options = thisOptions;
 
     config = lib.mkMerge [

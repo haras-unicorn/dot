@@ -5,7 +5,7 @@ let
   nsfw = config.dot.prompt.nsfw;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     options.dot = {
       prompt.nsfw = lib.mkOption {
         type = lib.types.bool;

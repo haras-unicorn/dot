@@ -30,11 +30,11 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
+  branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
     services.xserver.enable = true;
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     desktopEnvironment.sessionVariables = {
       QT_QPA_PLATFORM = "xcb";
     };

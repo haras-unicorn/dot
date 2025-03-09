@@ -16,7 +16,7 @@ let
   editor = config.dot.editor;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     terminal = { package = pkgs.kitty; bin = "kitty"; };
 
     stylix.targets.kitty.variant256Colors = true;

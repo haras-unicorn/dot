@@ -6,7 +6,7 @@
 # TODO: find mepo alternative
 
 {
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     # NOTE: https://github.com/NixOS/nixpkgs/issues/329522
     services.avahi.enable = true;
     services.geoclue2.enable = true;

@@ -15,7 +15,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     home.activation = {
       polybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${package}/bin/polybar-msg cmd restart || true

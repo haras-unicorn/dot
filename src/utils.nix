@@ -56,7 +56,7 @@ let
   };
 in
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     home.packages = [
       run
       repeat

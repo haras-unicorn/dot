@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     programs.zoxide.enable = true;
   };
 }

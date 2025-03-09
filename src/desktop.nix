@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  integrate.nixosModule.nixosModule.options.dot.desktopEnvironment = {
+  branch.nixosModule.nixosModule.options.dot.desktopEnvironment = {
     login = lib.mkOption {
       type = lib.types.str;
       default = [ ];
@@ -20,7 +20,7 @@
     };
   };
 
-  integrate.homeManagerModule.homeManagerModule.options.dot.desktopEnvironment = {
+  branch.homeManagerModule.homeManagerModule.options.dot.desktopEnvironment = {
     sessionVariables = lib.mkOption {
       type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
       default = { };

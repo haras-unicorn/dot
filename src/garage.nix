@@ -35,7 +35,7 @@ let
       (lib.strings.removePrefix "/" path));
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf false {
+  branch.nixosModule.nixosModule = lib.mkIf false {
     options.dot = {
       nfs.coordinator = lib.mkOption {
         type = lib.types.bool;
@@ -123,7 +123,7 @@ in
       };
     };
 
-    integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && false) {
+    branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && false) {
       home.packages = [
         pkgs.rclone
       ];

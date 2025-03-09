@@ -9,7 +9,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     home.activation = {
       picomReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "picom" || true

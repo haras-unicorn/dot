@@ -16,7 +16,7 @@ let
     bin = "firefox";
     stylix = "firefox";
     stylixGnomeTheme = "firefoxGnomeTheme";
-    integrate.homeManagerModule.homeManagerModule = "firefox";
+    branch.homeManagerModule.homeManagerModule = "firefox";
   };
 
   userjs = ''
@@ -31,7 +31,7 @@ let
   '';
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor) {
     browser = { package = fork.package; bin = fork.bin; };
 
     stylix.targets.${fork.stylix} = {

@@ -287,7 +287,7 @@ let
   };
 in
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
       {
         mods = [ "super" ];

@@ -5,7 +5,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     options.dot = {
       pinentry.package = lib.mkOption {
         type = lib.types.package;

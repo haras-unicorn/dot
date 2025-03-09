@@ -5,13 +5,13 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
+  branch.nixosModule.nixosModule = lib.mkIf hasMonitor {
     environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 
     programs.dconf.enable = true;
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     desktopEnvironment.sessionVariables = {
       GTK_USE_PORTAL = "1";
     };

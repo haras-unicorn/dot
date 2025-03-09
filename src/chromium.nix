@@ -30,7 +30,7 @@ in
 
   flake.lib.chromium.args = builtins.concatStringsSep " " args;
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     programs.chromium.enable = true;
     programs.chromium.package = package;
     programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [

@@ -61,7 +61,7 @@ let
   floatingSizeString = builtins.toString (config.dot.hardware.monitor.height / 2);
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
+  branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
     desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
 
     programs.hyprland.enable = true;
@@ -74,7 +74,7 @@ in
       };
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     desktopEnvironment.keybinds = [
       {
         mods = [ "super" ];

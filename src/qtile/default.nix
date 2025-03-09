@@ -100,7 +100,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
+  branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
     desktopEnvironment.startup = "qtile";
 
     services.xserver.windowManager.qtile.enable = true;
@@ -111,7 +111,7 @@ in
       ];
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     home.packages = [
       switch-layout
       current-layout

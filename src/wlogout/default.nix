@@ -16,7 +16,7 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasMouse && hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasMouse && hasWayland) {
     home.packages = [
       logout
     ];

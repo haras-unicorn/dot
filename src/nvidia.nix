@@ -9,7 +9,7 @@
     version = config.dot.hardware.graphics.version;
   in
   {
-    integrate.nixosModule.nixosModule = lib.mkIf hasNvidia {
+    branch.nixosModule.nixosModule = lib.mkIf hasNvidia {
       boot.initrd.availableKernelModules = [
         "nvidia"
         "nvidia_modeset"

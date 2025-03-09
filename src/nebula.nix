@@ -10,7 +10,7 @@ let
   isCoordinator = config.dot.vpn.coordinator;
 in
 {
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     options.dot = {
       vpn.coordinator = lib.mkOption {
         type = lib.types.bool;

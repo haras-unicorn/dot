@@ -8,7 +8,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
+  branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.steam.package = pkgs.steam.override {
       extraEnv = {
         MANGOHUD = "1";
@@ -28,7 +28,7 @@ in
     programs.gamemode.enable = true;
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";

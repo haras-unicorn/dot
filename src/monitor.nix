@@ -5,7 +5,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
+  branch.nixosModule.nixosModule = lib.mkIf hasMonitor {
     hardware.i2c.enable = true;
     services.ddccontrol.enable = true;
 
@@ -14,7 +14,7 @@ in
     ];
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
       {
         mods = [ "super" "shift" ];

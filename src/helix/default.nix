@@ -9,7 +9,7 @@ let
   editor = "${cfg.package}/bin/${cfg.bin}";
 in
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     editor = { package = pkgs.helix; bin = "hx"; };
 
     programs.helix.enable = true;

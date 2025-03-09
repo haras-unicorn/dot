@@ -8,7 +8,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
+  branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasKeyboard && !hasWayland) {
     environment.systemPackages = [
       pkgs.libsForQt5.qt5.qtgraphicaleffects
       pkgs.libsForQt5.plasma-framework

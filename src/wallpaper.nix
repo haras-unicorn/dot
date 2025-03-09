@@ -23,7 +23,7 @@ let
   };
 in
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     options.dot = {
       wallpaper = lib.mkOption {
         type = lib.types.str;

@@ -27,7 +27,7 @@ let
     };
 in
 {
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     environment.systemPackages = [
       pkgs.lazydocker
       pkgs.docker-client

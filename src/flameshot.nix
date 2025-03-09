@@ -7,7 +7,7 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
     desktopEnvironment.keybinds = lib.mkIf (hasKeyboard && hasMouse) [
       {
         mods = [ "super" ];

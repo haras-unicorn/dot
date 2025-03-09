@@ -209,12 +209,12 @@ let
   };
 in
 {
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     options.dot = thisOptions;
     config = thisConfig;
   };
 
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     options.dot = thisOptions;
     config = thisConfig;
   };

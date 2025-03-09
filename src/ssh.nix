@@ -6,7 +6,7 @@ let
   hasNetwork = config.dot.hardware.network.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
+  branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.openssh.enable = true;
     services.openssh.allowSFTP = true;
     services.openssh.settings.PermitRootLogin = "no";
@@ -32,7 +32,7 @@ in
     };
   };
 
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     programs.ssh.enable = true;
     services.ssh-agent.enable = true;
   };

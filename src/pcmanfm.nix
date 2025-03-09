@@ -8,11 +8,11 @@ let
   };
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf hasMonitor {
+  branch.nixosModule.nixosModule = lib.mkIf hasMonitor {
     services.gvfs.enable = true;
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";

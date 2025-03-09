@@ -54,7 +54,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
+  branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
     services.greetd.enable = true;
     services.greetd.settings = {
       default_session = {
@@ -63,7 +63,7 @@ in
     };
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     desktopEnvironment.sessionVariables = {
       QT_QPA_PLATFORM = "wayland;xcb";
       NIXOS_OZONE_WL = "1";

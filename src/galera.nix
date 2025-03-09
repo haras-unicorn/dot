@@ -17,7 +17,7 @@ let
   ];
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf false {
+  branch.nixosModule.nixosModule = lib.mkIf false {
     options.dot = {
       ddb.coordinator = lib.mkOption {
         type = lib.types.bool;

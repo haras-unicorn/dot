@@ -4,7 +4,7 @@ let
   hasNetwork = config.dot.hardware.network.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf (hasNetwork && false) {
+  branch.nixosModule.nixosModule = lib.mkIf (hasNetwork && false) {
     services.vaultwarden.enable = true;
     users.users.vaultwarden.uid = 988;
     users.groups.vaultwarden.gid = 977;

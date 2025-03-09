@@ -9,7 +9,7 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 in
 {
-  integrate.nixosModule.nixosModule = lib.mkIf hasNetwork {
+  branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
     networking.nftables.enable = true;
     networking.firewall.enable = true;
     networking.networkmanager.enable = true;
@@ -28,7 +28,7 @@ in
     ];
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor) {
     desktopEnvironment.windowrules = lib.mkIf hasKeyboard [{
       rule = "float";
       selector = "class";

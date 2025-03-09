@@ -29,7 +29,7 @@ let
   };
 in
 {
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     desktopEnvironment.windowrules = [
       {
         rule = "float";

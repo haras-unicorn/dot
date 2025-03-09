@@ -7,7 +7,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     imports = [ musnix.nixosModules.musnix ];
 
     config = lib.mkIf hasSound {
@@ -31,7 +31,7 @@ in
     };
   };
 
-  integrate.homeManagerModule.homeManagerModule = lib.mkIf (hasSound && hasMonitor) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasSound && hasMonitor) {
     desktopEnvironment.windowrules = [{
       rule = "float";
       selector = "class";

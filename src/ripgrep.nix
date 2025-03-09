@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     shell.aliases = {
       grep = "${pkgs.ripgrep}/bin/rg";
     };

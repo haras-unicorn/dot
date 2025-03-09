@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     shell.aliases = {
       cat = "${pkgs.bat}/bin/bat";
     };

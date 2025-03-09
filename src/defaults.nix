@@ -34,13 +34,13 @@ let
 in
 {
   # NOTE: this is a clusterfuck anyway
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     systemd.user.extraConfig = ''
       DefaultEnvironment="PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
     '';
   };
 
-  integrate.homeManagerModule.homeManagerModule = {
+  branch.homeManagerModule.homeManagerModule = {
     options.dot = {
       shell = {
         package = lib.mkOption {
