@@ -1,13 +1,13 @@
 {
   inputs = {
-    flake-utils.url = "github:numtide/flake-utils";
-
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    perch.url = "github:altibiz/perch/refs/tags/2.1.1";
+    perch.inputs.nixpkgs.follows = "nixpkgs";
+
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
-    deploy-rs.inputs.utils.follows = "flake-utils";
 
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
@@ -33,24 +33,16 @@
 
     nix-comfyui.url = "github:haras-unicorn/nix-comfyui/dev";
     nix-comfyui.inputs.nixpkgs.follows = "nixpkgs";
-    nix-comfyui.inputs.flake-utils.follows = "flake-utils";
 
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
 
     stylix.url = "github:danth/stylix/release-24.11";
-    stylix.inputs.flake-utils.follows = "flake-utils";
     stylix.inputs.home-manager.follows = "home-manager";
   };
 
   outputs =
-    { self
-    , flake-utils
-    , nixpkgs
-    , deploy-rs
-    , nixos-facter-modules
-    , ...
-    } @ rawInputs:
+    { perch, nixos-facter-modules, ... } @ rawInputs:
     let
       inputs = rawInputs // {
         nixos-facter-modules = nixos-facter-modules // (
@@ -74,37 +66,10 @@
           }
         );
       };
-
-      libPart = {
-        lib = nixpkgs.lib.mapAttrs'
-          (name: value: { inherit name; value = value inputs; })
-          (((import "${self}/src/lib/import.nix") inputs).importDir "${self}/src/lib");
-      };
-
-      systemPart = flake-utils.lib.eachDefaultSystem (system: {
-        devShells.default = self.lib.devShell.mkDevShell system;
-        formatter = self.lib.formatter.mkFormatter system;
-        checks = self.lib.checks.mkChecks system;
-      });
-
-      hostPart =
-        let
-          invokeForHostSystemMatrix = mk: nixpkgs.lib.mergeAttrsList
-            (builtins.map
-              ({ host, system }: {
-                "${host}-${system}" = mk host system;
-              })
-              (nixpkgs.lib.cartesianProduct {
-                host = (builtins.attrNames (builtins.readDir "${self}/src/host"));
-                system = flake-utils.lib.defaultSystems;
-              }));
-        in
-        {
-          nixosModules = invokeForHostSystemMatrix self.lib.nixosModule.mkNixosModule;
-          hmModules = invokeForHostSystemMatrix self.lib.hmModule.mkHmModule;
-          nixosConfigurations = invokeForHostSystemMatrix self.lib.nixosConfiguration.mkNixosConfiguration;
-          deploy.nodes = invokeForHostSystemMatrix self.lib.deploy.mkDeploy;
-        };
     in
-    libPart // systemPart // hostPart;
+    perch.lib.flake.make {
+      inherit inputs;
+      root = ./.;
+      prefix = "src";
+    };
 }
