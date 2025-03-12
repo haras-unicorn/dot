@@ -7,6 +7,17 @@ in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard) {
     programs.zed-editor.enable = true;
+    programs.zed-editor.extensions = [
+      "toml"
+      "marksman"
+      "html"
+      "scss"
+      "just"
+      "nu"
+      "csharp"
+      "pylsp"
+      "ruff"
+    ];
     programs.zed-editor.userSettings = {
       autosave = "on_window_change";
       vim_mode = true;
