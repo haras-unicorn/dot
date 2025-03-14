@@ -36,8 +36,6 @@ let
       else
         magick convert "$prev" "$out/image.png"
       fi
-      default = config.users.users.root.openssh.authorizedKeys.keyFiles;
-      defaultText = literalExpression "config.users.users.root.openssh.authorizedKeys.keyFiles";
     '';
 in
 {
