@@ -30,7 +30,7 @@ let
     }
     ''
       mkdir $out
-      prev="${config.dot.wallpaper}"
+      prev="${config.dot.wallpaper.path}"
       if file --mime-type "$prev" | grep -qE 'video/'; then
         ffmpeg -i "$prev" -vf "select=eq(n\,0)" -vsync vfr -q:v 2 "$out/image.png"
       else
