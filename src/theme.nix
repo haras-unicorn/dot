@@ -4,6 +4,7 @@
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
+  wallpaperImage = config.dot.wallpaper.image;
 
   inspect-gtk = pkgs.writeShellApplication {
     name = "inspect-gtk";
@@ -13,20 +14,6 @@ let
       exec "$@"
     '';
   };
-
-  wallpaper = pkgs.runCommand "wallpaper-image"
-    {
-      buildInputs = [ pkgs.file pkgs.ffmpeg pkgs.imagemagick_light ];
-    }
-    ''
-      mkdir $out
-      prev="${config.dot.wallpaper}"
-      if file --mime-type "$prev" | grep -qE 'video/'; then
-        ffmpeg -i "$prev" -vf "select=eq(n\,0)" -vsync vfr -q:v 2 "$out/image.png"
-      else
-        magick convert "$prev" "$out/image.png"
-      fi
-    '';
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
@@ -36,7 +23,7 @@ in
     ];
 
     stylix.enable = true;
-    stylix.image = "${wallpaper}/image.png";
+    stylix.image = wallpaperImage;
     stylix.imageScalingMode = "fill";
     stylix.polarity = "dark";
     stylix.fonts.monospace.name = "JetBrainsMono Nerd Font";
