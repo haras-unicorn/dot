@@ -50,7 +50,7 @@ in
         default = "${wallpaperImage}/image.png";
       };
       wallpaper.static = lib.mkOption {
-        type = lib.types.str;
+        type = lib.types.bool;
         default = !hasWayland;
       };
       wallpaper.final = lib.mkOption {
