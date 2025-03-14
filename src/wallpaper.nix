@@ -71,6 +71,10 @@ in
       stylix.targets.hyprpaper.enable = lib.mkForce (hasWayland && isStatic);
       stylix.targets.feh.enable = lib.mkForce ((!hasWayland) && isStatic);
 
+      services.hyprpaper = lib.mkIF (hasWayland && isStatic) {
+        enable = true;
+      };
+
       home.packages = lib.mkMerge [
         (lib.mkIf (hasWayland) [ setWallpaperWayland ])
         (lib.mkIf (!hasWayland) [ setWallpaperXorg ])
