@@ -89,7 +89,7 @@ in
                       ${crdb}/bin/cockroach sql \
                         ${if cfg.insecure then "--insecure" else "--certs-dir=${cfg.certsDir}"} \
                         --host=${cfg.listen.address}:${builtins.toString cfg.listen.port} \
-                        --filef "${file}"
+                        --file "${file}"
                     '')
                     initScriptFiles;
               };
