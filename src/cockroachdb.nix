@@ -86,9 +86,9 @@ in
                   lib.concatMapStrings
                     (file: ''
                       echo "Running: ${file}"
-                      ${crdb}/bin/cockroach sql \
-                        ${if cfg.insecure then "--insecure" else "--certs-dir=${cfg.certsDir}"} \
-                        --host=${cfg.listen.address}:${builtins.toString cfg.listen.port} \
+                      ${pkgs.postgresql}/bin/psql \
+                        --host ${cfg.listen.address} \
+                        --port ${builtins.toString cfg.listen.port} \
                         --file "${file}"
                     '')
                     initScriptFiles;
