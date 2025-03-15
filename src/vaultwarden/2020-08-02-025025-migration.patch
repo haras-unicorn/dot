@@ -1,11 +1,86 @@
+Subject: [PATCH] cockroachdb migrations patch
+---
+Index: migrations/postgresql/2020-08-02-025025_add_favorites_table/down.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/migrations/postgresql/2020-08-02-025025_add_favorites_table/down.sql b/migrations/postgresql/2020-08-02-025025_add_favorites_table/down.sql
+--- a/migrations/postgresql/2020-08-02-025025_add_favorites_table/down.sql	(revision 48836501bf348386d9bb1378fb56db33c19d3732)
++++ b/migrations/postgresql/2020-08-02-025025_add_favorites_table/down.sql	(date 1700662005031)
+@@ -1,13 +1,1 @@
+-ALTER TABLE ciphers
+-ADD COLUMN favorite BOOLEAN NOT NULL DEFAULT FALSE;
+-
+--- Transfer favorite status for user-owned ciphers.
+-UPDATE ciphers
+-SET favorite = TRUE
+-WHERE EXISTS (
+-  SELECT * FROM favorites
+-  WHERE favorites.user_uuid = ciphers.user_uuid
+-    AND favorites.cipher_uuid = ciphers.uuid
+-);
+-
+ DROP TABLE favorites;
+Index: migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
 diff --git a/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql b/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql
-index 9a8787f9..dec802c4 100644
---- a/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql
-+++ b/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql
-@@ -7,2 +7,6 @@ CREATE TABLE favorites (
+--- a/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql	(revision 48836501bf348386d9bb1378fb56db33c19d3732)
++++ b/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql	(date 1700662005036)
+@@ -4,13 +4,3 @@
  
-+COMMIT;
+   PRIMARY KEY (user_uuid, cipher_uuid)
+ );
+-
+--- Transfer favorite status for user-owned ciphers.
+-INSERT INTO favorites(user_uuid, cipher_uuid)
+-SELECT user_uuid, uuid
+-FROM ciphers
+-WHERE favorite = TRUE
+-  AND user_uuid IS NOT NULL;
+-
+-ALTER TABLE ciphers
+-DROP COLUMN favorite;
+Index: migrations/postgresql/2020-08-02-025026_add_favorites_table_fix/up.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/migrations/postgresql/2020-08-02-025026_add_favorites_table_fix/up.sql b/migrations/postgresql/2020-08-02-025026_add_favorites_table_fix/up.sql
+new file mode 100644
+--- /dev/null	(date 1700662005028)
++++ b/migrations/postgresql/2020-08-02-025026_add_favorites_table_fix/up.sql	(date 1700662005028)
+@@ -0,0 +1,9 @@
++-- Transfer favorite status for user-owned ciphers.
++INSERT INTO favorites(user_uuid, cipher_uuid)
++SELECT user_uuid, uuid
++FROM ciphers
++WHERE favorite = TRUE
++  AND user_uuid IS NOT NULL;
 +
-+BEGIN;
++ALTER TABLE ciphers
++DROP COLUMN favorite;
+Index: migrations/postgresql/2020-08-02-025026_add_favorites_table_fix/down.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/migrations/postgresql/2020-08-02-025026_add_favorites_table_fix/down.sql b/migrations/postgresql/2020-08-02-025026_add_favorites_table_fix/down.sql
+new file mode 100644
+--- /dev/null	(date 1700662005033)
++++ b/migrations/postgresql/2020-08-02-025026_add_favorites_table_fix/down.sql	(date 1700662005033)
+@@ -0,0 +1,11 @@
++ALTER TABLE ciphers
++ADD COLUMN favorite BOOLEAN NOT NULL DEFAULT FALSE;
 +
- -- Transfer favorite status for user-owned ciphers.
++-- Transfer favorite status for user-owned ciphers.
++UPDATE ciphers
++SET favorite = TRUE
++WHERE EXISTS (
++  SELECT * FROM favorites
++  WHERE favorites.user_uuid = ciphers.user_uuid
++    AND favorites.cipher_uuid = ciphers.uuid
++);
