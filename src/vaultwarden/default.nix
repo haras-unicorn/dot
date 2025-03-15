@@ -21,8 +21,9 @@ in
       ROCKET_ADDRESS = "::1";
       ROCKET_PORT = 8222;
       ADMIN_TOKEN = "admin";
-      SIGNUPS_ALLOWED = false;
-      INVITATIONS_ALLOWED = false;
+      SIGNUPS_ALLOWED = true;
+      # SIGNUPS_ALLOWED = false;
+      # INVITATIONS_ALLOWED = false;
       ENABLE_WEBSOCKET = false;
     };
     services.cockroachdb.initFiles = [ "/etc/cockroachdb/init/vaultwarden.sql" ];
