@@ -14,6 +14,7 @@ let
       # Basic startup
       "${crdb}/bin/cockroach"
       "start-single-node"
+      "--background"
       "--logtostderr"
       "--store=/var/lib/cockroachdb"
 
@@ -57,6 +58,7 @@ in
       services.cockroachdb.locality = "system=sol,planet=earth";
 
       systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
+      systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "simple";
 
       systemd.services.cockroachdb-init = lib.mkIf (cfg.init != [ ] || cfg.initFiles != [ ]) {
         description = "CockroachDB Initialization";
