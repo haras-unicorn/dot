@@ -24,7 +24,7 @@ in
       CREATE USER IF NOT EXISTS vault PASSWORD 'vault'; 
       CREATE DATABASE IF NOT EXISTS vault;
       ALTER DATABASE vault OWNER TO vault;
-      \c vault
+      USE vault;
 
       CREATE TABLE IF NOT EXISTS vault_kv_store (
         parent_path TEXT COLLATE "C" NOT NULL,
