@@ -1,7 +1,7 @@
-diff --git a/migrations/mysql/2020-08-02-025025_add_favorites_table/up.sql b/migrations/mysql/2020-08-02-025025_add_favorites_table/up.sql
-index ebff7e3d..ce3a8ec4 100644
---- a/migrations/mysql/2020-08-02-025025_add_favorites_table/up.sql
-+++ b/migrations/mysql/2020-08-02-025025_add_favorites_table/up.sql
+diff --git a/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql b/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql
+index 9a8787f9..dec802c4 100644
+--- a/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql
++++ b/migrations/postgresql/2020-08-02-025025_add_favorites_table/up.sql
 @@ -7,2 +7,6 @@ CREATE TABLE favorites (
  
 +COMMIT;
