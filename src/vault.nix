@@ -34,6 +34,7 @@ in
         CONSTRAINT pkey PRIMARY KEY (path, key)
       );
       CREATE INDEX IF NOT EXISTS parent_path_idx ON vault_kv_store (parent_path);
+      GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO vault;
     '';
   };
 
