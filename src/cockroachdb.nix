@@ -67,7 +67,6 @@ in
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           Type = "oneshot";
-          User = cfg.user;
           RemainAfterExit = "yes";
           ExecStart =
             let
