@@ -19,7 +19,7 @@ in
         connection_url = "postgres://vault:vault@localhost:8080/vault?sslmode=disable"
       }
     '';
-    services.cockroachdb.initFiles = [ "/etc//cockroachdb/init/vault.sql" ];
+    services.cockroachdb.initFiles = [ "/etc/cockroachdb/init/vault.sql" ];
     environment.etc."cockroachdb/init/vault.sql".text = ''
       CREATE USER IF NOT EXISTS vault PASSWORD 'vault'; 
       CREATE DATABASE IF NOT EXISTS vault;
