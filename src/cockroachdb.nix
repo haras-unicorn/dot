@@ -25,6 +25,7 @@ in
 
     config = {
       services.cockroachdb.enable = true;
+      services.cockroachdb.insecure = true;
 
       systemd.services.cockroachdb-init = lib.mkIf (cfg.init != [ ] || cfg.initFiles != [ ]) {
         description = "CockroachDB Initialization";
