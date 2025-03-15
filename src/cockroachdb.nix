@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  integrate.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = {
     services.cockroachdb.enable = true;
   };
 }
