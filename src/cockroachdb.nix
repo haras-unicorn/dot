@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
 let
   hasNetwork = config.dot.hardware.network.enable;
@@ -6,6 +6,34 @@ let
 
   cfg = config.services.cockroachdb;
   crdb = cfg.package;
+
+  # NOTE: https://github.com/NixOS/nixpkgs/pull/172923
+  # NOTE: https://github.com/NixOS/nixpkgs/blob/nixos-24.11/nixos/modules/services/databases/cockroachdb.nix
+  startupCommand = utils.escapeSystemdExecArgs (
+    [
+      # Basic startup
+      "${crdb}/bin/cockroach"
+      "start-single-node"
+      "--logtostderr"
+      "--store=/var/lib/cockroachdb"
+
+      # WebUI settings
+      "--http-addr=${cfg.http.address}:${toString cfg.http.port}"
+
+      # Cluster listen address
+      "--listen-addr=${cfg.listen.address}:${toString cfg.listen.port}"
+
+      # Cache and memory settings.
+      "--cache=${cfg.cache}"
+      "--max-sql-memory=${cfg.maxSqlMemory}"
+
+      # Certificate/security settings.
+      (if cfg.insecure then "--insecure" else "--certs-dir=${cfg.certsDir}")
+    ]
+    ++ lib.optional (cfg.join != null) "--join=${cfg.join}"
+    ++ lib.optional (cfg.locality != null) "--locality=${cfg.locality}"
+    ++ cfg.extraArgs
+  );
 in
 {
   branch.nixosModule.nixosModule = {
@@ -27,20 +55,8 @@ in
       services.cockroachdb.enable = true;
       services.cockroachdb.insecure = true;
       services.cockroachdb.locality = "system=sol,planet=earth";
-      # NOTE: https://github.com/NixOS/nixpkgs/pull/172923
-      nixpkgs.overlays = [
-        (final: prev: {
-          systemd.services.cockroachdb.serviceConfig.ExecStart =
-            "${final.services.cockroachdb.package}/bin/cockroach start-single-node " +
-            builtins.concatStringsSep " "
-              (builtins.tail
-                (builtins.tail
-                  (builtins.filter
-                    builtins.isString
-                    (builtins.split " "
-                      prev.systemd.services.cockroachdb.serviceConfig.ExecStart))));
-        })
-      ];
+
+      systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
 
       systemd.services.cockroachdb-init = lib.mkIf (cfg.init != [ ] || cfg.initFiles != [ ]) {
         description = "CockroachDB Initialization";
