@@ -78,22 +78,23 @@ in
                       sql)
                   cfg.init)
                 ++ cfg.initFiles;
-              commands =
-                lib.concatMapStrings
-                  (file: ''
-                    echo "Running: ${file}"
-                    ${crdb}/bin/cockroach sql \
-                      ${if cfg.insecure then "--insecure" else "--certs-dir=${cfg.certsDir}"} \
-                      --host=${cfg.listen.address}:${builtins.toString cfg.listen.port} \
-                      -f "${file}" || exit 1
-                  '')
-                  initScriptFiles;
-              script = ''
-                set -euo pipefail
-                ${commands}
-              '';
+
+              name = "cockroachdb-init-script";
+              app = pkgs.writeShellApplication {
+                inherit name;
+                text =
+                  lib.concatMapStrings
+                    (file: ''
+                      echo "Running: ${file}"
+                      ${crdb}/bin/cockroach sql \
+                        ${if cfg.insecure then "--insecure" else "--certs-dir=${cfg.certsDir}"} \
+                        --host=${cfg.listen.address}:${builtins.toString cfg.listen.port} \
+                        --filef "${file}"
+                    '')
+                    initScriptFiles;
+              };
             in
-            pkgs.writeShellScript "cockroachdb-init-script" script;
+            "${app}/bin/${name}";
         };
       };
     };
@@ -104,6 +105,7 @@ in
     {
       home.packages = [
         pkgs.cockroachdb
+        pkgs.postgresql
       ];
 
       xdg.desktopEntries = lib.mkIf hasMonitor {
