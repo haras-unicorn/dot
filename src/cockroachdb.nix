@@ -35,8 +35,10 @@ in
             builtins.concatStringsSep " "
               (builtins.tail
                 (builtins.tail
-                  (builtins.split " "
-                    prev.systemd.services.cockroachdb.serviceConfig.ExecStart)));
+                  (builtins.filter
+                    builtins.isString
+                    (builtins.split " "
+                      prev.systemd.services.cockroachdb.serviceConfig.ExecStart))));
         })
       ];
 
