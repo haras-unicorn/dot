@@ -1,25 +1,44 @@
-{ lib, config, ... }:
+{ lib, config, pkgs, ... }:
 
 let
   hasNetwork = config.dot.hardware.network.enable;
+  hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  branch.nixosModule.nixosModule = lib.mkIf (hasNetwork && false) {
+  branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.vaultwarden.enable = true;
-    users.users.vaultwarden.uid = 988;
-    users.groups.vaultwarden.gid = 977;
-    services.vaultwarden.dbBackend = "mysql";
-    services.vaultwarden.environmentFile = "/etc/vaultwarden/config.env";
+    services.vaultwarden.dbBackend = "postgresql";
     services.vaultwarden.config = {
-      DATA_FOLDER = "/var/lib/vaultwarden";
+      DATABASE_URL = "postgres://vaultwarden@localhost:26257/vaultwarden?sslmode=disable";
+      ROCKET_ADDRESS = "::1";
+      ROCKET_PORT = 8222;
+      ADMIN_TOKEN = "admin";
+      SIGNUPS_ALLOWED = false;
+      INVITATIONS_ALLOWED = false;
+      ENABLE_WEBSOCKET = false;
     };
-    systemd.services.vaultwarden.serviceConfig.StateDirectory = lib.mkForce "/var/lib/vaultwarden";
-    systemd.services.vaultwarden.serviceConfig.StateDirectoryMode = lib.mkForce "0700";
-    sops.secrets."shared.warden" = {
-      path = "/etc/vaultwarden/config.env";
-      owner = "root";
-      group = "root";
-      mode = "0400";
+    services.cockroachdb.initFiles = [ "/etc/cockroachdb/init/vaultwarden.sql" ];
+    environment.etc."cockroachdb/init/vaultwarden.sql".text = ''
+      CREATE USER IF NOT EXISTS vaultwarden; 
+      CREATE DATABASE IF NOT EXISTS vaultwarden;
+      ALTER DATABASE vaultwarden OWNER TO vaultwarden;
+      \c vaultwarden
+
+      GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO vaultwarden;
+    '';
+  };
+
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
+    home.packages = [
+      pkgs.vaultwarden-postgresql
+    ];
+
+    xdg.desktopEntries = lib.mkIf hasMonitor {
+      vaultwarder = {
+        name = "Vaultwarden";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8222";
+        terminal = false;
+      };
     };
   };
 }
