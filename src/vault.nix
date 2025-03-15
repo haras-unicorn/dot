@@ -27,9 +27,9 @@ in
       \c vault
 
       CREATE TABLE IF NOT EXISTS vault_kv_store (
-        parent_path TEXT COLLATE "C" NOT NULL,
-        path        TEXT COLLATE "C",
-        key         TEXT COLLATE "C",
+        parent_path TEXT NOT NULL,
+        path        TEXT,
+        key         TEXT,
         value       BYTEA,
         CONSTRAINT pkey PRIMARY KEY (path, key)
       );
