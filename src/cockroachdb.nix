@@ -26,6 +26,18 @@ in
     config = {
       services.cockroachdb.enable = true;
       services.cockroachdb.insecure = true;
+      services.cockroachdb.locality = "system=sol,planet=earth";
+      nixpkgs.overlays = [
+        (final: prev: {
+          systemd.services.cockroachdb.serviceConfig.ExecStart =
+            "${crdb}/bin/cockroach start-single-node " +
+            builtins.concatStringsSep " "
+              (builtins.tail
+                (builtins.tail
+                  (builtins.split " "
+                    prev.systemd.services.cockroachdb.serviceConfig.ExecStart)));
+        })
+      ];
 
       systemd.services.cockroachdb-init = lib.mkIf (cfg.init != [ ] || cfg.initFiles != [ ]) {
         description = "CockroachDB Initialization";
@@ -67,17 +79,19 @@ in
     };
   };
 
-  branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
-    home.packages = [
-      pkgs.cockroachdb
-    ];
+  branch.homeManagerModule.homeManagerModule = lib.mkIf
+    hasNetwork
+    {
+      home.packages = [
+        pkgs.cockroachdb
+      ];
 
-    xdg.desktopEntries = lib.mkIf hasMonitor {
-      cockroachdb = {
-        name = "CockroachDB";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8080";
-        terminal = false;
+      xdg.desktopEntries = lib.mkIf hasMonitor {
+        cockroachdb = {
+          name = "CockroachDB";
+          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8080";
+          terminal = false;
+        };
       };
     };
-  };
 }
