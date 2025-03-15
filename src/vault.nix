@@ -16,12 +16,12 @@ in
     services.vault.extraSettingsPaths = [ "/etc/vault/settings.hcl" ];
     environment.etc."vault/settings.hcl".text = ''
       storage "postgresql" {
-        connection_url = "postgres://vault:vault@localhost:8080/vault?sslmode=disable"
+        connection_url = "postgres://vault@localhost:26257/vault?sslmode=disable"
       }
     '';
     services.cockroachdb.initFiles = [ "/etc/cockroachdb/init/vault.sql" ];
     environment.etc."cockroachdb/init/vault.sql".text = ''
-      CREATE USER IF NOT EXISTS vault PASSWORD 'vault'; 
+      CREATE USER IF NOT EXISTS vault; 
       CREATE DATABASE IF NOT EXISTS vault;
       ALTER DATABASE vault OWNER TO vault;
       USE vault;
