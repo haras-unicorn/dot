@@ -1,4 +1,4 @@
-{ lib, config, perch, rumor, ... }:
+{ lib, config, perch, ... }:
 
 let
   importsOption = lib.mkOption {
