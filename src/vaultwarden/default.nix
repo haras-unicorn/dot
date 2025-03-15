@@ -3,10 +3,17 @@
 let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
+
+  package = pkgs.vaultwarden-postgresql.overrideAttrs (final: prev: {
+    patches = (prev.patches or [ ]) ++ [
+      ./2020-08-02-025025-migration.patch
+    ];
+  });
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.vaultwarden.enable = true;
+    services.vaultwarden.package = package;
     services.vaultwarden.dbBackend = "postgresql";
     services.vaultwarden.config = {
       DATABASE_URL = "postgres://vaultwarden@localhost:26257/vaultwarden?sslmode=disable";
@@ -30,7 +37,7 @@ in
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
     home.packages = [
-      pkgs.vaultwarden-postgresql
+      package
     ];
 
     xdg.desktopEntries = lib.mkIf hasMonitor {
