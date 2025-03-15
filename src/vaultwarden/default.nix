@@ -7,6 +7,7 @@ let
   package = pkgs.vaultwarden-postgresql.overrideAttrs (final: prev: {
     patches = (prev.patches or [ ]) ++ [
       ./2020-08-02-025025-migration.patch
+      ./specify-integer-length-in-migrations.patch
     ];
   });
 in

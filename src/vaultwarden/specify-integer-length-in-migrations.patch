@@ -1,0 +1,162 @@
+diff --git a/migrations/postgresql/2019-09-12-100000_create_tables/up.sql b/migrations/postgresql/2019-09-12-100000_create_tables/up.sql
+index c747e9aa..7b30d02b 100644
+--- a/migrations/postgresql/2019-09-12-100000_create_tables/up.sql
++++ b/migrations/postgresql/2019-09-12-100000_create_tables/up.sql
+@@ -8,3 +8,3 @@ CREATE TABLE users (
+   salt                BYTEA     NOT NULL,
+-  password_iterations INTEGER  NOT NULL,
++  password_iterations INT4  NOT NULL,
+   password_hint       TEXT,
+@@ -18,4 +18,4 @@ CREATE TABLE users (
+   excluded_globals    TEXT     NOT NULL,
+-  client_kdf_type     INTEGER NOT NULL DEFAULT 0,
+-  client_kdf_iter INTEGER NOT NULL DEFAULT 100000
++  client_kdf_type     INT4 NOT NULL DEFAULT 0,
++  client_kdf_iter INT4 NOT NULL DEFAULT 100000
+ );
+@@ -28,3 +28,3 @@ CREATE TABLE devices (
+   name          TEXT     NOT NULL,
+-  atype         INTEGER  NOT NULL,
++  atype         INT4  NOT NULL,
+   push_token    TEXT,
+@@ -46,3 +46,3 @@ CREATE TABLE ciphers (
+   organization_uuid CHAR(36) REFERENCES organizations (uuid),
+-  atype             INTEGER  NOT NULL,
++  atype             INT4  NOT NULL,
+   name              TEXT     NOT NULL,
+@@ -59,3 +59,3 @@ CREATE TABLE attachments (
+   file_name   TEXT    NOT NULL,
+-  file_size   INTEGER NOT NULL,
++  file_size   INT4 NOT NULL,
+   akey        TEXT
+@@ -91,4 +91,4 @@ CREATE TABLE users_organizations (
+   akey       TEXT    NOT NULL,
+-  status     INTEGER NOT NULL,
+-  atype      INTEGER NOT NULL,
++  status     INT4 NOT NULL,
++  atype      INT4 NOT NULL,
+ 
+@@ -112,3 +112,3 @@ CREATE TABLE twofactor (
+   user_uuid CHAR(36) NOT NULL REFERENCES users (uuid),
+-  atype     INTEGER  NOT NULL,
++  atype     INT4  NOT NULL,
+   enabled   BOOLEAN  NOT NULL,
+diff --git a/migrations/postgresql/2019-10-10-083032_add_column_to_twofactor/up.sql b/migrations/postgresql/2019-10-10-083032_add_column_to_twofactor/up.sql
+index cfcd6ca2..93ba6aa1 100644
+--- a/migrations/postgresql/2019-10-10-083032_add_column_to_twofactor/up.sql
++++ b/migrations/postgresql/2019-10-10-083032_add_column_to_twofactor/up.sql
+@@ -1 +1 @@
+-ALTER TABLE twofactor ADD COLUMN last_used INTEGER NOT NULL DEFAULT 0;
+\ No newline at end of file
++ALTER TABLE twofactor ADD COLUMN last_used INT4 NOT NULL DEFAULT 0;
+\ No newline at end of file
+diff --git a/migrations/postgresql/2019-11-17-011009_add_email_verification/up.sql b/migrations/postgresql/2019-11-17-011009_add_email_verification/up.sql
+index 1a1c55da..b430cd06 100644
+--- a/migrations/postgresql/2019-11-17-011009_add_email_verification/up.sql
++++ b/migrations/postgresql/2019-11-17-011009_add_email_verification/up.sql
+@@ -2,3 +2,3 @@ ALTER TABLE users ADD COLUMN verified_at TIMESTAMP DEFAULT NULL;
+ ALTER TABLE users ADD COLUMN last_verifying_at TIMESTAMP DEFAULT NULL;
+-ALTER TABLE users ADD COLUMN login_verify_count INTEGER NOT NULL DEFAULT 0;
++ALTER TABLE users ADD COLUMN login_verify_count INT4 NOT NULL DEFAULT 0;
+ ALTER TABLE users ADD COLUMN email_new VARCHAR(255) DEFAULT NULL;
+diff --git a/migrations/postgresql/2020-03-13-205045_add_policy_table/up.sql b/migrations/postgresql/2020-03-13-205045_add_policy_table/up.sql
+index a6b234ee..1f2c0016 100644
+--- a/migrations/postgresql/2020-03-13-205045_add_policy_table/up.sql
++++ b/migrations/postgresql/2020-03-13-205045_add_policy_table/up.sql
+@@ -3,3 +3,3 @@ CREATE TABLE org_policies (
+   org_uuid  CHAR(36) NOT NULL REFERENCES organizations (uuid),
+-  atype     INTEGER  NOT NULL,
++  atype     INT4  NOT NULL,
+   enabled   BOOLEAN  NOT NULL,
+diff --git a/migrations/postgresql/2021-03-11-190243_add_sends/up.sql b/migrations/postgresql/2021-03-11-190243_add_sends/up.sql
+index c57ca93b..8a69fe78 100644
+--- a/migrations/postgresql/2021-03-11-190243_add_sends/up.sql
++++ b/migrations/postgresql/2021-03-11-190243_add_sends/up.sql
+@@ -8,3 +8,3 @@ CREATE TABLE sends (
+ 
+-  atype             INTEGER NOT NULL,
++  atype             INT4 NOT NULL,
+   data              TEXT    NOT NULL,
+@@ -13,6 +13,6 @@ CREATE TABLE sends (
+   password_salt     BYTEA,
+-  password_iter     INTEGER,
++  password_iter     INT4,
+ 
+-  max_access_count  INTEGER,
+-  access_count      INTEGER NOT NULL,
++  max_access_count  INT4,
++  access_count      INT4 NOT NULL,
+ 
+diff --git a/migrations/postgresql/2021-04-30-233251_add_reprompt/up.sql b/migrations/postgresql/2021-04-30-233251_add_reprompt/up.sql
+index a54e503c..d6070a08 100644
+--- a/migrations/postgresql/2021-04-30-233251_add_reprompt/up.sql
++++ b/migrations/postgresql/2021-04-30-233251_add_reprompt/up.sql
+@@ -1,2 +1,2 @@
+ ALTER TABLE ciphers
+-ADD COLUMN reprompt INTEGER;
++ADD COLUMN reprompt INT4;
+diff --git a/migrations/postgresql/2021-08-30-193501_create_emergency_access/up.sql b/migrations/postgresql/2021-08-30-193501_create_emergency_access/up.sql
+index 5d84b151..4cadeb04 100644
+--- a/migrations/postgresql/2021-08-30-193501_create_emergency_access/up.sql
++++ b/migrations/postgresql/2021-08-30-193501_create_emergency_access/up.sql
+@@ -6,5 +6,5 @@ CREATE TABLE emergency_access (
+   key_encrypted             TEXT,
+-  atype                     INTEGER  NOT NULL,
+-  status                    INTEGER  NOT NULL,
+-  wait_time_days            INTEGER  NOT NULL,
++  atype                     INT4  NOT NULL,
++  status                    INT4  NOT NULL,
++  wait_time_days            INT4  NOT NULL,
+   recovery_initiated_at     TIMESTAMP,
+diff --git a/migrations/postgresql/2022-10-18-170602_add_events/up.sql b/migrations/postgresql/2022-10-18-170602_add_events/up.sql
+index 2d107b41..9a6d9689 100644
+--- a/migrations/postgresql/2022-10-18-170602_add_events/up.sql
++++ b/migrations/postgresql/2022-10-18-170602_add_events/up.sql
+@@ -2,3 +2,3 @@ CREATE TABLE event (
+   uuid               CHAR(36)        NOT NULL PRIMARY KEY,
+-  event_type         INTEGER     NOT NULL,
++  event_type         INT4     NOT NULL,
+   user_uuid          CHAR(36),
+@@ -10,3 +10,3 @@ CREATE TABLE event (
+   act_user_uuid      CHAR(36),
+-  device_type        INTEGER,
++  device_type        INT4,
+   ip_address         TEXT,
+diff --git a/migrations/postgresql/2023-01-31-222222_add_argon2/up.sql b/migrations/postgresql/2023-01-31-222222_add_argon2/up.sql
+index 35b8189e..2912d623 100644
+--- a/migrations/postgresql/2023-01-31-222222_add_argon2/up.sql
++++ b/migrations/postgresql/2023-01-31-222222_add_argon2/up.sql
+@@ -2,3 +2,3 @@ ALTER TABLE users
+     ADD COLUMN
+-    client_kdf_memory INTEGER DEFAULT NULL;
++    client_kdf_memory INT4 DEFAULT NULL;
+ 
+@@ -6,2 +6,2 @@ ALTER TABLE users
+     ADD COLUMN
+-    client_kdf_parallelism INTEGER DEFAULT NULL;
++    client_kdf_parallelism INT4 DEFAULT NULL;
+diff --git a/migrations/postgresql/2023-06-02-200424_create_organization_api_key/up.sql b/migrations/postgresql/2023-06-02-200424_create_organization_api_key/up.sql
+index 9c3ba41c..400804e6 100644
+--- a/migrations/postgresql/2023-06-02-200424_create_organization_api_key/up.sql
++++ b/migrations/postgresql/2023-06-02-200424_create_organization_api_key/up.sql
+@@ -3,3 +3,3 @@ CREATE TABLE organization_api_key (
+ 	org_uuid		CHAR(36) NOT NULL REFERENCES organizations(uuid),
+-	atype			INTEGER NOT NULL,
++	atype			INT4 NOT NULL,
+ 	api_key			VARCHAR(255),
+diff --git a/migrations/postgresql/2023-06-17-200424_create_auth_requests_table/up.sql b/migrations/postgresql/2023-06-17-200424_create_auth_requests_table/up.sql
+index 8d495e72..c2c51598 100644
+--- a/migrations/postgresql/2023-06-17-200424_create_auth_requests_table/up.sql
++++ b/migrations/postgresql/2023-06-17-200424_create_auth_requests_table/up.sql
+@@ -5,3 +5,3 @@ CREATE TABLE auth_requests (
+ 	request_device_identifier         CHAR(36) NOT NULL,
+-	device_type         INTEGER NOT NULL,
++	device_type         INT4 NOT NULL,
+ 	request_ip         TEXT NOT NULL,
+diff --git a/migrations/postgresql/2024-09-04-091351_use_device_type_for_mails/up.sql b/migrations/postgresql/2024-09-04-091351_use_device_type_for_mails/up.sql
+index a8fc7dfd..a07c3aba 100644
+--- a/migrations/postgresql/2024-09-04-091351_use_device_type_for_mails/up.sql
++++ b/migrations/postgresql/2024-09-04-091351_use_device_type_for_mails/up.sql
+@@ -1 +1 @@
+-ALTER TABLE twofactor_incomplete ADD COLUMN device_type INTEGER NOT NULL DEFAULT 14; -- 14 = Unknown Browser
++ALTER TABLE twofactor_incomplete ADD COLUMN device_type INT4 NOT NULL DEFAULT 14; -- 14 = Unknown Browser
