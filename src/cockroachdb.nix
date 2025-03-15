@@ -73,7 +73,7 @@ in
     ];
 
     xdg.desktopEntries = lib.mkIf hasMonitor {
-      vault = {
+      cockroachdb = {
         name = "CockroachDB";
         exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8080";
         terminal = false;
