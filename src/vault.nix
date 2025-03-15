@@ -7,6 +7,7 @@ in
 {
   branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.vault.enable = true;
+    services.vault.package = pkgs.vault-bin;
     systemd.services.vault.after = [ "cockroachdb-init.service" ];
     systemd.services.vault.wants = [ "cockroachdb-init.service" ];
     services.vault.storageBackend = "postgresql";
@@ -40,7 +41,7 @@ in
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
     home.packages = [
-      pkgs.vault
+      pkgs.vault-bin
     ];
 
     xdg.desktopEntries = lib.mkIf hasMonitor {
