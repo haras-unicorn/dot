@@ -34,7 +34,7 @@ in
     ];
 
     xdg.desktopEntries = lib.mkIf hasMonitor {
-      vaultwarder = {
+      vaultwarden = {
         name = "Vaultwarden";
         exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8222";
         terminal = false;
