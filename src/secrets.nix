@@ -60,7 +60,7 @@ in
     '';
   };
 
-  config.integrate.nixosModule.nixosModule = {
+  config.branch.nixosModule.nixosModule = {
     options.rumor = {
       imports = importsOption;
       generations = generationsOption;

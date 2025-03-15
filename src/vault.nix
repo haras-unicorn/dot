@@ -5,27 +5,41 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 in
 {
-  branch.nixosModule.nixosModule = lib.mkIf (hasNetwork && false) {
+  branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.vault.enable = true;
-    systemd.services.vault.after = [ "mysql.service" ];
-    systemd.services.vault.wants = [ "mysql.service" ];
-    services.vault.package = pkgs.vault-bin;
-    services.vault.extraSettingsPaths = [ "/etc/vault/settings.hcl" ];
-    services.vault.storageBackend = "mysql";
+    systemd.services.vault.after = [ "cockroachdb-init.service" ];
+    systemd.services.vault.wants = [ "cockroachdb-init.service" ];
+    services.vault.storageBackend = "postgresql";
     services.vault.extraConfig = ''
       ui = true
     '';
-    sops.secrets."shared.vault" = {
-      path = "/etc/vault/settings.hcl";
-      owner = "vault";
-      group = "vault";
-      mode = "0400";
-    };
+    services.vault.extraSettingsPaths = [ "/etc/vault/settings.hcl" ];
+    environment.etc."vault/settings.hcl".text = ''
+      storage "postgresql" {
+        connection_url = "postgres://vault:vault@localhost:8080/vault?sslmode=disable"
+      }
+    '';
+    services.cockroachdb.initFiles = [ "/etc//cockroachdb/init/vault.sql" ];
+    environment.etc."cockroachdb/init/vault.sql".text = ''
+      CREATE USER IF NOT EXISTS vault PASSWORD 'vault'; 
+      CREATE DATABASE IF NOT EXISTS vault;
+      ALTER DATABASE vault OWNER TO vault;
+      \c vault
+
+      CREATE TABLE IF NOT EXISTS vault_kv_store (
+        parent_path TEXT COLLATE "C" NOT NULL,
+        path        TEXT COLLATE "C",
+        key         TEXT COLLATE "C",
+        value       BYTEA,
+        CONSTRAINT pkey PRIMARY KEY (path, key)
+      );
+      CREATE INDEX IF NOT EXISTS parent_path_idx ON vault_kv_store (parent_path);
+    '';
   };
 
-  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && false) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
     home.packages = [
-      pkgs.vault-bin
+      pkgs.vault
     ];
 
     xdg.desktopEntries = lib.mkIf hasMonitor {
