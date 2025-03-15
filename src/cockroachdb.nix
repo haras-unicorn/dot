@@ -27,10 +27,11 @@ in
       services.cockroachdb.enable = true;
       services.cockroachdb.insecure = true;
       services.cockroachdb.locality = "system=sol,planet=earth";
+      # NOTE: https://github.com/NixOS/nixpkgs/pull/172923
       nixpkgs.overlays = [
         (final: prev: {
           systemd.services.cockroachdb.serviceConfig.ExecStart =
-            "${crdb}/bin/cockroach start-single-node " +
+            "${final.services.cockroachdb.package}/bin/cockroach start-single-node " +
             builtins.concatStringsSep " "
               (builtins.tail
                 (builtins.tail
