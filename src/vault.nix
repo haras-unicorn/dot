@@ -24,8 +24,8 @@ in
     environment.etc."cockroachdb/init/vault.sql".text = ''
       CREATE USER IF NOT EXISTS vault; 
       CREATE DATABASE IF NOT EXISTS vault;
-      ALTER DATABASE vault OWNER TO vault;
       \c vault
+      GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO vault;
 
       CREATE TABLE IF NOT EXISTS vault_kv_store (
         parent_path TEXT NOT NULL,
@@ -35,7 +35,6 @@ in
         CONSTRAINT pkey PRIMARY KEY (path, key)
       );
       CREATE INDEX IF NOT EXISTS parent_path_idx ON vault_kv_store (parent_path);
-      GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO vault;
     '';
   };
 

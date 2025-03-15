@@ -29,9 +29,7 @@ in
     environment.etc."cockroachdb/init/vaultwarden.sql".text = ''
       CREATE USER IF NOT EXISTS vaultwarden; 
       CREATE DATABASE IF NOT EXISTS vaultwarden;
-      ALTER DATABASE vaultwarden OWNER TO vaultwarden;
       \c vaultwarden
-
       GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO vaultwarden;
     '';
   };
