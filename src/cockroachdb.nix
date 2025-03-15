@@ -9,7 +9,7 @@ let
 in
 {
   branch.nixosModule.nixosModule = {
-    options = {
+    options.services.cockroachdb = {
       init = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default = [ ];
