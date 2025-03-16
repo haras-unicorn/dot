@@ -21,6 +21,22 @@ let
           "assets/hosts.toml"));
 in
 {
+  seal.rumor =
+    builtins.listToAttrs
+      (builtins.map
+        (host: {
+          name = host.name;
+          value.importers = [{
+            importer = "vault";
+            path = "kv/dot/host/${host.name}";
+          }];
+          value.exporters = [{
+            exporter = "vault";
+            path = "kv/dot/host/${host.name}";
+          }];
+        })
+        hosts.hosts);
+
   flake.nixosConfigurations =
     builtins.listToAttrs
       (builtins.map
