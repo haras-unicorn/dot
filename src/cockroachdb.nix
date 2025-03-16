@@ -55,7 +55,6 @@ in
     config = {
       services.cockroachdb.enable = true;
       services.cockroachdb.insecure = true;
-      services.cockroachdb.locality = "system=sol,planet=earth";
 
       systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
       systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
