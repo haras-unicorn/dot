@@ -73,8 +73,6 @@ in
     then { }
     else
       let
-        systems = builtins.attrNames perch.lib.defaults.systems;
-
         systemsFor = configuration:
           builtins.filter
             ({ value, ... }: value != null)
@@ -90,7 +88,7 @@ in
                     then config.flake.nixosConfigurations.${name}
                     else null;
                 })
-              systems);
+              perch.lib.defaults.systems);
       in
       builtins.listToAttrs
         (lib.flatten
