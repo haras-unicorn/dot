@@ -4,8 +4,6 @@
 
 let
   user = config.dot.user;
-  host = config.dot.host;
-
   hasNetwork = config.dot.hardware.network.enable;
 in
 {
@@ -15,24 +13,65 @@ in
     services.openssh.settings.PermitRootLogin = "no";
     services.openssh.settings.PasswordAuthentication = false;
     services.openssh.settings.KbdInteractiveAuthentication = false;
-    sops.secrets."${host.name}.ssh.auth.pub" = {
+
+    sops.secrets."ssh-authorized-keys" = {
       path = "/home/${user}/.ssh/authorized_keys";
       owner = user;
       group = "users";
       mode = "0644";
     };
-    sops.secrets."${host.name}.ssh.key.pub" = {
-      path = "/home/${user}/.ssh/id.pub";
+    sops.secrets."ssh-public" = {
+      path = "/home/${user}/.ssh/id_rsa.pub";
       owner = user;
       group = "users";
       mode = "0644";
     };
-    sops.secrets."${host.name}.ssh.key" = {
-      path = "/home/${user}/.ssh/id";
+    sops.secrets."ssh-private" = {
+      path = "/home/${user}/.ssh/id_rsa";
       owner = user;
       group = "users";
       mode = "0400";
     };
+
+    rumor.sops = [
+      "ssh-authorized-keys"
+      "ssh-public"
+      "ssh-private"
+    ];
+    rumor.generations = [
+      {
+        generator = "ssh-keygen";
+        arguments = {
+          name = config.networking.hostName;
+          public = "ssh-public";
+          private = "ssh-private";
+        };
+      }
+    ];
+    rumor.exports = [
+      # TODO: generate with moustache from other hosts
+      {
+        exporter = "copy";
+        arguments = {
+          from = "ssh-public";
+          to = "ssh-authorized-keys";
+        };
+      }
+      {
+        exporter = "copy";
+        arguments = {
+          from = "ssh-public";
+          to = "${config.networking.hostName}-ssh-public";
+        };
+      }
+      {
+        exporter = "vault-file";
+        arguments = {
+          path = "kv/dot/shared";
+          file = "${config.networking.hostName}-ssh-public";
+        };
+      }
+    ];
   };
 
   branch.homeManagerModule.homeManagerModule = {

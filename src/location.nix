@@ -18,6 +18,8 @@
       group = "geoclue";
       mode = "0400";
     };
+
+    rumor.sops = [ "geoclue-googleapi" ];
     rumor.imports = [{
       importer = "vault-file";
       arguments = {
@@ -25,6 +27,5 @@
         file = "geoclue-googleapi";
       };
     }];
-    rumor.sops = [ "geoclue-googleapi" ];
   };
 }

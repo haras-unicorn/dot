@@ -81,6 +81,7 @@ in
       imports = importsOption;
       generations = generationsOption;
       exports = exportsOption;
+      sops = sopsOption;
     };
   };
 

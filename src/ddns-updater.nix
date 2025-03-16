@@ -39,6 +39,8 @@ in
         group = "ddns-updater";
         mode = "0400";
       };
+
+      rumor.sops = [ "ddns-updater-duckdns-nebula" ];
       rumor.imports = [{
         importer = "vault-file";
         arguments = {
@@ -46,7 +48,6 @@ in
           file = "ddns-updater-duckdns-nebula";
         };
       }];
-      rumor.sops = [ "ddns-updater-duckdns-nebula" ];
     };
   };
 }

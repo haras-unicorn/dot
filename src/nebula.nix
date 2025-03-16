@@ -96,6 +96,13 @@ in
         group = "nebula-nebula";
         mode = "0400";
       };
+
+      rumor.sops = [
+        "nebula-ca-public"
+        "nebula-private"
+        "nebula-public"
+        "nebula-lighthouse"
+      ];
       rumor.imports = [
         {
           importer = "vault-file";
@@ -135,12 +142,6 @@ in
           public = "nebula-public";
         };
       }];
-      rumor.sops = [
-        "nebula-ca-public"
-        "nebula-private"
-        "nebula-public"
-        "nebula-lighthouse"
-      ];
     };
   };
 }
