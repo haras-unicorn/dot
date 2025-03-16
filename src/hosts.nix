@@ -26,11 +26,11 @@ in
       (builtins.map
         (host: {
           name = host.name;
-          value.importers = [{
+          value.imports = [{
             importer = "vault";
             path = "kv/dot/host/${host.name}";
           }];
-          value.exporters = [{
+          value.exports = [{
             exporter = "vault";
             path = "kv/dot/host/${host.name}";
           }];
