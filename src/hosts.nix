@@ -21,7 +21,8 @@ let
           "assets/hosts.toml"));
 in
 {
-  seal.rumor =
+  seal.rumor.sopsDir = "assets/secrets";
+  seal.rumor.specifications =
     builtins.listToAttrs
       (builtins.map
         (host: {
@@ -29,6 +30,7 @@ in
           value.imports = [{
             importer = "vault";
             path = "kv/dot/host/${host.name}";
+            allow_fail = true;
           }];
           value.exports = [{
             exporter = "vault";

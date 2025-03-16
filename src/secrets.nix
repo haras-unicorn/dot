@@ -25,20 +25,36 @@ let
     '';
   };
 
+  sopsOption = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [ ];
+    description = lib.literalMD ''
+      Which files to include in the sops file.
+    '';
+  };
+
   submodule.options = {
     imports = importsOption;
     generations = generationsOption;
     exports = exportsOption;
+    sops = sopsOption;
   };
 in
 {
-  options.seal.rumor = lib.mkOption {
+  options.seal.rumor.specifications = lib.mkOption {
     type =
       lib.types.attrsOf
         (lib.types.submodule submodule);
     default = { };
     description = lib.literalMD ''
       Rumor specifications.
+    '';
+  };
+
+  options.seal.rumor.sopsDir = lib.mkOption {
+    type = lib.types.str;
+    description = lib.literalMD ''
+      Where to put the sops file.
     '';
   };
 
@@ -101,9 +117,42 @@ in
                     imports = submodule.imports
                       ++ value.config.rumor.imports;
                     generations = submodule.generations
-                      ++ value.config.rumor.generations;
+                      ++ value.config.rumor.generations
+                      ++ [
+                      {
+                        generator = "age";
+                        arguments = {
+                          private = "age-private";
+                          public = "age-public";
+                        };
+                      }
+                      {
+                        generator = "sops";
+                        arguments = {
+                          age = "age-public";
+                          private = "sops-private";
+                          public = "sops-public";
+                          secrets =
+                            builtins.listToAttrs
+                              (builtins.map
+                                (file: {
+                                  name = file;
+                                  value = file;
+                                })
+                                (submodule.sops
+                                  ++ value.config.rumor.sops));
+                        };
+                      }
+                    ];
                     exports = submodule.exports
-                      ++ value.config.rumor.exports;
+                      ++ value.config.rumor.exports
+                      ++ [{
+                      exporter = "copy";
+                      arguments = {
+                        from = "sops-public";
+                        to = "../${config.seal.rumor.sopsDir}/${configuration}.yaml";
+                      };
+                    }];
                   };
                 })
                 (systemsFor configuration))
@@ -112,7 +161,7 @@ in
                 configuration = name;
                 submodule = value;
               })
-              config.seal.rumor)));
+              config.seal.rumor.specifications)));
 
   # TODO: pkgs.runCommand with rumor validate
   config.flake.checks =

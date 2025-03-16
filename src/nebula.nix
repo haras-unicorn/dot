@@ -6,8 +6,6 @@
 # TODO: nebula-wait-online.service and nebula-online.target
 
 let
-  host = config.dot.host;
-
   hasNetwork = config.dot.hardware.network.enable;
   isCoordinator = config.dot.vpn.coordinator;
 in
@@ -37,9 +35,9 @@ in
       services.nebula.networks.nebula = {
         enable = true;
         isLighthouse = isCoordinator;
-        cert = "/etc/nebula/host.crt";
-        key = "/etc/nebula/host.key";
-        ca = "/etc/nebula/ca.crt";
+        ca = config.sops.secrets."nebula-ca-public".path;
+        cert = config.sops.secrets."nebula-public".path;
+        key = config.sops.secrets."nebula-private".path;
       };
       systemd.services."nebula@nebula" = {
         after = lib.mkForce [ "basic.target" "network-online.target" ];
@@ -54,9 +52,9 @@ in
         ];
       environment.etc."nebula/config.d/config.yaml".text = ''
         pki:
-          ca: /etc/nebula/ca.crt
-          cert: /etc/nebula/host.crt
-          key: /etc/nebula/host.key
+          ca: ${config.sops.secrets."nebula-ca-public".path}
+          cert: ${config.sops.secrets."nebula-public".path}
+          key: ${config.sops.secrets."nebula-private".path}
         listen:
           host: '[::]'
           port: ${if isCoordinator then "4242" else "0"}
@@ -76,30 +74,73 @@ in
               proto: any
               host: any
       '';
-      sops.secrets."shared.vpn.ca.pub" = {
-        path = "/etc/nebula/ca.crt";
+
+      sops.secrets."nebula-ca-public" = {
         owner = "nebula-nebula";
         group = "nebula-nebula";
         mode = "0644";
       };
-      sops.secrets."${host.name}.vpn.key.pub" = {
-        path = "/etc/nebula/host.crt";
+      sops.secrets."nebula-public" = {
         owner = "nebula-nebula";
         group = "nebula-nebula";
         mode = "0644";
       };
-      sops.secrets."${host.name}.vpn.key" = {
-        path = "/etc/nebula/host.key";
+      sops.secrets."nebula-private" = {
         owner = "nebula-nebula";
         group = "nebula-nebula";
         mode = "0400";
       };
-      sops.secrets."${host.name}.vpn.cnf" = {
+      sops.secrets."nebula-lighthouse" = {
         path = "/etc/nebula/config.d/lighthouse.yaml";
         owner = "nebula-nebula";
         group = "nebula-nebula";
         mode = "0400";
       };
+      rumor.imports = [
+        {
+          importer = "vault-file";
+          path = "kv/dot/shared";
+          file = "nebula-ca-private";
+        }
+        {
+          importer = "vault-file";
+          path = "kv/dot/shared";
+          file = "nebula-ca-public";
+        }
+        {
+          importer = "vault-file";
+          path = "kv/dot/shared";
+          file =
+            if isCoordinator
+            then "nebula-lighthouse"
+            else "nebula-non-lighthouse";
+        }
+        {
+          importer = "copy";
+          from =
+            if isCoordinator
+            then "nebula-lighthouse"
+            else "nebula-non-lighthouse";
+          to = "nebula-lighthouse";
+        }
+      ];
+      rumor.generations = [{
+        generator = "nebula";
+        arguments = {
+          ca_private = "nebula-ca-private";
+          ca_public = "nebula-ca-public";
+          name = config.networking.hostName;
+          ip = "${config.vpn.ip}/${config.vpn.subnet.bits}";
+          private = "nebula-private";
+          public = "nebula-public";
+        };
+      }];
+      rumor.sops = [
+        "nebula-ca-public"
+        "nebula-private"
+        "nebula-public"
+        "nebula-lighthouse"
+      ];
     };
   };
 }
