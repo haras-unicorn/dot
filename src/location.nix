@@ -20,7 +20,7 @@
     };
 
     rumor.sops = [ "geoclue-googleapi" ];
-    rumor.imports = [{
+    rumor.specification.imports = [{
       importer = "vault-file";
       arguments = {
         path = "kv/dot/shared";

@@ -41,7 +41,7 @@ in
       };
 
       rumor.sops = [ "ddns-updater-duckdns-nebula" ];
-      rumor.imports = [{
+      rumor.specification.imports = [{
         importer = "vault-file";
         arguments = {
           path = "kv/dot/shared";

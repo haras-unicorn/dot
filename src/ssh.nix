@@ -38,7 +38,7 @@ in
       "ssh-public"
       "ssh-private"
     ];
-    rumor.generations = [
+    rumor.specification.generations = [
       {
         generator = "ssh-keygen";
         arguments = {
@@ -48,7 +48,7 @@ in
         };
       }
     ];
-    rumor.exports = [
+    rumor.specification.exports = [
       # TODO: generate with moustache from other hosts
       {
         exporter = "copy";

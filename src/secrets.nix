@@ -33,18 +33,17 @@ let
     '';
   };
 
-  submodule.options = {
+  specificationSubmodule.options = {
     imports = importsOption;
     generations = generationsOption;
     exports = exportsOption;
-    sops = sopsOption;
   };
 in
 {
   options.seal.rumor.specifications = lib.mkOption {
     type =
       lib.types.attrsOf
-        (lib.types.submodule submodule);
+        (lib.types.submodule specificationSubmodule);
     default = { };
     description = lib.literalMD ''
       Rumor specifications.
@@ -61,7 +60,7 @@ in
   options.propagate.rumor = lib.mkOption {
     type =
       lib.types.attrsOf
-        (lib.types.submodule submodule);
+        (lib.types.submodule specificationSubmodule);
     default = { };
     description = lib.literalMD ''
       Rumor specifications.
@@ -77,12 +76,12 @@ in
   };
 
   config.branch.nixosModule.nixosModule = {
-    options.rumor = {
+    options.rumor.specification = {
       imports = importsOption;
       generations = generationsOption;
       exports = exportsOption;
-      sops = sopsOption;
     };
+    options.rumor.sops = sopsOption;
   };
 
   config.propagate.rumor =
@@ -116,9 +115,9 @@ in
                   inherit name;
                   value = {
                     imports = submodule.imports
-                      ++ value.config.rumor.imports;
+                      ++ value.config.rumor.specification.imports;
                     generations = submodule.generations
-                      ++ value.config.rumor.generations
+                      ++ value.config.rumor.specification.generations
                       ++ [
                       {
                         generator = "age";
@@ -140,13 +139,12 @@ in
                                   name = file;
                                   value = file;
                                 })
-                                (submodule.sops
-                                  ++ value.config.rumor.sops));
+                                value.config.rumor.sops);
                         };
                       }
                     ];
                     exports = submodule.exports
-                      ++ value.config.rumor.exports
+                      ++ value.config.rumor.specification.exports
                       ++ [{
                       exporter = "copy";
                       arguments = {

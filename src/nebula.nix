@@ -103,7 +103,7 @@ in
         "nebula-public"
         "nebula-lighthouse"
       ];
-      rumor.imports = [
+      rumor.specification.imports = [
         {
           importer = "vault-file";
           path = "kv/dot/shared";
@@ -131,7 +131,7 @@ in
           to = "nebula-lighthouse";
         }
       ];
-      rumor.generations = [{
+      rumor.specification.generations = [{
         generator = "nebula";
         arguments = {
           ca_private = "nebula-ca-private";
