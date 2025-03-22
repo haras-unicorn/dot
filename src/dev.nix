@@ -12,8 +12,8 @@
         # Scripts
         just
         nushell
+        gum
         fzf
-        # nufmt
 
         # Misc
         nodePackages.prettier
@@ -23,14 +23,11 @@
         taplo
 
         # Tools
-        openssl
-        openvpn
-        openssh
-        age
-        sops
         nebula
         deploy-rs
         vaultwarden
+        vault-bin
+        cockroachdb
       ];
     };
 }
