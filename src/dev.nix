@@ -34,7 +34,7 @@
           sshpass
           vault
           postgresql
-          mysql
+          mariadb
           s3cmd
           deploy-rs
           zstd
