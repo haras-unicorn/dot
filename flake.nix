@@ -6,6 +6,10 @@
     perch.url = "github:altibiz/perch/refs/tags/2.1.1";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
+    rumor.url = "github:altibiz/rumor/refs/tags/1.1.3";
+    rumor.inputs.nixpkgs.follows = "nixpkgs";
+    rumor.inputs.perch.follows = "perch";
+
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
 

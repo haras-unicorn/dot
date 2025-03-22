@@ -96,9 +96,13 @@ def "pick host" [name?: string] {
   let host = $hosts
     | where $it.name == $name
     | first
-  let secrets = try { vault kv get -format=json $"kv/dot/host/($name)/current" } catch { echo '{}' } 
-    | from json
-    | get ?.data?.data
+  let secrets = try {
+    vault kv get -format=json $"kv/dot/host/($name)/current"
+      | from json
+      | get data.data
+    } catch {
+      { }
+    }
   let configuration = $"($name)-($host.system.nixpkgs.system)"
   let spec = nix eval --json $".#rumor.($configuration)"| from json
   $host

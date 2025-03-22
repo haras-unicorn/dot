@@ -809,8 +809,33 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "perch": "perch",
+        "rumor": "rumor",
         "sops-nix": "sops-nix",
         "stylix": "stylix"
+      }
+    },
+    "rumor": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "perch": [
+          "perch"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740629695,
+        "narHash": "sha256-93vWFzYkByC9BL6F/EAh7H3Gy9be/edCJne71FGGF5Q=",
+        "owner": "altibiz",
+        "repo": "rumor",
+        "rev": "abf863be83c5ce12ca4e63fb91eac299b4160673",
+        "type": "github"
+      },
+      "original": {
+        "owner": "altibiz",
+        "ref": "refs/tags/1.1.3",
+        "repo": "rumor",
+        "type": "github"
       }
     },
     "rust-overlay": {
