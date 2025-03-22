@@ -1,8 +1,7 @@
 set windows-shell := ["nu.exe", "-c"]
 set shell := ["nu", "-c"]
 
-secrets-script := absolute_path('scripts/secrets.nu')
-secrets-dir := absolute_path('secrets/current')
+root := absolute_path('')
 
 default:
     @just --choose
@@ -13,6 +12,5 @@ format:
 check:
     nix flake check
 
-secrets *args:
-    mkdir '{{ secrets-dir }}'
-    cd '{{ secrets-dir }}'; {{ secrets-script }} {{ args }}
+hosts *args:
+    {{ root }}/scripts/hosts.nu {{ args }}
