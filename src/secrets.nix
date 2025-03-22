@@ -114,7 +114,7 @@ in
               builtins.map
                 ({ name, system, value, ... }: {
                   inherit name;
-                  value = submodule // {
+                  value = {
                     imports = submodule.imports
                       ++ value.config.rumor.imports;
                     generations = submodule.generations
