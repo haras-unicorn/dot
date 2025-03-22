@@ -17,7 +17,7 @@ def "main secrets" [host?: string] {
   mkdir $artifacts
   cd $artifacts
 
-  $host.spec | rumor stdin json --stay
+  $host.spec | to json | rumor stdin json --stay
 }
 
 def "main image" [host?: string, format?: string] {
