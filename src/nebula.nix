@@ -137,7 +137,7 @@ in
           ca_private = "nebula-ca-private";
           ca_public = "nebula-ca-public";
           name = config.networking.hostName;
-          ip = "${config.vpn.ip}/${config.vpn.subnet.bits}";
+          ip = "${config.dot.vpn.ip}/${config.dot.vpn.subnet.bits}";
           private = "nebula-private";
           public = "nebula-public";
         };
