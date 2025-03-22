@@ -26,7 +26,7 @@
         nebula
         deploy-rs
         vaultwarden
-        vault-bin
+        vault
         cockroachdb
       ];
     };
