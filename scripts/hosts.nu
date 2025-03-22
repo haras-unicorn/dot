@@ -96,7 +96,7 @@ def "pick host" [name?: string] {
   let host = $hosts
     | where $it.name == $name
     | first
-  let secrets = vault kv get -format=json $"kv/dot/host/($name)/current"
+  let secrets = try { vault kv get -format=json $"kv/dot/host/($name)/current" } catch { echo '{}' } 
     | from json
     | get ?.data?.data
   let configuration = $"($name)-($host.system.nixpkgs.system)"
