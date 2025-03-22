@@ -106,29 +106,37 @@ in
       rumor.specification.imports = [
         {
           importer = "vault-file";
-          path = "kv/dot/shared";
-          file = "nebula-ca-private";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "nebula-ca-private";
+          };
         }
         {
           importer = "vault-file";
-          path = "kv/dot/shared";
-          file = "nebula-ca-public";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "nebula-ca-public";
+          };
         }
         {
           importer = "vault-file";
-          path = "kv/dot/shared";
-          file =
-            if isCoordinator
-            then "nebula-lighthouse"
-            else "nebula-non-lighthouse";
+          arguments = {
+            path = "kv/dot/shared";
+            file =
+              if isCoordinator
+              then "nebula-lighthouse"
+              else "nebula-non-lighthouse";
+          };
         }
         {
           importer = "copy";
-          from =
-            if isCoordinator
-            then "nebula-lighthouse"
-            else "nebula-non-lighthouse";
-          to = "nebula-lighthouse";
+          arguments = {
+            from =
+              if isCoordinator
+              then "nebula-lighthouse"
+              else "nebula-non-lighthouse";
+            to = "nebula-lighthouse";
+          };
         }
       ];
       rumor.specification.generations = [{

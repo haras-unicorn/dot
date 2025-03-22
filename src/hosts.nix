@@ -29,12 +29,16 @@ in
           name = host.name;
           value.imports = [{
             importer = "vault";
-            path = "kv/dot/host/${host.name}";
-            allow_fail = true;
+            arguments = {
+              path = "kv/dot/host/${host.name}";
+              allow_fail = true;
+            };
           }];
           value.exports = [{
             exporter = "vault";
-            path = "kv/dot/host/${host.name}";
+            arguments = {
+              path = "kv/dot/host/${host.name}";
+            };
           }];
         })
         hosts.hosts);
