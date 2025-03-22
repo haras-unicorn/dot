@@ -17,7 +17,8 @@ def "main secrets" [host?: string] {
   mkdir $artifacts
   cd $artifacts
 
-  $host.spec | to json | rumor stdin json --stay
+  let spec = nix eval --json $".#rumor.($host.configuration)"
+  $spec | rumor stdin json --stay
 }
 
 def "main image" [host?: string, format?: string] {
@@ -72,15 +73,26 @@ def "main pass" [host?: string] {
 
 def "main deploy" [host?: string] {
   let host = (pick host $host)
-  ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
-    | ssh-add - \\
-    && export SSHPASS='($host.secrets."pass-private")' \\
-    && sshpass -e deploy \\
-      --skip-checks \\
-      --interactive-sudo true \\
-      --hostname ($host.ip) \\
-      -- \\
-      '($root)#($host.configuration)'"
+
+  if ($host.name == (open --raw /etc/hostname | str trim)) {
+    (sudo nixos-rebuild switch
+      --flake $"($root)#($host.configuration)")
+    sudo mkdir -p /root
+    sudo chmod 700 /root
+    $host.secrets."age-private" | sudo tee /root/host.scrt.key
+    sudo chmod 400 /root/host.scrt.key
+  } else {
+    # TODO: scp age
+    ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
+      | ssh-add - \\
+      && export SSHPASS='($host.secrets."pass-private")' \\
+      && sshpass -e deploy \\
+        --skip-checks \\
+        --interactive-sudo true \\
+        --hostname ($host.ip) \\
+        -- \\
+        '($root)#($host.configuration)'"
+  }
 }
 
 def "pick host" [name?: string] {
@@ -104,9 +116,7 @@ def "pick host" [name?: string] {
       { }
     }
   let configuration = $"($name)-($host.system.nixpkgs.system)"
-  let spec = nix eval --json $".#rumor.($configuration)"| from json
   $host
     | insert secrets $secrets
     | insert configuration $configuration
-    | insert spec $spec
 }
