@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, rumor, ... }:
 
 {
   seal.defaults.devShell = "dev";
@@ -28,11 +28,22 @@
           taplo
 
           # Tools
+          rumor.packages.${pkgs.system}.default
           nebula
+          openssh
+          sshpass
+          vault
+          postgresql
+          mysql
+          s3cmd
           deploy-rs
-          vaultwarden
-          vault-bin
-          cockroachdb
+          zstd
+        ] ++ lib.optionals
+          (
+            pkgs.stdenv.hostPlatform.isLinux
+              && pkgs.stdenv.hostPlatform.isx86_64
+          ) [
+          libguestfs-with-appliance
         ];
       };
   };
