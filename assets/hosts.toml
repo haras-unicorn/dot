@@ -1,6 +1,6 @@
 [vpn]
 ip = "10.69.42.0"
-bits = "24"
+bits = 24
 mask = "255.255.255.0"
 
 [[hosts]]
@@ -14,7 +14,7 @@ services.cockroachdb.locality = "location=biden"
 dot.ddns.coordinator = true
 dot.vpn.ip = "10.69.42.1"
 dot.vpn.subnet.ip = "10.69.42.0"
-dot.vpn.subnet.bits = "24"
+dot.vpn.subnet.bits = 24
 dot.vpn.subnet.mask = "255.255.255.0"
 dot.hardware.rpi."4".enable = true
 dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
@@ -33,7 +33,7 @@ nixpkgs.system = "x86_64-linux"
 services.cockroachdb.locality = "location=portable"
 dot.vpn.ip = "10.69.42.3"
 dot.vpn.subnet.ip = "10.69.42.0"
-dot.vpn.subnet.bits = "24"
+dot.vpn.subnet.bits = 24
 dot.vpn.subnet.mask = "255.255.255.0"
 dot.hardware.temp = "/sys/class/hwmon/hwmon3/temp1_input"
 dot.hardware.monitor.main = "eDP-1"
@@ -54,7 +54,7 @@ nixpkgs.system = "x86_64-linux"
 services.cockroachdb.locality = "location=biden"
 dot.vpn.ip = "10.69.42.2"
 dot.vpn.subnet.ip = "10.69.42.0"
-dot.vpn.subnet.bits = "24"
+dot.vpn.subnet.bits = 24
 dot.vpn.subnet.mask = "255.255.255.0"
 dot.hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input"
 dot.hardware.monitor.main = "DP-1"
@@ -73,7 +73,7 @@ nixpkgs.system = "x86_64-linux"
 services.cockroachdb.locality = "location=veslaja"
 dot.vpn.ip = "10.69.42.4"
 dot.vpn.subnet.ip = "10.69.42.0"
-dot.vpn.subnet.bits = "24"
+dot.vpn.subnet.bits = 24
 dot.vpn.subnet.mask = "255.255.255.0"
 dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
 dot.hardware.monitor.main = "DVI-D-0"
