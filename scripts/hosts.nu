@@ -10,7 +10,7 @@ def main [] {
   nu -c $"($self) --help"
 }
 
-def "main secrets" [host: string] {
+def "main secrets" [host?: string] {
   let host = (pick host $host)
 
   rm -rf $artifacts
