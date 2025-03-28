@@ -521,11 +521,11 @@
         "poetry2nix": "poetry2nix"
       },
       "locked": {
-        "lastModified": 1742679286,
-        "narHash": "sha256-7ERDt7Vv5PT88WrPv6GgkeYD/PdF+o2m1VZVpf+O7+A=",
+        "lastModified": 1743195048,
+        "narHash": "sha256-Hp00w/nO8rGsAamNLHkbfMPVsPPH9q8QCRsqxv1Y388=",
         "owner": "haras-unicorn",
         "repo": "nix-comfyui",
-        "rev": "cfaebbec200bce5ad3240b7d22d8bd69cf3eaeeb",
+        "rev": "0682a73d63acbcf8c9ae3605eb1ae78f709d5d9e",
         "type": "github"
       },
       "original": {
