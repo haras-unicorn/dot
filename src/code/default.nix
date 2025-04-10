@@ -1,4 +1,5 @@
 { pkgs
+, unstablePkgs
 , self
 , config
 , lib
@@ -76,7 +77,7 @@ in
         pkgs.vscode-marketplace.rust-lang.rust-analyzer
 
         # csharp
-        pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-runtime
+        pkgs.vscode-extensions.ms-dotnettools.vscode-dotnet-runtime
         pkgs.vscode-marketplace.selcukermaya.se-csproj-extensions
         # pkgs.open-vsx.muhammad-sammy.csharp
         pkgs.vscode-extensions.ms-dotnettools.csdevkit
