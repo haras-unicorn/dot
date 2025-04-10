@@ -82,6 +82,7 @@ in
         # pkgs.open-vsx.muhammad-sammy.csharp
         pkgs.vscode-extensions.ms-dotnettools.csdevkit
         pkgs.vscode-extensions.ms-dotnettools.csharp
+        pkgs.vscode-extensions.ms-dotnettools.vscodeintellicode-csharp
 
         # python
         pkgs.vscode-marketplace.charliermarsh.ruff
