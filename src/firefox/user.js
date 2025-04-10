@@ -106,7 +106,8 @@ user_pref("security.ssl3.rsa_aes_256_sha", false);
 // webrtc
 user_pref("media.peerconnection.ice.proxy_only_if_behind_proxy", true);
 user_pref("media.peerconnection.ice.default_address_only", true);
-user_pref("media.peerconnection.ice.no_host", true);
+// FIXME
+user_pref("media.peerconnection.ice.no_host", false);
 user_pref("media.gmp-provider.enabled", false);
 user_pref("media.gmp-widevinecdm.enabled", false);
 user_pref("media.eme.enabled", false);
