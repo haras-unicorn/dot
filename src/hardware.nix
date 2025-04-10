@@ -3,6 +3,9 @@
 # TODO: temp and monitor id from facter
 
 let
+  threads =
+    (builtins.head config.facter.report.hardware.cpu).units;
+
   memoryInBytes = (builtins.head (builtins.head config.facter.report.hardware.memory).resources).range;
 
   network =
@@ -90,6 +93,11 @@ let
     rpi."4".enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
+    };
+
+    threads = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      default = threads;
     };
 
     memory = lib.mkOption {

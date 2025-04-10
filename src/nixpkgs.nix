@@ -73,6 +73,7 @@ let
     nix.extraOptions = "experimental-features = nix-command flakes";
     nix.gc.automatic = true;
     nix.gc.options = "--delete-older-than 30d";
+    nix.settings.max-jobs = config.dot.hardware.threads / 2;
     nix.settings.auto-optimise-store = true;
     nix.settings.trusted-users = [
       "@wheel"
