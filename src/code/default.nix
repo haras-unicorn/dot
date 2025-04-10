@@ -1,5 +1,5 @@
 { pkgs
-, unstablePkgs
+, masterPkgs
 , self
 , config
 , lib
@@ -77,12 +77,13 @@ in
         pkgs.vscode-marketplace.rust-lang.rust-analyzer
 
         # csharp
-        pkgs.vscode-extensions.ms-dotnettools.vscode-dotnet-runtime
+        # NOTE: https://github.com/NixOS/nixpkgs/issues/389098
+        masterPkgs.vscode-extensions.ms-dotnettools.vscode-dotnet-runtime
+        masterPkgs.vscode-extensions.ms-dotnettools.csdevkit
+        masterPkgs.vscode-extensions.ms-dotnettools.csharp
+        masterPkgs.vscode-extensions.ms-dotnettools.vscodeintellicode-csharp
         pkgs.vscode-marketplace.selcukermaya.se-csproj-extensions
         # pkgs.open-vsx.muhammad-sammy.csharp
-        pkgs.vscode-extensions.ms-dotnettools.csdevkit
-        pkgs.vscode-extensions.ms-dotnettools.csharp
-        pkgs.vscode-extensions.ms-dotnettools.vscodeintellicode-csharp
 
         # python
         pkgs.vscode-marketplace.charliermarsh.ruff

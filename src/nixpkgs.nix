@@ -1,4 +1,4 @@
-{ pkgs, config, lib, nixpkgs-unstable, ... }:
+{ pkgs, config, lib, nixpkgs-unstable, nixpkgs-master, ... }:
 
 let
   host = config.dot.host;
@@ -61,10 +61,18 @@ let
     unstablePkgs = lib.mkOption {
       type = lib.types.raw;
     };
+    masterPkgs = lib.mkOption {
+      type = lib.types.raw;
+    };
   };
 
   thisConfig = {
     _module.args.unstablePkgs = import nixpkgs-unstable {
+      system = pkgs.system;
+      config = config.nixpkgs.config;
+      overlays = config.nixpkgs.overlays;
+    };
+    _module.args.masterPkgs = import nixpkgs-master {
       system = pkgs.system;
       config = config.nixpkgs.config;
       overlays = config.nixpkgs.overlays;

@@ -628,6 +628,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1744298617,
+        "narHash": "sha256-ipleJZmo+AKrCg00I6qoOU4vSHgtlgu7grAHRwZAVCM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "f5acc5ef71c96ff28989a019ab2961047d73fae6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1710695816,
@@ -789,6 +805,7 @@
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixos-facter-modules": "nixos-facter-modules",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "perch": "perch",
