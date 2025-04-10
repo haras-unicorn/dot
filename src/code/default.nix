@@ -78,7 +78,14 @@ in
 
         # csharp
         # NOTE: https://github.com/NixOS/nixpkgs/issues/389098
-        masterPkgs.vscode-extensions.ms-dotnettools.vscode-dotnet-runtime
+        (masterPkgs.vscode-extensions.ms-dotnettools.vscode-dotnet-runtime.overrideAttrs
+          (final: prev: {
+            buildInputs = (prev.buildInputs or [ ]) ++ [
+              masterPkgs.dotnet-sdk_9
+              masterPkgs.dotnet-runtime_9
+              masterPkgs.dotnet-aspnetcore_9
+            ];
+          }))
         masterPkgs.vscode-extensions.ms-dotnettools.csdevkit
         masterPkgs.vscode-extensions.ms-dotnettools.csharp
         masterPkgs.vscode-extensions.ms-dotnettools.vscodeintellicode-csharp
