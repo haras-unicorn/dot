@@ -285,9 +285,32 @@ let
         "--app=http://localhost:$port1"
     '';
   };
+
+  # NOTE: https://github.com/NixOS/nixpkgs/issues/388681#issuecomment-2778618490
+  nixpkgs.overlays = [
+    (final: prev: {
+      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+        (
+          python-final: python-prev: {
+            onnxruntime = python-prev.onnxruntime.overridePythonAttrs (
+              oldAttrs: {
+                buildInputs = lib.lists.remove pkgs.onnxruntime oldAttrs.buildInputs;
+              }
+            );
+          }
+        )
+      ];
+    })
+  ];
 in
 {
+  branch.nixosModule.nixosModule = {
+    inherit nixpkgs;
+  };
+
   branch.homeManagerModule.homeManagerModule = {
+    inherit nixpkgs;
+
     dot.desktopEnvironment.keybinds = lib.mkIf (hasMonitor && hasKeyboard) [
       {
         mods = [ "super" ];
