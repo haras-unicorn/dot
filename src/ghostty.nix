@@ -1,20 +1,21 @@
-{ pkgs, lib, config, ... }:
+{ lib, config, ... }:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
+
+  shell = config.dot.shell;
 in
 {
-  branch.homeManagerModule.homeManagerModule = {
-    home.packages = [
-      pkgs.ghostty
-    ];
-    xdg.configFile."ghostty/config".text = lib.mkIf (hasKeyboard && hasMonitor) ''
-      cursor-style = block
-      cursor-style-blink =  false
-
-      background-opacity = 0.7
-      background-blur = true
-    '';
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasKeyboard && hasMonitor) {
+    programs.ghostty.enable = true;
+    programs.ghostty.installVimSyntax = true;
+    programs.ghostty.settngs = {
+      cursor-style = "block";
+      cursor-style-blink = false;
+      command = "${shell.package}/bin/${shell.bin}";
+      background-opacity = 0.7;
+      background-blur = true;
+    };
   };
 }
