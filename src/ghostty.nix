@@ -9,7 +9,7 @@ in
     home.packages = [
       pkgs.ghostty
     ];
-    xdg.configFile."ghostty/config" = lib.mkIf (hasKeyboard && hasMonitor) ''
+    xdg.configFile."ghostty/config".text = lib.mkIf (hasKeyboard && hasMonitor) ''
       cursor-style block
       cursor-style-blink false
     '';
