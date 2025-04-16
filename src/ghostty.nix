@@ -10,7 +10,7 @@ in
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasKeyboard && hasMonitor) {
     programs.ghostty.enable = true;
     programs.ghostty.installVimSyntax = true;
-    programs.ghostty.settngs = {
+    programs.ghostty.settings = {
       cursor-style = "block";
       cursor-style-blink = false;
       command = "${shell.package}/bin/${shell.bin}";
