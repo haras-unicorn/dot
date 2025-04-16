@@ -12,6 +12,9 @@ in
     xdg.configFile."ghostty/config".text = lib.mkIf (hasKeyboard && hasMonitor) ''
       cursor-style = block
       cursor-style-blink =  false
+
+      background-opacity = 0.7
+      background-blur = true
     '';
   };
 }
