@@ -25,7 +25,6 @@ in
 
     home.packages = [
       pkgs.smile
-      pkgs.gnomeExtensions.smile-complementary-extension
     ];
   };
 }
