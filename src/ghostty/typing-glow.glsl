@@ -1,4 +1,4 @@
-uniform sampler2D iChannel1;  // Previous frame
+layout(binding = 0) uniform sampler2D iChannel1;  // Current frame
 
 const vec3 GLOW_COLOR = vec3(0.7, 0.3, 0.9);  // Pretty purple!
 const float FADE_SPEED = 2.0;  // How fast the glow fades
