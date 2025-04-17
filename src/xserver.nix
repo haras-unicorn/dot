@@ -1,6 +1,8 @@
 { pkgs, lib, config, ... }:
 
 let
+  user = config.dot.user;
+
   copy = pkgs.writeShellApplication {
     name = "copy";
     runtimeInputs = [ pkgs.xclip ];
@@ -32,6 +34,11 @@ in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
     services.xserver.enable = true;
+
+    programs.ydotool.enable = true;
+    users.users.${user}.extraGroups = [
+      config.programs.ydotool.group
+    ];
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
@@ -53,6 +60,7 @@ in
       pkgs.xclip
       copy
       paste
+      pkgs.ydotool
 
       pkgs.libnotify
     ];

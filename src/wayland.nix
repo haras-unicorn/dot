@@ -1,6 +1,8 @@
 { pkgs, lib, config, ... }:
 
 let
+  user = config.dot.user;
+
   cfg = config.dot.desktopEnvironment;
 
   copy = pkgs.writeShellApplication {
@@ -61,6 +63,11 @@ in
         command = cfg.login;
       };
     };
+
+    programs.ydotool.enable = true;
+    users.users.${user}.extraGroups = [
+      config.programs.ydotool.group
+    ];
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
@@ -104,6 +111,7 @@ in
       pkgs.xclip
       copy
       paste
+      pkgs.ydotool
 
       pkgs.libnotify
 
