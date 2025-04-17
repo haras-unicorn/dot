@@ -1,6 +1,6 @@
 { lib
 , config
-  # , ghostty-shaders
+, ghostty-shaders
 , ...
 }:
 
@@ -12,10 +12,12 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasKeyboard && hasMonitor) {
+    xdg.configFile."ghostty/shaders/ghostty".target = "${ghostty-shaders}";
+
     programs.ghostty.enable = true;
     programs.ghostty.installVimSyntax = true;
     programs.ghostty.settings = {
-      custom-shader = "${./bloom.glsl}";
+      config-file = "?dev";
       cursor-style = "block";
       cursor-style-blink = false;
       command = "${shell.package}/bin/${shell.bin}";
