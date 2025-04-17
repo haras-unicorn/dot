@@ -43,6 +43,9 @@
 
     stylix.url = "github:danth/stylix/release-24.11";
     stylix.inputs.home-manager.follows = "home-manager";
+
+    ghostty-shaders.url = "github:hackr-sh/ghostty-shaders";
+    ghostty-shaders.flake = false;
   };
 
   outputs =

@@ -338,6 +338,22 @@
         "type": "github"
       }
     },
+    "ghostty-shaders": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1742711360,
+        "narHash": "sha256-p0speO5BtLZZwGeuRvBFETnHspDYg2r5Uiu0yeqj1iE=",
+        "owner": "hackr-sh",
+        "repo": "ghostty-shaders",
+        "rev": "a17573fb254e618f92a75afe80faa31fd5e09d6f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hackr-sh",
+        "repo": "ghostty-shaders",
+        "type": "github"
+      }
+    },
     "git-hooks": {
       "inputs": {
         "flake-compat": [
@@ -797,6 +813,7 @@
     "root": {
       "inputs": {
         "deploy-rs": "deploy-rs",
+        "ghostty-shaders": "ghostty-shaders",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "musnix": "musnix",

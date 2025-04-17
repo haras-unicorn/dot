@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, ghostty-shaders, ... }:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -11,7 +11,7 @@ in
     programs.ghostty.enable = true;
     programs.ghostty.installVimSyntax = true;
     programs.ghostty.settings = {
-      custom-shader = "${./typing-glow.glsl}";
+      custom-shader = "${ghostty-shaders}/bloom.glsl";
       cursor-style = "block";
       cursor-style-blink = false;
       command = "${shell.package}/bin/${shell.bin}";
