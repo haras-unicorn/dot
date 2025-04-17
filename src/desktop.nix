@@ -1,7 +1,15 @@
-{ lib, ... }:
+{ lib, config, ... }:
 
+let
+  user = config.dot.user;
+in
 {
   branch.nixosModule.nixosModule.options.dot.desktopEnvironment = {
+    programs.ydotool.enable = true;
+    users.users.${user}.extraGroups = [
+      config.programs.ydotool.group
+    ];
+
     login = lib.mkOption {
       type = lib.types.str;
       default = [ ];
