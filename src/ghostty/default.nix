@@ -11,7 +11,7 @@ in
     programs.ghostty.enable = true;
     programs.ghostty.installVimSyntax = true;
     programs.ghostty.settings = {
-      custom-shader = ./typing-glow.glsl;
+      custom-shader = "${./typing-glow.glsl}";
       cursor-style = "block";
       cursor-style-blink = false;
       command = "${shell.package}/bin/${shell.bin}";
