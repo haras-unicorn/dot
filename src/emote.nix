@@ -2,8 +2,13 @@
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
-
+  hasWayland = config.dot.hardware.graphics.wayland;
   hasKeyboard = config.dot.hardware.keyboard.enable;
+
+  paste =
+    if hasWayland
+    then "${pkgs.wl-clipboard}/bin/wl-paste"
+    else "${pkgs.xclip}/bin/xclip -o -sel clipboard";
 in
 {
   branch.homeManagerModule.homeManagerModule = (lib.mkIf (hasMonitor && hasKeyboard)) {
@@ -11,7 +16,7 @@ in
       {
         mods = [ "super" ];
         key = "e";
-        command = "${pkgs.smile}/bin/smile";
+        command = "bash -c '${pkgs.smile}/bin/smile; ${paste}'";
       }
     ];
 
