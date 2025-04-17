@@ -37,19 +37,22 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   vec2 uv = fragCoord.xy / iResolution.xy;
 
   vec4 color = texture(iChannel0, uv);
-  vec4 glow = vec4(0.0); // Start with no glow
+  vec4 glow = vec4(0.0);
 
   vec2 step = vec2(1.414) / iResolution.xy;
 
+  float totalGlow = 0.0;  // Track how much glow we've accumulated
   for (int i = 0; i < 24; i++) {
     vec3 s = samples[i];
     vec4 c = texture(iChannel0, uv + s.xy * step);
     float l = lum(c);
     if (l > 0.2) {
       glow += l * s.z * c * 0.2;
+      totalGlow += l * s.z * 0.2;
     }
   }
   
-  // Only add glow, keep original transparency
-  fragColor = vec4(color.rgb + glow.rgb, color.a);
+  // Make glow areas more transparent
+  float finalAlpha = max(0.0, color.a - totalGlow * 0.5);
+  fragColor = vec4(color.rgb + glow.rgb, finalAlpha);
 }
