@@ -111,6 +111,8 @@ in
       pkgs.xclip
       copy
       paste
+      wclipwatch
+      xclipwatch
       pkgs.ydotool
 
       pkgs.libnotify
