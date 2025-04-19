@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
 let
   run = pkgs.writeShellApplication {
@@ -72,7 +72,6 @@ in
       ezdd
       pkgs.htop
       pkgs.duf
-      pkgs.nvtopPackages.full
       pkgs.man-pages
       pkgs.man-pages-posix
       pkgs.rustscan
@@ -82,6 +81,8 @@ in
       pkgs.vim
       pkgs.kitty # NOTE: install everywhere for terminal compatibility
       pkgs.xfce.xfce4-terminal
-    ];
+    ] ++ (lib.optionals config.nixpkgs.config.cudaSupport [
+      pkgs.nvtopPackages.full
+    ]);
   };
 }
