@@ -1,6 +1,6 @@
 { lib
 , config
-, ghostty-shaders
+  # , ghostty-shaders
 , ...
 }:
 
@@ -12,7 +12,8 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasKeyboard && hasMonitor) {
-    xdg.configFile."ghostty/shaders/ghostty".target = "${ghostty-shaders}";
+    # FIXME: cant refer to a store path
+    # xdg.configFile."ghostty/shaders/ghostty".target = "${ghostty-shaders}";
 
     programs.ghostty.enable = true;
     programs.ghostty.installVimSyntax = true;
