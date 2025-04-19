@@ -77,7 +77,7 @@ in
               };
               dot.hosts = lib.mkOption {
                 type = lib.types.raw;
-                default = hosts;
+                default = hosts.hosts;
               };
             };
 
