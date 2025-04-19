@@ -62,7 +62,7 @@ in
                 root
                 "assets/secrets/${host.name}.yaml";
 
-            userHostModule.options = {
+            userHostsModule.options = {
               dot.user = lib.mkOption {
                 type = lib.types.str;
                 default = user;
@@ -74,6 +74,10 @@ in
               dot.host.ip = lib.mkOption {
                 type = lib.types.str;
                 default = host.ip;
+              };
+              dot.hosts = lib.mkOption {
+                type = lib.types.raw;
+                default = hosts;
               };
             };
 
@@ -103,7 +107,7 @@ in
                 nixos-facter-modules.hmModules.facter
                 sops-nix.homeManagerModules.sops
                 stylix.homeManagerModules.stylix
-                userHostModule
+                userHostsModule
                 homeManagerModule
                 host.home
               ];
@@ -133,7 +137,7 @@ in
                 sops-nix.nixosModules.default
                 home-manager.nixosModules.default
                 self.nixosModules.default
-                userHostModule
+                userHostsModule
                 nixosModule
                 host.system
               ];
