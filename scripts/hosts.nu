@@ -30,6 +30,7 @@ def "main image" [host?: string, format?: string] {
   cd $artifacts
 
   let raw = (nixos-generate
+    --show-trace
     --system $host.system.nixpkgs.system
     --format $format
     --flake $"($root)#($host.configuration)")
@@ -63,7 +64,7 @@ def "main ssh" [host?: string] {
 
   ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
     | ssh-add - \\
-    && ssh ($host.ip)"
+    && ssh -t ($host.ip) nu"
 }
 
 def "main pass" [host?: string] {

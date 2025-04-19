@@ -14,23 +14,11 @@ in
     services.openssh.settings.PasswordAuthentication = false;
     services.openssh.settings.KbdInteractiveAuthentication = false;
 
-    sops.secrets."ssh-authorized-keys" = {
+    sops.secrets."ssh-public" = {
       path = "/home/${user}/.ssh/authorized_keys";
       owner = user;
       group = "users";
       mode = "0644";
-    };
-    sops.secrets."ssh-public" = {
-      path = "/home/${user}/.ssh/id_rsa.pub";
-      owner = user;
-      group = "users";
-      mode = "0644";
-    };
-    sops.secrets."ssh-private" = {
-      path = "/home/${user}/.ssh/id_rsa";
-      owner = user;
-      group = "users";
-      mode = "0400";
     };
 
     rumor.sops = [
@@ -50,13 +38,6 @@ in
     ];
     rumor.specification.exports = [
       # TODO: generate with moustache from other hosts
-      {
-        exporter = "copy";
-        arguments = {
-          from = "ssh-public";
-          to = "ssh-authorized-keys";
-        };
-      }
       {
         exporter = "copy";
         arguments = {

@@ -13,6 +13,10 @@
 }:
 
 let
+  user = "haras";
+
+  version = "24.11";
+
   hosts =
     builtins.fromTOML
       (builtins.readFile
@@ -43,15 +47,23 @@ in
         })
         hosts.hosts);
 
+  seal.deploy.nodes =
+    builtins.listToAttrs
+      (builtins.map
+        (host: {
+          name = host.name;
+          value = {
+            hostname = host.ip;
+            sshUser = user;
+          };
+        })
+        hosts.hosts);
+
   flake.nixosConfigurations =
     builtins.listToAttrs
       (builtins.map
         (host:
           let
-            user = "haras";
-
-            version = "24.11";
-
             facterPath =
               lib.path.append
                 root
@@ -77,7 +89,7 @@ in
               };
               dot.hosts = lib.mkOption {
                 type = lib.types.raw;
-                default = hosts;
+                default = hosts.hosts;
               };
             };
 
@@ -115,7 +127,7 @@ in
                 self.homeManagerModules.default;
             };
 
-            homeManagerModule = {
+            homeManagerModule = { pkgs, ... }: {
               home.stateVersion = version;
 
               home.username = user;
@@ -125,6 +137,9 @@ in
 
               sops.defaultSopsFile = sopsPath;
               sops.age.keyFile = "/root/host.scrt.key";
+
+              # NOTE: https://github.com/nix-community/home-manager/issues/3113
+              home.packages = [ pkgs.dconf ];
             };
           in
           {
