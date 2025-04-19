@@ -158,13 +158,11 @@ in
       home.sessionVariables = lib.mkMerge [
         (lib.mkIf hasMonitor {
           BROWSER = "${browser}";
-        })
-        (lib.mkIf (hasMonitor && hasKeyboard) {
           VISUAL = "${visual}";
         })
-        (lib.mkIf hasKeyboard {
+        {
           EDITOR = "${editor}";
-        })
+        }
       ];
 
       xdg.mime.enable = true;

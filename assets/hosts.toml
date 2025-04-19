@@ -8,10 +8,12 @@ name = "puffy"
 ip = "10.69.42.1"
 
 [hosts.system]
-networking.hostName = "officer"
+networking.hostName = "puffy"
 nixpkgs.system = "aarch64-linux"
 services.cockroachdb.locality = "location=biden"
+dot.postgres.coordinator = true
 dot.ddns.coordinator = true
+dot.vpn.coordinator = true
 dot.vpn.ip = "10.69.42.1"
 dot.vpn.subnet.ip = "10.69.42.0"
 dot.vpn.subnet.bits = 24

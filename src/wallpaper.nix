@@ -24,13 +24,29 @@ let
     '';
   };
 
+  # NOTE: to keep it from regenerating the pallete
+  # whenever something changes in dot
+  wallpaperContentDrv = pkgs.stdenv.mkDerivation {
+    name = "wallpaper-content-file";
+    src = config.dot.wallpaper.path;
+
+    dontUnpack = true;
+    dontBuild = true;
+    dontConfigure = true;
+
+    installPhase = ''
+      mkdir -p $out
+      cp $src $out/file
+    '';
+  };
+
   wallpaperImage = pkgs.runCommand "wallpaper-image"
     {
       buildInputs = [ pkgs.file pkgs.ffmpeg pkgs.imagemagick_light ];
     }
     ''
       mkdir $out
-      prev="${config.dot.wallpaper.path}"
+      prev="${wallpaperContentDrv}/file"
       if file --mime-type "$prev" | grep -qE 'video/'; then
         ffmpeg -i "$prev" -vf "select=eq(n\,0)" -vsync vfr -q:v 2 "$out/image.png"
       else

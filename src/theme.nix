@@ -1,11 +1,9 @@
-{ stylix, config, pkgs, lib, unstablePkgs, ... }:
+{ stylix, config, pkgs, unstablePkgs, ... }:
 
 # TODO: https://github.com/danth/stylix/pull/847
 
 let
-  hasMonitor = config.dot.hardware.monitor.enable;
   wallpaperImage = config.dot.wallpaper.image;
-
   inspect-gtk = pkgs.writeShellApplication {
     name = "inspect-gtk";
     runtimeInputs = [ ];
@@ -16,7 +14,7 @@ let
   };
 in
 {
-  branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
+  branch.homeManagerModule.homeManagerModule = {
     home.packages = [
       inspect-gtk
       stylix.packages.${pkgs.system}.palette-generator
