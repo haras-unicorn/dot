@@ -28,6 +28,7 @@
           taplo
 
           # Tools
+          nixos-generators
           rumor.packages.${pkgs.system}.default
           nebula
           openssh
