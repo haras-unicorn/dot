@@ -57,6 +57,12 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = {
+    dot.shell.aliases = {
+      rm = "rm -i";
+      mv = "mv -i";
+      ls = "ls -la";
+    };
+
     home.packages = [
       run
       repeat
