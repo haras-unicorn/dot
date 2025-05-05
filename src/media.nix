@@ -85,6 +85,7 @@ in
       pkgs.inkscape
       pkgs.pencil
       pkgs.mpv
+      pkgs.progress-tracker
     ];
 
     xdg.mime.enable = true;
