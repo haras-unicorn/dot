@@ -52,6 +52,7 @@ ip = "10.69.42.2"
 networking.hostName = "hearth"
 nixpkgs.system = "x86_64-linux"
 services.cockroachdb.locality = "location=biden"
+dot.gc = false
 dot.vpn.ip = "10.69.42.2"
 dot.vpn.subnet.ip = "10.69.42.0"
 dot.vpn.subnet.bits = 24

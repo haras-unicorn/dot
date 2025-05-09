@@ -61,6 +61,11 @@ let
     unstablePkgs = lib.mkOption {
       type = lib.types.raw;
     };
+
+    dot.gc = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+    };
   };
 
   thisConfig = {
@@ -71,8 +76,10 @@ let
     };
 
     nix.extraOptions = "experimental-features = nix-command flakes";
-    nix.gc.automatic = true;
-    nix.gc.options = "--delete-older-than 30d";
+    nix.gc = lib.mkIf config.dot.gc {
+      automatic = true;
+      options = "--delete-older-than 30d";
+    };
     nix.settings.auto-optimise-store = true;
     nix.settings.trusted-users = [
       "@wheel"
