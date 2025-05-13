@@ -59,10 +59,10 @@ in
         fsType = "ext4";
       })
     ];
-    swapDevices = [{
+    swapDevices = (lib.mkIf (!isRpi4) [{
       device = "/var/swap";
       size = config.dot.hardware.memory / 1000 / 1000;
-    }];
+    }]);
     services.fstrim.enable = true;
 
     boot.initrd.systemd.enable = lib.mkIf hasMonitor true;
