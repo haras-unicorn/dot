@@ -96,6 +96,7 @@ in
     config = {
       services.cockroachdb.enable = true;
       services.cockroachdb.join = join;
+      services.cockroachdb.openPorts = true;
       services.cockroachdb.certsDir = certs;
 
       systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
