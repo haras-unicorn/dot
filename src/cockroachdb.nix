@@ -38,8 +38,11 @@ let
       # WebUI settings
       "--http-addr=${cfg.http.address}:${toString cfg.http.port}"
 
-      # Cluster listen address
-      "--listen-addr=${cfg.listen.address}:${toString cfg.listen.port}"
+      # Cluster advertise address
+      # NOTE: nixos config sets listen-addr here but we dont want to set that
+      # because we want to listen on all addresses
+      # what we actually want is to advertise on the vpn address
+      "--advertise-addr=${cfg.listen.address}:${toString cfg.listen.port}"
 
       # Cache and memory settings.
       "--cache=${cfg.cache}"
@@ -98,6 +101,7 @@ in
       services.cockroachdb.join = join;
       services.cockroachdb.openPorts = true;
       services.cockroachdb.certsDir = certs;
+      services.cockroachdb.listen.address = config.dot.host.ip;
 
       systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
       systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
