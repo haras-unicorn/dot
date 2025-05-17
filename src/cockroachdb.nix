@@ -12,11 +12,13 @@ let
   hosts = builtins.map
     (x: x.ip)
     (builtins.filter
-      (x:
-        if lib.hasAttrByPath [ "system" "dot" "postgres" "coordinator" ] x
-        then x.system.dot.postgres.coordinator
-        else false)
-      config.dot.hosts);
+      (x: x.ip != config.dot.host.ip)
+      (builtins.filter
+        (x:
+          if lib.hasAttrByPath [ "system" "dot" "postgres" "coordinator" ] x
+          then x.system.dot.postgres.coordinator
+          else false)
+        config.dot.hosts));
 
   join = builtins.concatStringsSep
     ","
