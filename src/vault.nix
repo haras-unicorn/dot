@@ -3,6 +3,8 @@
 let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
+  user = config.dot.user;
+  certs = "/etc/vault/certs";
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
@@ -14,31 +16,130 @@ in
     services.vault.extraConfig = ''
       ui = true
     '';
-    services.vault.extraSettingsPaths = [ "/etc/vault/settings.hcl" ];
-    environment.etc."vault/settings.hcl".text = ''
-      storage "postgresql" {
-        connection_url = "postgres://vault@localhost:26257/vault?sslmode=disable"
-      }
-    '';
-    services.cockroachdb.initFiles = [ "/etc/cockroachdb/init/vault.sql" ];
-    environment.etc."cockroachdb/init/vault.sql".text = ''
-      CREATE USER IF NOT EXISTS vault; 
-      CREATE DATABASE IF NOT EXISTS vault;
-      \c vault
-      GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO vault;
-      ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO vault;
-      GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO vault;
-      ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO vault;
+    services.vault.extraSettingsPaths = [ config.sops.secrets."vault-settings".path ];
 
-      CREATE TABLE IF NOT EXISTS vault_kv_store (
-        parent_path TEXT NOT NULL,
-        path        TEXT,
-        key         TEXT,
-        value       BYTEA,
-        CONSTRAINT pkey PRIMARY KEY (path, key)
-      );
-      CREATE INDEX IF NOT EXISTS parent_path_idx ON vault_kv_store (parent_path);
-    '';
+    services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vault-init".path ];
+
+    sops.secrets."vault-settings" = {
+      owner = config.systemd.services.vault.serviceConfig.User;
+      group = config.systemd.services.vault.serviceConfig.User;
+      mode = "0400";
+    };
+    sops.secrets."cockroach-vault-init" = {
+      owner = config.systemd.services.vault.serviceConfig.User;
+      group = config.systemd.services.vault.serviceConfig.User;
+      mode = "0400";
+    };
+    sops.secrets."cockroach-vault-ca-public" = {
+      key = "cockroach-ca-public";
+      path = "${certs}/ca.crt";
+      owner = config.systemd.services.vault.serviceConfig.User;
+      group = config.systemd.services.vault.serviceConfig.User;
+      mode = "0644";
+    };
+    sops.secrets."cockroach-vault-public" = {
+      path = "${certs}/client.vault.crt";
+      owner = config.systemd.services.vault.serviceConfig.User;
+      group = config.systemd.services.vault.serviceConfig.User;
+      mode = "0644";
+    };
+    sops.secrets."cockroach-vault-private" = {
+      path = "${certs}/client.vault.key";
+      owner = config.systemd.services.vault.serviceConfig.User;
+      group = config.systemd.services.vault.serviceConfig.User;
+      mode = "0400";
+    };
+
+    rumor.sops = [
+      "cockroach-vault-private"
+      "cockroach-vault-public"
+      "cockroach-vault-pass"
+      "cockroach-vault-init"
+      "vault-settings"
+    ];
+    rumor.specification.generations = [
+      {
+        generator = "cockroach-client";
+        arguments = {
+          ca_private = "cockroach-ca-private";
+          ca_public = "cockroach-ca-public";
+          private = "cockroach-vault-private";
+          public = "cockroach-vault-public";
+          user = "vault";
+        };
+      }
+      {
+        generator = "key";
+        arguments = {
+          name = "cockroach-vault-pass";
+        };
+      }
+      {
+        generator = "moustache";
+        arguments = {
+          name = "cockroach-vault-init";
+          renew = true;
+          variables = {
+            COCKROACH_VAULT_PASS = "cockroach-vault-pass";
+          };
+          template = ''
+            create user if not exists vault password '{{COCKROACH_VAULT_PASS}}';
+            create database if not exists vault;
+
+            \c vault
+            grant all privileges on all tables in schema public to vault;
+            grant all privileges on all sequences in schema public to vault;
+            grant all privileges on all functions in schema public to vault;
+
+            grant all privileges on all tables in schema public to ${user};
+            grant all privileges on all sequences in schema public to ${user};
+            grant all privileges on all functions in schema public to ${user};
+
+            create table if not exists vault_kv_store (
+              parent_path text not null,
+              path        text,
+              key         text,
+              value       bytea,
+              constraint pkey primary key (path, key)
+            );
+            create index if not exists parent_path_idx on vault_kv_store (parent_path);
+
+            create table if not exists vault_ha_locks (
+              ha_key      text not null,
+              ha_identity text not null,
+              ha_value    text,
+              valid_until timestamp with time zone not null,
+              constraint ha_key primary key (ha_key)
+            );
+          '';
+        };
+      }
+      {
+        generator = "moustache";
+        arguments = {
+          name = "vault-settings";
+          renew = true;
+          variables = {
+            COCKROACH_VAULT_PASS = "cockroach-vault-pass";
+          };
+          template =
+            let
+              databaseUrl = "postgresql://vault:{{COCKROACH_VAULT_PASS}}@localhost"
+                + ":${builtins.toString config.services.cockroachdb.listen.port}"
+                + "?sslmode=verify-full"
+                + "&sslrootcert=${certs}/ca.crt"
+                + "&sslcert=${certs}/client.vault.crt"
+                + "&sslkey=${certs}/client.vault.key";
+            in
+            ''
+              storage "postgresql" {
+                connection_url = "${databaseUrl}"
+                ha_enabled = "true"
+              }
+            '';
+        };
+      }
+    ];
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {

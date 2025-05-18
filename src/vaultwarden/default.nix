@@ -3,6 +3,8 @@
 let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
+  user = config.dot.user;
+  certs = "/etc/vault/certs";
 
   package = pkgs.vaultwarden-postgresql.overrideAttrs (final: prev: {
     patches = (prev.patches or [ ]) ++ [
@@ -17,25 +19,113 @@ in
     services.vaultwarden.package = package;
     services.vaultwarden.dbBackend = "postgresql";
     services.vaultwarden.config = {
-      DATABASE_URL = "postgres://vaultwarden@localhost:26257/vaultwarden?sslmode=disable";
       ROCKET_ADDRESS = "::1";
       ROCKET_PORT = 8222;
       ADMIN_TOKEN = "admin";
       SIGNUPS_ALLOWED = true;
-      # SIGNUPS_ALLOWED = false;
-      # INVITATIONS_ALLOWED = false;
       ENABLE_WEBSOCKET = false;
     };
-    services.cockroachdb.initFiles = [ "/etc/cockroachdb/init/vaultwarden.sql" ];
-    environment.etc."cockroachdb/init/vaultwarden.sql".text = ''
-      CREATE USER IF NOT EXISTS vaultwarden; 
-      CREATE DATABASE IF NOT EXISTS vaultwarden;
-      \c vaultwarden
-      GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO vaultwarden;
-      ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO vaultwarden;
-      GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO vaultwarden;
-      ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO vaultwarden;
-    '';
+    services.vaultwarden.environmentFile = config.sops.secrets."vaultwarden-env".path;
+    services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vaultwarden-init".path ];
+
+    sops.secrets."vaultwarden-env" = {
+      owner = config.systemd.services.vaultwarden.serviceConfig.User;
+      group = config.systemd.services.vaultwarden.serviceConfig.User;
+      mode = "0400";
+    };
+    sops.secrets."cockroach-vaultwarden-init" = {
+      owner = config.systemd.services.vaultwarden.serviceConfig.User;
+      group = config.systemd.services.vaultwarden.serviceConfig.User;
+      mode = "0400";
+    };
+    sops.secrets."cockroach-vaultwarden-ca-public" = {
+      key = "cockroach-ca-public";
+      path = "${certs}/ca.crt";
+      owner = config.systemd.services.vaultwarden.serviceConfig.User;
+      group = config.systemd.services.vaultwarden.serviceConfig.User;
+      mode = "0644";
+    };
+    sops.secrets."cockroach-vaultwarden-public" = {
+      path = "${certs}/client.vaultwarden.crt";
+      owner = config.systemd.services.vaultwarden.serviceConfig.User;
+      group = config.systemd.services.vaultwarden.serviceConfig.User;
+      mode = "0644";
+    };
+    sops.secrets."cockroach-vaultwarden-private" = {
+      path = "${certs}/client.vaultwarden.key";
+      owner = config.systemd.services.vaultwarden.serviceConfig.User;
+      group = config.systemd.services.vaultwarden.serviceConfig.User;
+      mode = "0400";
+    };
+
+    rumor.sops = [
+      "cockroach-vaultwarden-private"
+      "cockroach-vaultwarden-public"
+      "cockroach-vaultwarden-pass"
+      "cockroach-vaultwarden-init"
+      "vaultwarden-env"
+    ];
+    rumor.specification.generations = [
+      {
+        generator = "cockroach-client";
+        arguments = {
+          ca_private = "cockroach-ca-private";
+          ca_public = "cockroach-ca-public";
+          private = "cockroach-vaultwarden-private";
+          public = "cockroach-vaultwarden-public";
+          user = "vaultwarden";
+        };
+      }
+      {
+        generator = "key";
+        arguments = {
+          name = "cockroach-vaultwarden-pass";
+        };
+      }
+      {
+        generator = "moustache";
+        arguments = {
+          name = "cockroach-vaultwarden-init";
+          renew = true;
+          variables = {
+            COCKROACH_VAULTWARDEN_PASS = "cockroach-vaultwarden-pass";
+          };
+          template = ''
+            create user if not exists vaultwarden password '{{COCKROACH_VAULTWARDEN_PASS}}';
+            create database if not exists vaultwarden;
+
+            \c vaultwarden
+            grant all privileges on all tables in schema public to vaultwarden;
+            grant all privileges on all sequences in schema public to vaultwarden;
+            grant all privileges on all functions in schema public to vaultwarden;
+
+            grant all privileges on all tables in schema public to ${user};
+            grant all privileges on all sequences in schema public to ${user};
+            grant all privileges on all functions in schema public to ${user};
+          '';
+        };
+      }
+      {
+        generator = "moustache";
+        arguments = {
+          name = "vaultwarden-env";
+          renew = true;
+          variables = {
+            COCKROACH_VAULTWARDEN_PASS = "cockroach-vaultwarden-pass";
+          };
+          template =
+            let
+              databaseUrl = "postgresql://vaultwarden:{{COCKROACH_VAULTWARDEN_PASS}}@localhost"
+                + ":${builtins.toString config.services.cockroachdb.listen.port}"
+                + "?sslmode=verify-full"
+                + "&sslrootcert=${certs}/ca.crt"
+                + "&sslcert=${certs}/client.vaultwarden.crt"
+                + "&sslkey=${certs}/client.vaultwarden.key";
+            in
+            ''DATABASE_URL="${databaseUrl}"'';
+        };
+      }
+    ];
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
