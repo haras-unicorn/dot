@@ -107,7 +107,7 @@ in
       env = XDG_CURRENT_DESKTOP, Hyprland
       env = XDG_SESSION_DESKTOP, Hyprland
 
-      windowrulev2=size ${floatingSizeString} ${floatingSizeString},floating:1
+      windowrulev2=size ${floatingSizeString} ${floatingSizeString},floating:1,class:negative:steam
 
       ${vars}
 
