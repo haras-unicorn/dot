@@ -126,6 +126,7 @@ in
             let
               databaseUrl = "postgresql://vault:{{COCKROACH_VAULT_PASS}}@localhost"
                 + ":${builtins.toString config.services.cockroachdb.listen.port}"
+                + "/vault"
                 + "?sslmode=verify-full"
                 + "&sslrootcert=${certs}/ca.crt"
                 + "&sslcert=${certs}/client.vault.crt"
