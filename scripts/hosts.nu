@@ -69,7 +69,7 @@ def "main ssh" [host?: string] {
 
 def "main pass" [host?: string] {
   let host = (pick host $host)
-  $host.secrets."pass-private"
+  $host.secrets."pass-priv"
 }
 
 def "main deploy" [host?: string] {
@@ -86,7 +86,7 @@ def "main deploy" [host?: string] {
     # TODO: scp age
     ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
       | ssh-add - \\
-      && export SSHPASS='($host.secrets."pass-private")' \\
+      && export SSHPASS='($host.secrets."pass-priv")' \\
       && sshpass -e deploy \\
         --skip-checks \\
         --interactive-sudo true \\

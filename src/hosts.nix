@@ -79,6 +79,10 @@ in
                 type = lib.types.str;
                 default = user;
               };
+              dot.pass = lib.mkOption {
+                type = lib.types.bool;
+                default = true;
+              };
               dot.host.name = lib.mkOption {
                 type = lib.types.str;
                 default = host.name;
@@ -93,7 +97,7 @@ in
               };
             };
 
-            nixosModule = {
+            nixosModule = { config, ... }: {
               system.stateVersion = version;
 
               facter.reportPath = facterPath;
@@ -108,9 +112,15 @@ in
                 isNormalUser = true;
                 extraGroups = [ "wheel" "dialout" ];
                 home = "/home/${user}";
-                initialPassword = user;
+                initialPassword = lib.mkIf
+                  (!config.dot.pass)
+                  user;
                 createHome = true;
+                hashedPasswordFile = lib.mkIf
+                  config.dot.pass
+                  config.sops.secrets."pass-pub".path;
               };
+              sops.secrets."pass-pub".neededForUsers = true;
 
               home-manager.extraSpecialArgs = specialArgs;
               home-manager.sharedModules = [
@@ -125,6 +135,17 @@ in
               ];
               home-manager.users.${user} =
                 self.homeManagerModules.default;
+
+              rumor.sops = [
+                "pass-pub"
+              ];
+              rumor.specification.generations = [{
+                generator = "mkpasswd";
+                arguments = {
+                  public = "pass-pub";
+                  private = "pass-priv";
+                };
+              }];
             };
 
             homeManagerModule = { pkgs, ... }: {
