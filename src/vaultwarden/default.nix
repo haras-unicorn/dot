@@ -5,6 +5,7 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
   user = config.dot.user;
   certs = "/etc/vaultwarden/certs";
+  port = 8222;
 
   package = pkgs.vaultwarden-postgresql.overrideAttrs (final: prev: {
     patches = (prev.patches or [ ]) ++ [
@@ -19,14 +20,16 @@ in
     services.vaultwarden.package = package;
     services.vaultwarden.dbBackend = "postgresql";
     services.vaultwarden.config = {
-      ROCKET_ADDRESS = "::1";
-      ROCKET_PORT = 8222;
+      ROCKET_ADDRESS = "0.0.0.0";
+      ROCKET_PORT = port;
       ADMIN_TOKEN = "admin";
       SIGNUPS_ALLOWED = true;
       ENABLE_WEBSOCKET = false;
     };
     services.vaultwarden.environmentFile = config.sops.secrets."vaultwarden-env".path;
     services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vaultwarden-init".path ];
+
+    networking.firewall.allowedTCPPorts = [ port ];
 
     sops.secrets."vaultwarden-env" = {
       owner = config.systemd.services.vaultwarden.serviceConfig.User;
@@ -137,7 +140,8 @@ in
     xdg.desktopEntries = lib.mkIf hasMonitor {
       vaultwarden = {
         name = "Vaultwarden";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8222";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} "
+          + "--new-window localhost:${builtins.toString port}";
         terminal = false;
       };
     };
