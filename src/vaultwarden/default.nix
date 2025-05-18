@@ -34,8 +34,8 @@ in
       mode = "0400";
     };
     sops.secrets."cockroach-vaultwarden-init" = {
-      owner = config.systemd.services.vaultwarden.serviceConfig.User;
-      group = config.systemd.services.vaultwarden.serviceConfig.User;
+      owner = config.systemd.services.cockroachdb.serviceConfig.User;
+      group = config.systemd.services.cockroachdb.serviceConfig.User;
       mode = "0400";
     };
     sops.secrets."cockroach-vaultwarden-ca-public" = {

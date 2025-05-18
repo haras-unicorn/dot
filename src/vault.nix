@@ -26,8 +26,8 @@ in
       mode = "0400";
     };
     sops.secrets."cockroach-vault-init" = {
-      owner = config.systemd.services.vault.serviceConfig.User;
-      group = config.systemd.services.vault.serviceConfig.User;
+      owner = config.systemd.services.cockroachdb.serviceConfig.User;
+      group = config.systemd.services.cockroachdb.serviceConfig.User;
       mode = "0400";
     };
     sops.secrets."cockroach-vault-ca-public" = {
