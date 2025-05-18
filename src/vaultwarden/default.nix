@@ -4,7 +4,7 @@ let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
   user = config.dot.user;
-  certs = "/etc/vault/certs";
+  certs = "/etc/vaultwarden/certs";
 
   package = pkgs.vaultwarden-postgresql.overrideAttrs (final: prev: {
     patches = (prev.patches or [ ]) ++ [
