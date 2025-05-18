@@ -129,6 +129,7 @@ in
                       {
                         generator = "sops";
                         arguments = {
+                          renew = true;
                           age = "age-public";
                           private = "sops-private";
                           public = "sops-public";
