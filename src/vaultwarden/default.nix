@@ -117,6 +117,7 @@ in
             let
               databaseUrl = "postgresql://vaultwarden:{{COCKROACH_VAULTWARDEN_PASS}}@localhost"
                 + ":${builtins.toString config.services.cockroachdb.listen.port}"
+                + "/vaultwarden"
                 + "?sslmode=verify-full"
                 + "&sslrootcert=${certs}/ca.crt"
                 + "&sslcert=${certs}/client.vaultwarden.crt"
