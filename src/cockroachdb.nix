@@ -7,6 +7,12 @@ let
   cfg = config.services.cockroachdb;
   crdb = cfg.package;
   certs = "/var/lib/cockroachdb/.certs";
+  databaseUrl = "postgresql://root@localhost"
+    + ":${builtins.toString cfg.listen.port}"
+    + "?sslmode=verify-full"
+    + "&sslrootcert=${certs}/ca.crt"
+    + "&sslcert=${certs}/client.root.crt"
+    + "&sslkey=${certs}/client.root.key";
   user = config.dot.user;
   clientCerts = "${config.users.users.${user}.home}/.cockroach-certs";
   httpPort = 8080;
@@ -100,6 +106,13 @@ in
 
     config = lib.mkMerge [
       (lib.mkIf hasNetwork {
+        sops.secrets."cockroach-${user}-ca-public" = {
+          key = "cockroach-ca-public";
+          path = "${clientCerts}/ca.crt";
+          owner = user;
+          group = "users";
+          mode = "0644";
+        };
         sops.secrets."cockroach-${user}-public" = {
           path = "${clientCerts}/client.${user}.crt";
           owner = user;
@@ -181,15 +194,13 @@ in
                 app = pkgs.writeShellApplication {
                   inherit name;
                   text = ''
-                    cockroach init --host="localhost:${builtins.toString cfg.listen.port}" \
+                    cockroach init --certs-dir "${certs}" \
                       || echo "Cluster already initialized."
+                    export DATABASE_URL="${databaseUrl}"
                     ${lib.concatMapStrings
                       (file: ''
                         echo "Running: ${file}"
-                        ${pkgs.postgresql}/bin/psql \
-                          --host ${cfg.listen.address} \
-                          --port ${builtins.toString cfg.listen.port} \
-                          --file "${file}"
+                        ${pkgs.postgresql}/bin/psql --file "${file}"
                       '')
                       initScriptFiles}
                   '';
