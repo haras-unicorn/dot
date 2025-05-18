@@ -16,6 +16,7 @@ let
   user = config.dot.user;
   clientCerts = "${config.users.users.${user}.home}/.cockroach-certs";
   httpPort = 8080;
+  port = 26257;
   hosts = builtins.map
     (x: x.ip)
     (builtins.filter
@@ -30,7 +31,9 @@ let
 
   join = builtins.concatStringsSep
     ","
-    hosts;
+    (builtins.map
+      (x: "${x}:${port}")
+      hosts);
 
   # NOTE: https://github.com/NixOS/nixpkgs/pull/172923
   # NOTE: https://github.com/NixOS/nixpkgs/blob/nixos-24.11/nixos/modules/services/databases/cockroachdb.nix
