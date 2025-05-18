@@ -6,9 +6,10 @@ let
 
   cfg = config.services.cockroachdb;
   crdb = cfg.package;
-  dot = config.dot.postgres;
   certs = "/var/lib/cockroachdb/.certs";
-
+  user = config.dot.user;
+  clientCerts = "${config.users.users.${user}.home}/.cockroach-certs";
+  httpPort = 8080;
   hosts = builtins.map
     (x: x.ip)
     (builtins.filter
@@ -19,6 +20,7 @@ let
           then x.system.dot.postgres.coordinator
           else false)
         config.dot.hosts));
+  consoleAddress = "${builtins.head hosts}:${httpPort}";
 
   join = builtins.concatStringsSep
     ","
@@ -68,7 +70,7 @@ in
       xdg.desktopEntries = lib.mkIf hasMonitor {
         cockroachdb = {
           name = "CockroachDB";
-          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window localhost:8080";
+          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window ${consoleAddress}";
           terminal = false;
         };
       };
@@ -96,120 +98,168 @@ in
       };
     };
 
-    config = {
-      services.cockroachdb.enable = true;
-      services.cockroachdb.join = join;
-      services.cockroachdb.openPorts = true;
-      services.cockroachdb.certsDir = certs;
-      services.cockroachdb.listen.address = config.dot.host.ip;
-
-      systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
-      systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
-
-      systemd.services.cockroachdb-init = lib.mkIf (cfg.init != [ ] || cfg.initFiles != [ ]) {
-        description = "CockroachDB Initialization";
-        after = [ "cockroachdb.service" ];
-        requires = [ "cockroachdb.service" ];
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = "yes";
-          ExecStart =
-            let
-              initScriptFiles =
-                (lib.imap1
-                  (i: sql:
-                    pkgs.writeText
-                      "cockroach-init-${builtins.toString i}.sql"
-                      sql)
-                  cfg.init)
-                ++ cfg.initFiles;
-
-              name = "cockroachdb-init-script";
-              app = pkgs.writeShellApplication {
-                inherit name;
-                text = ''
-                  ${if dot.coordinator
-                  then ''
-                    if ! cockroach node status --insecure --host="${cfg.listen.address}:${builtins.toString cfg.listen.port}" 2>&1 | grep -q 'cluster not initialized'; then
-                      echo "Cluster already initialized."
-                    else
-                      echo "Cluster not initialized, initializing..."
-                      if cockroach init --insecure --host="${cfg.listen.address}:${builtins.toString cfg.listen.port}"; then
-                        echo "Cluster initialized successfully."
-                      else
-                        echo "Failed to initialize cluster." >&2
-                        exit 1
-                      fi
-                    fi
-                  ''
-                  else""}
-                  ${lib.concatMapStrings
-                    (file: ''
-                      echo "Running: ${file}"
-                      ${pkgs.postgresql}/bin/psql \
-                        --host ${cfg.listen.address} \
-                        --port ${builtins.toString cfg.listen.port} \
-                        --file "${file}"
-                    '')
-                    initScriptFiles}
-                '';
-              };
-            in
-            "${app}/bin/${name}";
+    config = lib.mkMerge [
+      (lib.mkIf hasNetwork {
+        sops.secrets."cockroach-${user}-public" = {
+          path = "${clientCerts}/client.${user}.crt";
+          owner = user;
+          group = "users";
+          mode = "0644";
         };
-      };
-
-      sops.secrets."cockroach-ca-public" = {
-        path = "${certs}/ca.crt";
-        owner = config.systemd.services.cockroachdb.serviceConfig.User;
-        group = config.systemd.services.cockroachdb.serviceConfig.User;
-        mode = "0644";
-      };
-      sops.secrets."cockroach-public" = {
-        path = "${certs}/node.crt";
-        owner = config.systemd.services.cockroachdb.serviceConfig.User;
-        group = config.systemd.services.cockroachdb.serviceConfig.User;
-        mode = "0644";
-      };
-      sops.secrets."cockroach-private" = {
-        path = "${certs}/node.key";
-        owner = config.systemd.services.cockroachdb.serviceConfig.User;
-        group = config.systemd.services.cockroachdb.serviceConfig.User;
-        mode = "0400";
-      };
-
-      rumor.sops = [
-        "cockroach-ca-public"
-        "cockroach-private"
-        "cockroach-public"
-      ];
-      rumor.specification.imports = [
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "cockroach-ca-private";
-          };
-        }
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "cockroach-ca-public";
-          };
-        }
-      ];
-      rumor.specification.generations = [{
-        generator = "cockroach";
-        arguments = {
-          ca_private = "cockroach-ca-private";
-          ca_public = "cockroach-ca-public";
-          hosts = [ "localhost" "127.0.0.1" config.dot.host.ip ];
-          private = "cockroach-private";
-          public = "cockroach-public";
+        sops.secrets."cockroach-${user}-private" = {
+          path = "${clientCerts}/client.${user}.key";
+          owner = user;
+          group = "users";
+          mode = "0400";
         };
-      }];
-    };
+
+        rumor.sops = [
+          "cockroach-${user}-private"
+          "cockroach-${user}-public"
+        ];
+        rumor.specification.imports = [
+          {
+            importer = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cockroach-ca-private";
+            };
+          }
+          {
+            importer = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cockroach-ca-public";
+            };
+          }
+        ];
+        rumor.specification.generations = [
+          {
+            generator = "cockroach-client";
+            arguments = {
+              ca_private = "cockroach-ca-private";
+              ca_public = "cockroach-ca-public";
+              private = "cockroach-${user}-private";
+              public = "cockroach-${user}-public";
+              user = user;
+            };
+          }
+        ];
+      })
+      (lib.mkIf (hasNetwork && config.dot.postgres.coordinator) {
+        services.cockroachdb.enable = true;
+        services.cockroachdb.join = join;
+        services.cockroachdb.openPorts = true;
+        services.cockroachdb.certsDir = certs;
+        services.cockroachdb.http.address = config.dot.host.ip;
+        services.cockroachdb.http.port = httpPort;
+        services.cockroachdb.listen.address = config.dot.host.ip;
+
+        systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
+        systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
+
+        systemd.services.cockroachdb-init = lib.mkIf (cfg.init != [ ] || cfg.initFiles != [ ]) {
+          description = "CockroachDB Initialization";
+          after = [ "cockroachdb.service" ];
+          requires = [ "cockroachdb.service" ];
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = "yes";
+            ExecStart =
+              let
+                initScriptFiles =
+                  (lib.imap1
+                    (i: sql:
+                      pkgs.writeText
+                        "cockroach-init-${builtins.toString i}.sql"
+                        sql)
+                    cfg.init)
+                  ++ cfg.initFiles;
+
+                name = "cockroachdb-init-script";
+                app = pkgs.writeShellApplication {
+                  inherit name;
+                  text = ''
+                    cockroach init --host="localhost:${builtins.toString cfg.listen.port}" \
+                      || echo "Cluster already initialized."
+                    ${lib.concatMapStrings
+                      (file: ''
+                        echo "Running: ${file}"
+                        ${pkgs.postgresql}/bin/psql \
+                          --host ${cfg.listen.address} \
+                          --port ${builtins.toString cfg.listen.port} \
+                          --file "${file}"
+                      '')
+                      initScriptFiles}
+                  '';
+                };
+              in
+              "${app}/bin/${name}";
+          };
+        };
+
+        sops.secrets."cockroach-ca-public" = {
+          path = "${certs}/ca.crt";
+          owner = config.systemd.services.cockroachdb.serviceConfig.User;
+          group = config.systemd.services.cockroachdb.serviceConfig.User;
+          mode = "0644";
+        };
+        sops.secrets."cockroach-public" = {
+          path = "${certs}/node.crt";
+          owner = config.systemd.services.cockroachdb.serviceConfig.User;
+          group = config.systemd.services.cockroachdb.serviceConfig.User;
+          mode = "0644";
+        };
+        sops.secrets."cockroach-private" = {
+          path = "${certs}/node.key";
+          owner = config.systemd.services.cockroachdb.serviceConfig.User;
+          group = config.systemd.services.cockroachdb.serviceConfig.User;
+          mode = "0400";
+        };
+        sops.secrets."cockroach-root-public" = {
+          path = "${certs}/client.root.crt";
+          owner = config.systemd.services.cockroachdb.serviceConfig.User;
+          group = config.systemd.services.cockroachdb.serviceConfig.User;
+          mode = "0644";
+        };
+        sops.secrets."cockroach-root-private" = {
+          path = "${certs}/client.root.key";
+          owner = config.systemd.services.cockroachdb.serviceConfig.User;
+          group = config.systemd.services.cockroachdb.serviceConfig.User;
+          mode = "0400";
+        };
+
+        rumor.sops = [
+          "cockroach-ca-public"
+          "cockroach-private"
+          "cockroach-public"
+          "cockroach-root-private"
+          "cockroach-root-public"
+        ];
+        rumor.specification.generations = [
+          {
+            generator = "cockroach";
+            arguments = {
+              ca_private = "cockroach-ca-private";
+              ca_public = "cockroach-ca-public";
+              hosts = [ "localhost" "127.0.0.1" config.dot.host.ip ];
+              private = "cockroach-private";
+              public = "cockroach-public";
+            };
+          }
+          {
+            generator = "cockroach-client";
+            arguments = {
+              ca_private = "cockroach-ca-private";
+              ca_public = "cockroach-ca-public";
+              private = "cockroach-root-private";
+              public = "cockroach-root-public";
+              user = "root";
+            };
+          }
+        ];
+      })
+    ];
   };
 }
