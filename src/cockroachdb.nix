@@ -179,6 +179,7 @@ in
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = "yes";
+            User = config.systemd.services.cockroachdb.serviceConfig.User;
             ExecStart =
               let
                 initScriptFiles =
@@ -194,13 +195,12 @@ in
                 app = pkgs.writeShellApplication {
                   inherit name;
                   text = ''
-                    cockroach init --certs-dir "${certs}" \
+                    ${crdb}/bin/cockroach init --certs-dir "${certs}" \
                       || echo "Cluster already initialized."
-                    export DATABASE_URL="${databaseUrl}"
                     ${lib.concatMapStrings
                       (file: ''
                         echo "Running: ${file}"
-                        ${pkgs.postgresql}/bin/psql --file "${file}"
+                        ${pkgs.postgresql}/bin/psql "${databaseUrl}" --file "${file}"
                       '')
                       initScriptFiles}
                   '';
@@ -209,6 +209,7 @@ in
               "${app}/bin/${name}";
           };
         };
+        services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-init".path ];
 
         sops.secrets."cockroach-ca-public" = {
           path = "${certs}/ca.crt";
@@ -240,15 +241,58 @@ in
           group = config.systemd.services.cockroachdb.serviceConfig.User;
           mode = "0400";
         };
+        sops.secrets."cockroach-init" = {
+          owner = config.systemd.services.cockroachdb.serviceConfig.User;
+          group = config.systemd.services.cockroachdb.serviceConfig.User;
+          mode = "0400";
+        };
 
         rumor.sops = [
           "cockroach-ca-public"
           "cockroach-private"
           "cockroach-public"
+          "cockroach-init"
           "cockroach-root-private"
           "cockroach-root-public"
+          "cockroach-root-pass"
+          "cockroach-${user}-private"
+          "cockroach-${user}-public"
+          "cockroach-${user}-pass"
         ];
         rumor.specification.generations = [
+          {
+            generator = "key";
+            arguments = {
+              name = "cockroach-root-pass";
+            };
+          }
+          {
+            generator = "key";
+            arguments = {
+              name = "cockroach-${user}-pass";
+            };
+          }
+          {
+            generator = "moustache";
+            arguments = {
+              name = "cockroach-init";
+              renew = true;
+              variables = {
+                COCKROACH_ROOT_PASS = "cockroach-root-pass";
+                COCKROACH_USER_PASS = "cockroach-${user}-pass";
+              };
+              template = ''
+                alter user root with password '{{COCKROACH_ROOT_PASS}}';
+                create user if not exists ${user} password '{{COCKROACH_USER_PASS}}';
+                create database if not exists ${user};
+
+                \c ${user}
+                grant all privileges on all tables in schema public to ${user};
+                grant all privileges on all sequences in schema public to ${user};
+                grant all privileges on all functions in schema public to ${user};
+              '';
+            };
+          }
           {
             generator = "cockroach";
             arguments = {
