@@ -59,12 +59,14 @@ dot.vpn.subnet.bits = 24
 dot.vpn.subnet.mask = "255.255.255.0"
 dot.hardware.temp = "/sys/class/hwmon/hwmon3/temp1_input"
 dot.hardware.monitor.main = "eDP-1"
+dot.pass = false
 
 [hosts.home]
 dot.prompt.nsfw = false
 dot.hardware.temp = "/sys/class/hwmon/hwmon3/temp1_input"
 dot.hardware.monitor.main = "eDP-1"
 dot.wallpaper.static = true
+dot.pass = false
 
 [[hosts]]
 name = "hearth"
@@ -81,11 +83,13 @@ dot.vpn.subnet.bits = 24
 dot.vpn.subnet.mask = "255.255.255.0"
 dot.hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input"
 dot.hardware.monitor.main = "DP-1"
+dot.pass = false
 
 [hosts.home]
 services.easyeffects.preset = "krk"
 dot.hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input"
 dot.hardware.monitor.main = "DP-1"
+dot.pass = false
 
 [[hosts]]
 name = "officer"
@@ -101,8 +105,10 @@ dot.vpn.subnet.bits = 24
 dot.vpn.subnet.mask = "255.255.255.0"
 dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
 dot.hardware.monitor.main = "DVI-D-0"
+dot.pass = false
 
 [hosts.home]
 dot.prompt.nsfw = false
 dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
 dot.hardware.monitor.main = "DVI-D-0"
+dot.pass = false
