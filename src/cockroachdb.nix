@@ -20,19 +20,17 @@ let
   hosts = builtins.map
     (x: x.ip)
     (builtins.filter
-      (x: x.ip != config.dot.host.ip)
-      (builtins.filter
-        (x:
-          if lib.hasAttrByPath [ "system" "dot" "postgres" "coordinator" ] x
-          then x.system.dot.postgres.coordinator
-          else false)
-        config.dot.hosts));
+      (x:
+        if lib.hasAttrByPath [ "system" "dot" "postgres" "coordinator" ] x
+        then x.system.dot.postgres.coordinator
+        else false)
+      config.dot.hosts);
   consoleAddress = "${builtins.head hosts}:${httpPort}";
 
   join = builtins.concatStringsSep
     ","
     (builtins.map
-      (x: "${x}:${port}")
+      (x: "${x}:${builtins.toString port}")
       hosts);
 
   # NOTE: https://github.com/NixOS/nixpkgs/pull/172923
@@ -139,6 +137,7 @@ in
             arguments = {
               path = "kv/dot/shared";
               file = "cockroach-ca-private";
+              allow_fail = true;
             };
           }
           {
@@ -146,10 +145,18 @@ in
             arguments = {
               path = "kv/dot/shared";
               file = "cockroach-ca-public";
+              allow_fail = true;
             };
           }
         ];
         rumor.specification.generations = [
+          {
+            generator = "cockroach-ca";
+            arguments = {
+              private = "cockroach-ca-private";
+              public = "cockroach-ca-public";
+            };
+          }
           {
             generator = "cockroach-client";
             arguments = {
@@ -158,6 +165,22 @@ in
               private = "cockroach-${user}-private";
               public = "cockroach-${user}-public";
               user = user;
+            };
+          }
+        ];
+        rumor.specification.exports = [
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cockroach-ca-private";
+            };
+          }
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cockroach-ca-public";
             };
           }
         ];
@@ -262,6 +285,24 @@ in
           "cockroach-${user}-public"
           "cockroach-${user}-pass"
         ];
+        rumor.specification.imports = [
+          {
+            importer = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cockroach-root-pass";
+              allow_fail = true;
+            };
+          }
+          {
+            importer = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cockroach-${user}-pass";
+              allow_fail = true;
+            };
+          }
+        ];
         rumor.specification.generations = [
           {
             generator = "key";
@@ -314,6 +355,22 @@ in
               private = "cockroach-root-private";
               public = "cockroach-root-public";
               user = "root";
+            };
+          }
+        ];
+        rumor.specification.exports = [
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cockroach-root-pass";
+            };
+          }
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cockroach-${user}-pass";
             };
           }
         ];

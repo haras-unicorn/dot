@@ -4,6 +4,7 @@ let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
   user = config.dot.user;
+  vaultwardenUser = "vaultwarden-${config.dot.host.name}";
   certs = "/etc/vaultwarden/certs";
   port = 8222;
 
@@ -94,13 +95,13 @@ in
             COCKROACH_VAULTWARDEN_PASS = "cockroach-vaultwarden-pass";
           };
           template = ''
-            create user if not exists vaultwarden password '{{COCKROACH_VAULTWARDEN_PASS}}';
+            create user if not exists ${vaultwardenUser} password '{{COCKROACH_VAULTWARDEN_PASS}}';
             create database if not exists vaultwarden;
 
             \c vaultwarden
-            grant all privileges on all tables in schema public to vaultwarden;
-            grant all privileges on all sequences in schema public to vaultwarden;
-            grant all privileges on all functions in schema public to vaultwarden;
+            grant all privileges on all tables in schema public to ${vaultwardenUser};
+            grant all privileges on all sequences in schema public to ${vaultwardenUser};
+            grant all privileges on all functions in schema public to ${vaultwardenUser};
 
             grant all privileges on all tables in schema public to ${user};
             grant all privileges on all sequences in schema public to ${user};
@@ -118,7 +119,7 @@ in
           };
           template =
             let
-              databaseUrl = "postgresql://vaultwarden:{{COCKROACH_VAULTWARDEN_PASS}}@localhost"
+              databaseUrl = "postgresql://${vaultwardenUser}:{{COCKROACH_VAULTWARDEN_PASS}}@localhost"
                 + ":${builtins.toString config.services.cockroachdb.listen.port}"
                 + "/vaultwarden"
                 + "?sslmode=verify-full"
