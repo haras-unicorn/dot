@@ -4,6 +4,7 @@ let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
   user = config.dot.user;
+  vaultUser = "vault-${config.dot.host.name}";
   certs = "/etc/vault/certs";
   port = 8200;
 in
@@ -88,13 +89,13 @@ in
             COCKROACH_VAULT_PASS = "cockroach-vault-pass";
           };
           template = ''
-            create user if not exists vault password '{{COCKROACH_VAULT_PASS}}';
+            create user if not exists ${vaultUser} password '{{COCKROACH_VAULT_PASS}}';
             create database if not exists vault;
 
             \c vault
-            grant all privileges on all tables in schema public to vault;
-            grant all privileges on all sequences in schema public to vault;
-            grant all privileges on all functions in schema public to vault;
+            grant all privileges on all tables in schema public to ${vaultUser};
+            grant all privileges on all sequences in schema public to ${vaultUser};
+            grant all privileges on all functions in schema public to ${vaultUser};
 
             grant all privileges on all tables in schema public to ${user};
             grant all privileges on all sequences in schema public to ${user};
@@ -129,7 +130,7 @@ in
           };
           template =
             let
-              databaseUrl = "postgresql://vault:{{COCKROACH_VAULT_PASS}}@localhost"
+              databaseUrl = "postgresql://${vaultUser}:{{COCKROACH_VAULT_PASS}}@localhost"
                 + ":${builtins.toString config.services.cockroachdb.listen.port}"
                 + "/vault"
                 + "?sslmode=verify-full"

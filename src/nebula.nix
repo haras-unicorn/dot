@@ -109,6 +109,7 @@ in
           arguments = {
             path = "kv/dot/shared";
             file = "nebula-ca-private";
+            allow_fail = true;
           };
         }
         {
@@ -116,6 +117,7 @@ in
           arguments = {
             path = "kv/dot/shared";
             file = "nebula-ca-public";
+            allow_fail = true;
           };
         }
         {
@@ -139,17 +141,43 @@ in
           };
         }
       ];
-      rumor.specification.generations = [{
-        generator = "nebula";
-        arguments = {
-          ca_private = "nebula-ca-private";
-          ca_public = "nebula-ca-public";
-          name = config.networking.hostName;
-          ip = "${config.dot.vpn.ip}/${builtins.toString config.dot.vpn.subnet.bits}";
-          private = "nebula-private";
-          public = "nebula-public";
-        };
-      }];
+      rumor.specification.generations = [
+        {
+          generator = "nebula-ca";
+          arguments = {
+            name = "dot";
+            private = "nebula-ca-private";
+            public = "nebula-ca-public";
+          };
+        }
+        {
+          generator = "nebula";
+          arguments = {
+            ca_private = "nebula-ca-private";
+            ca_public = "nebula-ca-public";
+            name = config.networking.hostName;
+            ip = "${config.dot.vpn.ip}/${builtins.toString config.dot.vpn.subnet.bits}";
+            private = "nebula-private";
+            public = "nebula-public";
+          };
+        }
+      ];
+      rumor.specification.exports = [
+        {
+          exporter = "vault-file";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "nebula-ca-private";
+          };
+        }
+        {
+          exporter = "vault-file";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "nebula-ca-public";
+          };
+        }
+      ];
     };
   };
 }
