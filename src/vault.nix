@@ -67,11 +67,12 @@ in
       {
         generator = "cockroach-client";
         arguments = {
+          renew = true;
           ca_private = "cockroach-ca-private";
           ca_public = "cockroach-ca-public";
           private = "cockroach-vault-private";
           public = "cockroach-vault-public";
-          user = "vault";
+          user = vaultUser;
         };
       }
       {
