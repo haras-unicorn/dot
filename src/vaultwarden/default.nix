@@ -4,7 +4,7 @@ let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
   user = config.dot.user;
-  vaultwardenUser = "vaultwarden-${config.dot.host.name}";
+  vaultwardenUser = "vaultwarden_${config.dot.host.name}";
   certs = "/etc/vaultwarden/certs";
   port = 8222;
 
