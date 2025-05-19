@@ -235,7 +235,7 @@ in
               "${app}/bin/${name}";
           };
         };
-        services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-init".path ];
+        services.cockroachdb.initFiles = lib.mkBefore [ config.sops.secrets."cockroach-init".path ];
 
         sops.secrets."cockroach-ca-public" = {
           path = "${certs}/ca.crt";
