@@ -4,7 +4,7 @@ let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
   user = config.dot.user;
-  vaultUser = "vault-${config.dot.host.name}";
+  vaultUser = "vault_${config.dot.host.name}";
   certs = "/etc/vault/certs";
   port = 8200;
 in
