@@ -7,22 +7,24 @@ let
   vaultUser = "vault_${config.dot.host.name}";
   certs = "/etc/vault/certs";
   port = 8200;
+  haPort = 23886;
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
     services.vault.enable = true;
     services.vault.package = pkgs.vault-bin;
-    services.vault.address = "${config.dot.host.ip}:${builtins.toString port}";
+    services.vault.address = "127.0.0.1:${builtins.toString port}";
     systemd.services.vault.after = [ "cockroachdb-init.service" ];
     systemd.services.vault.wants = [ "cockroachdb-init.service" ];
     services.vault.storageBackend = "postgresql";
     services.vault.extraConfig = ''
       ui = true
-      api_addr = "http://${config.dot.host.ip}:${builtins.toString port}"
+      api_addr = "http://${config.dot.host.ip}:${builtins.toString haPort}"
     '';
     services.vault.extraSettingsPaths = [ config.sops.secrets."vault-settings".path ];
 
-    networking.firewall.allowedTCPPorts = [ port ];
+    networking.firewall.allowedTCPPorts = [ haPort ];
+    dot.nginx.locations = { "/vault" = { inherit port; }; };
 
     services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vault-init".path ];
 

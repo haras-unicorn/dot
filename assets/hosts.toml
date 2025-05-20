@@ -11,8 +11,9 @@ ip = "10.69.42.1"
 networking.hostName = "puffy"
 nixpkgs.system = "aarch64-linux"
 services.cockroachdb.locality = "location=biden"
-dot.postgres.coordinator = true
 dot.ddns.coordinator = true
+dot.nginx.coordinator = true
+dot.postgres.coordinator = true
 dot.vpn.coordinator = true
 dot.vpn.ip = "10.69.42.1"
 dot.vpn.subnet.ip = "10.69.42.0"
@@ -33,7 +34,10 @@ ip = "10.69.42.5"
 networking.hostName = "brock"
 nixpkgs.system = "aarch64-linux"
 services.cockroachdb.locality = "location=biden"
+dot.ddns.coordinator = true
+dot.nginx.coordinator = true
 dot.postgres.coordinator = true
+dot.vpn.coordinator = true
 dot.vpn.ip = "10.69.42.5"
 dot.vpn.subnet.ip = "10.69.42.0"
 dot.vpn.subnet.bits = 24
