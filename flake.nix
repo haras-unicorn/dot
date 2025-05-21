@@ -6,7 +6,7 @@
     perch.url = "github:altibiz/perch/refs/tags/2.2.1";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
-    rumor.url = "github:altibiz/rumor/refs/tags/1.3.1";
+    rumor.url = "github:altibiz/rumor/refs/tags/2.0.1";
     rumor.inputs.nixpkgs.follows = "nixpkgs";
     rumor.inputs.perch.follows = "perch";
 
