@@ -7,7 +7,7 @@ let
   vaultUser = "vault_${config.dot.host.name}";
   certs = "/etc/vault/certs";
   port = 8200;
-  haPort = 23886;
+  clusterPort = 8201;
   hosts = builtins.map
     (x: x.ip)
     (builtins.filter
@@ -50,11 +50,12 @@ in
       services.vault.storageBackend = "postgresql";
       services.vault.extraConfig = ''
         ui = true
-        api_addr = "http://${config.dot.host.ip}:${builtins.toString haPort}"
+        api_addr = "http://${config.dot.host.ip}:${builtins.toString port}"
+        cluster_addr = "http://${config.dot.host.ip}:${builtins.toString clusterPort}"
       '';
       services.vault.extraSettingsPaths = [ config.sops.secrets."vault-settings".path ];
 
-      networking.firewall.allowedTCPPorts = [ haPort port ];
+      networking.firewall.allowedTCPPorts = [ clusterPort port ];
       dot.nginx.locations = { "/vault" = { inherit port; }; };
 
       services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vault-init".path ];
