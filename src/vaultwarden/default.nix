@@ -52,7 +52,7 @@ in
       services.vaultwarden.package = package;
       services.vaultwarden.dbBackend = "postgresql";
       services.vaultwarden.config = {
-        ROCKET_ADDRESS = "127.0.0.1";
+        ROCKET_ADDRESS = "0.0.0.0";
         ROCKET_PORT = port;
         ADMIN_TOKEN = "admin";
         SIGNUPS_ALLOWED = true;
@@ -61,6 +61,7 @@ in
       services.vaultwarden.environmentFile = config.sops.secrets."vaultwarden-env".path;
       services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vaultwarden-init".path ];
 
+      networking.firewall.allowedTCPPorts = [ port ];
       dot.nginx.locations = { "/vaultwarden" = { inherit port; }; };
 
       sops.secrets."vaultwarden-env" = {

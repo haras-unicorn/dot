@@ -44,7 +44,7 @@ in
     config = lib.mkIf (hasNetwork && config.dot.vault.coordinator) {
       services.vault.enable = true;
       services.vault.package = pkgs.vault-bin;
-      services.vault.address = "127.0.0.1:${builtins.toString port}";
+      services.vault.address = "0.0.0.0:${builtins.toString port}";
       systemd.services.vault.after = [ "cockroachdb-init.service" ];
       systemd.services.vault.wants = [ "cockroachdb-init.service" ];
       services.vault.storageBackend = "postgresql";
@@ -54,7 +54,7 @@ in
       '';
       services.vault.extraSettingsPaths = [ config.sops.secrets."vault-settings".path ];
 
-      networking.firewall.allowedTCPPorts = [ haPort ];
+      networking.firewall.allowedTCPPorts = [ haPort port ];
       dot.nginx.locations = { "/vault" = { inherit port; }; };
 
       services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vault-init".path ];
