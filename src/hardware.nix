@@ -12,7 +12,15 @@ let
   networkInterface =
     if network then
       let
-        network = builtins.head config.facter.report.hardware.network_controller;
+        network = builtins.head
+          (lib.sortOn
+            (interface:
+              if lib.hasPrefix "e" interface.unix_device_name
+              then 0
+              else 1)
+            (builtins.filter
+              (interface: interface.unix_device_name != "lo")
+              config.facter.report.hardware.network_interface));
       in
       network.unix_device_name
     else null;
