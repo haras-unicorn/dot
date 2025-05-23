@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   hasNetwork = config.dot.hardware.network.enable;
@@ -17,6 +17,27 @@ let
           else false)
         config.dot.hosts));
   peerLanIps = builtins.map (peer: peer.lanIp) peers;
+
+  # NOTE: needed for nebula to work
+  keepalivedNotifyMaster = pkgs.writeShellApplication {
+    name = "keepalived-notify-master";
+    runtimeInputs = with pkgs; [ gawk gnugrep iproute2 ];
+    text = ''
+      gateway="$(ip route show dev ${networkInterface} | grep default | awk '{print $3}')"
+      ip rule add from ${cfg.vip} table 100 priority 100
+      ip route add default via "''${gateway}" dev ${networkInterface} src ${cfg.vip} table 100
+      ip rule add from all sport 4242 lookup 100
+    '';
+  };
+
+  keepalivedNotifyBackup = pkgs.writeShellApplication {
+    name = "keepalived-notify-backup";
+    runtimeInputs = with pkgs; [ iproute2 ];
+    text = ''
+      ip rule del from all sport 4242 lookup 100 || true
+      ip rule del from ${cfg.vip} table 100 priority 100 || true
+    '';
+  };
 in
 {
   branch.nixosModule.nixosModule = {
@@ -70,6 +91,9 @@ in
             auth_type PASS
             auth_pass ''${KEEPALIVED_PASS}
           }
+
+          notify_master "${keepalivedNotifyMaster}/bin/keepalived-notify-master"
+          notify_backup "${keepalivedNotifyBackup}/bin/keepalived-notify-backup"
         '';
       };
 
