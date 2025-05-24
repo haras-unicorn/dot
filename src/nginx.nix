@@ -30,7 +30,17 @@ in
     config = lib.mkMerge [
       (lib.mkIf hasNetwork {
         security.pki.certificates = [
-          config.sops.secrets."nginx-ca-public".path
+          ''
+            -----BEGIN CERTIFICATE-----
+            MIIBHzCB0qADAgECAhQVQABvKMUXldTGm4xnajtfLAX2oTAFBgMrZXAwDjEMMAoG
+            A1UEAwwDZG90MB4XDTI1MDUyMTEyNDIxNloXDTM1MDUxOTEyNDIxNlowDjEMMAoG
+            A1UEAwwDZG90MCowBQYDK2VwAyEAXD8w5g9p3YNyY3Qeho8S43yUylgQuCOrfSOE
+            Y8YS5jCjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgIEMB0GA1Ud
+            DgQWBBQyV148u4plySlIi8Ybfu16h8byYjAFBgMrZXADQQDdO9nhw4HbZe+DQVcy
+            4TzLiuDLl6qIs/FkfRX//lT9Yl8X6aSO63w2bQNI38MvgbckiPHOrfoZIfi474H5
+            BMIP
+            -----END CERTIFICATE-----
+          ''
         ];
 
         sops.secrets."nginx-ca-public" = {
