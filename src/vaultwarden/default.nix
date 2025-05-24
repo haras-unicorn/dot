@@ -22,6 +22,7 @@ let
         else false)
       config.dot.hosts);
   firstHost = builtins.head hosts;
+  consoleAddress = "${firstHost}:${builtins.toString port}";
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
@@ -33,7 +34,7 @@ in
       vaultwarden = {
         name = "Vaultwarden";
         exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} "
-          + "--new-window ${firstHost}:${builtins.toString port}";
+          + "--new-window ${consoleAddress}";
         terminal = false;
       };
     };
