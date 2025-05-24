@@ -34,6 +34,7 @@
           openssh
           sshpass
           vault
+          vault-medusa
           postgresql
           mariadb
           s3cmd
