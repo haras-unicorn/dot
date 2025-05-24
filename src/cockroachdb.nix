@@ -128,6 +128,7 @@ in
         };
 
         rumor.sops = [
+          "cockroach-ca-public"
           "cockroach-${user}-private"
           "cockroach-${user}-public"
         ];
@@ -274,7 +275,6 @@ in
         };
 
         rumor.sops = [
-          "cockroach-ca-public"
           "cockroach-private"
           "cockroach-public"
           "cockroach-init"
