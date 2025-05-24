@@ -47,6 +47,7 @@ in
       services.vault.address = "0.0.0.0:${builtins.toString port}";
       systemd.services.vault.after = [ "cockroachdb-init.service" ];
       systemd.services.vault.wants = [ "cockroachdb-init.service" ];
+      # NOTE: nixpkgs requires something here but i put cockroachdb at the bottom
       services.vault.storageBackend = "postgresql";
       services.vault.extraConfig = ''
         ui = true
@@ -174,7 +175,7 @@ in
                   + "&sslkey=${certs}/client.vault.key";
               in
               ''
-                storage "postgresql" {
+                storage "cockroachdb" {
                   connection_url = "${databaseUrl}"
                   ha_enabled = "true"
                 }
