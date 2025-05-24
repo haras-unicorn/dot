@@ -25,7 +25,7 @@ let
         then x.system.dot.postgres.coordinator
         else false)
       config.dot.hosts);
-  consoleAddress = "${builtins.head hosts}:${httpPort}";
+  consoleAddress = "${builtins.head hosts}:${builtins.toString httpPort}";
 
   join = builtins.concatStringsSep
     ","

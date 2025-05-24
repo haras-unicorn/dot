@@ -17,6 +17,7 @@ let
         else false)
       config.dot.hosts);
   firstHost = builtins.head hosts;
+  consoleAddress = "${firstHost}:${builtins.toString port}";
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
@@ -27,7 +28,8 @@ in
     xdg.desktopEntries = lib.mkIf hasMonitor {
       vault = {
         name = "Vault";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window ${firstHost}:${port}";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin}"
+          + " --new-window ${consoleAddress}";
         terminal = false;
       };
     };
