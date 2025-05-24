@@ -123,6 +123,7 @@ in
               sops.secrets."pass-pub".neededForUsers = true;
 
               home-manager.extraSpecialArgs = specialArgs;
+              home-manager.backupFileExtension = "backup";
               home-manager.sharedModules = [
                 nur.modules.homeManager.default
                 nix-index-database.hmModules.nix-index
