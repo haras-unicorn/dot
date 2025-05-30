@@ -63,7 +63,6 @@ in
       services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vaultwarden-init".path ];
 
       networking.firewall.allowedTCPPorts = [ port ];
-      dot.nginx.locations = { "/vaultwarden" = { inherit port; }; };
 
       sops.secrets."vaultwarden-env" = {
         owner = config.systemd.services.vaultwarden.serviceConfig.User;

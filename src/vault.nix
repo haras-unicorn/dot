@@ -59,7 +59,6 @@ in
       services.vault.extraSettingsPaths = [ config.sops.secrets."vault-settings".path ];
 
       networking.firewall.allowedTCPPorts = [ clusterPort port ];
-      dot.nginx.locations = { "/" = { inherit port; }; };
 
       services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vault-init".path ];
 
