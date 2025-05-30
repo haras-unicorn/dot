@@ -1,5 +1,7 @@
 { pkgs, lib, config, ... }:
 
+# TODO: HA SSL
+
 let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
