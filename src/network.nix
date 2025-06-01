@@ -14,7 +14,14 @@ in
     networking.firewall.enable = true;
     networking.networkmanager.enable = true;
     systemd.network.wait-online.enable = false;
-    networking.nameservers = [ "1.1.1.1" "1.0.0.1" ];
+    networking.nameservers = [
+      # Cloudflare
+      "1.1.1.1"
+      "1.0.0.1"
+      # Google
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
 
     # NOTE: https://github.com/NixOS/nixpkgs/issues/231038
     environment.etc."ppp/options".text = ''
