@@ -4,7 +4,8 @@ let
   hasNetwork = config.dot.hardware.network.enable;
   hasMonitor = config.dot.hardware.monitor.enable;
   httpsPort = 443;
-  consulEndpoint = "127.0.0.1:8500";
+  # NOTE: not on "localhost" because resolved has "127.0.0.53:53"
+  consulEndpoint = "${config.dot.host.ip}:8500";
   hosts = builtins.map
     (x: x.ip)
     (builtins.filter
@@ -97,6 +98,7 @@ in
 
           consulCatalog = {
             prefix = "dot";
+            defaultRule = "Host(`{{ normalize .Name }}.service.consul`)";
             endpoint = {
               address = consulEndpoint;
               scheme = "https";
