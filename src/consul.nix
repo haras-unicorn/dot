@@ -138,6 +138,7 @@ in
         mode = "0400";
       };
       sops.secrets."consul-ca-public" = {
+        key = "openssl-ca-public";
         path = "${certs}/ca.crt";
         owner = config.systemd.services.consul.serviceConfig.User;
         group = config.systemd.services.consul.serviceConfig.User;
@@ -157,29 +158,12 @@ in
       };
 
       rumor.sops = [
-        "consul-ca-public"
         "consul-private"
         "consul-public"
         "consul-config"
       ];
 
       rumor.specification.imports = [
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "consul-ca-private";
-            allow_fail = true;
-          };
-        }
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "consul-ca-public";
-            allow_fail = true;
-          };
-        }
         {
           importer = "vault-file";
           arguments = {
@@ -198,36 +182,6 @@ in
         }
       ];
       rumor.specification.generations = [
-        {
-          generator = "text";
-          arguments = {
-            name = "consul-ca-config";
-            text = ''
-              [req]
-              distinguished_name = req_distinguished_name
-              x509_extensions = v3_ca
-              prompt = no
-
-              [req_distinguished_name]
-              CN = Consul CA
-              O = Dot
-
-              [v3_ca]
-              basicConstraints = critical,CA:TRUE
-              keyUsage = critical,keyCertSign,cRLSign
-              subjectKeyIdentifier = hash
-              authorityKeyIdentifier = keyid:always,issuer:always
-            '';
-          };
-        }
-        {
-          generator = "openssl-ca";
-          arguments = {
-            config = "consul-ca-config";
-            private = "consul-ca-private";
-            public = "consul-ca-public";
-          };
-        }
         {
           generator = "text";
           arguments = {
@@ -260,9 +214,9 @@ in
         {
           generator = "openssl";
           arguments = {
-            ca_private = "consul-ca-private";
-            ca_public = "consul-ca-public";
-            serial = "consul-serial";
+            ca_private = "openssl-ca-private";
+            ca_public = "openssl-ca-public";
+            serial = "openssl-ca-serial";
             config = "consul-cert-config";
             private = "consul-private";
             public = "consul-public";
@@ -304,20 +258,6 @@ in
         }
       ];
       rumor.specification.exports = [
-        {
-          exporter = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "consul-ca-private";
-          };
-        }
-        {
-          exporter = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "consul-ca-public";
-          };
-        }
         {
           exporter = "vault-file";
           arguments = {
