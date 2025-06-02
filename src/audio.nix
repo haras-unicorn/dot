@@ -44,10 +44,6 @@ in
 
     home.packages = [
       pkgs.pwvucontrol
-      pkgs.easyeffects
     ];
-
-    services.easyeffects.enable = true;
-    services.easyeffects.preset = "speakers";
   };
 }

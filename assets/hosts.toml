@@ -61,6 +61,7 @@ dot.hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input"
 dot.hardware.monitor.main = "DP-1"
 
 [hosts.home]
+services.easyeffects.preset = "krk"
 dot.hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input"
 dot.hardware.monitor.main = "DP-1"
 
