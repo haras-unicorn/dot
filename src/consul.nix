@@ -88,11 +88,12 @@ in
           encrypt_verify_incoming = true;
           encrypt_verify_outgoing = true;
 
-          acl = {
-            enabled = true;
-            default_policy = "deny";
-            enable_token_persistence = true;
-          };
+          acl.enabled = false;
+          # acl = {
+          #   enabled = true;
+          #   default_policy = "deny";
+          #   enable_token_persistence = true;
+          # };
 
           tls = {
             defaults = {
