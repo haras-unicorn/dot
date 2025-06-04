@@ -64,6 +64,20 @@ in
 
       networking.firewall.allowedTCPPorts = [ port ];
 
+      dot.consul.services = [{
+        name = "vaultwarden";
+        port = port;
+        address = config.dot.host.ip;
+        tags = [
+          "dot.enable=true"
+        ];
+        check = {
+          http = "http://${config.dot.host.ip}:${builtins.toString port}/alive";
+          interval = "30s";
+          timeout = "10s";
+        };
+      }];
+
       sops.secrets."vaultwarden-env" = {
         owner = config.systemd.services.vaultwarden.serviceConfig.User;
         group = config.systemd.services.vaultwarden.serviceConfig.User;
