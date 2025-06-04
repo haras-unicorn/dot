@@ -47,6 +47,10 @@ in
         type = lib.types.bool;
         default = false;
       };
+      consul.services = lib.mkOption {
+        type = lib.types.listOf (lib.types.attrsOf lib.types.anything);
+        default = [ ];
+      };
     };
 
     config = lib.mkMerge [
@@ -118,6 +122,8 @@ in
             serf_wan = serfWanPort;
             server = rpcPort;
           };
+
+          services = config.dot.consul.services;
         };
 
         services.consul.extraConfigFiles = [
