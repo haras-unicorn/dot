@@ -238,6 +238,20 @@ in
         };
         services.cockroachdb.initFiles = lib.mkBefore [ config.sops.secrets."cockroach-init".path ];
 
+        dot.consul.services = [{
+          name = "cockroachdb";
+          port = httpPort;
+          address = config.dot.host.ip;
+          tags = [
+            "dot.enable=true"
+          ];
+          check = {
+            http = "http://${config.dot.host.ip}:${builtins.toString httpPort}/health";
+            interval = "30s";
+            timeout = "10s";
+          };
+        }];
+
         sops.secrets."cockroach-ca-public" = {
           path = "${certs}/ca.crt";
           owner = config.systemd.services.cockroachdb.serviceConfig.User;
