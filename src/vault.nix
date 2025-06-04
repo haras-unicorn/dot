@@ -64,6 +64,20 @@ in
 
       services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vault-init".path ];
 
+      dot.consul.services = [{
+        name = "vault";
+        port = port;
+        address = config.dot.host.ip;
+        tags = [
+          "dot.enable=true"
+        ];
+        check = {
+          http = "http://${config.dot.host.ip}:${builtins.toString port}/v1/sys/health";
+          interval = "30s";
+          timeout = "10s";
+        };
+      }];
+
       sops.secrets."vault-settings" = {
         owner = config.systemd.services.vault.serviceConfig.User;
         group = config.systemd.services.vault.serviceConfig.User;
