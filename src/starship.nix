@@ -1,35 +1,14 @@
-{ pkgs, config, lib, ... }:
+{ config, ... }:
 
 let
   colors = config.lib.stylix.colors.withHashtag;
-  nsfw = config.dot.prompt.nsfw;
 in
 {
   branch.homeManagerModule.homeManagerModule = {
-    options.dot = {
-      prompt.nsfw = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-      };
-    };
-
     config = {
-      home.packages = [
-        pkgs.mommy
-      ];
-
-      programs.nushell.extraConfig = lib.mkIf nsfw (lib.mkAfter ''
-        let last_command_prompt = $env.PROMPT_COMMAND_RIGHT
-        $env.PROMPT_COMMAND_RIGHT = { || ${pkgs.mommy}/bin/mommy -1 -s $env.LAST_EXIT_CODE }
-        def --env "enable mommy" [] {
-          $env.PROMPT_COMMAND_RIGHT = { || ${pkgs.mommy}/bin/mommy -1 -s $env.LAST_EXIT_CODE }
-        }
-        def --env "disable mommy" [] {
-          $env.PROMPT_COMMAND_RIGHT = $last_command_prompt
-        }
-      '');
-
       programs.starship.enable = true;
+      # NOTE: fails when trying to apply bright-yellow to color scheme
+      stylix.targets.starship.enable = false;
 
       programs.starship.settings = builtins.fromTOML ''
         # TODO: fix how slow python is
@@ -254,7 +233,7 @@ in
         style = "underline bold fg:${colors.blue}"
 
         [status]
-        symbol = " "
+        symbol = "  "
         style = "fg:${colors.red}"
         format = """ \
         [[{](bold fg:${colors.cyan})\

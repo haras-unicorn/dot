@@ -99,7 +99,9 @@ in
 
     home.packages = [
       pkgs.egl-wayland
-      pkgs.xwaylandvideobridge
+      pkgs.kdePackages.xwaylandvideobridge
+      # NOTE: this one is deprecated
+      # pkgs.libsForQt5.xwaylandvideobridge
 
       pkgs.libsForQt5.qt5ct
       pkgs.qt6.qtwayland

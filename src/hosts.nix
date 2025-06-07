@@ -129,7 +129,7 @@ in
                 nix-index-database.hmModules.nix-index
                 nixos-facter-modules.hmModules.facter
                 sops-nix.homeManagerModules.sops
-                stylix.homeManagerModules.stylix
+                stylix.homeModules.stylix
                 userHostsModule
                 homeManagerModule
                 host.home

@@ -40,7 +40,7 @@ in
         pkgs.keepassxc
       ];
 
-      services.gpg-agent.pinentryPackage =
+      services.gpg-agent.pinentry.package =
         lib.mkMerge [
           (lib.mkIf hasMonitor pkgs.pinentry-qt)
           (lib.mkIf (!hasMonitor) pkgs.pinentry-curses)
