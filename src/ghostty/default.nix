@@ -19,6 +19,11 @@ in
     programs.ghostty.installVimSyntax = true;
     programs.ghostty.settings = {
       config-file = "?dev";
+      font-family = "${config.stylix.fonts.monospace.name}";
+      font-family-bold = "${config.stylix.fonts.monospace.name} Bold";
+      font-family-italic = "${config.stylix.fonts.monospace.name} Italic";
+      font-family-bold-italic = "${config.stylix.fonts.monospace.name} Bold Italic";
+      # custom-shader = "${./bloom.glsl}";
       cursor-style = "block";
       cursor-style-blink = false;
       command = "${shell.package}/bin/${shell.bin}";
