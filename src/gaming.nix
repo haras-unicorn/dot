@@ -42,14 +42,9 @@ in
     programs.mangohud.enable = true;
 
     systemd.user.services.steam = {
-      Unit = {
-        Description = "Steam daemon";
-        Requires = "tray.target";
-        After = [ "graphical-session-pre.target" "tray.target" ];
-        PartOf = [ "graphical-session.target" ];
-      };
+      Unit.Description = "Steam daemon";
       Service.ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent";
-      Install.WantedBy = [ "graphical-session.target" ];
+      Install.WantedBy = [ "tray.target" ];
     };
   };
 }

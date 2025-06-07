@@ -40,7 +40,7 @@ in
         pkgs.keepassxc
       ];
 
-      services.gpg-agent.pinentryPackage =
+      services.gpg-agent.pinentry.package =
         lib.mkMerge [
           (lib.mkIf hasMonitor pkgs.pinentry-qt)
           (lib.mkIf (!hasMonitor) pkgs.pinentry-curses)
@@ -73,14 +73,9 @@ in
       };
 
       systemd.user.services.keepassxc = lib.mkIf (hasMonitor && hasKeyboard) {
-        Unit = {
-          Description = "KeePassXC daemon";
-          Requires = "tray.target";
-          After = [ "graphical-session-pre.target" "tray.target" ];
-          PartOf = [ "graphical-session.target" ];
-        };
+        Unit.Description = "KeePassXC daemon";
         Service.ExecStart = "${pkgs.keepassxc}/bin/keepassxc";
-        Install.WantedBy = [ "graphical-session.target" ];
+        Install.WantedBy = [ "tray.target" ];
       };
     };
   };

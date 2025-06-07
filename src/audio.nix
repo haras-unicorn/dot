@@ -13,7 +13,7 @@ in
     imports = [ musnix.nixosModules.musnix ];
 
     config = lib.mkIf hasSound {
-      hardware.pulseaudio.package = pkgs.pulseaudioFull;
+      services.pulseaudio.package = pkgs.pulseaudioFull;
 
       services.pipewire.enable = true;
       services.pipewire.wireplumber.enable = true;

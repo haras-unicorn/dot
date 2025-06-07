@@ -62,14 +62,9 @@ in
     ];
 
     systemd.user.services.ferdium = {
-      Unit = {
-        Description = "Ferdium daemon";
-        Requires = "tray.target";
-        After = [ "graphical-session-pre.target" "tray.target" ];
-        PartOf = [ "graphical-session.target" ];
-      };
+      Unit.Description = "Ferdium daemon";
       Service.ExecStart = "${ferdium}/bin/ferdium";
-      Install.WantedBy = [ "graphical-session.target" ];
+      Install.WantedBy = [ "tray.target" ];
     };
     xdg.configFile."Ferdium/config/settings.json".text = builtins.toJSON
       ((builtins.fromJSON (builtins.readFile ./ferdium.json)) // {

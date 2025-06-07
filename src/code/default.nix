@@ -29,7 +29,7 @@ in
     programs.vscode.package = package;
     programs.vscode.mutableExtensionsDir = false;
 
-    programs.vscode = {
+    programs.vscode.profiles.default = {
       enableUpdateCheck = false;
       keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
       userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {
@@ -76,11 +76,11 @@ in
         pkgs.vscode-marketplace.rust-lang.rust-analyzer
 
         # csharp
-        pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-runtime
-        pkgs.vscode-marketplace.selcukermaya.se-csproj-extensions
-        # pkgs.open-vsx.muhammad-sammy.csharp
+        pkgs.vscode-extensions.ms-dotnettools.vscode-dotnet-runtime
         pkgs.vscode-extensions.ms-dotnettools.csdevkit
         pkgs.vscode-extensions.ms-dotnettools.csharp
+        pkgs.vscode-extensions.ms-dotnettools.vscodeintellicode-csharp
+        pkgs.vscode-marketplace.selcukermaya.se-csproj-extensions
 
         # python
         pkgs.vscode-marketplace.charliermarsh.ruff

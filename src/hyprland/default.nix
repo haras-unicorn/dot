@@ -85,6 +85,7 @@ in
 
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
+    programs.waybar.systemd.target = "hyprland-session.target";
 
     home.packages = [
       switch-layout
@@ -107,7 +108,7 @@ in
       env = XDG_CURRENT_DESKTOP, Hyprland
       env = XDG_SESSION_DESKTOP, Hyprland
 
-      windowrulev2=size ${floatingSizeString} ${floatingSizeString},floating:1,class:negative:steam
+      windowrulev2=size ${floatingSizeString} ${floatingSizeString},floating:1,,class:negative:^.*steam.*$
 
       ${vars}
 

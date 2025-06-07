@@ -34,6 +34,7 @@ in
     stylix.fonts.serif.package = pkgs.roboto-serif;
     stylix.cursor.package = pkgs.pokemon-cursor;
     stylix.cursor.name = "Pokemon";
+    stylix.cursor.size = 24;
     stylix.iconTheme.enable = true;
     stylix.iconTheme.package = pkgs.beauty-line-icon-theme;
     stylix.iconTheme.dark = "BeautyLine";
@@ -44,4 +45,3 @@ in
     stylix.opacity.popups = 1.0;
   };
 }
-
