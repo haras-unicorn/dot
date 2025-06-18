@@ -11,7 +11,7 @@ let
       sdk_8_0_3xx
     ]);
 
-  root = "${sdk}/bin";
+  root = "${sdk}/share/dotnet";
 in
 {
   branch.homeManagerModule.homeManagerModule = {
