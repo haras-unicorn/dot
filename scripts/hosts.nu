@@ -59,12 +59,13 @@ exit"
   echo $commands | guestfish --rw -a image.img
 }
 
-def "main ssh" [host?: string] {
+def "main ssh" [host?: string, ip?: string] {
   let host = (pick host $host)
+  let ip = if ($ip == null) { $host.ip } else { $ip }
 
   ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
     | ssh-add - \\
-    && ssh -t ($host.ip) nu"
+    && ssh -t ($ip) nu"
 }
 
 def "main pass" [host?: string] {
