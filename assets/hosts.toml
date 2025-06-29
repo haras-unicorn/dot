@@ -24,6 +24,7 @@ dot.ddns.coordinator = true
 dot.consul.coordinator = true
 dot.traefik.coordinator = true
 dot.postgres.coordinator = true
+dot.fs.coordinator = true
 dot.vault.coordinator = true
 dot.vaultwarden.coordinator = true
 dot.hardware.rpi."4".enable = true
@@ -54,6 +55,38 @@ dot.ddns.coordinator = true
 dot.consul.coordinator = true
 dot.traefik.coordinator = true
 dot.postgres.coordinator = true
+dot.fs.coordinator = true
+dot.vault.coordinator = true
+dot.vaultwarden.coordinator = true
+dot.hardware.rpi."4".enable = true
+dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
+
+[hosts.home]
+dot.hardware.rpi."4".enable = true
+dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
+
+[[hosts]]
+name = "bean"
+ip = "10.69.42.6"
+
+[hosts.system]
+networking.hostName = "bean"
+nixpkgs.system = "aarch64-linux"
+services.cockroachdb.locality = "location=biden"
+services.seaweedfs.volumes.dot.dataCenter = "biden"
+services.seaweedfs.volumes.dot.rack = "dot"
+services.seaweedfs.filers.dot.dataCenter = "biden"
+services.seaweedfs.filers.dot.rack = "dot"
+dot.vpn.coordinator = true
+dot.vpn.ip = "10.69.42.6"
+dot.vpn.subnet.ip = "10.69.42.0"
+dot.vpn.subnet.bits = 24
+dot.vpn.subnet.mask = "255.255.255.0"
+dot.ddns.coordinator = true
+dot.consul.coordinator = true
+dot.traefik.coordinator = true
+dot.postgres.coordinator = true
+dot.fs.coordinator = true
 dot.vault.coordinator = true
 dot.vaultwarden.coordinator = true
 dot.hardware.rpi."4".enable = true
