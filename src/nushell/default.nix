@@ -87,5 +87,6 @@ in
     programs.zoxide.enableNushellIntegration = true;
     programs.yazi.enableNushellIntegration = true;
     programs.starship.enableNushellIntegration = true;
+    programs.carapace.enableNushellIntegration = true;
   };
 }
