@@ -21,6 +21,7 @@ in
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     home.packages = [
       dbeaver
+      pkgs.lazysql
     ];
   };
 }
