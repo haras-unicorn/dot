@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, unstablePkgs, ... }:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -7,6 +7,7 @@ in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard) {
     programs.zed-editor.enable = true;
+    programs.zed-editor.package = unstablePkgs.zed-editor;
     programs.zed-editor.extensions = [
       "toml"
       "marksman"
