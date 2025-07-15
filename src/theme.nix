@@ -1,4 +1,4 @@
-{ self, stylix, config, pkgs, unstablePkgs, ... }:
+{ self, stylix, config, pkgs, ... }:
 
 # TODO: https://github.com/danth/stylix/pull/847
 
@@ -27,7 +27,7 @@ in
     stylix.base16Scheme = builtins.fromJSON
       (builtins.readFile "${self}/assets/wallpaper.json");
     stylix.fonts.monospace.name = "JetBrainsMono Nerd Font";
-    stylix.fonts.monospace.package = unstablePkgs.nerd-fonts.jetbrains-mono;
+    stylix.fonts.monospace.package = pkgs.nerd-fonts.jetbrains-mono;
     stylix.fonts.sansSerif.name = "Roboto";
     stylix.fonts.sansSerif.package = pkgs.roboto;
     stylix.fonts.serif.name = "Roboto Serif";

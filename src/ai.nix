@@ -1,4 +1,4 @@
-{ self, nix-comfyui, pkgs, unstablePkgs, config, lib, ... }:
+{ self, nix-comfyui, pkgs, config, lib, ... }:
 
 # TODO: listen command with openai-whisper-cpp
 
@@ -29,9 +29,9 @@ let
 
   comfyuiPackage = nix-comfyui.packages.${pkgs.system}.${packageName};
 
-  ollamaPackage = unstablePkgs.ollama;
+  ollamaPackage = pkgs.ollama;
 
-  openWebuiPackage = unstablePkgs.open-webui;
+  openWebuiPackage = pkgs.open-webui;
 
   comfyui = pkgs.writeShellApplication {
     name = "comfyui";
