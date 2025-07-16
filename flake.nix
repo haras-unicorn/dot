@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-ai.url = "github:nixos/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d";
 
     perch.url = "github:altibiz/perch/refs/tags/2.2.1";
     perch.inputs.nixpkgs.follows = "nixpkgs";

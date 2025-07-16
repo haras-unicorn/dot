@@ -1,4 +1,4 @@
-{ pkgs, config, lib, nixpkgs-unstable, ... }:
+{ pkgs, config, lib, nixpkgs-unstable, nixpkgs-ai, ... }:
 
 let
   host = config.dot.host;
@@ -62,6 +62,10 @@ let
       type = lib.types.raw;
     };
 
+    aiPkgs = lib.mkOption {
+      type = lib.types.raw;
+    };
+
     dot.gc = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -70,6 +74,12 @@ let
 
   thisConfig = {
     _module.args.unstablePkgs = import nixpkgs-unstable {
+      system = pkgs.system;
+      config = config.nixpkgs.config;
+      overlays = config.nixpkgs.overlays;
+    };
+
+    _module.args.aiPkgs = import nixpkgs-ai {
       system = pkgs.system;
       config = config.nixpkgs.config;
       overlays = config.nixpkgs.overlays;
