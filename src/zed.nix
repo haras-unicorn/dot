@@ -1,4 +1,4 @@
-{ config, lib, unstablePkgs, ... }:
+{ config, pkgs, lib, unstablePkgs, ... }:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -18,7 +18,9 @@ in
       "csharp"
       "pylsp"
       "ruff"
+      "nix"
     ];
+    programs.zed-editor.extraPackages = [ pkgs.nixd ];
     programs.zed-editor.userSettings = {
       autosave = "on_window_change";
       helix_mode = true;
