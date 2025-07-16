@@ -21,7 +21,7 @@ in
     ];
     programs.zed-editor.userSettings = {
       autosave = "on_window_change";
-      vim_mode = true;
+      helix_mode = true;
       load_direnv = "direct";
       inline_completions = {
         disabled_globs = [
