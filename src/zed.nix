@@ -23,7 +23,7 @@ in
       autosave = "on_window_change";
       helix_mode = true;
       load_direnv = "direct";
-      inline_completions = {
+      edit_predictions = {
         disabled_globs = [
           ".env"
         ];
@@ -42,7 +42,7 @@ in
       tab_size = 2;
       telemetry = {
         diagnostics = true;
-        metrics = false;
+        metrics = true;
       };
       terminal = {
         shell = {
