@@ -17,7 +17,7 @@ in
             "rust-src"
           ];
           targets = [
-            "wasm32-wasip1"
+            "wasm32-wasip2"
           ];
         };
       })
