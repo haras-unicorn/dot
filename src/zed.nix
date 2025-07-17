@@ -25,6 +25,7 @@ in
     programs.zed-editor.extraPackages = [
       pkgs.nixd
       pkgs.nil
+      pkgs.nixfmt-rfc-style
       pkgs.package-version-server
     ];
     programs.zed-editor.userSettings = {
@@ -86,6 +87,16 @@ in
       };
       vertical_scroll_margin = 100;
       wrap_guides = [ 80 ];
+
+      lsp = {
+        nil = {
+          initialization_options = {
+            formatting = {
+              command = [ "nixfmt" ];
+            };
+          };
+        };
+      };
     };
   };
 }
