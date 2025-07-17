@@ -18,7 +18,6 @@ in
       "scss"
       "just"
       "nu"
-      "csharp"
       "pylsp"
       "ruff"
       "nix"
