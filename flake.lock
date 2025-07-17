@@ -806,6 +806,7 @@
         "nur": "nur",
         "perch": "perch",
         "rumor": "rumor",
+        "rust-overlay": "rust-overlay_2",
         "sops-nix": "sops-nix",
         "stylix": "stylix"
       }
@@ -851,6 +852,26 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "rev": "6dc3e45fe4aee36efeed24d64fc68b1f989d5465",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1752720268,
+        "narHash": "sha256-XCiJdtXIN09Iv0i1gs5ajJ9CVHk537Gy1iG/4nIdpVI=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "dc221f842e9ddc8c0416beae8d77f2ea356b91ae",
         "type": "github"
       },
       "original": {

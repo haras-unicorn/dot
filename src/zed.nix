@@ -1,4 +1,4 @@
-{ config, pkgs, lib, unstablePkgs, ... }:
+{ config, pkgs, lib, unstablePkgs, rust-overlay, ... }:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -6,6 +6,23 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard) {
+    nixpkgs.overlays = [
+      (import rust-overlay)
+      (final: prev: {
+        rust-zed = prev.rust-bin.stable.latest.default.override {
+          extensions = [
+            "clippy"
+            "rustfmt"
+            "rust-analyzer"
+            "rust-src"
+          ];
+          targets = [
+            "wasm32-wasip1"
+          ];
+        };
+      })
+    ];
+
     programs.zed-editor.enable = true;
     programs.zed-editor.package = unstablePkgs.zed-editor;
     programs.zed-editor.extensions = [
@@ -22,11 +39,13 @@ in
       "ruff"
       "nix"
     ];
-    programs.zed-editor.extraPackages = [
-      pkgs.nixd
-      pkgs.nil
-      pkgs.nixfmt-rfc-style
-      pkgs.package-version-server
+    programs.zed-editor.extraPackages = with pkgs; [
+      nixd
+      nil
+      nixfmt-rfc-style
+      package-version-server
+      llvmPackages.clangNoLibcxx
+      rust-zed
     ];
     programs.zed-editor.userSettings = {
       agent = {
