@@ -11,6 +11,7 @@ in
     programs.zed-editor.extensions = [
       "git-firefly"
       "env"
+      "log"
       "toml"
       "marksman"
       "html"
