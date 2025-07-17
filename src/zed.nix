@@ -22,7 +22,10 @@ in
       "ruff"
       "nix"
     ];
-    programs.zed-editor.extraPackages = [ pkgs.nixd ];
+    programs.zed-editor.extraPackages = [
+      pkgs.nixd
+      pkgs.package-version-server
+    ];
     programs.zed-editor.userSettings = {
       autosave = "on_window_change";
       helix_mode = true;
