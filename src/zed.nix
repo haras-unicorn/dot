@@ -24,6 +24,7 @@ in
     ];
     programs.zed-editor.extraPackages = [
       pkgs.nixd
+      pkgs.nil
       pkgs.package-version-server
     ];
     programs.zed-editor.userSettings = {
