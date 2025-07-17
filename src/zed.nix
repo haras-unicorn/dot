@@ -46,6 +46,7 @@ in
       package-version-server
       llvmPackages.clangNoLibcxx
       rust-zed
+      rustup
     ];
     programs.zed-editor.userSettings = {
       agent = {
