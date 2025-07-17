@@ -9,6 +9,7 @@ in
     programs.zed-editor.enable = true;
     programs.zed-editor.package = unstablePkgs.zed-editor;
     programs.zed-editor.extensions = [
+      "git-firefly"
       "env"
       "toml"
       "marksman"
