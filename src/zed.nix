@@ -28,41 +28,64 @@ in
       pkgs.package-version-server
     ];
     programs.zed-editor.userSettings = {
+      agent = {
+        button = false;
+        version = "2";
+      };
       autosave = "on_window_change";
+      collaboration_panel.button = false;
+      features.edit_prediction_provider = "supermaven";
+      git_panel.button = false;
+      gutter = {
+        folds = false;
+        line_numbers = false;
+      };
       helix_mode = true;
-      load_direnv = "direct";
-      edit_predictions = {
-        disabled_globs = [
-          ".env"
-        ];
-      };
-      tab_bar = {
-        show = false;
-      };
-      toolbar = {
-        breadcrumbs = true;
-        quick_actions = true;
-      };
+      horizontal_scroll_margin = 100;
       inlay_hints = {
         enabled = true;
       };
-      wrap_guides = [ 80 120 ];
+      load_direnv = "direct";
+      minimap.show = "auto";
+      notification_panel = {
+        button = false;
+      };
+      outline_panel = {
+        button = false;
+      };
+      project_panel = {
+        button = false;
+        dock = "right";
+        hide_gitignore = true;
+      };
+      search.button = false;
+      tab_bar.show = false;
       tab_size = 2;
       telemetry = {
         diagnostics = true;
         metrics = true;
       };
       terminal = {
-        shell.program = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
+        button = false;
         detect_venv = "off";
-        button = false;
+        dock = "right";
+        shell.program = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
+        toolbar.breadcrumbs = false;
       };
-      project_panel = {
-        button = false;
+      title_bar = {
+        show_branch_icon = false;
+        show_branch_name = false;
+        show_onboarding_banner = false;
+        show_project_items = false;
+        show_sign_in = false;
+        show_user_picture = false;
       };
-      outline_panel = {
-        button = false;
+      toolbar = {
+        breadcrumbs = false;
+        quick_actions = false;
       };
+      vertical_scroll_margin = 100;
+      wrap_guides = [ 80 ];
     };
   };
 }
