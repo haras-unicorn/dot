@@ -9,6 +9,7 @@ in
     programs.zed-editor.enable = true;
     programs.zed-editor.package = unstablePkgs.zed-editor;
     programs.zed-editor.extensions = [
+      "env"
       "toml"
       "marksman"
       "html"
@@ -47,9 +48,7 @@ in
         metrics = true;
       };
       terminal = {
-        shell = {
-          program = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
-        };
+        shell.program = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
         detect_venv = "off";
         button = false;
       };
