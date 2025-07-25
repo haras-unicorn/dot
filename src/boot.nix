@@ -25,6 +25,7 @@ in
     boot.loader.grub.useOSProber = true;
     boot.loader.generic-extlinux-compatible.enable = isRpi4;
 
+    boot.binfmt.preferStaticEmulators = true;
     boot.binfmt.emulatedSystems = (lib.mkIf
       (pkgs.system == "x86_64-linux")
       [ "aarch64-linux" ]);
