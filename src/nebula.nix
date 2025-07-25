@@ -40,8 +40,9 @@ in
         key = config.sops.secrets."nebula-private".path;
       };
       systemd.services."nebula@nebula" = {
-        after = lib.mkForce [ "basic.target" "network-online.target" ];
-        wants = lib.mkForce [ "basic.target" "network-online.target" ];
+        after = lib.mkForce [ "basic.target" "network-online.target" "time-synced.target" ];
+        requires = lib.mkForce [ "network-online.target" "time-synced.target" ];
+        wants = lib.mkForce [ "basic.target" ];
         serviceConfig = {
           ExecStart = lib.mkForce "${pkgs.nebula}/bin/nebula -config /etc/nebula/config.d";
         };

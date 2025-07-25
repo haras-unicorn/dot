@@ -195,6 +195,9 @@ in
         services.cockroachdb.http.port = httpPort;
         services.cockroachdb.listen.address = config.dot.host.ip;
 
+        systemd.services.cockroachdb.after = lib.mkForce [ "basic.target" "nebula@nebula.service" "time-synced.target" ];
+        systemd.services.cockroachdb.requires = lib.mkForce [ "nebula@nebula.service" "time-synced.target" ];
+        systemd.services.cockroachdb.wants = lib.mkForce [ "basic.target" ];
         systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
         systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
 
