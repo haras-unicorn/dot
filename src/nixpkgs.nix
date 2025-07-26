@@ -57,6 +57,19 @@ let
     '';
   };
 
+  rebuild-chroot = pkgs.writeShellApplication {
+    name = "rebuild-chroot";
+    runtimeInputs = [ ];
+    text = ''
+      ${ensure}
+      sudo nixos-rebuild switch \
+        --flake "${path}#${host.name}-${system}" \
+        --option sandbox false \
+        --option filter-syscalls false \
+        "$@"
+    '';
+  };
+
   thisOptions = {
     unstablePkgs = lib.mkOption {
       type = lib.types.raw;
@@ -151,7 +164,7 @@ in
     config = lib.mkMerge [
       thisConfig
       {
-        home.packages = [ rebuild rebuild-wip rebuild-trace ];
+        home.packages = [ rebuild rebuild-wip rebuild-trace rebuild-chroot ];
         home.activation = {
           ensurePulledAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ensure;
         };
