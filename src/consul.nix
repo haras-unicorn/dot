@@ -60,6 +60,10 @@ in
       (lib.mkIf (hasNetwork && config.dot.consul.coordinator) {
         networking.nameservers = [ "127.0.0.1" ];
 
+        systemd.services.consul.after = lib.mkForce [ "basic.target" "nebula@nebula.service" "time-sync.target" ];
+        systemd.services.consul.requires = lib.mkForce [ "nebula@nebula.service" "time-sync.target" ];
+        systemd.services.consul.wants = lib.mkForce [ "basic.target" ];
+
         services.consul.enable = true;
         services.consul.webUi = true;
         services.consul.dropPrivileges = false;
