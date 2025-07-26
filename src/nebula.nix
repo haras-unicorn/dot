@@ -39,13 +39,23 @@ in
         cert = config.sops.secrets."nebula-public".path;
         key = config.sops.secrets."nebula-private".path;
       };
+
       systemd.services."nebula@nebula" = {
-        after = lib.mkForce [ "basic.target" "network-online.target" "time-synced.target" ];
-        requires = lib.mkForce [ "network-online.target" "time-synced.target" ];
-        wants = lib.mkForce [ "basic.target" ];
+        after = [ "network-online.target" "time-synced.target" ];
+        requires = [ "network-online.target" "time-synced.target" ];
         serviceConfig = {
           ExecStart = lib.mkForce "${pkgs.nebula}/bin/nebula -config /etc/nebula/config.d";
         };
+      };
+      systemd.targets.vpn = {
+        description = "VPN Started";
+        wantedBy = [ "nebula@nebula.service" ];
+        after = [ "nebula@nebula.service" ];
+      };
+      systemd.targets.vpn-online = {
+        description = "VPN Online";
+        requires = [ "nebula@nebula.service" ];
+        after = [ "nebula@nebula.service" ];
       };
       networking.firewall.allowedUDPPorts =
         lib.mkIf isCoordinator [

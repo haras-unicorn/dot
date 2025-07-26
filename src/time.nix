@@ -3,9 +3,10 @@
 {
   branch.nixosModule.nixosModule = {
     services.timesyncd.enable = false;
+    # NOTE: do not enable NTS because time can be so far off sometimes
+    # that it registers certs as invalid
     services.chrony = {
       enable = true;
-      enableNTS = true;
       servers = [
         "time.cloudflare.com"
         "time.google.com"
@@ -16,42 +17,48 @@
       ];
       initstepslew = {
         enabled = true;
-        threshold = 0.1;
+        threshold = 1;
       };
-      extraConfig = ''
-        makestep 0.1 3
-      '';
     };
+
+    systemd.services.chronyd.after = [ "network-online.target" ];
+    systemd.services.chronyd.requires = [ "network-online.target" ];
 
     systemd.targets.time-synced = {
       description = "System Time Synchronized";
       wantedBy = [ "multi-user.target" ];
+      requires = [ "chrony-time-sync-wait.service" ];
+      after = [ "chrony-time-sync-wait.service" ];
     };
 
-    systemd.services.time-sync-wait = {
-      description = "Wait for time synchronization";
+    systemd.services.chrony-time-sync-wait = {
+      description = "Wait for time synchronization from chrony";
       after = [ "chronyd.service" ];
       requires = [ "chronyd.service" ];
-
-      before = [ "time-synced.target" ];
-      wantedBy = [ "time-synced.target" ];
 
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        StandardOutput = "journal";
+        TimeoutStartSec = "infinity";
         ExecStart = "${
-            pkgs.writeShellApplication {
-              name = "wait-for-time-sync";
-              runtimeInputs = [ pkgs.systemd pkgs.gnugrep pkgs.coreutils ];
-              text = ''
-                until timedatectl | grep -q "System clock synchronized: yes"; do
-                  systemctl restart chronyd
-                  sleep 10
-                done
-              '';
-            }
-          }/bin/wait-for-time-sync";
-        TimeoutStartSec = "5min";
+          pkgs.writeShellApplication {
+            name = "wait-for-time-sync";
+            runtimeInputs = [ pkgs.chrony ];
+            text = ''
+              if timedatectl | grep -q "System clock synchronized: yes"; then
+                exit 0
+              fi
+              while true; do
+                sleep 10
+                if timedatectl | grep -q "System clock synchronized: yes"; then
+                  exit 0
+                fi
+                chronyc makestep
+              done
+            '';
+          }
+        }/bin/wait-for-time-sync";
       };
     };
   };

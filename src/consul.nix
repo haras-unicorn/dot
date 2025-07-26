@@ -60,9 +60,8 @@ in
       (lib.mkIf (hasNetwork && config.dot.consul.coordinator) {
         networking.nameservers = [ "127.0.0.1" ];
 
-        systemd.services.consul.after = lib.mkForce [ "basic.target" "nebula@nebula.service" "time-sync.target" ];
-        systemd.services.consul.requires = lib.mkForce [ "nebula@nebula.service" "time-sync.target" ];
-        systemd.services.consul.wants = lib.mkForce [ "basic.target" ];
+        systemd.services.consul.after = [ "vpn-online.target" "time-synced.target" ];
+        systemd.services.consul.requires = [ "vpn-online.target" "time-synced.target" ];
 
         services.consul.enable = true;
         services.consul.webUi = true;
@@ -78,7 +77,7 @@ in
           client_addr = config.dot.host.ip;
           # NOTE: like this instead of through nixpkgs
           # because then it tries to wait for the device
-          # but nebula doesn't work that way
+          # but vpn doesn't work that way
           bind_addr = config.dot.host.ip;
           advertise_addr = config.dot.host.ip;
 
