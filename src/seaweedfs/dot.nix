@@ -16,6 +16,8 @@ let
         then x.system.dot.fs.coordinator
         else false)
       config.dot.hosts);
+
+  peers = builtins.filter (x: x != config.dot.host.ip) hosts;
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf
@@ -42,7 +44,7 @@ in
         services.seaweedfs.master.enable = true;
         services.seaweedfs.master.openFirewall = true;
         services.seaweedfs.master.ip = config.dot.host.ip;
-        services.seaweedfs.master.peers = hosts;
+        services.seaweedfs.master.peers = peers;
 
         services.seaweedfs.volumes.dot.enable = true;
         services.seaweedfs.volumes.dot.ip = config.dot.host.ip;
