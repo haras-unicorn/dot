@@ -49,8 +49,6 @@ in
       services.vault.enable = true;
       services.vault.package = pkgs.vault-bin;
       services.vault.address = "0.0.0.0:${builtins.toString port}";
-      systemd.services.vault.after = [ "cockroachdb-init.service" ];
-      systemd.services.vault.wants = [ "cockroachdb-init.service" ];
       # NOTE: nixpkgs requires something here but i put cockroachdb at the bottom
       services.vault.storageBackend = "postgresql";
       services.vault.extraConfig = ''
@@ -62,6 +60,8 @@ in
 
       networking.firewall.allowedTCPPorts = [ clusterPort port ];
 
+      systemd.services.vault.requires = [ "cockroachdb-init.service" ];
+      systemd.services.vault.after = [ "cockroachdb-init.service" ];
       services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vault-init".path ];
 
       dot.consul.services = [{

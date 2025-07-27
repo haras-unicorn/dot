@@ -45,10 +45,14 @@ in
         services.seaweedfs.master.openFirewall = true;
         services.seaweedfs.master.ip = config.dot.host.ip;
         services.seaweedfs.master.peers = peers;
+        systemd.services."seaweedfs-master".requires = [ "vpn-online.target" "time-synced.target" ];
+        systemd.services."seaweedfs-master".after = [ "vpn-online.target" "time-synced.target" ];
 
         services.seaweedfs.volumes.dot.enable = true;
         services.seaweedfs.volumes.dot.ip = config.dot.host.ip;
         services.seaweedfs.volumes.dot.masterServers = hosts;
+        systemd.services."seaweedfs-volume@dot".requires = [ "seaweedfs-master.service" ];
+        systemd.services."seaweedfs-volume@dot".after = [ "seaweedfs-master.service" ];
 
         services.seaweedfs.filers.dot.enable = true;
         services.seaweedfs.filers.dot.ip = config.dot.host.ip;
@@ -62,6 +66,10 @@ in
           username = "seaweedfs";
           database = "seaweedfs";
         };
+        systemd.services."seaweedfs-filer@dot".requires = [ "seaweedfs-master.service" "cockroachdb-init.service" ];
+        systemd.services."seaweedfs-filer@dot".after = [ "seaweedfs-master.service" "cockroachdb-init.service" ];
+        services.cockroachdb.initFiles =
+          [ config.sops.secrets."cockroach-seaweedfs-init".path ];
 
         dot.consul.services = [
           {
@@ -104,9 +112,6 @@ in
             };
           }
         ];
-
-        services.cockroachdb.initFiles =
-          [ config.sops.secrets."cockroach-seaweedfs-init".path ];
 
         sops.secrets."seaweedfs-filer-env" = {
           owner = config.systemd.services."seaweedfs-filer@dot".serviceConfig.User;
