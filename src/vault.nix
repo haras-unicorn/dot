@@ -150,9 +150,17 @@ in
               alter default privileges in schema public grant all on sequences to ${vaultUser};
               alter default privileges in schema public grant all on functions to ${vaultUser};
 
+              grant all on all tables in schema public to ${vaultUser};
+              grant all on all sequences in schema public to ${vaultUser};
+              grant all on all functions in schema public to ${vaultUser};
+
               alter default privileges in schema public grant all on tables to ${user};
               alter default privileges in schema public grant all on sequences to ${user};
               alter default privileges in schema public grant all on functions to ${user};
+
+              grant all on all tables in schema public to ${user};
+              grant all on all sequences in schema public to ${user};
+              grant all on all functions in schema public to ${user};
 
               create table if not exists vault_kv_store (
                 parent_path text not null,
