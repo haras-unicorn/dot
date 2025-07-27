@@ -205,17 +205,22 @@ let
     };
   };
 
-  thisConfig.dot.hardware.check =
-    builtins.trace
-      (lib.assertMsg
-        (config.facter.report.version == "1")
-        "Only facter report version 1 supported")
-      false;
+  thisConfig = {
+    dot.hardware.check =
+      builtins.trace
+        (lib.assertMsg
+          (config.facter.report.version == "1")
+          "Only facter report version 1 supported")
+        false;
+  };
 in
 {
   branch.nixosModule.nixosModule = {
     options = thisOptions;
-    config = thisConfig;
+    config = lib.mkMerge [
+      thisConfig
+      { hardware.enableAllFirmware = true; }
+    ];
   };
 
   branch.homeManagerModule.homeManagerModule = {
