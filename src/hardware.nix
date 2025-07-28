@@ -5,6 +5,12 @@
 let
   memoryInBytes = (builtins.head (builtins.head config.facter.report.hardware.memory).resources).range;
 
+  threads =
+    let
+      cpu = builtins.head config.facter.report.hardware.cpu;
+    in
+    if builtins.hasAttr "units" cpu then cpu.units else 2;
+
   network =
     (builtins.hasAttr "network_controller" config.facter.report.hardware) &&
     ((builtins.length config.facter.report.hardware.network_controller) > 0);
@@ -103,6 +109,11 @@ let
     memory = lib.mkOption {
       type = lib.types.ints.unsigned;
       default = memoryInBytes;
+    };
+
+    threads = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      default = threads;
     };
 
     temp = lib.mkOption {
@@ -206,6 +217,9 @@ let
   };
 
   thisConfig = {
+    nix.settings.max-jobs =
+      config.dot.hardware.threads * 2 / 3;
+
     dot.hardware.check =
       builtins.trace
         (lib.assertMsg
@@ -219,7 +233,9 @@ in
     options = thisOptions;
     config = lib.mkMerge [
       thisConfig
-      { hardware.enableAllFirmware = true; }
+      {
+        hardware.enableAllFirmware = true;
+      }
     ];
   };
 

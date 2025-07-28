@@ -83,6 +83,27 @@
         "type": "github"
       }
     },
+    "comin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1752424616,
+        "narHash": "sha256-hzUHeFxuOCJb22ALhMs9griuvu9kKl4dBk9zwXxIXQw=",
+        "owner": "nlewo",
+        "repo": "comin",
+        "rev": "726d5998f3297193ca302052ad73596f3e40f893",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nlewo",
+        "ref": "refs/tags/v0.8.0",
+        "repo": "comin",
+        "type": "github"
+      }
+    },
     "crane": {
       "inputs": {
         "nixpkgs": [
@@ -790,6 +811,7 @@
     },
     "root": {
       "inputs": {
+        "comin": "comin",
         "deploy-rs": "deploy-rs",
         "ghostty-shaders": "ghostty-shaders",
         "home-manager": "home-manager",
