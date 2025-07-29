@@ -124,6 +124,32 @@ dot.wallpaper.static = true
 dot.pass = false
 
 [[hosts]]
+name = "koncar9000"
+ip = "10.69.42.7"
+
+[hosts.system]
+networking.hostName = "koncar9000"
+nixpkgs.system = "x86_64-linux"
+services.cockroachdb.locality = "location=portable"
+services.seaweedfs.volumes.dot.dataCenter = "portable"
+services.seaweedfs.volumes.dot.rack = "dot"
+services.seaweedfs.filers.dot.dataCenter = "portable"
+services.seaweedfs.filers.dot.rack = "dot"
+dot.vpn.ip = "10.69.42.7"
+dot.vpn.subnet.ip = "10.69.42.0"
+dot.vpn.subnet.bits = 24
+dot.vpn.subnet.mask = "255.255.255.0"
+# dot.hardware.temp = "/sys/class/hwmon/hwmon3/temp1_input"
+# dot.hardware.monitor.main = "eDP-1"
+dot.pass = false
+
+[hosts.home]
+# dot.hardware.temp = "/sys/class/hwmon/hwmon3/temp1_input"
+# dot.hardware.monitor.main = "eDP-1"
+dot.wallpaper.static = true
+dot.pass = false
+
+[[hosts]]
 name = "hearth"
 ip = "10.69.42.2"
 
