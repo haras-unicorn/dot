@@ -7,7 +7,7 @@
     programs.yazi.enable = true;
 
     programs.yazi.settings = builtins.fromTOML ''
-      [manager]
+      [mgr]
       show_hidden = true
     '';
   };
