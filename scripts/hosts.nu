@@ -10,19 +10,21 @@ def main [] {
   nu -c $"($self) --help"
 }
 
-def "main secrets" [host?: string] {
-  let host = (pick host $host)
+def "main secrets" [host?: string, --all] {
+  let hosts = pick hosts $all false $host
 
   rm -rf $artifacts
   mkdir $artifacts
   cd $artifacts
 
-  let spec = nix eval --json $".#rumor.($host.configuration)"
-  $spec | rumor stdin json --stay
+  for host in $hosts {
+    let spec = nix eval --json $".#rumor.($host.configuration)"
+    $spec | rumor stdin json --stay
+  }
 }
 
 def "main image" [host?: string, format?: string] {
-  let host = (pick host $host)
+  let host = pick hosts false true $host | first
   let format = if $format == null { "sd-aarch64" } else { $format }
 
   rm -rf $artifacts
@@ -60,7 +62,7 @@ exit"
 }
 
 def "main ssh" [host?: string, ip?: string] {
-  let host = (pick host $host)
+  let host = pick hosts false true $host | first
   let ip = if ($ip == null) { $host.ip } else { $ip }
 
   ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
@@ -69,12 +71,12 @@ def "main ssh" [host?: string, ip?: string] {
 }
 
 def "main pass" [host?: string] {
-  let host = (pick host $host)
+  let host = pick hosts false true $host | first
   $host.secrets."pass-priv"
 }
 
 def "main deploy" [host?: string] {
-  let host = (pick host $host)
+  let host = pick hosts false true $host | first
 
   if ($host.name == (open --raw /etc/hostname | str trim)) {
     (sudo nixos-rebuild switch
@@ -97,28 +99,28 @@ def "main deploy" [host?: string] {
   }
 }
 
-def "pick host" [name?: string] {
-  mut name = $name
+def "pick hosts" [all: bool, with_secrets: bool, name?: string] {
+  mut hosts = open $hosts | get hosts
 
-  let hosts = (open --raw $hosts) | from toml | get hosts
-
-  if $name == null {
-    let hostnames = $hosts | get name 
-    $name = (gum choose --header "Pick host name:" ...($hostnames))
+  if ($name == null) and not ($all) {
+    let wanted = (gum choose --header "Pick host name:" ...($hosts | get name ))
+    $hosts = $hosts | where $it.name == $wanted
   }
 
-  let host = $hosts
-    | where $it.name == $name
-    | first
-  let secrets = try {
-    vault kv get -format=json $"kv/dot/host/($name)/current"
+  $hosts = $hosts | each { |host|
+    let configuration = $"($host.name)-($host.system.nixpkgs.system)"
+    $host | insert configuration $configuration
+  }
+
+  if not $with_secrets {
+    return $hosts
+  }
+
+  $hosts | each { |host|
+    let key = $"kv/dot/host/($host.name)/current"
+    let secrets = vault kv get -format=json $key
       | from json
       | get data.data
-    } catch {
-      { }
-    }
-  let configuration = $"($name)-($host.system.nixpkgs.system)"
-  $host
-    | insert secrets $secrets
-    | insert configuration $configuration
+    $host | insert secrets $secrets
+  }
 }
