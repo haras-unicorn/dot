@@ -23,7 +23,7 @@
           # Misc
           nodePackages.prettier
           nodePackages.yaml-language-server
-          nodePackages.vscode-json-languageserver
+          nodePackages.vscode-langservers-extracted
           marksman
           taplo
 
