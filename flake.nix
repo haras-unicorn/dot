@@ -34,13 +34,8 @@
 
     nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
 
-    lanzaboote.url = "github:nix-community/lanzaboote/v0.4.1";
-    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
-
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-colors.url = "github:Misterio77/nix-colors";
 
     nix-comfyui.url = "github:haras-unicorn/nix-comfyui/dev";
     nix-comfyui.inputs.nixpkgs.follows = "nixpkgs";
@@ -49,9 +44,6 @@
     musnix.inputs.nixpkgs.follows = "nixpkgs";
 
     stylix.url = "github:danth/stylix/release-25.05";
-
-    ghostty-shaders.url = "github:hackr-sh/ghostty-shaders";
-    ghostty-shaders.flake = false;
   };
 
   outputs =

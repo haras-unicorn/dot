@@ -1,6 +1,6 @@
 { lib
 , config
-, ghostty-shaders
+, pkgs
 , ...
 }:
 
@@ -9,6 +9,13 @@ let
   hasKeyboard = config.dot.hardware.keyboard.enable;
 
   shell = config.dot.shell;
+
+  ghostty-shaders = pkgs.fetchFromGitHub {
+    owner = "hackr-sh";
+    repo = "ghostty-shaders";
+    rev = "3d7e56a3c46b2b6ba552ee338e35dc52b33042fa";
+    hash = "sha256-UNwO9kmaF0l2Wm026t5PGDalxkmI6L6S4+LfgTEF2dA=";
+  };
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasKeyboard && hasMonitor) {
