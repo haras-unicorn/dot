@@ -1,9 +1,11 @@
 #!/usr/bin/env nu
 
+# TODO: load hosts through nix
+
 let self = [ $env.FILE_PWD "hosts.nu" ] | path join
 let root = $env.FILE_PWD | path dirname
 let artifacts = [ $root "artifacts" ] | path join
-let hosts = [ $root "assets" "hosts.toml" ] | path join
+let hosts = [ $root "src" "hosts" "hosts.toml" ] | path join
 let flake = $"git+file:($root)"
 
 def main [] {

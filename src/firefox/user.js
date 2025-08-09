@@ -158,13 +158,14 @@ user_pref("privacy.fingerprintingProtection", true);
 user_pref("privacy.fingerprintingProtection.pbmode", true);
 user_pref(
   "privacy.fingerprintingProtection.overrides",
-  "+AllTargets"
+  "+AllTargets" +
     // enable system color scheme detection
-    + ",-CSSPrefersColorScheme"
+    ",-CSSPrefersColorScheme" +
     // enable gpu rendering
-    + ",-WebGLRenderCapability"
+    ",-WebGLRenderCapability" +
     // disable canvas randomization
-    + ",-CanvasRandomization");
+    ",-CanvasRandomization",
+);
 user_pref("browser.link.open_newwindow", 3);
 user_pref("browser.link.open_newwindow.restriction", 0);
 
@@ -250,11 +251,13 @@ user_pref("browser.contentblocking.category", "strict");
 user_pref("privacy.partition.serviceWorkers", true);
 user_pref(
   "privacy.partition.always_partition_third_party_non_cookie_storage",
-  true);
+  true,
+);
 user_pref(
-  "privacy.partition.always_partition_third_party_non_cookie_storage"
-    + ".exempt_sessionstorage",
-  false);
+  "privacy.partition.always_partition_third_party_non_cookie_storage" +
+    ".exempt_sessionstorage",
+  false,
+);
 
 // sanitize on shutdown
 user_pref("privacy.sanitize.sanitizeOnShutdown", true);
@@ -288,10 +291,12 @@ user_pref("browser.download.manager.addToRecentDocs", false);
 // disable recommended extensions/features
 user_pref(
   "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons",
-  false);
+  false,
+);
 user_pref(
   "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features",
-  false);
+  false,
+);
 
 // ----------------------------------------------------------------------------
 // OPTIMIZATION

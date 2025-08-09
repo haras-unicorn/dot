@@ -18,11 +18,8 @@ let
   version = "24.11";
 
   hosts =
-    builtins.fromTOML
-      (builtins.readFile
-        (lib.path.append
-          root
-          "assets/hosts.toml"));
+    let toml = builtins.fromTOML (builtins.readFile ./hosts.toml);
+    in toml.hosts;
 in
 {
   seal.rumor.sopsDir = "assets/secrets";
@@ -45,7 +42,7 @@ in
             };
           }];
         })
-        hosts.hosts);
+        hosts);
 
   seal.deploy.nodes =
     builtins.listToAttrs
@@ -57,7 +54,7 @@ in
             sshUser = user;
           };
         })
-        hosts.hosts);
+        hosts);
 
   flake.nixosConfigurations =
     builtins.listToAttrs
@@ -93,7 +90,7 @@ in
               };
               dot.hosts = lib.mkOption {
                 type = lib.types.raw;
-                default = hosts.hosts;
+                default = hosts;
               };
             };
 
@@ -180,5 +177,5 @@ in
               ];
             };
           })
-        hosts.hosts);
+        hosts);
 }
