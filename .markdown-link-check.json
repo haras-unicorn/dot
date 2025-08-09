@@ -1,0 +1,19 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^#"
+    },
+    {
+      "pattern": "^https://localhost"
+    },
+    {
+      "pattern": "^http://localhost"
+    },
+    {
+      "pattern": "^https://haras-unicorn.github.io/dot"
+    },
+    {
+      "pattern": "^https://github.com/haras-unicorn/dot"
+    }
+  ]
+}

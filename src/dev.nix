@@ -24,10 +24,13 @@
           nodePackages.prettier
           nodePackages.yaml-language-server
           nodePackages.vscode-langservers-extracted
+          markdownlint-cli
+          nodePackages.markdown-link-check
           marksman
           taplo
 
           # Tools
+          nodePackages.cspell
           nixos-generators
           rumor.packages.${pkgs.system}.default
           nebula
