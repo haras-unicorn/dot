@@ -1,8 +1,6 @@
 { pkgs, config, lib, ... }:
 
 # TODO: grub theming
-# TODO: use iso generator and put firmware on sd card for rpi 4
-# TODO: laptop battery saving
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -34,37 +32,6 @@ in
       if isRpi4 then pkgs.linuxKernel.packages.linux_rpi4
       else if isLegacyNvidia then pkgs.linuxKernel.packages.linux_6_6
       else pkgs.linuxPackages_zen;
-    services.ananicy.enable = true;
-    services.ananicy.package = pkgs.ananicy-cpp;
-    services.preload.enable = true;
-
-    boot.initrd.kernelModules = [
-      "ext4"
-      "vfat"
-    ];
-    fileSystems."/firmware" = lib.mkIf isRpi4 {
-      device = "/dev/disk/by-label/FIRMWARE";
-      fsType = "vfat";
-    };
-    fileSystems."/boot" = lib.mkIf (!isRpi4) {
-      device = "/dev/disk/by-label/NIXBOOT";
-      fsType = "vfat";
-    };
-    fileSystems."/" = lib.mkMerge [
-      (lib.mkIf (!isRpi4) {
-        device = "/dev/disk/by-label/NIXROOT";
-        fsType = "ext4";
-      })
-      (lib.mkIf (isRpi4) {
-        device = "/dev/disk/by-label/NIXOS_SD";
-        fsType = "ext4";
-      })
-    ];
-    swapDevices = (lib.mkIf (!isRpi4) [{
-      device = "/var/swap";
-      size = config.dot.hardware.memory / 1000 / 1000;
-    }]);
-    services.fstrim.enable = true;
 
     boot.initrd.systemd.enable = lib.mkIf hasMonitor true;
     boot.initrd.verbose = lib.mkIf hasMonitor false;

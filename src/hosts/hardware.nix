@@ -217,9 +217,6 @@ let
   };
 
   thisConfig = {
-    nix.settings.max-jobs =
-      config.dot.hardware.threads * 2 / 3;
-
     dot.hardware.check =
       builtins.trace
         (lib.assertMsg
