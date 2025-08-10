@@ -5,7 +5,8 @@ let
 
   hasNetwork = config.dot.hardware.network.enable;
 
-  path = "/home/${user}/.secrets/deepseek-api-key";
+  deepseekPath = "/home/${user}/.secrets/deepseek-api-key";
+  openaiPath = "/home/${user}/.secrets/openai-api-key";
 
   crush = pkgs.writeShellApplication {
     name = "crush";
@@ -14,7 +15,9 @@ let
     ];
     text = ''
       # shellcheck disable=SC2155
-      export DEEPSEEK_API_KEY="$(cat ${path})"
+      export DEEPSEEK_API_KEY="$(cat ${deepseekPath})"
+      # shellcheck disable=SC2155
+      export OPENAI_API_KEY="$(cat ${openaiPath})"
       crush "$@"
     '';
   };
@@ -28,9 +31,15 @@ in
     xdg.configFile."crush/crush.json".source = ./crush.json;
   };
 
-  branch.nixosModule.nixosModule = {
+  branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
     sops.secrets."deepseek-api-key" = {
-      inherit path;
+      path = deepseekPath;
+      owner = user;
+      group = "users";
+      mode = "0400";
+    };
+    sops.secrets."openai-api-key" = {
+      path = openaiPath;
       owner = user;
       group = "users";
       mode = "0400";
@@ -38,6 +47,7 @@ in
 
     rumor.sops = [
       "deepseek-api-key"
+      "openai-api-key"
     ];
     rumor.specification.imports = [
       {
@@ -45,6 +55,14 @@ in
         arguments = {
           path = "kv/dot/shared";
           file = "deepseek-api-key";
+          allow_fail = false;
+        };
+      }
+      {
+        importer = "vault-file";
+        arguments = {
+          path = "kv/dot/shared";
+          file = "openai-api-key";
           allow_fail = false;
         };
       }
