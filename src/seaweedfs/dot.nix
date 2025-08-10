@@ -17,7 +17,15 @@ let
         else false)
       config.dot.hosts);
 
-  peers = builtins.filter (x: x != config.dot.host.ip) hosts;
+  peers = builtins.map
+    (x: "${x}:${builtins.toString config.services.seaweedfs.master.httpPort}")
+    (builtins.filter
+      (x: x != config.dot.host.ip)
+      hosts);
+
+  masters = builtins.map
+    (x: "${x}:${builtins.toString config.services.seaweedfs.master.httpPort}")
+    hosts;
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf
@@ -50,16 +58,16 @@ in
 
         services.seaweedfs.volumes.dot.enable = true;
         services.seaweedfs.volumes.dot.ip = config.dot.host.ip;
-        services.seaweedfs.volumes.dot.masterServers = hosts;
+        services.seaweedfs.volumes.dot.masterServers = masters;
         systemd.services."seaweedfs-volume@dot".requires = [ "seaweedfs-master.service" ];
         systemd.services."seaweedfs-volume@dot".after = [ "seaweedfs-master.service" ];
 
         services.seaweedfs.filers.dot.enable = true;
         services.seaweedfs.filers.dot.ip = config.dot.host.ip;
-        services.seaweedfs.filers.dot.masterServers = hosts;
+        services.seaweedfs.filers.dot.masterServers = masters;
         services.seaweedfs.filers.dot.environmentFile =
           config.sops.secrets."seaweedfs-filer-env".path;
-        services.seaweedfs.filers.dot.config.cockroachdb = {
+        services.seaweedfs.filers.dot.config.postgres2 = {
           enabled = true;
           hostname = "localhost";
           port = config.services.cockroachdb.listen.port;
@@ -180,7 +188,7 @@ in
               name = "seaweedfs-filer-env";
               renew = true;
               variables = {
-                WEED_COCKROACHDB_PASSWORD = "cockroach-seaweedfs-pass";
+                WEED_POSTGRES2_PASSWORD = "cockroach-seaweedfs-pass";
               };
             };
           }
