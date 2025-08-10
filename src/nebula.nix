@@ -86,6 +86,13 @@ in
               host: any
       '';
 
+
+      programs.rust-motd.settings = lib.mkIf isCoordinator {
+        service_status = {
+          "Nebula VPN" = "nebula@nebula";
+        };
+      };
+
       sops.secrets."nebula-ca-public" = {
         owner = "nebula-nebula";
         group = "nebula-nebula";

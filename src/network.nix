@@ -38,6 +38,12 @@ in
       pkgs.openfortivpn
       pkgs.networkmanager-fortisslvpn
     ];
+
+    programs.rust-motd.settings = {
+      service_status = {
+        Network = "systemd-networkd";
+      };
+    };
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor) {

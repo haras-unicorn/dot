@@ -78,6 +78,12 @@ in
         };
       }];
 
+      programs.rust-motd.settings = {
+        service_status = {
+          Vault = "vault";
+        };
+      };
+
       sops.secrets."vault-settings" = {
         owner = config.systemd.services.vault.serviceConfig.User;
         group = config.systemd.services.vault.serviceConfig.User;

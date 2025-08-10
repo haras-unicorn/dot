@@ -21,6 +21,12 @@
       };
     };
 
+    programs.rust-motd.settings = {
+      service_status = {
+        Chrony = "chronyd";
+      };
+    };
+
     systemd.services.chronyd.after = [ "network-online.target" ];
     systemd.services.chronyd.requires = [ "network-online.target" ];
 

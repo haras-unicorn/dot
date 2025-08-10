@@ -28,5 +28,11 @@ in
       })
     ];
     services.fstrim.enable = true;
+
+    programs.rust-motd.settings = {
+      filesystems = {
+        root = "/";
+      };
+    };
   };
 }

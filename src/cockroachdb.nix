@@ -254,6 +254,12 @@ in
           };
         }];
 
+        programs.rust-motd.settings = {
+          service_status = {
+            CockroachDB = "cockroachdb";
+          };
+        };
+
         sops.secrets."cockroach-ca-public" = {
           path = "${certs}/ca.crt";
           owner = config.systemd.services.cockroachdb.serviceConfig.User;

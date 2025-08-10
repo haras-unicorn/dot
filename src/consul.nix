@@ -148,6 +148,12 @@ in
           dnsPort
         ];
 
+        programs.rust-motd.settings = {
+          service_status = {
+            Consul = "consul";
+          };
+        };
+
         sops.secrets."consul-config" = {
           path = configPath;
           owner = config.systemd.services.consul.serviceConfig.User;

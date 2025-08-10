@@ -117,6 +117,12 @@ in
         httpsPort
       ];
 
+      programs.rust-motd.settings = {
+        service_status = {
+          Traefik = "traefik";
+        };
+      };
+
       sops.secrets."traefik-ca-public" = {
         key = "openssl-ca-public";
         owner = config.systemd.services.traefik.serviceConfig.User;

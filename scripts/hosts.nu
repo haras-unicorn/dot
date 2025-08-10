@@ -69,7 +69,7 @@ def "main ssh" [host?: string, ip?: string] {
 
   ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
     | ssh-add - \\
-    && ssh -t ($ip) nu"
+    && ssh -t ($ip) motd-wrap nu"
 }
 
 def "main pass" [host?: string] {
