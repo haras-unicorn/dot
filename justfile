@@ -24,5 +24,10 @@ lint:
       | complete \
       | get exit_code) == 0 { exit 1 }
 
+rebuild *args:
+    sudo nixos-rebuild switch \
+      --flake $"{{ root }}#(hostname)-((uname).machine)-linux" \
+      {{ args }}
+
 hosts *args:
     {{ root }}/scripts/hosts.nu {{ args }}

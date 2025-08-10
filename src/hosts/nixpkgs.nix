@@ -5,41 +5,15 @@ let
 
   system = pkgs.system;
 
-  path = "${config.xdg.dataHome}/dot";
-
-  ensure = ''
-    if [ ! -d "${path}/.git" ]; then
-      ${pkgs.git}/bin/git clone \
-        -c user.name=haras \
-        -c user.email=social@haras.anonaddy.me \
-        https://github.com/haras-unicorn/dot \
-        "${path}"
-    fi
-  '';
+  path = "github:haras-unicorn/dot";
 
   rebuild = pkgs.writeShellApplication {
     name = "rebuild";
     runtimeInputs = [ ];
     text = ''
-      ${ensure}
       sudo nixos-rebuild switch \
         --flake "${path}#${host.name}-${system}" \
-        "$@"
-    '';
-  };
-
-  rebuild-wip = pkgs.writeShellApplication {
-    name = "rebuild-wip";
-    runtimeInputs = [ ];
-    text = ''
-      ${ensure}
-
-      cd "${path}" && ${pkgs.git}/bin/git add "${path}"
-      cd "${path}" && ${pkgs.git}/bin/git commit -m WIP
-      cd "${path}" && ${pkgs.git}/bin/git push
-
-      sudo nixos-rebuild switch \
-        --flake "${path}#${host.name}-${system}" \
+        --option eval-cache false \
         "$@"
     '';
   };
@@ -48,7 +22,6 @@ let
     name = "rebuild-trace";
     runtimeInputs = [ ];
     text = ''
-      ${ensure}
       sudo nixos-rebuild switch \
         --flake "${path}#${host.name}-${system}" \
         --show-trace \
@@ -61,11 +34,11 @@ let
     name = "rebuild-chroot";
     runtimeInputs = [ ];
     text = ''
-      ${ensure}
       sudo nixos-rebuild switch \
         --flake "${path}#${host.name}-${system}" \
         --option sandbox false \
         --option filter-syscalls false \
+        --option eval-cache false \
         "$@"
     '';
   };
@@ -164,10 +137,12 @@ in
     config = lib.mkMerge [
       thisConfig
       {
-        home.packages = [ rebuild rebuild-wip rebuild-trace rebuild-chroot ];
-        home.activation = {
-          ensurePulledAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ensure;
-        };
+        home.packages = [
+          pkgs.nixos-option
+          rebuild
+          rebuild-trace
+          rebuild-chroot
+        ];
       }
     ];
   };
