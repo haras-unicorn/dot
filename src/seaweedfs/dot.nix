@@ -57,6 +57,8 @@ in
         systemd.services."seaweedfs-master".after = [ "vpn-online.target" "time-synced.target" ];
 
         services.seaweedfs.volumes.dot.enable = true;
+        # NOTE: 8080 is cockroachdb
+        services.seaweedfs.volumes.dot.httpPort = 8081;
         services.seaweedfs.volumes.dot.ip = config.dot.host.ip;
         services.seaweedfs.volumes.dot.masterServers = masters;
         systemd.services."seaweedfs-volume@dot".requires = [ "seaweedfs-master.service" ];
