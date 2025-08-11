@@ -293,6 +293,7 @@ in
                 "-port=${toString volumeCfg.httpPort}"
                 "-port.grpc=${toString volumeCfg.grpcPort}"
                 "-mserver=${lib.concatStringsSep "," volumeCfg.masterServers}"
+                "-dir=${volumeCfg.dataDir}"
               ]))
           (lib.filterAttrs (_: v: v.enable) cfg.volumes))
         (lib.mapAttrs'
