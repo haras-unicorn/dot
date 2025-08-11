@@ -105,7 +105,7 @@ in
               "dot.enable=true"
             ];
             check = {
-              http = "http://${config.dot.host.ip}:${builtins.toString config.services.seaweedfs.volumes.dot.httpPort}";
+              http = "http://${config.dot.host.ip}:${builtins.toString config.services.seaweedfs.volumes.dot.httpPort}/status";
               interval = "30s";
               timeout = "10s";
             };
