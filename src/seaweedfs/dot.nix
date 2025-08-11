@@ -61,12 +61,14 @@ in
         services.seaweedfs.volumes.dot.httpPort = 8081;
         services.seaweedfs.volumes.dot.ip = config.dot.host.ip;
         services.seaweedfs.volumes.dot.masterServers = masters;
+        services.seaweedfs.volumes.dot.openFirewall = true;
         systemd.services."seaweedfs-volume@dot".requires = [ "seaweedfs-master.service" ];
         systemd.services."seaweedfs-volume@dot".after = [ "seaweedfs-master.service" ];
 
         services.seaweedfs.filers.dot.enable = true;
         services.seaweedfs.filers.dot.ip = config.dot.host.ip;
         services.seaweedfs.filers.dot.masterServers = masters;
+        services.seaweedfs.filers.dot.openFirewall = true;
         services.seaweedfs.filers.dot.environmentFile =
           config.sops.secrets."seaweedfs-filer-env".path;
         services.seaweedfs.filers.dot.config.postgres = {
