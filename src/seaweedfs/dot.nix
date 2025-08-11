@@ -67,11 +67,11 @@ in
         services.seaweedfs.filers.dot.masterServers = masters;
         services.seaweedfs.filers.dot.environmentFile =
           config.sops.secrets."seaweedfs-filer-env".path;
-        services.seaweedfs.filers.dot.config.postgres2 = {
+        services.seaweedfs.filers.dot.config.postgres = {
           enabled = true;
           hostname = "localhost";
           port = config.services.cockroachdb.listen.port;
-          username = "seaweedfs";
+          username = seaweedfsUser;
           database = "seaweedfs";
         };
         systemd.services."seaweedfs-filer@dot".requires = [ "seaweedfs-master.service" "cockroachdb-init.service" ];
@@ -188,7 +188,7 @@ in
               name = "seaweedfs-filer-env";
               renew = true;
               variables = {
-                WEED_POSTGRES2_PASSWORD = "cockroach-seaweedfs-pass";
+                WEED_POSTGRES_PASSWORD = "cockroach-seaweedfs-pass";
               };
             };
           }
