@@ -7,6 +7,7 @@
 # FIXME: duckduckgo - note that last time it was overwriting it
 # NOTE: https://github.com/arkenfox/user.js/wiki
 # NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
+# TODO: https://addons.mozilla.org/en-US/firefox/addon/textarea-cache/
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
