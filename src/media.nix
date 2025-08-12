@@ -75,7 +75,6 @@ in
       pkgs.libreoffice-fresh
       pkgs.nomacs
       pkgs.libsForQt5.okular
-      pkgs.spotify-player
       pkgs.vlc
       pkgs.xarchiver
       pkgs.transmission_4-gtk
