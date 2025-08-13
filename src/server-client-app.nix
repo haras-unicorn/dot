@@ -30,7 +30,7 @@
           ) | zenity --progress --no-cancel --auto-close \
             --title="Starting ${display}" --text="Initializing server..."
             
-          ${client}
+          ${client} || echo "Client exited with non-zero exit code"
             
           systemctl stop --user ${name}-servers.scope
         '';

@@ -42,7 +42,7 @@ let
       client = ''
         chromium \
           "--user-data-dir=${config.xdg.dataHome}/comfyui/${instanceName}/session" \
-          "--app=http://localhost:$port0"
+          "--app=http://localhost:$port0" \
       '';
     };
   };

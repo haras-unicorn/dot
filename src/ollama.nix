@@ -51,7 +51,7 @@ let
       client = ''
         chromium \
           "--user-data-dir=${config.xdg.dataHome}/ollama/${instanceName}/session" \
-          "--app=http://localhost:$port1"
+          "--app=http://localhost:$port1" \
       '';
     };
   };
