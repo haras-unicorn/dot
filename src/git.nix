@@ -4,6 +4,7 @@
   branch.homeManagerModule.homeManagerModule = {
     dot.shell.aliases = {
       bruh = "${pkgs.lazygit}/bin/lazygit";
+      bru = "${pkgs.gitui}/bin/gitui";
     };
 
     home.packages = [
@@ -40,5 +41,7 @@
         suspend = true;
       };
     };
+
+    programs.gitui.enable = true;
   };
 }
