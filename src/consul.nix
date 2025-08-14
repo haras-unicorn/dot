@@ -135,6 +135,7 @@ in
           address = config.dot.host.ip;
           tags = [
             "dot.enable=true"
+            "dot.http.services.consul-ui.loadbalancer.server.scheme=https"
           ];
           check = {
             http = "https://${config.dot.host.ip}:${builtins.toString port}/v1/status/leader";
