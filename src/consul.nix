@@ -129,6 +129,20 @@ in
           services = config.dot.consul.services;
         };
 
+        dot.consul.services = [{
+          name = "consul";
+          port = port;
+          address = config.dot.host.ip;
+          tags = [
+            "dot.enable=true"
+          ];
+          check = {
+            http = "http://${config.dot.host.ip}:${builtins.toString port}/v1/status/leader";
+            interval = "30s";
+            timeout = "10s";
+          };
+        }];
+
         services.consul.extraConfigFiles = [
           config.sops.secrets."consul-config".path
         ];
