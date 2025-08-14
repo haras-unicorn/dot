@@ -130,7 +130,7 @@ in
         };
 
         dot.consul.services = [{
-          name = "consul";
+          name = "consul-ui";
           port = port;
           address = config.dot.host.ip;
           tags = [
