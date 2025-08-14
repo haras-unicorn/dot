@@ -72,7 +72,8 @@ in
           "dot.enable=true"
         ];
         check = {
-          http = "http://${config.dot.host.ip}:${builtins.toString port}/v1/sys/health";
+          http = "http://${config.dot.host.ip}:${toString port}/v1/sys/health"
+            + "?standbyok=true&perfstandbyok=true";
           interval = "30s";
           timeout = "10s";
         };
