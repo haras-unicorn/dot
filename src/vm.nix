@@ -1,5 +1,11 @@
 { pkgs, config, lib, ... }:
 
+# NOTE: https://github.com/quickemu-project/quickemu/issues/1475#issuecomment-2639232863
+# NOTE: put this in the windows-11.conf
+# #fixed_iso="windows-11/virtio-win.iso" -> YES COMMENT THIS OUT
+# extra_args="-drive media=cdrom,index=3,file=windows-11/virtio-win.iso"
+# extra_args="-cpu host,+hypervisor,+invtsc,l3-cache=on,migratable=no,hv-relaxed,hv-vapic,hv-spinlocks=0x1fff,hv-time,hv-synic,hv-stimer,hv-tlbflush,hv-ipi,hv-reset,hv-frequencies,hv-vpindex,topoext"
+
 let
   user = config.dot.user;
 
