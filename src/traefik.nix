@@ -51,7 +51,7 @@ in
             {
               certFile = config.sops.secrets."traefik-public".path;
               keyFile = config.sops.secrets."traefik-private".path;
-              stores = "default";
+              stores = [ "default" ];
             }
           ];
           stores = {
@@ -67,7 +67,9 @@ in
         http = {
           routers = {
             dashboard = {
-              rule = "PathPrefix(`/api`) || PathPrefix(`/dashboard`)";
+              rule = "Host(`traefik.service.consul`)"
+                + " && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))";
+              entryPoints = [ "websecure" ];
               service = "api@internal";
             };
           };
@@ -75,7 +77,9 @@ in
       };
 
       services.traefik.staticConfigOptions = {
-        api = { };
+        api = {
+          dashboard = true;
+        };
 
         entryPoints = {
           websecure = {
@@ -98,6 +102,7 @@ in
 
           consulCatalog = {
             prefix = "dot";
+            exposedByDefault = false;
             defaultRule = "Host(`{{ normalize .Name }}.service.consul`)";
             endpoint = {
               address = consulEndpoint;
@@ -112,6 +117,17 @@ in
           };
         };
       };
+
+      dot.consul.services = [{
+        name = "traefik";
+        port = httpsPort;
+        address = config.dot.host.ip;
+        check = {
+          tcp = "${config.dot.host.ip}:${builtins.toString httpsPort}";
+          interval = "30s";
+          timeout = "10s";
+        };
+      }];
 
       networking.firewall.allowedTCPPorts = [
         httpsPort
