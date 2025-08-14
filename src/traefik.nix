@@ -65,12 +65,29 @@ in
         };
 
         http = {
+          middlewares = {
+            traefik-root-redirect.redirectregex = {
+              regex = "^/$";
+              replacement = "/dashboard/";
+              permanent = true;
+            };
+            traefik-dashboard-slash.redirectregex = {
+              regex = "^/dashboard$";
+              replacement = "/dashboard/";
+              permanent = true;
+            };
+          };
+
           routers = {
             dashboard = {
               rule = "Host(`traefik.service.consul`)"
-                + " && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))";
+                + " && (PathPrefix(`/api`) || PathPrefix(`/dashboard`) || Path(`/`))";
               entryPoints = [ "websecure" ];
               service = "api@internal";
+              middlewares = [
+                "traefik-root-redirect"
+                "traefik-dashboard-slash"
+              ];
             };
           };
         };

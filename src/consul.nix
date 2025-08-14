@@ -137,7 +137,7 @@ in
             "dot.enable=true"
           ];
           check = {
-            http = "http://${config.dot.host.ip}:${builtins.toString port}/v1/status/leader";
+            http = "https://${config.dot.host.ip}:${builtins.toString port}/v1/status/leader";
             interval = "30s";
             timeout = "10s";
           };
