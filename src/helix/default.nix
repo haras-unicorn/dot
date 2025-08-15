@@ -69,7 +69,12 @@ in
           name = "nix";
           auto-format = true;
           formatter = {
-            command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
+            command = "${pkgs.nixfmt-rfc-style}/bin/nixfmt";
+            args = [
+              "--filename"
+              "%{buffer_name}"
+            ];
+
           };
           language-servers = [ "nil" ];
         }

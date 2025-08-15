@@ -18,7 +18,7 @@ json = { validate = { enable = true } }
 [[language]]
 name = "nix"
 auto-format = true
-formatter = { command = "nixpkgs-fmt" }
+formatter = { command = "nixfmt", args = ["--filename", "%{buffer_name}"] }
 language-servers = ["nil"]
 
 [[language]]
