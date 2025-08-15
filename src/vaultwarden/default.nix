@@ -36,7 +36,9 @@ in
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
     home.packages = [
       package
-    ];
+      pkgs.bitwarden-cli
+    ]
+    ++ (lib.optional hasMonitor pkgs.bitwarden-desktop);
 
     xdg.desktopEntries = lib.mkIf hasMonitor {
       vaultwarden = {

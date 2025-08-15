@@ -62,6 +62,7 @@ in
             pkgs.nur.repos.rycee.firefox-addons.darkreader
             pkgs.nur.repos.rycee.firefox-addons.vimium-c
             pkgs.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
+            pkgs.nur.repos.rycee.firefox-addons.bitwarden
           ];
         };
         alternative = {
