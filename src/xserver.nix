@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   user = config.dot.user;
@@ -21,7 +26,10 @@ let
 
   pastedo = pkgs.writeShellApplication {
     name = "pastex";
-    runtimeInputs = [ pkgs.xclip pkgs.dotool ];
+    runtimeInputs = [
+      pkgs.xclip
+      pkgs.dotool
+    ];
     text = ''
       echo "type $(xclip -o -sel clip)" | dotool 
     '';
@@ -48,7 +56,10 @@ in
 
     dot.desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
       {
-        mods = [ "ctrl" "alt" ];
+        mods = [
+          "ctrl"
+          "alt"
+        ];
         key = "v";
         command = "${pastedo}/bin/pastedo";
       }

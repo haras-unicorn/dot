@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -6,18 +11,21 @@ let
 
   cfg = config.dot.terminal;
 
-  vars = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (name: "env ${name}=${builtins.toString cfg.sessionVariables."${name}"}")
-      (builtins.attrNames cfg.sessionVariables));
+  vars = lib.strings.concatStringsSep "\n" (
+    builtins.map (name: "env ${name}=${builtins.toString cfg.sessionVariables."${name}"}") (
+      builtins.attrNames cfg.sessionVariables
+    )
+  );
 
   shell = config.dot.shell;
   editor = config.dot.editor;
 in
 {
   branch.homeManagerModule.homeManagerModule = {
-    dot.terminal = { package = pkgs.kitty; bin = "kitty"; };
+    dot.terminal = {
+      package = pkgs.kitty;
+      bin = "kitty";
+    };
 
     stylix.targets.kitty.variant256Colors = true;
 

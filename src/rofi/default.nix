@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # TODO: colors
 
@@ -21,12 +26,18 @@ in
         command = "${pkgs.keepmenu}/bin/keepmenu";
       }
       {
-        mods = [ "super" "shift" ];
+        mods = [
+          "super"
+          "shift"
+        ];
         key = "p";
         command = "${pkgs.keepmenu}/bin/keepmenu -a '{PASSWORD}'";
       }
       {
-        mods = [ "super" "alt" ];
+        mods = [
+          "super"
+          "alt"
+        ];
         key = "p";
         command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
       }

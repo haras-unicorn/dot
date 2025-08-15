@@ -1,4 +1,10 @@
-{ nixpkgs, pkgs, lib, config, ... }:
+{
+  nixpkgs,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # TODO: fix 340
 # FIXME: https://github.com/NixOS/nixpkgs/issues/306276
@@ -71,8 +77,8 @@
       ];
     };
   }
-) //
-(
+)
+// (
   let
     openUrl = "https://web.archive.org/web/20241006015348/https://github.com/NVIDIA/open-gpu-kernel-modules";
     legacyUrl = "https://web.archive.org/web/20240928225313/https://www.nvidia.com/en-us/drivers/unix/legacy-gpu";
@@ -87,23 +93,25 @@
         url = legacyUrl;
       };
 
-      mkLegacyScript = curr: prev: pkgs.writeTextFile {
-        name = "nvidia-legacy-${curr}-script";
-        text = ''
-          $in
-            | lines
-            | skip until { |x| $x =~ "${curr}.xx" }
-            | take until { |x| $x =~ "${prev}.xx" }
-            | skip 12
-            | drop 4
-            | enumerate
-            | where ($it.index mod 5) == 0
-            | each { |x| $x.item }
-            | str replace -r ".*<td.*>([0-9A-F]+).*</td>.*" "$1"
-            | uniq
-            | str join "\n"
-        '';
-      };
+      mkLegacyScript =
+        curr: prev:
+        pkgs.writeTextFile {
+          name = "nvidia-legacy-${curr}-script";
+          text = ''
+            $in
+              | lines
+              | skip until { |x| $x =~ "${curr}.xx" }
+              | take until { |x| $x =~ "${prev}.xx" }
+              | skip 12
+              | drop 4
+              | enumerate
+              | where ($it.index mod 5) == 0
+              | each { |x| $x.item }
+              | str replace -r ".*<td.*>([0-9A-F]+).*</td>.*" "$1"
+              | uniq
+              | str join "\n"
+          '';
+        };
       openScript = pkgs.writeTextFile {
         name = "nvidia-open-script";
         text = ''
@@ -115,19 +123,22 @@
             | str join "\n"
         '';
       };
-      mkExpr = name: html: script:
-        pkgs.lib.splitString "\n"
-          (builtins.readFile
-            (
-              "${pkgs.runCommand "nvidia-${name}-text"
-          {
-            buildInputs = [ pkgs.nushell ];
-          }
-          ''
-            mkdir $out
-            cat ${html} | nu --stdin -c '${builtins.readFile script}' > $out/result
-          ''}/result"
-            ));
+      mkExpr =
+        name: html: script:
+        pkgs.lib.splitString "\n" (
+          builtins.readFile (
+            "${
+              pkgs.runCommand "nvidia-${name}-text"
+                {
+                  buildInputs = [ pkgs.nushell ];
+                }
+                ''
+                  mkdir $out
+                  cat ${html} | nu --stdin -c '${builtins.readFile script}' > $out/result
+                ''
+            }/result"
+          )
+        );
 
       # legacy340 = mkExpr "legacy-340" legacyHtml (mkLegacyScript "340" "304");
       legacy340 = [ ];
@@ -137,7 +148,8 @@
     };
   in
   {
-    flake.lib.nvidia.mkComputed = pkgs:
+    flake.lib.nvidia.mkComputed =
+      pkgs:
       let
         nvidia = mkNvidia pkgs;
       in

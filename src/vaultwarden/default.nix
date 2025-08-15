@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 let
   hasNetwork = config.dot.hardware.network.enable;
@@ -7,20 +12,23 @@ let
   vaultwardenUser = "vaultwarden_${config.dot.host.name}";
   certs = "/etc/vaultwarden/certs";
   port = 8222;
-  package = pkgs.vaultwarden-postgresql.overrideAttrs (final: prev: {
-    patches = (prev.patches or [ ]) ++ [
-      ./2020-08-02-025025-migration.patch
-      ./specify-integer-length-in-migrations.patch
-    ];
-  });
-  hosts = builtins.map
-    (x: x.ip)
-    (builtins.filter
-      (x:
-        if lib.hasAttrByPath [ "system" "dot" "vaultwarden" "coordinator" ] x
-        then x.system.dot.vaultwarden.coordinator
-        else false)
-      config.dot.hosts);
+  package = pkgs.vaultwarden-postgresql.overrideAttrs (
+    final: prev: {
+      patches = (prev.patches or [ ]) ++ [
+        ./2020-08-02-025025-migration.patch
+        ./specify-integer-length-in-migrations.patch
+      ];
+    }
+  );
+  hosts = builtins.map (x: x.ip) (
+    builtins.filter (
+      x:
+      if lib.hasAttrByPath [ "system" "dot" "vaultwarden" "coordinator" ] x then
+        x.system.dot.vaultwarden.coordinator
+      else
+        false
+    ) config.dot.hosts
+  );
   firstHost = builtins.head hosts;
   consoleAddress = "${firstHost}:${builtins.toString port}";
 in
@@ -33,8 +41,8 @@ in
     xdg.desktopEntries = lib.mkIf hasMonitor {
       vaultwarden = {
         name = "Vaultwarden";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} "
-          + "--new-window ${consoleAddress}";
+        exec =
+          "${config.dot.browser.package}/bin/${config.dot.browser.bin} " + "--new-window ${consoleAddress}";
         terminal = false;
       };
     };
@@ -67,19 +75,21 @@ in
 
       networking.firewall.allowedTCPPorts = [ port ];
 
-      dot.consul.services = [{
-        name = "vaultwarden";
-        port = port;
-        address = config.dot.host.ip;
-        tags = [
-          "dot.enable=true"
-        ];
-        check = {
-          http = "http://${config.dot.host.ip}:${builtins.toString port}/alive";
-          interval = "30s";
-          timeout = "10s";
-        };
-      }];
+      dot.consul.services = [
+        {
+          name = "vaultwarden";
+          port = port;
+          address = config.dot.host.ip;
+          tags = [
+            "dot.enable=true"
+          ];
+          check = {
+            http = "http://${config.dot.host.ip}:${builtins.toString port}/alive";
+            interval = "30s";
+            timeout = "10s";
+          };
+        }
+      ];
 
       sops.secrets."vaultwarden-env" = {
         owner = config.systemd.services.vaultwarden.serviceConfig.User;
@@ -177,7 +187,8 @@ in
             };
             template =
               let
-                databaseUrl = "postgresql://${vaultwardenUser}:{{COCKROACH_VAULTWARDEN_PASS}}@localhost"
+                databaseUrl =
+                  "postgresql://${vaultwardenUser}:{{COCKROACH_VAULTWARDEN_PASS}}@localhost"
                   + ":${builtins.toString config.services.cockroachdb.listen.port}"
                   + "/vaultwarden"
                   + "?sslmode=verify-full"

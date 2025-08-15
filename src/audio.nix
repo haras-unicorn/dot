@@ -1,4 +1,10 @@
-{ pkgs, lib, config, musnix, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  musnix,
+  ...
+}:
 
 # TODO: laptop battery saving
 
@@ -34,13 +40,15 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasSound && hasMonitor) {
-    dot.desktopEnvironment.windowrules = [{
-      rule = "float";
-      selector = "class";
-      xselector = "wm_class";
-      arg = "com.saivert.pwvucontrol";
-      xarg = "pwvucontrol";
-    }];
+    dot.desktopEnvironment.windowrules = [
+      {
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "com.saivert.pwvucontrol";
+        xarg = "pwvucontrol";
+      }
+    ];
 
     home.packages = [
       pkgs.pwvucontrol

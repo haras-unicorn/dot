@@ -20,12 +20,14 @@
     };
 
     rumor.sops = [ "geoclue-googleapi" ];
-    rumor.specification.imports = [{
-      importer = "vault-file";
-      arguments = {
-        path = "kv/dot/shared";
-        file = "geoclue-googleapi";
-      };
-    }];
+    rumor.specification.imports = [
+      {
+        importer = "vault-file";
+        arguments = {
+          path = "kv/dot/shared";
+          file = "geoclue-googleapi";
+        };
+      }
+    ];
   };
 }

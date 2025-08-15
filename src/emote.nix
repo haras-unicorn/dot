@@ -1,14 +1,16 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 
-  type =
-    if hasWayland
-    then "${pkgs.wtype}/bin/wtype"
-    else "${pkgs.xdotool}/bin/xdotool type";
+  type = if hasWayland then "${pkgs.wtype}/bin/wtype" else "${pkgs.xdotool}/bin/xdotool type";
 in
 {
   branch.homeManagerModule.homeManagerModule = (lib.mkIf (hasMonitor && hasKeyboard)) {
@@ -20,13 +22,15 @@ in
       }
     ];
 
-    dot.desktopEnvironment.windowrules = [{
-      rule = "float";
-      selector = "class";
-      xselector = "wm_class";
-      arg = "it.mijorus.smile";
-      xarg = "smile";
-    }];
+    dot.desktopEnvironment.windowrules = [
+      {
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "it.mijorus.smile";
+        xarg = "smile";
+      }
+    ];
 
     home.packages = [
       pkgs.smile

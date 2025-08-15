@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 # TODO: logout menu
 # TODO: switch-layout, current-layout and logout should be through nix
@@ -42,19 +47,22 @@ in
         monitor = config.dot.hardware.monitor.main;
         network-interface = config.dot.hardware.network.interface;
         cpu-hwmon = config.dot.hardware.temp;
-        font = (builtins.toString config.stylix.fonts.sansSerif.name)
+        font =
+          (builtins.toString config.stylix.fonts.sansSerif.name)
           + ":size="
           + (builtins.toString fontSizePt)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2 - 2))
           + "px";
-        font2 = (builtins.toString config.stylix.fonts.monospace.name)
+        font2 =
+          (builtins.toString config.stylix.fonts.monospace.name)
           + ":size="
           + (builtins.toString fontSizePt)
           + ";"
           + (builtins.toString ((32 - fontSizePx) / 2 - 2))
           + "px";
-        font3 = (builtins.toString config.stylix.fonts.emoji.name)
+        font3 =
+          (builtins.toString config.stylix.fonts.emoji.name)
           + ":size="
           + (builtins.toString fontSizePt)
           + ";"

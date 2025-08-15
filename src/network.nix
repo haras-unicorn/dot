@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # FIXME: networkmanager-fortisslvpn
 # TODO: openfortivpn as a service
@@ -47,13 +52,15 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasNetwork && hasMonitor) {
-    dot.desktopEnvironment.windowrules = lib.mkIf hasKeyboard [{
-      rule = "float";
-      selector = "class";
-      xselector = "wm_class";
-      arg = "nm-connection-editor";
-      xarg = "nm-connection-editor";
-    }];
+    dot.desktopEnvironment.windowrules = lib.mkIf hasKeyboard [
+      {
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "nm-connection-editor";
+        xarg = "nm-connection-editor";
+      }
+    ];
 
     services.network-manager-applet.enable = true;
   };

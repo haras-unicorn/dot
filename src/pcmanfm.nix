@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -13,13 +18,15 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
-    dot.desktopEnvironment.windowrules = [{
-      rule = "float";
-      selector = "class";
-      xselector = "wm_class";
-      arg = "pcmanfm";
-      xarg = "pcmanfm";
-    }];
+    dot.desktopEnvironment.windowrules = [
+      {
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "pcmanfm";
+        xarg = "pcmanfm";
+      }
+    ];
 
     home.packages = [ pkgs.pcmanfm ];
 

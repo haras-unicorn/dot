@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # FIXME: completions
 
@@ -8,23 +13,21 @@
 let
   cfg = config.dot.shell;
 
-  vars = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (name: ''$env.${name} = $"(${builtins.toString cfg.sessionVariables."${name}"})"'')
-      (builtins.attrNames cfg.sessionVariables));
+  vars = lib.strings.concatStringsSep "\n" (
+    builtins.map (name: ''$env.${name} = $"(${builtins.toString cfg.sessionVariables."${name}"})"'') (
+      builtins.attrNames cfg.sessionVariables
+    )
+  );
 
-  aliases = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (name: ''alias ${name} = ${builtins.toString cfg.aliases."${name}"}'')
-      (builtins.attrNames cfg.aliases));
+  aliases = lib.strings.concatStringsSep "\n" (
+    builtins.map (name: ''alias ${name} = ${builtins.toString cfg.aliases."${name}"}'') (
+      builtins.attrNames cfg.aliases
+    )
+  );
 
-  startup = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (command: "${builtins.toString command}")
-      cfg.sessionStartup);
+  startup = lib.strings.concatStringsSep "\n" (
+    builtins.map (command: "${builtins.toString command}") cfg.sessionStartup
+  );
 
   # completions = lib.strings.concatStringsSep
   #   "\n"
@@ -42,7 +45,10 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = {
-    dot.shell = { package = pkgs.nushell; bin = "nu"; };
+    dot.shell = {
+      package = pkgs.nushell;
+      bin = "nu";
+    };
 
     programs.nushell.enable = true;
 
@@ -73,14 +79,16 @@ in
         args = [ "--lsp" ];
       };
 
-      language = [{
-        name = "nu";
-        language-servers = [ "nu-lsp" ];
-        # formatter = {
-        #   command = "${pkgs.nufmt}/bin/nufmt --stdin";
-        # };
-        # auto-format = true;
-      }];
+      language = [
+        {
+          name = "nu";
+          language-servers = [ "nu-lsp" ];
+          # formatter = {
+          #   command = "${pkgs.nufmt}/bin/nufmt --stdin";
+          # };
+          # auto-format = true;
+        }
+      ];
     };
 
     programs.direnv.enableNushellIntegration = true;

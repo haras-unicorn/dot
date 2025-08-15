@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasSound = config.dot.hardware.sound.enable;
@@ -6,50 +11,58 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
 
   voicesBaseUrl = "https://huggingface.co/rhasspy/piper-voices/resolve/main";
-  mkVoiceBaseUrl = voice: builtins.concatStringsSep "/"
-    [
+  mkVoiceBaseUrl =
+    voice:
+    builtins.concatStringsSep "/" [
       voicesBaseUrl
       voice.language
       voice.dialect
       voice.name
       voice.quality
     ];
-  mkVoiceModelName = voice:
-    "${voice.dialect}-${voice.name}-${voice.quality}.onnx";
-  mkVoiceConfigName = voice:
-    "${voice.dialect}-${voice.name}-${voice.quality}.onnx.json";
-  mkVoice = hashes: voice: voice // rec {
-    model = pkgs.fetchurl {
-      url = "${mkVoiceBaseUrl voice}/${mkVoiceModelName voice}";
-      sha256 = hashes.model;
+  mkVoiceModelName = voice: "${voice.dialect}-${voice.name}-${voice.quality}.onnx";
+  mkVoiceConfigName = voice: "${voice.dialect}-${voice.name}-${voice.quality}.onnx.json";
+  mkVoice =
+    hashes: voice:
+    voice
+    // rec {
+      model = pkgs.fetchurl {
+        url = "${mkVoiceBaseUrl voice}/${mkVoiceModelName voice}";
+        sha256 = hashes.model;
+      };
+      config = pkgs.fetchurl {
+        url = "${mkVoiceBaseUrl voice}/${mkVoiceConfigName voice}";
+        sha256 = hashes.config;
+      };
+      sampleRate =
+        let
+          json = builtins.fromJSON (builtins.readFile config);
+        in
+        json.audio.sample_rate;
     };
-    config = pkgs.fetchurl {
-      url = "${mkVoiceBaseUrl voice}/${mkVoiceConfigName voice}";
-      sha256 = hashes.config;
-    };
-    sampleRate =
-      let json = builtins.fromJSON (builtins.readFile config);
-      in json.audio.sample_rate;
-  };
 
   voices = {
-    amy = mkVoice
-      {
-        model = "sha256-pakau33g8QQ1iiWt7UgN2s8f8HYohjJYhuxAai6GqrM=";
-        config = "sha256-IlCppgW43DWhFnF/rcUFZpXdgJ40oV0C9yoPUtU9Prs=";
-      }
-      {
-        language = "en";
-        dialect = "en_US";
-        name = "amy";
-        quality = "low";
-      };
+    amy =
+      mkVoice
+        {
+          model = "sha256-pakau33g8QQ1iiWt7UgN2s8f8HYohjJYhuxAai6GqrM=";
+          config = "sha256-IlCppgW43DWhFnF/rcUFZpXdgJ40oV0C9yoPUtU9Prs=";
+        }
+        {
+          language = "en";
+          dialect = "en_US";
+          name = "amy";
+          quality = "low";
+        };
   };
 
   speakVoice = voices.amy;
   speak = pkgs.writeShellApplication {
     name = "speak";
-    runtimeInputs = [ pkgs.piper-tts pkgs.alsa-utils ];
+    runtimeInputs = [
+      pkgs.piper-tts
+      pkgs.alsa-utils
+    ];
     text = ''
       cat \
         | piper \
@@ -69,14 +82,10 @@ let
     name = "read";
     runtimeInputs = [
       speak
-      (if config.dot.hardware.graphics.wayland
-      then pkgs.wl-clipboard
-      else pkgs.xclip)
+      (if config.dot.hardware.graphics.wayland then pkgs.wl-clipboard else pkgs.xclip)
     ];
     text = ''
-      ${if config.dot.hardware.graphics.wayland
-        then "wl-paste"
-        else "xclip -o"} | speak
+      ${if config.dot.hardware.graphics.wayland then "wl-paste" else "xclip -o"} | speak
     '';
   };
 
@@ -89,15 +98,13 @@ in
         pkgs.piper-tts
       ];
 
-      dot.desktopEnvironment.keybinds = lib.mkIf
-        (hasKeyboard && hasMonitor)
-        [
-          {
-            mods = [ "super" ];
-            key = "s";
-            command = "${read}/bin/read";
-          }
-        ];
+      dot.desktopEnvironment.keybinds = lib.mkIf (hasKeyboard && hasMonitor) [
+        {
+          mods = [ "super" ];
+          key = "s";
+          command = "${read}/bin/read";
+        }
+      ];
     };
   };
 }

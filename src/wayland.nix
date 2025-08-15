@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   user = config.dot.user;
@@ -7,7 +12,10 @@ let
 
   copy = pkgs.writeShellApplication {
     name = "copy";
-    runtimeInputs = [ pkgs.wl-clipboard pkgs.xclip ];
+    runtimeInputs = [
+      pkgs.wl-clipboard
+      pkgs.xclip
+    ];
     text = ''
       to_copy="$(cat)"
       "$to_copy" | wl-copy
@@ -25,7 +33,10 @@ let
 
   pastedo = pkgs.writeShellApplication {
     name = "pastex";
-    runtimeInputs = [ pkgs.xclip pkgs.dotool ];
+    runtimeInputs = [
+      pkgs.xclip
+      pkgs.dotool
+    ];
     text = ''
       echo "type $(wl-paste)" | dotool 
     '';
@@ -33,7 +44,10 @@ let
 
   wclipwatch = pkgs.writeShellApplication {
     name = "wclipwatch";
-    runtimeInputs = [ pkgs.wl-clipboard pkgs.xclip ];
+    runtimeInputs = [
+      pkgs.wl-clipboard
+      pkgs.xclip
+    ];
     text = ''
       wl-paste --type text --watch xclip -sel clipboard
     '';
@@ -41,7 +55,11 @@ let
 
   xclipwatch = pkgs.writeShellApplication {
     name = "xclipwatch";
-    runtimeInputs = [ pkgs.clipnotify pkgs.wl-clipboard pkgs.xclip ];
+    runtimeInputs = [
+      pkgs.clipnotify
+      pkgs.wl-clipboard
+      pkgs.xclip
+    ];
     text = ''
       while clipnotify; do
         if [ "$(xclip -o -sel clipboard)" != "$(wl-paste)" ]; then
@@ -91,7 +109,10 @@ in
 
     dot.desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
       {
-        mods = [ "ctrl" "alt" ];
+        mods = [
+          "ctrl"
+          "alt"
+        ];
         key = "v";
         command = "${pastedo}/bin/pastedo";
       }

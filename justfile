@@ -9,12 +9,12 @@ default:
 format:
     cd '{{ root }}'; just --unstable --fmt
     prettier --write '{{ root }}'
-    nixpkgs-fmt '{{ root }}'
+    nixfmt ...(fd '.*.nix$' '{{ root }}' | lines)
 
 lint:
     cd '{{ root }}'; just --unstable --fmt --check
     prettier --check '{{ root }}'
-    nixpkgs-fmt '{{ root }}' --check
+    nixfmt --check ...(fd '.*.nix$' '{{ root }}' | lines)
     markdownlint --ignore-path .gitignore '{{ root }}'
     cspell lint '{{ root }}' --no-progress
     if (markdown-link-check \

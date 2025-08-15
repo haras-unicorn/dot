@@ -1,4 +1,10 @@
-{ self, pkgs, lib, config, ... }:
+{
+  self,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasWayland = config.dot.hardware.graphics.wayland;
@@ -40,19 +46,24 @@ let
     '';
   };
 
-  wallpaperImage = pkgs.runCommand "wallpaper-image"
-    {
-      buildInputs = [ pkgs.file pkgs.ffmpeg pkgs.imagemagick_light ];
-    }
-    ''
-      mkdir $out
-      prev="${wallpaperContentDrv}/file"
-      if file --mime-type "$prev" | grep -qE 'video/'; then
-        ffmpeg -i "$prev" -vf "select=eq(n\,0)" -vsync vfr -q:v 2 "$out/image.png"
-      else
-        magick convert "$prev" "$out/image.png"
-      fi
-    '';
+  wallpaperImage =
+    pkgs.runCommand "wallpaper-image"
+      {
+        buildInputs = [
+          pkgs.file
+          pkgs.ffmpeg
+          pkgs.imagemagick_light
+        ];
+      }
+      ''
+        mkdir $out
+        prev="${wallpaperContentDrv}/file"
+        if file --mime-type "$prev" | grep -qE 'video/'; then
+          ffmpeg -i "$prev" -vf "select=eq(n\,0)" -vsync vfr -q:v 2 "$out/image.png"
+        else
+          magick convert "$prev" "$out/image.png"
+        fi
+      '';
 in
 {
   branch.homeManagerModule.homeManagerModule = {
@@ -71,18 +82,14 @@ in
       };
       wallpaper.final = lib.mkOption {
         type = lib.types.str;
-        default =
-          if isStatic
-          then config.dot.wallpaper.image
-          else config.dot.wallpaper.path;
+        default = if isStatic then config.dot.wallpaper.image else config.dot.wallpaper.path;
       };
     };
 
     config = lib.mkIf hasMonitor {
-      dot.desktopEnvironment.sessionStartup =
-        lib.mkIf (hasWayland && !isStatic) [
-          ''${setWallpaperWayland}/bin/wallpaper ${config.dot.wallpaper.final}''
-        ];
+      dot.desktopEnvironment.sessionStartup = lib.mkIf (hasWayland && !isStatic) [
+        ''${setWallpaperWayland}/bin/wallpaper ${config.dot.wallpaper.final}''
+      ];
 
       stylix.targets.hyprpaper.enable = lib.mkForce (hasWayland && isStatic);
       services.hyprpaper.enable = lib.mkForce (hasWayland && isStatic);

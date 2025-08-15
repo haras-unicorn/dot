@@ -1,4 +1,11 @@
-{ config, pkgs, lib, unstablePkgs, rust-overlay, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  unstablePkgs,
+  rust-overlay,
+  ...
+}:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;

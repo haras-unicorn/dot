@@ -1,7 +1,8 @@
-{ pkgs
-, config
-, lib
-, ...
+{
+  pkgs,
+  config,
+  lib,
+  ...
 }:
 
 # FIXME: duckduckgo - note that last time it was overwriting it
@@ -24,16 +25,24 @@ let
     ${builtins.readFile ./user.js}
 
     // set ui dark theme same as stylix
-    ${if config.stylix.polarity == "dark" then ''
-    user_pref("ui.systemUsesDarkTheme", 1);
-    '' else ''
-    user_pref("ui.systemUsesDarkTheme", 0);
-    ''}
+    ${
+      if config.stylix.polarity == "dark" then
+        ''
+          user_pref("ui.systemUsesDarkTheme", 1);
+        ''
+      else
+        ''
+          user_pref("ui.systemUsesDarkTheme", 0);
+        ''
+    }
   '';
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor) {
-    dot.browser = { package = fork.package; bin = fork.bin; };
+    dot.browser = {
+      package = fork.package;
+      bin = fork.bin;
+    };
 
     stylix.targets.${fork.stylix} = {
       profileNames = [ "personal" ];

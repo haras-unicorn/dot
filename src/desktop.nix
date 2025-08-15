@@ -22,9 +22,18 @@
 
   branch.homeManagerModule.homeManagerModule.options.dot.desktopEnvironment = {
     sessionVariables = lib.mkOption {
-      type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+      type =
+        with lib.types;
+        lazyAttrsOf (oneOf [
+          str
+          path
+          int
+          float
+        ]);
       default = { };
-      example = { EDITOR = "hx"; };
+      example = {
+        EDITOR = "hx";
+      };
       description = ''
         Environment variables to set on session start with Hyprland.
       '';
@@ -40,8 +49,15 @@
     };
 
     keybinds = lib.mkOption {
-      # TODO: strictly check for the mods, key and command options 
-      type = with lib.types; listOf (lazyAttrsOf (oneOf [ str (listOf str) ]));
+      # TODO: strictly check for the mods, key and command options
+      type =
+        with lib.types;
+        listOf (
+          lazyAttrsOf (oneOf [
+            str
+            (listOf str)
+          ])
+        );
       default = [ ];
       example = [
         {

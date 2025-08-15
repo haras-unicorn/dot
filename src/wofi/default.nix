@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -7,7 +12,10 @@ let
 
   paste-type = pkgs.writeShellApplication {
     name = "paste-type";
-    runtimeInputs = [ pkgs.wtype pkgs.wl-clipboard ];
+    runtimeInputs = [
+      pkgs.wtype
+      pkgs.wl-clipboard
+    ];
     text = ''wtype "$(wl-paste)"'';
   };
 in
@@ -25,17 +33,26 @@ in
         command = "${pkgs.keepmenu}/bin/keepmenu";
       }
       {
-        mods = [ "super" "shift" ];
+        mods = [
+          "super"
+          "shift"
+        ];
         key = "p";
         command = "${pkgs.keepmenu}/bin/keepmenu -a '{PASSWORD}'";
       }
       {
-        mods = [ "super" "alt" ];
+        mods = [
+          "super"
+          "alt"
+        ];
         key = "p";
         command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
       }
       {
-        mods = [ "ctrl" "alt" ];
+        mods = [
+          "ctrl"
+          "alt"
+        ];
         key = "v";
         command = "${paste-type}/bin/paste-type";
       }

@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 # TODO: lutris packages
 
@@ -31,13 +36,15 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
-    dot.desktopEnvironment.windowrules = [{
-      rule = "float";
-      selector = "class";
-      xselector = "wm_class";
-      arg = "steam";
-      xarg = "steam";
-    }];
+    dot.desktopEnvironment.windowrules = [
+      {
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = "steam";
+        xarg = "steam";
+      }
+    ];
 
     programs.mangohud.enable = true;
 

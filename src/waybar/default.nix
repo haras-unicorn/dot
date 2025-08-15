@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 # TODO: config paths for executables
 # TODO: switch-layout, current-layout and logout should be through nix
@@ -18,15 +23,15 @@ in
     programs.waybar.enable = true;
     programs.waybar.systemd.enable = true;
     programs.waybar.settings = [
-      (pkgs.lib.attrsets.recursiveUpdate
-        (builtins.fromJSON (builtins.readFile ./config.json))
-        {
-          output = config.dot.hardware.monitor.main;
-          network = { interface = config.dot.hardware.network.interface; };
-          temperature = {
-            hwmon-path = config.dot.hardware.temp;
-          };
-        })
+      (pkgs.lib.attrsets.recursiveUpdate (builtins.fromJSON (builtins.readFile ./config.json)) {
+        output = config.dot.hardware.monitor.main;
+        network = {
+          interface = config.dot.hardware.network.interface;
+        };
+        temperature = {
+          hwmon-path = config.dot.hardware.temp;
+        };
+      })
     ];
 
     programs.waybar.style = builtins.readFile ./style.css;

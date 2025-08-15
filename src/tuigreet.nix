@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -7,7 +12,6 @@ let
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasKeyboard && hasWayland) {
-    dot.desktopEnvironment.login =
-      "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd '${config.dot.desktopEnvironment.startup}'";
+    dot.desktopEnvironment.login = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd '${config.dot.desktopEnvironment.startup}'";
   };
 }

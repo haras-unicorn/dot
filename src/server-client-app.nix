@@ -3,17 +3,35 @@
 {
   flake.lib.serverClientApp =
     pkgs:
-    { name, display ? name, servers, waits, speed ? 1, client, runtimeInputs ? [ ], ... }@args:
-    pkgs.writeShellApplication
-      ((builtins.removeAttrs args [ "display" "servers" "waits" "speed" "client" ]) // {
+    {
+      name,
+      display ? name,
+      servers,
+      waits,
+      speed ? 1,
+      client,
+      runtimeInputs ? [ ],
+      ...
+    }@args:
+    pkgs.writeShellApplication (
+      (builtins.removeAttrs args [
+        "display"
+        "servers"
+        "waits"
+        "speed"
+        "client"
+      ])
+      // {
         runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
         text = ''
-          ${lib.concatStringsSep "\n" (lib.imap0 (i: _: ''
-            port${toString i}=$(shuf -i 32768-65535 -n 1)
-            while ss -tulwn | grep -q ":$port${toString i} "; do
+          ${lib.concatStringsSep "\n" (
+            lib.imap0 (i: _: ''
               port${toString i}=$(shuf -i 32768-65535 -n 1)
-            done
-          '') servers)}
+              while ss -tulwn | grep -q ":$port${toString i} "; do
+                port${toString i}=$(shuf -i 32768-65535 -n 1)
+              done
+            '') servers
+          )}
             
           systemd-run --user --scope --unit=${name}-servers \
             sh -c "${lib.concatStringsSep " & " servers} & wait" &
@@ -34,5 +52,6 @@
             
           systemctl stop --user ${name}-servers.scope
         '';
-      });
+      }
+    );
 }

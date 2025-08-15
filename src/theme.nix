@@ -1,4 +1,10 @@
-{ self, stylix, config, pkgs, ... }:
+{
+  self,
+  stylix,
+  config,
+  pkgs,
+  ...
+}:
 
 # TODO: https://github.com/danth/stylix/pull/847
 
@@ -24,8 +30,7 @@ in
     stylix.image = wallpaperImage;
     stylix.imageScalingMode = "fill";
     stylix.polarity = "dark";
-    stylix.base16Scheme = builtins.fromJSON
-      (builtins.readFile "${self}/assets/wallpaper.json");
+    stylix.base16Scheme = builtins.fromJSON (builtins.readFile "${self}/assets/wallpaper.json");
     stylix.fonts.monospace.name = "JetBrainsMono Nerd Font";
     stylix.fonts.monospace.package = pkgs.nerd-fonts.jetbrains-mono;
     stylix.fonts.sansSerif.name = "Roboto";

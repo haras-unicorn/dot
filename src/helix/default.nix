@@ -1,4 +1,9 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 
 # FIXME: stylix conflicts
 # TODO: proper theming as explained here: https://docs.helix-editor.com/themes.html
@@ -10,7 +15,10 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = {
-    dot.editor = { package = pkgs.helix; bin = "hx"; };
+    dot.editor = {
+      package = pkgs.helix;
+      bin = "hx";
+    };
 
     programs.helix.enable = true;
 
@@ -27,7 +35,10 @@ in
         nil = {
           command = "${pkgs.nil}/bin/nil";
         };
-        taplo = { command = "${pkgs.taplo}/bin/taplo"; args = [ "server" ]; };
+        taplo = {
+          command = "${pkgs.taplo}/bin/taplo";
+          args = [ "server" ];
+        };
         yaml-language-server = {
           command = "${pkgs.yaml-language-server}/bin/yaml-language-server";
           args = [ "--stdio" ];
@@ -37,18 +48,29 @@ in
           args = [ "--stdio" ];
           config = {
             provideFormatter = true;
-            format = { enable = true; };
-            json = { validate = { enable = true; }; };
+            format = {
+              enable = true;
+            };
+            json = {
+              validate = {
+                enable = true;
+              };
+            };
           };
         };
-        marksman = { command = "${pkgs.marksman}/bin/marksman"; args = [ "server" ]; };
+        marksman = {
+          command = "${pkgs.marksman}/bin/marksman";
+          args = [ "server" ];
+        };
       };
 
       language = [
         {
           name = "nix";
           auto-format = true;
-          formatter = { command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt"; };
+          formatter = {
+            command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
+          };
           language-servers = [ "nil" ];
         }
         {
@@ -61,7 +83,10 @@ in
           auto-format = true;
           formatter = {
             command = "${pkgs.nodePackages.prettier}/bin/prettier";
-            args = [ "--parser" "yaml" ];
+            args = [
+              "--parser"
+              "yaml"
+            ];
           };
           language-servers = [ "yaml-language-server" ];
         }
@@ -70,7 +95,10 @@ in
           auto-format = true;
           formatter = {
             command = "${pkgs.nodePackages.prettier}/bin/prettier";
-            args = [ "--parser" "json" ];
+            args = [
+              "--parser"
+              "json"
+            ];
           };
           language-servers = [ "vscode-json-language-server" ];
         }
@@ -79,13 +107,22 @@ in
           auto-format = true;
           formatter = {
             command = "${pkgs.nodePackages.prettier}/bin/prettier";
-            args = [ "--parser" "json" ];
+            args = [
+              "--parser"
+              "json"
+            ];
           };
         }
         {
           name = "xml";
           auto-format = true;
-          formatter = { command = "${pkgs.html-tidy}/bin/tidy"; args = [ "-xml" "-i" ]; };
+          formatter = {
+            command = "${pkgs.html-tidy}/bin/tidy";
+            args = [
+              "-xml"
+              "-i"
+            ];
+          };
         }
       ];
     };

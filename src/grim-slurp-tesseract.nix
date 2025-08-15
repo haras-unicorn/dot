@@ -1,9 +1,19 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   screenshot = pkgs.writeShellApplication {
     name = "screenshot";
-    runtimeInputs = [ pkgs.grim pkgs.slurp pkgs.tesseract pkgs.wl-clipboard ];
+    runtimeInputs = [
+      pkgs.grim
+      pkgs.slurp
+      pkgs.tesseract
+      pkgs.wl-clipboard
+    ];
     text = ''
       type="png"
       dir="${config.xdg.userDirs.pictures}/screenshots"

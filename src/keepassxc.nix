@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -9,42 +14,40 @@ in
     options.dot = {
       pinentry.package = lib.mkOption {
         type = lib.types.package;
-        default =
-          if hasMonitor
-          then pkgs.pinentry-qt
-          else pkgs.pinentry-curses;
+        default = if hasMonitor then pkgs.pinentry-qt else pkgs.pinentry-curses;
       };
       pinentry.bin = lib.mkOption {
         type = lib.types.str;
-        default =
-          if hasMonitor
-          then "pinentry-qt"
-          else "pinentry-curses";
+        default = if hasMonitor then "pinentry-qt" else "pinentry-curses";
       };
     };
 
     config = {
-      dot.desktopEnvironment.windowrules = lib.mkIf (hasMonitor && hasKeyboard) [{
-        rule = "float";
-        selector = "class";
-        xselector = "wm_class";
-        arg = "org.keepassxc.KeePassXC";
-        xarg = "keepassxc";
-      }];
-
-      home.packages = lib.optionals hasMonitor [
-        pkgs.pinentry-qt
-      ] ++ lib.optionals (!hasMonitor) [
-        pkgs.pinentry-curses
-      ] ++ lib.optionals (hasMonitor && hasKeyboard) [
-        pkgs.keepassxc
+      dot.desktopEnvironment.windowrules = lib.mkIf (hasMonitor && hasKeyboard) [
+        {
+          rule = "float";
+          selector = "class";
+          xselector = "wm_class";
+          arg = "org.keepassxc.KeePassXC";
+          xarg = "keepassxc";
+        }
       ];
 
-      services.gpg-agent.pinentry.package =
-        lib.mkMerge [
-          (lib.mkIf hasMonitor pkgs.pinentry-qt)
-          (lib.mkIf (!hasMonitor) pkgs.pinentry-curses)
+      home.packages =
+        lib.optionals hasMonitor [
+          pkgs.pinentry-qt
+        ]
+        ++ lib.optionals (!hasMonitor) [
+          pkgs.pinentry-curses
+        ]
+        ++ lib.optionals (hasMonitor && hasKeyboard) [
+          pkgs.keepassxc
         ];
+
+      services.gpg-agent.pinentry.package = lib.mkMerge [
+        (lib.mkIf hasMonitor pkgs.pinentry-qt)
+        (lib.mkIf (!hasMonitor) pkgs.pinentry-curses)
+      ];
 
       xdg.configFile."keepassxc/keepassxc.ini" = lib.mkIf (hasMonitor && hasKeyboard) {
         text = ''

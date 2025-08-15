@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.services.seaweedfs;
@@ -11,20 +16,15 @@ let
     serviceConfig = {
       User = componentCfg.user;
       Group = componentCfg.group;
-      Environment = lib.mapAttrsToList
-        (name: value: "${name}=${value}")
-        componentCfg.environment;
-      EnvironmentFile = lib.mkIf
-        (componentCfg.environmentFile != null)
-        componentCfg.environmentFile;
+      Environment = lib.mapAttrsToList (name: value: "${name}=${value}") componentCfg.environment;
+      EnvironmentFile = lib.mkIf (componentCfg.environmentFile != null) componentCfg.environmentFile;
       ExecStart =
         let
-          finalArgs =
-            lib.concatStringsSep " "
-              (args ++ componentCfg.extraArgs);
+          finalArgs = lib.concatStringsSep " " (args ++ componentCfg.extraArgs);
         in
         "${pkgs.seaweedfs}/bin/weed ${name} ${finalArgs}";
-    } // serviceConfig;
+    }
+    // serviceConfig;
   };
 
   componentOptions = {
@@ -108,7 +108,11 @@ in
           type = lib.types.listOf lib.types.str;
           default = [ ];
           description = "List of master peers (host:(httpPort(.grpcPort)?)?)";
-          example = [ "192.168.1.10" "192.168.1.11:9333" "192.168.1.11:9333.19333" ];
+          example = [
+            "192.168.1.10"
+            "192.168.1.11:9333"
+            "192.168.1.11:9333.19333"
+          ];
         };
 
         security = lib.mkOption {
@@ -119,127 +123,137 @@ in
       };
 
       volumes = lib.mkOption {
-        type = lib.types.attrsOf (lib.types.submodule ({ config, name, ... }: {
-          options = componentOptions // {
-            workDir = lib.mkOption {
-              type = lib.types.path;
-              default = "/var/lib/seaweedfs/volumes/${name}";
-              description = "Volume working directory needed for setting up security.toml";
-            };
+        type = lib.types.attrsOf (
+          lib.types.submodule (
+            { config, name, ... }:
+            {
+              options = componentOptions // {
+                workDir = lib.mkOption {
+                  type = lib.types.path;
+                  default = "/var/lib/seaweedfs/volumes/${name}";
+                  description = "Volume working directory needed for setting up security.toml";
+                };
 
-            dataDir = lib.mkOption {
-              type = lib.types.path;
-              default = "${config.workDir}/data";
-              description = "Volume data directory";
-            };
+                dataDir = lib.mkOption {
+                  type = lib.types.path;
+                  default = "${config.workDir}/data";
+                  description = "Volume data directory";
+                };
 
-            max = lib.mkOption {
-              type = lib.types.str;
-              default = "0";
-              description = "Volume maximum capacity. 0 indicates no limit.";
-            };
+                max = lib.mkOption {
+                  type = lib.types.str;
+                  default = "0";
+                  description = "Volume maximum capacity. 0 indicates no limit.";
+                };
 
-            dataCenter = lib.mkOption {
-              type = lib.types.str;
-              description = "Volume server data center location";
-            };
+                dataCenter = lib.mkOption {
+                  type = lib.types.str;
+                  description = "Volume server data center location";
+                };
 
-            rack = lib.mkOption {
-              type = lib.types.str;
-              description = "Volume server rack location";
-            };
+                rack = lib.mkOption {
+                  type = lib.types.str;
+                  description = "Volume server rack location";
+                };
 
-            ip = lib.mkOption {
-              type = lib.types.str;
-              description = "Volume server IP";
-              example = "192.168.1.10";
-            };
+                ip = lib.mkOption {
+                  type = lib.types.str;
+                  description = "Volume server IP";
+                  example = "192.168.1.10";
+                };
 
-            httpPort = lib.mkOption {
-              type = lib.types.port;
-              default = 8080;
-              description = "Volume HTTP port";
-            };
+                httpPort = lib.mkOption {
+                  type = lib.types.port;
+                  default = 8080;
+                  description = "Volume HTTP port";
+                };
 
-            grpcPort = lib.mkOption {
-              type = lib.types.port;
-              default = 18080;
-              description = "Volume gRPC port";
-            };
+                grpcPort = lib.mkOption {
+                  type = lib.types.port;
+                  default = 18080;
+                  description = "Volume gRPC port";
+                };
 
-            masterServers = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              description = "List of master servers (host:(httpPort(.grpcPort)?)?)";
-            };
+                masterServers = lib.mkOption {
+                  type = lib.types.listOf lib.types.str;
+                  default = [ ];
+                  description = "List of master servers (host:(httpPort(.grpcPort)?)?)";
+                };
 
-            security = lib.mkOption {
-              type = lib.types.anything;
-              default = { };
-              description = "Contents of security.toml for the volume server";
-            };
-          };
-        }));
+                security = lib.mkOption {
+                  type = lib.types.anything;
+                  default = { };
+                  description = "Contents of security.toml for the volume server";
+                };
+              };
+            }
+          )
+        );
         default = { };
         description = "Volume server instances";
       };
 
       filers = lib.mkOption {
-        type = lib.types.attrsOf (lib.types.submodule ({ name, ... }: {
-          options = componentOptions // {
-            workDir = lib.mkOption {
-              type = lib.types.path;
-              default = "/var/lib/seaweedfs/filers/${name}";
-              description = "Filer working directory needed for setting up security.toml and filer.toml";
-            };
+        type = lib.types.attrsOf (
+          lib.types.submodule (
+            { name, ... }:
+            {
+              options = componentOptions // {
+                workDir = lib.mkOption {
+                  type = lib.types.path;
+                  default = "/var/lib/seaweedfs/filers/${name}";
+                  description = "Filer working directory needed for setting up security.toml and filer.toml";
+                };
 
-            dataCenter = lib.mkOption {
-              type = lib.types.str;
-              description = "Filer server data center location";
-            };
+                dataCenter = lib.mkOption {
+                  type = lib.types.str;
+                  description = "Filer server data center location";
+                };
 
-            rack = lib.mkOption {
-              type = lib.types.str;
-              description = "Filer server rack location";
-            };
+                rack = lib.mkOption {
+                  type = lib.types.str;
+                  description = "Filer server rack location";
+                };
 
-            ip = lib.mkOption {
-              type = lib.types.str;
-              description = "Filer server IP";
-              example = "192.168.1.10";
-            };
+                ip = lib.mkOption {
+                  type = lib.types.str;
+                  description = "Filer server IP";
+                  example = "192.168.1.10";
+                };
 
-            httpPort = lib.mkOption {
-              type = lib.types.port;
-              default = 8888;
-              description = "Filer HTTP port";
-            };
+                httpPort = lib.mkOption {
+                  type = lib.types.port;
+                  default = 8888;
+                  description = "Filer HTTP port";
+                };
 
-            grpcPort = lib.mkOption {
-              type = lib.types.port;
-              default = 18888;
-              description = "Filer gRPC port";
-            };
+                grpcPort = lib.mkOption {
+                  type = lib.types.port;
+                  default = 18888;
+                  description = "Filer gRPC port";
+                };
 
-            masterServers = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              description = "List of master servers (host:(httpPort(.grpcPort)?)?)";
-            };
+                masterServers = lib.mkOption {
+                  type = lib.types.listOf lib.types.str;
+                  default = [ ];
+                  description = "List of master servers (host:(httpPort(.grpcPort)?)?)";
+                };
 
-            security = lib.mkOption {
-              type = lib.types.anything;
-              default = { };
-              description = "Contents of security.toml for the filer server";
-            };
+                security = lib.mkOption {
+                  type = lib.types.anything;
+                  default = { };
+                  description = "Contents of security.toml for the filer server";
+                };
 
-            config = lib.mkOption {
-              type = lib.types.anything;
-              default = { };
-              description = "Contents of filer.toml for the filer server";
-            };
-          };
-        }));
+                config = lib.mkOption {
+                  type = lib.types.anything;
+                  default = { };
+                  description = "Contents of filer.toml for the filer server";
+                };
+              };
+            }
+          )
+        );
         default = { };
         description = "Filer server instances";
       };
@@ -256,10 +270,8 @@ in
 
       systemd.services = lib.mkMerge [
         {
-          seaweedfs-master = lib.mkIf cfg.master.enable
-            (mkSeaweedService
-              "master"
-              cfg.master
+          seaweedfs-master = lib.mkIf cfg.master.enable (
+            mkSeaweedService "master" cfg.master
               {
                 WorkingDirectory = cfg.master.workDir;
                 ExecStartPre = [
@@ -272,13 +284,13 @@ in
                 "-port.grpc=${toString cfg.master.grpcPort}"
                 "-mdir=${cfg.master.dataDir}"
                 "-peers=${lib.concatStringsSep "," cfg.master.peers}"
-              ]);
+              ]
+          );
         }
-        (lib.mapAttrs'
-          (name: volumeCfg: lib.nameValuePair "seaweedfs-volume@${name}"
-            (mkSeaweedService
-              "volume"
-              volumeCfg
+        (lib.mapAttrs' (
+          name: volumeCfg:
+          lib.nameValuePair "seaweedfs-volume@${name}" (
+            mkSeaweedService "volume" volumeCfg
               {
                 WorkingDirectory = volumeCfg.workDir;
                 ExecStartPre = [
@@ -294,13 +306,13 @@ in
                 "-port.grpc=${toString volumeCfg.grpcPort}"
                 "-mserver=${lib.concatStringsSep "," volumeCfg.masterServers}"
                 "-dir=${volumeCfg.dataDir}"
-              ]))
-          (lib.filterAttrs (_: v: v.enable) cfg.volumes))
-        (lib.mapAttrs'
-          (name: filerCfg: lib.nameValuePair "seaweedfs-filer@${name}"
-            (mkSeaweedService
-              "filer"
-              filerCfg
+              ]
+          )
+        ) (lib.filterAttrs (_: v: v.enable) cfg.volumes))
+        (lib.mapAttrs' (
+          name: filerCfg:
+          lib.nameValuePair "seaweedfs-filer@${name}" (
+            mkSeaweedService "filer" filerCfg
               {
                 WorkingDirectory = filerCfg.workDir;
                 ExecStartPre = [
@@ -315,8 +327,9 @@ in
                 "-port=${toString filerCfg.httpPort}"
                 "-port.grpc=${toString filerCfg.grpcPort}"
                 "-master=${lib.concatStringsSep "," filerCfg.masterServers}"
-              ]))
-          (lib.filterAttrs (_: v: v.enable) cfg.filers))
+              ]
+          )
+        ) (lib.filterAttrs (_: v: v.enable) cfg.filers))
       ];
 
       environment.etc = lib.mkMerge [
@@ -328,30 +341,33 @@ in
             mode = "0644";
           };
         })
-        (lib.mapAttrs'
-          (name: volumeCfg: lib.nameValuePair "seaweedfs/volumes/${name}/security.toml" {
+        (lib.mapAttrs' (
+          name: volumeCfg:
+          lib.nameValuePair "seaweedfs/volumes/${name}/security.toml" {
             source = pkgs.writers.writeTOML "security.toml" volumeCfg.security;
             user = volumeCfg.user;
             group = volumeCfg.group;
             mode = "0644";
-          })
-          (lib.filterAttrs (_: v: v.enable && v.security != { }) cfg.volumes))
-        (lib.mapAttrs'
-          (name: filerCfg: lib.nameValuePair "seaweedfs/filers/${name}/security.toml" {
+          }
+        ) (lib.filterAttrs (_: v: v.enable && v.security != { }) cfg.volumes))
+        (lib.mapAttrs' (
+          name: filerCfg:
+          lib.nameValuePair "seaweedfs/filers/${name}/security.toml" {
             source = pkgs.writers.writeTOML "security.toml" filerCfg.security;
             user = filerCfg.user;
             group = filerCfg.group;
             mode = "0644";
-          })
-          (lib.filterAttrs (_: v: v.enable && v.security != { }) cfg.filers))
-        (lib.mapAttrs'
-          (name: filerCfg: lib.nameValuePair "seaweedfs/filers/${name}/filer.toml" {
+          }
+        ) (lib.filterAttrs (_: v: v.enable && v.security != { }) cfg.filers))
+        (lib.mapAttrs' (
+          name: filerCfg:
+          lib.nameValuePair "seaweedfs/filers/${name}/filer.toml" {
             source = pkgs.writers.writeTOML "filer.toml" filerCfg.config;
             user = filerCfg.user;
             group = filerCfg.group;
             mode = "0644";
-          })
-          (lib.filterAttrs (_: v: v.enable && v.config != { }) cfg.filers))
+          }
+        ) (lib.filterAttrs (_: v: v.enable && v.config != { }) cfg.filers))
       ];
 
       systemd.tmpfiles.rules = lib.mkMerge [
@@ -359,35 +375,47 @@ in
           "d ${cfg.master.workDir} 0750 ${cfg.master.user} ${cfg.master.group} -"
           "d ${cfg.master.dataDir} 0750 ${cfg.master.user} ${cfg.master.group} -"
         ])
-        (lib.flatten (lib.mapAttrsToList
-          (name: volumeCfg: lib.optionals volumeCfg.enable [
-            "d ${volumeCfg.workDir} 0750 ${volumeCfg.user} ${volumeCfg.group} -"
-            "d ${volumeCfg.dataDir} 0750 ${volumeCfg.user} ${volumeCfg.group} -"
-          ])
-          cfg.volumes))
-        (lib.flatten (lib.mapAttrsToList
-          (name: filerCfg: lib.optionals filerCfg.enable [
-            "d ${filerCfg.workDir} 0750 ${filerCfg.user} ${filerCfg.group} -"
-          ])
-          cfg.filers))
+        (lib.flatten (
+          lib.mapAttrsToList (
+            name: volumeCfg:
+            lib.optionals volumeCfg.enable [
+              "d ${volumeCfg.workDir} 0750 ${volumeCfg.user} ${volumeCfg.group} -"
+              "d ${volumeCfg.dataDir} 0750 ${volumeCfg.user} ${volumeCfg.group} -"
+            ]
+          ) cfg.volumes
+        ))
+        (lib.flatten (
+          lib.mapAttrsToList (
+            name: filerCfg:
+            lib.optionals filerCfg.enable [
+              "d ${filerCfg.workDir} 0750 ${filerCfg.user} ${filerCfg.group} -"
+            ]
+          ) cfg.filers
+        ))
       ];
 
-      networking.firewall.allowedTCPPorts = lib.mkMerge
-        ([
-          (lib.optionals
-            (cfg.master.enable && cfg.master.openFirewall)
-            [ cfg.master.httpPort cfg.master.grpcPort ])
+      networking.firewall.allowedTCPPorts = lib.mkMerge (
+        [
+          (lib.optionals (cfg.master.enable && cfg.master.openFirewall) [
+            cfg.master.httpPort
+            cfg.master.grpcPort
+          ])
         ]
-        ++ (builtins.map
-          (volume: lib.optionals
-            (volume.enable && volume.openFirewall)
-            [ volume.httpPort volume.grpcPort ])
-          (lib.attrValues cfg.volumes))
-        ++ (builtins.map
-          (filer: lib.optionals
-            (filer.enable && filer.openFirewall)
-            [ filer.httpPort filer.grpcPort ])
-          (lib.attrValues cfg.filers)));
+        ++ (builtins.map (
+          volume:
+          lib.optionals (volume.enable && volume.openFirewall) [
+            volume.httpPort
+            volume.grpcPort
+          ]
+        ) (lib.attrValues cfg.volumes))
+        ++ (builtins.map (
+          filer:
+          lib.optionals (filer.enable && filer.openFirewall) [
+            filer.httpPort
+            filer.grpcPort
+          ]
+        ) (lib.attrValues cfg.filers))
+      );
     };
   };
 }

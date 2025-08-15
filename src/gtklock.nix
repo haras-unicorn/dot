@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasMonitor = config.dot.hardware.monitor.enable;
@@ -12,7 +17,10 @@ in
 
     systemd.user.services.gtklock = {
       description = "GTK Lock Service";
-      wantedBy = [ "lock.target" "sleep.target" ];
+      wantedBy = [
+        "lock.target"
+        "sleep.target"
+      ];
       before = [ "sleep.target" ];
       script = "${pkgs.gtklock}/bin/gtklock";
       serviceConfig = {

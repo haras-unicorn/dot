@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # TODO: use instead of waybar
 # TODO: hook up config like with waybar
@@ -14,24 +19,26 @@ let
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
-  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard && hasMouse && hasWayland) {
-    systemd.user.services.eww = {
-      Unit = {
-        Description = "Eww daemon";
-        Requires = "tray.target";
-        PartOf = [ "graphical-session.target" ];
-        After = [ "graphical-session-pre.target" ];
+  branch.homeManagerModule.homeManagerModule =
+    lib.mkIf (hasMonitor && hasKeyboard && hasMouse && hasWayland)
+      {
+        systemd.user.services.eww = {
+          Unit = {
+            Description = "Eww daemon";
+            Requires = "tray.target";
+            PartOf = [ "graphical-session.target" ];
+            After = [ "graphical-session-pre.target" ];
+          };
+          Service.ExecStart = "${package}/bin/eww daemon";
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+
+        home.packages = [
+          package
+        ];
+
+        programs.eww.enable = true;
+        programs.eww.package = package;
+        programs.eww.configDir = ./config;
       };
-      Service.ExecStart = "${package}/bin/eww daemon";
-      Install.WantedBy = [ "graphical-session.target" ];
-    };
-
-    home.packages = [
-      package
-    ];
-
-    programs.eww.enable = true;
-    programs.eww.package = package;
-    programs.eww.configDir = ./config;
-  };
 }

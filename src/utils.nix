@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   run = pkgs.writeShellApplication {
@@ -81,7 +86,8 @@ in
       pkgs.vim
       pkgs.kitty # NOTE: install everywhere for terminal compatibility
       pkgs.xfce.xfce4-terminal
-    ] ++ (lib.optionals config.nixpkgs.config.cudaSupport [
+    ]
+    ++ (lib.optionals config.nixpkgs.config.cudaSupport [
       pkgs.nvtopPackages.full
     ]);
   };

@@ -7,18 +7,20 @@
       allowUnfree = true;
     };
 
-    devShell =
-      pkgs.mkShell {
-        packages = with pkgs; [
+    devShell = pkgs.mkShell {
+      packages =
+        with pkgs;
+        [
           # Nix
           nil
-          nixpkgs-fmt
+          nixfmt-rfc-style
 
           # Scripts
           just
           nushell
           gum
           fzf
+          fd
 
           # Misc
           nodePackages.prettier
@@ -43,13 +45,10 @@
           s3cmd
           deploy-rs
           zstd
-        ] ++ lib.optionals
-          (
-            pkgs.stdenv.hostPlatform.isLinux
-              && pkgs.stdenv.hostPlatform.isx86_64
-          ) [
+        ]
+        ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && pkgs.stdenv.hostPlatform.isx86_64) [
           libguestfs-with-appliance
         ];
-      };
+    };
   };
 }

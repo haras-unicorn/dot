@@ -1,4 +1,10 @@
-{ self, pkgs, lib, config, ... }:
+{
+  self,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # FIXME: ferdium screen sharing and WebRTC
 # NOTE: ferdium outlook - Self Hosted at https://outlook.office.com/mail/
@@ -66,12 +72,14 @@ in
       Service.ExecStart = "${ferdium}/bin/ferdium";
       Install.WantedBy = [ "tray.target" ];
     };
-    xdg.configFile."Ferdium/config/settings.json".text = builtins.toJSON
-      ((builtins.fromJSON (builtins.readFile ./ferdium.json)) // {
+    xdg.configFile."Ferdium/config/settings.json".text = builtins.toJSON (
+      (builtins.fromJSON (builtins.readFile ./ferdium.json))
+      // {
         darkMode = config.stylix.polarity == "dark";
         accentColor = config.lib.stylix.colors.withHashtag.magenta;
         progressbarAccentColor = config.lib.stylix.colors.withHashtag.cyan;
-      });
+      }
+    );
     xdg.configFile."Ferdium/config/window-state.json".text = builtins.toJSON windowState;
     xdg.configFile."Ferdium/window-state.json".text = builtins.toJSON windowState;
 

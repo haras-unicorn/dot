@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # FIXME: https://github.com/NVIDIA/egl-wayland/issues/126#issuecomment-2594012291
 
@@ -7,7 +12,10 @@ let
 
   current-layout = pkgs.writeShellApplication {
     name = "current-layout";
-    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
+    runtimeInputs = [
+      pkgs.hyprland
+      pkgs.jq
+    ];
     text = ''
       hyprctl devices -j | \
         jq -r '.keyboards[] | select(.name | contains("power") | not) | .active_keymap' | \
@@ -17,7 +25,10 @@ let
 
   switch-layout = pkgs.writeShellApplication {
     name = "switch-layout";
-    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
+    runtimeInputs = [
+      pkgs.hyprland
+      pkgs.jq
+    ];
     text = ''
       hyprctl devices -j | \
         jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
@@ -27,31 +38,28 @@ let
     '';
   };
 
-  vars = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (name: "env = ${name}, ${builtins.toString cfg.sessionVariables."${name}"}")
-      (builtins.attrNames cfg.sessionVariables));
+  vars = lib.strings.concatStringsSep "\n" (
+    builtins.map (name: "env = ${name}, ${builtins.toString cfg.sessionVariables."${name}"}") (
+      builtins.attrNames cfg.sessionVariables
+    )
+  );
 
-  startup = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (command: "exec-once = ${builtins.toString command}")
-      cfg.sessionStartup);
+  startup = lib.strings.concatStringsSep "\n" (
+    builtins.map (command: "exec-once = ${builtins.toString command}") cfg.sessionStartup
+  );
 
-  binds = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (bind: "bind = ${lib.strings.concatStringsSep " " bind.mods}, ${bind.key}, exec, ${bind.command}")
-      cfg.keybinds);
+  binds = lib.strings.concatStringsSep "\n" (
+    builtins.map (
+      bind: "bind = ${lib.strings.concatStringsSep " " bind.mods}, ${bind.key}, exec, ${bind.command}"
+    ) cfg.keybinds
+  );
 
-  windowrules = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (windowrule: "windowrulev2 ="
-        + " ${windowrule.rule}"
-        + ", ${windowrule.selector}:(${windowrule.arg})")
-      cfg.windowrules);
+  windowrules = lib.strings.concatStringsSep "\n" (
+    builtins.map (
+      windowrule:
+      "windowrulev2 =" + " ${windowrule.rule}" + ", ${windowrule.selector}:(${windowrule.arg})"
+    ) cfg.windowrules
+  );
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
@@ -100,7 +108,7 @@ in
     wayland.windowManager.hyprland.extraConfig = ''
       monitor = , preferred, auto, 1
       monitor = ${config.dot.hardware.monitor.main}, highrr, auto, 1
-  
+
       ${builtins.readFile ./hyprland.conf}
 
       bind = super, space, exec, ${switch-layout}/bin/switch-layout
@@ -120,4 +128,3 @@ in
     '';
   };
 }
-

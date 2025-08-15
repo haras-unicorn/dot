@@ -47,29 +47,33 @@
   };
 
   outputs =
-    { perch, nixos-facter-modules, ... } @ rawInputs:
+    { perch, nixos-facter-modules, ... }@rawInputs:
     let
       inputs = rawInputs // {
-        nixos-facter-modules = nixos-facter-modules // (
-          let
-            hmModule = ({ config, lib, ... }: {
-              options.facter = {
-                report = lib.mkOption {
-                  type = lib.types.raw;
-                  default = builtins.fromJSON
-                    (builtins.readFile config.facter.reportPath);
-                };
+        nixos-facter-modules =
+          nixos-facter-modules
+          // (
+            let
+              hmModule = (
+                { config, lib, ... }:
+                {
+                  options.facter = {
+                    report = lib.mkOption {
+                      type = lib.types.raw;
+                      default = builtins.fromJSON (builtins.readFile config.facter.reportPath);
+                    };
 
-                reportPath = lib.mkOption {
-                  type = lib.types.path;
-                };
-              };
-            });
-          in
-          {
-            hmModules.facter = hmModule;
-          }
-        );
+                    reportPath = lib.mkOption {
+                      type = lib.types.path;
+                    };
+                  };
+                }
+              );
+            in
+            {
+              hmModules.facter = hmModule;
+            }
+          );
       };
     in
     perch.lib.flake.make {

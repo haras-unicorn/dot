@@ -15,7 +15,10 @@ let
 
   banner = pkgs.writeShellApplication {
     name = "motd-banner";
-    runtimeInputs = [ pkgs.curl pkgs.jq ];
+    runtimeInputs = [
+      pkgs.curl
+      pkgs.jq
+    ];
     text = ''
       printf "${dot}\n"
       printf "Welcome to ${host}, ${user}~ <3\n"

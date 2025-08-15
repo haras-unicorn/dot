@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasNetwork = config.dot.hardware.network.enable;
@@ -13,14 +18,15 @@ let
   serfWanPort = 8302;
   grpcTlsPort = 8503;
   dnsPort = 53;
-  hosts = builtins.map
-    (x: x.ip)
-    (builtins.filter
-      (x:
-        if lib.hasAttrByPath [ "system" "dot" "consul" "coordinator" ] x
-        then x.system.dot.consul.coordinator
-        else false)
-      config.dot.hosts);
+  hosts = builtins.map (x: x.ip) (
+    builtins.filter (
+      x:
+      if lib.hasAttrByPath [ "system" "dot" "consul" "coordinator" ] x then
+        x.system.dot.consul.coordinator
+      else
+        false
+    ) config.dot.hosts
+  );
   firstHost = builtins.head hosts;
   consoleAddress = "https://${firstHost}:${builtins.toString port}";
   retryJoinHosts = builtins.filter (x: x != config.dot.host.ip) hosts;
@@ -34,8 +40,8 @@ in
     xdg.desktopEntries = lib.mkIf hasMonitor {
       consul = {
         name = "Consul";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin}"
-          + " --new-window ${consoleAddress}";
+        exec =
+          "${config.dot.browser.package}/bin/${config.dot.browser.bin}" + " --new-window ${consoleAddress}";
         terminal = false;
       };
     };
@@ -60,8 +66,14 @@ in
       (lib.mkIf (hasNetwork && config.dot.consul.coordinator) {
         networking.nameservers = [ "127.0.0.1" ];
 
-        systemd.services.consul.after = [ "vpn-online.target" "time-synced.target" ];
-        systemd.services.consul.requires = [ "vpn-online.target" "time-synced.target" ];
+        systemd.services.consul.after = [
+          "vpn-online.target"
+          "time-synced.target"
+        ];
+        systemd.services.consul.requires = [
+          "vpn-online.target"
+          "time-synced.target"
+        ];
 
         services.consul.enable = true;
         services.consul.webUi = true;
@@ -129,20 +141,22 @@ in
           services = config.dot.consul.services;
         };
 
-        dot.consul.services = [{
-          name = "consul-ui";
-          port = port;
-          address = config.dot.host.ip;
-          tags = [
-            "dot.enable=true"
-            "dot.http.services.consul-ui.loadbalancer.server.scheme=https"
-          ];
-          check = {
-            http = "https://${config.dot.host.ip}:${builtins.toString port}/v1/status/leader";
-            interval = "30s";
-            timeout = "10s";
-          };
-        }];
+        dot.consul.services = [
+          {
+            name = "consul-ui";
+            port = port;
+            address = config.dot.host.ip;
+            tags = [
+              "dot.enable=true"
+              "dot.http.services.consul-ui.loadbalancer.server.scheme=https"
+            ];
+            check = {
+              http = "https://${config.dot.host.ip}:${builtins.toString port}/v1/status/leader";
+              interval = "30s";
+              timeout = "10s";
+            };
+          }
+        ];
 
         services.consul.extraConfigFiles = [
           config.sops.secrets."consul-config".path

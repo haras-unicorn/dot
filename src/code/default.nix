@@ -1,9 +1,10 @@
-{ pkgs
-, self
-, config
-, lib
-, nix-vscode-extensions
-, ...
+{
+  pkgs,
+  self,
+  config,
+  lib,
+  nix-vscode-extensions,
+  ...
 }:
 
 # TODO: extensions in projects
@@ -19,7 +20,10 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard) {
-    dot.visual = { inherit package; bin = "code"; };
+    dot.visual = {
+      inherit package;
+      bin = "code";
+    };
 
     nixpkgs.overlays = [
       nix-vscode-extensions.overlays.default

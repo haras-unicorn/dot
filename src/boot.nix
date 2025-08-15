@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 # TODO: grub theming
 
@@ -10,9 +15,7 @@ let
       version = config.dot.hardware.graphics.version;
       driver = config.dot.hardware.graphics.driver;
     in
-    driver == "nvidia"
-    && ((version != "latest")
-    && (version != "production"));
+    driver == "nvidia" && ((version != "latest") && (version != "production"));
 in
 {
   branch.nixosModule.nixosModule = {
@@ -24,14 +27,15 @@ in
     boot.loader.generic-extlinux-compatible.enable = isRpi4;
 
     boot.binfmt.preferStaticEmulators = true;
-    boot.binfmt.emulatedSystems = (lib.mkIf
-      (pkgs.system == "x86_64-linux")
-      [ "aarch64-linux" ]);
+    boot.binfmt.emulatedSystems = (lib.mkIf (pkgs.system == "x86_64-linux") [ "aarch64-linux" ]);
 
     boot.kernelPackages =
-      if isRpi4 then pkgs.linuxKernel.packages.linux_rpi4
-      else if isLegacyNvidia then pkgs.linuxKernel.packages.linux_6_6
-      else pkgs.linuxPackages_zen;
+      if isRpi4 then
+        pkgs.linuxKernel.packages.linux_rpi4
+      else if isLegacyNvidia then
+        pkgs.linuxKernel.packages.linux_6_6
+      else
+        pkgs.linuxPackages_zen;
 
     boot.initrd.systemd.enable = lib.mkIf hasMonitor true;
     boot.initrd.verbose = lib.mkIf hasMonitor false;

@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   user = config.dot.user;
@@ -19,7 +24,10 @@ in
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
     dot.desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
       {
-        mods = [ "super" "shift" ];
+        mods = [
+          "super"
+          "shift"
+        ];
         key = "b";
         command = ''${pkgs.brightnessctl}/bin/brightnessctl set +2%'';
       }

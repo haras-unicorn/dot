@@ -1,4 +1,10 @@
-{ config, self, pkgs, lib, ... }:
+{
+  config,
+  self,
+  pkgs,
+  lib,
+  ...
+}:
 
 # FIXME: hardware acceleration
 
@@ -10,23 +16,21 @@ let
     "--use-gl=egl"
   ];
 
-  flags = builtins.concatStringsSep
-    " "
-    (builtins.map
-      (x: "--append-flags ${x}")
-      args);
+  flags = builtins.concatStringsSep " " (builtins.map (x: "--append-flags ${x}") args);
 
   hasMonitor = config.dot.hardware.monitor.enable;
 
   package = self.lib.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
 in
 {
-  flake.lib.chromium.wrap = pkgs: package: bin: pkgs.symlinkJoin {
-    name = bin;
-    paths = [ package ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''wrapProgram $out/bin/${bin} ${flags}'';
-  };
+  flake.lib.chromium.wrap =
+    pkgs: package: bin:
+    pkgs.symlinkJoin {
+      name = bin;
+      paths = [ package ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''wrapProgram $out/bin/${bin} ${flags}'';
+    };
 
   flake.lib.chromium.args = builtins.concatStringsSep " " args;
 

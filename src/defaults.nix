@@ -1,4 +1,9 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 
 let
   terminal = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
@@ -54,9 +59,18 @@ in
           example = "nu";
         };
         sessionVariables = lib.mkOption {
-          type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+          type =
+            with lib.types;
+            lazyAttrsOf (oneOf [
+              str
+              path
+              int
+              float
+            ]);
           default = { };
-          example = { EDITOR = "hx"; };
+          example = {
+            EDITOR = "hx";
+          };
           description = ''
             Environment variables to set on session start with Nushell.
           '';
@@ -64,7 +78,9 @@ in
         aliases = lib.mkOption {
           type = with lib.types; lazyAttrsOf str;
           default = { };
-          example = { rm = "rm -i"; };
+          example = {
+            rm = "rm -i";
+          };
           description = ''
             Aliases to use in Nushell.
           '';
@@ -102,9 +118,18 @@ in
           example = "alacritty";
         };
         sessionVariables = lib.mkOption {
-          type = with lib.types; lazyAttrsOf (oneOf [ str path int float ]);
+          type =
+            with lib.types;
+            lazyAttrsOf (oneOf [
+              str
+              path
+              int
+              float
+            ]);
           default = { };
-          example = { EDITOR = "hx"; };
+          example = {
+            EDITOR = "hx";
+          };
           description = ''
             Environment variables to set with kitty.
           '';
@@ -138,16 +163,20 @@ in
 
     config = {
       dot.desktopEnvironment.keybinds = lib.mkMerge [
-        (lib.mkIf hasMonitor [{
-          mods = [ "super" ];
-          key = "w";
-          command = "${browser}";
-        }])
-        (lib.mkIf (hasMonitor && hasKeyboard) [{
-          mods = [ "super" ];
-          key = "t";
-          command = "${terminal} ${shell}";
-        }])
+        (lib.mkIf hasMonitor [
+          {
+            mods = [ "super" ];
+            key = "w";
+            command = "${browser}";
+          }
+        ])
+        (lib.mkIf (hasMonitor && hasKeyboard) [
+          {
+            mods = [ "super" ];
+            key = "t";
+            command = "${terminal} ${shell}";
+          }
+        ])
       ];
       home.packages = [
         pkgs.xdg-user-dirs

@@ -11,13 +11,15 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasBluetooth && hasMonitor) {
-    dot.desktopEnvironment.windowrules = [{
-      rule = "float";
-      selector = "class";
-      xselector = "wm_class";
-      arg = ".blueman-manager-wrapped";
-      xarg = ".blueman-manager-wrapped";
-    }];
+    dot.desktopEnvironment.windowrules = [
+      {
+        rule = "float";
+        selector = "class";
+        xselector = "wm_class";
+        arg = ".blueman-manager-wrapped";
+        xarg = ".blueman-manager-wrapped";
+      }
+    ];
 
     services.blueman-applet.enable = true;
   };

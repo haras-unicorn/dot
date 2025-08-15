@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasNetwork = config.dot.hardware.network.enable;
@@ -6,14 +11,15 @@ let
   httpsPort = 443;
   # NOTE: not on "localhost" because resolved has "127.0.0.53:53"
   consulEndpoint = "${config.dot.host.ip}:8500";
-  hosts = builtins.map
-    (x: x.ip)
-    (builtins.filter
-      (x:
-        if lib.hasAttrByPath [ "system" "dot" "traefik" "coordinator" ] x
-        then x.system.dot.traefik.coordinator
-        else false)
-      config.dot.hosts);
+  hosts = builtins.map (x: x.ip) (
+    builtins.filter (
+      x:
+      if lib.hasAttrByPath [ "system" "dot" "traefik" "coordinator" ] x then
+        x.system.dot.traefik.coordinator
+      else
+        false
+    ) config.dot.hosts
+  );
   firstHost = builtins.head hosts;
   dashboardAddress = "https://${firstHost}";
 in
@@ -26,8 +32,8 @@ in
     xdg.desktopEntries = lib.mkIf hasMonitor {
       traefik = {
         name = "Traefik Dashboard";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin}"
-          + " --new-window ${dashboardAddress}";
+        exec =
+          "${config.dot.browser.package}/bin/${config.dot.browser.bin}" + " --new-window ${dashboardAddress}";
         terminal = false;
       };
     };
@@ -80,7 +86,8 @@ in
 
           routers = {
             dashboard = {
-              rule = "Host(`traefik.service.consul`)"
+              rule =
+                "Host(`traefik.service.consul`)"
                 + " && (PathPrefix(`/api`) || PathPrefix(`/dashboard`) || Path(`/`))";
               entryPoints = [ "websecure" ];
               service = "api@internal";
@@ -135,16 +142,18 @@ in
         };
       };
 
-      dot.consul.services = [{
-        name = "traefik";
-        port = httpsPort;
-        address = config.dot.host.ip;
-        check = {
-          tcp = "${config.dot.host.ip}:${builtins.toString httpsPort}";
-          interval = "30s";
-          timeout = "10s";
-        };
-      }];
+      dot.consul.services = [
+        {
+          name = "traefik";
+          port = httpsPort;
+          address = config.dot.host.ip;
+          check = {
+            tcp = "${config.dot.host.ip}:${builtins.toString httpsPort}";
+            interval = "30s";
+            timeout = "10s";
+          };
+        }
+      ];
 
       networking.firewall.allowedTCPPorts = [
         httpsPort

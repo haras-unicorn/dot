@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
 # FIXME: colors import
@@ -13,7 +18,10 @@ let
 
   current-layout = pkgs.writeShellApplication {
     name = "niri-current-layout";
-    runtimeInputs = [ pkgs.niri pkgs.jq ];
+    runtimeInputs = [
+      pkgs.niri
+      pkgs.jq
+    ];
     text = ''
       # hyprctl devices -j | \
       #   jq -r '.keyboards[] | select(.name | contains("power") | not) | .active_keymap' | \
@@ -23,7 +31,10 @@ let
 
   switch-layout = pkgs.writeShellApplication {
     name = "niri-switch-layout";
-    runtimeInputs = [ pkgs.niri pkgs.jq ];
+    runtimeInputs = [
+      pkgs.niri
+      pkgs.jq
+    ];
     text = ''
       # hyprctl devices -j | \
       #   jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
@@ -33,45 +44,47 @@ let
     '';
   };
 
-  capitalize = x: builtins.foldl'
-    (char: string: char + string)
-    ""
-    (pkgs.lib.lists.imap0
-      (i: x: if i == 0 then (pkgs.lib.strings.toUpper x) else x)
-      (pkgs.lib.strings.stringToCharacters x));
+  capitalize =
+    x:
+    builtins.foldl' (char: string: char + string) "" (
+      pkgs.lib.lists.imap0 (i: x: if i == 0 then (pkgs.lib.strings.toUpper x) else x) (
+        pkgs.lib.strings.stringToCharacters x
+      )
+    );
 
-  vars = lib.strings.concatStringsSep
-    "\n  "
-    (builtins.map
-      (name: "${name} \"${builtins.toString cfg.sessionVariables."${name}"}\"")
-      (builtins.attrNames cfg.sessionVariables));
+  vars = lib.strings.concatStringsSep "\n  " (
+    builtins.map (name: "${name} \"${builtins.toString cfg.sessionVariables."${name}"}\"") (
+      builtins.attrNames cfg.sessionVariables
+    )
+  );
 
-  startup = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (command: "spawn-at-startup \"${builtins.toString command}\"")
-      cfg.sessionStartup);
+  startup = lib.strings.concatStringsSep "\n" (
+    builtins.map (command: "spawn-at-startup \"${builtins.toString command}\"") cfg.sessionStartup
+  );
 
-  binds = lib.strings.concatStringsSep
-    "\n  "
-    (builtins.map
-      (bind:
-        let
-          mods = builtins.map
-            (mod:
-              if mod == "super" then "Mod"
-              else if mod == "alt" then "Alt"
-              else if mod == "ctrl" then "Ctrl"
-              else if mod == "shift" then "Shift"
-              else mod)
-            bind.mods;
-          key = lib.strings.toUpper bind.key;
-        in
-        "${lib.strings.concatStringsSep "+" (mods ++ [(capitalize key)])}"
-        + " { spawn \"${lib.strings.concatStringsSep
-          "\" \""
-          (lib.strings.splitString " " bind.command)}\"; }")
-      cfg.keybinds);
+  binds = lib.strings.concatStringsSep "\n  " (
+    builtins.map (
+      bind:
+      let
+        mods = builtins.map (
+          mod:
+          if mod == "super" then
+            "Mod"
+          else if mod == "alt" then
+            "Alt"
+          else if mod == "ctrl" then
+            "Ctrl"
+          else if mod == "shift" then
+            "Shift"
+          else
+            mod
+        ) bind.mods;
+        key = lib.strings.toUpper bind.key;
+      in
+      "${lib.strings.concatStringsSep "+" (mods ++ [ (capitalize key) ])}"
+      + " { spawn \"${lib.strings.concatStringsSep "\" \"" (lib.strings.splitString " " bind.command)}\"; }"
+    ) cfg.keybinds
+  );
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
@@ -97,7 +110,7 @@ in
       output "${config.dot.hardware.monitor.main}" {
         variable-refresh-rate
       }
-  
+
       ${builtins.readFile ./config.kdl}
         
       cursor {
@@ -121,4 +134,3 @@ in
     '';
   };
 }
-

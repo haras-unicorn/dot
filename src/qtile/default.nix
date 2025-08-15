@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
 # WORKAROUND: these commands on de startup
@@ -15,7 +20,10 @@ let
 
   current-layout = pkgs.writeShellApplication {
     name = "current-layout";
-    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
+    runtimeInputs = [
+      pkgs.hyprland
+      pkgs.jq
+    ];
     text = ''
       # hyprctl devices -j | \
       #   jq -r '.keyboards[] | select(.name | contains("power") | not) | .active_keymap' | \
@@ -25,7 +33,10 @@ let
 
   switch-layout = pkgs.writeShellApplication {
     name = "switch-layout";
-    runtimeInputs = [ pkgs.hyprland pkgs.jq ];
+    runtimeInputs = [
+      pkgs.hyprland
+      pkgs.jq
+    ];
     text = ''
       # hyprctl devices -j | \
       #   jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
@@ -40,61 +51,54 @@ let
     def startup_once():
         lazy.spawn("systemctl --user import-environment PATH")
         lazy.spawn("systemctl --user restart xdg-desktop-portal.service")
-  '' + (lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (command: "    lazy.spawn(\"${builtins.toString command}\")")
-      cfg.sessionStartup));
+  ''
+  + (lib.strings.concatStringsSep "\n" (
+    builtins.map (command: "    lazy.spawn(\"${builtins.toString command}\")") cfg.sessionStartup
+  ));
 
-  vars = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (name: ''
-        os.environ["${name}"] = "${builtins.toString cfg.sessionVariables."${name}"}"
-      '')
-      (builtins.attrNames cfg.sessionVariables));
+  vars = lib.strings.concatStringsSep "\n" (
+    builtins.map (name: ''
+      os.environ["${name}"] = "${builtins.toString cfg.sessionVariables."${name}"}"
+    '') (builtins.attrNames cfg.sessionVariables)
+  );
 
-  binds = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (bind:
-        let
-          mods = builtins.map
-            (mod:
-              if mod == "super" then
-                "mod4"
-              else if mod == "alt" then
-                "mod1"
-              else if mod == "ctrl" then
-                "control"
-              else
-                mod)
-            bind.mods;
+  binds = lib.strings.concatStringsSep "\n" (
+    builtins.map (
+      bind:
+      let
+        mods = builtins.map (
+          mod:
+          if mod == "super" then
+            "mod4"
+          else if mod == "alt" then
+            "mod1"
+          else if mod == "ctrl" then
+            "control"
+          else
+            mod
+        ) bind.mods;
 
-          modString =
-            if (builtins.length mods) == 0 then
-              ""
-            else
-              ''"${lib.strings.concatStringsSep ''", "'' mods}"'';
-        in
-        ''
-          keys.append(
-              Key(
-                  [${modString}],
-                  "${bind.key}",
-                  lazy.spawn("${bind.command}")
-              )
-          )
-        '')
-      cfg.keybinds);
+        modString =
+          if (builtins.length mods) == 0 then "" else ''"${lib.strings.concatStringsSep ''", "'' mods}"'';
+      in
+      ''
+        keys.append(
+            Key(
+                [${modString}],
+                "${bind.key}",
+                lazy.spawn("${bind.command}")
+            )
+        )
+      ''
+    ) cfg.keybinds
+  );
 
-  windowrules = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (windowrule: "floating_layout.float_rules.append(Match(${windowrule.xselector}=\"${windowrule.xarg}\"))")
-      (builtins.filter
-        (windowrule: windowrule.rule == "float")
-        cfg.windowrules));
+  windowrules = lib.strings.concatStringsSep "\n" (
+    builtins.map (
+      windowrule:
+      "floating_layout.float_rules.append(Match(${windowrule.xselector}=\"${windowrule.xarg}\"))"
+    ) (builtins.filter (windowrule: windowrule.rule == "float") cfg.windowrules)
+  );
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;

@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # TODO: HA SSL
 
@@ -10,14 +15,15 @@ let
   certs = "/etc/vault/certs";
   port = 8200;
   clusterPort = 8201;
-  hosts = builtins.map
-    (x: x.ip)
-    (builtins.filter
-      (x:
-        if lib.hasAttrByPath [ "system" "dot" "vault" "coordinator" ] x
-        then x.system.dot.vault.coordinator
-        else false)
-      config.dot.hosts);
+  hosts = builtins.map (x: x.ip) (
+    builtins.filter (
+      x:
+      if lib.hasAttrByPath [ "system" "dot" "vault" "coordinator" ] x then
+        x.system.dot.vault.coordinator
+      else
+        false
+    ) config.dot.hosts
+  );
   firstHost = builtins.head hosts;
   consoleAddress = "${firstHost}:${builtins.toString port}";
 in
@@ -30,8 +36,8 @@ in
     xdg.desktopEntries = lib.mkIf hasMonitor {
       vault = {
         name = "Vault";
-        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin}"
-          + " --new-window ${consoleAddress}";
+        exec =
+          "${config.dot.browser.package}/bin/${config.dot.browser.bin}" + " --new-window ${consoleAddress}";
         terminal = false;
       };
     };
@@ -58,26 +64,32 @@ in
       '';
       services.vault.extraSettingsPaths = [ config.sops.secrets."vault-settings".path ];
 
-      networking.firewall.allowedTCPPorts = [ clusterPort port ];
+      networking.firewall.allowedTCPPorts = [
+        clusterPort
+        port
+      ];
 
       systemd.services.vault.requires = [ "cockroachdb-init.service" ];
       systemd.services.vault.after = [ "cockroachdb-init.service" ];
       services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vault-init".path ];
 
-      dot.consul.services = [{
-        name = "vault";
-        port = port;
-        address = config.dot.host.ip;
-        tags = [
-          "dot.enable=true"
-        ];
-        check = {
-          http = "http://${config.dot.host.ip}:${toString port}/v1/sys/health"
-            + "?standbyok=true&perfstandbyok=true";
-          interval = "30s";
-          timeout = "10s";
-        };
-      }];
+      dot.consul.services = [
+        {
+          name = "vault";
+          port = port;
+          address = config.dot.host.ip;
+          tags = [
+            "dot.enable=true"
+          ];
+          check = {
+            http =
+              "http://${config.dot.host.ip}:${toString port}/v1/sys/health"
+              + "?standbyok=true&perfstandbyok=true";
+            interval = "30s";
+            timeout = "10s";
+          };
+        }
+      ];
 
       programs.rust-motd.settings = {
         service_status = {
@@ -198,7 +210,8 @@ in
             };
             template =
               let
-                databaseUrl = "postgresql://${vaultUser}:{{COCKROACH_VAULT_PASS}}@localhost"
+                databaseUrl =
+                  "postgresql://${vaultUser}:{{COCKROACH_VAULT_PASS}}@localhost"
                   + ":${builtins.toString config.services.cockroachdb.listen.port}"
                   + "/vault"
                   + "?sslmode=verify-full"

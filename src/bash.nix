@@ -1,27 +1,30 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # TODO: prompt after starship like nushell
 
 let
   cfg = config.dot.shell;
 
-  vars = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (name: ''export ${name}="$(${builtins.toString cfg.sessionVariables."${name}"})"'')
-      (builtins.attrNames cfg.sessionVariables));
+  vars = lib.strings.concatStringsSep "\n" (
+    builtins.map (name: ''export ${name}="$(${builtins.toString cfg.sessionVariables."${name}"})"'') (
+      builtins.attrNames cfg.sessionVariables
+    )
+  );
 
-  aliases = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (name: ''alias ${name}="${builtins.toString cfg.aliases."${name}"}"'')
-      (builtins.attrNames cfg.aliases));
+  aliases = lib.strings.concatStringsSep "\n" (
+    builtins.map (name: ''alias ${name}="${builtins.toString cfg.aliases."${name}"}"'') (
+      builtins.attrNames cfg.aliases
+    )
+  );
 
-  startup = lib.strings.concatStringsSep
-    "\n"
-    (builtins.map
-      (command: "${builtins.toString command}")
-      cfg.sessionStartup);
+  startup = lib.strings.concatStringsSep "\n" (
+    builtins.map (command: "${builtins.toString command}") cfg.sessionStartup
+  );
 in
 {
   branch.nixosModule.nixosModule = {
@@ -41,11 +44,13 @@ in
 
     programs.helix.languages =
       let
-        bash-language-server = pkgs.nodePackages.bash-language-server.overrideAttrs (final: prev: {
-          buildInputs = (prev.buildInputs or [ ]) ++ [
-            pkgs.shellcheck
-          ];
-        });
+        bash-language-server = pkgs.nodePackages.bash-language-server.overrideAttrs (
+          final: prev: {
+            buildInputs = (prev.buildInputs or [ ]) ++ [
+              pkgs.shellcheck
+            ];
+          }
+        );
       in
       {
         language-server.bash-language-server = {
@@ -53,14 +58,16 @@ in
           args = [ "start" ];
         };
 
-        language = [{
-          name = "bash";
-          language-servers = [ "bash-language-server" ];
-          formatter = {
-            command = "${pkgs.shfmt}/bin/shfmt";
-          };
-          auto-format = true;
-        }];
+        language = [
+          {
+            name = "bash";
+            language-servers = [ "bash-language-server" ];
+            formatter = {
+              command = "${pkgs.shfmt}/bin/shfmt";
+            };
+            auto-format = true;
+          }
+        ];
       };
 
     programs.direnv.enableBashIntegration = true;

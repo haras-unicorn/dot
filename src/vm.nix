@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 # NOTE: https://github.com/quickemu-project/quickemu/issues/1475#issuecomment-2639232863
 # NOTE: put this in the windows-11.conf
@@ -43,7 +48,11 @@ in
       };
     };
 
-    users.users.${user}.extraGroups = [ "libvirtd" "kvm" "input" ];
+    users.users.${user}.extraGroups = [
+      "libvirtd"
+      "kvm"
+      "input"
+    ];
 
     programs.dconf.enable = true;
 

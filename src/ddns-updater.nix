@@ -16,8 +16,7 @@ in
     config = lib.mkIf (hasNetwork && isCoordinator) {
       services.ddns-updater.enable = true;
       services.ddns-updater.environment = {
-        CONFIG_FILEPATH =
-          config.sops.secrets."ddns-updater-duckdns-nebula".path;
+        CONFIG_FILEPATH = config.sops.secrets."ddns-updater-duckdns-nebula".path;
         PERIOD = "5m";
       };
       users.users.ddns-updater = {
@@ -41,13 +40,15 @@ in
       };
 
       rumor.sops = [ "ddns-updater-duckdns-nebula" ];
-      rumor.specification.imports = [{
-        importer = "vault-file";
-        arguments = {
-          path = "kv/dot/shared";
-          file = "ddns-updater-duckdns-nebula";
-        };
-      }];
+      rumor.specification.imports = [
+        {
+          importer = "vault-file";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "ddns-updater-duckdns-nebula";
+          };
+        }
+      ];
     };
   };
 }

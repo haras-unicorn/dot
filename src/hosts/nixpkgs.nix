@@ -1,4 +1,11 @@
-{ pkgs, config, lib, nixpkgs-unstable, nixpkgs-ai, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  nixpkgs-unstable,
+  nixpkgs-ai,
+  ...
+}:
 
 let
   host = config.dot.host;
@@ -100,21 +107,22 @@ let
     nixpkgs.config = {
       allowUnfree = true;
       nvidia.acceptLicense = config.dot.hardware.graphics.driver == "nvidia";
-      cudaSupport = (config.dot.hardware.graphics.driver == "nvidia")
-        && ((config.dot.hardware.graphics.version == "latest")
-        || (config.dot.hardware.graphics.version == "production"));
+      cudaSupport =
+        (config.dot.hardware.graphics.driver == "nvidia")
+        && (
+          (config.dot.hardware.graphics.version == "latest")
+          || (config.dot.hardware.graphics.version == "production")
+        );
       rocmSupport =
         # NOTE: lots of packages broken right now
         # config.dot.hardware.graphics.driver == "amdgpu"
-        false
-      ;
+        false;
     };
 
     nixpkgs.overlays = lib.mkIf config.dot.hardware.rpi."4".enable [
       (final: prev: {
-        # NOTE: https://github.com/NixOS/nixpkgs/issues/154163#issuecomment-1008362877  
-        makeModulesClosure = x: prev.makeModulesClosure
-          (x // { allowMissing = true; });
+        # NOTE: https://github.com/NixOS/nixpkgs/issues/154163#issuecomment-1008362877
+        makeModulesClosure = x: prev.makeModulesClosure (x // { allowMissing = true; });
       })
     ];
   };

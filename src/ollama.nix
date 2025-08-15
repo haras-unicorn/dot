@@ -1,4 +1,11 @@
-{ self, aiPkgs, pkgs, lib, config, ... }:
+{
+  self,
+  aiPkgs,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasGpu = config.nixpkgs.config.cudaSupport || config.nixpkgs.config.rocmSupport;

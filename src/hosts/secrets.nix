@@ -1,4 +1,9 @@
-{ lib, config, perch, ... }:
+{
+  lib,
+  config,
+  perch,
+  ...
+}:
 
 let
   importsOption = lib.mkOption {
@@ -41,9 +46,7 @@ let
 in
 {
   options.seal.rumor.specifications = lib.mkOption {
-    type =
-      lib.types.attrsOf
-        (lib.types.submodule specificationSubmodule);
+    type = lib.types.attrsOf (lib.types.submodule specificationSubmodule);
     default = { };
     description = lib.literalMD ''
       Rumor specifications.
@@ -58,9 +61,7 @@ in
   };
 
   options.propagate.rumor = lib.mkOption {
-    type =
-      lib.types.attrsOf
-        (lib.types.submodule specificationSubmodule);
+    type = lib.types.attrsOf (lib.types.submodule specificationSubmodule);
     default = { };
     description = lib.literalMD ''
       Rumor specifications.
@@ -85,92 +86,102 @@ in
   };
 
   config.propagate.rumor =
-    if !config.seal.defaults.nixosConfigurationsAsRumor
-    then { }
+    if !config.seal.defaults.nixosConfigurationsAsRumor then
+      { }
     else
       let
-        systemsFor = configuration:
-          builtins.filter
-            ({ value, ... }: value != null)
-            (builtins.map
-              (system:
-                let
-                  name = "${configuration}-${system}";
-                in
-                {
-                  inherit configuration system name;
-                  value =
-                    if config.flake.nixosConfigurations ? ${name}
-                    then config.flake.nixosConfigurations.${name}
-                    else null;
-                })
-              perch.lib.defaults.systems);
+        systemsFor =
+          configuration:
+          builtins.filter ({ value, ... }: value != null) (
+            builtins.map (
+              system:
+              let
+                name = "${configuration}-${system}";
+              in
+              {
+                inherit configuration system name;
+                value =
+                  if config.flake.nixosConfigurations ? ${name} then
+                    config.flake.nixosConfigurations.${name}
+                  else
+                    null;
+              }
+            ) perch.lib.defaults.systems
+          );
       in
-      builtins.listToAttrs
-        (lib.flatten
-          (builtins.map
-            ({ configuration, submodule }:
-              builtins.map
-                ({ name, system, value, ... }: {
+      builtins.listToAttrs (
+        lib.flatten (
+          builtins.map
+            (
+              { configuration, submodule }:
+              builtins.map (
+                {
+                  name,
+                  system,
+                  value,
+                  ...
+                }:
+                {
                   inherit name;
                   value = {
-                    imports = submodule.imports
-                      ++ value.config.rumor.specification.imports;
-                    generations = submodule.generations
+                    imports = submodule.imports ++ value.config.rumor.specification.imports;
+                    generations =
+                      submodule.generations
                       ++ value.config.rumor.specification.generations
                       ++ [
-                      {
-                        generator = "age";
-                        arguments = {
-                          private = "age-private";
-                          public = "age-public";
-                        };
-                      }
-                      {
-                        generator = "sops";
-                        arguments = {
-                          renew = true;
-                          age = "age-public";
-                          private = "sops-private";
-                          public = "sops-public";
-                          secrets =
-                            builtins.listToAttrs
-                              (builtins.map
-                                (file: {
-                                  name = file;
-                                  value = file;
-                                })
-                                value.config.rumor.sops);
-                        };
-                      }
-                    ];
-                    exports = submodule.exports
+                        {
+                          generator = "age";
+                          arguments = {
+                            private = "age-private";
+                            public = "age-public";
+                          };
+                        }
+                        {
+                          generator = "sops";
+                          arguments = {
+                            renew = true;
+                            age = "age-public";
+                            private = "sops-private";
+                            public = "sops-public";
+                            secrets = builtins.listToAttrs (
+                              builtins.map (file: {
+                                name = file;
+                                value = file;
+                              }) value.config.rumor.sops
+                            );
+                          };
+                        }
+                      ];
+                    exports =
+                      submodule.exports
                       ++ value.config.rumor.specification.exports
-                      ++ [{
-                      exporter = "copy";
-                      arguments = {
-                        from = "sops-public";
-                        to = "../${config.seal.rumor.sopsDir}/${configuration}.yaml";
-                      };
-                    }];
+                      ++ [
+                        {
+                          exporter = "copy";
+                          arguments = {
+                            from = "sops-public";
+                            to = "../${config.seal.rumor.sopsDir}/${configuration}.yaml";
+                          };
+                        }
+                      ];
                   };
-                })
-                (systemsFor configuration))
-            (lib.mapAttrsToList
-              (name: value: {
+                }
+              ) (systemsFor configuration)
+            )
+            (
+              lib.mapAttrsToList (name: value: {
                 configuration = name;
                 submodule = value;
-              })
-              config.seal.rumor.specifications)));
+              }) config.seal.rumor.specifications
+            )
+        )
+      );
 
   # TODO: pkgs.runCommand with rumor validate
-  config.flake.checks =
-    builtins.listToAttrs
-      (builtins.map
-        (system:
-          {
-            name = system;
-            value = { };
-          })
-        perch.lib.defaults.systems);
+  config.flake.checks = builtins.listToAttrs (
+    builtins.map (system: {
+      name = system;
+      value = { };
+    }) perch.lib.defaults.systems
+  );
 }

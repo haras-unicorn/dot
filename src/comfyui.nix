@@ -1,4 +1,11 @@
-{ self, nix-comfyui, pkgs, lib, config, ... }:
+{
+  self,
+  nix-comfyui,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasGpu = config.nixpkgs.config.cudaSupport || config.nixpkgs.config.rocmSupport;

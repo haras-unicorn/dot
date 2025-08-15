@@ -1,4 +1,10 @@
-{ config, lib, pkgs, utils, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  utils,
+  ...
+}:
 
 let
   hasNetwork = config.dot.hardware.network.enable;
@@ -7,7 +13,8 @@ let
   cfg = config.services.cockroachdb;
   crdb = cfg.package;
   certs = "/var/lib/cockroachdb/.certs";
-  databaseUrl = "postgresql://root@localhost"
+  databaseUrl =
+    "postgresql://root@localhost"
     + ":${builtins.toString cfg.listen.port}"
     + "?sslmode=verify-full"
     + "&sslrootcert=${certs}/ca.crt"
@@ -17,21 +24,18 @@ let
   clientCerts = "${config.users.users.${user}.home}/.cockroach-certs";
   httpPort = 8080;
   port = 26257;
-  hosts = builtins.map
-    (x: x.ip)
-    (builtins.filter
-      (x:
-        if lib.hasAttrByPath [ "system" "dot" "postgres" "coordinator" ] x
-        then x.system.dot.postgres.coordinator
-        else false)
-      config.dot.hosts);
+  hosts = builtins.map (x: x.ip) (
+    builtins.filter (
+      x:
+      if lib.hasAttrByPath [ "system" "dot" "postgres" "coordinator" ] x then
+        x.system.dot.postgres.coordinator
+      else
+        false
+    ) config.dot.hosts
+  );
   consoleAddress = "${builtins.head hosts}:${builtins.toString httpPort}";
 
-  join = builtins.concatStringsSep
-    ","
-    (builtins.map
-      (x: "${x}:${builtins.toString port}")
-      hosts);
+  join = builtins.concatStringsSep "," (builtins.map (x: "${x}:${builtins.toString port}") hosts);
 
   # NOTE: https://github.com/NixOS/nixpkgs/pull/172923
   # NOTE: https://github.com/NixOS/nixpkgs/blob/nixos-24.11/nixos/modules/services/databases/cockroachdb.nix
@@ -66,22 +70,20 @@ let
   );
 in
 {
-  branch.homeManagerModule.homeManagerModule = lib.mkIf
-    hasNetwork
-    {
-      home.packages = [
-        pkgs.cockroachdb
-        pkgs.postgresql
-      ];
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
+    home.packages = [
+      pkgs.cockroachdb
+      pkgs.postgresql
+    ];
 
-      xdg.desktopEntries = lib.mkIf hasMonitor {
-        cockroachdb = {
-          name = "CockroachDB";
-          exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window ${consoleAddress}";
-          terminal = false;
-        };
+    xdg.desktopEntries = lib.mkIf hasMonitor {
+      cockroachdb = {
+        name = "CockroachDB";
+        exec = "${config.dot.browser.package}/bin/${config.dot.browser.bin} --new-window ${consoleAddress}";
+        terminal = false;
       };
     };
+  };
 
   branch.nixosModule.nixosModule = {
     options.dot = {
@@ -195,8 +197,14 @@ in
         services.cockroachdb.http.port = httpPort;
         services.cockroachdb.listen.address = config.dot.host.ip;
 
-        systemd.services.cockroachdb.after = [ "vpn-online.target" "time-synced.target" ];
-        systemd.services.cockroachdb.requires = [ "vpn-online.target" "time-synced.target" ];
+        systemd.services.cockroachdb.after = [
+          "vpn-online.target"
+          "time-synced.target"
+        ];
+        systemd.services.cockroachdb.requires = [
+          "vpn-online.target"
+          "time-synced.target"
+        ];
         systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
         systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
 
@@ -212,12 +220,7 @@ in
             ExecStart =
               let
                 initScriptFiles =
-                  (lib.imap1
-                    (i: sql:
-                      pkgs.writeText
-                        "cockroach-init-${builtins.toString i}.sql"
-                        sql)
-                    cfg.init)
+                  (lib.imap1 (i: sql: pkgs.writeText "cockroach-init-${builtins.toString i}.sql" sql) cfg.init)
                   ++ cfg.initFiles;
 
                 name = "cockroachdb-init-script";
@@ -226,12 +229,10 @@ in
                   text = ''
                     ${crdb}/bin/cockroach init --certs-dir "${certs}" \
                       || echo "Cluster already initialized."
-                    ${lib.concatMapStrings
-                      (file: ''
-                        echo "Running: ${file}"
-                        ${pkgs.postgresql}/bin/psql "${databaseUrl}" --file "${file}"
-                      '')
-                      initScriptFiles}
+                    ${lib.concatMapStrings (file: ''
+                      echo "Running: ${file}"
+                      ${pkgs.postgresql}/bin/psql "${databaseUrl}" --file "${file}"
+                    '') initScriptFiles}
                   '';
                 };
               in
@@ -240,19 +241,21 @@ in
         };
         services.cockroachdb.initFiles = lib.mkBefore [ config.sops.secrets."cockroach-init".path ];
 
-        dot.consul.services = [{
-          name = "cockroachdb";
-          port = httpPort;
-          address = config.dot.host.ip;
-          tags = [
-            "dot.enable=true"
-          ];
-          check = {
-            http = "http://${config.dot.host.ip}:${builtins.toString httpPort}/health";
-            interval = "30s";
-            timeout = "10s";
-          };
-        }];
+        dot.consul.services = [
+          {
+            name = "cockroachdb";
+            port = httpPort;
+            address = config.dot.host.ip;
+            tags = [
+              "dot.enable=true"
+            ];
+            check = {
+              http = "http://${config.dot.host.ip}:${builtins.toString httpPort}/health";
+              interval = "30s";
+              timeout = "10s";
+            };
+          }
+        ];
 
         programs.rust-motd.settings = {
           service_status = {
@@ -368,7 +371,11 @@ in
             arguments = {
               ca_private = "cockroach-ca-private";
               ca_public = "cockroach-ca-public";
-              hosts = [ "localhost" "127.0.0.1" config.dot.host.ip ];
+              hosts = [
+                "localhost"
+                "127.0.0.1"
+                config.dot.host.ip
+              ];
               private = "cockroach-private";
               public = "cockroach-public";
             };

@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   hasSound = config.dot.hardware.sound.enable;
@@ -21,7 +26,10 @@ in
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasSound && hasMonitor) {
     dot.desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
       {
-        mods = [ "shift" "super" ];
+        mods = [
+          "shift"
+          "super"
+        ];
         key = "v";
         command = ''${toggleEasyeffectsBypass}/toggle-easyeffects-bypass'';
       }

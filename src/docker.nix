@@ -1,6 +1,7 @@
-{ pkgs
-, config
-, ...
+{
+  pkgs,
+  config,
+  ...
 }:
 
 # FIXME: https://github.com/NixOS/nixpkgs/pull/303442

@@ -7,7 +7,6 @@
       tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
     };
 
-
     programs.eza.enable = true;
     programs.eza.extraOptions = [
       "--all"

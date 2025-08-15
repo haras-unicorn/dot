@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 # TODO: convert firewall rules to nebula firewall rules
 # TODO: disable all traffic from outside vpn
@@ -41,8 +46,14 @@ in
       };
 
       systemd.services."nebula@nebula" = {
-        after = [ "network-online.target" "time-synced.target" ];
-        requires = [ "network-online.target" "time-synced.target" ];
+        after = [
+          "network-online.target"
+          "time-synced.target"
+        ];
+        requires = [
+          "network-online.target"
+          "time-synced.target"
+        ];
         serviceConfig = {
           ExecStart = lib.mkForce "${pkgs.nebula}/bin/nebula -config /etc/nebula/config.d";
         };
@@ -57,10 +68,9 @@ in
         requires = [ "nebula@nebula.service" ];
         after = [ "nebula@nebula.service" ];
       };
-      networking.firewall.allowedUDPPorts =
-        lib.mkIf isCoordinator [
-          4242
-        ];
+      networking.firewall.allowedUDPPorts = lib.mkIf isCoordinator [
+        4242
+      ];
       environment.etc."nebula/config.d/config.yaml".text = ''
         pki:
           ca: ${config.sops.secrets."nebula-ca-public".path}
@@ -85,7 +95,6 @@ in
               proto: any
               host: any
       '';
-
 
       programs.rust-motd.settings = lib.mkIf isCoordinator {
         service_status = {
@@ -142,19 +151,13 @@ in
           importer = "vault-file";
           arguments = {
             path = "kv/dot/shared";
-            file =
-              if isCoordinator
-              then "nebula-lighthouse"
-              else "nebula-non-lighthouse";
+            file = if isCoordinator then "nebula-lighthouse" else "nebula-non-lighthouse";
           };
         }
         {
           importer = "copy";
           arguments = {
-            from =
-              if isCoordinator
-              then "nebula-lighthouse"
-              else "nebula-non-lighthouse";
+            from = if isCoordinator then "nebula-lighthouse" else "nebula-non-lighthouse";
             to = "nebula-lighthouse";
           };
         }
