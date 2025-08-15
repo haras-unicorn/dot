@@ -66,6 +66,7 @@ in
         ADMIN_TOKEN = "admin";
         SIGNUPS_ALLOWED = true;
         ENABLE_WEBSOCKET = false;
+        DOMAIN = "https://vaultwarden.service.consul";
       };
       services.vaultwarden.environmentFile = config.sops.secrets."vaultwarden-env".path;
 
