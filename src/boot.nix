@@ -35,7 +35,9 @@ in
       else if isLegacyNvidia then
         pkgs.linuxKernel.packages.linux_6_6
       else
-        pkgs.linuxPackages_zen;
+        # FIXME: https://github.com/NixOS/nixpkgs/issues/429624#issuecomment-3148696289
+        pkgs.linuxKernel.packages.linux_6_15;
+        # pkgs.linuxPackages_zen;
 
     boot.initrd.systemd.enable = lib.mkIf hasMonitor true;
     boot.initrd.verbose = lib.mkIf hasMonitor false;
