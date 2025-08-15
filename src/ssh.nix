@@ -21,7 +21,7 @@ in
     sops.secrets."ssh-public" = {
       path = "/home/${user}/.ssh/authorized_keys";
       owner = user;
-      group = "users";
+      group = user;
       mode = "0644";
     };
 

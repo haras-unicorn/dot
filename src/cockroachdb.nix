@@ -113,19 +113,19 @@ in
           key = "cockroach-ca-public";
           path = "${clientCerts}/ca.crt";
           owner = user;
-          group = "users";
+          group = user;
           mode = "0644";
         };
         sops.secrets."cockroach-${user}-public" = {
           path = "${clientCerts}/client.${user}.crt";
           owner = user;
-          group = "users";
+          group = user;
           mode = "0644";
         };
         sops.secrets."cockroach-${user}-private" = {
           path = "${clientCerts}/client.${user}.key";
           owner = user;
-          group = "users";
+          group = user;
           mode = "0400";
         };
 

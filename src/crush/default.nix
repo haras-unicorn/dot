@@ -40,13 +40,13 @@ in
     sops.secrets."deepseek-api-key" = {
       path = deepseekPath;
       owner = user;
-      group = "users";
+      group = user;
       mode = "0400";
     };
     sops.secrets."openai-api-key" = {
       path = openaiPath;
       owner = user;
-      group = "users";
+      group = user;
       mode = "0400";
     };
 
