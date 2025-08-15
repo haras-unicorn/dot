@@ -97,6 +97,24 @@ def "main ssh" [host?: string, ip?: string] {
     && ssh -t ($ip) motd-wrap nu"
 }
 
+def "main scp-here" [from: string, to: string, host?: string, ip?: string] {
+  let host = pick hosts false true $host | first
+  let ip = if ($ip == null) { $host.ip } else { $ip }
+
+  ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
+    | ssh-add - \\
+    && scp ($ip):($from) ($to)"
+}
+
+def "main scp-there" [from: string, to: string, host?: string, ip?: string] {
+  let host = pick hosts false true $host | first
+  let ip = if ($ip == null) { $host.ip } else { $ip }
+
+  ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
+    | ssh-add - \\
+    && scp ($from) ($ip):($to)"
+}
+
 def "main pass" [host?: string] {
   let host = pick hosts false true $host | first
   $host.secrets."pass-priv"
