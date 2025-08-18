@@ -5,12 +5,6 @@
   ...
 }:
 
-# NOTE: https://github.com/quickemu-project/quickemu/issues/1475#issuecomment-2639232863
-# NOTE: put this in the windows-11.conf
-# #fixed_iso="windows-11/virtio-win.iso" -> YES COMMENT THIS OUT
-# extra_args="-drive media=cdrom,index=3,file=windows-11/virtio-win.iso"
-# extra_args="-cpu host,+hypervisor,+invtsc,l3-cache=on,migratable=no,hv-relaxed,hv-vapic,hv-spinlocks=0x1fff,hv-time,hv-synic,hv-stimer,hv-tlbflush,hv-ipi,hv-reset,hv-frequencies,hv-vpindex,topoext"
-
 let
   user = config.dot.user;
 
@@ -26,11 +20,26 @@ let
       cd "${config.xdg.dataHome}/win11"
       if [ ! -f windows-11.conf ]; then
         quickget windows 11
+        # NOTE: https://github.com/quickemu-project/quickemu/issues/1475#issuecomment-2639232863
+        sed -i 's|^fixed_iso="windows-11/virtio-win\.iso"|#&|' windows-11.conf
+      cat << EOF >> windows-11.conf
+      extra_args=" \
+        -drive media=cdrom,index=3,file=windows-11/virtio-win.iso \
+      "
+      EOF
+        # NOTE: first time install virtio then switch to virtio keyboar/mouse
+        exec quickemu \
+          --vm windows-11.conf \
+          --fullscreen \
+          "$@"
+      else
+        exec quickemu \
+          --vm windows-11.conf \
+          --fullscreen \
+          --mouse virtio \
+          --keyboard virtio \
+          "$@"
       fi
-      exec quickemu \
-        --vm windows-11.conf \
-        --fullscreen \
-        "$@"
     '';
   };
 in
