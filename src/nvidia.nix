@@ -36,7 +36,9 @@
 
       hardware.nvidia.modesetting.enable = true;
       hardware.nvidia.nvidiaSettings = true;
-      hardware.nvidia.open = config.dot.hardware.graphics.open;
+      # FIXME: https://github.com/NixOS/nixpkgs/issues/429624#issuecomment-3148696289
+      # hardware.nvidia.open = config.dot.hardware.graphics.open;
+      hardware.nvidia.open = false;
       hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${version}";
 
       hardware.graphics.enable = true;
