@@ -89,7 +89,6 @@ in
       pkgs.inkscape
       pkgs.pencil
       pkgs.mpv
-      pkgs.losslesscut-bin
       pkgs.shotcut
       pkgs.video-downloader
     ];
