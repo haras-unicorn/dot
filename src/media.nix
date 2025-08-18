@@ -91,6 +91,7 @@ in
       pkgs.mpv
       pkgs.losslesscut-bin
       pkgs.shotcut
+      pkgs.ytdownloader
     ];
 
     xdg.mime.enable = true;
