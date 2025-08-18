@@ -89,7 +89,8 @@ in
       pkgs.inkscape
       pkgs.pencil
       pkgs.mpv
-      pkgs.progress-tracker
+      pkgs.losslesscut-bin
+      pkgs.shotcut
     ];
 
     xdg.mime.enable = true;
