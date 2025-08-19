@@ -52,6 +52,7 @@ in
 
     home.packages = [
       pkgs.pwvucontrol
+      pkgs.helvum
     ];
   };
 }
