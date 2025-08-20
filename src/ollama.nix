@@ -7,6 +7,9 @@
   ...
 }:
 
+# FIXME: https://www.youtube.com/watch?v=GyWuQwEsbe8
+# ^^ use open webui from pkgs
+
 let
   hasGpu = config.nixpkgs.config.cudaSupport || config.nixpkgs.config.rocmSupport;
 
@@ -15,7 +18,7 @@ let
   mkOllamaInstance = instanceName: rec {
     ollama = pkgs.writeShellApplication {
       name = "ollama-${instanceName}";
-      runtimeInputs = [ aiPkgs.ollama ];
+      runtimeInputs = [ pkgs.ollama ];
       text = ''
         mkdir -p "${config.xdg.dataHome}/ollama/${instanceName}"
         cd "${config.xdg.dataHome}/ollama/${instanceName}"
