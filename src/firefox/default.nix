@@ -102,6 +102,11 @@ in
         exec = "${fork.package}/bin/${fork.bin} --new-window https://myfooddata.com";
         terminal = false;
       };
+      firefox-work = {
+        name = "Firefox (work)";
+        exec = "${fork.package}/bin/${fork.bin} -P work";
+        terminal = false;
+      };
     };
   };
 }
