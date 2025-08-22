@@ -76,6 +76,18 @@ in
             pkgs.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
           ];
         };
+        work = {
+          name = "work";
+          id = lib.mkForce 2;
+          isDefault = lib.mkForce false;
+          extensions.packages = [
+            pkgs.nur.repos.rycee.firefox-addons.ublock-origin
+            pkgs.nur.repos.rycee.firefox-addons.darkreader
+            pkgs.nur.repos.rycee.firefox-addons.vimium-c
+            pkgs.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
+            pkgs.nur.repos.rycee.firefox-addons.bitwarden
+          ];
+        };
       };
     };
 
