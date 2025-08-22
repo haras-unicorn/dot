@@ -33,60 +33,86 @@ let
     isMaximized = true;
     isFullScreen = false;
   };
+
+  settings = (builtins.fromJSON (builtins.readFile ./ferdium.json)) // {
+    darkMode = config.stylix.polarity == "dark";
+    accentColor = config.lib.stylix.colors.withHashtag.magenta;
+    progressbarAccentColor = config.lib.stylix.colors.withHashtag.cyan;
+  };
+
+  mkFerdiumInstanceConfig =
+    instanceName:
+    let
+      dataDir = "${config.xdg.dataHome}/ferdium/${instanceName}";
+      prefix = "ferdium/${instanceName}";
+    in
+    {
+      systemd.user.services."ferdium@${instanceName}" = {
+        Unit = {
+          Description = "Ferdium (${instanceName})";
+          After = [ "graphical-session.target" ];
+          PartOf = [ "tray.target" ];
+        };
+        Service = {
+          ExecStartPre = [
+            "${pkgs.coreutils}/bin/mkdir -p ${dataDir}/config"
+          ];
+          ExecStart = "${ferdium}/bin/ferdium --user-data-dir=${dataDir}";
+          Restart = "on-failure";
+          WorkingDirectory = dataDir;
+        };
+        Install.WantedBy = [ "tray.target" ];
+      };
+
+      xdg.dataFile."${prefix}/config/settings.json".text = builtins.toJSON settings;
+
+      xdg.dataFile."${prefix}/config/window-state.json".text = builtins.toJSON windowState;
+      xdg.dataFile."${prefix}/window-state.json".text = builtins.toJSON windowState;
+    };
 in
 {
-  branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
-    dot.desktopEnvironment.windowrules = [
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor (
+    lib.mkMerge [
       {
-        rule = "float";
-        selector = "class";
-        xselector = "wm_class";
-        arg = "ferdium";
-        xarg = "ferdium";
-      }
-      {
-        rule = "float";
-        selector = "class";
-        xselector = "wm_class";
-        arg = "teams-for-linux";
-        xarg = "teams-for-linux";
-      }
-      {
-        rule = "float";
-        selector = "class";
-        xselector = "wm_class";
-        arg = "vesktop";
-        xarg = "vesktop";
-      }
-    ];
+        dot.desktopEnvironment.windowrules = [
+          {
+            rule = "float";
+            selector = "class";
+            xselector = "wm_class";
+            arg = "ferdium";
+            xarg = "ferdium";
+          }
+          {
+            rule = "float";
+            selector = "class";
+            xselector = "wm_class";
+            arg = "teams-for-linux";
+            xarg = "teams-for-linux";
+          }
+          {
+            rule = "float";
+            selector = "class";
+            xselector = "wm_class";
+            arg = "vesktop";
+            xarg = "vesktop";
+          }
+        ];
 
-    home.packages = [
-      ferdium
-      teams
-      vesktop
-      slack
-    ];
+        home.packages = [
+          ferdium
+          teams
+          vesktop
+          slack
+        ];
 
-    systemd.user.services.ferdium = {
-      Unit.Description = "Ferdium daemon";
-      Service.ExecStart = "${ferdium}/bin/ferdium";
-      Install.WantedBy = [ "tray.target" ];
-    };
-    xdg.configFile."Ferdium/config/settings.json".text = builtins.toJSON (
-      (builtins.fromJSON (builtins.readFile ./ferdium.json))
-      // {
-        darkMode = config.stylix.polarity == "dark";
-        accentColor = config.lib.stylix.colors.withHashtag.magenta;
-        progressbarAccentColor = config.lib.stylix.colors.withHashtag.cyan;
+        xdg.configFile."teams-for-linux/config.json".text = builtins.toJSON {
+          closeAppOnCross = true;
+          trayIconEnabled = false;
+        };
+        xdg.configFile."teams-for-linux/window-state.json".text = builtins.toJSON windowState;
       }
-    );
-    xdg.configFile."Ferdium/config/window-state.json".text = builtins.toJSON windowState;
-    xdg.configFile."Ferdium/window-state.json".text = builtins.toJSON windowState;
-
-    xdg.configFile."teams-for-linux/config.json".text = builtins.toJSON {
-      closeAppOnCross = true;
-      trayIconEnabled = false;
-    };
-    xdg.configFile."teams-for-linux/window-state.json".text = builtins.toJSON windowState;
-  };
+      (mkFerdiumInstanceConfig "personal")
+      (mkFerdiumInstanceConfig "work")
+    ]
+  );
 }
