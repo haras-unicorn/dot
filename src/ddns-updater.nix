@@ -3,6 +3,9 @@
 let
   hasNetwork = config.dot.hardware.network.enable;
   isCoordinator = config.dot.ddns.coordinator;
+
+  httpPort = 8000;
+  healthPort = 9999;
 in
 {
   branch.nixosModule.nixosModule = {
@@ -16,7 +19,10 @@ in
     config = lib.mkIf (hasNetwork && isCoordinator) {
       services.ddns-updater.enable = true;
       services.ddns-updater.environment = {
-        CONFIG_FILEPATH = config.sops.secrets."ddns-updater-duckdns-nebula".path;
+        CONFIG_FILEPATH = config.sops.secrets."ddns-updater-settings".path;
+        LISTENING_ADDRESS = ":${builtins.toString httpPort}";
+        HEALTH_SERVER_ADDRESS = ":${builtins.toString healthPort}";
+        RESOLVER_ADDRESS = "1.1.1.1:53";
         PERIOD = "5m";
       };
       users.users.ddns-updater = {
@@ -33,19 +39,68 @@ in
         };
       };
 
-      sops.secrets."ddns-updater-duckdns-nebula" = {
+      networking.firewall.allowedTCPPorts = [
+        httpPort
+        healthPort
+      ];
+
+      dot.consul.services = [
+        {
+          name = "ddns-updater";
+          port = httpPort;
+          address = config.dot.host.ip;
+          tags = [
+            "dot.enable=true"
+          ];
+          check = {
+            http = "http://${config.dot.host.ip}:${builtins.toString healthPort}";
+            interval = "30s";
+            timeout = "10s";
+          };
+        }
+      ];
+
+      sops.secrets."ddns-updater-settings" = {
         owner = "ddns-updater";
         group = "ddns-updater";
         mode = "0400";
       };
 
-      rumor.sops = [ "ddns-updater-duckdns-nebula" ];
+      rumor.sops = [ "ddns-updater-settings" ];
       rumor.specification.imports = [
         {
           importer = "vault-file";
           arguments = {
             path = "kv/dot/shared";
-            file = "ddns-updater-duckdns-nebula";
+            file = "ddns-updater-duckdns";
+          };
+        }
+        {
+          importer = "vault-file";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "ddns-updater-cloudflare";
+          };
+        }
+      ];
+      rumor.specification.generations = [
+        {
+          generator = "moustache";
+          arguments = {
+            name = "ddns-updater-settings";
+            renew = true;
+            variables = {
+              DUCKDNS = "ddns-updater-duckdns";
+              CLOUDFLARE = "ddns-updater-cloudflare";
+            };
+            template = ''
+              {
+                "settings": [
+                  {{DUCKDNS}},
+                  {{CLOUDFLARE}}
+                ]
+              }
+            '';
           };
         }
       ];
