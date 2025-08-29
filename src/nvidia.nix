@@ -7,6 +7,8 @@
 }:
 
 # TODO: fix 340
+# TODO: hardware.fancontrol.enable
+# TODO: hardware.brillo.enable
 # FIXME: https://github.com/NixOS/nixpkgs/issues/306276
 
 (
@@ -18,6 +20,7 @@
   in
   {
     branch.nixosModule.nixosModule = lib.mkIf hasNvidia {
+      # NOTE: needed for early splash
       boot.initrd.availableKernelModules = [
         "nvidia"
         "nvidia_modeset"
@@ -25,21 +28,42 @@
       ];
       boot.kernelParams = [
         "nvidia_drm.modeset=1"
-        "nvidia_drm.fbdev=1"
-        "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
       ];
       boot.kernelModules = [
-        "nvidia_uvm"
+        "nvidia_uvm" # NOTE: sometimes CUDA forgets to auto-load
       ];
 
-      services.xserver.videoDrivers = [ "nvidia" ];
+      # NOTE: needed for suspend
+      boot.extraModprobeConfig = ''
+        options nvidia NVreg_PreserveVideoMemoryAllocations=1
+      '';
+      hardware.nvidia.powerManagement.enable = true;
+      systemd.services.nvidia-suspend.wantedBy = [ "sleep.target" ];
+      systemd.services.nvidia-suspend.before = [ "sleep.target" ];
+      systemd.services.nvidia-hibernate.wantedBy = [ "hibernate.target" ];
+      systemd.services.nvidia-hibernate.before = [ "hibernate.target" ];
+      systemd.services.nvidia-resume.wantedBy = [
+        "suspend.target"
+        "hibernate.target"
+        "hybrid-sleep.target"
+        "suspend-then-hibernate.target"
+      ];
+      systemd.services.nvidia-resume.after = [
+        "suspend.target"
+        "hibernate.target"
+        "hybrid-sleep.target"
+        "suspend-then-hibernate.target"
+      ];
 
-      hardware.nvidia.modesetting.enable = true;
-      hardware.nvidia.nvidiaSettings = true;
+      hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${version}";
       # FIXME: https://github.com/NixOS/nixpkgs/issues/429624#issuecomment-3148696289
       # hardware.nvidia.open = config.dot.hardware.graphics.open;
       hardware.nvidia.open = false;
-      hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${version}";
+      hardware.nvidia.modesetting.enable = true;
+      hardware.nvidia.videoAcceleration = true;
+      hardware.nvidia.nvidiaSettings = true;
+
+      services.xserver.videoDrivers = [ "nvidia" ];
 
       hardware.graphics.enable = true;
       hardware.graphics.enable32Bit = true;
