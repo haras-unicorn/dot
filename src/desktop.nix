@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ pkgs, lib, ... }:
 
 {
   branch.nixosModule.nixosModule.options.dot.desktopEnvironment = {
@@ -45,6 +45,18 @@
       example = [ "keepassxc" ];
       description = ''
         Commands to execute on session start with Hyprland.
+      '';
+    };
+
+    fullscreenCheck = lib.mkOption {
+      type = lib.types.str;
+      default = "false";
+      example = ''
+        ${pkgs.hyprland}/bin/hyprctl -j activewindow 2>/dev/null \
+          | ${pkgs.jq}/bin/jq -e '.fullscreen > 0' >/dev/null
+      '';
+      description = ''
+        Bash if condition that checks whether the active window is fullscreen or not.
       '';
     };
 

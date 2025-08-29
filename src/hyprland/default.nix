@@ -83,6 +83,11 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
+    dot.desktopEnvironment.fullscreenCheck = ''
+      ${pkgs.hyprland}/bin/hyprctl -j activewindow 2>/dev/null \
+        | ${pkgs.jq}/bin/jq -e '.fullscreen > 0' >/dev/null
+    '';
+
     dot.desktopEnvironment.keybinds = [
       {
         mods = [ "super" ];
