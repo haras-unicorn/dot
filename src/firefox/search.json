@@ -1,0 +1,59 @@
+{
+  "version": 12,
+  "engines": [
+    {
+      "id": "searx",
+      "_name": "searx",
+      "_loadPath": "[https]searx.stream/searxng.xml",
+      "_urls": [
+        {
+          "params": [],
+          "rels": [],
+          "template": "https://searx.stream/search",
+          "type": "searchform"
+        },
+        {
+          "params": [{ "name": "q", "value": "{searchTerms}" }],
+          "rels": ["results"],
+          "template": "https://searx.stream/search",
+          "method": "POST"
+        },
+        {
+          "params": [],
+          "rels": ["suggestions"],
+          "template": "https://searx.stream/autocompleter?q={searchTerms}",
+          "type": "application/x-suggestions+json",
+          "method": "POST"
+        },
+        {
+          "params": [],
+          "rels": ["self"],
+          "template": "https://searx.stream/opensearch.xml",
+          "type": "application/opensearchdescription+xml",
+          "method": "POST"
+        }
+      ]
+    },
+    {
+      "id": "kagi",
+      "_name": "Kagi",
+      "_loadPath": "[https]kagi.com/kagi.xml",
+      "_urls": [
+        {
+          "params": [],
+          "rels": ["results"],
+          "template": "https://kagi.com/search?q={searchTerms}"
+        },
+        {
+          "params": [],
+          "rels": ["suggestions"],
+          "template": "https://kagisuggest.com/api/autosuggest?q={searchTerms}",
+          "type": "application/x-suggestions+json"
+        }
+      ]
+    }
+  ],
+  "metaData": {
+    "defaultEngineId": "kagi"
+  }
+}
