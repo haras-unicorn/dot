@@ -65,7 +65,6 @@ in
       services.vaultwarden.config = {
         ROCKET_ADDRESS = "0.0.0.0";
         ROCKET_PORT = port;
-        ADMIN_TOKEN = "admin";
         SIGNUPS_ALLOWED = true;
         ENABLE_WEBSOCKET = false;
         DOMAIN = "https://vaultwarden.service.consul";
@@ -123,13 +122,38 @@ in
         group = config.systemd.services.vaultwarden.serviceConfig.User;
         mode = "0400";
       };
+      sops.secrets."vaultwarden-auth-key" = {
+        path = "/var/lib/vaultwarden/rsa_key.pem";
+        owner = config.systemd.services.vaultwarden.serviceConfig.User;
+        group = config.systemd.services.vaultwarden.serviceConfig.User;
+        mode = "0400";
+      };
 
       rumor.sops = [
         "cockroach-vaultwarden-private"
         "cockroach-vaultwarden-public"
         "cockroach-vaultwarden-pass"
         "cockroach-vaultwarden-init"
+        "vaultwarden-auth-key"
         "vaultwarden-env"
+      ];
+      rumor.specification.imports = [
+        {
+          importer = "vault-file";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "${user}-password";
+            allow_fail = false;
+          };
+        }
+        {
+          importer = "vault-file";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "vaultwarden-auth-key";
+            allow_fail = false;
+          };
+        }
       ];
       rumor.specification.generations = [
         {
@@ -187,6 +211,7 @@ in
             renew = true;
             variables = {
               COCKROACH_VAULTWARDEN_PASS = "cockroach-vaultwarden-pass";
+              ADMIN_TOKEN = "${user}-password";
             };
             template =
               let
@@ -199,7 +224,10 @@ in
                   + "&sslcert=${certs}/client.vaultwarden.crt"
                   + "&sslkey=${certs}/client.vaultwarden.key";
               in
-              ''DATABASE_URL="${databaseUrl}"'';
+              ''
+                DATABASE_URL="${databaseUrl}"
+                ADMIN_TOKEN="{{ADMIN_TOKEN}}"
+              '';
           };
         }
       ];
