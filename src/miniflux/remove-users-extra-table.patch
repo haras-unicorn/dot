@@ -1,0 +1,74 @@
+diff --git a/internal/database/migrations.go b/internal/database/migrations.go
+index 44911e28..9c6f4986 100644
+--- a/internal/database/migrations.go
++++ b/internal/database/migrations.go
+@@ -125,9 +125,3 @@ var migrations = []func(tx *sql.Tx) error{
+ 	func(tx *sql.Tx) (err error) {
+-		sql := `
+-			CREATE EXTENSION IF NOT EXISTS hstore;
+-			ALTER TABLE users ADD COLUMN extra hstore;
+-			CREATE INDEX users_extra_idx ON users using gin(extra);
+-			`
+-		_, err = tx.Exec(sql)
+-		return err
++		return nil
+ 	},
+@@ -444,52 +438,2 @@ var migrations = []func(tx *sql.Tx) error{
+ 		`)
+-		if err != nil {
+-			return err
+-		}
+-
+-		_, err = tx.Exec(`
+-				DECLARE my_cursor CURSOR FOR
+-				SELECT
+-					id,
+-					COALESCE(extra->'custom_css', '') as custom_css,
+-					COALESCE(extra->'google_id', '') as google_id,
+-					COALESCE(extra->'oidc_id', '') as oidc_id
+-				FROM users
+-				FOR UPDATE
+-			`)
+-		if err != nil {
+-			return err
+-		}
+-		defer tx.Exec("CLOSE my_cursor")
+-
+-		for {
+-			var (
+-				userID           int64
+-				customStylesheet string
+-				googleID         string
+-				oidcID           string
+-			)
+-
+-			if err := tx.QueryRow(`FETCH NEXT FROM my_cursor`).Scan(&userID, &customStylesheet, &googleID, &oidcID); err != nil {
+-				if err == sql.ErrNoRows {
+-					break
+-				}
+-				return err
+-			}
+-
+-			_, err := tx.Exec(
+-				`UPDATE
+-						users
+-					SET
+-						stylesheet=$2,
+-						google_id=$3,
+-						openid_connect_id=$4
+-					WHERE
+-						id=$1
+-					`,
+-				userID, customStylesheet, googleID, oidcID)
+-			if err != nil {
+-				return err
+-			}
+-		}
+-
+ 		return err
+@@ -497,5 +441,2 @@ var migrations = []func(tx *sql.Tx) error{
+ 	func(tx *sql.Tx) (err error) {
+-		if _, err = tx.Exec(`ALTER TABLE users DROP COLUMN extra;`); err != nil {
+-			return err
+-		}
+ 		_, err = tx.Exec(`

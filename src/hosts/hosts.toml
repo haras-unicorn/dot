@@ -27,6 +27,7 @@ dot.postgres.coordinator = true
 dot.fs.coordinator = true
 dot.vault.coordinator = true
 dot.vaultwarden.coordinator = true
+dot.miniflux.coordinator = true
 dot.hardware.rpi."4".enable = true
 dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
 
@@ -58,6 +59,7 @@ dot.postgres.coordinator = true
 dot.fs.coordinator = true
 dot.vault.coordinator = true
 dot.vaultwarden.coordinator = true
+dot.miniflux.coordinator = true
 dot.hardware.rpi."4".enable = true
 dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
 
@@ -89,6 +91,7 @@ dot.postgres.coordinator = true
 dot.fs.coordinator = true
 dot.vault.coordinator = true
 dot.vaultwarden.coordinator = true
+dot.miniflux.coordinator = true
 dot.hardware.rpi."4".enable = true
 dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input"
 

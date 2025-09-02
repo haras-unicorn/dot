@@ -1,0 +1,13 @@
+diff --git a/internal/database/migrations.go b/internal/database/migrations.go
+index 9c6f4986..a4b06058 100644
+--- a/internal/database/migrations.go
++++ b/internal/database/migrations.go
+@@ -259,7 +259,3 @@ var migrations = []func(tx *sql.Tx) error{
+ 	func(tx *sql.Tx) (err error) {
+-		sql := `
+-			ALTER TABLE user_sessions ALTER COLUMN ip SET DATA TYPE inet using ip::inet;
+-		`
+-		_, err = tx.Exec(sql)
+-		return err
++		return nil
+ 	},
