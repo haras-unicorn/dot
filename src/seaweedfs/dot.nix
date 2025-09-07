@@ -173,17 +173,17 @@ in
                   create database if not exists seaweedfs;
 
                   \c seaweedfs
-                  alter default privileges in schema public grant all on tables to ${seaweedfsUser};
-                  alter default privileges in schema public grant all on sequences to ${seaweedfsUser};
-                  alter default privileges in schema public grant all on functions to ${seaweedfsUser};
+                  alter default privileges for all roles in schema public grant all on tables to ${seaweedfsUser};
+                  alter default privileges for all roles in schema public grant all on sequences to ${seaweedfsUser};
+                  alter default privileges for all roles in schema public grant all on functions to ${seaweedfsUser};
 
                   grant all on all tables in schema public to ${seaweedfsUser};
                   grant all on all sequences in schema public to ${seaweedfsUser};
                   grant all on all functions in schema public to ${seaweedfsUser};
 
-                  alter default privileges in schema public grant all on tables to ${user};
-                  alter default privileges in schema public grant all on sequences to ${user};
-                  alter default privileges in schema public grant all on functions to ${user};
+                  alter default privileges for all roles in schema public grant all on tables to ${user};
+                  alter default privileges for all roles in schema public grant all on sequences to ${user};
+                  alter default privileges for all roles in schema public grant all on functions to ${user};
 
                   grant all on all tables in schema public to ${user};
                   grant all on all sequences in schema public to ${user};

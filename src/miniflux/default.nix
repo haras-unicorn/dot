@@ -188,17 +188,17 @@ in
               create database if not exists miniflux;
 
               \c miniflux
-              alter default privileges in schema public grant all on tables to ${minifluxUser};
-              alter default privileges in schema public grant all on sequences to ${minifluxUser};
-              alter default privileges in schema public grant all on functions to ${minifluxUser};
+              alter default privileges for all roles in schema public grant all on tables to ${minifluxUser};
+              alter default privileges for all roles in schema public grant all on sequences to ${minifluxUser};
+              alter default privileges for all roles in schema public grant all on functions to ${minifluxUser};
 
               grant all on all tables in schema public to ${minifluxUser};
               grant all on all sequences in schema public to ${minifluxUser};
               grant all on all functions in schema public to ${minifluxUser};
 
-              alter default privileges in schema public grant all on tables to ${user};
-              alter default privileges in schema public grant all on sequences to ${user};
-              alter default privileges in schema public grant all on functions to ${user};
+              alter default privileges for all roles in schema public grant all on tables to ${user};
+              alter default privileges for all roles in schema public grant all on sequences to ${user};
+              alter default privileges for all roles in schema public grant all on functions to ${user};
 
               grant all on all tables in schema public to ${user};
               grant all on all sequences in schema public to ${user};

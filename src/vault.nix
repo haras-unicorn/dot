@@ -165,17 +165,17 @@ in
               create database if not exists vault;
 
               \c vault
-              alter default privileges in schema public grant all on tables to ${vaultUser};
-              alter default privileges in schema public grant all on sequences to ${vaultUser};
-              alter default privileges in schema public grant all on functions to ${vaultUser};
+              alter default privileges for all roles in schema public grant all on tables to ${vaultUser};
+              alter default privileges for all roles in schema public grant all on sequences to ${vaultUser};
+              alter default privileges for all roles in schema public grant all on functions to ${vaultUser};
 
               grant all on all tables in schema public to ${vaultUser};
               grant all on all sequences in schema public to ${vaultUser};
               grant all on all functions in schema public to ${vaultUser};
 
-              alter default privileges in schema public grant all on tables to ${user};
-              alter default privileges in schema public grant all on sequences to ${user};
-              alter default privileges in schema public grant all on functions to ${user};
+              alter default privileges for all roles in schema public grant all on tables to ${user};
+              alter default privileges for all roles in schema public grant all on sequences to ${user};
+              alter default privileges for all roles in schema public grant all on functions to ${user};
 
               grant all on all tables in schema public to ${user};
               grant all on all sequences in schema public to ${user};

@@ -186,17 +186,17 @@ in
               create database if not exists vaultwarden;
 
               \c vaultwarden
-              alter default privileges in schema public grant all on tables to ${vaultwardenUser};
-              alter default privileges in schema public grant all on sequences to ${vaultwardenUser};
-              alter default privileges in schema public grant all on functions to ${vaultwardenUser};
+              alter default privileges for all roles in schema public grant all on tables to ${vaultwardenUser};
+              alter default privileges for all roles in schema public grant all on sequences to ${vaultwardenUser};
+              alter default privileges for all roles in schema public grant all on functions to ${vaultwardenUser};
 
               grant all on all tables in schema public to ${vaultwardenUser};
               grant all on all sequences in schema public to ${vaultwardenUser};
               grant all on all functions in schema public to ${vaultwardenUser};
 
-              alter default privileges in schema public grant all on tables to ${user};
-              alter default privileges in schema public grant all on sequences to ${user};
-              alter default privileges in schema public grant all on functions to ${user};
+              alter default privileges for all roles in schema public grant all on tables to ${user};
+              alter default privileges for all roles in schema public grant all on sequences to ${user};
+              alter default privileges for all roles in schema public grant all on functions to ${user};
 
               grant all on all tables in schema public to ${user};
               grant all on all sequences in schema public to ${user};

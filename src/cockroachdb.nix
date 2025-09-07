@@ -248,6 +248,7 @@ in
             address = config.dot.host.ip;
             tags = [
               "dot.enable=true"
+              "dot.http.services.cockroachdb.loadbalancer.server.scheme=https"
             ];
             check = {
               http = "http://${config.dot.host.ip}:${builtins.toString httpPort}/health";
@@ -323,8 +324,37 @@ in
             importer = "vault-file";
             arguments = {
               path = "kv/dot/shared";
+              file = "cockroach-backup-pass";
+              allow_fail = true;
+            };
+          }
+          {
+            importer = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
               file = "cockroach-${user}-pass";
               allow_fail = true;
+            };
+          }
+          {
+            importer = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cloudflare-r2-cockroachdb-endpoint";
+            };
+          }
+          {
+            importer = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cloudflare-r2-cockroachdb-access-key-id";
+            };
+          }
+          {
+            importer = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cloudflare-r2-cockroachdb-secret-access-key";
             };
           }
         ];
@@ -333,6 +363,12 @@ in
             generator = "key";
             arguments = {
               name = "cockroach-root-pass";
+            };
+          }
+          {
+            generator = "key";
+            arguments = {
+              name = "cockroach-backup-pass";
             };
           }
           {
@@ -348,22 +384,56 @@ in
               renew = true;
               variables = {
                 COCKROACH_ROOT_PASS = "cockroach-root-pass";
+                COCKROACH_BACKUP_PASS = "cockroach-backup-pass";
                 COCKROACH_USER_PASS = "cockroach-${user}-pass";
+
+                CLOUDFLARE_R2_COCKROACHDB_ENDPOINT = "cloudflare-r2-cockroachdb-endpoint";
+                CLOUDFLARE_R2_COCKROACHDB_ACCESS_KEY_ID = "cloudflare-r2-cockroachdb-access-key-id";
+                CLOUDFLARE_R2_COCKROACHDB_SECRET_ACCESS_KEY = "cloudflare-r2-cockroachdb-secret-access-key";
               };
-              template = ''
-                alter user root with password '{{COCKROACH_ROOT_PASS}}';
-                create user if not exists ${user} password '{{COCKROACH_USER_PASS}}';
-                create database if not exists ${user};
+              template =
+                let
+                  backupConnectionStringTemplate =
+                    "s3://cockroachdb/v1"
+                    + "?AWS_REGION=auto"
+                    + "&AWS_ENDPOINT={{CLOUDFLARE_R2_COCKROACHDB_ENDPOINT}}"
+                    + "&AWS_ACCESS_KEY_ID={{CLOUDFLARE_R2_COCKROACHDB_ACCESS_KEY_ID}}"
+                    + "&AWS_SECRET_ACCESS_KEY={{CLOUDFLARE_R2_COCKROACHDB_SECRET_ACCESS_KEY}}";
+                in
+                ''
+                  alter user root with password '{{COCKROACH_ROOT_PASS}}';
 
-                \c ${user}
-                alter default privileges in schema public grant all on tables to ${user};
-                alter default privileges in schema public grant all on sequences to ${user};
-                alter default privileges in schema public grant all on functions to ${user};
 
-                grant all on all tables in schema public to ${user};
-                grant all on all sequences in schema public to ${user};
-                grant all on all functions in schema public to ${user};
-              '';
+                  create user if not exists backup password '{{COCKROACH_BACKUP_PASS}}';
+
+                  grant system backup, externalioimplicitaccess to backup;
+
+                  set role backup;
+
+                  create schedule if not exists cluster_daily
+                  for backup into '${backupConnectionStringTemplate}'
+                  recurring '@daily' full backup always
+                  with schedule options first_run = now;
+
+                  reset role;
+
+
+                  create user if not exists ${user} password '{{COCKROACH_USER_PASS}}';
+
+                  create database if not exists ${user};
+
+                  use ${user};
+
+                  alter default privileges for all roles in schema public grant all on tables to ${user};
+                  alter default privileges for all roles in schema public grant all on sequences to ${user};
+                  alter default privileges for all roles in schema public grant all on functions to ${user};
+
+                  grant all on all tables in schema public to ${user};
+                  grant all on all sequences in schema public to ${user};
+                  grant all on all functions in schema public to ${user};
+
+                  reset database;
+                '';
             };
           }
           {
@@ -397,6 +467,13 @@ in
             arguments = {
               path = "kv/dot/shared";
               file = "cockroach-root-pass";
+            };
+          }
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = "kv/dot/shared";
+              file = "cockroach-backup-pass";
             };
           }
           {
