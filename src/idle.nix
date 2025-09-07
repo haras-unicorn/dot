@@ -26,6 +26,7 @@ let
     {
       inherit name package;
       command = "${package}/bin/${name}";
+      unwrapped = command;
     };
 
   lockCallback = mkCallback "swayidle-lock" "${pkgs.systemd}/bin/loginctl lock-session";
@@ -41,12 +42,16 @@ in
     services.swayidle.enable = true;
     services.swayidle.timeouts = [
       {
-        timeout = 60 * 5;
+        timeout = 60 * 3;
         command = lockCallback.command;
       }
       {
-        timeout = 60 * 60;
+        timeout = 60 * 15;
         command = suspendCallback.command;
+      }
+      {
+        timeout = 60 * 60;
+        command = suspendCallback.unwrapped;
       }
     ];
   };
