@@ -101,8 +101,11 @@ in
             sops.age.keyFile = "/root/host.scrt.key";
 
             users.mutableUsers = false;
-            users.groups.${user} = { };
+            users.groups.${user} = {
+              gid = 1000;
+            };
             users.users.${user} = {
+              uid = 1000;
               group = user;
               isNormalUser = true;
               extraGroups = [

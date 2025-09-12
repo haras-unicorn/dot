@@ -16,7 +16,7 @@ in
 
     # NOTE: otherwise sops leaves .ssh owner root
     systemd.tmpfiles.rules = [
-      "d /home/${user}/.ssh 0700 ${user} users - -"
+      "d /home/${user}/.ssh 0700 ${user} ${user} - -"
     ];
     sops.secrets."ssh-public" = {
       path = "/home/${user}/.ssh/authorized_keys";

@@ -30,6 +30,20 @@ let
   masters = builtins.map (
     x: "${x}:${builtins.toString config.services.seaweedfs.master.httpPort}"
   ) hosts;
+
+  filerPort = 8888;
+
+  filers = builtins.concatStringsSep "," (
+    builtins.map (x: "${x}:${builtins.toString filerPort}") hosts
+  );
+
+  seaweedfsUid = 18888;
+  seaweedfsGid = 18888;
+  userUid = config.users.users.${config.dot.user}.uid;
+  userGid = config.users.groups.${config.dot.user}.gid;
+
+  mountDir = "${config.users.users.${config.dot.user}.home}/weed";
+  cacheDir = "${config.users.users.${config.dot.user}.home}/.weed-cache";
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
@@ -49,7 +63,34 @@ in
 
     config = lib.mkIf hasNetwork (
       lib.mkMerge [
+        (lib.mkIf (!config.dot.fs.coordinator) {
+          systemd.services.seaweedfs-mount = {
+            description = "SeaweedFS FUSE mount";
+            after = [ "vpn-online.target" ];
+            requires = [ "vpn-online.target" ];
+            wantedBy = [ "multi-user.target" ];
+            serviceConfig = {
+              Type = "simple";
+              ExecStartPre = [
+                "${pkgs.coreutils}/bin/mkdir -p ${mountDir}"
+                "${pkgs.coreutils}/bin/chown ${config.dot.user}:${config.dot.user} ${mountDir}"
+              ];
+              ExecStart = builtins.replaceStrings [ "\n" ] [ " " ] ''
+                ${pkgs.seaweedfs}/bin/weed mount
+                  -dir='${mountDir}'
+                  -cacheDir='${cacheDir}'
+                  -filer='${filers}'
+                  -filer.path='${mountDir}'
+                  -map.uid=${builtins.toString userUid}:${builtins.toString seaweedfsUid}
+                  -map.gid=${builtins.toString userGid}:${builtins.toString seaweedfsGid}
+              '';
+            };
+          };
+        })
         (lib.mkIf config.dot.fs.coordinator {
+          users.users.seaweedfs.uid = seaweedfsUid;
+          users.groups.seaweedfs.gid = seaweedfsGid;
+
           services.seaweedfs.enable = true;
 
           services.seaweedfs.master.enable = true;
@@ -76,6 +117,7 @@ in
 
           services.seaweedfs.filers.dot.enable = true;
           services.seaweedfs.filers.dot.ip = config.dot.host.ip;
+          services.seaweedfs.filers.dot.httpPort = filerPort;
           services.seaweedfs.filers.dot.masterServers = masters;
           services.seaweedfs.filers.dot.openFirewall = true;
           services.seaweedfs.filers.dot.environmentFile = config.sops.secrets."seaweedfs-filer-env".path;
