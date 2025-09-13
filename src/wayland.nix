@@ -104,7 +104,8 @@ in
 
     dot.desktopEnvironment.sessionStartup = [
       "${wclipwatch}/bin/wclipwatch"
-      "${xclipwatch}/bin/xclipwatch"
+      # TODO: fix so it doesnt go into an endless loop with each other
+      # "${xclipwatch}/bin/xclipwatch"
     ];
 
     dot.desktopEnvironment.keybinds = lib.mkIf hasKeyboard [
