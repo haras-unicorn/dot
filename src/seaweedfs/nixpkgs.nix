@@ -104,6 +104,12 @@ in
           description = "Master gRPC port";
         };
 
+        volumeSizeLimitMB = lib.mkOption {
+          type = lib.types.ints.unsigned;
+          default = 30000;
+          description = "Volume size limit in MB";
+        };
+
         peers = lib.mkOption {
           type = lib.types.listOf lib.types.str;
           default = [ ];
@@ -284,6 +290,7 @@ in
                 "-port.grpc=${toString cfg.master.grpcPort}"
                 "-mdir=${cfg.master.dataDir}"
                 "-peers=${lib.concatStringsSep "," cfg.master.peers}"
+                "-volumeSizeLimitMB=${builtins.toString cfg.master.volumeSizeLimitMB}"
               ]
           );
         }

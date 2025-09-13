@@ -36,6 +36,19 @@ let
     else
       null;
 
+  diskInBytes =
+    let
+      resource = (
+        builtins.head (
+          builtins.filter (resource: resource.type == "size" && resource.unit == "sectors")
+            (builtins.head (
+              builtins.filter (disk: builtins.hasAttr "vendor" disk) config.facter.report.hardware.disk
+            )).resources
+        )
+      );
+    in
+    resource.value_1 * resource.value_2;
+
   bluetooth =
     (builtins.hasAttr "bluetooth" config.facter.report.hardware)
     && ((builtins.length config.facter.report.hardware.bluetooth) > 0);
@@ -124,6 +137,11 @@ let
     memory = lib.mkOption {
       type = lib.types.ints.unsigned;
       default = memoryInBytes;
+    };
+
+    disk = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      default = diskInBytes;
     };
 
     threads = lib.mkOption {
