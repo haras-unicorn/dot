@@ -1,4 +1,9 @@
-{ config, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   branch.nixosModule.nixosModule = {
@@ -9,7 +14,6 @@
     location.provider = "geoclue2";
     i18n.defaultLocale = "en_US.UTF-8";
     services.automatic-timezoned.enable = true;
-    programs.mepo.enable = config.dot.hardware.monitor.enable;
 
     # NOTE: https://github.com/NixOS/nixpkgs/issues/293212#issuecomment-2319051915
     sops.secrets."geoclue-googleapi" = {
@@ -28,6 +32,12 @@
           file = "geoclue-googleapi";
         };
       }
+    ];
+  };
+
+  branch.homeManagerModule.homeManagerModule = {
+    home.packages = lib.mkIf config.dot.hardware.monitor.enable [
+      pkgs.gnome-maps
     ];
   };
 }
