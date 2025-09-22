@@ -17,6 +17,11 @@
 
     hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
     version = config.dot.hardware.graphics.version;
+    busId = config.dot.hardware.graphics.busId;
+
+    integratedDriver = config.dot.hardware.graphics.integrated.driver;
+    integratedBusId = config.dot.hardware.graphics.integrated.busId;
+    hasIntegrated = integratedDriver != null && integratedBusId != null;
   in
   {
     branch.nixosModule.nixosModule = lib.mkIf hasNvidia {
@@ -57,11 +62,18 @@
 
       hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages."${version}";
       # FIXME: https://github.com/NixOS/nixpkgs/issues/429624#issuecomment-3148696289
+      # also seems like this has to be false for PRIME...
       # hardware.nvidia.open = config.dot.hardware.graphics.open;
       hardware.nvidia.open = false;
       hardware.nvidia.modesetting.enable = true;
       hardware.nvidia.videoAcceleration = true;
       hardware.nvidia.nvidiaSettings = true;
+
+      hardware.nvidia.prime.offload.enable = hasIntegrated;
+      hardware.nvidia.prime.offload.enableOffloadCmd = hasIntegrated;
+      hardware.nvidia.prime.nvidiaBusId = lib.mkIf hasIntegrated busId;
+      hardware.nvidia.prime.amdgpuBusId = lib.mkIf (integratedDriver == "amdgpu") integratedBusId;
+      hardware.nvidia.prime.intelBusId = lib.mkIf (integratedDriver == "intel") integratedBusId;
 
       services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -91,11 +103,17 @@
         VDPAU_DRIVER = "va_gl"; # NOTE: hardware acceleration
         GBM_BACKEND = "nvidia-drm"; # NOTE: wayland buffer api
         WLR_RENDERER = "gles2"; # NOTE: wayland roots compositor renderer
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia"; # NOTE: offload opengl workloads to nvidia
 
         NVD_BACKEND = "direct"; # NOTE: nvidia-vaapi-driver backend
         __GL_GSYNC_ALLOWED = "1"; # NOTE: nvidia g-sync
         __GL_VRR_ALLOWED = "1"; # NOTE: nvidia g-sync
+      }
+      // lib.optionalAttrs hasIntegrated {
+        # NOTE: offload everything to nvidia
+        __NV_PRIME_RENDER_OFFLOAD = "1";
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        __VK_LAYER_NV_optimus = "NVIDIA_only";
+        DRI_PRIME = "1";
       };
 
       users.users.${user}.extraGroups = [

@@ -164,6 +164,7 @@ services.seaweedfs.volumes.dot.dataCenter = "biden"
 services.seaweedfs.volumes.dot.rack = "dot"
 services.seaweedfs.filers.dot.dataCenter = "biden"
 services.seaweedfs.filers.dot.rack = "dot"
+boot.blacklistedKernelModules = ["amdgpu", "radeon"]
 dot.gc = false
 dot.vpn.ip = "10.69.42.2"
 dot.vpn.subnet.ip = "10.69.42.0"

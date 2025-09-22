@@ -80,8 +80,53 @@ let
     (builtins.hasAttr "graphics_card" config.facter.report.hardware)
     && ((builtins.length config.facter.report.hardware.graphics_card) > 0);
 
-  graphicsDriver =
-    if graphics then (builtins.head config.facter.report.hardware.graphics_card).driver else null;
+  graphicsCards =
+    let
+      raw = config.facter.report.hardware.graphics_card or [ ];
+      sumMemory =
+        card:
+        builtins.foldl' (
+          sum: resource: sum + (if (resource.type or "") == "mem" then (resource.range or 0) else 0)
+        ) 0 (card.resources or [ ]);
+    in
+    builtins.sort (lhs: rhs: sumMemory lhs > sumMemory rhs) raw;
+
+  graphicsCard =
+    if (!graphics) || (builtins.length graphicsCards < 1) then
+      null
+    else
+      builtins.elemAt graphicsCards 0;
+
+  integratedGraphicsCard =
+    if (!graphics) || (builtins.length graphicsCards < 2) then
+      null
+    else
+      builtins.elemAt graphicsCards 1;
+
+  # NOTE: kinda brittle but works
+  # "0000:0c:00.0" -> "PCI:12:0:0"
+  sysfsBusIdToBusId =
+    sysFsBusId:
+    let
+      matched = builtins.match "^[0-9a-fA-F]{4}:([0-9a-fA-F]{2}):([0-9a-fA-F]{2}).([0-7])$" sysFsBusId;
+      bus = self.lib.hex.hexToDec (builtins.elemAt matched 0);
+      dev = self.lib.hex.hexToDec (builtins.elemAt matched 1);
+      fn = self.lib.hex.hexToDec (builtins.elemAt matched 2);
+    in
+    "PCI:${toString bus}:${toString dev}:${toString fn}";
+
+  graphicsDriver = if graphicsCard == null then null else graphicsCard.driver;
+
+  graphicsBusId = if graphicsCard == null then null else sysfsBusIdToBusId graphicsCard.sysfs_bus_id;
+
+  integratedGraphicsDriver =
+    if integratedGraphicsCard == null then null else integratedGraphicsCard.driver;
+
+  integratedGraphicsBusId =
+    if integratedGraphicsCard == null then
+      null
+    else
+      sysfsBusIdToBusId integratedGraphicsCard.sysfs_bus_id;
 
   nvidia = self.lib.nvidia.frozen;
 
@@ -218,9 +263,31 @@ let
         lib.types.enum [
           "nvidia"
           "amdgpu"
+          "intel"
         ]
       );
       default = graphicsDriver;
+    };
+
+    graphics.busId = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = graphicsBusId;
+    };
+
+    graphics.integrated.driver = lib.mkOption {
+      type = lib.types.nullOr (
+        lib.types.enum [
+          "nvidia"
+          "amdgpu"
+          "intel"
+        ]
+      );
+      default = integratedGraphicsDriver;
+    };
+
+    graphics.integrated.busId = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = integratedGraphicsBusId;
     };
 
     graphics.wayland = lib.mkOption {
