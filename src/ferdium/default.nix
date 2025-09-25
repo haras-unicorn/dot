@@ -112,7 +112,7 @@ in
         xdg.configFile."teams-for-linux/window-state.json".text = builtins.toJSON windowState;
       }
       (mkFerdiumInstanceConfig "personal")
-      (mkFerdiumInstanceConfig "work")
+      # (mkFerdiumInstanceConfig "work")
     ]
   );
 }
