@@ -72,7 +72,7 @@
   "hideDownloadButton": false,
   "alwaysShowWorkspaces": false,
   "hideAllServicesWorkspace": false,
-  "liftSingleInstanceLock": false,
+  "liftSingleInstanceLock": true,
   "enableLongPressServiceHint": false,
   "isTodosFeatureEnabled": false,
   "customTodoServer": "",
