@@ -33,9 +33,7 @@ let
 
   filerPort = 8888;
 
-  filers = builtins.concatStringsSep "," (
-    builtins.map (x: "${x}:${builtins.toString filerPort}") hosts
-  );
+  filers = builtins.map (x: "${x}:${builtins.toString filerPort}") hosts;
 
   seaweedfsUid = 18888;
   seaweedfsGid = 18888;
@@ -43,7 +41,6 @@ let
   userGid = config.users.groups.${config.dot.user}.gid;
 
   mountDir = "${config.users.users.${config.dot.user}.home}/weed";
-  cacheDir = "${config.users.users.${config.dot.user}.home}/.weed-cache";
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasNetwork {
@@ -64,28 +61,22 @@ in
     config = lib.mkIf hasNetwork (
       lib.mkMerge [
         (lib.mkIf (!config.dot.fs.coordinator) {
-          systemd.services.seaweedfs-mount = {
-            description = "SeaweedFS FUSE mount";
-            after = [ "vpn-online.target" ];
-            requires = [ "vpn-online.target" ];
-            wantedBy = [ "multi-user.target" ];
-            serviceConfig = {
-              Type = "simple";
-              ExecStartPre = [
-                "${pkgs.coreutils}/bin/mkdir -p ${mountDir}"
-                "${pkgs.coreutils}/bin/chown ${config.dot.user}:${config.dot.user} ${mountDir}"
-              ];
-              ExecStart = builtins.replaceStrings [ "\n" ] [ " " ] ''
-                ${pkgs.seaweedfs}/bin/weed mount
-                  -dir='${mountDir}'
-                  -cacheDir='${cacheDir}'
-                  -filer='${filers}'
-                  -filer.path='${mountDir}'
-                  -map.uid=${builtins.toString userUid}:${builtins.toString seaweedfsUid}
-                  -map.gid=${builtins.toString userGid}:${builtins.toString seaweedfsGid}
-              '';
-            };
-          };
+          services.seaweedfs.enable = true;
+
+          services.seaweedfs.mounts.dot.enable = true;
+          services.seaweedfs.mounts.dot.mountDir = mountDir;
+          services.seaweedfs.mounts.dot.mountUid = userUid;
+          services.seaweedfs.mounts.dot.mountGid = userGid;
+          services.seaweedfs.mounts.dot.filerPath = mountDir;
+          services.seaweedfs.mounts.dot.filers = builtins.map (filer: {
+            server = filer;
+            uid = seaweedfsUid;
+            gid = seaweedfsGid;
+          }) filers;
+          systemd.services."seaweedfs-mount@dot".requires = [
+            "vpn-online.target"
+            "time-synced.target"
+          ];
         })
         (lib.mkIf config.dot.fs.coordinator {
           users.users.seaweedfs.uid = seaweedfsUid;
