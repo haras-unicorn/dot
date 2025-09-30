@@ -90,11 +90,11 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
 in
 {
-  branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland && false) {
-    dot.desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
+  branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
+    # dot.desktopEnvironment.startup = "${pkgs.dbus}/bin/dbus-run-session ${pkgs.niri}/bin/niri";
   };
 
-  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland && false) {
+  branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 
@@ -104,6 +104,11 @@ in
       current-layout
     ];
 
+    # cursor {
+    #   xcursor-theme "${config.dot.cursor-theme.name}"
+    #   xcursor-size ${builtins.toString config.dot.cursor-theme.size}
+    # }
+
     xdg.configFile."niri/config.kdl".text = ''
       screenshot-path "${config.xdg.userDirs.pictures}/screenshots"
 
@@ -112,11 +117,6 @@ in
       }
 
       ${builtins.readFile ./config.kdl}
-        
-      cursor {
-        xcursor-theme "${config.dot.cursor-theme.name}"
-        xcursor-size ${builtins.toString config.dot.cursor-theme.size}
-      }
 
       environment {
         ${vars}
