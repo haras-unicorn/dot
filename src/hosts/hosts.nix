@@ -126,7 +126,6 @@ in
               nix-index-database.hmModules.nix-index
               nixos-facter-modules.hmModules.facter
               sops-nix.homeManagerModules.sops
-              stylix.homeModules.stylix
               userHostsModule
               homeManagerModule
               host.home
@@ -171,6 +170,7 @@ in
             sops-nix.nixosModules.default
             home-manager.nixosModules.default
             self.nixosModules.default
+            stylix.nixosModules.stylix
             userHostsModule
             nixosModule
             host.system

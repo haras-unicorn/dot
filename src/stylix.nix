@@ -6,8 +6,6 @@
   ...
 }:
 
-# TODO: https://github.com/danth/stylix/pull/847
-
 let
   wallpaperImage = config.dot.wallpaper.image;
   inspect-gtk = pkgs.writeShellApplication {
@@ -20,12 +18,7 @@ let
   };
 in
 {
-  branch.homeManagerModule.homeManagerModule = {
-    home.packages = [
-      inspect-gtk
-      stylix.packages.${pkgs.system}.palette-generator
-    ];
-
+  branch.nixosModule.nixosModule = {
     stylix.enable = true;
     stylix.image = wallpaperImage;
     stylix.imageScalingMode = "fill";
@@ -40,13 +33,21 @@ in
     stylix.cursor.package = pkgs.pokemon-cursor;
     stylix.cursor.name = "Pokemon";
     stylix.cursor.size = 24;
-    stylix.iconTheme.enable = true;
-    stylix.iconTheme.package = pkgs.beauty-line-icon-theme;
-    stylix.iconTheme.dark = "BeautyLine";
-    stylix.iconTheme.light = "BeautyLine";
     stylix.opacity.applications = 0.9;
     stylix.opacity.desktop = 0.0;
     stylix.opacity.terminal = 0.75;
     stylix.opacity.popups = 1.0;
+  };
+
+  branch.homeManagerModule.homeManagerModule = {
+    home.packages = [
+      inspect-gtk
+      stylix.packages.${pkgs.system}.palette-generator
+    ];
+
+    stylix.iconTheme.enable = true;
+    stylix.iconTheme.package = pkgs.beauty-line-icon-theme;
+    stylix.iconTheme.dark = "BeautyLine";
+    stylix.iconTheme.light = "BeautyLine";
   };
 }

@@ -64,27 +64,33 @@ let
           magick convert "$prev" "$out/image.png"
         fi
       '';
+
+  options.dot = {
+    wallpaper.path = lib.mkOption {
+      type = lib.types.str;
+      default = "${self}/assets/wallpaper.mp4";
+    };
+    wallpaper.image = lib.mkOption {
+      type = lib.types.str;
+      default = "${wallpaperImage}/image.png";
+    };
+    wallpaper.static = lib.mkOption {
+      type = lib.types.bool;
+      default = !hasWayland;
+    };
+    wallpaper.final = lib.mkOption {
+      type = lib.types.str;
+      default = if isStatic then config.dot.wallpaper.image else config.dot.wallpaper.path;
+    };
+  };
 in
 {
+  branch.nixosModule.nixosModule = {
+    inherit options;
+  };
+
   branch.homeManagerModule.homeManagerModule = {
-    options.dot = {
-      wallpaper.path = lib.mkOption {
-        type = lib.types.str;
-        default = "${self}/assets/wallpaper.mp4";
-      };
-      wallpaper.image = lib.mkOption {
-        type = lib.types.str;
-        default = "${wallpaperImage}/image.png";
-      };
-      wallpaper.static = lib.mkOption {
-        type = lib.types.bool;
-        default = !hasWayland;
-      };
-      wallpaper.final = lib.mkOption {
-        type = lib.types.str;
-        default = if isStatic then config.dot.wallpaper.image else config.dot.wallpaper.path;
-      };
-    };
+    inherit options;
 
     config = lib.mkIf hasMonitor {
       dot.desktopEnvironment.sessionStartup = lib.mkIf (hasWayland && !isStatic) [
