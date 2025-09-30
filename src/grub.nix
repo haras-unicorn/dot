@@ -16,5 +16,7 @@ in
     boot.loader.grub.efiSupport = true;
     boot.loader.grub.useOSProber = true;
     boot.loader.generic-extlinux-compatible.enable = isRpi4;
+
+    stylix.targets.grub.useWallpaper = true;
   };
 }
