@@ -84,10 +84,7 @@ in
       pkgs.xarchiver
       pkgs.transmission_4-gtk
       pkgs.pinta
-      pkgs.netflix
       pkgs.gimp
-      pkgs.inkscape
-      pkgs.pencil
       pkgs.mpv
       pkgs.shotcut
       pkgs.video-downloader

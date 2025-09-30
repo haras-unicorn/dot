@@ -26,9 +26,5 @@ in
       "udev.log_priority=3"
     ];
     boot.plymouth.enable = true;
-    boot.plymouth.theme = "nixos-bgrt";
-    boot.plymouth.themePackages = [
-      pkgs.nixos-bgrt-plymouth
-    ];
   };
 }
