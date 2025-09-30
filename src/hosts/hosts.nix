@@ -123,7 +123,7 @@ in
             home-manager.backupFileExtension = "backup";
             home-manager.sharedModules = [
               nur.modules.homeManager.default
-              nix-index-database.hmModules.nix-index
+              nix-index-database.homeModules.nix-index
               nixos-facter-modules.hmModules.facter
               sops-nix.homeManagerModules.sops
               userHostsModule

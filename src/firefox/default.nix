@@ -12,6 +12,8 @@
 let
   hasMonitor = config.dot.hardware.monitor.enable;
 
+  package = pkgs.firefox-bin;
+
   userJs = ''
     ${builtins.readFile ./user.js}
 
@@ -105,7 +107,7 @@ in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor) {
     dot.browser = {
-      package = pkgs.firefox;
+      package = package;
       bin = "firefox";
     };
 
@@ -120,6 +122,7 @@ in
 
     programs.firefox = {
       enable = true;
+      package = package;
       profiles = {
         personal = profileBase // {
           name = "personal";
@@ -142,7 +145,7 @@ in
     xdg.desktopEntries = {
       firefox-work = {
         name = "Firefox (work)";
-        exec = "${pkgs.firefox}/bin/firefox -P work";
+        exec = "${package}/bin/firefox -P work";
         terminal = false;
       };
     };
