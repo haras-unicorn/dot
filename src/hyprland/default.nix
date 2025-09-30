@@ -81,9 +81,9 @@ in
     programs.hyprland.xwayland.enable = true;
     programs.hyprland.systemd.setPath.enable = true;
 
-    environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json" =
+    environment.etc."nvidia/nvidia-application-profiles-rc.d/550-limit-free-buffer-pool-in-hyprland.json.json" =
       lib.mkIf hasNvidia {
-        source = ./50-limit-free-buffer-pool-in-wayland-compositors.json;
+        source = ./50-limit-free-buffer-pool-in-hyprland.json;
       };
   };
 
@@ -103,7 +103,6 @@ in
 
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
-    programs.waybar.systemd.target = "hyprland-session.target";
 
     home.packages = [
       switch-layout

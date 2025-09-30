@@ -5,9 +5,6 @@
   ...
 }:
 
-# TODO: config paths for executables
-# TODO: switch-layout, current-layout and logout should be through nix
-
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
@@ -20,8 +17,17 @@ in
       '';
     };
 
+    systemd.user.targets.waybar = {
+      Unit = {
+        Description = "Start waybar";
+      };
+    };
+
+    dot.desktopEnvironment.sessionStartup = [ "systemctl --user start waybar.target" ];
+
     programs.waybar.enable = true;
     programs.waybar.systemd.enable = true;
+    programs.waybar.systemd.target = "waybar.target";
     programs.waybar.settings = [
       (pkgs.lib.attrsets.recursiveUpdate (builtins.fromJSON (builtins.readFile ./config.json)) {
         output = config.dot.hardware.monitor.main;
@@ -30,6 +36,12 @@ in
         };
         temperature = {
           hwmon-path = config.dot.hardware.temp;
+        };
+        "custom/powermenu" = {
+          on-click = config.dot.desktopEnvironment.logout;
+        };
+        "pulseaudio" = {
+          "on-click" = config.dot.desktopEnvironment.volume;
         };
       })
     ];

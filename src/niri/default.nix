@@ -6,43 +6,15 @@
 }:
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
-# FIXME: colors import
 # FIXME: xwayland
-# WORKAROUND: these commands on de startup
-# systemctl --user import-environment PATH
-# systemctl --user restart xdg-desktop-portal.service
 # TODO: remove niri- prefixes and add in the commented out options
 
 let
+  package = pkgs.niri;
+
+  colors = config.lib.stylix.colors.withHashtag;
+
   cfg = config.dot.desktopEnvironment;
-
-  current-layout = pkgs.writeShellApplication {
-    name = "niri-current-layout";
-    runtimeInputs = [
-      pkgs.niri
-      pkgs.jq
-    ];
-    text = ''
-      # hyprctl devices -j | \
-      #   jq -r '.keyboards[] | select(.name | contains("power") | not) | .active_keymap' | \
-      #   head -n 1
-    '';
-  };
-
-  switch-layout = pkgs.writeShellApplication {
-    name = "niri-switch-layout";
-    runtimeInputs = [
-      pkgs.niri
-      pkgs.jq
-    ];
-    text = ''
-      # hyprctl devices -j | \
-      #   jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
-      #   xargs -IR sh -c 'hyprctl switchxkblayout R next &>/dev/null'
-
-      # ${current-layout}/bin/current-layout
-    '';
-  };
 
   capitalize =
     x:
@@ -59,7 +31,10 @@ let
   );
 
   startup = lib.strings.concatStringsSep "\n" (
-    builtins.map (command: "spawn-at-startup \"${builtins.toString command}\"") cfg.sessionStartup
+    builtins.map (
+      command:
+      "spawn-at-startup \"${lib.strings.concatStringsSep "\" \"" (lib.strings.splitString " " command)}\""
+    ) cfg.sessionStartup
   );
 
   binds = lib.strings.concatStringsSep "\n  " (
@@ -88,15 +63,23 @@ let
 
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
+
+  hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
     dot.desktopEnvironment.startup = [
       {
         name = "Niri";
-        command = "${pkgs.niri}/bin/niri";
+        command = "${package}/bin/niri-session";
       }
     ];
+
+    environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-niri.json" =
+      lib.mkIf hasNvidia
+        {
+          source = ./50-limit-free-buffer-pool-in-niri.json;
+        };
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
@@ -104,21 +87,20 @@ in
     systemd.user.sessionVariables = cfg.sessionVariables;
 
     home.packages = [
-      pkgs.niri
-      switch-layout
-      current-layout
+      package
+      pkgs.xwayland-satellite
     ];
-
-    # cursor {
-    #   xcursor-theme "${config.dot.cursor-theme.name}"
-    #   xcursor-size ${builtins.toString config.dot.cursor-theme.size}
-    # }
 
     xdg.configFile."niri/config.kdl".text = ''
       screenshot-path "${config.xdg.userDirs.pictures}/screenshots"
 
       output "${config.dot.hardware.monitor.main}" {
         variable-refresh-rate
+      }
+
+      cursor {
+        xcursor-theme "${config.stylix.cursor.name}"
+        xcursor-size ${builtins.toString config.stylix.cursor.size}
       }
 
       ${builtins.readFile ./config.kdl}
@@ -130,11 +112,30 @@ in
       ${startup}
 
       binds {
-        Mod+Space { spawn "${switch-layout}/bin/switch-layout"; }
-
         ${builtins.readFile ./binds.kdl}
-
         ${binds}
+      }
+
+      layout {
+        focus-ring {
+          width 0
+        }
+        border {
+          width 2
+          active-gradient \
+          	from="${colors.yellow}" \
+          	to="${colors.magenta}" \
+          	angle=45 \
+          	relative-to="workspace-view"
+          inactive-color "${colors.green}"
+        }
+        gaps 4
+        struts {
+          top 8
+          bottom 8
+          left 8
+          right 8
+        }
       }
     '';
   };

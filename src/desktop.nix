@@ -4,7 +4,7 @@
   branch.nixosModule.nixosModule.options.dot.desktopEnvironment = {
     login = lib.mkOption {
       type = lib.types.str;
-      default = [ ];
+      default = "";
       example = "tuigreet --cmd Hyprland";
       description = ''
         Login command.
@@ -108,6 +108,24 @@
           xarg = "keepassxc";
         }
       ];
+    };
+
+    volume = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      example = "pwvucontrol";
+      description = ''
+        Volume command.
+      '';
+    };
+
+    logout = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      example = "wlogout -p layer-shell";
+      description = ''
+        Logout command.
+      '';
     };
   };
 }

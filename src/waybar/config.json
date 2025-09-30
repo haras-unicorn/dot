@@ -4,10 +4,12 @@
   "margin-bottom": 0,
   "modules-left": [
     "clock",
-    "custom/layout",
+    "hyprland/language",
+    "niri/language",
     "tray",
     "hyprland/submap",
-    "hyprland/workspaces"
+    "hyprland/workspaces",
+    "niri/workspaces"
   ],
   "modules-right": [
     "network",
@@ -19,22 +21,13 @@
     "custom/powermenu"
   ],
   "tray": { "spacing": 10 },
-  "hyprland/window": { "format": " {}", "separate-outputs": false },
-  "hyprland/submap": { "format": "✌️ {}", "max-length": 8, "tooltip": true },
-  "hyprland/workspaces": {
-    "format": "{icon}",
-    "format-icons": {
-      "1": "1",
-      "2": "2",
-      "3": "3",
-      "4": "4",
-      "5": "5",
-      "6": "6",
-      "7": "7",
-      "8": "8",
-      "9": "9",
-      "10": "10"
-    }
+  "niri/language": {
+    "format-en": "WHAT THE FUCK IS A KILOMETER???",
+    "format-hr": "WHAT THE FUCK IS A MILE???"
+  },
+  "hyprland/language": {
+    "format-en": "WHAT THE FUCK IS A KILOMETER???",
+    "format-hr": "WHAT THE FUCK IS A MILE???"
   },
   "battery": {
     "states": { "good": 95, "warning": 30, "critical": 20 },
@@ -59,14 +52,7 @@
   "cpu": { "format": "󰻠 {usage}%", "tooltip": "false", "interval": 1 },
   "custom/powermenu": {
     "format": "⏻",
-    "tooltip": false,
-    "on-click": "logout"
-  },
-  "custom/layout": {
-    "format": "{} ⌨",
-    "interval": 1,
-    "exec": "current-layout",
-    "on-click": "switch-layout"
+    "tooltip": false
   },
   "pulseaudio": {
     "format": "{volume}% {icon}",
@@ -81,8 +67,7 @@
       "car": "󰄋",
       "default": ["󰕿", "󰕾"]
     },
-    "scroll-step": 1,
-    "on-click": "pwvucontrol"
+    "scroll-step": 1
   },
   "clock": {
     "format": "🕰️  {:%H:%M:%S}",

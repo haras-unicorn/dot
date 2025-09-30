@@ -48,6 +48,8 @@ in
       }
     ];
 
+    dot.desktopEnvironment.volume = "${pkgs.pwvucontrol}/bin/pwvucontrol";
+
     home.packages = [
       pkgs.pwvucontrol
       pkgs.helvum

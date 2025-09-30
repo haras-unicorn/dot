@@ -8,23 +8,13 @@
 let
   colors = config.lib.stylix.colors.withHashtag;
 
-  logout = pkgs.writeShellApplication {
-    name = "logout";
-    runtimeInputs = [ pkgs.wlogout ];
-    text = ''
-      exec wlogout -p layer-shell
-    '';
-  };
-
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
   hasMouse = config.dot.hardware.mouse.enable;
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasMouse && hasWayland) {
-    home.packages = [
-      logout
-    ];
+    dot.desktopEnvironment.logout = "${pkgs.wlogout}/bin/wlogout -p layer-shell";
 
     programs.wlogout.enable = true;
     programs.wlogout.layout = [
@@ -74,26 +64,56 @@ in
 
       #lock {
         background-image: image(url("${./lock.svg}"));
+        color: @foreground;
+      }
+
+      #lock:hover {
+        color: @background;
       }
 
       #logout {
         background-image: image(url("${./logout.svg}"));
+        color: @foreground;
+      }
+
+      #logout:hover {
+        color: @background;
       }
 
       #suspend {
         background-image: image(url("${./suspend.svg}"));
+        color: @foreground;
+      }
+
+      #suspend:hover {
+        color: @background;
       }
 
       #hibernate {
         background-image: image(url("${./hibernate.svg}"));
+        color: @foreground;
+      }
+
+      #hibernate:hover {
+        color: @background;
       }
 
       #shutdown {
         background-image: image(url("${./shutdown.svg}"));
+        color: @foreground;
+      }
+
+      #shutdown:hover {
+        color: @background;
       }
 
       #reboot {
         background-image: image(url("${./reboot.svg}"));
+        color: @foreground;
+      }
+
+      #reboot:hover {
+        color: @background;
       }
 
       @define-color background ${colors.base00};

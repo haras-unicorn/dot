@@ -9,68 +9,12 @@ input {
     }
   }
 }
-// input {
-//   numlock_by_default = true
-//   sensitivity = 1.0
-//   follow_mouse = 2
-//   mouse_refocus = false
-//   float_switch_override_focus = 2
-//   kb_layout = us,hr
-// }
-
-layout {
-  border {
-    width 2
-  }
-  focus-ring {
-    width 3
-  }
-  gaps 4
-  struts {
-    top 8
-    bottom 8
-    left 32
-    right 32
-  }
-}
-// general {
-//   border_size = 2
-//   gaps_in = 4
-//   gaps_out = 8
-//   layout = master
-//   resize_on_border = true
-//   no_focus_fallback = true
-// }
-// master {
-//   new_status = slave
-// }
 
 hotkey-overlay {
   skip-at-startup
 }
+
 window-rule {
   geometry-corner-radius 8 8 8 8
   clip-to-geometry true
 }
-// misc {
-//   vrr = 1
-//   key_press_enables_dpms = true
-//   focus_on_activate = true
-//   disable_hyprland_logo = true
-// }
-// decoration {
-//   rounding = 8
-//   # TODO: when updated
-//   # blur_xray = true
-// }
-// windowrulev2 = float, class:(org.keepassxc.KeePassXC)
-// windowrulev2 = float, class:(firefox), title:(Library)
-// windowrulev2 = float, class:(mpv)
-// windowrulev2 = float, class:(feh)
-// windowrulev2 = float, class:(alarm-clock-applet)
-// windowrulev2 = float, class:(xdg-desktop-portal-gtk)
-
-
-// debug {
-//   disable_logs = false
-// }
