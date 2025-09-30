@@ -15,8 +15,6 @@ in
       "/share/xdg-desktop-portal"
       "/share/applications"
     ];
-
-    programs.dconf.enable = true;
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {

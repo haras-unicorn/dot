@@ -28,8 +28,6 @@ in
       services.pipewire.jack.enable = true;
       services.pipewire.pulse.enable = true;
 
-      programs.dconf.enable = true;
-
       security.rtkit.enable = true;
 
       users.users.${user}.extraGroups = [
