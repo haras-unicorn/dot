@@ -12,11 +12,24 @@
     };
 
     startup = lib.mkOption {
-      type = lib.types.str;
-      example = "Hyprland";
-      description = ''
-        Command to launch desktop environment.
-      '';
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options.name = lib.mkOption {
+            type = lib.types.str;
+            example = "Hyprland";
+            description = ''
+              Description for the desktop environment.
+            '';
+          };
+          options.command = lib.mkOption {
+            type = lib.types.str;
+            example = "Hyprland";
+            description = ''
+              Command to launch the desktop environment;
+            '';
+          };
+        }
+      );
     };
   };
 

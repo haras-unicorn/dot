@@ -70,7 +70,12 @@ let
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
-    dot.desktopEnvironment.startup = "${pkgs.hyprland}/bin/Hyprland";
+    dot.desktopEnvironment.startup = [
+      {
+        name = "Hyprland";
+        command = "${pkgs.hyprland}/bin/Hyprland";
+      }
+    ];
 
     programs.hyprland.enable = true;
     programs.hyprland.xwayland.enable = true;
