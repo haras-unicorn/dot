@@ -89,6 +89,10 @@ in
       pkgs.xwayland-satellite
     ];
 
+    xdg.portal.extraPortals = lib.mkBefore [
+      pkgs.xdg-desktop-portal-gnome
+    ];
+
     xdg.configFile."niri/config.kdl".text = ''
       screenshot-path "${config.xdg.userDirs.pictures}/screenshots"
 
