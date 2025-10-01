@@ -32,6 +32,24 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
 
+  copy = pkgs.writeShellApplication {
+    name = "copy";
+    text = ''
+      cat > '${config.xdg.dataHome}/clipboard.txt'
+    '';
+  };
+
+  paste = pkgs.writeShellApplication {
+    name = "paste";
+    text = ''
+      if [ -f '${config.xdg.dataHome}/clipboard' ]; then
+        cat '${config.xdg.dataHome}/clipboard.txt'
+      else
+        printf ""
+      fi
+    '';
+  };
+
   mime = lib.mkMerge [
     (lib.mkIf (hasMonitor) browserMime)
     (lib.mkIf (hasKeyboard && hasMonitor) visualMime)
@@ -91,6 +109,20 @@ in
           example = [ "fastfetch" ];
           description = ''
             Commands to execute on session start with Nushell.
+          '';
+        };
+        paste = lib.mkOption {
+          type = lib.types.package;
+          default = paste;
+          description = ''
+            Paste command.
+          '';
+        };
+        copy = lib.mkOption {
+          type = lib.types.package;
+          default = copy;
+          description = ''
+            Copy command.
           '';
         };
       };
@@ -182,6 +214,9 @@ in
         pkgs.xdg-user-dirs
         pkgs.xdg-utils
         pkgs.shared-mime-info
+
+        config.dot.shell.copy
+        config.dot.shell.paste
       ];
 
       home.sessionVariables = lib.mkMerge [
