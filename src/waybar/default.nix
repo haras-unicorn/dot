@@ -11,12 +11,6 @@ let
 in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
-    home.activation = {
-      waybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "waybar" || true
-      '';
-    };
-
     programs.waybar.enable = true;
     programs.waybar.systemd.enable = true;
     programs.waybar.systemd.target = "tray.target";
