@@ -17,17 +17,9 @@ in
       '';
     };
 
-    systemd.user.targets.waybar = {
-      Unit = {
-        Description = "Start waybar";
-      };
-    };
-
-    dot.desktopEnvironment.sessionStartup = [ "systemctl --user start waybar.target" ];
-
     programs.waybar.enable = true;
     programs.waybar.systemd.enable = true;
-    programs.waybar.systemd.target = "waybar.target";
+    programs.waybar.systemd.target = "tray.target";
     programs.waybar.settings = [
       (pkgs.lib.attrsets.recursiveUpdate (builtins.fromJSON (builtins.readFile ./config.json)) {
         output = config.dot.hardware.monitor.main;
