@@ -51,7 +51,6 @@ in
 
     home.packages = [
       pkgs.egl-wayland
-      pkgs.kdePackages.xwaylandvideobridge
 
       pkgs.libsForQt5.qt5ct
       pkgs.qt6.qtwayland
