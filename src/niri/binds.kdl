@@ -34,6 +34,6 @@ Mod+F { toggle-window-floating; }
 Mod+Shift+F { fullscreen-window; }
 
 Mod+Ctrl+H { set-window-width "-10%"; }
-Mod+Ctrl+J { set-window-height "-10%"; }
-Mod+Ctrl+K { set-window-height "+10%"; }
+Mod+Ctrl+J { set-window-height "+10%"; }
+Mod+Ctrl+K { set-window-height "-10%"; }
 Mod+Ctrl+L { set-window-width "+10%"; }
