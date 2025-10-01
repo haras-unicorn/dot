@@ -6,8 +6,6 @@
 }:
 
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
-# FIXME: xwayland
-# TODO: remove niri- prefixes and add in the commented out options
 
 let
   package = pkgs.niri;
