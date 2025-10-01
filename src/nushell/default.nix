@@ -20,7 +20,7 @@ let
   );
 
   aliases = lib.strings.concatStringsSep "\n" (
-    builtins.map (name: ''alias ${name} = ${builtins.toString cfg.aliases."${name}"}'') (
+    builtins.map (name: ''alias "${name}" = ${builtins.toString cfg.aliases."${name}"}'') (
       builtins.attrNames cfg.aliases
     )
   );
