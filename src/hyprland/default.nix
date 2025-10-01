@@ -111,6 +111,10 @@ in
       pkgs.hyprpicker
     ];
 
+    xdg.portal.extraPortals = lib.mkBefore [
+      pkgs.xdg-desktop-portal-hyprland
+    ];
+
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.xwayland.enable = true;
     wayland.windowManager.hyprland.systemd.enable = true;
