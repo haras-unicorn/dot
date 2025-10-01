@@ -27,9 +27,7 @@ in
         {
           rule = "float";
           selector = "class";
-          xselector = "wm_class";
           arg = "org.keepassxc.KeePassXC";
-          xarg = "keepassxc";
         }
       ];
 

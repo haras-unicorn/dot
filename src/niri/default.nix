@@ -59,6 +59,34 @@ let
     ) cfg.keybinds
   );
 
+  windowrules = lib.strings.concatStringsSep "\n" (
+    builtins.map (
+      windowrule:
+      let
+        rule =
+          if windowrule.rule == "float" then
+            "open-floating true"
+          else if windowrule.rule == "hide" then
+            ''
+              open-floating true
+              default-column-width { fixed 0; }
+              default-window-height { fixed 0; }
+            ''
+          else
+            builtins.throw "Unknown window rule";
+
+        selector =
+          if windowrule.selector == "class" then "app-id" else builtins.throw "Unknown window selector";
+      in
+      ''
+        window-rule {
+          match ${selector}="${windowrule.arg}"
+          ${rule}
+        }
+      ''
+    ) cfg.windowrules
+  );
+
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 
@@ -127,6 +155,8 @@ in
         ${builtins.readFile ./binds.kdl}
         ${binds}
       }
+
+      ${windowrules}
 
       layout {
         focus-ring {

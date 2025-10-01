@@ -57,7 +57,16 @@ let
   windowrules = lib.strings.concatStringsSep "\n" (
     builtins.map (
       windowrule:
-      "windowrulev2 =" + " ${windowrule.rule}" + ", ${windowrule.selector}:(${windowrule.arg})"
+      let
+        rule =
+          if windowrule.rule == "float" then
+            "float"
+          else if windowrule.rule == "hide" then
+            "size 0 0"
+          else
+            builtins.throw "Unknown window rule";
+      in
+      "windowrulev2 =" + " ${rule}" + ", ${windowrule.selector}:(${windowrule.arg})"
     ) cfg.windowrules
   );
 

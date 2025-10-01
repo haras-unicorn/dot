@@ -22,9 +22,7 @@ in
       {
         rule = "float";
         selector = "class";
-        xselector = "wm_class";
         arg = "pcmanfm";
-        xarg = "pcmanfm";
       }
     ];
 

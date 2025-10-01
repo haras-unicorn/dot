@@ -15,9 +15,7 @@ in
       {
         rule = "float";
         selector = "class";
-        xselector = "wm_class";
         arg = ".blueman-manager-wrapped";
-        xarg = ".blueman-manager-wrapped";
       }
     ];
 

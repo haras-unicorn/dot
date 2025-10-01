@@ -96,8 +96,13 @@ let
   windowrules = lib.strings.concatStringsSep "\n" (
     builtins.map (
       windowrule:
-      "floating_layout.float_rules.append(Match(${windowrule.xselector}=\"${windowrule.xarg}\"))"
-    ) (builtins.filter (windowrule: windowrule.rule == "float") cfg.windowrules)
+      let
+        rule = if windowrule.rule == "float" then "float" else builtins.throw "Unknown window rule";
+        selector = if windowrule.selector == "class" then "wm_class" else builtins.throw "Unknown selector";
+        arg = windowrule.arg;
+      in
+      "floating_layout.${rule}_rules.append(Match(${selector}=\"${arg}\"))"
+    ) cfg.windowrules
   );
 
   hasMonitor = config.dot.hardware.monitor.enable;

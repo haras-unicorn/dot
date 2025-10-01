@@ -40,9 +40,7 @@ in
       {
         rule = "float";
         selector = "class";
-        xselector = "wm_class";
         arg = "steam";
-        xarg = "steam";
       }
     ];
 

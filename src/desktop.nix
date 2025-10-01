@@ -97,17 +97,26 @@
     };
 
     windowrules = lib.mkOption {
-      type = with lib.types; listOf (lazyAttrsOf (str));
+      type =
+        with lib.types;
+        listOf (submodule {
+          options.rule = lib.mkOption {
+            type = lib.types.str;
+            example = "float";
+            description = "Window rule to apply";
+          };
+          options.selector = lib.mkOption {
+            type = lib.types.str;
+            example = "class";
+            description = "Selector with which to match";
+          };
+          options.arg = lib.mkOption {
+            type = lib.types.str;
+            example = "org.keepassxc.KeePassXC";
+            description = "Selector argument with which to match";
+          };
+        });
       default = [ ];
-      example = [
-        {
-          rule = "float";
-          selector = "class";
-          xselector = "wm_class";
-          arg = "org.keepassxc.KeePassXC";
-          xarg = "keepassxc";
-        }
-      ];
     };
 
     volume = lib.mkOption {
