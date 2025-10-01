@@ -1,5 +1,5 @@
 Mod+Escape { close-window; }
-// Mod+Space { switch-layout next; }
+Mod+Space { switch-layout "next"; }
 
 Mod+H { focus-column-left; }
 Mod+J { focus-window-or-workspace-down; }
