@@ -40,7 +40,6 @@ in
       MOZ_ENABLE_WAYLAND = "1";
       # NOTE: xwayland uses x11 anyway and this breaks gnome xdg portal
       # GDK_BACKEND = "wayland,x11";
-      GDK_BACKEND = "wayland";
       CLUTTER_BACKEND = "wayland";
       SDL_VIDEODRIVER = "wayland,x11";
       _JAVA_AWT_WM_NONREPARENTING = "1";

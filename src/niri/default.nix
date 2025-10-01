@@ -89,9 +89,19 @@ in
       pkgs.xwayland-satellite
     ];
 
-    xdg.portal.extraPortals = lib.mkBefore [
+    xdg.portal.extraPortals = [
       pkgs.xdg-desktop-portal-gnome
     ];
+    xdg.portal.config.niri = {
+      default = [
+        "gnome"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.Access" = [ "gtk" ];
+      "org.freedesktop.impl.portal.Notification" = [ "gtk" ];
+      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+    };
 
     xdg.configFile."niri/config.kdl".text = ''
       screenshot-path "${config.xdg.userDirs.pictures}/screenshots"

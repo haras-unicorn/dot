@@ -111,9 +111,17 @@ in
       pkgs.hyprpicker
     ];
 
-    xdg.portal.extraPortals = lib.mkBefore [
+    xdg.portal.extraPortals = [
       pkgs.xdg-desktop-portal-hyprland
     ];
+    xdg.portal.config.hyprland = {
+      default = [
+        "hyprland"
+        "gtk"
+      ];
+      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+    };
 
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.xwayland.enable = true;

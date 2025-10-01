@@ -25,13 +25,23 @@ in
       pkgs.libnotify
     ];
 
+    services.gnome-keyring.enable = true;
+
     xdg.portal.enable = true;
     xdg.portal.xdgOpenUsePortal = true;
 
-    xdg.portal.config.common.default = "*";
     xdg.portal.extraPortals = [
       pkgs.xdg-desktop-portal-gtk
-      pkgs.libsForQt5.xdg-desktop-portal-kde
+      pkgs.kdePackages.xdg-desktop-portal-kde
+      pkgs.gnome-keyring
     ];
+    xdg.portal.config.common = {
+      default = [
+        "gtk"
+        "kde"
+      ];
+      "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      "org.freedesktop.impl.portal.FileChooser" = [ "kde" ];
+    };
   };
 }
