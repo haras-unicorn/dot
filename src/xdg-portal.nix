@@ -25,6 +25,11 @@ in
       pkgs.libnotify
     ];
 
+    # NOTE: idk why but it solves problems xd
+    dot.desktopEnvironment.sessionStartup = [
+      "${pkgs.systemd}/bin/systemctl restart --user xdg-desktop-portal*"
+    ];
+
     services.gnome-keyring.enable = true;
 
     xdg.portal.enable = true;
