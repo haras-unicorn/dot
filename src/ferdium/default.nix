@@ -51,7 +51,7 @@ let
         Unit = {
           Description = "Ferdium (${instanceName})";
           After = [ "graphical-session.target" ];
-          PartOf = [ "tray.target" ];
+          Requires = [ "graphical-session.target" ];
         };
         Service = {
           ExecStartPre = [
@@ -61,7 +61,7 @@ let
           Restart = "on-failure";
           WorkingDirectory = dataDir;
         };
-        Install.WantedBy = [ "tray.target" ];
+        Install.WantedBy = [ "graphical-session.target" ];
       };
 
       xdg.dataFile."${prefix}/config/settings.json".text = builtins.toJSON settings;

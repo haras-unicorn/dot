@@ -23,13 +23,10 @@ in
     lib.mkIf (hasMonitor && hasKeyboard && hasMouse && hasWayland)
       {
         systemd.user.services.eww = {
-          Unit = {
-            Description = "Eww daemon";
-            Requires = "tray.target";
-            PartOf = [ "graphical-session.target" ];
-            After = [ "graphical-session-pre.target" ];
-          };
+          Unit.Description = "Eww daemon";
           Service.ExecStart = "${package}/bin/eww daemon";
+          Unit.Requires = [ "graphical-session.target" ];
+          Unit.After = [ "graphical-session.target" ];
           Install.WantedBy = [ "graphical-session.target" ];
         };
 

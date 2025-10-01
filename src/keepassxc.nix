@@ -76,7 +76,9 @@ in
       systemd.user.services.keepassxc = lib.mkIf (hasMonitor && hasKeyboard) {
         Unit.Description = "KeePassXC daemon";
         Service.ExecStart = "${pkgs.keepassxc}/bin/keepassxc";
-        Install.WantedBy = [ "tray.target" ];
+        Unit.After = [ "graphical-session.target" ];
+        Unit.Requires = [ "graphical-session.target" ];
+        Install.WantedBy = [ "graphical-session.target" ];
       };
     };
   };

@@ -13,7 +13,7 @@ in
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     programs.waybar.enable = true;
     programs.waybar.systemd.enable = true;
-    programs.waybar.systemd.target = "tray.target";
+    programs.waybar.systemd.target = "graphical-session.target";
     programs.waybar.settings = [
       (pkgs.lib.attrsets.recursiveUpdate (builtins.fromJSON (builtins.readFile ./config.json)) {
         output = config.dot.hardware.monitor.main;
