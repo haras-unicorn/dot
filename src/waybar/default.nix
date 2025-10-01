@@ -29,6 +29,15 @@ in
         "pulseaudio" = {
           "on-click" = config.dot.desktopEnvironment.volume;
         };
+        "network" = {
+          "on-click" = config.dot.desktopEnvironment.network;
+        };
+        "memory" = {
+          "on-click" = config.dot.desktopEnvironment.monitor;
+        };
+        "cpu" = {
+          "on-click" = config.dot.desktopEnvironment.monitor;
+        };
       })
     ];
 

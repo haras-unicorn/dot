@@ -128,6 +128,24 @@
       '';
     };
 
+    monitor = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      example = "mission-center";
+      description = ''
+        Monitor command.
+      '';
+    };
+
+    network = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      example = "nm-connection-editor";
+      description = ''
+        Network command.
+      '';
+    };
+
     logout = lib.mkOption {
       type = lib.types.str;
       default = "";

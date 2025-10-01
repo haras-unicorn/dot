@@ -61,5 +61,7 @@ in
     ];
 
     services.network-manager-applet.enable = true;
+
+    dot.desktopEnvironment.network = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
   };
 }
