@@ -11,14 +11,15 @@ let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
 
-  pastedo = pkgs.writeShellApplication {
-    name = "pastedo";
+  type = pkgs.writeShellApplication {
+    name = "type";
     runtimeInputs = [
-      pkgs.xclip
       pkgs.ydotool
+      pkgs.coreutils
+      config.dot.shell.paste
     ];
     text = ''
-      echo "type $(${config.dot.shell.paste})" | ydotool
+      echo "type $(paste)" | ydotool
     '';
   };
 in
@@ -39,7 +40,7 @@ in
           "alt"
         ];
         key = "v";
-        command = "${pastedo}/bin/pastedo";
+        command = "${type}/bin/type";
       }
     ];
   };

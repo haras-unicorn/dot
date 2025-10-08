@@ -17,6 +17,7 @@ let
     name = "motd-banner";
     runtimeInputs = [
       pkgs.curl
+      pkgs.coreutils
       pkgs.jq
     ];
     text = ''
@@ -27,6 +28,9 @@ let
 
   motd-wrap = pkgs.writeShellApplication {
     name = "motd-wrap";
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
       cat /var/lib/rust-motd/motd
       exec "$@"

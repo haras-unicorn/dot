@@ -6,6 +6,8 @@
 }:
 
 let
+  user = config.dot.user;
+
   terminal = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
   shell = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
   browser = "${config.dot.browser.package}/bin/${config.dot.browser.bin}";
@@ -30,25 +32,59 @@ let
   };
 
   hasMonitor = config.dot.hardware.monitor.enable;
+  hasMouse = config.dot.hardware.mouse.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
 
   copy = pkgs.writeShellApplication {
     name = "copy";
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
-      cat > '${config.xdg.dataHome}/clipboard.txt'
+      mkdir -p '${config.xdg.dataHome}'
+      cat > '${config.xdg.dataHome}/clipboard'
     '';
   };
 
   paste = pkgs.writeShellApplication {
     name = "paste";
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
       if [ -f '${config.xdg.dataHome}/clipboard' ]; then
-        cat '${config.xdg.dataHome}/clipboard.txt'
-      else
-        printf ""
+        cat '${config.xdg.dataHome}/clipboard'
       fi
     '';
   };
+
+  mkScreenshot =
+    { name, ... }:
+    pkgs.writeShellApplication {
+      name = "screenshot";
+      runtimeInputs = [
+        pkgs.fbcat
+        config.dot.shell.copy
+        pkgs.coreutils
+      ];
+      text = ''
+        tmp="$(mktemp -d)"
+        mkdir -p "$tmp"
+        trap 'rm -rf "$tmp"' EXIT
+
+        name="$(date -Iseconds)"
+        type="png"
+        fbgrab "$tmp/$name.$type"
+        copy < "$tmp/$name.$type"
+
+        dir='${config.xdg.userDirs.pictures}/screenshots'
+        mkdir -p "$dir"
+        mv -f "$tmp/$name.$type" "$dir/$name.$type"
+      '';
+    };
+
+  screenshot = mkScreenshot { name = "screenshot"; };
+  regionshot = mkScreenshot { name = "regionshot"; };
 
   mime = lib.mkMerge [
     (lib.mkIf (hasMonitor) browserMime)
@@ -61,6 +97,10 @@ in
     systemd.user.extraConfig = ''
       DefaultEnvironment="PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
     '';
+
+    users.users.${user}.extraGroups = [
+      "video"
+    ];
   };
 
   branch.homeManagerModule.homeManagerModule = {
@@ -111,6 +151,13 @@ in
             Commands to execute on session start with Nushell.
           '';
         };
+        copy = lib.mkOption {
+          type = lib.types.package;
+          default = copy;
+          description = ''
+            Copy command.
+          '';
+        };
         paste = lib.mkOption {
           type = lib.types.package;
           default = paste;
@@ -118,11 +165,18 @@ in
             Paste command.
           '';
         };
-        copy = lib.mkOption {
+        screenshot = lib.mkOption {
           type = lib.types.package;
-          default = copy;
+          default = screenshot;
           description = ''
-            Copy command.
+            Screenshot command.
+          '';
+        };
+        regionshot = lib.mkOption {
+          type = lib.types.package;
+          default = regionshot;
+          description = ''
+            Region screenshot command.
           '';
         };
       };
@@ -208,6 +262,21 @@ in
             key = "t";
             command = "${terminal} ${shell}";
           }
+          {
+            mods = [ "super" ];
+            key = "Print";
+            command = "${screenshot}/bin/screenshot";
+          }
+        ])
+        (lib.mkIf (hasMonitor && hasKeyboard && hasMouse) [
+          {
+            mods = [
+              "super"
+              "shift"
+            ];
+            key = "Print";
+            command = "${regionshot}/bin/regionshot";
+          }
         ])
       ];
       home.packages = [
@@ -217,6 +286,8 @@ in
 
         config.dot.shell.copy
         config.dot.shell.paste
+        config.dot.shell.screenshot
+        config.dot.shell.regionshot
       ];
 
       home.sessionVariables = lib.mkMerge [

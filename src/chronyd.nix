@@ -50,7 +50,10 @@
         ExecStart = "${
           pkgs.writeShellApplication {
             name = "wait-for-time-sync";
-            runtimeInputs = [ pkgs.chrony ];
+            runtimeInputs = [
+              pkgs.chrony
+              pkgs.coreutils
+            ];
             text = ''
               if timedatectl | grep -q "System clock synchronized: yes"; then
                 exit 0

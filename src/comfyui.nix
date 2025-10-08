@@ -25,7 +25,10 @@ let
   mkComfyuiInstance = instanceName: rec {
     comfyui = pkgs.writeShellApplication {
       name = "comfyui-${instanceName}";
-      runtimeInputs = [ comfyuiPackage ];
+      runtimeInputs = [
+        comfyuiPackage
+        pkgs.coreutils
+      ];
       text = ''
         mkdir -p "${config.xdg.dataHome}/comfyui/${instanceName}"
         cd "${config.xdg.dataHome}/comfyui/${instanceName}"

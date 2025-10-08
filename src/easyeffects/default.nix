@@ -12,7 +12,10 @@ let
 
   toggleEasyeffectsBypass = pkgs.writeShellApplication {
     name = "toggle-easyeffects-bypass";
-    runtimeInputs = [ pkgs.easyeffects ];
+    runtimeInputs = [
+      pkgs.easyeffects
+      pkgs.coreutils
+    ];
     text = ''
       if [ "$(easyeffects -b 3)" = "1" ]; then
         easyeffects -b 2

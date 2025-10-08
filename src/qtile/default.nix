@@ -21,6 +21,7 @@ let
   current-layout = pkgs.writeShellApplication {
     name = "current-layout";
     runtimeInputs = [
+      pkgs.coreutils
       pkgs.hyprland
       pkgs.jq
     ];
@@ -34,6 +35,7 @@ let
   switch-layout = pkgs.writeShellApplication {
     name = "switch-layout";
     runtimeInputs = [
+      pkgs.coreutils
       pkgs.hyprland
       pkgs.jq
     ];

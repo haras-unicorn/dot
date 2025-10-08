@@ -5,7 +5,10 @@
 let
   refactor = pkgs.writeShellApplication {
     name = "refactor";
-    runtimeInputs = [ pkgs.git ];
+    runtimeInputs = [
+      pkgs.git
+      pkgs.coreutils
+    ];
     text = ''
       USAGE="Usage: refactor <command> [name]
       Commands:

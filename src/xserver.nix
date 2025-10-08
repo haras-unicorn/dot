@@ -6,22 +6,6 @@
 }:
 
 let
-  copy = pkgs.writeShellApplication {
-    name = "copy";
-    runtimeInputs = [ pkgs.xclip ];
-    text = ''
-      cat | xclip -sel clip
-    '';
-  };
-
-  paste = pkgs.writeShellApplication {
-    name = "paste";
-    runtimeInputs = [ pkgs.xclip ];
-    text = ''
-      xclip -o -sel clip
-    '';
-  };
-
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 in
@@ -34,10 +18,6 @@ in
     dot.desktopEnvironment.sessionVariables = {
       QT_QPA_PLATFORM = "xcb";
     };
-
-    dot.shell.copy = copy;
-
-    dot.shell.paste = paste;
 
     home.packages = [
       pkgs.libsForQt5.qt5ct

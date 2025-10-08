@@ -8,6 +8,9 @@
 let
   run = pkgs.writeShellApplication {
     name = "run";
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
       "$@" &>/dev/null & disown %-
     '';
@@ -15,6 +18,9 @@ let
 
   repeat = pkgs.writeShellApplication {
     name = "repeat";
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
       while true; do "$@"; done
     '';
@@ -22,6 +28,9 @@ let
 
   nr = pkgs.writeShellApplication {
     name = "nr";
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
       name="$1"
       shift
@@ -31,6 +40,9 @@ let
 
   nru = pkgs.writeShellApplication {
     name = "nru";
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
       export NIXPKGS_ALLOW_UNFREE=1
       name="$1"
@@ -41,6 +53,9 @@ let
 
   nruu = pkgs.writeShellApplication {
     name = "nruu";
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
       export NIXPKGS_ALLOW_UNFREE=1
       name="$1"
@@ -51,6 +66,9 @@ let
 
   ezdd = pkgs.writeShellApplication {
     name = "ezdd";
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
       if="$1"
       of="$2"
@@ -81,8 +99,6 @@ in
       pkgs.man-pages-posix
       pkgs.rustscan
       pkgs.fd
-      pkgs.watchexec
-      pkgs.systemfd
       pkgs.vim
       pkgs.kitty # NOTE: install everywhere for terminal compatibility
       pkgs.xfce.xfce4-terminal

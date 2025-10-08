@@ -13,7 +13,10 @@ let
 
   setWallpaperXorg = pkgs.writeShellApplication {
     name = "wallpaper";
-    runtimeInputs = [ pkgs.feh ];
+    runtimeInputs = [
+      pkgs.feh
+      pkgs.coreutils
+    ];
     text = ''
       feh --bg-fill "$@"
     '';
@@ -22,7 +25,10 @@ let
   # TODO: adjust for images
   setWallpaperWayland = pkgs.writeShellApplication {
     name = "wallpaper";
-    runtimeInputs = [ pkgs.mpvpaper ];
+    runtimeInputs = [
+      pkgs.mpvpaper
+      pkgs.coreutils
+    ];
     text = ''
       mpvpaper \
         -o "video-unscaled=yes no-audio --loop-playlist" \

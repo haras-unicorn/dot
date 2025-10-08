@@ -18,7 +18,10 @@ let
   mkOllamaInstance = instanceName: rec {
     ollama = pkgs.writeShellApplication {
       name = "ollama-${instanceName}";
-      runtimeInputs = [ pkgs.ollama ];
+      runtimeInputs = [
+        pkgs.ollama
+        pkgs.coreutils
+      ];
       text = ''
         mkdir -p "${config.xdg.dataHome}/ollama/${instanceName}"
         cd "${config.xdg.dataHome}/ollama/${instanceName}"
@@ -29,7 +32,10 @@ let
 
     openWebui = pkgs.writeShellApplication {
       name = "open-webui-${instanceName}";
-      runtimeInputs = [ aiPkgs.open-webui ];
+      runtimeInputs = [
+        aiPkgs.open-webui
+        pkgs.coreutils
+      ];
       text = ''
         mkdir -p "${config.xdg.dataHome}/ollama/${instanceName}/ui"
         cd "${config.xdg.dataHome}/ollama/${instanceName}/ui"

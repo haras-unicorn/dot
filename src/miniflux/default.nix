@@ -26,7 +26,10 @@ let
   );
   package-admin = pkgs.writeShellApplication {
     name = "miniflux-admin";
-    runtimeInputs = [ package ];
+    runtimeInputs = [
+      package
+      pkgs.coreutils
+    ];
     text = ''
       if [ "$EUID" -ne 0 ]; then
         echo "Please run as root"

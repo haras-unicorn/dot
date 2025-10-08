@@ -16,6 +16,7 @@ let
   crush = pkgs.writeShellApplication {
     name = "crush";
     runtimeInputs = [
+      pkgs.coreutils
       pkgs.nur.repos.charmbracelet.crush
     ];
     text = ''

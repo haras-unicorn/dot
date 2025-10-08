@@ -6,27 +6,6 @@
 }:
 
 let
-  copy = pkgs.writeShellApplication {
-    name = "copy";
-    runtimeInputs = [
-      pkgs.wl-clipboard
-      pkgs.xclip
-    ];
-    text = ''
-      to_copy="$(cat)"
-      "$to_copy" | wl-copy
-      "$to_copy" | xclip -sel clipboard
-    '';
-  };
-
-  paste = pkgs.writeShellApplication {
-    name = "paste";
-    runtimeInputs = [ pkgs.wl-clipboard ];
-    text = ''
-      wl-paste
-    '';
-  };
-
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 in
@@ -44,10 +23,6 @@ in
       SDL_VIDEODRIVER = "wayland,x11";
       _JAVA_AWT_WM_NONREPARENTING = "1";
     };
-
-    dot.shell.copy = copy;
-
-    dot.shell.paste = paste;
 
     home.packages = [
       pkgs.egl-wayland

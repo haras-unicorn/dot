@@ -10,7 +10,9 @@ let
   wallpaperImage = config.dot.wallpaper.image;
   inspect-gtk = pkgs.writeShellApplication {
     name = "inspect-gtk";
-    runtimeInputs = [ ];
+    runtimeInputs = [
+      pkgs.coreutils
+    ];
     text = ''
       export GTK_DEBUG=interactive
       exec "$@"

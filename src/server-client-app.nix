@@ -22,7 +22,10 @@
         "client"
       ])
       // {
-        runtimeInputs = runtimeInputs ++ [ pkgs.zenity ];
+        runtimeInputs = runtimeInputs ++ [
+          pkgs.zenity
+          pkgs.coreutils
+        ];
         text = ''
           ${lib.concatStringsSep "\n" (
             lib.imap0 (i: _: ''
@@ -32,10 +35,10 @@
               done
             '') servers
           )}
-            
+
           systemd-run --user --scope --unit=${name}-servers \
             sh -c "${lib.concatStringsSep " & " servers} & wait" &
-            
+
           (
             progress=0
             while ! (${lib.concatStringsSep " && " (map (x: "${x} > /dev/null") waits)}); do
@@ -47,9 +50,9 @@
             echo 100
           ) | zenity --progress --no-cancel --auto-close \
             --title="Starting ${display}" --text="Initializing server..."
-            
+
           ${client} || echo "Client exited with non-zero exit code"
-            
+
           systemctl stop --user ${name}-servers.scope
         '';
       }

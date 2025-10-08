@@ -16,6 +16,9 @@ let
     let
       package = pkgs.writeShellApplication {
         inherit name;
+        runtimeInputs = [
+          pkgs.coreutils
+        ];
         text = ''
           if ! ( ${config.dot.desktopEnvironment.fullscreenCheck} ); then
             exec ${command}

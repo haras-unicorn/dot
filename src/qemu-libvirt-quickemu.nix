@@ -14,7 +14,10 @@ let
 
   win11 = pkgs.writeShellApplication {
     name = "win11";
-    runtimeInputs = [ pkgs.quickemu ];
+    runtimeInputs = [
+      pkgs.quickemu
+      pkgs.coreutils
+    ];
     text = ''
       mkdir -p "${config.xdg.dataHome}/win11"
       cd "${config.xdg.dataHome}/win11"

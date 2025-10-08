@@ -226,6 +226,9 @@ in
                 name = "cockroachdb-init-script";
                 app = pkgs.writeShellApplication {
                   inherit name;
+                  runtimeInputs = [
+                    pkgs.coreutils
+                  ];
                   text = ''
                     ${crdb}/bin/cockroach init --certs-dir "${certs}" \
                       || echo "Cluster already initialized."

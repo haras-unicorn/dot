@@ -23,16 +23,16 @@ let
   mkVoiceModelName = voice: "${voice.dialect}-${voice.name}-${voice.quality}.onnx";
   mkVoiceConfigName = voice: "${voice.dialect}-${voice.name}-${voice.quality}.onnx.json";
   mkVoice =
-    hashes: voice:
+    voice:
     voice
     // rec {
       model = pkgs.fetchurl {
         url = "${mkVoiceBaseUrl voice}/${mkVoiceModelName voice}";
-        sha256 = hashes.model;
+        sha256 = voice.modelHash;
       };
       config = pkgs.fetchurl {
         url = "${mkVoiceBaseUrl voice}/${mkVoiceConfigName voice}";
-        sha256 = hashes.config;
+        sha256 = voice.configHash;
       };
       sampleRate =
         let
@@ -42,18 +42,14 @@ let
     };
 
   voices = {
-    amy =
-      mkVoice
-        {
-          model = "sha256-pakau33g8QQ1iiWt7UgN2s8f8HYohjJYhuxAai6GqrM=";
-          config = "sha256-IlCppgW43DWhFnF/rcUFZpXdgJ40oV0C9yoPUtU9Prs=";
-        }
-        {
-          language = "en";
-          dialect = "en_US";
-          name = "amy";
-          quality = "low";
-        };
+    amy = mkVoice {
+      modelHash = "sha256-pakau33g8QQ1iiWt7UgN2s8f8HYohjJYhuxAai6GqrM=";
+      configHash = "sha256-IlCppgW43DWhFnF/rcUFZpXdgJ40oV0C9yoPUtU9Prs=";
+      language = "en";
+      dialect = "en_US";
+      name = "amy";
+      quality = "low";
+    };
   };
 
   speakVoice = voices.amy;
@@ -62,6 +58,7 @@ let
     runtimeInputs = [
       pkgs.piper-tts
       pkgs.alsa-utils
+      pkgs.coreutils
     ];
     text = ''
       cat \
@@ -82,29 +79,27 @@ let
     name = "read";
     runtimeInputs = [
       speak
-      (if config.dot.hardware.graphics.wayland then pkgs.wl-clipboard else pkgs.xclip)
+      pkgs.coreutils
+      config.dot.shell.paste
     ];
     text = ''
-      ${if config.dot.hardware.graphics.wayland then "wl-paste" else "xclip -o"} | speak
+      paste | speak
     '';
   };
-
 in
 {
-  branch.homeManagerModule.homeManagerModule = {
-    config = lib.mkIf hasSound {
-      home.packages = [
-        speak
-        pkgs.piper-tts
-      ];
+  branch.homeManagerModule.homeManagerModule = lib.mkIf hasSound {
+    home.packages = [
+      speak
+      pkgs.piper-tts
+    ];
 
-      dot.desktopEnvironment.keybinds = lib.mkIf (hasKeyboard && hasMonitor) [
-        {
-          mods = [ "super" ];
-          key = "s";
-          command = "${read}/bin/read";
-        }
-      ];
-    };
+    dot.desktopEnvironment.keybinds = lib.mkIf (hasKeyboard && hasMonitor) [
+      {
+        mods = [ "super" ];
+        key = "s";
+        command = "${read}/bin/read";
+      }
+    ];
   };
 }
