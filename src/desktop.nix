@@ -1,5 +1,28 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
+let
+  cfg = config.dot.desktopEnvironment;
+
+  sessions = pkgs.runCommand "sessions" { } ''
+    mkdir -p $out
+    ${lib.concatStringsSep "\n" (
+      map (s: ''
+        cat > $out/${lib.strings.escapeShellArg s.name}.desktop <<'EOF'
+        [Desktop Entry]
+        Name=${s.name}
+        Comment=Launch ${s.name}
+        Exec=/usr/bin/env ${s.command}
+        Type=Application
+        EOF
+      '') cfg.startup
+    )}
+  '';
+in
 {
   branch.nixosModule.nixosModule.options.dot.desktopEnvironment = {
     login = lib.mkOption {
@@ -30,6 +53,14 @@
           };
         }
       );
+    };
+
+    sessions = lib.mkOption {
+      type = lib.types.package;
+      default = sessions;
+      description = ''
+        Session startup files directory.
+      '';
     };
   };
 
