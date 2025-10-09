@@ -52,9 +52,8 @@ let
           else
             mod
         ) bind.mods;
-        key = lib.strings.toUpper bind.key;
       in
-      "${lib.strings.concatStringsSep "+" (mods ++ [ (capitalize key) ])}"
+      "${lib.strings.concatStringsSep "+" (mods ++ [ (capitalize bind.key) ])}"
       + " { spawn \"${lib.strings.concatStringsSep "\" \"" (lib.strings.splitString " " bind.command)}\"; }"
     ) cfg.keybinds
   );

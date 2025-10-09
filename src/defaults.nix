@@ -265,7 +265,7 @@ in
           {
             mods = [ "super" ];
             key = "Print";
-            command = "${screenshot}/bin/screenshot";
+            command = "${config.dot.shell.screenshot}/bin/screenshot";
           }
         ])
         (lib.mkIf (hasMonitor && hasKeyboard && hasMouse) [
@@ -275,7 +275,7 @@ in
               "shift"
             ];
             key = "Print";
-            command = "${regionshot}/bin/regionshot";
+            command = "${config.dot.shell.regionshot}/bin/regionshot";
           }
         ])
       ];
