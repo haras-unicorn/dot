@@ -2,11 +2,11 @@
 
 let
   transcribe = pkgs.writeShellApplication {
-    name = "regionocr";
+    name = "transcribe";
     runtimeInputs = [
-      pkgs.coreutils
       config.dot.shell.paste
       config.dot.shell.copy
+      pkgs.coreutils
       pkgs.tesseract
       pkgs.libnotify
     ];

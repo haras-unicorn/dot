@@ -79,8 +79,8 @@ let
     name = "read";
     runtimeInputs = [
       speak
-      pkgs.coreutils
       config.dot.shell.paste
+      pkgs.coreutils
     ];
     text = ''
       paste | speak
