@@ -15,8 +15,8 @@ let
     ];
     text = ''
       to_copy="$(cat)"
-      echo "$to_copy" | wl-copy
-      echo "$to_copy" | xclip -sel clipboard
+      echo "$to_copy" | wl-copy "$@"
+      echo "$to_copy" | xclip -sel clipboard "$@"
     '';
   };
 
@@ -27,7 +27,7 @@ let
       pkgs.coreutils
     ];
     text = ''
-      wl-paste
+      wl-paste "$@"
     '';
   };
 
@@ -38,7 +38,7 @@ let
       pkgs.coreutils
     ];
     text = ''
-      cat | xclip -sel clip
+      cat | xclip -sel clip "$@"
     '';
   };
 
@@ -49,7 +49,7 @@ let
       pkgs.coreutils
     ];
     text = ''
-      xclip -o -sel clip
+      xclip -o -sel clip "$@"
     '';
   };
 

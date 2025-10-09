@@ -75,7 +75,7 @@ let
         name="$(date -Iseconds)"
         type="png"
         fbgrab "$tmp/$name.$type"
-        copy < "$tmp/$name.$type"
+        copy -t image/$type < "$tmp/$name.$type"
 
         dir='${config.xdg.userDirs.pictures}/screenshots'
         mkdir -p "$dir"

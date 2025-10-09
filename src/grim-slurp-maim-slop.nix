@@ -29,7 +29,7 @@ let
         type="png"
         name="$(date -Iseconds)"
         ${command}
-        copy < "$tmp/$name.$type"
+        copy -t image/$type < "$tmp/$name.$type"
         notify-send --icon="$tmp/$name.$type" Clipboard "copied '$name.$type'" --transient
 
         dir="${config.xdg.userDirs.pictures}/screenshots"
