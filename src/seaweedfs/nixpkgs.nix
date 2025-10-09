@@ -474,6 +474,10 @@ in
                 WorkingDirectory = mountCfg.workDir;
                 ExecStartPre = [
                   "${pkgs.coreutils}/bin/ln -sf /etc/seaweedfs/mounts/${name}/security.toml ${mountCfg.workDir}/security.toml"
+                  "-${pkgs.util-linux}/bin/umount ${mountCfg.workDir}/mnt"
+                ];
+                ExecStopPost = [
+                  "-${pkgs.util-linux}/bin/umount ${mountCfg.workDir}/mnt"
                 ];
                 CapabilityBoundingSet = [
                   "CAP_SYS_ADMIN"
