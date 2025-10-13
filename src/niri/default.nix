@@ -70,6 +70,9 @@ let
               open-floating true
               default-column-width { fixed 0; }
               default-window-height { fixed 0; }
+              max-width 0
+              max-height 0
+              default-floating-position x=0 y=0 relative-to="bottom-left"
             ''
           else
             builtins.throw "Unknown window rule";
