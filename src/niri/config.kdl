@@ -8,6 +8,9 @@ input {
       layout "us,hr"
     }
   }
+  touchpad {
+    tap
+  }
 }
 
 hotkey-overlay {
