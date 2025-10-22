@@ -11,8 +11,8 @@ let
       pkgs.libnotify
     ];
     text = ''
-      text="$(paste | tesseract --psm 1 --oem 1 stdin stdout)"
-      trimmed="$(sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' < "$text")";
+      text="$(paste -t image/png | tesseract --psm 1 --oem 1 stdin stdout)"
+      trimmed="$(echo "$text" | xargs)"
       echo "$trimmed" | copy
       notify-send Clipboard "copied '$trimmed'" --transient
     '';
