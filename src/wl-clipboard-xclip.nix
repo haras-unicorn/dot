@@ -14,9 +14,13 @@ let
       pkgs.coreutils
     ];
     text = ''
-      to_copy="$(cat)"
-      echo "$to_copy" | wl-copy "$@"
-      echo "$to_copy" | xclip -sel clipboard "$@"
+      tmpfile="$(mktemp)"
+      trap 'rm -f "$tmpfile"' EXIT
+
+      cat > "$tmpfile"
+
+      wl-copy "$@" < "$tmpfile"
+      xclip -sel clipboard "$@" < "$tmpfile"
     '';
   };
 
@@ -38,7 +42,7 @@ let
       pkgs.coreutils
     ];
     text = ''
-      cat | xclip -sel clip "$@"
+      xclip -sel clip "$@"
     '';
   };
 
