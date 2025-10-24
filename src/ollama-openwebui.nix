@@ -13,7 +13,7 @@
 let
   hasGpu = config.nixpkgs.config.cudaSupport || config.nixpkgs.config.rocmSupport;
 
-  chromium = self.lib.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
+  chromium = config.dot.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
 
   mkOllamaInstance = instanceName: rec {
     ollama = pkgs.writeShellApplication {

@@ -1,29 +1,32 @@
 {
   config,
-  self,
   pkgs,
   lib,
   ...
 }:
 
-# FIXME: hardware acceleration
-
 let
-  args = [
-    "--enable-features=WebRTCPipeWireCapturer"
-    "--enable-features=UseOzonePlatform"
-    "--ozone-platform-hint=auto"
-    "--use-gl=egl"
-  ];
-
-  flags = builtins.concatStringsSep " " (builtins.map (x: "--append-flags ${x}") args);
-
   hasMonitor = config.dot.hardware.monitor.enable;
+  hasGpu = config.dot.hardware.graphics.enable;
+  hasWayland = config.dot.hardware.graphics.wayland;
 
-  package = self.lib.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
-in
-{
-  flake.lib.chromium.wrap =
+  rawArgs =
+    [ ]
+    ++ lib.optionals hasWayland [
+      "--enable-features=UseOzonePlatform,WaylandWindowDecorations,WebRTCPipeWireCapturer"
+      "--ozone-platform=wayland"
+    ]
+    ++ lib.optionals hasGpu [
+      "--enable-gpu-rasterization"
+      "--enable-zero-copy"
+    ]
+    ++ lib.optionals (!hasWayland) [
+      "--use-gl=egl"
+    ];
+
+  flags = builtins.concatStringsSep " " (builtins.map (x: "--append-flags '${x}'") rawArgs);
+
+  wrap =
     pkgs: package: bin:
     pkgs.symlinkJoin {
       name = bin;
@@ -32,24 +35,36 @@ in
       postBuild = ''wrapProgram $out/bin/${bin} ${flags}'';
     };
 
-  flake.lib.chromium.args = builtins.concatStringsSep " " args;
+  args = builtins.concatStringsSep " " rawArgs;
 
-  branch.homeManagerModule.homeManagerModule = lib.mkIf hasMonitor {
-    programs.chromium.enable = true;
-    programs.chromium.package = package;
-    programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
-      en_US
-    ];
-    # NOTE: keeping here just in case i need them again
-    # programs.chromium.extensions = [
-    #   # ublock origin
-    #   { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; }
-    #   # dark reader
-    #   { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; }
-    #   # vimium c
-    #   { id = "hfjbmagddngcpeloejdejnfgbamkjaeg"; }
-    #   # vimium c new tab
-    #   { id = "cglpcedifkgalfdklahhcchnjepcckfn"; }
-    # ];
+  options.dot = {
+    chromium.wrap = lib.mkOption {
+      type = lib.types.raw;
+      default = wrap;
+    };
+
+    chromium.args = lib.mkOption {
+      type = lib.types.raw;
+      default = args;
+    };
+  };
+
+  package = config.dot.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
+in
+{
+  branch.nixosModule.nixosModules = {
+    inherit options;
+  };
+
+  branch.homeManagerModule.homeManagerModule = {
+    inherit options;
+
+    config = lib.mkIf hasMonitor {
+      programs.chromium.enable = true;
+      programs.chromium.package = package;
+      programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
+        en_US
+      ];
+    };
   };
 }

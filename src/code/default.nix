@@ -12,7 +12,7 @@
 
 let
   package = pkgs.vscode.override {
-    commandLineArgs = self.lib.chromium.args;
+    commandLineArgs = config.dot.chromium.args;
   };
 
   hasMonitor = config.dot.hardware.monitor.enable;
