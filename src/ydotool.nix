@@ -19,7 +19,7 @@ let
       config.dot.shell.paste
     ];
     text = ''
-      echo "type $(paste)" | ydotool
+      printf "%s" "type '$1'" | ydotool
     '';
   };
 in
@@ -33,15 +33,6 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasKeyboard) {
-    dot.desktopEnvironment.keybinds = [
-      {
-        mods = [
-          "ctrl"
-          "alt"
-        ];
-        key = "v";
-        command = "${type}/bin/type";
-      }
-    ];
+    dot.shell.type = type;
   };
 }

@@ -8,9 +8,19 @@
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasKeyboard = config.dot.hardware.keyboard.enable;
-  hasWayland = config.dot.hardware.graphics.wayland;
 
-  type = if hasWayland then "${pkgs.wtype}/bin/wtype" else "${pkgs.xdotool}/bin/xdotool type";
+  emote = pkgs.writeShellApplication {
+    name = "emote";
+    runtimeInputs = [
+      pkgs.coreutils
+      pkgs.smile
+      config.dot.shell.paste
+      config.dot.shell.type
+    ];
+    text = ''
+      smile; type "$(paste)"
+    '';
+  };
 in
 {
   branch.homeManagerModule.homeManagerModule = (lib.mkIf (hasMonitor && hasKeyboard)) {
@@ -18,7 +28,7 @@ in
       {
         mods = [ "super" ];
         key = "e";
-        command = "bash -c '${pkgs.smile}/bin/smile; ${type} $(paste)'";
+        command = "${emote}/bin/emote";
       }
     ];
 
@@ -32,6 +42,7 @@ in
 
     home.packages = [
       pkgs.smile
+      emote
     ];
   };
 }

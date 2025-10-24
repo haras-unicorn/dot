@@ -58,6 +58,29 @@ let
     '';
   };
 
+  type = pkgs.writeShellApplication {
+    name = "type";
+    runtimeInputs = [
+      pkgs.coreutils
+      paste
+    ];
+    text = ''
+      paste
+    '';
+  };
+
+  type-clipboard = pkgs.writeShellApplication {
+    name = "type-clipboard";
+    runtimeInputs = [
+      pkgs.coreutils
+      config.dot.shell.paste
+      config.dot.shell.type
+    ];
+    text = ''
+      type "$(paste)"
+    '';
+  };
+
   mkScreenshot =
     { name, ... }:
     pkgs.writeShellApplication {
@@ -163,6 +186,13 @@ in
           default = paste;
           description = ''
             Paste command.
+          '';
+        };
+        type = lib.mkOption {
+          type = lib.types.package;
+          default = type;
+          description = ''
+            Type command.
           '';
         };
         screenshot = lib.mkOption {
@@ -276,6 +306,16 @@ in
             ];
             key = "Print";
             command = "${config.dot.shell.regionshot}/bin/regionshot";
+          }
+        ])
+        (lib.mkIf (hasMonitor && hasKeyboard) [
+          {
+            mods = [
+              "ctrl"
+              "alt"
+            ];
+            key = "v";
+            command = "${type-clipboard}/bin/type-clipboard";
           }
         ])
       ];
