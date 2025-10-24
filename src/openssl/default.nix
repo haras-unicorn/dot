@@ -6,19 +6,8 @@ in
 {
   branch.nixosModule.nixosModule = {
     config = lib.mkIf hasNetwork {
-      security.pki.certificates = [
-        ''
-          -----BEGIN CERTIFICATE-----
-          MIIBWjCCAQCgAwIBAgIUSY5XVPR/Gnq4GZBBuZdH2veq940wCgYIKoZIzj0EAwIw
-          DjEMMAoGA1UEAwwDRG90MB4XDTI1MDYwMTEwNTQxNloXDTM1MDUzMDEwNTQxNlow
-          DjEMMAoGA1UEAwwDRG90MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEv9eBFfrh
-          SriLoPmDiVB3MTYNSO3itMXfa5qlrSM6FZk+/CrYWLPik45hUO5vzaH0dJ5Yd6s1
-          rKDe1I8bVrAxbaM8MDowDAYDVR0TBAUwAwEB/zALBgNVHQ8EBAMCAgQwHQYDVR0O
-          BBYEFACBLdQ8lP/Fcsg7WW/70wNWd05DMAoGCCqGSM49BAMCA0gAMEUCIQDg5UDt
-          OlAWt5qb7iUWthMnIAWZ3OX+IM5LV9siZeRS3AIgWsSTsxrjDcdqylz6G17zIaHe
-          Vfy6Zv4nVCN+V1xQ1OY=
-          -----END CERTIFICATE-----
-        ''
+      security.pki.certificateFiles = [
+        ./ca.crt
       ];
 
       sops.secrets."openssl-ca-public" = {
