@@ -173,8 +173,13 @@ let
       && ((builtins.length config.facter.report.hardware.mouse) > 0)
     );
 
-  thisOptions.dot.hardware = {
+  options.dot.hardware = {
     rpi."4".enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
+
+    battery.enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
     };
@@ -321,7 +326,7 @@ let
     };
   };
 
-  thisConfig = {
+  configHere = {
     dot.hardware.check = builtins.trace (lib.assertMsg (
       config.facter.report.version == "1"
     ) "Only facter report version 1 supported") false;
@@ -329,9 +334,9 @@ let
 in
 {
   branch.nixosModule.nixosModule = {
-    options = thisOptions;
+    inherit options;
     config = lib.mkMerge [
-      thisConfig
+      configHere
       {
         hardware.enableAllFirmware = true;
       }
@@ -339,7 +344,7 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = {
-    options = thisOptions;
-    config = thisConfig;
+    inherit options;
+    config = configHere;
   };
 }
