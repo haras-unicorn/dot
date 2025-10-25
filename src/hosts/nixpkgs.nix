@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  nixpkgs,
   nixpkgs-unstable,
   nixpkgs-ai,
   ...
@@ -84,6 +85,7 @@ let
       overlays = config.nixpkgs.overlays;
     };
 
+    nix.registry.nixpkgs.flake = nixpkgs;
     nix.extraOptions = "experimental-features = nix-command flakes";
     nix.gc = lib.mkIf config.dot.gc {
       automatic = true;
@@ -91,6 +93,7 @@ let
     };
     nix.settings.auto-optimise-store = true;
     nix.settings.trusted-users = [
+      "root"
       "@wheel"
     ];
     nix.settings.substituters = [
