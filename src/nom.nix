@@ -1,18 +1,21 @@
 { pkgs, ... }:
 
+let
+  package = pkgs.nix-output-monitor;
+in
 {
   branch.homeManagerModule.homeManagerModule = {
     home.packages = [
-      pkgs.nix-output-monitor
+      package
     ];
 
     dot.shell.aliases = {
-      "nix build" = "nom build";
-      "nix shell" = "nom shell";
-      "nix develop" = "nom develop";
+      "nix build" = "${package}/bin/nom build";
+      "nix shell" = "${package}/bin/nom shell";
+      "nix develop" = "${package}/bin/nom develop";
 
-      "nix-build" = "nom-build";
-      "nix-shell" = "nom-shell";
+      "nix-build" = "${package}/bin/nom-build";
+      "nix-shell" = "${package}/bin/nom-shell";
     };
   };
 }
