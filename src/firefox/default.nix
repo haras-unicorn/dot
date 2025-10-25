@@ -12,7 +12,8 @@
 let
   hasMonitor = config.dot.hardware.monitor.enable;
 
-  package = pkgs.firefox-bin;
+  package = pkgs.firefox-esr;
+  bin = "firefox-esr";
 
   userJs = ''
     ${builtins.readFile ./user.js}
@@ -108,7 +109,7 @@ in
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor) {
     dot.browser = {
       package = package;
-      bin = "firefox";
+      bin = bin;
     };
 
     stylix.targets.firefox = {
@@ -145,7 +146,7 @@ in
     xdg.desktopEntries = {
       firefox-work = {
         name = "Firefox (work)";
-        exec = "${package}/bin/firefox -P work";
+        exec = "${package}/bin/${bin} -P work";
         terminal = false;
       };
     };
