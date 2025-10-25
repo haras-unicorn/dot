@@ -5,11 +5,29 @@
   ...
 }:
 
-# FIXME: fullscreen detection
-
 let
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
+
+  fullscreenCheck = pkgs.writeShellApplication {
+    name = "fullscreen-check";
+    runtimeInputs = builtins.attrValues config.dot.desktopEnvironment.fullscreenChecks;
+    text = ''
+      case "$XDG_CURRENT_DESKTOP" in
+        ${lib.concatStringsSep "\n" (
+          lib.mapAttrsToList (name: pkg: ''
+            ${name})
+              exec ${lib.getExe pkg}
+              ;;
+          '') config.dot.desktopEnvironment.fullscreenChecks
+        )}
+        *)
+          echo "Unknown desktop environment: $XDG_CURRENT_DESKTOP" >&2
+          exit 1
+          ;;
+      esac
+    '';
+  };
 
   mkCallback =
     name: command:
@@ -18,9 +36,10 @@ let
         inherit name;
         runtimeInputs = [
           pkgs.coreutils
+          fullscreenCheck
         ];
         text = ''
-          if ! ( ${config.dot.desktopEnvironment.fullscreenCheck} ); then
+          if ! ( fullscreen-check ); then
             exec ${command}
           fi
         '';
@@ -38,6 +57,7 @@ in
 {
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
     home.packages = [
+      fullscreenCheck
       lockCallback.package
       suspendCallback.package
     ];

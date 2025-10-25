@@ -78,6 +78,18 @@ let
   hasNvidia = config.dot.hardware.graphics.driver == "nvidia";
 
   floatingSizeString = builtins.toString (config.dot.hardware.monitor.height / 2);
+
+  fullscreenCheck = pkgs.writeShellApplication {
+    name = "hyprland-fullscreen-check";
+    runtimeInputs = [
+      pkgs.hyprland
+      pkgs.jq
+    ];
+    text = ''
+      hyprctl -j activewindow 2>/dev/null \
+        | jq -e '.fullscreen > 0' >/dev/null
+    '';
+  };
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasWayland) {
@@ -99,10 +111,9 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
-    dot.desktopEnvironment.fullscreenCheck = ''
-      ${pkgs.hyprland}/bin/hyprctl -j activewindow 2>/dev/null \
-        | ${pkgs.jq}/bin/jq -e '.fullscreen > 0' >/dev/null
-    '';
+    dot.desktopEnvironment.fullscreenChecks = {
+      Hyprland = fullscreenCheck;
+    };
 
     dot.desktopEnvironment.keybinds = [
       {

@@ -89,6 +89,27 @@ let
     ) cfg.windowrules
   );
 
+  fullscreenCheck = pkgs.writeShellApplication {
+    name = "niri-fullscreen-check";
+    runtimeInputs = [
+      pkgs.niri
+      pkgs.jq
+    ];
+    text = ''
+      window_info=$(niri msg --json focused-window 2>/dev/null)
+      window_width=$(echo "$window_info" | jq -r '.layout.window_size[0]')
+      window_height=$(echo "$window_info" | jq -r '.layout.window_size[1]')
+
+      # check if window size matches monitor (with small margin for rounding)
+      if [ "$window_width" -ge ${toString (config.dot.hardware.monitor.width - 5)} ] && \
+         [ "$window_height" -ge ${toString (config.dot.hardware.monitor.height - 5)} ]; then
+        exit 0  # is fullscreen
+      else
+        exit 1  # not fullscreen
+      fi
+    '';
+  };
+
   hasMonitor = config.dot.hardware.monitor.enable;
   hasWayland = config.dot.hardware.graphics.wayland;
 
@@ -111,6 +132,10 @@ in
   };
 
   branch.homeManagerModule.homeManagerModule = lib.mkIf (hasMonitor && hasWayland) {
+    dot.desktopEnvironment.fullscreenChecks = {
+      niri = fullscreenCheck;
+    };
+
     home.sessionVariables = cfg.sessionVariables;
     systemd.user.sessionVariables = cfg.sessionVariables;
 

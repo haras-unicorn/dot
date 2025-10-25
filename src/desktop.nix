@@ -92,15 +92,11 @@ in
       '';
     };
 
-    fullscreenCheck = lib.mkOption {
-      type = lib.types.str;
-      default = "false";
-      example = ''
-        ${pkgs.hyprland}/bin/hyprctl -j activewindow 2>/dev/null \
-          | ${pkgs.jq}/bin/jq -e '.fullscreen > 0' >/dev/null
-      '';
+    fullscreenChecks = lib.mkOption {
+      type = lib.types.attrsOf lib.types.package;
+      default = { };
       description = ''
-        Bash if condition that checks whether the active window is fullscreen or not.
+        Packages that exit 0/1 if active window is fullscreen.
       '';
     };
 
