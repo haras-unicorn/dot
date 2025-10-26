@@ -10,6 +10,7 @@ let
   hasWayland = config.dot.hardware.graphics.wayland;
   hasKeyboard = config.dot.hardware.keyboard.enable;
 
+  # https://github.com/rharish101/ReGreet/blob/c75486b2e1f3f5e1a30a93c2df050df2b5d61b9f/src/sysutil.rs#L146
   package = pkgs.symlinkJoin {
     name = "regreet";
     paths = [ pkgs.greetd.regreet ];
