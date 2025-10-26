@@ -27,6 +27,10 @@ in
     programs.steam.extraCompatPackages = [
       pkgs.proton-ge-bin
     ];
+    # NOTE: bitburner
+    programs.steam.extraPackages = [
+      pkgs.nss
+    ];
 
     users.users.${user}.extraGroups = [
       "gamemode"
