@@ -18,7 +18,7 @@ let
 
   aliases = lib.strings.concatStringsSep "\n" (
     builtins.map (name: ''alias ${name}="${builtins.toString cfg.aliases."${name}"}"'') (
-      builtins.attrNames cfg.aliases
+      builtins.filter (name: !(lib.strings.hasInfix " " name)) (builtins.attrNames cfg.aliases)
     )
   );
 
@@ -28,13 +28,21 @@ let
 in
 {
   branch.nixosModule.nixosModule = {
-    environment.shells = [ "${pkgs.bashInteractive}/bin/bash" ];
-    users.defaultUserShell = "${pkgs.bashInteractive}/bin/bash";
+    dot.desktopEnvironment.startup = [
+      {
+        name = "Bash";
+        command = "${pkgs.bashInteractive}/bin/bash --login";
+      }
+    ];
+
+    environment.shells = [ pkgs.bashInteractive ];
+    users.defaultUserShell = pkgs.bashInteractive;
   };
 
   branch.homeManagerModule.homeManagerModule = {
     programs.bash.enable = true;
     programs.bash.enableCompletion = true;
+    programs.bash.package = pkgs.bashInteractive;
 
     programs.bash.initExtra = ''
       ${vars}

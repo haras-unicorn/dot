@@ -44,6 +44,17 @@ let
   #           (builtins.readDir "${pkgs.nu_scripts}/share/nu_scripts/custom-completions")))));
 in
 {
+  branch.nixosModule.nixosModule = {
+    dot.desktopEnvironment.startup = [
+      {
+        name = "Nushell";
+        command = "${pkgs.nushell}/bin/nu --login";
+      }
+    ];
+
+    environment.shells = [ "${pkgs.nushell}/bin/nu" ];
+  };
+
   branch.homeManagerModule.homeManagerModule = {
     dot.shell = {
       package = pkgs.nushell;
