@@ -1,3 +1,3 @@
 # Dot
 
-My Dotfiles.
+My NixOS configurations.

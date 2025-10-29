@@ -30,6 +30,7 @@ in
     # NOTE: bitburner
     programs.steam.extraPackages = [
       pkgs.nss
+      pkgs.gamemode
     ];
 
     users.users.${user}.extraGroups = [
