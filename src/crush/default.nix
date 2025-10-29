@@ -12,6 +12,7 @@ let
 
   deepseekPath = "/home/${user}/.secrets/deepseek-api-key";
   openaiPath = "/home/${user}/.secrets/openai-api-key";
+  openrouterPath = "/home/${user}/.secrets/openrouter-api-key";
 
   crush = pkgs.writeShellApplication {
     name = "crush";
@@ -24,6 +25,8 @@ let
       export DEEPSEEK_API_KEY="$(cat ${deepseekPath})"
       # shellcheck disable=SC2155
       export OPENAI_API_KEY="$(cat ${openaiPath})"
+      # shellcheck disable=SC2155
+      export OPENROUTER_API_KEY="$(cat ${openrouterPath})"
       crush "$@"
     '';
   };
@@ -50,10 +53,17 @@ in
       group = user;
       mode = "0400";
     };
+    sops.secrets."openrouter-api-key" = {
+      path = openrouterPath;
+      owner = user;
+      group = user;
+      mode = "0400";
+    };
 
     rumor.sops = [
       "deepseek-api-key"
       "openai-api-key"
+      "openrouter-api-key"
     ];
     rumor.specification.imports = [
       {
@@ -69,6 +79,14 @@ in
         arguments = {
           path = "kv/dot/shared";
           file = "openai-api-key";
+          allow_fail = false;
+        };
+      }
+      {
+        importer = "vault-file";
+        arguments = {
+          path = "kv/dot/shared";
+          file = "openrouter-api-key";
           allow_fail = false;
         };
       }
