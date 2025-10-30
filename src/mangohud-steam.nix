@@ -16,11 +16,6 @@ let
 in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
-    programs.steam.package = pkgs.steam.override {
-      extraEnv = {
-        MANGOHUD = "1";
-      };
-    };
     programs.steam.enable = true;
     programs.steam.extest.enable = true;
     programs.steam.protontricks.enable = true;
