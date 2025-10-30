@@ -17,7 +17,6 @@ in
 {
   branch.nixosModule.nixosModule = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
     programs.steam.enable = true;
-    programs.steam.extest.enable = true;
     programs.steam.protontricks.enable = true;
     programs.steam.extraCompatPackages = [
       pkgs.proton-ge-bin
