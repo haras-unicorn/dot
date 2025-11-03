@@ -62,5 +62,10 @@ in
   branch.homeManagerModule.homeManagerModule = {
     programs.ssh.enable = true;
     services.ssh-agent.enable = true;
+    programs.ssh.matchBlocks."vsock/*".extraOptions = {
+      StrictHostKeyChecking = "no";
+      UserKnownHostsFile = "/dev/null";
+      GlobalKnownHostsFile = "/dev/null";
+    };
   };
 }
