@@ -37,7 +37,7 @@ in
 
     config = lib.mkIf hasNetwork {
       # NOTE: these values are not used but nix evaluates them
-      services.nebula.networks.nebula = {
+      services.nebula.networks.dot = {
         enable = true;
         isLighthouse = isCoordinator;
         ca = config.sops.secrets."nebula-ca-public".path;
@@ -45,7 +45,7 @@ in
         key = config.sops.secrets."nebula-private".path;
       };
 
-      systemd.services."nebula@nebula" = {
+      systemd.services."nebula@dot" = {
         after = [
           "network-online.target"
           "time-synced.target"
@@ -60,13 +60,13 @@ in
       };
       systemd.targets.vpn = {
         description = "VPN Started";
-        wantedBy = [ "nebula@nebula.service" ];
-        after = [ "nebula@nebula.service" ];
+        wantedBy = [ "nebula@dot.service" ];
+        after = [ "nebula@dot.service" ];
       };
       systemd.targets.vpn-online = {
         description = "VPN Online";
-        requires = [ "nebula@nebula.service" ];
-        after = [ "nebula@nebula.service" ];
+        requires = [ "nebula@dot.service" ];
+        after = [ "nebula@dot.service" ];
       };
       networking.firewall.allowedUDPPorts = lib.mkIf isCoordinator [
         4242
@@ -94,33 +94,35 @@ in
             - port: any
               proto: any
               host: any
+        tun:
+          dev: nebula-dot
       '';
 
       programs.rust-motd.settings = lib.mkIf isCoordinator {
         service_status = {
-          "Nebula VPN" = "nebula@nebula";
+          "Nebula VPN" = "nebula@dot";
         };
       };
 
       sops.secrets."nebula-ca-public" = {
-        owner = "nebula-nebula";
-        group = "nebula-nebula";
+        owner = "nebula-dot";
+        group = "nebula-dot";
         mode = "0644";
       };
       sops.secrets."nebula-public" = {
-        owner = "nebula-nebula";
-        group = "nebula-nebula";
+        owner = "nebula-dot";
+        group = "nebula-dot";
         mode = "0644";
       };
       sops.secrets."nebula-private" = {
-        owner = "nebula-nebula";
-        group = "nebula-nebula";
+        owner = "nebula-dot";
+        group = "nebula-dot";
         mode = "0400";
       };
       sops.secrets."nebula-lighthouse" = {
         path = "/etc/nebula/config.d/lighthouse.yaml";
-        owner = "nebula-nebula";
-        group = "nebula-nebula";
+        owner = "nebula-dot";
+        group = "nebula-dot";
         mode = "0400";
       };
 
