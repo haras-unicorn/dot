@@ -18,7 +18,12 @@ in
 {
   branch.nixosModule.nixosModule = lib.mkIf hasNetwork {
     networking.networkmanager.dns = "systemd-resolved";
+    networking.nameservers = nameservers;
+
     services.resolved.enable = true;
-    services.resolved.fallbackDns = nameservers;
+    services.resolved.fallbackDns = [ ];
+    services.resolved.dnssec = "allow-downgrade";
+    services.resolved.dnsovertls = "opportunistic";
+    services.resolved.llmnr = "false";
   };
 }

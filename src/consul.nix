@@ -61,10 +61,26 @@ in
 
     config = lib.mkMerge [
       (lib.mkIf (hasNetwork && !config.dot.consul.coordinator) {
-        networking.nameservers = hosts;
+        networking.networkmanager.ensureProfiles.profiles.${config.dot.vpn.interface} = {
+          connection = {
+            id = config.dot.vpn.interface;
+          };
+          ipv4 = {
+            dns = builtins.concatStringsSep ";" hosts;
+            dns-search = "~dot;~service.consul";
+          };
+        };
       })
       (lib.mkIf (hasNetwork && config.dot.consul.coordinator) {
-        networking.nameservers = [ "127.0.0.1" ];
+        networking.networkmanager.ensureProfiles.profiles.${config.dot.vpn.interface} = {
+          connection = {
+            id = config.dot.vpn.interface;
+          };
+          ipv4 = {
+            dns = "127.0.0.1";
+            dns-search = "~dot;~service.consul";
+          };
+        };
 
         systemd.services.consul.after = [
           "vpn-online.target"

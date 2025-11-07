@@ -13,6 +13,7 @@
 let
   hasNetwork = config.dot.hardware.network.enable;
   isCoordinator = config.dot.vpn.coordinator;
+  interface = "nebula-dot";
 in
 {
   branch.nixosModule.nixosModule = {
@@ -32,6 +33,10 @@ in
       };
       vpn.subnet.mask = lib.mkOption {
         type = lib.types.str;
+      };
+      vpn.interface = lib.mkOption {
+        type = lib.types.str;
+        default = interface;
       };
     };
 
@@ -95,8 +100,24 @@ in
               proto: any
               host: any
         tun:
-          dev: nebula-dot
+          dev: ${config.dot.vpn.interface}
       '';
+
+      networking.networkmanager.ensureProfiles.profiles.${config.dot.vpn.interface} = {
+        connection = {
+          id = config.dot.vpn.interface;
+          type = "tun";
+          autoconnect = false;
+          interface-name = config.dot.vpn.interface;
+        };
+        ipv4 = {
+          address1 = "${config.dot.vpn.ip}/${builtins.toString config.dot.vpn.subnet.bits}";
+          method = "manual";
+        };
+        ipv6 = {
+          method = "ignore";
+        };
+      };
 
       programs.rust-motd.settings = lib.mkIf isCoordinator {
         service_status = {
