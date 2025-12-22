@@ -91,11 +91,11 @@ let
   };
 in
 {
-  branch.nixosModule.nixosModule = {
+  nixosModule = {
     inherit options;
   };
 
-  branch.homeManagerModule.homeManagerModule = {
+  homeManagerModule = {
     inherit options;
 
     config = lib.mkIf hasMonitor {

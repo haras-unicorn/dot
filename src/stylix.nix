@@ -20,7 +20,7 @@ let
   };
 in
 {
-  branch.nixosModule.nixosModule = {
+  nixosModule = {
     stylix.enable = true;
     stylix.image = wallpaperImage;
     stylix.imageScalingMode = "fill";
@@ -41,7 +41,7 @@ in
     stylix.opacity.popups = 1.0;
   };
 
-  branch.homeManagerModule.homeManagerModule = {
+  homeManagerModule = {
     home.packages = [
       inspect-gtk
       stylix.packages.${pkgs.system}.palette-generator

@@ -8,7 +8,7 @@ let artifacts = [ $root "artifacts" ] | path join
 let hosts = [ $root "src" "hosts" "hosts.toml" ] | path join
 let flake = $"git+file:($root)"
 
-let vpn_base_template = "
+let nebula_base_template = "
 firewall:
   inbound:
     - host: any
@@ -144,7 +144,7 @@ def "main deploy" [host?: string] {
   }
 }
 
-def "main vpn" [ip: string, --host: string] {
+def "main nebula" [ip: string, --host: string] {
   let host = if $host == null {
       open --raw /etc/hostname
     } else {
@@ -205,7 +205,7 @@ def "main vpn" [ip: string, --host: string] {
             CERT_PRIVATE: $"($host)-nebula-private"
             CERT_PUBLIC: $"($host)-nebula-public"
           }
-          template: ($vpn_base_template
+          template: ($nebula_base_template
             + "\n"
             + $shared.nebula-non-lighthouse)
         }

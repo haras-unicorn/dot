@@ -45,11 +45,11 @@ let
   };
 in
 {
-  branch.nixosModule.nixosModule = {
+  nixosModule = {
     config = thisConfig;
   };
 
-  branch.homeManagerModule.homeManagerModule = {
+  homeManagerModule = {
     config = thisConfig;
   };
 }

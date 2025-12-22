@@ -6,10 +6,8 @@
 }:
 
 let
-  builders = config.dot.hardware.threads * 2 / 3;
-
   thisOptions = {
-    dot.gc = lib.mkOption {
+    dot.nix.gc = lib.mkOption {
       type = lib.types.bool;
       default = true;
     };
@@ -20,10 +18,10 @@ let
 
     nix.extraOptions = "experimental-features = nix-command flakes";
 
-    nix.settings.max-jobs = builders;
-    nix.settings.cores = builders;
+    nix.settings.max-jobs = config.dot.hardware.threads / 3;
+    nix.settings.cores = 2;
 
-    nix.gc = lib.mkIf config.dot.gc {
+    nix.gc = lib.mkIf config.dot.nix.gc {
       automatic = true;
       options = "--delete-older-than 30d";
     };
@@ -53,12 +51,12 @@ let
   };
 in
 {
-  branch.nixosModule.nixosModule = {
+  nixosModule = {
     options = thisOptions;
     config = thisConfig;
   };
 
-  branch.homeManagerModule.homeManagerModule = {
+  homeManagerModule = {
     options = thisOptions;
     config = thisConfig;
   };

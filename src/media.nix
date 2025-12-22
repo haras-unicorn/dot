@@ -17,7 +17,7 @@ let
 
   nomacs = "${pkgs.nomacs}/share/applications/nomacs.desktop";
 
-  okular = "${pkgs.libsForQt5.okular}/share/applications/okularApplication_pdf.desktop";
+  okular = "${pkgs.kdePackages.okular}/share/applications/okularApplication_pdf.desktop";
 
   vlc = "${pkgs.vlc}/share/applications/vlc.desktop";
 
@@ -75,11 +75,11 @@ let
   };
 in
 {
-  branch.homeManagerModule.homeManagerModule = lib.mkIf config.dot.hardware.monitor.enable {
+  homeManagerModule = lib.mkIf config.dot.hardware.monitor.enable {
     home.packages = [
       pkgs.libreoffice-fresh
       pkgs.nomacs
-      pkgs.libsForQt5.okular
+      pkgs.kdePackages.okular
       pkgs.vlc
       pkgs.xarchiver
       pkgs.transmission_4-gtk

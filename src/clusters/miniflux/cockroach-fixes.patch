@@ -1,0 +1,164 @@
+diff --git a/internal/database/migrations.go b/internal/database/migrations.go
+index 69069776..6b2ce512 100644
+--- a/internal/database/migrations.go
++++ b/internal/database/migrations.go
+@@ -261,7 +261,3 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 	func(tx *sql.Tx) (err error) {
+-		sql := `
+-			ALTER TABLE user_sessions ALTER COLUMN ip SET DATA TYPE inet using ip::inet;
+-		`
+-		_, err = tx.Exec(sql)
+-		return err
++		return nil
+ 	},
+@@ -279,4 +275,2 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 			ALTER TABLE entries ADD COLUMN document_vectors tsvector;
+-			UPDATE entries SET document_vectors = to_tsvector(substring(title || ' ' || coalesce(content, '') for 1000000));
+-			CREATE INDEX document_vectors_idx ON entries USING gin(document_vectors);
+ 		`
+@@ -286,3 +280,6 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 	func(tx *sql.Tx) (err error) {
+-		sql := `ALTER TABLE feeds ADD COLUMN user_agent text default ''`
++		sql := `
++			UPDATE entries SET document_vectors = to_tsvector(substring(title || ' ' || coalesce(content, '') for 1000000));
++			CREATE INDEX document_vectors_idx ON entries USING gin(document_vectors);
++		`
+ 		_, err = tx.Exec(sql)
+@@ -291,8 +288,3 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 	func(tx *sql.Tx) (err error) {
+-		sql := `
+-			UPDATE
+-				entries
+-			SET
+-				document_vectors = setweight(to_tsvector(substring(coalesce(title, '') for 1000000)), 'A') || setweight(to_tsvector(substring(coalesce(content, '') for 1000000)), 'B')
+-		`
++		sql := `ALTER TABLE feeds ADD COLUMN user_agent text default ''`
+ 		_, err = tx.Exec(sql)
+@@ -323,2 +315,8 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 			ALTER TABLE entries ADD COLUMN changed_at timestamp with time zone;
++		`
++		_, err = tx.Exec(sql)
++		return err
++	},
++	func(tx *sql.Tx) (err error) {
++		sql := `
+ 			UPDATE entries SET changed_at = published_at;
+@@ -348,2 +346,8 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 			ALTER TABLE entries ADD COLUMN share_code text not null default '';
++		`
++		_, err = tx.Exec(sql)
++		return err
++	},
++	func(tx *sql.Tx) (err error) {
++		sql := `
+ 			CREATE UNIQUE INDEX entries_share_code_idx ON entries USING btree(share_code) WHERE share_code <> '';
+@@ -354,3 +358,3 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 	func(tx *sql.Tx) (err error) {
+-		sql := `CREATE INDEX enclosures_user_entry_url_idx ON enclosures(user_id, entry_id, md5(url))`
++		sql := `CREATE INDEX enclosures_user_entry_url_idx ON enclosures(user_id, entry_id, url);`
+ 		_, err = tx.Exec(sql)
+@@ -361,2 +365,8 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 			ALTER TABLE feeds ADD COLUMN next_check_at timestamp with time zone default now();
++		`
++		_, err = tx.Exec(sql)
++		return err
++	},
++	func(tx *sql.Tx) (err error) {
++		sql := `
+ 			CREATE INDEX entries_user_feed_idx ON entries (user_id, feed_id);
+@@ -428,2 +438,8 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 			ALTER TABLE entries ADD COLUMN created_at timestamp with time zone not null default now();
++		`
++		_, err = tx.Exec(sql)
++		return err
++	},
++	func(tx *sql.Tx) (err error) {
++		sql := `
+ 			UPDATE entries SET created_at = published_at;
+@@ -521,3 +537,3 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 		_, err = tx.Exec(`
+-			CREATE INDEX entries_feed_url_idx ON entries(feed_id, url) WHERE length(url) < 2000;
++			CREATE INDEX entries_feed_url_idx ON entries(feed_id, url);
+ 			CREATE INDEX entries_user_status_feed_idx ON entries(user_id, status, feed_id);
+@@ -546,2 +562,8 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 			CREATE TYPE webapp_display_mode AS enum('fullscreen', 'standalone', 'minimal-ui', 'browser');
++		`
++		_, err = tx.Exec(sql)
++		return err
++	},
++	func(tx *sql.Tx) (err error) {
++		sql := `
+ 			ALTER TABLE users ADD COLUMN display_mode webapp_display_mode default 'standalone';
+@@ -581,2 +603,8 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 			CREATE TYPE entry_sorting_order AS enum('published_at', 'created_at');
++		`
++		_, err = tx.Exec(sql)
++		return err
++	},
++	func(tx *sql.Tx) (err error) {
++		sql := `
+ 			ALTER TABLE users ADD COLUMN entry_order entry_sorting_order default 'published_at';
+@@ -674,6 +702,17 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 		sql := `
+-			ALTER TABLE users RENAME double_tap TO gesture_nav;
+-			ALTER TABLE users
+-				ALTER COLUMN gesture_nav SET DATA TYPE text using case when gesture_nav = true then 'tap' when gesture_nav = false then 'none' end,
+-				ALTER COLUMN gesture_nav SET default 'tap';
++			ALTER TABLE users ADD COLUMN gesture_nav text DEFAULT 'tap' NOT NULL;
++		`
++		_, err = tx.Exec(sql)
++		return err
++	},
++	func(tx *sql.Tx) (err error) {
++		sql := `
++			UPDATE users SET gesture_nav = CASE WHEN double_tap THEN 'tap' ELSE 'none' END;
++		`
++		_, err = tx.Exec(sql)
++		return err
++	},
++	func(tx *sql.Tx) (err error) {
++		sql := `
++			ALTER TABLE users DROP COLUMN double_tap;
+ 		`
+@@ -725,3 +764,3 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 		// Create unique index
+-		_, err = tx.Exec(`CREATE UNIQUE INDEX enclosures_user_entry_url_unique_idx ON enclosures(user_id, entry_id, md5(url))`)
++		_, err = tx.Exec(`CREATE UNIQUE INDEX enclosures_user_entry_url_unique_idx ON enclosures(user_id, entry_id, url);`)
+ 		if err != nil {
+@@ -1060,2 +1099,8 @@ var migrations = [...]func(tx *sql.Tx) error{
+ 			ALTER TABLE icons ADD COLUMN external_id text default '';
++		`
++		_, err = tx.Exec(sql)
++		return err
++	},
++	func(tx *sql.Tx) (err error) {
++		sql := `
+ 			CREATE UNIQUE INDEX icons_external_id_idx ON icons USING btree(external_id) WHERE external_id <> '';
+diff --git a/internal/storage/enclosure.go b/internal/storage/enclosure.go
+index ba0a69de..01f9fec4 100644
+--- a/internal/storage/enclosure.go
++++ b/internal/storage/enclosure.go
+@@ -157,3 +157,3 @@ func (s *Storage) createEnclosure(tx *sql.Tx, enclosure *model.Enclosure) error
+ 			($1, $2, $3, $4, $5, $6)
+-		ON CONFLICT (user_id, entry_id, md5(url)) DO NOTHING
++		ON CONFLICT (user_id, entry_id, url) DO NOTHING
+ 		RETURNING
+diff --git a/internal/storage/entry.go b/internal/storage/entry.go
+index 272e11d2..f37422d5 100644
+--- a/internal/storage/entry.go
++++ b/internal/storage/entry.go
+@@ -79,3 +79,3 @@ func (s *Storage) UpdateEntryTitleAndContent(entry *model.Entry) error {
+ 			reading_time=$3,
+-			document_vectors = setweight(to_tsvector($4), 'A') || setweight(to_tsvector($5), 'B')
++			document_vectors = to_tsvector(substring($4 || ' ' || $4 || ' ' || coalesce($5, '') for 1000000))
+ 		WHERE
+@@ -132,3 +132,3 @@ func (s *Storage) createEntry(tx *sql.Tx, entry *model.Entry) error {
+ 				now(),
+-				setweight(to_tsvector($11), 'A') || setweight(to_tsvector($12), 'B'),
++				to_tsvector(substring($11 || ' ' || $11 || ' ' || coalesce($12, '') for 1000000)),
+ 				$13
+@@ -190,3 +190,3 @@ func (s *Storage) updateEntry(tx *sql.Tx, entry *model.Entry) error {
+ 			reading_time=$6,
+-			document_vectors = setweight(to_tsvector($7), 'A') || setweight(to_tsvector($8), 'B'),
++			document_vectors =  to_tsvector(substring($7 || ' ' || $7 || ' ' || coalesce($8, '') for 1000000)),
+ 			tags=$12

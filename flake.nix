@@ -1,13 +1,22 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-ai.url = "github:nixos/nixpkgs?rev=799ba5bffed04ced7067a91798353d360788b30d";
 
-    perch.url = "github:altibiz/perch/refs/tags/2.2.1";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    stylix.url = "github:danth/stylix/release-25.11";
+
+    perch.url = "github:haras-unicorn/perch/refs/tags/1.0.4";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
-    rumor.url = "github:altibiz/rumor/refs/tags/2.0.2";
+    perch-modules.url = "github:haras-unicorn/perch-modules/refs/tags/1.1.0";
+    perch-modules.inputs.nixpkgs.follows = "nixpkgs";
+    perch-modules.inputs.perch.follows = "perch";
+
+    rumor.url = "github:haras-unicorn/rumor/refs/tags/1.0.0";
     rumor.inputs.nixpkgs.follows = "nixpkgs";
     rumor.inputs.perch.follows = "perch";
 
@@ -19,9 +28,6 @@
 
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nur.url = "github:nix-community/NUR";
     nur.inputs.nixpkgs.follows = "nixpkgs";
@@ -42,8 +48,6 @@
 
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
-
-    stylix.url = "github:danth/stylix/release-25.05";
   };
 
   outputs =

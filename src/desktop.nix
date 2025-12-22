@@ -24,7 +24,7 @@ let
   '';
 in
 {
-  branch.nixosModule.nixosModule.options.dot.desktopEnvironment = {
+  nixosModule.options.dot.desktopEnvironment = {
     login = lib.mkOption {
       type = lib.types.str;
       default = "";
@@ -64,7 +64,7 @@ in
     };
   };
 
-  branch.homeManagerModule.homeManagerModule.options.dot.desktopEnvironment = {
+  homeManagerModule.options.dot.desktopEnvironment = {
     sessionVariables = lib.mkOption {
       type =
         with lib.types;

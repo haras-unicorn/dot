@@ -79,7 +79,7 @@ let
   };
 in
 {
-  branch.homeManagerModule.homeManagerModule = {
+  homeManagerModule = {
     dot.shell.aliases = {
       rm = "rm -i";
       mv = "mv -i";

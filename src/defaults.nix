@@ -6,7 +6,7 @@
 }:
 
 let
-  user = config.dot.user;
+  user = config.dot.host.user;
 
   terminal = "${config.dot.terminal.package}/bin/${config.dot.terminal.bin}";
   shell = "${config.dot.shell.package}/bin/${config.dot.shell.bin}";
@@ -116,7 +116,7 @@ let
 in
 {
   # NOTE: this is a clusterfuck anyway
-  branch.nixosModule.nixosModule = {
+  nixosModule = {
     systemd.user.extraConfig = ''
       DefaultEnvironment="PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
     '';
@@ -126,7 +126,7 @@ in
     ];
   };
 
-  branch.homeManagerModule.homeManagerModule = {
+  homeManagerModule = {
     options.dot = {
       shell = {
         package = lib.mkOption {

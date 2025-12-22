@@ -26,7 +26,7 @@ lint:
 
 rebuild *args:
     sudo nixos-rebuild switch \
-      --flake $"{{ root }}#(hostname)-((uname).machine)-linux" \
+      --flake $"{{ root }}#hosts-(hostname)-((uname).machine)-linux" \
       {{ args }}
 
 hosts *args:

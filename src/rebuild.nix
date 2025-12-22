@@ -54,7 +54,7 @@ let
   };
 in
 {
-  branch.homeManagerModule.homeManagerModule = {
+  homeManagerModule = {
     home.packages = [
       rebuild
       rebuild-trace
