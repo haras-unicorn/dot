@@ -230,7 +230,7 @@ in
           mode = "0400";
         };
 
-        rumor.sops = [
+        rumor.sops.keys = [
           "consul-private"
           "consul-public"
           "consul-config"
@@ -256,43 +256,29 @@ in
         ];
         rumor.specification.generations = [
           {
-            generator = "text";
+            generator = "tls-leaf";
             arguments = {
-              name = "consul-cert-config";
-              renew = true;
-              text = ''
-                [req]
-                distinguished_name = req_distinguished_name
-                prompt = no
-
-                [req_distinguished_name]
-                CN = Consul
-                O = Dot
-
-                [ext]
-                basicConstraints = CA:FALSE
-                keyUsage = nonRepudiation,digitalSignature,keyEncipherment
-                subjectAltName = @alt_names
-
-                [alt_names]
-                DNS.1 = consul.service.consul
-                DNS.2 = ${config.dot.host.name}.dot
-                DNS.3 = localhost
-                IP.1 = ${config.dot.host.ip}
-                IP.2 = 127.0.0.1
-              '';
-            };
-          }
-          {
-            generator = "openssl";
-            arguments = {
-              ca_private = "openssl-ca-private";
               ca_public = "openssl-ca-public";
+              ca_private = "openssl-ca-private";
               serial = "openssl-ca-serial";
+
               config = "consul-cert-config";
-              private = "consul-private";
+              request_config = "consul-cert-request-config";
               public = "consul-public";
+              private = "consul-private";
+
               renew = true;
+
+              common_name = "Consul";
+              organization = "Dot";
+
+              sans = lib.concatStringsSep "," [
+                "consul.service.consul"
+                "${config.dot.host.name}.dot"
+                "localhost"
+                "${config.dot.host.ip}"
+                "127.0.0.1"
+              ];
             };
           }
           {

@@ -182,51 +182,37 @@ in
         mode = "0400";
       };
 
-      rumor.sops = [
+      rumor.sops.keys = [
         "traefik-private"
         "traefik-public"
       ];
 
       rumor.specification.generations = [
         {
-          generator = "text";
+          generator = "tls-leaf";
           arguments = {
-            name = "traefik-cert-config";
-            renew = true;
-            text = ''
-              [req]
-              distinguished_name = req_distinguished_name
-              prompt = no
-
-              [req_distinguished_name]
-              CN = Traefik
-              O = Dot
-
-              [ext]
-              basicConstraints = CA:FALSE
-              keyUsage = nonRepudiation,digitalSignature,keyEncipherment
-              subjectAltName = @alt_names
-
-
-              [alt_names]
-              DNS.1 = *.service.consul
-              DNS.2 = ${config.dot.host.name}.dot
-              DNS.3 = localhost
-              IP.1 = ${config.dot.host.ip}
-              IP.2 = 127.0.0.1
-            '';
-          };
-        }
-        {
-          generator = "openssl";
-          arguments = {
-            ca_private = "openssl-ca-private";
             ca_public = "openssl-ca-public";
+            ca_private = "openssl-ca-private";
             serial = "openssl-ca-serial";
+
             config = "traefik-cert-config";
-            private = "traefik-private";
+            request_config = "traefik-cert-request-config";
+            request = "traefik-cert-request";
             public = "traefik-public";
+            private = "traefik-private";
+
             renew = true;
+
+            common_name = "Traefik";
+            organization = "Dot";
+
+            sans = lib.concatStringsSep "," [
+              "*.service.consul"
+              "${config.dot.host.name}.dot"
+              "localhost"
+              "${config.dot.host.ip}"
+              "127.0.0.1"
+            ];
           };
         }
       ];

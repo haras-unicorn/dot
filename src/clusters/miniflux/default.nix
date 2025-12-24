@@ -138,7 +138,7 @@ in
         mode = "0400";
       };
 
-      rumor.sops = [
+      rumor.sops.keys = [
         "cockroach-miniflux-private"
         "cockroach-miniflux-public"
         "cockroach-miniflux-pass"
@@ -157,7 +157,7 @@ in
       ];
       rumor.specification.generations = [
         {
-          generator = "cockroach-client";
+          generator = "cockroach-client-cert";
           arguments = {
             renew = true;
             ca_private = "cockroach-ca-private";

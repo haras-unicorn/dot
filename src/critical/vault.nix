@@ -18,10 +18,7 @@ let
   hosts = builtins.map (x: x.ip) (
     builtins.filter (
       x:
-      if lib.hasAttrByPath [ "system" "dot" "vault" "enable" ] x then
-        x.system.dot.vault.enable
-      else
-        false
+      if lib.hasAttrByPath [ "system" "dot" "vault" "enable" ] x then x.system.dot.vault.enable else false
     ) config.dot.host.hosts
   );
   firstHost = builtins.head hosts;
@@ -127,7 +124,7 @@ in
         mode = "0400";
       };
 
-      rumor.sops = [
+      rumor.sops.keys = [
         "cockroach-vault-private"
         "cockroach-vault-public"
         "cockroach-vault-pass"
@@ -136,7 +133,7 @@ in
       ];
       rumor.specification.generations = [
         {
-          generator = "cockroach-client";
+          generator = "cockroach-client-cert";
           arguments = {
             renew = true;
             ca_private = "cockroach-ca-private";
