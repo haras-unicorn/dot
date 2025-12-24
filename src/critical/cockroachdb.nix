@@ -133,7 +133,7 @@ in
           mode = "0400";
         };
 
-        rumor.sops = [
+        rumor.sops.keys = [
           "cockroach-ca-public"
           "cockroach-${user}-private"
           "cockroach-${user}-public"
@@ -308,7 +308,7 @@ in
           mode = "0400";
         };
 
-        rumor.sops = [
+        rumor.sops.keys = [
           "cockroach-private"
           "cockroach-public"
           "cockroach-init"
@@ -445,7 +445,7 @@ in
             };
           }
           {
-            generator = "cockroach";
+            generator = "cockroach-node-cert";
             arguments = {
               ca_private = "cockroach-ca-private";
               ca_public = "cockroach-ca-public";
@@ -459,7 +459,7 @@ in
             };
           }
           {
-            generator = "cockroach-client";
+            generator = "cockroach-client-cert";
             arguments = {
               ca_private = "cockroach-ca-private";
               ca_public = "cockroach-ca-public";

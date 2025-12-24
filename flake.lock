@@ -532,16 +532,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1766405782,
-        "narHash": "sha256-4AG5lUxdH8+ngLR117nY5PDJbkN3MiGeJM1ngZbbpp8=",
+        "lastModified": 1766572723,
+        "narHash": "sha256-wUV+TFxrX1vrvgVdJvZXCJf7zfpqWF2X8E840eW5W04=",
         "owner": "haras-unicorn",
         "repo": "perch-modules",
-        "rev": "a99b9ab4240543ce5f331128fd37e04a0934e522",
+        "rev": "1af41510c74c73613626076ea8bfa3108bf38f25",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/1.1.0",
+        "ref": "refs/tags/1.1.1",
         "repo": "perch-modules",
         "type": "github"
       }

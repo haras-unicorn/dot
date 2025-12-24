@@ -12,7 +12,7 @@
     perch.url = "github:haras-unicorn/perch/refs/tags/1.3.0";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
-    perch-modules.url = "github:haras-unicorn/perch-modules/refs/tags/1.1.0";
+    perch-modules.url = "github:haras-unicorn/perch-modules/refs/tags/1.1.1";
     perch-modules.inputs.nixpkgs.follows = "nixpkgs";
     perch-modules.inputs.perch.follows = "perch";
 

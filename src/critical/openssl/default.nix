@@ -16,7 +16,7 @@ in
         mode = "0644";
       };
 
-      rumor.sops = [
+      rumor.sops.keys = [
         "openssl-ca-public"
       ];
 
@@ -49,27 +49,11 @@ in
 
       rumor.specification.generations = lib.mkBefore [
         {
-          generator = "text";
+          generator = "tls-root";
           arguments = {
-            name = "openssl-ca-config";
-            text = ''
-              [req]
-              distinguished_name = req_distinguished_name
-              x509_extensions = v3_ca
-              prompt = no
+            common_name = "Dot";
+            organization = "Dot";
 
-              [req_distinguished_name]
-              CN = Dot
-
-              [v3_ca]
-              basicConstraints = CA:TRUE
-              keyUsage = keyCertSign
-            '';
-          };
-        }
-        {
-          generator = "openssl-ca";
-          arguments = {
             config = "openssl-ca-config";
             private = "openssl-ca-private";
             public = "openssl-ca-public";

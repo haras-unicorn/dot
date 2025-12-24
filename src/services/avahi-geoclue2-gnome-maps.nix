@@ -26,7 +26,7 @@
     #   mode = "0440";
     # };
 
-    rumor.sops = [ "geoclue-static-geolocation" ];
+    rumor.sops.keys = [ "geoclue-static-geolocation" ];
     rumor.specification.imports = [
       {
         importer = "vault-file";

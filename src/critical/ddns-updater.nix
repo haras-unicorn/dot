@@ -66,7 +66,7 @@ in
         mode = "0400";
       };
 
-      rumor.sops = [ "ddns-updater-settings" ];
+      rumor.sops.keys = [ "ddns-updater-settings" ];
       rumor.specification.imports = [
         {
           importer = "vault-file";

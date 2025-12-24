@@ -28,6 +28,9 @@ in
       nebula.subnet.ip = lib.mkOption {
         type = lib.types.str;
       };
+      nebula.subnet.match = lib.mkOption {
+        type = lib.types.str;
+      };
       nebula.subnet.bits = lib.mkOption {
         type = lib.types.ints.u16;
       };
@@ -148,7 +151,7 @@ in
         mode = "0400";
       };
 
-      rumor.sops = [
+      rumor.sops.keys = [
         "nebula-ca-public"
         "nebula-private"
         "nebula-public"
@@ -196,7 +199,7 @@ in
           };
         }
         {
-          generator = "nebula";
+          generator = "nebula-cert";
           arguments = {
             ca_private = "nebula-ca-private";
             ca_public = "nebula-ca-public";

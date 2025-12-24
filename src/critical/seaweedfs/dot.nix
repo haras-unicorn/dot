@@ -193,7 +193,7 @@ in
             group = config.systemd.services.cockroachdb.serviceConfig.User;
             mode = "0400";
           };
-          rumor.sops = [
+          rumor.sops.keys = [
             "cockroach-seaweedfs-pass"
             "cockroach-seaweedfs-init"
             "seaweedfs-filer-env"
