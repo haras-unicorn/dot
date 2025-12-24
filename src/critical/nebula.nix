@@ -61,6 +61,7 @@ in
         ];
         serviceConfig = {
           ExecStart = lib.mkForce "${pkgs.nebula}/bin/nebula -config /etc/nebula/config.d";
+          ExecStartPost = "${pkgs.bash}/bin/bash -c 'sleep 1 && ${pkgs.networkmanager}/bin/nmcli c up nebula-dot || true'";
         };
       };
       systemd.targets.nebula = {

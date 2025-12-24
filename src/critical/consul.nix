@@ -61,15 +61,20 @@ in
 
     config = lib.mkMerge [
       (lib.mkIf (hasNetwork && !config.dot.consul.enable) {
-        networking.networkmanager.ensureProfiles.profiles.${config.dot.nebula.interface} = {
-          connection = {
-            "dns-over-tls" = "1";
-          };
-          ipv4 = {
-            dns = builtins.concatStringsSep ";" hosts;
-            dns-search = "~dot;~service.consul";
-          };
-        };
+        networking.networkmanager.dispatcherScripts = [
+          {
+            source = pkgs.writeText "disable-dnssec-nebula" ''
+              if [ "$1" = "${config.dot.nebula.interface}" ] && [ "$2" = "up" ]; then
+                ${pkgs.systemd}/bin/resolvectl dnssec $1 off
+                ${pkgs.systemd}/bin/resolvectl dnsovertls $1 off
+                ${pkgs.systemd}/bin/resolvectl domain $1 ~dot ~service.consul
+                ${pkgs.systemd}/bin/resolvectl dns $1 ${builtins.concatStringsSep " " hosts}
+              fi
+            '';
+            type = "basic";
+          }
+        ];
+
       })
       (lib.mkIf (hasNetwork && config.dot.consul.enable) {
         networking.networkmanager.ensureProfiles.profiles.${config.dot.nebula.interface} = {
