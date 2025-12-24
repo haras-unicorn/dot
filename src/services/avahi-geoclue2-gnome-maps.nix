@@ -23,7 +23,7 @@
       mode = "0400";
     };
 
-    rumor.sops = [ "geoclue-googleapi" ];
+    rumor.sops.keys = [ "geoclue-googleapi" ];
     rumor.specification.imports = [
       {
         importer = "vault-file";
