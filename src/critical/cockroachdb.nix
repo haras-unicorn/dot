@@ -165,7 +165,7 @@ in
             };
           }
           {
-            generator = "cockroach-client";
+            generator = "cockroach-client-cert";
             arguments = {
               ca_private = "cockroach-ca-private";
               ca_public = "cockroach-ca-public";
