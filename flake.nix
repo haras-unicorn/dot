@@ -12,11 +12,11 @@
     perch.url = "github:haras-unicorn/perch/refs/tags/1.3.0";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
-    perch-modules.url = "github:haras-unicorn/perch-modules/refs/tags/1.1.1";
+    perch-modules.url = "github:haras-unicorn/perch-modules/refs/tags/1.1.2";
     perch-modules.inputs.nixpkgs.follows = "nixpkgs";
     perch-modules.inputs.perch.follows = "perch";
 
-    rumor.url = "github:haras-unicorn/rumor/refs/tags/1.0.0";
+    rumor.url = "github:haras-unicorn/rumor/refs/tags/1.1.3";
     rumor.inputs.nixpkgs.follows = "nixpkgs";
     rumor.inputs.perch.follows = "perch";
 

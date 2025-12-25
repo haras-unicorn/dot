@@ -532,16 +532,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1766572723,
-        "narHash": "sha256-wUV+TFxrX1vrvgVdJvZXCJf7zfpqWF2X8E840eW5W04=",
+        "lastModified": 1766742833,
+        "narHash": "sha256-oTZbGz4T5JEMIV4MhYpBOF+WV3FolxqbxDeaKPH2nnA=",
         "owner": "haras-unicorn",
         "repo": "perch-modules",
-        "rev": "1af41510c74c73613626076ea8bfa3108bf38f25",
+        "rev": "d2c7fa4b2b00294e2efc5d83dcc6a7f898f86b44",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/1.1.1",
+        "ref": "refs/tags/1.1.2",
         "repo": "perch-modules",
         "type": "github"
       }
@@ -579,16 +579,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1766398716,
-        "narHash": "sha256-AXr874BscBZECXZdi4j8ud9Ndy8j5y62xi2Ykymnmdc=",
+        "lastModified": 1766751473,
+        "narHash": "sha256-twYFPCTT35KKFF+LI28oEn2jmcVWE3923PAcP5KOka4=",
         "owner": "haras-unicorn",
         "repo": "rumor",
-        "rev": "f945357feec3b6cb9caf12ca8084606e8396c706",
+        "rev": "d7ca7fef0beefa62096d4e0e5f5ffec383851167",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/1.0.0",
+        "ref": "refs/tags/1.1.3",
         "repo": "rumor",
         "type": "github"
       }
