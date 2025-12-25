@@ -5,8 +5,7 @@
 let self = [ $env.FILE_PWD "hosts.nu" ] | path join
 let root = $env.FILE_PWD | path dirname
 let artifacts = [ $root "artifacts" ] | path join
-let hosts = [ $root "src" "hosts" "hosts.toml" ] | path join
-let flake = $"git+file:($root)"
+let flake = $"path:($root)"
 
 let nebula_base_template = "
 firewall:
@@ -46,7 +45,8 @@ def "main secrets" [host?: string, --all] {
 
   for host in $hosts {
     let spec = nix eval --json $".#rumor.($host.configuration)"
-    $spec | rumor stdin json --stay
+    let spec = $spec | from json | update exports { [] } | to json
+    $spec | rumor from-stdin json --stay --keep --dry-run --nosandbox --very-verbose
   }
 }
 
@@ -60,7 +60,7 @@ def "main image" [host?: string, format?: string] {
 
   let raw = (nixos-generate
     --show-trace
-    --system $host.system.nixpkgs.system
+    --system $host.system
     --format $format
     --flake $"($root)#($host.configuration)")
 
@@ -185,7 +185,7 @@ def "main nebula" [ip: string, --host: string] {
     ]
     generations: [
       {
-        generator: "nebula"
+        generator: "nebula-cert"
         arguments: {
           ca_private: "nebula-ca-private"
           ca_public: "nebula-ca-public"
@@ -219,20 +219,35 @@ def "main nebula" [ip: string, --host: string] {
         }
       }
     ]
-  } | to json | rumor stdin json --stay
+  } | to json | rumor from-stdin json --stay --keep --dry-run --nosandbox --very-verbose
 }
 
 def "pick hosts" [all: bool, with_secrets: bool, name?: string] {
-  mut hosts = open $hosts | get hosts
+  mut hosts = nix eval --json --impure --expr $"
+    let
+      lib = \(import <nixpkgs> { }\).lib;
+      configs = \(builtins.getFlake path:($root)\).nixosConfigurations;
+    in
+      builtins.attrValues
+        \(builtins.mapAttrs
+          \(configuration: config:
+            let
+              split = lib.drop 1
+                \(lib.splitString "-" configuration\);
+              name = builtins.concatStringsSep "-"
+                \(lib.dropEnd 2 split\);
+              system = builtins.concatStringsSep "-"
+                \(lib.takeEnd 2 split\);
+            in {
+              inherit configuration name system;
+              ip = config.config.dot.host.ip;
+            }\)
+          configs\)
+  " | from json
 
   if ($name == null) and not ($all) {
-    let wanted = (gum choose --header "Pick host name:" ...($hosts | get name ))
+    let wanted = (gum choose --header "Pick host name:" ...($hosts | get name))
     $hosts = $hosts | where $it.name == $wanted
-  }
-
-  $hosts = $hosts | each { |host|
-    let configuration = $"($host.name)-($host.system.nixpkgs.system)"
-    $host | insert configuration $configuration
   }
 
   if not $with_secrets {

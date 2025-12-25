@@ -32,11 +32,11 @@ let
         default = true;
       };
       facterPath = lib.mkOption {
-        type = lib.types.path;
+        type = lib.types.str;
         default = "src/hosts/${config.dot.host.name}/hardware.json";
       };
       sopsPath = lib.mkOption {
-        type = lib.types.path;
+        type = lib.types.str;
         default = "src/hosts/${config.dot.host.name}/secrets.yaml";
       };
       version = lib.mkOption {

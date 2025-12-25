@@ -76,11 +76,11 @@ in
           renew = true;
           variables = builtins.listToAttrs (
             builtins.map (host: {
-              name = "${host.name}-ssh-public";
+              name = "${host.name}";
               value = "${host.name}-ssh-public";
             }) otherHosts
           );
-          template = lib.concatMapStringsSep "\n" (host: "{{ ${host.name}-ssh-public }}") otherHosts;
+          template = lib.concatMapStringsSep "\n" (host: "{{ ${host.name} }}") otherHosts;
         };
       }
     ];
