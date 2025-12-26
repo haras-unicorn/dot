@@ -11,7 +11,7 @@ let
   hasNetwork = config.dot.hardware.network.enable;
 
   hosts = builtins.filter (x: x.system.services.openssh.enable or false) config.dot.host.hosts;
-  otherHosts = builtins.filter (x: x.name != config.networking.hostName) hosts;
+  otherHosts = builtins.filter (x: x.name != config.dot.host.name) hosts;
 in
 {
   nixosModule = lib.mkIf hasNetwork {
@@ -53,53 +53,83 @@ in
       "ssh-public"
       "ssh-private"
     ];
-    rumor.specification.imports = builtins.map (host: {
-      importer = "vault-file";
-      arguments = {
-        path = "kv/dot/shared";
-        file = "${host.name}-ssh-public";
-      };
-    }) otherHosts;
-    rumor.specification.generations = [
-      {
+    rumor.specification.imports = lib.flatten (
+      builtins.map (host: [
+        {
+          importer = "vault-file";
+          arguments = {
+            allow_fail = true;
+            path = "kv/dot/shared";
+            file = "${host.name}-ssh-public";
+          };
+        }
+        {
+          importer = "vault-file";
+          arguments = {
+            allow_fail = true;
+            path = "kv/dot/shared";
+            file = "${host.name}-ssh-private";
+          };
+        }
+      ]) hosts
+    );
+    rumor.specification.generations =
+      (builtins.map (host: {
         generator = "ssh-key";
         arguments = {
-          name = config.networking.hostName;
-          public = "ssh-public";
-          private = "ssh-private";
+          name = host.name;
+          public = "${host.name}-ssh-public";
+          private = "${host.name}-ssh-private";
         };
-      }
-      {
-        generator = "moustache";
-        arguments = {
-          name = "ssh-nebula-authorized-keys";
-          renew = true;
-          variables = builtins.listToAttrs (
-            builtins.map (host: {
-              name = "${host.name}";
-              value = "${host.name}-ssh-public";
-            }) otherHosts
-          );
-          template = lib.concatMapStringsSep "\n" (host: "{{ ${host.name} }}") otherHosts;
-        };
-      }
-    ];
-    rumor.specification.exports = [
-      {
-        exporter = "copy";
-        arguments = {
-          from = "ssh-public";
-          to = "${config.networking.hostName}-ssh-public";
-        };
-      }
-      {
-        exporter = "vault-file";
-        arguments = {
-          path = "kv/dot/shared";
-          file = "${config.networking.hostName}-ssh-public";
-        };
-      }
-    ];
+      }) hosts)
+      ++ [
+        {
+          generator = "copy";
+          arguments = {
+            from = "${config.dot.host.name}-ssh-public";
+            to = "ssh-public";
+          };
+        }
+        {
+          generator = "copy";
+          arguments = {
+            from = "${config.dot.host.name}-ssh-private";
+            to = "ssh-private";
+          };
+        }
+        {
+          generator = "moustache";
+          arguments = {
+            name = "ssh-nebula-authorized-keys";
+            renew = true;
+            variables = builtins.listToAttrs (
+              builtins.map (host: {
+                name = "${host.name}";
+                value = "${host.name}-ssh-public";
+              }) hosts
+            );
+            template = lib.concatMapStringsSep "\n" (host: "{{ ${host.name} }}") hosts;
+          };
+        }
+      ];
+    rumor.specification.exports = lib.flatten (
+      builtins.map (host: [
+        {
+          exporter = "vault-file";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "${host.name}-ssh-public";
+          };
+        }
+        {
+          exporter = "vault-file";
+          arguments = {
+            path = "kv/dot/shared";
+            file = "${host.name}-ssh-private";
+          };
+        }
+      ]) hosts
+    );
   };
 
   homeManagerModule = {
