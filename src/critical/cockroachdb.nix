@@ -414,7 +414,7 @@ in
 
                   create user if not exists backup password '{{COCKROACH_BACKUP_PASS}}';
 
-                  grant system backup, externalioimplicitaccess to backup;
+                  grant system backup, externalioimplicitaccess, viewclustermetadata to backup;
 
                   set role backup;
 
@@ -427,6 +427,8 @@ in
 
 
                   create user if not exists ${user} password '{{COCKROACH_USER_PASS}}';
+
+                  grant system backup, externalioimplicitaccess to ${user};
 
                   create database if not exists ${user};
 
@@ -495,4 +497,22 @@ in
       })
     ];
   };
+
+  # TODO: fix user
+  flake.lib.backup.cockroachdb =
+    { name, pkgs, ... }:
+    pkgs.writeShellApplication {
+      inherit name;
+      runtimeInputs = [
+        pkgs.coreutils
+        pkgs.cockroachdb
+      ];
+      text = ''
+        node_id="$(cockroach sql -u haras -e "SELECT node_id FROM crdb_internal.node_runtime_info;" | tail -n 1)"
+        sudo rm -rf /var/lib/cockroachdb/extern
+        cockroach sql -u haras -e "backup into 'nodelocal://$node_id/backup';"
+        sudo cp -r /var/lib/cockroachdb/extern/backup/. "$1"
+        sudo rm -rf /var/lib/cockroachdb/extern
+      '';
+    };
 }
