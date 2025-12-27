@@ -50,6 +50,39 @@ def "main secrets" [host?: string, --all] {
   }
 }
 
+def "main backup" [dest?: path, host?: string] {
+  let dest = if ($dest | is-empty) { "backup.tar.gzip.age" } else { $dest }
+  let host = pick hosts false true $host | first
+  let shared = vault kv get -format=json "kv/dot/shared/current"
+    | from json
+    | get data.data
+
+  let drv = (nix build
+    --print-out-paths
+    --no-link
+    $"path:($root)#packages.($host.system).backup")
+
+  print "Built derivation..."
+
+  ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
+    | ssh-add - \\
+    && nix-copy-closure --to ($host.ip) ($drv)"
+
+  print "Copied closure..."
+
+  ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
+    | ssh-add - \\
+    && ssh ($host.ip) ($drv)/bin/backup '($host.secrets."pass-priv")' '($shared."backup-age-public")' '~/backup.tar.gzip.age'"
+
+  print "Created backup..."
+
+  ssh-agent bash -c $"echo '($host.secrets."ssh-private")' \\
+    | ssh-add - \\
+    && scp ($host.ip):~/backup.tar.gzip.age '($dest)'"
+
+  print "Moved backup..."
+}
+
 def "main image" [host?: string, format?: string] {
   let host = pick hosts false true $host | first
   let format = if $format == null { "sd-aarch64" } else { $format }
