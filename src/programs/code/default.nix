@@ -1,6 +1,5 @@
 {
   pkgs,
-  self,
   config,
   lib,
   nix-vscode-extensions,
@@ -81,9 +80,10 @@ in
 
         # csharp
         pkgs.vscode-extensions.ms-dotnettools.vscode-dotnet-runtime
+        # FIXME: debugger doesn't work for the 500th fucking time again
+        # god fucking damn it microsoft get ur shit together for once fuck
         pkgs.vscode-extensions.ms-dotnettools.csdevkit
         pkgs.vscode-extensions.ms-dotnettools.csharp
-        pkgs.vscode-extensions.ms-dotnettools.vscodeintellicode-csharp
         pkgs.vscode-marketplace.selcukermaya.se-csproj-extensions
 
         # python
