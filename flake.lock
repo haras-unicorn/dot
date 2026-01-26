@@ -68,6 +68,26 @@
         "type": "github"
       }
     },
+    "certilia-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1767377903,
+        "narHash": "sha256-3HrvUyQiCPAfZi7vjZaQGhw3NNGfTftnIfb9v03e2q8=",
+        "owner": "marijanp",
+        "repo": "certilia-overlay",
+        "rev": "685073c67b022e9f293ad2269ed2a1de57002e1e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "marijanp",
+        "repo": "certilia-overlay",
+        "type": "github"
+      }
+    },
     "comin": {
       "inputs": {
         "nixpkgs": [
@@ -567,6 +587,7 @@
     },
     "root": {
       "inputs": {
+        "certilia-overlay": "certilia-overlay",
         "comin": "comin",
         "deploy-rs": "deploy-rs",
         "home-manager": "home-manager",

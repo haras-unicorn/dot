@@ -48,6 +48,9 @@
 
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
+
+    certilia-overlay.url = "github:marijanp/certilia-overlay";
+    certilia-overlay.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
