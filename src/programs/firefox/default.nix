@@ -93,7 +93,6 @@ let
     pkgs.nur.repos.rycee.firefox-addons.vimium-c
     pkgs.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
     pkgs.nur.repos.rycee.firefox-addons.bitwarden
-    pkgs.nur.repos.rycee.firefox-addons.kagi-privacy-pass
   ];
 
   profileBase = {

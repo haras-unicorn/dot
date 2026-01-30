@@ -35,25 +35,25 @@
       ]
     },
     {
-      "id": "kagi",
-      "_name": "Kagi",
-      "_loadPath": "[https]kagi.com/kagi.xml",
+      "id": "duckduckgo",
+      "_name": "DuckDuckGo",
+      "_loadPath": "[https]duckduckgo.com/opensearch.xml",
       "_urls": [
         {
           "params": [],
           "rels": ["results"],
-          "template": "https://kagi.com/search?q={searchTerms}"
+          "template": "https://duckduckgo.com/?q={searchTerms}"
         },
         {
           "params": [],
           "rels": ["suggestions"],
-          "template": "https://kagisuggest.com/api/autosuggest?q={searchTerms}",
+          "template": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
           "type": "application/x-suggestions+json"
         }
       ]
     }
   ],
   "metaData": {
-    "defaultEngineId": "kagi"
+    "defaultEngineId": "duckduckgo"
   }
 }
