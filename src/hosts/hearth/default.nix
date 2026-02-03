@@ -40,5 +40,7 @@ in
 
   homeManagerModule = {
     services.easyeffects.preset = "krk";
+
+    dot.wallpaper.static = true;
   };
 }
