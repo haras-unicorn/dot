@@ -19,12 +19,12 @@
     services.automatic-timezoned.enable = true;
 
     # NOTE: https://github.com/NixOS/nixpkgs/issues/293212#issuecomment-2319051915
-    sops.secrets."geoclue-static-geolocation" = {
-      path = "/etc/geolocation";
-      owner = "geoclue";
-      group = "geoclue";
-      mode = "0440";
-    };
+    # sops.secrets."geoclue-static-geolocation" = {
+    #   path = "/etc/geolocation";
+    #   owner = "geoclue";
+    #   group = "geoclue";
+    #   mode = "0440";
+    # };
 
     rumor.sops = [ "geoclue-static-geolocation" ];
     rumor.specification.imports = [
