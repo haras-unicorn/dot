@@ -516,16 +516,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1766499009,
-        "narHash": "sha256-y5X0/kWjvCbEK8Xva7zgEKAPwe/w6RDhx5zmPnpiUHE=",
+        "lastModified": 1770212688,
+        "narHash": "sha256-KWQdLSVyWYBalvj23l4fmmzPBsKul8iOgYzveTGBE10=",
         "owner": "haras-unicorn",
         "repo": "perch",
-        "rev": "ba98829f294ebc7cfef4fa96fa327ee2b40f0674",
+        "rev": "a24126a73478810081e5bf6fe69c3380a0a331bb",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/1.0.4",
+        "ref": "refs/tags/1.3.0",
         "repo": "perch",
         "type": "github"
       }

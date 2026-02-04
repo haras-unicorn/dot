@@ -9,7 +9,7 @@
 
     stylix.url = "github:danth/stylix/release-25.11";
 
-    perch.url = "github:haras-unicorn/perch/refs/tags/1.0.4";
+    perch.url = "github:haras-unicorn/perch/refs/tags/1.3.0";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
     perch-modules.url = "github:haras-unicorn/perch-modules/refs/tags/1.1.0";
