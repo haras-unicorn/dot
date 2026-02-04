@@ -45,6 +45,11 @@ let
   };
 in
 {
+  eval.allowedArgs = [
+    "unstablePkgs"
+    "aiPkgs"
+  ];
+
   nixosModule = {
     config = thisConfig;
   };
