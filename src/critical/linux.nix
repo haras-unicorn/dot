@@ -17,7 +17,7 @@ in
 {
   nixosModule = {
     boot.binfmt.preferStaticEmulators = true;
-    boot.binfmt.emulatedSystems = (lib.mkIf (pkgs.system == "x86_64-linux") [ "aarch64-linux" ]);
+    boot.binfmt.emulatedSystems = (lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") [ "aarch64-linux" ]);
 
     boot.kernelPackages =
       if isRpi4 then

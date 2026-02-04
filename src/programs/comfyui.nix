@@ -20,7 +20,7 @@ let
     else
       null;
 
-  comfyuiPackage = nix-comfyui.packages.${pkgs.system}.${packageName};
+  comfyuiPackage = nix-comfyui.packages.${pkgs.stdenv.hostPlatform.system}.${packageName};
 
   mkComfyuiInstance = instanceName: rec {
     comfyui = pkgs.writeShellApplication {

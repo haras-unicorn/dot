@@ -44,7 +44,7 @@ in
   homeManagerModule = {
     home.packages = [
       inspect-gtk
-      stylix.packages.${pkgs.system}.palette-generator
+      stylix.packages.${pkgs.stdenv.hostPlatform.system}.palette-generator
     ];
 
     stylix.iconTheme.enable = true;

@@ -13,7 +13,7 @@
 
     services.comin = {
       enable = true;
-      hostname = "${config.dot.host.name}-${pkgs.system}";
+      hostname = "${config.dot.host.name}-${pkgs.stdenv.hostPlatform.system}";
       remotes = [
         {
           name = "origin";

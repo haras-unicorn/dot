@@ -10,13 +10,13 @@
 let
   thisConfig = {
     _module.args.unstablePkgs = import nixpkgs-unstable {
-      system = pkgs.system;
+      system = pkgs.stdenv.hostPlatform.system;
       config = config.nixpkgs.config;
       overlays = config.nixpkgs.overlays;
     };
 
     _module.args.aiPkgs = import nixpkgs-ai {
-      system = pkgs.system;
+      system = pkgs.stdenv.hostPlatform.system;
       config = config.nixpkgs.config;
       overlays = config.nixpkgs.overlays;
     };

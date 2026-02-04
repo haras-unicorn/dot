@@ -30,7 +30,7 @@
         # Tools
         nodePackages.cspell
         nixos-generators
-        rumor.packages.${pkgs.system}.default
+        rumor.packages.${pkgs.stdenv.hostPlatform.system}.default
         nebula
         openssh
         sshpass

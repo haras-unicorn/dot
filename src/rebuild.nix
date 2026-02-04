@@ -7,7 +7,7 @@
 let
   host = config.dot.host;
 
-  system = pkgs.system;
+  system = pkgs.stdenv.hostPlatform.system;
 
   path = "github:haras-unicorn/dot";
 
