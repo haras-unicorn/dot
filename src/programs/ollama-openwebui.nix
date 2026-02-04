@@ -15,12 +15,14 @@ let
 
   chromium = config.dot.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
 
+  ollamaPackage = pkgs.ollama;
+  openWebuiPackage = aiPkgs.open-webui;
+
   mkOllamaInstance = instanceName: rec {
     ollama = pkgs.writeShellApplication {
       name = "ollama-${instanceName}";
       runtimeInputs = [
-        pkgs.ollama
-        pkgs.coreutils
+        ollamaPackage
       ];
       text = ''
         mkdir -p "${config.xdg.dataHome}/ollama/${instanceName}"
@@ -33,7 +35,7 @@ let
     openWebui = pkgs.writeShellApplication {
       name = "open-webui-${instanceName}";
       runtimeInputs = [
-        aiPkgs.open-webui
+        openWebuiPackage
         pkgs.coreutils
       ];
       text = ''
