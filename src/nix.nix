@@ -16,7 +16,7 @@ let
   thisConfig = {
     nix.registry.nixpkgs.flake = nixpkgs;
 
-    nix.extraOptions = "experimental-features = nix-command flakes";
+    nix.extraOptions = "experimental-features = nix-command flakes recursive-nix";
 
     nix.settings.max-jobs = config.dot.hardware.threads / 3;
     nix.settings.cores = 2;
