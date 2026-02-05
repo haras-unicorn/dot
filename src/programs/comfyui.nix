@@ -1,6 +1,6 @@
 {
   self,
-  nix-comfyui,
+  comfyui-nix,
   pkgs,
   lib,
   config,
@@ -12,15 +12,9 @@ let
 
   chromium = config.dot.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
 
-  packageName =
-    if config.nixpkgs.config.cudaSupport then
-      "cuda-comfyui-with-extensions"
-    else if config.nixpkgs.config.rocmSupport then
-      "rocm-comfyui-with-extensions"
-    else
-      null;
+  packageName = if config.nixpkgs.config.cudaSupport then "cuda" else "default";
 
-  comfyuiPackage = nix-comfyui.packages.${pkgs.stdenv.hostPlatform.system}.${packageName};
+  comfyuiPackage = comfyui-nix.packages.${pkgs.stdenv.hostPlatform.system}.${packageName};
 
   mkComfyuiInstance = instanceName: rec {
     comfyui = pkgs.writeShellApplication {
@@ -32,7 +26,7 @@ let
       text = ''
         mkdir -p "${config.xdg.dataHome}/comfyui/${instanceName}"
         cd "${config.xdg.dataHome}/comfyui/${instanceName}"
-        comfyui "$@"
+        comfyui --base-directory "${config.xdg.dataHome}/comfyui/${instanceName}" "$@"
       '';
     };
 

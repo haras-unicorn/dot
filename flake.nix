@@ -43,8 +43,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-comfyui.url = "github:haras-unicorn/nix-comfyui/dev";
-    nix-comfyui.inputs.nixpkgs.follows = "nixpkgs-ai";
+    comfyui-nix.url = "github:utensils/comfyui-nix/refs/tags/v0.7.0-1";
 
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
