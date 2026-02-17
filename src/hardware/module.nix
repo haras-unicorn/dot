@@ -173,6 +173,22 @@ let
       && ((builtins.length config.facter.report.hardware.mouse) > 0)
     );
 
+  logitech =
+    (
+      (builtins.hasAttr "mouse" config.facter.report.hardware)
+      && ((builtins.length config.facter.report.hardware.mouse) > 0)
+      && (builtins.any (
+        mouse: mouse.model == "Logitech USB Receiver"
+      ) config.facter.report.hardware.mouse)
+    )
+    || (
+      (builtins.hasAttr "keyboard" config.facter.report.hardware)
+      && ((builtins.length config.facter.report.hardware.keyboard) > 0)
+      && (builtins.any (
+        keyboard: keyboard.model == "Logitech USB Receiver"
+      ) config.facter.report.hardware.keyboard)
+    );
+
   options.dot.hardware = {
     rpi."4".enable = lib.mkOption {
       type = lib.types.bool;
@@ -318,6 +334,11 @@ let
     mouse.enable = lib.mkOption {
       type = lib.types.bool;
       default = mouse;
+    };
+
+    logitech.enable = lib.mkOption {
+      type = lib.types.bool;
+      default = logitech;
     };
 
     check = lib.mkOption {
