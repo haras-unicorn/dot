@@ -1,21 +1,26 @@
-{ pkgs, ... }:
-
-let
-  package = pkgs.nix-output-monitor;
-in
 {
-  homeManagerModule = {
-    home.packages = [
-      package
-    ];
+  flake.homeModules.programs-nom =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      package = pkgs.nix-output-monitor;
+    in
+    {
+      home.packages = [
+        package
+      ];
 
-    dot.shell.aliases = {
-      "nix build" = "${package}/bin/nom build";
-      "nix shell" = "${package}/bin/nom shell";
-      "nix develop" = "${package}/bin/nom develop";
+      dot.shell.aliases = {
+        "nix build" = "${package}/bin/nom build";
+        "nix shell" = "${package}/bin/nom shell";
+        "nix develop" = "${package}/bin/nom develop";
 
-      "nix-build" = "${package}/bin/nom-build";
-      "nix-shell" = "${package}/bin/nom-shell";
+        "nix-build" = "${package}/bin/nom-build";
+        "nix-shell" = "${package}/bin/nom-shell";
+      };
     };
-  };
 }

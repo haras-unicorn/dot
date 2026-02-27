@@ -9,6 +9,11 @@
 
     stylix.url = "github:danth/stylix/release-25.11";
 
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
+
+    import-tree.url = "github:vic/import-tree";
+
     perch.url = "github:haras-unicorn/perch/refs/tags/1.3.0";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -53,7 +58,7 @@
   };
 
   outputs =
-    { perch, nixos-facter-modules, ... }@rawInputs:
+    { flake-parts, nixos-facter-modules, ... }@rawInputs:
     let
       inputs = rawInputs // {
         nixos-facter-modules =
@@ -82,9 +87,17 @@
           );
       };
     in
-    perch.lib.flake.make {
-      inherit inputs;
-      root = ./.;
-      prefix = "src";
-    };
+    flake-parts.lib.mkFlake
+      {
+        inherit inputs;
+        specialArgs = {
+          root = ./.;
+        };
+      }
+      {
+        imports = [
+          inputs.home-manager.flakeModules.home-manager
+          (inputs.import-tree ./src)
+        ];
+      };
 }

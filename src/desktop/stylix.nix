@@ -1,0 +1,63 @@
+{ inputs, ... }:
+
+{
+  flake.nixosModules.desktop-stylix =
+    {
+      config,
+      pkgs,
+      ...
+    }:
+    let
+      wallpaperImage = config.dot.wallpaper.image;
+    in
+    {
+      stylix.enable = true;
+      stylix.image = wallpaperImage;
+      stylix.imageScalingMode = "fill";
+      stylix.polarity = "dark";
+      stylix.base16Scheme = builtins.fromJSON (builtins.readFile ./wallpaper/wallpaper.json);
+      stylix.fonts.monospace.name = "JetBrainsMono Nerd Font";
+      stylix.fonts.monospace.package = pkgs.nerd-fonts.jetbrains-mono;
+      stylix.fonts.sansSerif.name = "Roboto";
+      stylix.fonts.sansSerif.package = pkgs.roboto;
+      stylix.fonts.serif.name = "Roboto Serif";
+      stylix.fonts.serif.package = pkgs.roboto-serif;
+      stylix.cursor.package = pkgs.pokemon-cursor;
+      stylix.cursor.name = "Pokemon";
+      stylix.cursor.size = 24;
+      stylix.opacity.applications = 0.9;
+      stylix.opacity.desktop = 0.0;
+      stylix.opacity.terminal = 0.75;
+      stylix.opacity.popups = 1.0;
+    };
+
+  flake.homeModules.stylix =
+    {
+      config,
+      pkgs,
+      ...
+    }:
+    let
+      inspect-gtk = pkgs.writeShellApplication {
+        name = "inspect-gtk";
+        runtimeInputs = [
+          pkgs.coreutils
+        ];
+        text = ''
+          export GTK_DEBUG=interactive
+          exec "$@"
+        '';
+      };
+    in
+    {
+      home.packages = [
+        inspect-gtk
+        inputs.stylix.packages.${pkgs.stdenv.hostPlatform.system}.palette-generator
+      ];
+
+      stylix.iconTheme.enable = true;
+      stylix.iconTheme.package = pkgs.beauty-line-icon-theme;
+      stylix.iconTheme.dark = "BeautyLine";
+      stylix.iconTheme.light = "BeautyLine";
+    };
+}

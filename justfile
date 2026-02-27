@@ -24,9 +24,14 @@ lint:
       | complete \
       | get exit_code) == 0 { exit 1 }
 
-rebuild *args:
+rebuild-switch *args:
     sudo nixos-rebuild switch \
-      --flake $"{{ root }}#hosts-(hostname)-((uname).machine)-linux" \
+      --flake $"{{ root }}#(hostname)" \
+      {{ args }}
+
+rebuild-boot *args:
+    sudo nixos-rebuild boot \
+      --flake $"{{ root }}#(hostname)" \
       {{ args }}
 
 hosts *args:

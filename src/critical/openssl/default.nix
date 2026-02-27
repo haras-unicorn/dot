@@ -1,11 +1,17 @@
-{ lib, config, ... }:
+{ ... }:
 
-let
-  hasNetwork = config.dot.hardware.network.enable;
-in
 {
-  nixosModule = {
-    config = lib.mkIf hasNetwork {
+  flake.nixosModules.critical-openssl =
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
+    let
+      hasNetwork = config.dot.hardware.network.enable;
+    in
+    lib.mkIf hasNetwork {
       security.pki.certificateFiles = [
         ./ca.crt
       ];
@@ -101,5 +107,4 @@ in
         }
       ];
     };
-  };
 }

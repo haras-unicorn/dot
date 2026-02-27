@@ -1,34 +1,44 @@
 {
-  pkgs,
-  config,
-  lib,
-  ...
-}:
+  flake.nixosModules.programs-pcmanfm =
+    {
+      lib,
+      config,
+      ...
+    }:
+    let
+      hasMonitor = config.dot.hardware.monitor.enable;
+    in
+    lib.mkIf hasMonitor {
+      services.gvfs.enable = true;
+    };
 
-let
-  hasMonitor = config.dot.hardware.monitor.enable;
+  flake.homeModules.programs-pcmanfm =
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
 
-  mime = {
-    "inode/directory" = "${pkgs.pcmanfm}/share/applications/pcmanfm.desktop";
-  };
-in
-{
-  nixosModule = lib.mkIf hasMonitor {
-    services.gvfs.enable = true;
-  };
+    let
+      hasMonitor = config.dot.hardware.monitor.enable;
 
-  homeManagerModule = lib.mkIf hasMonitor {
-    dot.desktopEnvironment.windowrules = [
-      {
-        rule = "float";
-        selector = "class";
-        arg = "pcmanfm";
-      }
-    ];
+      mime = {
+        "inode/directory" = "${pkgs.pcmanfm}/share/applications/pcmanfm.desktop";
+      };
+    in
+    lib.mkIf hasMonitor {
+      dot.desktopEnvironment.windowrules = [
+        {
+          rule = "float";
+          selector = "class";
+          arg = "pcmanfm";
+        }
+      ];
 
-    home.packages = [ pkgs.pcmanfm ];
+      home.packages = [ pkgs.pcmanfm ];
 
-    xdg.mimeApps.associations.added = mime;
-    xdg.mimeApps.defaultApplications = mime;
-  };
+      xdg.mimeApps.associations.added = mime;
+      xdg.mimeApps.defaultApplications = mime;
+    };
 }

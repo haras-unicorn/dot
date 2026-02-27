@@ -1,23 +1,23 @@
-{ pkgs, config, ... }:
-
 {
-  homeManagerModule = {
-    dot.shell.aliases = {
-      la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
-      tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
-    };
+  flake.homeModules.programs-eza =
+    { pkgs, config, ... }:
+    {
+      dot.shell.aliases = {
+        la = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions}";
+        tree = "${pkgs.eza}/bin/eza ${pkgs.lib.escapeShellArgs config.programs.eza.extraOptions} --tree";
+      };
 
-    programs.eza.enable = true;
-    programs.eza.extraOptions = [
-      "--all"
-      "--long"
-      "--color=always"
-      "--group-directories-first"
-      "--icons"
-      "--group"
-      "--header"
-      "--icons"
-      "--git"
-    ];
-  };
+      programs.eza.enable = true;
+      programs.eza.extraOptions = [
+        "--all"
+        "--long"
+        "--color=always"
+        "--group-directories-first"
+        "--icons"
+        "--group"
+        "--header"
+        "--icons"
+        "--git"
+      ];
+    };
 }

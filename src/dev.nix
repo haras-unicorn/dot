@@ -1,49 +1,64 @@
-{ pkgs, rumor, ... }:
+{ inputs, ... }:
 
 {
-  defaultDevShell = true;
-  devShellNixpkgs.config.allowUnfree = true;
-  devShell = pkgs.mkShell {
-    packages =
-      with pkgs;
-      [
-        # Nix
-        nil
-        nixfmt-rfc-style
+  systems = [
+    "x86_64-linux"
+    "aarch64-linux"
+  ];
+  perSystem =
+    { pkgs, system, ... }:
+    let
+      devShell = pkgs.mkShell {
+        packages =
+          with pkgs;
+          [
+            # Nix
+            nil
+            nixfmt-rfc-style
 
-        # Scripts
-        just
-        nushell
-        gum
-        fzf
-        fd
+            # Scripts
+            just
+            nushell
+            gum
+            fzf
+            fd
 
-        # Misc
-        nodePackages.prettier
-        nodePackages.yaml-language-server
-        nodePackages.vscode-langservers-extracted
-        markdownlint-cli
-        nodePackages.markdown-link-check
-        marksman
-        taplo
+            # Misc
+            nodePackages.prettier
+            nodePackages.yaml-language-server
+            nodePackages.vscode-langservers-extracted
+            markdownlint-cli
+            nodePackages.markdown-link-check
+            marksman
+            taplo
 
-        # Tools
-        nodePackages.cspell
-        nixos-generators
-        rumor.packages.${pkgs.stdenv.hostPlatform.system}.default
-        nebula
-        openssh
-        sshpass
-        vault
-        vault-medusa
-        postgresql
-        mariadb
-        s3cmd
-        deploy-rs
-        zstd
-      ]
-      ++ lib.optionals (pkgs.stdenv.hostPlatform.isLinux && pkgs.stdenv.hostPlatform.isx86_64) [
-        libguestfs-with-appliance
-      ];
-  };
+            # Tools
+            nodePackages.cspell
+            nixos-generators
+            inputs.rumor.packages.${system}.default
+            nebula
+            openssh
+            sshpass
+            vault
+            vault-medusa
+            postgresql
+            mariadb
+            s3cmd
+            deploy-rs
+            zstd
+          ]
+          ++ lib.optionals (system == "x86_64-linux") [
+            libguestfs-with-appliance
+          ];
+      };
+    in
+    {
+      _module.args.pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
+      devShells.dev = devShell;
+      devShells.default = devShell;
+    };
 }

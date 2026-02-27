@@ -3,7 +3,7 @@
 # TODO: configure
 
 {
-  homeManagerModule = {
+  flake.homeModules.programs-yazi = {
     programs.yazi.enable = true;
 
     programs.yazi.settings = builtins.fromTOML ''

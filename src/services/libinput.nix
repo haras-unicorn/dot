@@ -1,18 +1,20 @@
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+  flake.nixosModules.services-libinput =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      hasMouse = config.dot.hardware.mouse.enable;
+      hasKeyboard = config.dot.hardware.keyboard.enable;
+    in
+    {
+      config = lib.mkIf (hasMouse || hasKeyboard) {
+        services.libinput.enable = true;
 
-let
-  hasMouse = config.dot.hardware.mouse.enable;
-  hasKeyboard = config.dot.hardware.keyboard.enable;
-in
-{
-  nixosModule = lib.mkIf (hasMouse || hasKeyboard) {
-    services.libinput.enable = true;
-
-    environment.systemPackages = [ pkgs.libinput ];
-  };
+        environment.systemPackages = [ pkgs.libinput ];
+      };
+    };
 }

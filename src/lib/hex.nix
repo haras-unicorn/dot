@@ -4,7 +4,7 @@ let
   hexChars = lib.stringToCharacters "0123456789abcdef";
 in
 {
-  flake.lib.hex.hexToDec =
+  libAttrs.hex.hexToDec =
     hex:
     builtins.foldl' (
       sum: char:

@@ -1,78 +1,81 @@
+{ inputs, config, ... }:
+
 {
-  self,
-  comfyui-nix,
-  pkgs,
-  lib,
-  config,
-  ...
-}:
+  flake.homeModules.programs-comfyui =
+    let
+      flakeConfig = config.flake;
+    in
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
+    let
+      hasGpu = config.nixpkgs.config.cudaSupport || config.nixpkgs.config.rocmSupport;
 
-let
-  hasGpu = config.nixpkgs.config.cudaSupport || config.nixpkgs.config.rocmSupport;
+      chromium = config.dot.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
 
-  chromium = config.dot.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
+      packageName = if config.nixpkgs.config.cudaSupport then "cuda" else "default";
 
-  packageName = if config.nixpkgs.config.cudaSupport then "cuda" else "default";
+      comfyuiPackage = inputs.comfyui-nix.packages.${pkgs.stdenv.hostPlatform.system}.${packageName};
 
-  comfyuiPackage = comfyui-nix.packages.${pkgs.stdenv.hostPlatform.system}.${packageName};
+      mkComfyuiInstance = instanceName: rec {
+        comfyui = pkgs.writeShellApplication {
+          name = "comfyui-${instanceName}";
+          runtimeInputs = [
+            comfyuiPackage
+            pkgs.coreutils
+          ];
+          text = ''
+            mkdir -p "${config.xdg.dataHome}/comfyui/${instanceName}"
+            cd "${config.xdg.dataHome}/comfyui/${instanceName}"
+            comfyui --base-directory "${config.xdg.dataHome}/comfyui/${instanceName}" "$@"
+          '';
+        };
 
-  mkComfyuiInstance = instanceName: rec {
-    comfyui = pkgs.writeShellApplication {
-      name = "comfyui-${instanceName}";
-      runtimeInputs = [
-        comfyuiPackage
-        pkgs.coreutils
-      ];
-      text = ''
-        mkdir -p "${config.xdg.dataHome}/comfyui/${instanceName}"
-        cd "${config.xdg.dataHome}/comfyui/${instanceName}"
-        comfyui --base-directory "${config.xdg.dataHome}/comfyui/${instanceName}" "$@"
-      '';
-    };
+        desktopApp = flakeConfig.lib.serverClientApp.make pkgs {
+          name = "comfyui-${instanceName}-app";
+          display = "ComfyUI (${instanceName})";
+          runtimeInputs = [
+            comfyui
+            chromium
+          ];
+          servers = [
+            "comfyui-${instanceName} --preview-method taesd --port $port0"
+          ];
+          waits = [
+            ''curl -s "http://localhost:$port0"''
+          ];
+          client = ''
+            chromium \
+              "--user-data-dir=${config.xdg.dataHome}/comfyui/${instanceName}/session" \
+              "--app=http://localhost:$port0" \
+          '';
+        };
+      };
 
-    desktopApp = self.lib.serverClientApp.make pkgs {
-      name = "comfyui-${instanceName}-app";
-      display = "ComfyUI (${instanceName})";
-      runtimeInputs = [
-        comfyui
-        chromium
-      ];
-      servers = [
-        "comfyui-${instanceName} --preview-method taesd --port $port0"
-      ];
-      waits = [
-        ''curl -s "http://localhost:$port0"''
-      ];
-      client = ''
-        chromium \
-          "--user-data-dir=${config.xdg.dataHome}/comfyui/${instanceName}/session" \
-          "--app=http://localhost:$port0" \
-      '';
-    };
-  };
+      instances = {
+        personal = mkComfyuiInstance "personal";
+        alternative = mkComfyuiInstance "alternative";
+      };
+    in
+    {
+      config = lib.mkIf hasGpu {
+        home.packages = with instances; [
+          personal.comfyui
+          personal.desktopApp
+          alternative.comfyui
+          alternative.desktopApp
+        ];
 
-  instances = {
-    personal = mkComfyuiInstance "personal";
-    alternative = mkComfyuiInstance "alternative";
-  };
-in
-{
-  homeManagerModule = {
-    config = lib.mkIf hasGpu {
-      home.packages = with instances; [
-        personal.comfyui
-        personal.desktopApp
-        alternative.comfyui
-        alternative.desktopApp
-      ];
-
-      xdg.desktopEntries = {
-        comfyui-personal = {
-          name = "ComfyUI";
-          exec = "${instances.personal.desktopApp}/bin/comfyui-personal-app";
-          terminal = false;
+        xdg.desktopEntries = {
+          comfyui-personal = {
+            name = "ComfyUI";
+            exec = "${instances.personal.desktopApp}/bin/comfyui-personal-app";
+            terminal = false;
+          };
         };
       };
     };
-  };
 }

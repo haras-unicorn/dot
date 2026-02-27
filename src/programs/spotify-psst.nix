@@ -1,10 +1,10 @@
-{ pkgs, ... }:
-
 {
-  homeManagerModule = {
-    home.packages = [
-      pkgs.spotify-player
-      pkgs.psst
-    ];
-  };
+  flake.homeModules.programs-spotify-psst =
+    { pkgs, ... }:
+    {
+      home.packages = [
+        pkgs.spotify-player
+        pkgs.psst
+      ];
+    };
 }

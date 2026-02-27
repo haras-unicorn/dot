@@ -1,8 +1,4 @@
-{
-  self,
-  config,
-  ...
-}:
+{ config, ... }:
 
 let
   name = "hearth";
@@ -10,25 +6,11 @@ let
   ip = "10.69.42.2";
 in
 {
-  nixosConfigurationNixpkgs.system = system;
-  nixosConfiguration = {
-    imports = [
-      self.nixosModules.host
-      self.nixosModules."hosts-${name}"
-    ];
-    config.dot.host.name = name;
-    config.dot.host.ip = ip;
-    config.dot.host.pass = false;
-
-    config.home-manager.users.${config.dot.host.user} = {
-      imports = [
-        self.homeManagerModules.host
-        self.homeManagerModules."hosts-${name}"
-      ];
-    };
+  flake.nixosConfigurations.${name} = config.flake.lib.host.mkHost {
+    inherit name system ip;
   };
 
-  nixosModule = {
+  flake.nixosModules."hosts-${name}" = {
     boot.blacklistedKernelModules = [
       "amdgpu"
       "radeon"
@@ -36,11 +18,11 @@ in
     dot.nix.gc = false;
     dot.hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input";
     dot.hardware.monitor.main = "DP-1";
+    dot.host.pass = false;
   };
 
-  homeManagerModule = {
+  flake.homeModules."hosts-${name}" = {
     services.easyeffects.preset = "krk";
-
     dot.wallpaper.static = true;
   };
 }

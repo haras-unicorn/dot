@@ -1,17 +1,35 @@
-{ config, lib, ... }:
-
-let
-  hasMonitor = config.dot.hardware.monitor.enable;
-  hasWayland = config.dot.hardware.graphics.wayland;
-in
 {
-  nixosModule = lib.mkIf (hasMonitor && !hasWayland) {
-    services.avahi.enable = true; # NOTE: https://github.com/NixOS/nixpkgs/issues/329522
-    services.geoclue2.enable = true;
-  };
+  flake.nixosModules.services-redshift =
+    {
+      config,
+      lib,
+      ...
+    }:
+    let
+      hasMonitor = config.dot.hardware.monitor.enable;
+      hasWayland = config.dot.hardware.graphics.wayland;
+    in
+    {
+      config = lib.mkIf (hasMonitor && !hasWayland) {
+        services.avahi.enable = true; # NOTE: https://github.com/NixOS/nixpkgs/issues/329522
+        services.geoclue2.enable = true;
+      };
+    };
 
-  homeManagerModule = lib.mkIf (hasMonitor && !hasWayland) {
-    services.redshift.enable = true;
-    services.redshift.provider = "geoclue2";
-  };
+  flake.homeModules.services-redshift =
+    {
+      config,
+      lib,
+      ...
+    }:
+    let
+      hasMonitor = config.dot.hardware.monitor.enable;
+      hasWayland = config.dot.hardware.graphics.wayland;
+    in
+    {
+      config = lib.mkIf (hasMonitor && !hasWayland) {
+        services.redshift.enable = true;
+        services.redshift.provider = "geoclue2";
+      };
+    };
 }

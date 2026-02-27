@@ -1,17 +1,17 @@
 {
-  pkgs,
-  config,
-  lib,
-  ...
-}:
-
-let
-  hasMonitor = config.dot.hardware.monitor.enable;
-in
-{
-  homeManagerModule = lib.mkIf hasMonitor {
-    home.packages = [
-      pkgs.remmina
-    ];
-  };
+  flake.homeModules.programs-remmina =
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
+    let
+      hasMonitor = config.dot.hardware.monitor.enable;
+    in
+    lib.mkIf hasMonitor {
+      home.packages = [
+        pkgs.remmina
+      ];
+    };
 }

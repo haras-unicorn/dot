@@ -1,31 +1,31 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
-
 # TODO: make the volume stuff work (maybe wpctl?)
 
-let
-  hasSound = config.dot.hardware.sound.enable;
-
-  hasKeyboard = config.dot.hardware.keyboard.enable;
-in
 {
-  homeManagerModule = lib.mkIf hasSound {
-    dot.desktopEnvironment.keybinds = lib.mkIf (hasSound && hasKeyboard) [
-      {
-        mods = [ "super" ];
-        key = "v";
-        command = ''${pkgs.playerctl}/bin/playerctl play-pause'';
-      }
-    ];
+  flake.homeModules.services-playerctl =
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
+    let
+      hasSound = config.dot.hardware.sound.enable;
 
-    home.packages = [
-      pkgs.playerctl
-    ];
+      hasKeyboard = config.dot.hardware.keyboard.enable;
+    in
+    lib.mkIf hasSound {
+      dot.desktopEnvironment.keybinds = lib.mkIf (hasSound && hasKeyboard) [
+        {
+          mods = [ "super" ];
+          key = "v";
+          command = ''${pkgs.playerctl}/bin/playerctl play-pause'';
+        }
+      ];
 
-    services.playerctld.enable = true;
-  };
+      home.packages = [
+        pkgs.playerctl
+      ];
+
+      services.playerctld.enable = true;
+    };
 }

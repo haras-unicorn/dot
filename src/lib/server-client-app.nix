@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  flake.lib.serverClientApp.make =
+  libAttrs.serverClientApp.make =
     pkgs:
     {
       name,

@@ -1,8 +1,4 @@
-{
-  self,
-  config,
-  ...
-}:
+{ config, ... }:
 
 let
   name = "bean";
@@ -10,27 +6,13 @@ let
   ip = "10.69.42.6";
 in
 {
-  nixosConfigurationNixpkgs.system = system;
-  nixosConfiguration = {
-    imports = [
-      self.nixosModules.host
-      self.nixosModules."hosts-${name}"
-    ];
-    config.dot.host.name = name;
-    config.dot.host.ip = ip;
-
-    config.home-manager.users.${config.dot.host.user} = {
-      imports = [
-        self.homeManagerModules.host
-        self.homeManagerModules."hosts-${name}"
-      ];
-    };
+  flake.nixosConfigurations.${name} = config.flake.lib.host.mkHost {
+    inherit name system ip;
   };
 
-  nixosModule = {
+  flake.nixosModules."hosts-${name}" = {
     dot.hardware.rpi."4".enable = true;
     dot.hardware.temp = "/sys/class/hwmon/hwmon0/temp1_input";
-
     dot.nebula.lighthouse = true;
     dot.ddns.enable = true;
     dot.consul.enable = true;
@@ -45,5 +27,5 @@ in
     dot.miniflux.enable = true;
   };
 
-  homeManagerModule = { };
+  flake.homeModules."hosts-${name}" = { };
 }

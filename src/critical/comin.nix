@@ -1,26 +1,27 @@
-{
-  comin,
-  config,
-  pkgs,
-  ...
-}:
+{ inputs, ... }:
 
 {
-  nixosModule = {
-    imports = [
-      comin.nixosModules.comin
-    ];
-
-    services.comin = {
-      enable = true;
-      hostname = "${config.dot.host.name}-${pkgs.stdenv.hostPlatform.system}";
-      remotes = [
-        {
-          name = "origin";
-          url = "https://github.com/haras-unicorn/dot";
-          branches.main.name = "main";
-        }
+  flake.nixosModules.critical-comin =
+    {
+      config,
+      pkgs,
+      ...
+    }:
+    {
+      imports = [
+        inputs.comin.nixosModules.comin
       ];
+
+      services.comin = {
+        enable = true;
+        hostname = "${config.dot.host.name}-${pkgs.stdenv.hostPlatform.system}";
+        remotes = [
+          {
+            name = "origin";
+            url = "https://github.com/haras-unicorn/dot";
+            branches.main.name = "main";
+          }
+        ];
+      };
     };
-  };
 }
