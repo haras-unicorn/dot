@@ -29,6 +29,10 @@ The project uses [nix-unit] for unit testing and
 for NixOS VM testing. An example of how to write tests can be found in the
 [library test file](./src/lib/test.nix).
 
+When adding test code (e2e or unit tests), commit the changes after tests pass
+successfully using [Conventional Commits] format (e.g., `test(module-name): add
+e2e test for critical-openssh`).
+
 ## Gotchas
 
 - unit test attrset leaves must have `expr` and `expected` args and their key
@@ -50,3 +54,4 @@ for NixOS VM testing. An example of how to write tests can be found in the
 [nushell]: https://www.nushell.sh/
 [nix-unit]: https://github.com/nix-community/nix-unit/
 [`config.flake.lib.test.mkTest`]: ./src/lib/test.nix
+[Conventional Commits]: https://www.conventionalcommits.org/
