@@ -37,7 +37,7 @@
     {
       checks.test-critical-network-manager = config.flake.lib.test.mkTest pkgs {
         name = "critical-network-manager";
-        nodes.test = {
+        nodes.machine = {
           imports = [ config.flake.nixosModules.critical-network-manager ];
           options.dot.hardware.network.enable = pkgs.lib.mkOption {
             type = pkgs.lib.types.bool;
@@ -46,8 +46,8 @@
         };
         script = ''
           start_all()
-          test.succeed("systemctl is-enabled nftables.service")
-          test.succeed("systemctl is-enabled NetworkManager.service")
+          machine.succeed("systemctl is-enabled nftables.service")
+          machine.succeed("systemctl is-enabled NetworkManager.service")
         '';
       };
     };
