@@ -23,6 +23,7 @@ lint:
       | rg -q error \
       | complete \
       | get exit_code) == 0 { exit 1 }
+    nix flake check --all-systems
 
 rebuild-switch *args:
     sudo nixos-rebuild switch \
