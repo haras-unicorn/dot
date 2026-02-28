@@ -30,8 +30,23 @@ for NixOS VM testing. An example of how to write tests can be found in the
 [library test file](./src/lib/test.nix).
 
 When adding test code (e2e or unit tests), commit the changes after tests pass
-successfully using [Conventional Commits] format (e.g., `test(module-name): add
-e2e test for critical-openssh`).
+successfully using [Conventional Commits] format (e.g.,
+`test(module-name): add e2e test for critical-openssh`).
+
+## E2E Testing
+
+Use `machine` for the test node name and ensure test commands match this name
+(e.g., `machine.succeed()`).
+
+When writing e2e tests for modules that use `dot.*` options (e.g.,
+`dot.hardware.network.enable`), you must mock these options in the test's
+`nodes.<name>.options` attribute since they are defined in other modules which
+are not imported by default.
+
+For modules using external dependencies like [sops-nix] and [rumor], import
+their modules (e.g., `config.flake.nixosModules.rumor`) and mock required
+options. You generally don't need to set up actual secrets - the module will
+configure secret paths automatically based on `dot.host.user`.
 
 ## Gotchas
 
@@ -41,10 +56,6 @@ e2e test for critical-openssh`).
   especially the [justfile](./justfile).
 - always first check the [justfile](./justfile) for available recipes before
   running any commands
-- when writing e2e tests for modules that use `dot.*` options (e.g.,
-  `dot.hardware.network.enable`), you must mock these options in the test's
-  `nodes.<name>.options` attribute since they are defined in other modules which
-  are not imported by default
 
 [Nix]: https://nixos.org/
 [NixOS]: https://nixos.org/
@@ -55,3 +66,5 @@ e2e test for critical-openssh`).
 [nix-unit]: https://github.com/nix-community/nix-unit/
 [`config.flake.lib.test.mkTest`]: ./src/lib/test.nix
 [Conventional Commits]: https://www.conventionalcommits.org/
+[sops-nix]: https://github.com/Mic92/sops-nix
+[rumor]: https://github.com/haras-unicorn/rumor
