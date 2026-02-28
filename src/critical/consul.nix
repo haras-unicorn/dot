@@ -241,7 +241,7 @@
             mode = "0400";
           };
 
-          rumor.sops = [
+          rumor.sops.keys = [
             "consul-private"
             "consul-public"
             "consul-config"

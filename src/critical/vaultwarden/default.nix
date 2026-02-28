@@ -139,7 +139,7 @@
           mode = "0400";
         };
 
-        rumor.sops = [
+        rumor.sops.keys = [
           "cockroach-vaultwarden-private"
           "cockroach-vaultwarden-public"
           "cockroach-vaultwarden-pass"

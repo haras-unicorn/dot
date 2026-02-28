@@ -84,7 +84,7 @@ in
         mode = "0400";
       };
 
-      rumor.sops = [
+      rumor.sops.keys = [
         "deepseek-api-key"
         "openai-api-key"
         "openrouter-api-key"

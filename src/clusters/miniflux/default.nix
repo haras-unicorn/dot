@@ -133,7 +133,7 @@
           mode = "0400";
         };
 
-        rumor.sops = [
+        rumor.sops.keys = [
           "cockroach-miniflux-private"
           "cockroach-miniflux-public"
           "cockroach-miniflux-pass"

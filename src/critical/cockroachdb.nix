@@ -143,7 +143,7 @@
             mode = "0400";
           };
 
-          rumor.sops = [
+          rumor.sops.keys = [
             "cockroach-ca-public"
             "cockroach-${user}-private"
             "cockroach-${user}-public"
@@ -318,7 +318,7 @@
             mode = "0400";
           };
 
-          rumor.sops = [
+          rumor.sops.keys = [
             "cockroach-private"
             "cockroach-public"
             "cockroach-init"

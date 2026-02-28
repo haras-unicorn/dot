@@ -28,7 +28,7 @@
           mode = "0644";
         };
 
-        rumor.sops = [
+        rumor.sops.keys = [
           "ssh-authorized-keys"
           "ssh-public"
           "ssh-private"

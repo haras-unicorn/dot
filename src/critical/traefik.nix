@@ -184,7 +184,7 @@
           mode = "0400";
         };
 
-        rumor.sops = [
+        rumor.sops.keys = [
           "traefik-private"
           "traefik-public"
         ];

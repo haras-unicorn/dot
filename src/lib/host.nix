@@ -72,7 +72,6 @@ in
         inputs.sops-nix.nixosModules.default
         inputs.home-manager.nixosModules.default
         inputs.stylix.nixosModules.stylix
-        inputs.perch-modules.nixosModules."flake-rumor"
         hostModule
       ]
       ++ nixosModules;
@@ -94,6 +93,8 @@ in
 
       sops.defaultSopsFile = config.dot.host.sopsPath;
       sops.age.keyFile = "/root/host.scrt.key";
+      # NOTE: assumes we're running rumor in some subdir of the repository
+      rumor.sops.path = "../${lib.path.removePrefix root config.dot.host.sopsPath}";
       rumor.specification = {
         imports = [
           {
@@ -132,7 +133,7 @@ in
         hashedPasswordFile = lib.mkIf config.dot.host.pass config.sops.secrets."pass-pub".path;
       };
       sops.secrets."pass-pub".neededForUsers = true;
-      rumor.sops = [
+      rumor.sops.keys = [
         "pass-pub"
       ];
       rumor.specification.generations = [

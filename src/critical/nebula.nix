@@ -151,7 +151,7 @@
           mode = "0400";
         };
 
-        rumor.sops = [
+        rumor.sops.keys = [
           "nebula-ca-public"
           "nebula-private"
           "nebula-public"

@@ -22,7 +22,7 @@
         mode = "0644";
       };
 
-      rumor.sops = [
+      rumor.sops.keys = [
         "openssl-ca-public"
       ];
 
