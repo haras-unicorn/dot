@@ -23,7 +23,18 @@ lint:
       | rg -q error \
       | complete \
       | get exit_code) == 0 { exit 1 }
+
+test:
     nix flake check --all-systems
+    nix-unit --flake .#tests
+
+test-e2e test:
+    nix build \
+      `.#checks.x86_64-linux."{{ test }}"` \
+      --option sandbox-paths /dev/vhost-vsock
+
+test-unit test:
+    nix-unit --flake .#tests out+err>| grep `{{ test }}`
 
 rebuild-switch *args:
     sudo nixos-rebuild switch \

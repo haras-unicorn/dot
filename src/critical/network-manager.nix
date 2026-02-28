@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   flake.nixosModules.critical-network-manager =
@@ -25,6 +25,30 @@
             Network = "systemd-networkd";
           };
         };
+      };
+    };
+
+  systems = [
+    "x86_64-linux"
+    "aarch64-linux"
+  ];
+  perSystem =
+    { pkgs, ... }:
+    {
+      checks.test-critical-network-manager = config.flake.lib.test.mkTest pkgs {
+        name = "critical-network-manager";
+        nodes.test = {
+          imports = [ config.flake.nixosModules.critical-network-manager ];
+          options.dot.hardware.network.enable = pkgs.lib.mkOption {
+            type = pkgs.lib.types.bool;
+            default = true;
+          };
+        };
+        script = ''
+          start_all()
+          test.succeed("systemctl is-enabled nftables.service")
+          test.succeed("systemctl is-enabled NetworkManager.service")
+        '';
       };
     };
 }

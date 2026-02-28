@@ -15,6 +15,7 @@
             # Nix
             nil
             nixfmt-rfc-style
+            nix-unit
 
             # Scripts
             just
