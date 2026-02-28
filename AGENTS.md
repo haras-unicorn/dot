@@ -57,8 +57,6 @@ configure secret paths automatically based on `dot.host.user`.
 - always first check the [justfile](./justfile) for available recipes before
   running any commands
 
-[Nix]: https://nixos.org/
-[NixOS]: https://nixos.org/
 [flake-parts]: https://flake.parts/
 [import-tree]: https://import-tree.oeiuwq.com/
 [just]: https://just.systems/
