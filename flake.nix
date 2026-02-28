@@ -14,6 +14,10 @@
 
     import-tree.url = "github:vic/import-tree";
 
+    nix-unit.url = "github:nix-community/nix-unit";
+    nix-unit.inputs.nixpkgs.follows = "nixpkgs";
+    nix-unit.inputs.flake-parts.follows = "flake-parts";
+
     perch.url = "github:haras-unicorn/perch/refs/tags/1.3.0";
     perch.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -96,6 +100,7 @@
       }
       {
         imports = [
+          inputs.nix-unit.modules.flake.default
           inputs.home-manager.flakeModules.home-manager
           (inputs.import-tree ./src)
         ];
