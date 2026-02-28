@@ -8,6 +8,8 @@ ignoreWords:
   - nixos
   - facter
   - nushell
+  - pkgs
+  - attrset
 ignorePaths:
   - justfile
   - flake.nix
