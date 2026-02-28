@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 # NOTE: do not enable NTS because time can be so far off sometimes
 # that it registers certs as invalid
@@ -76,6 +76,27 @@
             }
           }/bin/chronyd-sync-wait";
         };
+      };
+    };
+
+  systems = [
+    "x86_64-linux"
+    "aarch64-linux"
+  ];
+  perSystem =
+    { pkgs, ... }:
+    {
+      checks.test-critical-chronyd = config.flake.lib.test.mkTest pkgs {
+        name = "critical-chronyd";
+        nodes.machine = {
+          imports = [ config.flake.nixosModules.critical-chronyd ];
+        };
+        script = ''
+          start_all()
+          machine.succeed("systemctl is-enabled chronyd.service")
+          machine.succeed("which chronyd")
+          machine.succeed("which chronyc")
+        '';
       };
     };
 }
