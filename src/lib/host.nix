@@ -72,7 +72,6 @@ in
         inputs.sops-nix.nixosModules.default
         inputs.home-manager.nixosModules.default
         inputs.stylix.nixosModules.stylix
-        inputs.perch-modules.nixosModules."flake-deployRs"
         inputs.perch-modules.nixosModules."flake-rumor"
         hostModule
       ]
