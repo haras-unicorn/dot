@@ -2,5 +2,5 @@
 .env
 secrets
 flake.lock
-assets/secrets/
-assets/hardware/
+src/hosts/*/hardware.json
+src/hosts/*/secrets.yaml
