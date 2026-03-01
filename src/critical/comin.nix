@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 
 {
   flake.nixosModules.critical-comin =
@@ -22,6 +22,32 @@
             branches.main.name = "main";
           }
         ];
+      };
+    };
+
+  systems = [
+    "x86_64-linux"
+    "aarch64-linux"
+  ];
+  perSystem =
+    { pkgs, ... }:
+    {
+      checks.test-critical-comin = config.flake.lib.test.mkTest pkgs {
+        name = "critical-comin";
+        nodes.machine = {
+          imports = [
+            config.flake.nixosModules.critical-comin
+          ];
+          options.dot.host.name = pkgs.lib.mkOption {
+            type = pkgs.lib.types.str;
+            default = "testhost";
+          };
+        };
+        script = ''
+          start_all()
+          machine.succeed("systemctl is-enabled comin.service")
+          machine.succeed("which comin")
+        '';
       };
     };
 }
