@@ -63,6 +63,12 @@ or service status checks are more stable and maintainable.
   especially the [justfile](./justfile).
 - always first check the [justfile](./justfile) for available recipes before
   running any commands
+- **Important**: Nix flakes only see git-tracked files. When adding new test
+  files or modules, you must `git add` them before Nix can evaluate them. This
+  is a common source of "attribute not found" errors when adding new tests.
+- **Important**: Nix flakes only see git-tracked files. When adding new test
+  files or modules, you must `git add` them before Nix can evaluate them. This
+  is a common source of "attribute not found" errors when adding new tests.
 
 ## Security Warning
 
