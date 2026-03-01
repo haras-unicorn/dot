@@ -48,6 +48,13 @@ their modules (e.g., `config.flake.nixosModules.rumor`) and mock required
 options. You generally don't need to set up actual secrets - the module will
 configure secret paths automatically based on `dot.host.user`.
 
+When verifying that a specific package or kernel version is being used, prefer
+"canonical" paths over direct nix store searches. For example, use
+`readlink /run/booted-system/kernel` to check the kernel instead of
+`find /nix/store -name '*kernel*'`. Nix store paths are implementation details
+and may change; canonical paths like symlinks in `/run/booted-system/`, `/etc`,
+or service status checks are more stable and maintainable.
+
 ## Gotchas
 
 - unit test attrset leaves must have `expr` and `expected` args and their key
