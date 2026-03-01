@@ -60,7 +60,7 @@
           start_all()
           # Verify the system boots with zen kernel packages available
           machine.succeed("readlink /run/booted-system/kernel | grep -qi zen")
-          machine.succeed("systemctl is-system-running --wait || true")
+          machine.succeed("systemctl is-system-running --wait")
         '';
       };
 
@@ -85,7 +85,7 @@
           start_all()
           # Verify 6.6 kernel is used for legacy Nvidia
           machine.succeed("readlink /run/booted-system/kernel | grep -q '6.6'")
-          machine.succeed("systemctl is-system-running --wait || true")
+          machine.succeed("systemctl is-system-running --wait")
         '';
       };
     };
