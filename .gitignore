@@ -4,3 +4,4 @@
 /artifacts
 result
 .crush
+.nixos-test-history
