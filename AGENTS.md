@@ -64,6 +64,22 @@ or service status checks are more stable and maintainable.
 - always first check the [justfile](./justfile) for available recipes before
   running any commands
 
+## Security Warning
+
+**IMPORTANT: Never execute or run anything related to [rumor] or secret
+management tools.** This includes:
+
+- Do not run `rumor` commands or import and execute its generators/importers
+- Do not generate, rotate, or export real certificates or keys
+- Do not access or modify production Vault, SOPS, or Age keys
+- Only mock the `rumor.*` option schema for NixOS module compatibility when
+  testing
+- Mock `sops.secrets` with dummy paths and test data only when testing
+
+These tools manage sensitive production credentials. Tests should only verify
+module configuration and service behavior using mock/test data, never interact
+with real secret infrastructure.
+
 [flake-parts]: https://flake.parts/
 [import-tree]: https://import-tree.oeiuwq.com/
 [just]: https://just.systems/
