@@ -33,6 +33,11 @@ test-e2e test:
       `.#checks.x86_64-linux."{{ test }}"` \
       --option sandbox-paths /dev/vhost-vsock
 
+test-e2e-interactive test:
+    nix run \
+      `.#checks.x86_64-linux."{{ test }}".driverInteractive` \
+      --option sandbox-paths /dev/vhost-vsock
+
 test-unit test:
     nix-unit --flake .#tests out+err>| grep `{{ test }}`
 
