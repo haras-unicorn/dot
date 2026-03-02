@@ -41,7 +41,7 @@
       crdb = cfg.package;
       certs = "/var/lib/cockroachdb/.certs";
       databaseUrl =
-        "postgresql://root@localhost"
+        "postgresql://root@${config.dot.host.ip}"
         + ":${builtins.toString cfg.listen.port}"
         + "?sslmode=verify-full"
         + "&sslrootcert=${certs}/ca.crt"
@@ -61,8 +61,12 @@
         ) config.dot.host.hosts
       );
 
-      join = builtins.concatStringsSep "," (builtins.map (x: "${x}:${builtins.toString port}") hosts);
+      # NOTE: https://www.cockroachlabs.com/docs/stable/cockroach-start
+      joinHosts = builtins.tail (lib.lists.sublist 0 5 hosts);
 
+      initHost = builtins.head joinHosts;
+
+      join = builtins.concatStringsSep "," (builtins.map (x: "${x}:${builtins.toString port}") joinHosts);
     in
     {
       options.dot.cockroachdb = {
@@ -180,6 +184,12 @@
           services.cockroachdb.http.port = httpPort;
           services.cockroachdb.listen.address = config.dot.host.ip;
           services.cockroachdb.locality = config.dot.cockroachdb.locality;
+          services.cockroachdb.extraArgs = [
+            "--background"
+            "--logtostderr=WARNING"
+            "--max-offset=5s"
+          ];
+          systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
 
           systemd.services.cockroachdb.after = [
             "nebula-online.target"
@@ -190,12 +200,20 @@
             "chronyd-synced.target"
           ];
 
-          systemd.services.cockroachdb-init = lib.mkIf (cfg.init != [ ] || cfg.initFiles != [ ]) {
+          systemd.services.cockroachdb-init = {
             description = "CockroachDB Initialization";
-            after = [ "cockroachdb.service" ];
-            requires = [ "cockroachdb.service" ];
+            after = [
+              "nebula-online.target"
+              "chronyd-synced.target"
+            ];
+            requires = [
+              "nebula-online.target"
+              "chronyd-synced.target"
+            ];
             wantedBy = [ "multi-user.target" ];
             serviceConfig = {
+              Restart = "on-failure";
+              RestartSec = "3";
               Type = "oneshot";
               RemainAfterExit = "yes";
               User = config.systemd.services.cockroachdb.serviceConfig.User;
@@ -212,7 +230,9 @@
                       pkgs.coreutils
                     ];
                     text = ''
-                      ${crdb}/bin/cockroach init --certs-dir "${certs}" \
+                      ${crdb}/bin/cockroach init \
+                        --host "${initHost}:${builtins.toString port}" \
+                        --certs-dir "${certs}" \
                         || echo "Cluster already initialized."
                       ${lib.concatMapStrings (file: ''
                         echo "Running: ${file}"
