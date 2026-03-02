@@ -64,11 +64,8 @@ tests to fail in confusing ways. Use explicit
 `networking.interfaces.*.ipv4.addresses` configurations for each node in
 multi-node tests.
 
-Never use `||` (or) in test assertions with `machine.succeed()`. Commands like
-`machine.succeed("grep foo /etc/config || echo not found")` will always pass
-because the `||` ensures the exit code is 0. This makes the test meaningless.
-Instead, use `machine.succeed("grep foo /etc/config")` directly so the test
-properly fails when the assertion is not met.
+Test script host names are equal to `networking.hostName` in their config and if
+that option is not set it will be set by the tester to the node name.
 
 ## Gotchas
 
