@@ -55,11 +55,14 @@ When verifying that a specific package or kernel version is being used, prefer
 and may change; canonical paths like symlinks in `/run/booted-system/`, `/etc`,
 or service status checks are more stable and maintainable.
 
-**Always assign static IP addresses explicitly** for all test nodes when testing
-networking-related functionality. Relying on DHCP or default addressing can lead
-to IP conflicts (e.g., multiple nodes getting the same IP address) which will
-cause tests to fail in confusing ways. Use explicit `networking.interfaces.*.ipv4.addresses`
-configurations for each node in multi-node tests.
+Always assign static IP addresses explicitly for all test nodes when testing
+networking-related functionality and use addresses above at least `8` in the
+prefix to prevent collisions with DHCP addresses (ie. DHCP sets up `192.168.1.1`
+and you set up `192.168.1.8`). Relying on DHCP or default addressing can lead to
+IP conflicts (e.g., multiple nodes getting the same IP address) which will cause
+tests to fail in confusing ways. Use explicit
+`networking.interfaces.*.ipv4.addresses` configurations for each node in
+multi-node tests.
 
 ## Gotchas
 
