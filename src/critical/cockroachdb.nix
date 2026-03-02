@@ -63,37 +63,6 @@
 
       join = builtins.concatStringsSep "," (builtins.map (x: "${x}:${builtins.toString port}") hosts);
 
-      # NOTE: https://github.com/NixOS/nixpkgs/pull/172923
-      # NOTE: https://github.com/NixOS/nixpkgs/blob/nixos-24.11/nixos/modules/services/databases/cockroachdb.nix
-      startupCommand = utils.escapeSystemdExecArgs (
-        [
-          # Basic startup
-          "${crdb}/bin/cockroach"
-          "start"
-          "--background"
-          "--logtostderr"
-          "--store=/var/lib/cockroachdb"
-
-          # WebUI settings
-          "--http-addr=${cfg.http.address}:${toString cfg.http.port}"
-
-          # Cluster advertise address
-          # NOTE: nixos config sets listen-addr here but we dont want to set that
-          # because we want to listen on all addresses
-          # what we actually want is to advertise on the vpn address
-          "--advertise-addr=${cfg.listen.address}:${toString cfg.listen.port}"
-
-          # Cache and memory settings.
-          "--cache=${cfg.cache}"
-          "--max-sql-memory=${cfg.maxSqlMemory}"
-
-          # Certificate/security settings.
-          (if cfg.insecure then "--insecure" else "--certs-dir=${cfg.certsDir}")
-        ]
-        ++ lib.optional (cfg.join != null) "--join=${cfg.join}"
-        ++ lib.optional (cfg.locality != null) "--locality=${cfg.locality}"
-        ++ cfg.extraArgs
-      );
     in
     {
       options.dot.cockroachdb = {
@@ -220,8 +189,6 @@
             "nebula-online.target"
             "chronyd-synced.target"
           ];
-          systemd.services.cockroachdb.serviceConfig.ExecStart = lib.mkForce startupCommand;
-          systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
 
           systemd.services.cockroachdb-init = lib.mkIf (cfg.init != [ ] || cfg.initFiles != [ ]) {
             description = "CockroachDB Initialization";
