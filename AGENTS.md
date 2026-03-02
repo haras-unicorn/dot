@@ -64,20 +64,26 @@ tests to fail in confusing ways. Use explicit
 `networking.interfaces.*.ipv4.addresses` configurations for each node in
 multi-node tests.
 
+Never use `||` (or) in test assertions with `machine.succeed()`. Commands like
+`machine.succeed("grep foo /etc/config || echo not found")` will always pass
+because the `||` ensures the exit code is 0. This makes the test meaningless.
+Instead, use `machine.succeed("grep foo /etc/config")` directly so the test
+properly fails when the assertion is not met.
+
 ## Gotchas
 
-- unit test attrset leaves must have `expr` and `expected` args and their key
-  must start with `test`
-- please read all the files mentioned in this file inside this repository -
-  especially the [justfile](./justfile).
-- always first check the [justfile](./justfile) for available recipes before
-  running any commands
-- **Important**: Nix flakes only see git-tracked files. When adding new test
-  files or modules, you must `git add` them before Nix can evaluate them. This
-  is a common source of "attribute not found" errors when adding new tests.
-- **Important**: Nix flakes only see git-tracked files. When adding new test
-  files or modules, you must `git add` them before Nix can evaluate them. This
-  is a common source of "attribute not found" errors when adding new tests.
+Unit test attrset leaves must have `expr` and `expected` args and their key must
+start with `test`
+
+Please read all the files mentioned in this file inside this repository -
+especially the [justfile](./justfile).
+
+Always first check the [justfile](./justfile) for available recipes before
+running any commands.
+
+Nix flakes only see git-tracked files. When adding new test files or modules,
+you must `git add` them before Nix can evaluate them. This is a common source of
+"attribute not found" errors when adding new tests.
 
 ## Security Warning
 
