@@ -4,14 +4,12 @@
 
 {
   flake.homeModules.critical-vault =
-
     {
       pkgs,
       lib,
       config,
       ...
     }:
-
     let
       hasNetwork = config.dot.hardware.network.enable;
       hasMonitor = config.dot.hardware.monitor.enable;
@@ -33,14 +31,12 @@
     };
 
   flake.nixosModules.critical-vault =
-
     {
       pkgs,
       lib,
       config,
       ...
     }:
-
     let
       hasNetwork = config.dot.hardware.network.enable;
       user = config.dot.host.user;
@@ -75,9 +71,9 @@
           port
         ];
 
-        systemd.services.vault.requires = [ "cockroachdb-init.service" ];
-        systemd.services.vault.after = [ "cockroachdb-init.service" ];
-        services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vault-init".path ];
+        systemd.services.vault.requires = [ "cockroachdb-init.target" ];
+        systemd.services.vault.after = [ "cockroachdb-init.target" ];
+        services.cockroachdb.init.files = [ config.sops.secrets."cockroach-vault-init".path ];
 
         dot.consul.services = [
           {
@@ -188,20 +184,16 @@
                 grant all on all functions in schema public to ${user};
 
                 create table if not exists vault_kv_store (
-                  parent_path text not null,
-                  path        text,
-                  key         text,
-                  value       bytea,
-                  constraint pkey primary key (path, key)
+                  path string not null,
+                  value bytes null,
+                  constraint vault_kv_store_pkey primary key (path asc)
                 );
-                create index if not exists parent_path_idx on vault_kv_store (parent_path);
-
                 create table if not exists vault_ha_locks (
-                  ha_key      text not null,
-                  ha_identity text not null,
-                  ha_value    text,
-                  valid_until timestamp with time zone not null,
-                  constraint ha_key primary key (ha_key)
+                  ha_key string not null,
+                  ha_identity string not null,
+                  ha_value string null,
+                  valid_until timestamptz not null,
+                  constraint ha_key primary key (ha_key asc)
                 );
               '';
             };
@@ -217,8 +209,8 @@
               template =
                 let
                   databaseUrl =
-                    "postgresql://${vaultUser}:{{COCKROACH_VAULT_PASS}}@localhost"
-                    + ":${builtins.toString config.services.cockroachdb.listen.port}"
+                    "postgresql://${vaultUser}:{{COCKROACH_VAULT_PASS}}@${config.dot.host.ip}"
+                    + ":${builtins.toString config.services.cockroachdb.sql.port}"
                     + "/vault"
                     + "?sslmode=verify-full"
                     + "&sslrootcert=${certs}/ca.crt"
