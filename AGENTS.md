@@ -31,6 +31,10 @@ When adding test code (e2e or unit tests), commit the changes after tests pass
 successfully using [Conventional Commits] format (e.g.,
 `test(module-name): add e2e test for critical-openssh`).
 
+If you can't get past some wall and you appear to be stuck for a long time and
+keep using very long timeouts and such it is okay to quit and let me take over
+and fix issues.
+
 ## E2E Testing
 
 Use `machine` for the test node name and ensure test commands match this name
