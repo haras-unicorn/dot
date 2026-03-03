@@ -124,6 +124,53 @@
         };
       };
 
+      # Rumor specification mock submodule
+      rumorSpecificationSubmodule = pkgs.lib.types.submodule {
+        options = {
+          imports = pkgs.lib.mkOption {
+            type = pkgs.lib.types.listOf pkgs.lib.types.raw;
+            default = [ ];
+          };
+          generations = pkgs.lib.mkOption {
+            type = pkgs.lib.types.listOf pkgs.lib.types.raw;
+            default = [ ];
+          };
+          exports = pkgs.lib.mkOption {
+            type = pkgs.lib.types.listOf pkgs.lib.types.raw;
+            default = [ ];
+          };
+        };
+      };
+
+      # Rumor sops mock submodule
+      rumorSopsSubmodule = pkgs.lib.types.submodule {
+        options = {
+          keys = pkgs.lib.mkOption {
+            type = pkgs.lib.types.listOf pkgs.lib.types.str;
+            default = [ ];
+          };
+          path = pkgs.lib.mkOption {
+            type = pkgs.lib.types.nullOr pkgs.lib.types.str;
+            default = null;
+          };
+        };
+      };
+
+      # Rumor options mock
+      rumorOptions = {
+        rumor = pkgs.lib.mkOption {
+          type = pkgs.lib.types.nullOr (
+            pkgs.lib.types.submodule {
+              options = {
+                specification = rumorSpecificationSubmodule;
+                sops = rumorSopsSubmodule;
+              };
+            }
+          );
+          default = null;
+        };
+      };
+
       # Mock systemd targets that services depend on
       mockSystemdTargets =
         { lib, ... }:
@@ -151,60 +198,62 @@
           config.flake.nixosModules.rumor
           mockSystemdTargets
         ];
-        options = pkgs.lib.recursiveUpdate seaweedfsOptions {
-          dot.host.ip = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = nodeIp;
-          };
-          dot.host.hosts = pkgs.lib.mkOption {
-            type = pkgs.lib.types.listOf pkgs.lib.types.attrs;
-            default = [
-              {
-                ip = "192.168.1.10";
-                system = {
-                  dot = {
-                    cockroachdb = {
-                      enable = true;
-                    };
-                    seaweedfs = {
-                      enable = true;
-                    };
-                  };
-                };
-              }
-              {
-                ip = "192.168.1.11";
-                system = {
-                  dot = {
-                    cockroachdb = {
-                      enable = true;
-                    };
-                    seaweedfs = {
-                      enable = true;
+        options = pkgs.lib.recursiveUpdate seaweedfsOptions (
+          pkgs.lib.recursiveUpdate rumorOptions {
+            dot.host.ip = pkgs.lib.mkOption {
+              type = pkgs.lib.types.str;
+              default = nodeIp;
+            };
+            dot.host.hosts = pkgs.lib.mkOption {
+              type = pkgs.lib.types.listOf pkgs.lib.types.attrs;
+              default = [
+                {
+                  ip = "192.168.1.10";
+                  system = {
+                    dot = {
+                      cockroachdb = {
+                        enable = true;
+                      };
+                      seaweedfs = {
+                        enable = true;
+                      };
                     };
                   };
-                };
-              }
-              {
-                ip = "192.168.1.12";
-                system = {
-                  dot = {
-                    cockroachdb = {
-                      enable = true;
-                    };
-                    seaweedfs = {
-                      enable = true;
+                }
+                {
+                  ip = "192.168.1.11";
+                  system = {
+                    dot = {
+                      cockroachdb = {
+                        enable = true;
+                      };
+                      seaweedfs = {
+                        enable = true;
+                      };
                     };
                   };
-                };
-              }
-            ];
-          };
-          sops.secrets = pkgs.lib.mkOption {
-            type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-            default = { };
-          };
-        };
+                }
+                {
+                  ip = "192.168.1.12";
+                  system = {
+                    dot = {
+                      cockroachdb = {
+                        enable = true;
+                      };
+                      seaweedfs = {
+                        enable = true;
+                      };
+                    };
+                  };
+                }
+              ];
+            };
+            sops.secrets = pkgs.lib.mkOption {
+              type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
+              default = { };
+            };
+          }
+        );
         config = {
           networking.hostName = nodeName;
 
@@ -354,16 +403,28 @@
           imports = [
             config.flake.nixosModules.critical-seaweedfs-module
             config.flake.nixosModules.critical-seaweedfs-nixpkgs
+            config.flake.nixosModules.critical-cockroachdb
             config.flake.nixosModules.rumor
+            mockSystemdTargets
           ];
-          options = pkgs.lib.recursiveUpdate seaweedfsOptions {
-            sops.secrets = pkgs.lib.mkOption {
-              type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-              default = { };
-            };
-          };
+          options = pkgs.lib.recursiveUpdate seaweedfsOptions (
+            pkgs.lib.recursiveUpdate rumorOptions {
+              sops.secrets = pkgs.lib.mkOption {
+                type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
+                default = { };
+              };
+            }
+          );
           config = {
             networking.hostName = "testhost";
+            users.users.testuser = {
+              isNormalUser = true;
+              home = "/home/testuser";
+              uid = 1000;
+            };
+            users.groups.testuser = {
+              gid = 1000;
+            };
             # dot.seaweedfs.enable defaults to false
           };
         };
