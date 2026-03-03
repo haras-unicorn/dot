@@ -138,7 +138,7 @@
             services.seaweedfs.filers.dot.rack = config.dot.seaweedfs.rack;
             services.seaweedfs.filers.dot.config.postgres = {
               enabled = true;
-              hostname = "localhost";
+              hostname = config.dot.host.ip;
               port = config.services.cockroachdb.listen.port;
               username = seaweedfsUser;
               database = "seaweedfs";

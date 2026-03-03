@@ -349,6 +349,8 @@
 
           environment.etc."cockroachdb/seaweedfs-init.sql".text = ''
             CREATE USER IF NOT EXISTS seaweedfs_node1 WITH PASSWORD 'testpassword123';
+            CREATE USER IF NOT EXISTS seaweedfs_node2 WITH PASSWORD 'testpassword123';
+            CREATE USER IF NOT EXISTS seaweedfs_node3 WITH PASSWORD 'testpassword123';
             CREATE DATABASE IF NOT EXISTS seaweedfs;
             \c seaweedfs
             ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON TABLES TO seaweedfs_node1;
@@ -357,6 +359,18 @@
             GRANT ALL ON ALL TABLES IN SCHEMA public TO seaweedfs_node1;
             GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO seaweedfs_node1;
             GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO seaweedfs_node1;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON TABLES TO seaweedfs_node2;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON SEQUENCES TO seaweedfs_node2;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON FUNCTIONS TO seaweedfs_node2;
+            GRANT ALL ON ALL TABLES IN SCHEMA public TO seaweedfs_node2;
+            GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO seaweedfs_node2;
+            GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO seaweedfs_node2;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON TABLES TO seaweedfs_node3;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON SEQUENCES TO seaweedfs_node3;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON FUNCTIONS TO seaweedfs_node3;
+            GRANT ALL ON ALL TABLES IN SCHEMA public TO seaweedfs_node3;
+            GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO seaweedfs_node3;
+            GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO seaweedfs_node3;
             CREATE TABLE IF NOT EXISTS filemeta (
               dirhash     bigint,
               name        varchar(65535),
@@ -448,8 +462,6 @@
           node3 = commonNodeConfig "192.168.1.12" "node3";
         };
         script = ''
-          import time
-
           start_all()
 
           # Wait for cockroachdb to be ready on all nodes
@@ -458,49 +470,67 @@
           node3.wait_until_succeeds("systemctl is-enabled cockroachdb.service", timeout=60)
 
           # Wait for cockroachdb to be active
-          node1.wait_for_unit("cockroachdb.service")
-          node2.wait_for_unit("cockroachdb.service")
-          node3.wait_for_unit("cockroachdb.service")
-
-          # Initialize cockroachdb cluster on node1
-          node1.succeed("cockroach init --host=192.168.1.10 --certs-dir=/var/lib/cockroachdb/.certs || echo 'Cluster may already be initialized'")
+          node1.wait_for_unit("cockroachdb.service", timeout=60)
+          node2.wait_for_unit("cockroachdb.service", timeout=60)
+          node3.wait_for_unit("cockroachdb.service", timeout=60)
 
           # Wait for cockroachdb-init to complete
-          node1.wait_for_unit("cockroachdb-init.service")
+          node1.wait_for_unit("cockroachdb-init.service", timeout=180)
+          node2.wait_for_unit("cockroachdb-init.service", timeout=180)
+          node3.wait_for_unit("cockroachdb-init.service", timeout=180)
 
           # Verify cockroachdb SQL is working
           node1.succeed("cockroach sql --certs-dir=/var/lib/cockroachdb/.certs --host=192.168.1.10 --execute='SELECT 1'")
+          node2.succeed("cockroach sql --certs-dir=/var/lib/cockroachdb/.certs --host=192.168.1.11 --execute='SELECT 1'")
+          node3.succeed("cockroach sql --certs-dir=/var/lib/cockroachdb/.certs --host=192.168.1.12 --execute='SELECT 1'")
 
           # Wait for seaweedfs master services to be ready
-          node1.wait_for_unit("seaweedfs-master.service")
-          node2.wait_for_unit("seaweedfs-master.service")
-          node3.wait_for_unit("seaweedfs-master.service")
+          node1.wait_for_unit("seaweedfs-master.service", timeout=60)
+          node2.wait_for_unit("seaweedfs-master.service", timeout=60)
+          node3.wait_for_unit("seaweedfs-master.service", timeout=60)
 
           # Wait for seaweedfs volume services
-          node1.wait_for_unit("seaweedfs-volume@dot.service")
-          node2.wait_for_unit("seaweedfs-volume@dot.service")
-          node3.wait_for_unit("seaweedfs-volume@dot.service")
+          node1.wait_for_unit("seaweedfs-volume@dot.service", timeout=60)
+          node2.wait_for_unit("seaweedfs-volume@dot.service", timeout=60)
+          node3.wait_for_unit("seaweedfs-volume@dot.service", timeout=60)
 
           # Wait for seaweedfs filer services (depend on cockroachdb-init)
-          node1.wait_for_unit("seaweedfs-filer@dot.service")
-          node2.wait_for_unit("seaweedfs-filer@dot.service")
-          node3.wait_for_unit("seaweedfs-filer@dot.service")
-
-          # Give services time to fully start
-          time.sleep(5)
+          node1.wait_until_succeeds("systemctl is-enabled seaweedfs-filer@dot.service", timeout=60)
+          node2.wait_until_succeeds("systemctl is-enabled seaweedfs-filer@dot.service", timeout=60)
+          node3.wait_until_succeeds("systemctl is-enabled seaweedfs-filer@dot.service", timeout=60)
 
           # Verify HTTP health endpoints are responding
-          node1.succeed("curl -f http://192.168.1.10:9333/cluster/status")
-          node2.succeed("curl -f http://192.168.1.11:9333/cluster/status")
-          node3.succeed("curl -f http://192.168.1.12:9333/cluster/status")
+          node1.wait_until_succeeds("curl -f http://192.168.1.10:9333/cluster/status", timeout=60)
+          node2.wait_until_succeeds("curl -f http://192.168.1.11:9333/cluster/status", timeout=60)
+          node3.wait_until_succeeds("curl -f http://192.168.1.12:9333/cluster/status", timeout=60)
 
           # Test filer endpoints
-          node1.succeed("curl -f http://192.168.1.10:8888/")
-          node2.succeed("curl -f http://192.168.1.11:8888/")
-          node3.succeed("curl -f http://192.168.1.12:8888/")
+          node1.wait_until_succeeds("curl -f http://192.168.1.10:8888/", timeout=60)
+          node2.wait_until_succeeds("curl -f http://192.168.1.11:8888/", timeout=60)
+          node3.wait_until_succeeds("curl -f http://192.168.1.12:8888/", timeout=60)
 
-          # TODO: Add file upload/download tests once basic connectivity works
-          # This requires debugging to ensure proper cluster formation
+          # Test file upload and download across cluster
+          # Create a test file on node1
+          node1.succeed("echo 'Hello from SeaweedFS cluster test' > /tmp/testfile.txt")
+
+          # Upload file via node1's filer
+          node1.succeed("curl -F file=@/tmp/testfile.txt http://192.168.1.10:8888/testfolder/")
+
+          # Verify file is accessible via node2 and node3 (replication)
+          node2.wait_until_succeeds("curl -f http://192.168.1.11:8888/testfolder/testfile.txt | grep 'Hello from SeaweedFS cluster test'", timeout=60)
+          node3.wait_until_succeeds("curl -f http://192.168.1.12:8888/testfolder/testfile.txt | grep 'Hello from SeaweedFS cluster test'", timeout=60)
+
+          # Test directory listing
+          node1.succeed("curl -f http://192.168.1.10:8888/testfolder/ | grep 'testfile.txt'")
+
+          # Test cluster topology - verify all masters see each other
+          node1.succeed("curl -f http://192.168.1.10:9333/cluster/status | grep -q '192.168.1.11'")
+          node1.succeed("curl -f http://192.168.1.10:9333/cluster/status | grep -q '192.168.1.12'")
+
+          # Test volume server status
+          node1.succeed("curl -f http://192.168.1.10:8081/status | grep -q 'Version'")
+          node2.succeed("curl -f http://192.168.1.11:8081/status | grep -q 'Version'")
+          node3.succeed("curl -f http://192.168.1.12:8081/status | grep -q 'Version'")
         '';
       };
     };
