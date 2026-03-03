@@ -3,7 +3,7 @@
 # TODO: security
 
 {
-  flake.homeModules.critical-seaweedfs-dot =
+  flake.homeModules.critical-seaweedfs-module =
     {
       lib,
       config,
@@ -20,7 +20,7 @@
       ];
     };
 
-  flake.nixosModules.critical-seaweedfs-dot =
+  flake.nixosModules.critical-seaweedfs-module =
     {
       lib,
       config,
