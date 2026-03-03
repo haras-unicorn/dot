@@ -50,266 +50,156 @@
             chmod 400 $out/client.root.key
           '';
 
-      # Common options mock for cockroachdb tests
-      cockroachdbOptions = {
-        dot.hardware.network.enable = pkgs.lib.mkOption {
-          type = pkgs.lib.types.bool;
-          default = true;
-        };
-        dot.hardware.monitor.enable = pkgs.lib.mkOption {
-          type = pkgs.lib.types.bool;
-          default = false;
-        };
-        dot.host.name = pkgs.lib.mkOption {
-          type = pkgs.lib.types.str;
-          default = "testhost";
-        };
-        dot.host.user = pkgs.lib.mkOption {
-          type = pkgs.lib.types.str;
-          default = "testuser";
-        };
-        dot.host.ip = pkgs.lib.mkOption {
-          type = pkgs.lib.types.str;
-          default = "192.168.1.10";
-        };
-        dot.host.hosts = pkgs.lib.mkOption {
-          type = pkgs.lib.types.listOf pkgs.lib.types.attrs;
-          default = [ ];
-        };
-        dot.nebula.interface = pkgs.lib.mkOption {
-          type = pkgs.lib.types.str;
-          default = "nebula-dot";
-        };
-        dot.browser.package = pkgs.lib.mkOption {
-          type = pkgs.lib.types.package;
-          default = pkgs.firefox;
-        };
-        dot.browser.bin = pkgs.lib.mkOption {
-          type = pkgs.lib.types.str;
-          default = "firefox";
-        };
-        dot.consul.services = pkgs.lib.mkOption {
-          type = pkgs.lib.types.listOf pkgs.lib.types.attrs;
-          default = [ ];
-        };
-      };
-
-      # Sops secrets mock submodule
-      sopsSecretsSubmodule = pkgs.lib.types.submodule {
-        options = {
-          path = pkgs.lib.mkOption { type = pkgs.lib.types.str; };
-          owner = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "root";
-          };
-          group = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "root";
-          };
-          mode = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "0400";
-          };
-          key = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "";
-          };
-        };
-      };
-
-      # Mock systemd targets that cockroachdb depends on
-      mockSystemdTargets =
-        { lib, ... }:
-        {
-          systemd.targets.nebula-online = {
-            description = "Mock nebula-online target";
-            after = [ "network-online.target" ];
-            wants = [ "network-online.target" ];
-            wantedBy = [ "multi-user.target" ];
-          };
-          systemd.targets.chronyd-synced = {
-            description = "Mock chronyd-synced target";
-            after = [ "network-online.target" ];
-            wants = [ "network-online.target" ];
-            wantedBy = [ "multi-user.target" ];
-          };
-        };
-
       # Common node configuration
       commonNodeConfig = nodeIp: nodeName: {
         imports = [
           config.flake.nixosModules.critical-cockroachdb
+          config.flake.nixosModules.critical-consul
           config.flake.nixosModules.rumor
-          mockSystemdTargets
+          config.flake.lib.test.mockNebulaChronydTargetsModule
+          config.flake.lib.test.commonDotOptionsModule
+          config.flake.lib.test.sopsSecretsModule
         ];
-        options = pkgs.lib.recursiveUpdate cockroachdbOptions {
-          dot.host.ip = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = nodeIp;
-          };
-          dot.host.hosts = pkgs.lib.mkOption {
-            type = pkgs.lib.types.listOf pkgs.lib.types.attrs;
-            default = [
-              {
-                ip = "192.168.1.10";
-                system = {
-                  dot = {
-                    cockroachdb = {
-                      enable = true;
-                    };
-                  };
+
+        dot.host.ip = nodeIp;
+        dot.host.hosts = [
+          {
+            ip = "192.168.1.10";
+            system = {
+              dot = {
+                cockroachdb = {
+                  enable = true;
                 };
-              }
-              {
-                ip = "192.168.1.11";
-                system = {
-                  dot = {
-                    cockroachdb = {
-                      enable = true;
-                    };
-                  };
+              };
+            };
+          }
+          {
+            ip = "192.168.1.11";
+            system = {
+              dot = {
+                cockroachdb = {
+                  enable = true;
                 };
-              }
-              {
-                ip = "192.168.1.12";
-                system = {
-                  dot = {
-                    cockroachdb = {
-                      enable = true;
-                    };
-                  };
+              };
+            };
+          }
+          {
+            ip = "192.168.1.12";
+            system = {
+              dot = {
+                cockroachdb = {
+                  enable = true;
                 };
-              }
-            ];
-          };
-          sops.secrets = pkgs.lib.mkOption {
-            type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-            default = { };
-          };
-        };
-        config = {
-          networking.hostName = nodeName;
+              };
+            };
+          }
+        ];
 
-          networking.interfaces.eth1.ipv4.addresses = [
-            {
-              address = nodeIp;
-              prefixLength = 24;
-            }
-          ];
+        networking.hostName = nodeName;
 
-          dot.host.name = nodeName;
-          dot.cockroachdb.enable = true;
+        networking.interfaces.eth1.ipv4.addresses = [
+          {
+            address = nodeIp;
+            prefixLength = 24;
+          }
+        ];
 
-          # Set up certificates using activation script to ensure proper permissions
-          system.activationScripts.cockroachdb-certs = {
-            text = ''
-              mkdir -p /var/lib/cockroachdb/.certs
-              cp ${testCerts}/ca.crt /var/lib/cockroachdb/.certs/
-              cp ${testCerts}/node.crt /var/lib/cockroachdb/.certs/
-              cp ${testCerts}/node.key /var/lib/cockroachdb/.certs/
-              cp ${testCerts}/client.root.crt /var/lib/cockroachdb/.certs/
-              cp ${testCerts}/client.root.key /var/lib/cockroachdb/.certs/
-              chown -R cockroachdb:cockroachdb /var/lib/cockroachdb/.certs
-              chmod 644 /var/lib/cockroachdb/.certs/ca.crt
-              chmod 644 /var/lib/cockroachdb/.certs/node.crt
-              chmod 600 /var/lib/cockroachdb/.certs/node.key
-              chmod 644 /var/lib/cockroachdb/.certs/client.root.crt
-              chmod 600 /var/lib/cockroachdb/.certs/client.root.key
-            '';
-            deps = [
-              "users"
-              "groups"
-            ];
-          };
+        dot.host.name = nodeName;
+        dot.cockroachdb.enable = true;
 
-          # Mock sops secrets required by the module
-          sops.secrets = {
-            "cockroach-ca-public" = {
-              path = "/var/lib/cockroachdb/.certs/ca.crt";
-              owner = "cockroachdb";
-              group = "cockroachdb";
-              mode = "0644";
-            };
-            "cockroach-public" = {
-              path = "/var/lib/cockroachdb/.certs/node.crt";
-              owner = "cockroachdb";
-              group = "cockroachdb";
-              mode = "0644";
-            };
-            "cockroach-private" = {
-              path = "/var/lib/cockroachdb/.certs/node.key";
-              owner = "cockroachdb";
-              group = "cockroachdb";
-              mode = "0400";
-            };
-            "cockroach-root-public" = {
-              path = "/var/lib/cockroachdb/.certs/client.root.crt";
-              owner = "cockroachdb";
-              group = "cockroachdb";
-              mode = "0644";
-            };
-            "cockroach-root-private" = {
-              path = "/var/lib/cockroachdb/.certs/client.root.key";
-              owner = "cockroachdb";
-              group = "cockroachdb";
-              mode = "0400";
-            };
-            "cockroach-init" = {
-              path = "/etc/cockroachdb/init.sql";
-              owner = "cockroachdb";
-              group = "cockroachdb";
-              mode = "0400";
-            };
-          };
-
-          environment.etc."cockroachdb/init.sql".text = ''
-            CREATE DATABASE IF NOT EXISTS testdb;
+        # Set up certificates using activation script to ensure proper permissions
+        system.activationScripts.cockroachdb-certs = {
+          text = ''
+            mkdir -p /var/lib/cockroachdb/.certs
+            cp ${testCerts}/ca.crt /var/lib/cockroachdb/.certs/
+            cp ${testCerts}/node.crt /var/lib/cockroachdb/.certs/
+            cp ${testCerts}/node.key /var/lib/cockroachdb/.certs/
+            cp ${testCerts}/client.root.crt /var/lib/cockroachdb/.certs/
+            cp ${testCerts}/client.root.key /var/lib/cockroachdb/.certs/
+            chown -R cockroachdb:cockroachdb /var/lib/cockroachdb/.certs
+            chmod 644 /var/lib/cockroachdb/.certs/ca.crt
+            chmod 644 /var/lib/cockroachdb/.certs/node.crt
+            chmod 600 /var/lib/cockroachdb/.certs/node.key
+            chmod 644 /var/lib/cockroachdb/.certs/client.root.crt
+            chmod 600 /var/lib/cockroachdb/.certs/client.root.key
           '';
-
-          users.users.cockroachdb = {
-            isSystemUser = true;
-            group = "cockroachdb";
-            home = "/var/lib/cockroachdb";
-          };
-          users.groups.cockroachdb = { };
-
-          environment.systemPackages = [
-            pkgs.curl
-            pkgs.cockroachdb
-            pkgs.postgresql
+          deps = [
+            "users"
+            "groups"
           ];
         };
+
+        # Mock sops secrets required by the module
+        sops.secrets = {
+          "cockroach-ca-public" = {
+            path = "/var/lib/cockroachdb/.certs/ca.crt";
+            owner = "cockroachdb";
+            group = "cockroachdb";
+            mode = "0644";
+          };
+          "cockroach-public" = {
+            path = "/var/lib/cockroachdb/.certs/node.crt";
+            owner = "cockroachdb";
+            group = "cockroachdb";
+            mode = "0644";
+          };
+          "cockroach-private" = {
+            path = "/var/lib/cockroachdb/.certs/node.key";
+            owner = "cockroachdb";
+            group = "cockroachdb";
+            mode = "0400";
+          };
+          "cockroach-root-public" = {
+            path = "/var/lib/cockroachdb/.certs/client.root.crt";
+            owner = "cockroachdb";
+            group = "cockroachdb";
+            mode = "0644";
+          };
+          "cockroach-root-private" = {
+            path = "/var/lib/cockroachdb/.certs/client.root.key";
+            owner = "cockroachdb";
+            group = "cockroachdb";
+            mode = "0400";
+          };
+          "cockroach-init" = {
+            path = "/etc/cockroachdb/init.sql";
+            owner = "cockroachdb";
+            group = "cockroachdb";
+            mode = "0400";
+          };
+        };
+
+        environment.etc."cockroachdb/init.sql".text = ''
+          CREATE DATABASE IF NOT EXISTS testdb;
+        '';
+
+        users.users.cockroachdb = {
+          isSystemUser = true;
+          group = "cockroachdb";
+          home = "/var/lib/cockroachdb";
+        };
+        users.groups.cockroachdb = { };
+
+        environment.systemPackages = [
+          pkgs.curl
+          pkgs.cockroachdb
+          pkgs.postgresql
+        ];
       };
     in
     {
       # Test 1: CockroachDB disabled - no service should be configured
-      checks.test-critical-cockroachdb-disabled = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-cockroachdb-disabled = config.flake.lib.test.mkDisabledServiceTest pkgs {
         name = "critical-cockroachdb-disabled";
-        nodes.machine = {
+        module = {
           imports = [
             config.flake.nixosModules.critical-cockroachdb
-            config.flake.nixosModules.rumor
+            config.flake.nixosModules.critical-consul
+            config.flake.lib.test.mockNebulaChronydTargetsModule
           ];
-          options = pkgs.lib.recursiveUpdate cockroachdbOptions {
-            sops.secrets = pkgs.lib.mkOption {
-              type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-              default = { };
-            };
-          };
-          config = {
-            networking.hostName = "testhost";
-            # dot.cockroachdb.enable defaults to false
-          };
         };
-        script = ''
-          start_all()
-
-          # When cockroachdb is disabled, service should not be enabled
-          machine.fail("systemctl is-enabled cockroachdb.service")
-
-          # Verify no cockroachdb config directory is created
-          machine.fail("test -d /etc/cockroachdb")
-        '';
+        serviceName = "cockroachdb.service";
+        configPath = "/etc/cockroachdb";
       };
 
       # Test 2: Multi-node cockroachdb cluster with secure mode

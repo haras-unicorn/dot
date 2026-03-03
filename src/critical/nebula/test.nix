@@ -40,43 +40,12 @@
               -out-crt $out/node2.crt -out-key $out/node2.key
           '';
 
-      # Common nebula options mock (only define what the module doesn't define)
-      nebulaOptions = {
-        dot.hardware.network.enable = pkgs.lib.mkOption {
-          type = pkgs.lib.types.bool;
-          default = true;
-        };
-      };
-
-      # Sops secrets mock submodule
-      sopsSecretsSubmodule = pkgs.lib.types.submodule {
-        options = {
-          path = pkgs.lib.mkOption { type = pkgs.lib.types.str; };
-          owner = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "root";
-          };
-          group = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "root";
-          };
-          mode = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "0400";
-          };
-        };
-      };
-
-      # Mock chronyd-synced.target
-      mockChronydModule =
-        { lib, ... }:
-        {
-          systemd.targets.chronyd-synced = {
-            description = "Mock chronyd synced target";
-            after = [ "network-online.target" ];
-            wantedBy = [ "multi-user.target" ];
-          };
-        };
+      # Get helper functions from test library
+      inherit (config.flake.lib.test)
+        commonDotOptionsModule
+        sopsSecretsModule
+        mockNebulaChronydTargetsModule
+        ;
 
       underlyingNetworkIp = "192.168.1.10";
     in
@@ -86,31 +55,14 @@
         name = "critical-nebula-disabled";
         nodes.machine = {
           imports = [
+            commonDotOptionsModule
+            sopsSecretsModule
             config.flake.nixosModules.critical-nebula
             config.flake.nixosModules.rumor
           ];
-          options = pkgs.lib.recursiveUpdate nebulaOptions {
-            dot.host.user = pkgs.lib.mkOption {
-              type = pkgs.lib.types.str;
-              default = "testuser";
-            };
-            sops.secrets = pkgs.lib.mkOption {
-              type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-              default = { };
-            };
-          };
-          config = {
-            networking.hostName = "testhost";
-            dot.hardware.network.enable = false;
-            dot.nebula.ip = "10.69.42.1";
-            dot.nebula.subnet.ip = "10.69.42.0";
-            dot.nebula.subnet.bits = 24;
-            dot.nebula.subnet.mask = "255.255.255.0";
-            users.users.testuser = {
-              isNormalUser = true;
-              home = "/home/testuser";
-            };
-          };
+
+          networking.hostName = "testhost";
+          dot.hardware.network.enable = false;
         };
         script = ''
           start_all()
@@ -134,239 +86,212 @@
             imports = [
               config.flake.nixosModules.critical-nebula
               config.flake.nixosModules.rumor
-              mockChronydModule
+              commonDotOptionsModule
+              mockNebulaChronydTargetsModule
+              sopsSecretsModule
             ];
-            options = pkgs.lib.recursiveUpdate nebulaOptions {
-              dot.host.user = pkgs.lib.mkOption {
-                type = pkgs.lib.types.str;
-                default = "testuser";
-              };
-              sops.secrets = pkgs.lib.mkOption {
-                type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-                default = { };
-              };
-            };
-            config = {
-              networking.hostName = "lighthouse";
-              virtualisation.vlans = [ 1 ];
 
-              # Static IP on the underlying network (eth1)
-              networking.interfaces.eth1.ipv4.addresses = [
-                {
-                  address = underlyingNetworkIp;
-                  prefixLength = 24;
-                }
-              ];
+            networking.hostName = "lighthouse";
+            virtualisation.vlans = [ 1 ];
 
-              dot.nebula.lighthouse = true;
-              dot.nebula.ip = "10.69.42.1";
-              dot.nebula.subnet.ip = "10.69.42.0";
-              dot.nebula.subnet.bits = 24;
-              dot.nebula.subnet.mask = "255.255.255.0";
+            # Static IP on the underlying network (eth1)
+            networking.interfaces.eth1.ipv4.addresses = [
+              {
+                address = underlyingNetworkIp;
+                prefixLength = 24;
+              }
+            ];
 
-              # Set up mock sops secrets pointing to test certs
-              sops.secrets = {
-                "nebula-ca-public" = {
-                  path = "${testCerts}/ca.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-public" = {
-                  path = "${testCerts}/lighthouse.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-private" = {
-                  path = "${testCerts}/lighthouse.key";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-                "nebula-lighthouse" = {
-                  path = "/etc/nebula/config.d/lighthouse.yaml";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-              };
+            dot.nebula.lighthouse = true;
+            dot.nebula.ip = "10.69.42.1";
+            dot.nebula.subnet.ip = "10.69.42.0";
+            dot.nebula.subnet.bits = 24;
+            dot.nebula.subnet.mask = "255.255.255.0";
 
-              # Lighthouse configuration
-              environment.etc."nebula/config.d/lighthouse.yaml".text = ''
-                lighthouse:
-                  am_lighthouse: true
-                  serve_dns: false
-                  interval: 60
-              '';
-
-              users.users.testuser = {
-                isNormalUser = true;
-                home = "/home/testuser";
-              };
-
-              users.users.nebula-dot = {
-                isSystemUser = true;
+            # Set up mock sops secrets pointing to test certs
+            sops.secrets = {
+              "nebula-ca-public" = {
+                path = "${testCerts}/ca.crt";
+                owner = "nebula-dot";
                 group = "nebula-dot";
+                mode = "0644";
               };
-              users.groups.nebula-dot = { };
+              "nebula-public" = {
+                path = "${testCerts}/lighthouse.crt";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0644";
+              };
+              "nebula-private" = {
+                path = "${testCerts}/lighthouse.key";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
+              "nebula-lighthouse" = {
+                path = "/etc/nebula/config.d/lighthouse.yaml";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
             };
+
+            # Lighthouse configuration
+            environment.etc."nebula/config.d/lighthouse.yaml".text = ''
+              lighthouse:
+                am_lighthouse: true
+                serve_dns: false
+                interval: 60
+            '';
+
+            users.users.testuser = {
+              isNormalUser = true;
+              home = "/home/testuser";
+            };
+
+            users.users.nebula-dot = {
+              isSystemUser = true;
+              group = "nebula-dot";
+            };
+            users.groups.nebula-dot = { };
           };
 
           node1 = {
             imports = [
               config.flake.nixosModules.critical-nebula
               config.flake.nixosModules.rumor
-              mockChronydModule
+              mockNebulaChronydTargetsModule
+              commonDotOptionsModule
+              sopsSecretsModule
             ];
-            options = pkgs.lib.recursiveUpdate nebulaOptions {
-              dot.host.user = pkgs.lib.mkOption {
-                type = pkgs.lib.types.str;
-                default = "testuser";
-              };
-              sops.secrets = pkgs.lib.mkOption {
-                type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-                default = { };
-              };
-            };
-            config = {
-              networking.hostName = "node1";
-              virtualisation.vlans = [ 1 ];
 
-              dot.nebula.lighthouse = false;
-              dot.nebula.ip = "10.69.42.2";
-              dot.nebula.subnet.ip = "10.69.42.0";
-              dot.nebula.subnet.bits = 24;
-              dot.nebula.subnet.mask = "255.255.255.0";
+            networking.hostName = "node1";
+            virtualisation.vlans = [ 1 ];
 
-              # Set up mock sops secrets pointing to test certs
-              sops.secrets = {
-                "nebula-ca-public" = {
-                  path = "${testCerts}/ca.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-public" = {
-                  path = "${testCerts}/node1.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-private" = {
-                  path = "${testCerts}/node1.key";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-                "nebula-lighthouse" = {
-                  path = "/etc/nebula/config.d/lighthouse.yaml";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-              };
+            dot.nebula.lighthouse = false;
+            dot.nebula.ip = "10.69.42.2";
+            dot.nebula.subnet.ip = "10.69.42.0";
+            dot.nebula.subnet.bits = 24;
+            dot.nebula.subnet.mask = "255.255.255.0";
 
-              # Regular node configuration - uses lighthouse's underlying network IP
-              environment.etc."nebula/config.d/lighthouse.yaml".text = ''
-                static_host_map:
-                  "10.69.42.1": ["${underlyingNetworkIp}:4242"]
-                lighthouse:
-                  am_lighthouse: false
-                  hosts:
-                    - '10.69.42.1'
-                  interval: 60
-              '';
-
-              users.users.testuser = {
-                isNormalUser = true;
-                home = "/home/testuser";
-              };
-
-              users.users.nebula-dot = {
-                isSystemUser = true;
+            # Set up mock sops secrets pointing to test certs
+            sops.secrets = {
+              "nebula-ca-public" = {
+                path = "${testCerts}/ca.crt";
+                owner = "nebula-dot";
                 group = "nebula-dot";
+                mode = "0644";
               };
-              users.groups.nebula-dot = { };
+              "nebula-public" = {
+                path = "${testCerts}/node1.crt";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0644";
+              };
+              "nebula-private" = {
+                path = "${testCerts}/node1.key";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
+              "nebula-lighthouse" = {
+                path = "/etc/nebula/config.d/lighthouse.yaml";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
             };
+
+            # Regular node configuration - uses lighthouse's underlying network IP
+            environment.etc."nebula/config.d/lighthouse.yaml".text = ''
+              static_host_map:
+                "10.69.42.1": ["${underlyingNetworkIp}:4242"]
+              lighthouse:
+                am_lighthouse: false
+                hosts:
+                  - '10.69.42.1'
+                interval: 60
+            '';
+
+            users.users.testuser = {
+              isNormalUser = true;
+              home = "/home/testuser";
+            };
+
+            users.users.nebula-dot = {
+              isSystemUser = true;
+              group = "nebula-dot";
+            };
+            users.groups.nebula-dot = { };
           };
 
           node2 = {
             imports = [
               config.flake.nixosModules.critical-nebula
               config.flake.nixosModules.rumor
-              mockChronydModule
+              mockNebulaChronydTargetsModule
+              commonDotOptionsModule
+              sopsSecretsModule
             ];
-            options = pkgs.lib.recursiveUpdate nebulaOptions {
-              dot.host.user = pkgs.lib.mkOption {
-                type = pkgs.lib.types.str;
-                default = "testuser";
-              };
-              sops.secrets = pkgs.lib.mkOption {
-                type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-                default = { };
-              };
-            };
-            config = {
-              networking.hostName = "node2";
-              virtualisation.vlans = [ 1 ];
 
-              dot.nebula.lighthouse = false;
-              dot.nebula.ip = "10.69.42.3";
-              dot.nebula.subnet.ip = "10.69.42.0";
-              dot.nebula.subnet.bits = 24;
-              dot.nebula.subnet.mask = "255.255.255.0";
+            networking.hostName = "node2";
+            virtualisation.vlans = [ 1 ];
 
-              # Set up mock sops secrets pointing to test certs
-              sops.secrets = {
-                "nebula-ca-public" = {
-                  path = "${testCerts}/ca.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-public" = {
-                  path = "${testCerts}/node2.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-private" = {
-                  path = "${testCerts}/node2.key";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-                "nebula-lighthouse" = {
-                  path = "/etc/nebula/config.d/lighthouse.yaml";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-              };
+            dot.nebula.lighthouse = false;
+            dot.nebula.ip = "10.69.42.3";
+            dot.nebula.subnet.ip = "10.69.42.0";
+            dot.nebula.subnet.bits = 24;
+            dot.nebula.subnet.mask = "255.255.255.0";
 
-              # Regular node configuration - uses lighthouse's underlying network IP
-              environment.etc."nebula/config.d/lighthouse.yaml".text = ''
-                static_host_map:
-                  "10.69.42.1": ["${underlyingNetworkIp}:4242"]
-                lighthouse:
-                  am_lighthouse: false
-                  hosts:
-                    - '10.69.42.1'
-                  interval: 60
-              '';
-
-              users.users.testuser = {
-                isNormalUser = true;
-                home = "/home/testuser";
-              };
-
-              users.users.nebula-dot = {
-                isSystemUser = true;
+            # Set up mock sops secrets pointing to test certs
+            sops.secrets = {
+              "nebula-ca-public" = {
+                path = "${testCerts}/ca.crt";
+                owner = "nebula-dot";
                 group = "nebula-dot";
+                mode = "0644";
               };
-              users.groups.nebula-dot = { };
+              "nebula-public" = {
+                path = "${testCerts}/node2.crt";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0644";
+              };
+              "nebula-private" = {
+                path = "${testCerts}/node2.key";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
+              "nebula-lighthouse" = {
+                path = "/etc/nebula/config.d/lighthouse.yaml";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
             };
+
+            # Regular node configuration - uses lighthouse's underlying network IP
+            environment.etc."nebula/config.d/lighthouse.yaml".text = ''
+              static_host_map:
+                "10.69.42.1": ["${underlyingNetworkIp}:4242"]
+              lighthouse:
+                am_lighthouse: false
+                hosts:
+                  - '10.69.42.1'
+                interval: 60
+            '';
+
+            users.users.testuser = {
+              isNormalUser = true;
+              home = "/home/testuser";
+            };
+
+            users.users.nebula-dot = {
+              isSystemUser = true;
+              group = "nebula-dot";
+            };
+            users.groups.nebula-dot = { };
           };
         };
 
@@ -448,97 +373,88 @@
             imports = [
               config.flake.nixosModules.critical-nebula
               config.flake.nixosModules.rumor
-              mockChronydModule
+              mockNebulaChronydTargetsModule
+              commonDotOptionsModule
+              sopsSecretsModule
             ];
-            options = pkgs.lib.recursiveUpdate nebulaOptions {
-              dot.host.user = pkgs.lib.mkOption {
-                type = pkgs.lib.types.str;
-                default = "testuser";
-              };
-              sops.secrets = pkgs.lib.mkOption {
-                type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-                default = { };
-              };
-            };
-            config = {
-              networking.hostName = "relay";
-              # Relay is on both VLANs
-              virtualisation.vlans = [
-                1
-                2
-              ];
 
-              networking.interfaces.eth1.ipv4.addresses = [
-                {
-                  address = "192.168.1.10";
-                  prefixLength = 24;
-                }
-              ];
-              networking.interfaces.eth2.ipv4.addresses = [
-                {
-                  address = "192.168.2.10";
-                  prefixLength = 24;
-                }
-              ];
+            networking.hostName = "relay";
+            # Relay is on both VLANs
+            virtualisation.vlans = [
+              1
+              2
+            ];
 
-              dot.nebula.lighthouse = true;
-              dot.nebula.ip = "10.69.42.1";
-              dot.nebula.subnet.ip = "10.69.42.0";
-              dot.nebula.subnet.bits = 24;
-              dot.nebula.subnet.mask = "255.255.255.0";
+            networking.interfaces.eth1.ipv4.addresses = [
+              {
+                address = "192.168.1.10";
+                prefixLength = 24;
+              }
+            ];
+            networking.interfaces.eth2.ipv4.addresses = [
+              {
+                address = "192.168.2.10";
+                prefixLength = 24;
+              }
+            ];
 
-              # Set up mock sops secrets pointing to test certs
-              sops.secrets = {
-                "nebula-ca-public" = {
-                  path = "${testCerts}/ca.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-public" = {
-                  path = "${testCerts}/lighthouse.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-private" = {
-                  path = "${testCerts}/lighthouse.key";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-                "nebula-lighthouse" = {
-                  path = "/etc/nebula/config.d/lighthouse.yaml";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-              };
+            dot.nebula.lighthouse = true;
+            dot.nebula.ip = "10.69.42.1";
+            dot.nebula.subnet.ip = "10.69.42.0";
+            dot.nebula.subnet.bits = 24;
+            dot.nebula.subnet.mask = "255.255.255.0";
 
-              # Relay configuration with am_relay: true
-              environment.etc."nebula/config.d/lighthouse.yaml".text = ''
-                lighthouse:
-                  am_lighthouse: true
-                  serve_dns: false
-                  interval: 60
-                punchy:
-                  punch: true
-                relay:
-                  am_relay: true
-                  use_relays: true
-              '';
-
-              users.users.testuser = {
-                isNormalUser = true;
-                home = "/home/testuser";
-              };
-
-              users.users.nebula-dot = {
-                isSystemUser = true;
+            # Set up mock sops secrets pointing to test certs
+            sops.secrets = {
+              "nebula-ca-public" = {
+                path = "${testCerts}/ca.crt";
+                owner = "nebula-dot";
                 group = "nebula-dot";
+                mode = "0644";
               };
-              users.groups.nebula-dot = { };
+              "nebula-public" = {
+                path = "${testCerts}/lighthouse.crt";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0644";
+              };
+              "nebula-private" = {
+                path = "${testCerts}/lighthouse.key";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
+              "nebula-lighthouse" = {
+                path = "/etc/nebula/config.d/lighthouse.yaml";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
             };
+
+            # Relay configuration with am_relay: true
+            environment.etc."nebula/config.d/lighthouse.yaml".text = ''
+              lighthouse:
+                am_lighthouse: true
+                serve_dns: false
+                interval: 60
+              punchy:
+                punch: true
+              relay:
+                am_relay: true
+                use_relays: true
+            '';
+
+            users.users.testuser = {
+              isNormalUser = true;
+              home = "/home/testuser";
+            };
+
+            users.users.nebula-dot = {
+              isSystemUser = true;
+              group = "nebula-dot";
+            };
+            users.groups.nebula-dot = { };
           };
 
           # Node1 - only on VLAN 1 (can reach relay on 192.168.1.10)
@@ -546,92 +462,82 @@
             imports = [
               config.flake.nixosModules.critical-nebula
               config.flake.nixosModules.rumor
-              mockChronydModule
+              mockNebulaChronydTargetsModule
+              commonDotOptionsModule
+              sopsSecretsModule
             ];
-            options = pkgs.lib.recursiveUpdate nebulaOptions {
-              dot.host.user = pkgs.lib.mkOption {
-                type = pkgs.lib.types.str;
-                default = "testuser";
-              };
-              sops.secrets = pkgs.lib.mkOption {
-                type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-                default = { };
-              };
-            };
-            config = {
-              networking.hostName = "node1";
-              virtualisation.vlans = [ 1 ];
+            networking.hostName = "node1";
+            virtualisation.vlans = [ 1 ];
 
-              networking.interfaces.eth1.ipv4.addresses = [
-                {
-                  address = "192.168.1.20";
-                  prefixLength = 24;
-                }
-              ];
+            networking.interfaces.eth1.ipv4.addresses = [
+              {
+                address = "192.168.1.20";
+                prefixLength = 24;
+              }
+            ];
 
-              dot.nebula.lighthouse = false;
-              dot.nebula.ip = "10.69.42.2";
-              dot.nebula.subnet.ip = "10.69.42.0";
-              dot.nebula.subnet.bits = 24;
-              dot.nebula.subnet.mask = "255.255.255.0";
+            dot.nebula.lighthouse = false;
+            dot.nebula.ip = "10.69.42.2";
+            dot.nebula.subnet.ip = "10.69.42.0";
+            dot.nebula.subnet.bits = 24;
+            dot.nebula.subnet.mask = "255.255.255.0";
 
-              # Set up mock sops secrets pointing to test certs
-              sops.secrets = {
-                "nebula-ca-public" = {
-                  path = "${testCerts}/ca.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-public" = {
-                  path = "${testCerts}/node1.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-private" = {
-                  path = "${testCerts}/node1.key";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-                "nebula-lighthouse" = {
-                  path = "/etc/nebula/config.d/lighthouse.yaml";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-              };
-
-              # Node configuration with relay support
-              environment.etc."nebula/config.d/lighthouse.yaml".text = ''
-                static_host_map:
-                  "10.69.42.1": ["192.168.1.10:4242"]
-                lighthouse:
-                  am_lighthouse: false
-                  hosts:
-                    - '10.69.42.1'
-                  interval: 60
-                punchy:
-                  punch: true
-                relay:
-                  am_relay: false
-                  use_relays: true
-                  relays:
-                    - "10.69.42.1"
-              '';
-
-              users.users.testuser = {
-                isNormalUser = true;
-                home = "/home/testuser";
-              };
-
-              users.users.nebula-dot = {
-                isSystemUser = true;
+            # Set up mock sops secrets pointing to test certs
+            sops.secrets = {
+              "nebula-ca-public" = {
+                path = "${testCerts}/ca.crt";
+                owner = "nebula-dot";
                 group = "nebula-dot";
+                mode = "0644";
               };
-              users.groups.nebula-dot = { };
+              "nebula-public" = {
+                path = "${testCerts}/node1.crt";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0644";
+              };
+              "nebula-private" = {
+                path = "${testCerts}/node1.key";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
+              "nebula-lighthouse" = {
+                path = "/etc/nebula/config.d/lighthouse.yaml";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
             };
+
+            # Node configuration with relay support
+            environment.etc."nebula/config.d/lighthouse.yaml".text = ''
+              static_host_map:
+                "10.69.42.1": ["192.168.1.10:4242"]
+              lighthouse:
+                am_lighthouse: false
+                hosts:
+                  - '10.69.42.1'
+                interval: 60
+              punchy:
+                punch: true
+              relay:
+                am_relay: false
+                use_relays: true
+                relays:
+                  - "10.69.42.1"
+            '';
+
+            users.users.testuser = {
+              isNormalUser = true;
+              home = "/home/testuser";
+            };
+
+            users.users.nebula-dot = {
+              isSystemUser = true;
+              group = "nebula-dot";
+            };
+            users.groups.nebula-dot = { };
           };
 
           # Node2 - only on VLAN 2 (can reach relay on 192.168.2.10)
@@ -639,92 +545,83 @@
             imports = [
               config.flake.nixosModules.critical-nebula
               config.flake.nixosModules.rumor
-              mockChronydModule
+              mockNebulaChronydTargetsModule
+              commonDotOptionsModule
+              sopsSecretsModule
             ];
-            options = pkgs.lib.recursiveUpdate nebulaOptions {
-              dot.host.user = pkgs.lib.mkOption {
-                type = pkgs.lib.types.str;
-                default = "testuser";
-              };
-              sops.secrets = pkgs.lib.mkOption {
-                type = pkgs.lib.types.attrsOf sopsSecretsSubmodule;
-                default = { };
-              };
-            };
-            config = {
-              networking.hostName = "node2";
-              virtualisation.vlans = [ 2 ];
 
-              networking.interfaces.eth1.ipv4.addresses = [
-                {
-                  address = "192.168.2.20";
-                  prefixLength = 24;
-                }
-              ];
+            networking.hostName = "node2";
+            virtualisation.vlans = [ 2 ];
 
-              dot.nebula.lighthouse = false;
-              dot.nebula.ip = "10.69.42.3";
-              dot.nebula.subnet.ip = "10.69.42.0";
-              dot.nebula.subnet.bits = 24;
-              dot.nebula.subnet.mask = "255.255.255.0";
+            networking.interfaces.eth1.ipv4.addresses = [
+              {
+                address = "192.168.2.20";
+                prefixLength = 24;
+              }
+            ];
 
-              # Set up mock sops secrets pointing to test certs
-              sops.secrets = {
-                "nebula-ca-public" = {
-                  path = "${testCerts}/ca.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-public" = {
-                  path = "${testCerts}/node2.crt";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0644";
-                };
-                "nebula-private" = {
-                  path = "${testCerts}/node2.key";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-                "nebula-lighthouse" = {
-                  path = "/etc/nebula/config.d/lighthouse.yaml";
-                  owner = "nebula-dot";
-                  group = "nebula-dot";
-                  mode = "0400";
-                };
-              };
+            dot.nebula.lighthouse = false;
+            dot.nebula.ip = "10.69.42.3";
+            dot.nebula.subnet.ip = "10.69.42.0";
+            dot.nebula.subnet.bits = 24;
+            dot.nebula.subnet.mask = "255.255.255.0";
 
-              # Node configuration with relay support
-              environment.etc."nebula/config.d/lighthouse.yaml".text = ''
-                static_host_map:
-                  "10.69.42.1": ["192.168.2.10:4242"]
-                lighthouse:
-                  am_lighthouse: false
-                  hosts:
-                    - '10.69.42.1'
-                  interval: 60
-                punchy:
-                  punch: true
-                relay:
-                  am_relay: false
-                  use_relays: true
-                  relays:
-                    - "10.69.42.1"
-              '';
-
-              users.users.testuser = {
-                isNormalUser = true;
-                home = "/home/testuser";
-              };
-
-              users.users.nebula-dot = {
-                isSystemUser = true;
+            # Set up mock sops secrets pointing to test certs
+            sops.secrets = {
+              "nebula-ca-public" = {
+                path = "${testCerts}/ca.crt";
+                owner = "nebula-dot";
                 group = "nebula-dot";
+                mode = "0644";
               };
-              users.groups.nebula-dot = { };
+              "nebula-public" = {
+                path = "${testCerts}/node2.crt";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0644";
+              };
+              "nebula-private" = {
+                path = "${testCerts}/node2.key";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
+              "nebula-lighthouse" = {
+                path = "/etc/nebula/config.d/lighthouse.yaml";
+                owner = "nebula-dot";
+                group = "nebula-dot";
+                mode = "0400";
+              };
             };
+
+            # Node configuration with relay support
+            environment.etc."nebula/config.d/lighthouse.yaml".text = ''
+              static_host_map:
+                "10.69.42.1": ["192.168.2.10:4242"]
+              lighthouse:
+                am_lighthouse: false
+                hosts:
+                  - '10.69.42.1'
+                interval: 60
+              punchy:
+                punch: true
+              relay:
+                am_relay: false
+                use_relays: true
+                relays:
+                  - "10.69.42.1"
+            '';
+
+            users.users.testuser = {
+              isNormalUser = true;
+              home = "/home/testuser";
+            };
+
+            users.users.nebula-dot = {
+              isSystemUser = true;
+              group = "nebula-dot";
+            };
+            users.groups.nebula-dot = { };
           };
         };
 
