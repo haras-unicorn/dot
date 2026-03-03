@@ -13,8 +13,6 @@ relying on over the years which include but are not limited to:
 
 - [./src/lib/host.nix](./src/lib/host.nix)
 - [./src/hardware/module.nix](./src/hardware/module.nix)
-- [./src/hardware/nvidia.nix](./src/hardware/nvidia.nix)
-- [./src/critical/vault.nix](./src/critical/vault.nix)
 - [./src/lib/test.nix](./src/lib/test.nix)
 
 The project uses the [just] command runner for [running commands](./justfile)
