@@ -41,16 +41,14 @@
       crdb = cfg.package;
       certs = "/var/lib/cockroachdb/.certs";
       databaseUrl =
-        "postgresql://root@${config.dot.host.ip}"
-        + ":${builtins.toString cfg.listen.port}"
+        "postgresql://root@${cfg.sql.address}"
+        + ":${builtins.toString cfg.sql.port}"
         + "?sslmode=verify-full"
         + "&sslrootcert=${certs}/ca.crt"
         + "&sslcert=${certs}/client.root.crt"
         + "&sslkey=${certs}/client.root.key";
       user = config.dot.host.user;
       clientCerts = "${config.users.users.${user}.home}/.cockroach-certs";
-      httpPort = 8080;
-      port = 26257;
       hosts = builtins.map (x: x.ip) (
         builtins.filter (
           x:
@@ -66,20 +64,11 @@
 
       initHost = builtins.head joinHosts;
 
-      join = builtins.concatStringsSep "," (builtins.map (x: "${x}:${builtins.toString port}") joinHosts);
+      join = builtins.concatStringsSep "," (
+        builtins.map (x: "${x}:${builtins.toString cfg.listen.port}") joinHosts
+      );
     in
     {
-      options.dot.cockroachdb = {
-        enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-        };
-        locality = lib.mkOption {
-          type = lib.types.str;
-          default = "region=origin,datacenter=dot";
-        };
-      };
-
       options.services.cockroachdb = {
         init = lib.mkOption {
           type = lib.types.listOf lib.types.str;
@@ -92,9 +81,37 @@
           default = [ ];
           description = "List of SQL file paths to execute during initialization";
         };
+
+        sql.port = lib.mkOption {
+          type = lib.types.port;
+          default = 26258;
+          description = "SQL listening port";
+        };
+
+        sql.address = lib.mkOption {
+          type = lib.types.str;
+          default = "localhost";
+          description = "SQL listening address";
+        };
+      };
+
+      options.dot.cockroachdb = {
+        enable = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+        };
+        locality = lib.mkOption {
+          type = lib.types.str;
+          default = "region=origin,datacenter=dot";
+        };
       };
 
       config = lib.mkMerge [
+        {
+          networking.firewall.allowedTCPPorts = lib.optionals cfg.openPorts [
+            cfg.sql.port
+          ];
+        }
         (lib.mkIf hasNetwork {
           sops.secrets."cockroach-${user}-ca-public" = {
             key = "cockroach-ca-public";
@@ -181,13 +198,17 @@
           services.cockroachdb.openPorts = true;
           services.cockroachdb.certsDir = certs;
           services.cockroachdb.http.address = config.dot.host.ip;
-          services.cockroachdb.http.port = httpPort;
           services.cockroachdb.listen.address = config.dot.host.ip;
+          services.cockroachdb.listen.port = 26258;
+          services.cockroachdb.sql.address = config.dot.host.ip;
+          services.cockroachdb.sql.port = 26257;
           services.cockroachdb.locality = config.dot.cockroachdb.locality;
           services.cockroachdb.extraArgs = [
             "--background"
             "--logtostderr=WARNING"
             "--max-offset=5s"
+            "--sql-addr"
+            "${cfg.sql.address}:${builtins.toString cfg.sql.port}"
           ];
           systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
 
@@ -249,14 +270,14 @@
           dot.consul.services = [
             {
               name = "cockroachdb";
-              port = httpPort;
-              address = config.dot.host.ip;
+              port = cfg.http.port;
+              address = cfg.http.address;
               tags = [
                 "dot.enable=true"
                 "dot.http.services.cockroachdb.loadbalancer.server.scheme=https"
               ];
               check = {
-                http = "http://${config.dot.host.ip}:${builtins.toString httpPort}/health";
+                http = "http://${cfg.http.address}:${builtins.toString cfg.http.port}/health";
                 interval = "30s";
                 timeout = "10s";
               };

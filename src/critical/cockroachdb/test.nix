@@ -250,10 +250,13 @@
 
           # Verify firewall ports are open on all nodes
           node1.succeed("iptables -L -n | grep -q '26257'")
+          node1.succeed("iptables -L -n | grep -q '26258'")
           node1.succeed("iptables -L -n | grep -q '8080'")
           node2.succeed("iptables -L -n | grep -q '26257'")
+          node2.succeed("iptables -L -n | grep -q '26258'")
           node2.succeed("iptables -L -n | grep -q '8080'")
           node3.succeed("iptables -L -n | grep -q '26257'")
+          node3.succeed("iptables -L -n | grep -q '26258'")
           node3.succeed("iptables -L -n | grep -q '8080'")
 
           # Test data replication - create table on node1, verify on others

@@ -139,7 +139,7 @@
             services.seaweedfs.filers.dot.config.postgres = {
               enabled = true;
               hostname = config.dot.host.ip;
-              port = config.services.cockroachdb.listen.port;
+              port = config.services.cockroachdb.sql.port;
               username = seaweedfsUser;
               database = "seaweedfs";
             };
