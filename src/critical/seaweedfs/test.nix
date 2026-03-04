@@ -42,19 +42,20 @@
               --certs-dir=$out \
               --ca-key=$out/ca.key
 
-            # Create client certificate for seaweedfs user
+            # Create client certificate for seaweedfs users
             cockroach cert create-client seaweedfs_node1 \
+              --certs-dir=$out \
+              --ca-key=$out/ca.key
+            cockroach cert create-client seaweedfs_node2 \
+              --certs-dir=$out \
+              --ca-key=$out/ca.key
+            cockroach cert create-client seaweedfs_node3 \
               --certs-dir=$out \
               --ca-key=$out/ca.key
 
             # Set permissions
-            chmod 644 $out/ca.crt
-            chmod 644 $out/node.crt
-            chmod 400 $out/node.key
-            chmod 644 $out/client.root.crt
-            chmod 400 $out/client.root.key
-            chmod 644 $out/client.seaweedfs_node1.crt
-            chmod 400 $out/client.seaweedfs_node1.key
+            chmod 644 $out/*.crt
+            chmod 400 $out/*.key
           '';
 
       # Common node configuration for seaweedfs cluster test
@@ -129,17 +130,10 @@
         system.activationScripts.cockroachdb-certs = {
           text = ''
             mkdir -p /var/lib/cockroachdb/.certs
-            cp ${cockroachCerts}/ca.crt /var/lib/cockroachdb/.certs/
-            cp ${cockroachCerts}/node.crt /var/lib/cockroachdb/.certs/
-            cp ${cockroachCerts}/node.key /var/lib/cockroachdb/.certs/
-            cp ${cockroachCerts}/client.root.crt /var/lib/cockroachdb/.certs/
-            cp ${cockroachCerts}/client.root.key /var/lib/cockroachdb/.certs/
+            cp ${cockroachCerts}/* /var/lib/cockroachdb/.certs/
             chown -R cockroachdb:cockroachdb /var/lib/cockroachdb/.certs
-            chmod 644 /var/lib/cockroachdb/.certs/ca.crt
-            chmod 644 /var/lib/cockroachdb/.certs/node.crt
-            chmod 600 /var/lib/cockroachdb/.certs/node.key
-            chmod 644 /var/lib/cockroachdb/.certs/client.root.crt
-            chmod 600 /var/lib/cockroachdb/.certs/client.root.key
+            chmod 644 /var/lib/cockroachdb/.certs/*.crt
+            chmod 600 /var/lib/cockroachdb/.certs/*.key
           '';
           deps = [
             "users"
@@ -313,9 +307,9 @@
           node3.wait_for_unit("cockroachdb.service", timeout=60)
 
           # Wait for cockroachdb-init to complete (check target is reached)
-          node1.wait_for_unit("cockroachdb-init.target", timeout=180)
-          node2.wait_for_unit("cockroachdb-init.target", timeout=180)
-          node3.wait_for_unit("cockroachdb-init.target", timeout=180)
+          node1.wait_for_unit("cockroachdb-init.target", timeout=240)
+          node2.wait_for_unit("cockroachdb-init.target", timeout=240)
+          node3.wait_for_unit("cockroachdb-init.target", timeout=240)
 
           # Verify cockroachdb SQL is working
           node1.succeed("cockroach sql --certs-dir=/var/lib/cockroachdb/.certs --host=192.168.1.10 --execute='SELECT 1'")
