@@ -221,22 +221,27 @@
             "chronyd-synced.target"
           ];
 
+          systemd.targets.cockroachdb-init = {
+            description = "CockroachDB Initialization Target";
+            wantedBy = [ "multi-user.target" ];
+            after = [ "cockroachdb-init.service" ];
+            requires = [ "cockroachdb-init.service" ];
+          };
+
           systemd.services.cockroachdb-init = {
             description = "CockroachDB Initialization";
             after = [
               "nebula-online.target"
               "chronyd-synced.target"
+              "cockroachdb.service"
             ];
             requires = [
               "nebula-online.target"
               "chronyd-synced.target"
+              "cockroachdb.service"
             ];
-            wantedBy = [ "multi-user.target" ];
             serviceConfig = {
-              Restart = "on-failure";
-              RestartSec = "3";
               Type = "oneshot";
-              RemainAfterExit = "yes";
               User = config.systemd.services.cockroachdb.serviceConfig.User;
               ExecStart =
                 let
@@ -249,16 +254,59 @@
                     inherit name;
                     runtimeInputs = [
                       pkgs.coreutils
+                      pkgs.gnugrep
                     ];
                     text = ''
-                      ${crdb}/bin/cockroach init \
-                        --host "${initHost}:${builtins.toString port}" \
-                        --certs-dir "${certs}" \
-                        || echo "Cluster already initialized."
+                      # Initialize cluster with retries
+                      MAX_RETRIES=10
+                      RETRY_DELAY=5
+                      INIT_TIMEOUT=30
+                      SCRIPT_TIMEOUT=300
+
+                      echo "Attempting to initialize CockroachDB cluster..."
+                      for i in $(seq 1 $MAX_RETRIES); do
+                        output=$(timeout ''${INIT_TIMEOUT}s ${crdb}/bin/cockroach init \
+                          --host "${initHost}:${builtins.toString cfg.listen.port}" \
+                          --certs-dir "${certs}" \
+                          2>&1) && {
+                          echo "Cluster initialized successfully"
+                          break
+                        }
+
+                        if echo "$output" | grep -q "cluster has already been initialized"; then
+                          echo "Cluster already initialized, continuing..."
+                          break
+                        fi
+
+                        if [ "$i" -eq $MAX_RETRIES ]; then
+                          echo "Failed to initialize cluster after $MAX_RETRIES attempts"
+                          exit 1
+                        fi
+
+                        echo "Init attempt $i failed, retrying in $RETRY_DELAY seconds..."
+                        sleep $RETRY_DELAY
+                      done
+
+                      # Run SQL scripts with retries
                       ${lib.concatMapStrings (file: ''
                         echo "Running: ${file}"
-                        ${pkgs.postgresql}/bin/psql "${databaseUrl}" --file "${file}"
+                        for i in $(seq 1 $MAX_RETRIES); do
+                          if timeout ''${SCRIPT_TIMEOUT}s ${pkgs.postgresql}/bin/psql "${databaseUrl}" --file "${file}" --set=ON_ERROR_STOP=1; then
+                            echo "Script ${file} completed successfully"
+                            break
+                          fi
+
+                          if [ "$i" -eq $MAX_RETRIES ]; then
+                            echo "Script ${file} failed after $MAX_RETRIES attempts"
+                            exit 1
+                          fi
+
+                          echo "Script ${file} attempt $i failed, retrying in $RETRY_DELAY seconds..."
+                          sleep $RETRY_DELAY
+                        done
                       '') initScriptFiles}
+
+                      echo "CockroachDB initialization complete"
                     '';
                   };
                 in

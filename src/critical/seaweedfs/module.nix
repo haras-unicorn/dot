@@ -145,11 +145,11 @@
             };
             systemd.services."seaweedfs-filer@dot".requires = [
               "seaweedfs-master.service"
-              "cockroachdb-init.service"
+              "cockroachdb-init.target"
             ];
             systemd.services."seaweedfs-filer@dot".after = [
               "seaweedfs-master.service"
-              "cockroachdb-init.service"
+              "cockroachdb-init.target"
             ];
             services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-seaweedfs-init".path ];
 

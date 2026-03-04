@@ -312,10 +312,10 @@
           node2.wait_for_unit("cockroachdb.service", timeout=60)
           node3.wait_for_unit("cockroachdb.service", timeout=60)
 
-          # Wait for cockroachdb-init to complete
-          node1.wait_for_unit("cockroachdb-init.service", timeout=180)
-          node2.wait_for_unit("cockroachdb-init.service", timeout=180)
-          node3.wait_for_unit("cockroachdb-init.service", timeout=180)
+          # Wait for cockroachdb-init to complete (check target is reached)
+          node1.wait_for_unit("cockroachdb-init.target", timeout=180)
+          node2.wait_for_unit("cockroachdb-init.target", timeout=180)
+          node3.wait_for_unit("cockroachdb-init.target", timeout=180)
 
           # Verify cockroachdb SQL is working
           node1.succeed("cockroach sql --certs-dir=/var/lib/cockroachdb/.certs --host=192.168.1.10 --execute='SELECT 1'")
