@@ -76,7 +76,7 @@
         };
         locality = lib.mkOption {
           type = lib.types.str;
-          default = "location=dot";
+          default = "region=origin,datacenter=dot";
         };
       };
 

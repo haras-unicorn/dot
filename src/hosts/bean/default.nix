@@ -18,7 +18,7 @@ in
     dot.consul.enable = true;
     dot.traefik.enable = true;
     dot.cockroachdb.enable = true;
-    dot.cockroachdb.locality = "location=biden";
+    dot.cockroachdb.locality = "region=origin,datacenter=biden";
     dot.seaweedfs.enable = true;
     dot.seaweedfs.dataCenter = "biden";
     dot.seaweedfs.rack = "dot";
