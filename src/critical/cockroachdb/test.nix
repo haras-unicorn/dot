@@ -53,6 +53,7 @@
       # Common node configuration
       commonNodeConfig = nodeIp: nodeName: {
         imports = [
+          config.flake.nixosModules.critical-cockroachdb-nixpkgs
           config.flake.nixosModules.critical-cockroachdb
           config.flake.nixosModules.critical-consul
           config.flake.nixosModules.rumor
@@ -193,6 +194,7 @@
         name = "critical-cockroachdb-disabled";
         module = {
           imports = [
+            config.flake.nixosModules.critical-cockroachdb-nixpkgs
             config.flake.nixosModules.critical-cockroachdb
             config.flake.nixosModules.critical-consul
             config.flake.lib.test.mockNebulaChronydTargetsModule
@@ -224,9 +226,9 @@
           node3.wait_for_unit("cockroachdb.service", timeout=60)
 
           # Wait for cockroachdb-init to complete (check target is reached)
-          node1.wait_for_unit("cockroachdb-init.target", timeout=180)
-          node2.wait_for_unit("cockroachdb-init.target", timeout=180)
-          node3.wait_for_unit("cockroachdb-init.target", timeout=180)
+          node1.wait_for_unit("cockroachdb-init.target", timeout=60)
+          node2.wait_for_unit("cockroachdb-init.target", timeout=60)
+          node3.wait_for_unit("cockroachdb-init.target", timeout=60)
 
           # Verify cockroachdb binary is available on all nodes
           node1.succeed("which cockroach")

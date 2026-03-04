@@ -63,6 +63,7 @@
         imports = [
           config.flake.nixosModules.critical-seaweedfs-module
           config.flake.nixosModules.critical-seaweedfs-nixpkgs
+          config.flake.nixosModules.critical-cockroachdb-nixpkgs
           config.flake.nixosModules.critical-cockroachdb
           config.flake.nixosModules.critical-consul
           config.flake.nixosModules.rumor
@@ -267,6 +268,7 @@
           imports = [
             config.flake.nixosModules.critical-seaweedfs-module
             config.flake.nixosModules.critical-seaweedfs-nixpkgs
+            config.flake.nixosModules.critical-cockroachdb-nixpkgs
             config.flake.nixosModules.critical-cockroachdb
             config.flake.nixosModules.critical-consul
             config.flake.lib.test.mockNebulaChronydTargetsModule

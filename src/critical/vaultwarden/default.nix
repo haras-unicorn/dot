@@ -81,7 +81,7 @@
         };
         services.vaultwarden.environmentFile = config.sops.secrets."vaultwarden-env".path;
 
-        services.cockroachdb.initFiles = [ config.sops.secrets."cockroach-vaultwarden-init".path ];
+        services.cockroachdb.init.files = [ config.sops.secrets."cockroach-vaultwarden-init".path ];
         systemd.services.vaultwarden.requires = [ "cockroachdb-init.service" ];
         systemd.services.vaultwarden.after = [ "cockroachdb-init.service" ];
 

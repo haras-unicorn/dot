@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 
 {
   flake.homeModules.critical-cockroachdb =
@@ -38,15 +38,7 @@
     let
       hasNetwork = config.dot.hardware.network.enable;
       cfg = config.services.cockroachdb;
-      crdb = cfg.package;
       certs = "/var/lib/cockroachdb/.certs";
-      databaseUrl =
-        "postgresql://root@${cfg.sql.address}"
-        + ":${builtins.toString cfg.sql.port}"
-        + "?sslmode=verify-full"
-        + "&sslrootcert=${certs}/ca.crt"
-        + "&sslcert=${certs}/client.root.crt"
-        + "&sslkey=${certs}/client.root.key";
       user = config.dot.host.user;
       clientCerts = "${config.users.users.${user}.home}/.cockroach-certs";
       hosts = builtins.map (x: x.ip) (
@@ -69,32 +61,6 @@
       );
     in
     {
-      options.services.cockroachdb = {
-        init = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
-          default = [ ];
-          description = "List of SQL scripts to execute during initialization";
-        };
-
-        initFiles = lib.mkOption {
-          type = lib.types.listOf lib.types.path;
-          default = [ ];
-          description = "List of SQL file paths to execute during initialization";
-        };
-
-        sql.port = lib.mkOption {
-          type = lib.types.port;
-          default = 26258;
-          description = "SQL listening port";
-        };
-
-        sql.address = lib.mkOption {
-          type = lib.types.str;
-          default = "localhost";
-          description = "SQL listening address";
-        };
-      };
-
       options.dot.cockroachdb = {
         enable = lib.mkOption {
           type = lib.types.bool;
@@ -107,11 +73,6 @@
       };
 
       config = lib.mkMerge [
-        {
-          networking.firewall.allowedTCPPorts = lib.optionals cfg.openPorts [
-            cfg.sql.port
-          ];
-        }
         (lib.mkIf hasNetwork {
           sops.secrets."cockroach-${user}-ca-public" = {
             key = "cockroach-ca-public";
@@ -207,8 +168,6 @@
             "--background"
             "--logtostderr=WARNING"
             "--max-offset=5s"
-            "--sql-addr"
-            "${cfg.sql.address}:${builtins.toString cfg.sql.port}"
           ];
           systemd.services.cockroachdb.serviceConfig.Type = lib.mkForce "forking";
 
@@ -221,99 +180,10 @@
             "chronyd-synced.target"
           ];
 
-          systemd.targets.cockroachdb-init = {
-            description = "CockroachDB Initialization Target";
-            wantedBy = [ "multi-user.target" ];
-            after = [ "cockroachdb-init.service" ];
-            requires = [ "cockroachdb-init.service" ];
-          };
-
-          systemd.services.cockroachdb-init = {
-            description = "CockroachDB Initialization";
-            after = [
-              "nebula-online.target"
-              "chronyd-synced.target"
-              "cockroachdb.service"
-            ];
-            requires = [
-              "nebula-online.target"
-              "chronyd-synced.target"
-              "cockroachdb.service"
-            ];
-            serviceConfig = {
-              Type = "oneshot";
-              User = config.systemd.services.cockroachdb.serviceConfig.User;
-              ExecStart =
-                let
-                  initScriptFiles =
-                    (lib.imap1 (i: sql: pkgs.writeText "cockroach-init-${builtins.toString i}.sql" sql) cfg.init)
-                    ++ cfg.initFiles;
-
-                  name = "cockroachdb-init-script";
-                  app = pkgs.writeShellApplication {
-                    inherit name;
-                    runtimeInputs = [
-                      pkgs.coreutils
-                      pkgs.gnugrep
-                    ];
-                    text = ''
-                      # Initialize cluster with retries
-                      MAX_RETRIES=10
-                      RETRY_DELAY=5
-                      INIT_TIMEOUT=30
-                      SCRIPT_TIMEOUT=300
-
-                      echo "Attempting to initialize CockroachDB cluster..."
-                      for i in $(seq 1 $MAX_RETRIES); do
-                        output=$(timeout ''${INIT_TIMEOUT}s ${crdb}/bin/cockroach init \
-                          --host "${initHost}:${builtins.toString cfg.listen.port}" \
-                          --certs-dir "${certs}" \
-                          2>&1) && {
-                          echo "Cluster initialized successfully"
-                          break
-                        }
-
-                        if echo "$output" | grep -q "cluster has already been initialized"; then
-                          echo "Cluster already initialized, continuing..."
-                          break
-                        fi
-
-                        if [ "$i" -eq $MAX_RETRIES ]; then
-                          echo "Failed to initialize cluster after $MAX_RETRIES attempts"
-                          exit 1
-                        fi
-
-                        echo "Init attempt $i failed, retrying in $RETRY_DELAY seconds..."
-                        sleep $RETRY_DELAY
-                      done
-
-                      # Run SQL scripts with retries
-                      ${lib.concatMapStrings (file: ''
-                        echo "Running: ${file}"
-                        for i in $(seq 1 $MAX_RETRIES); do
-                          if timeout ''${SCRIPT_TIMEOUT}s ${pkgs.postgresql}/bin/psql "${databaseUrl}" --file "${file}" --set=ON_ERROR_STOP=1; then
-                            echo "Script ${file} completed successfully"
-                            break
-                          fi
-
-                          if [ "$i" -eq $MAX_RETRIES ]; then
-                            echo "Script ${file} failed after $MAX_RETRIES attempts"
-                            exit 1
-                          fi
-
-                          echo "Script ${file} attempt $i failed, retrying in $RETRY_DELAY seconds..."
-                          sleep $RETRY_DELAY
-                        done
-                      '') initScriptFiles}
-
-                      echo "CockroachDB initialization complete"
-                    '';
-                  };
-                in
-                "${app}/bin/${name}";
-            };
-          };
-          services.cockroachdb.initFiles = lib.mkBefore [ config.sops.secrets."cockroach-init".path ];
+          services.cockroachdb.init.enable = true;
+          services.cockroachdb.init.runner = config.dot.host.ip == initHost;
+          services.cockroachdb.init.hash = self.narHash;
+          services.cockroachdb.init.files = lib.mkBefore [ config.sops.secrets."cockroach-init".path ];
 
           dot.consul.services = [
             {
