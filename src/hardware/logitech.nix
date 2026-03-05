@@ -1,4 +1,4 @@
-{ ... }:
+# TODO: add service for tray
 
 {
   flake.nixosModules.hardware-logitech =
