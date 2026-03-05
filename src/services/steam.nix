@@ -1,15 +1,12 @@
 {
-  flake.nixosModules.services-mangohud-steam =
+  flake.nixosModules.services-steam =
     {
       pkgs,
       config,
       lib,
       ...
     }:
-
     let
-      user = config.dot.host.user;
-
       hasMonitor = config.dot.hardware.monitor.enable;
       hasMouse = config.dot.hardware.mouse.enable;
       hasKeyboard = config.dot.hardware.keyboard.enable;
@@ -24,22 +21,16 @@
         # NOTE: bitburner
         programs.steam.extraPackages = [
           pkgs.nss
-          pkgs.gamemode
         ];
-
-        users.users.${user}.extraGroups = [
-          "gamemode"
-        ];
-
-        programs.gamemode.enable = true;
       };
     };
 
-  flake.homeModules.services-mangohud-steam =
+  flake.homeModules.services-steam =
     {
       pkgs,
       config,
       lib,
+      osConfig,
       ...
     }:
     let
@@ -57,8 +48,6 @@
           }
         ];
 
-        programs.mangohud.enable = true;
-
         systemd.user.services.steam = {
           Unit.Description = "Steam daemon";
           Service.ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent";
@@ -66,6 +55,8 @@
           Unit.Requires = [ "graphical-session.target" ];
           Install.WantedBy = [ "graphical-session.target" ];
         };
+
+        programs.lutris.steamPackage = osConfig.programs.steam.package;
       };
     };
 }
