@@ -9,256 +9,132 @@
   perSystem =
     { pkgs, ... }:
     let
-      # Generate test certificates for cockroachdb using cockroach cert command
-      cockroachCerts =
-        pkgs.runCommand "cockroachdb-test-certs"
-          {
-            nativeBuildInputs = [ pkgs.cockroachdb ];
-          }
-          ''
-            mkdir -p $out
+      certsDir = "/var/lib/cockroachdb/.certs";
 
-            # Create CA
-            cockroach cert create-ca \
-              --certs-dir=$out \
-              --ca-key=$out/ca.key
+      nodes = [
+        {
+          ip = "192.168.1.10";
+          name = "node1";
+        }
+        {
+          ip = "192.168.1.11";
+          name = "node2";
+        }
+        {
+          ip = "192.168.1.12";
+          name = "node3";
+        }
+      ];
 
-            # Create node certificate for all nodes in the cluster
-            # Include all node IPs and localhost
-            cockroach cert create-node \
-              localhost \
-              127.0.0.1 \
-              192.168.1.10 \
-              192.168.1.11 \
-              192.168.1.12 \
-              node1 \
-              node2 \
-              node3 \
-              --certs-dir=$out \
-              --ca-key=$out/ca.key
+      clients = [
+        {
+          name = "seaweedfs_node1";
+        }
+        {
+          name = "seaweedfs_node2";
+        }
+        {
+          name = "seaweedfs_node3";
+        }
+      ];
 
-            # Create client certificate for root
-            cockroach cert create-client root \
-              --certs-dir=$out \
-              --ca-key=$out/ca.key
+      certs = config.flake.lib.test.mkCockroachdbCerts pkgs {
+        inherit nodes clients;
+      };
 
-            # Create client certificate for seaweedfs users
-            cockroach cert create-client seaweedfs_node1 \
-              --certs-dir=$out \
-              --ca-key=$out/ca.key
-            cockroach cert create-client seaweedfs_node2 \
-              --certs-dir=$out \
-              --ca-key=$out/ca.key
-            cockroach cert create-client seaweedfs_node3 \
-              --certs-dir=$out \
-              --ca-key=$out/ca.key
+      commonNodeConfig =
+        { ip, name, ... }:
+        { lib, ... }:
+        {
+          imports = [
+            config.flake.lib.test.commonCockroachdbModule
+            config.flake.nixosModules.critical-seaweedfs-module
+            config.flake.nixosModules.critical-seaweedfs-nixpkgs
+          ];
 
-            # Set permissions
-            chmod 644 $out/*.crt
-            chmod 400 $out/*.key
+          dot.host.name = name;
+          networking.hostName = name;
+          dot.host.ip = ip;
+          networking.interfaces.eth1.ipv4.addresses = [
+            {
+              address = ip;
+              prefixLength = 24;
+            }
+          ];
+          dot.host.hosts = builtins.map (
+            { ip, ... }:
+            {
+              inherit ip;
+              system.dot.cockroachdb.enable = true;
+              system.dot.seaweedfs.enable = true;
+            }
+          ) nodes;
+
+          services.cockroachdb.certsDir = lib.mkForce certsDir;
+          dot.cockroachdb.enable = true;
+          dot.test.cockroachdb.certs = certs;
+          dot.test.cockroachdb.init = ''
+            CREATE DATABASE IF NOT EXISTS testdb;
           '';
 
-      # Common node configuration for seaweedfs cluster test
-      commonNodeConfig = nodeIp: nodeName: {
-        imports = [
-          config.flake.nixosModules.critical-seaweedfs-module
-          config.flake.nixosModules.critical-seaweedfs-nixpkgs
-          config.flake.nixosModules.critical-cockroachdb-nixpkgs
-          config.flake.nixosModules.critical-cockroachdb
-          config.flake.nixosModules.critical-consul
-          config.flake.nixosModules.rumor
-          config.flake.lib.test.commonDotOptionsModule
-          config.flake.lib.test.mockNebulaChronydTargetsModule
-          config.flake.lib.test.sopsSecretsModule
-        ];
-
-        dot.host.ip = nodeIp;
-        dot.host.hosts = [
-          {
-            ip = "192.168.1.10";
-            system = {
-              dot = {
-                cockroachdb = {
-                  enable = true;
-                };
-                seaweedfs = {
-                  enable = true;
-                };
-              };
+          dot.seaweedfs.enable = true;
+          sops.secrets = {
+            "cockroach-seaweedfs-init" = {
+              path = "/etc/cockroachdb/seaweedfs-init.sql";
+              owner = "cockroachdb";
+              group = "cockroachdb";
+              mode = "0400";
             };
-          }
-          {
-            ip = "192.168.1.11";
-            system = {
-              dot = {
-                cockroachdb = {
-                  enable = true;
-                };
-                seaweedfs = {
-                  enable = true;
-                };
-              };
+            "seaweedfs-filer-env" = {
+              path = "/etc/seaweedfs/filer.env";
+              owner = "seaweedfs";
+              group = "seaweedfs";
+              mode = "0400";
             };
-          }
-          {
-            ip = "192.168.1.12";
-            system = {
-              dot = {
-                cockroachdb = {
-                  enable = true;
-                };
-                seaweedfs = {
-                  enable = true;
-                };
-              };
-            };
-          }
-        ];
-        networking.hostName = nodeName;
-
-        networking.interfaces.eth1.ipv4.addresses = [
-          {
-            address = nodeIp;
-            prefixLength = 24;
-          }
-        ];
-
-        dot.host.name = nodeName;
-        dot.cockroachdb.enable = true;
-        dot.seaweedfs.enable = true;
-
-        # Set up cockroachdb certificates using activation script
-        system.activationScripts.cockroachdb-certs = {
-          text = ''
-            mkdir -p /var/lib/cockroachdb/.certs
-            cp ${cockroachCerts}/* /var/lib/cockroachdb/.certs/
-            chown -R cockroachdb:cockroachdb /var/lib/cockroachdb/.certs
-            chmod 644 /var/lib/cockroachdb/.certs/*.crt
-            chmod 600 /var/lib/cockroachdb/.certs/*.key
+          };
+          environment.etc."cockroachdb/seaweedfs-init.sql".text = ''
+            CREATE USER IF NOT EXISTS seaweedfs_node1 WITH PASSWORD 'testpassword123';
+            CREATE USER IF NOT EXISTS seaweedfs_node2 WITH PASSWORD 'testpassword123';
+            CREATE USER IF NOT EXISTS seaweedfs_node3 WITH PASSWORD 'testpassword123';
+            CREATE DATABASE IF NOT EXISTS seaweedfs;
+            \c seaweedfs
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON TABLES TO seaweedfs_node1;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON SEQUENCES TO seaweedfs_node1;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON FUNCTIONS TO seaweedfs_node1;
+            GRANT ALL ON ALL TABLES IN SCHEMA public TO seaweedfs_node1;
+            GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO seaweedfs_node1;
+            GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO seaweedfs_node1;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON TABLES TO seaweedfs_node2;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON SEQUENCES TO seaweedfs_node2;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON FUNCTIONS TO seaweedfs_node2;
+            GRANT ALL ON ALL TABLES IN SCHEMA public TO seaweedfs_node2;
+            GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO seaweedfs_node2;
+            GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO seaweedfs_node2;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON TABLES TO seaweedfs_node3;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON SEQUENCES TO seaweedfs_node3;
+            ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON FUNCTIONS TO seaweedfs_node3;
+            GRANT ALL ON ALL TABLES IN SCHEMA public TO seaweedfs_node3;
+            GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO seaweedfs_node3;
+            GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO seaweedfs_node3;
+            CREATE TABLE IF NOT EXISTS filemeta (
+              dirhash     bigint,
+              name        varchar(65535),
+              directory   varchar(65535),
+              meta        bytea,
+              PRIMARY KEY (dirhash, name)
+            );
           '';
-          deps = [
-            "users"
-            "groups"
+          environment.etc."seaweedfs/filer.env".text = ''
+            WEED_POSTGRES_PASSWORD=testpassword123
+          '';
+
+          environment.systemPackages = [
+            pkgs.curl
+            pkgs.cockroachdb
+            pkgs.postgresql
+            pkgs.seaweedfs
           ];
         };
-
-        # Mock sops secrets required by the modules
-        sops.secrets = {
-          "cockroach-ca-public" = {
-            path = "/var/lib/cockroachdb/.certs/ca.crt";
-            owner = "cockroachdb";
-            group = "cockroachdb";
-            mode = "0644";
-          };
-          "cockroach-public" = {
-            path = "/var/lib/cockroachdb/.certs/node.crt";
-            owner = "cockroachdb";
-            group = "cockroachdb";
-            mode = "0644";
-          };
-          "cockroach-private" = {
-            path = "/var/lib/cockroachdb/.certs/node.key";
-            owner = "cockroachdb";
-            group = "cockroachdb";
-            mode = "0400";
-          };
-          "cockroach-root-public" = {
-            path = "/var/lib/cockroachdb/.certs/client.root.crt";
-            owner = "cockroachdb";
-            group = "cockroachdb";
-            mode = "0644";
-          };
-          "cockroach-root-private" = {
-            path = "/var/lib/cockroachdb/.certs/client.root.key";
-            owner = "cockroachdb";
-            group = "cockroachdb";
-            mode = "0400";
-          };
-          "cockroach-init" = {
-            path = "/etc/cockroachdb/init.sql";
-            owner = "cockroachdb";
-            group = "cockroachdb";
-            mode = "0400";
-          };
-          "cockroach-seaweedfs-init" = {
-            path = "/etc/cockroachdb/seaweedfs-init.sql";
-            owner = "cockroachdb";
-            group = "cockroachdb";
-            mode = "0400";
-          };
-          "seaweedfs-filer-env" = {
-            path = "/etc/seaweedfs/filer.env";
-            owner = "seaweedfs";
-            group = "seaweedfs";
-            mode = "0400";
-          };
-        };
-
-        # Create cockroachdb init files
-        environment.etc."cockroachdb/init.sql".text = ''
-          CREATE DATABASE IF NOT EXISTS testdb;
-        '';
-
-        environment.etc."cockroachdb/seaweedfs-init.sql".text = ''
-          CREATE USER IF NOT EXISTS seaweedfs_node1 WITH PASSWORD 'testpassword123';
-          CREATE USER IF NOT EXISTS seaweedfs_node2 WITH PASSWORD 'testpassword123';
-          CREATE USER IF NOT EXISTS seaweedfs_node3 WITH PASSWORD 'testpassword123';
-          CREATE DATABASE IF NOT EXISTS seaweedfs;
-          \c seaweedfs
-          ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON TABLES TO seaweedfs_node1;
-          ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON SEQUENCES TO seaweedfs_node1;
-          ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON FUNCTIONS TO seaweedfs_node1;
-          GRANT ALL ON ALL TABLES IN SCHEMA public TO seaweedfs_node1;
-          GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO seaweedfs_node1;
-          GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO seaweedfs_node1;
-          ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON TABLES TO seaweedfs_node2;
-          ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON SEQUENCES TO seaweedfs_node2;
-          ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON FUNCTIONS TO seaweedfs_node2;
-          GRANT ALL ON ALL TABLES IN SCHEMA public TO seaweedfs_node2;
-          GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO seaweedfs_node2;
-          GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO seaweedfs_node2;
-          ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON TABLES TO seaweedfs_node3;
-          ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON SEQUENCES TO seaweedfs_node3;
-          ALTER DEFAULT PRIVILEGES FOR ALL ROLES IN SCHEMA public GRANT ALL ON FUNCTIONS TO seaweedfs_node3;
-          GRANT ALL ON ALL TABLES IN SCHEMA public TO seaweedfs_node3;
-          GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO seaweedfs_node3;
-          GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO seaweedfs_node3;
-          CREATE TABLE IF NOT EXISTS filemeta (
-            dirhash     bigint,
-            name        varchar(65535),
-            directory   varchar(65535),
-            meta        bytea,
-            PRIMARY KEY (dirhash, name)
-          );
-        '';
-
-        # Create seaweedfs filer environment file
-        environment.etc."seaweedfs/filer.env".text = ''
-          WEED_POSTGRES_PASSWORD=testpassword123
-        '';
-
-        # Ensure users exist
-        users.users.cockroachdb = {
-          isSystemUser = true;
-          group = "cockroachdb";
-          home = "/var/lib/cockroachdb";
-        };
-        users.groups.cockroachdb = { };
-
-        users.users.seaweedfs = {
-          isSystemUser = true;
-          group = "seaweedfs";
-          home = "/var/lib/seaweedfs";
-        };
-        users.groups.seaweedfs = { };
-
-        environment.systemPackages = [
-          pkgs.curl
-          pkgs.cockroachdb
-          pkgs.postgresql
-          pkgs.seaweedfs
-        ];
-      };
     in
     {
       # Test 1: SeaweedFS disabled - no service should be configured
@@ -281,11 +157,14 @@
       # Test 2: Multi-node seaweedfs cluster with cockroachdb
       checks.test-critical-seaweedfs-cluster = config.flake.lib.test.mkTest pkgs {
         name = "critical-seaweedfs-cluster";
-        nodes = {
-          node1 = commonNodeConfig "192.168.1.10" "node1";
-          node2 = commonNodeConfig "192.168.1.11" "node2";
-          node3 = commonNodeConfig "192.168.1.12" "node3";
-        };
+        nodes = builtins.mapAttrs (_: commonNodeConfig) (
+          builtins.listToAttrs (
+            builtins.map (node: {
+              name = node.name;
+              value = node;
+            }) nodes
+          )
+        );
         script = ''
           start_all()
 
@@ -305,9 +184,9 @@
           node3.wait_for_unit("cockroachdb-init.target", timeout=240)
 
           # Verify cockroachdb SQL is working
-          node1.succeed("cockroach sql --certs-dir=/var/lib/cockroachdb/.certs --host=192.168.1.10 --execute='SELECT 1'")
-          node2.succeed("cockroach sql --certs-dir=/var/lib/cockroachdb/.certs --host=192.168.1.11 --execute='SELECT 1'")
-          node3.succeed("cockroach sql --certs-dir=/var/lib/cockroachdb/.certs --host=192.168.1.12 --execute='SELECT 1'")
+          node1.succeed("cockroach sql --certs-dir=${certsDir} --host=192.168.1.10 --execute='SELECT 1'")
+          node2.succeed("cockroach sql --certs-dir=${certsDir} --host=192.168.1.11 --execute='SELECT 1'")
+          node3.succeed("cockroach sql --certs-dir=${certsDir} --host=192.168.1.12 --execute='SELECT 1'")
 
           # Wait for seaweedfs master services to be ready
           node1.wait_for_unit("seaweedfs-master.service", timeout=60)

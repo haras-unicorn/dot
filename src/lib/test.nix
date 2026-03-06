@@ -199,6 +199,160 @@
       '';
     };
 
+  # Generate test certificates for cockroachdb using cockroach cert command
+  libAttrs.test.mkCockroachdbCerts =
+    pkgs:
+    { nodes, clients }:
+    pkgs.runCommand "cockroachdb-test-certs"
+      {
+        nativeBuildInputs = [ pkgs.cockroachdb ];
+      }
+      ''
+        mkdir -p $out
+
+        # Create CA
+        cockroach cert create-ca \
+          --certs-dir=$out \
+          --ca-key=$out/ca.key
+
+        # Create node certificates for all nodes in the cluster
+        ${builtins.concatStringsSep "\n" (
+          builtins.map (
+            { ip, name, ... }:
+            ''
+              cockroach cert create-node \
+                ${name} \
+                ${ip} \
+                127.0.0.1 \
+                localhost \
+                --certs-dir=$out \
+                --ca-key=$out/ca.key
+              mv $out/node.crt $out/${name}.crt
+              mv $out/node.key $out/${name}.key
+            ''
+          ) nodes
+        )}
+
+        # Create client certificate for root
+        cockroach cert create-client root \
+          --certs-dir=$out \
+          --ca-key=$out/ca.key
+
+        # Create additional client certificates
+        ${builtins.concatStringsSep "\n" (
+          builtins.map (
+            { name, ... }:
+            ''
+              cockroach cert create-client ${name} \
+                --certs-dir=$out \
+                --ca-key=$out/ca.key
+            ''
+          ) clients
+        )}
+
+        # Set permissions
+        chmod 644 $out/*.crt
+        chmod 400 $out/*.key
+      '';
+
+  # Common cockroachdb node configuration for tests
+  libAttrs.test.commonCockroachdbModule =
+    let
+      flakeConfig = config.flake;
+    in
+    { lib, config, ... }:
+    let
+      certsPackage = config.dot.test.cockroachdb.certs;
+      certsPath = config.services.cockroachdb.certsDir;
+      hostName = config.dot.host.name;
+      initScript = config.dot.test.cockroachdb.init;
+      cockroachdbUser = config.services.cockroachdb.user;
+      cockroachdbGroup = config.services.cockroachdb.group;
+    in
+    {
+      imports = [
+        flakeConfig.nixosModules.critical-cockroachdb-nixpkgs
+        flakeConfig.nixosModules.critical-cockroachdb
+        flakeConfig.nixosModules.critical-consul
+        flakeConfig.nixosModules.rumor
+        flakeConfig.lib.test.mockNebulaChronydTargetsModule
+        flakeConfig.lib.test.commonDotOptionsModule
+        flakeConfig.lib.test.sopsSecretsModule
+      ];
+
+      options = {
+        dot.test.cockroachdb.certs = lib.mkOption {
+          type = lib.types.package;
+          description = "Package of generated cockroachdb certificates the test";
+        };
+        dot.test.cockroachdb.init = lib.mkOption {
+          type = lib.types.str;
+          description = "Init script for cockroachdb";
+        };
+      };
+
+      config = {
+        system.activationScripts.cockroachdb-certs = {
+          text = ''
+            mkdir -p ${certsPath}
+            cp ${certsPackage}/ca.crt ${certsPath}/
+            cp ${certsPackage}/client.root.crt ${certsPath}/
+            cp ${certsPackage}/client.root.key ${certsPath}/
+            cp ${certsPackage}/${hostName}.crt ${certsPath}/node.crt
+            cp ${certsPackage}/${hostName}.key ${certsPath}/node.key
+            chown -R cockroachdb:cockroachdb ${certsPath}
+            chmod 644 ${certsPath}/*.crt
+            chmod 600 ${certsPath}/*.key
+          '';
+          deps = [
+            "users"
+            "groups"
+          ];
+        };
+
+        environment.etc."cockroachdb/init.sql".text = initScript;
+
+        sops.secrets = {
+          "cockroach-ca-public" = {
+            path = "${certsPath}/ca.crt";
+            owner = cockroachdbUser;
+            group = cockroachdbGroup;
+            mode = "0644";
+          };
+          "cockroach-public" = {
+            path = "${certsPath}/${hostName}.crt";
+            owner = cockroachdbUser;
+            group = cockroachdbGroup;
+            mode = "0644";
+          };
+          "cockroach-private" = {
+            path = "${certsPath}/${hostName}.key";
+            owner = cockroachdbUser;
+            group = cockroachdbGroup;
+            mode = "0400";
+          };
+          "cockroach-root-public" = {
+            path = "${certsPath}/client.root.crt";
+            owner = cockroachdbUser;
+            group = cockroachdbGroup;
+            mode = "0644";
+          };
+          "cockroach-root-private" = {
+            path = "${certsPath}/client.root.key";
+            owner = cockroachdbUser;
+            group = cockroachdbGroup;
+            mode = "0400";
+          };
+          "cockroach-init" = {
+            path = "/etc/cockroachdb/init.sql";
+            owner = cockroachdbUser;
+            group = cockroachdbGroup;
+            mode = "0400";
+          };
+        };
+      };
+    };
+
   systems = [
     "x86_64-linux"
     "aarch64-linux"
