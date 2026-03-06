@@ -82,6 +82,30 @@
         services.vaultwarden.environmentFile = config.sops.secrets."vaultwarden-env".path;
 
         services.cockroachdb.init.sql.files = [ config.sops.secrets."cockroach-vaultwarden-init".path ];
+        services.cockroachdb.init.bash.scripts = [
+          ''
+            echo "Running vaultwarden migrations..."
+            export DATABASE_URL="$(grep DATABASE_URL ${
+              config.sops.secrets."vaultwarden-env".path
+            } | cut -d'"' -f2)"
+            export ADMIN_TOKEN="temp"
+            export ROCKET_ADDRESS="127.0.0.1"
+            export ROCKET_PORT="18222"
+            export SIGNUPS_ALLOWED="true"
+            export ENABLE_WEBSOCKET="false"
+
+            ${package}/bin/vaultwarden 2>&1 | while read line; do
+              echo "$line"
+              if echo "$line" | grep -q "Rocket has launched"; then
+                echo "Migrations complete, shutting down vaultwarden..."
+                pkill -f vaultwarden
+                break
+              fi
+            done
+
+            echo "Vaultwarden migrations finished successfully"
+          ''
+        ];
         systemd.services.vaultwarden.requires = [ "cockroachdb-init.target" ];
         systemd.services.vaultwarden.after = [ "cockroachdb-init.target" ];
 
