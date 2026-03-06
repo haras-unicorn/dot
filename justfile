@@ -28,18 +28,20 @@ test:
     nix flake check --all-systems
     nix-unit --flake .#tests
 
-test-e2e test:
+test-e2e test *args:
     nix build \
       `.#checks.x86_64-linux."{{ test }}"` \
-      --option sandbox-paths /dev/vhost-vsock
+      --option sandbox-paths /dev/vhost-vsock \
+      {{ args }}
 
-test-e2e-interactive test:
+test-e2e-interactive test *args:
     nix run \
       `.#checks.x86_64-linux."{{ test }}".driverInteractive` \
-      --option sandbox-paths /dev/vhost-vsock
+      --option sandbox-paths /dev/vhost-vsock \
+      {{ args }}
 
-test-unit test:
-    nix-unit --flake .#tests out+err>| grep `{{ test }}`
+test-unit test *args:
+    nix-unit --flake .#tests out+err>| grep `{{ test }}` {{ args }}
 
 rebuild-switch *args:
     sudo nixos-rebuild switch \
