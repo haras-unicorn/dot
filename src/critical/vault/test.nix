@@ -323,15 +323,6 @@
             config.flake.lib.test.mockNebulaChronydTargetsModule
           ];
 
-          users.users.testuser = {
-            isNormalUser = true;
-            home = "/home/testuser";
-            uid = 1000;
-          };
-          users.groups.testuser = {
-            gid = 1000;
-          };
-
           # dot.vault.enable defaults to false
         };
         serviceName = "vault.service";

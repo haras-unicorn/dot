@@ -273,15 +273,6 @@
             config.flake.nixosModules.critical-consul
             config.flake.lib.test.mockNebulaChronydTargetsModule
           ];
-
-          users.users.testuser = {
-            isNormalUser = true;
-            home = "/home/testuser";
-            uid = 1000;
-          };
-          users.groups.testuser = {
-            gid = 1000;
-          };
         };
         serviceName = "seaweedfs.service";
         configPath = "/etc/seaweedfs";

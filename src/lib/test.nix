@@ -177,6 +177,15 @@
 
         networking.hostName = "testhost";
 
+        users.users.testuser = {
+          isNormalUser = true;
+          home = "/home/testuser";
+          uid = 1000;
+        };
+        users.groups.testuser = {
+          gid = 1000;
+        };
+
         # The module's enable option defaults to false
       };
       script = ''
