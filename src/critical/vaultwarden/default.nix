@@ -48,7 +48,7 @@
     let
       hasNetwork = config.dot.hardware.network.enable;
       user = config.dot.host.user;
-      vaultwardenUser = "vaultwarden_${config.dot.host.name}";
+      vaultwardenCockroachdbUser = "vaultwarden_${config.dot.host.name}";
       certs = "/etc/vaultwarden/certs";
       port = 8222;
       package = pkgs.vaultwarden-postgresql.overrideAttrs (
@@ -59,6 +59,8 @@
           ];
         }
       );
+      dataDir = "/var/lib/${config.systemd.services.vaultwarden.serviceConfig.StateDirectory}";
+      vaultwardenUser = config.systemd.services.vaultwarden.serviceConfig.User;
     in
     {
       options.dot = {
@@ -82,6 +84,52 @@
         services.vaultwarden.environmentFile = config.sops.secrets."vaultwarden-env".path;
 
         services.cockroachdb.init.sql.files = [ config.sops.secrets."cockroach-vaultwarden-init".path ];
+        services.cockroachdb.init.packages = [ package ];
+        services.cockroachdb.init.bash.scripts = [
+          ''
+            echo "Running vaultwarden migrations..."
+            export DATABASE_URL="$(grep DATABASE_URL ${
+              config.sops.secrets."vaultwarden-env".path
+            } | cut -d'"' -f2)"
+            export ADMIN_TOKEN="temp"
+            export ROCKET_ADDRESS="127.0.0.1"
+            export ROCKET_PORT="18222"
+            export SIGNUPS_ALLOWED="true"
+            export ENABLE_WEBSOCKET="false"
+            export DATA_FOLDER="${dataDir}"
+            export WEB_VAULT_ENABLED="false"
+            export EXTENDED_LOGGING="true"
+            export LOG_LEVEL="info"
+
+            mkdir -p "$DATA_FOLDER"
+            chown "${vaultwardenUser}:${vaultwardenUser}" "$DATA_FOLDER"
+
+            log_file=$(mktemp)
+            trap 'rm -f "$log_file"' EXIT
+
+            runuser -u "${vaultwardenUser}" -- vaultwarden > "$log_file" 2>&1 &
+            vaultwarden_pid=$!
+            migrations_done=false
+
+            while IFS= read -r line; do
+                echo "vaultwarden: $line"
+                if echo "$line" | grep -q "Rocket has launched"; then
+                    echo "Vaultwarden server launched"
+                    migrations_done=true
+                    kill $vaultwarden_pid 2>/dev/null
+                    break
+                fi
+            done < <(tail -n +1 -f "$log_file")
+            wait $vaultwarden_pid
+
+            if [ "$migrations_done" != "true" ]; then
+                echo "Vaultwarden failed before migrations completed"
+                exit 1
+            fi
+
+            echo "Vaultwarden migrations completed successfully"
+          ''
+        ];
         systemd.services.vaultwarden.requires = [ "cockroachdb-init.target" ];
         systemd.services.vaultwarden.after = [ "cockroachdb-init.target" ];
 
@@ -133,7 +181,7 @@
           mode = "0400";
         };
         sops.secrets."vaultwarden-auth-key" = {
-          path = "/var/lib/vaultwarden/rsa_key.pem";
+          path = "${dataDir}/rsa_key.pem";
           owner = config.systemd.services.vaultwarden.serviceConfig.User;
           group = config.systemd.services.vaultwarden.serviceConfig.User;
           mode = "0400";
@@ -174,7 +222,7 @@
               ca_public = "cockroach-ca-public";
               private = "cockroach-vaultwarden-private";
               public = "cockroach-vaultwarden-public";
-              user = vaultwardenUser;
+              user = vaultwardenCockroachdbUser;
             };
           }
           {
@@ -192,17 +240,17 @@
                 COCKROACH_VAULTWARDEN_PASS = "cockroach-vaultwarden-pass";
               };
               template = ''
-                create user if not exists ${vaultwardenUser} password '{{COCKROACH_VAULTWARDEN_PASS}}';
+                create user if not exists ${vaultwardenCockroachdbUser} password '{{COCKROACH_VAULTWARDEN_PASS}}';
                 create database if not exists vaultwarden;
 
                 \c vaultwarden
-                alter default privileges for all roles in schema public grant all on tables to ${vaultwardenUser};
-                alter default privileges for all roles in schema public grant all on sequences to ${vaultwardenUser};
-                alter default privileges for all roles in schema public grant all on functions to ${vaultwardenUser};
+                alter default privileges for all roles in schema public grant all on tables to ${vaultwardenCockroachdbUser};
+                alter default privileges for all roles in schema public grant all on sequences to ${vaultwardenCockroachdbUser};
+                alter default privileges for all roles in schema public grant all on functions to ${vaultwardenCockroachdbUser};
 
-                grant all on all tables in schema public to ${vaultwardenUser};
-                grant all on all sequences in schema public to ${vaultwardenUser};
-                grant all on all functions in schema public to ${vaultwardenUser};
+                grant all on all tables in schema public to ${vaultwardenCockroachdbUser};
+                grant all on all sequences in schema public to ${vaultwardenCockroachdbUser};
+                grant all on all functions in schema public to ${vaultwardenCockroachdbUser};
 
                 alter default privileges for all roles in schema public grant all on tables to ${user};
                 alter default privileges for all roles in schema public grant all on sequences to ${user};
@@ -226,7 +274,7 @@
               template =
                 let
                   databaseUrl =
-                    "postgresql://${vaultwardenUser}:{{COCKROACH_VAULTWARDEN_PASS}}@localhost"
+                    "postgresql://${vaultwardenCockroachdbUser}:{{COCKROACH_VAULTWARDEN_PASS}}@localhost"
                     + ":${builtins.toString config.services.cockroachdb.listen.port}"
                     + "/vaultwarden"
                     + "?sslmode=verify-full"

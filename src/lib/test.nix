@@ -13,8 +13,8 @@
       testScript = script;
       sshBackdoor.enable = true;
       defaults = {
-        virtualisation.memorySize = 4096; # in MiB
-        virtualisation.cores = 2;
+        virtualisation.memorySize = 8192; # in MiB
+        virtualisation.cores = 4;
         # Workaround for nixpkgs gzip/install-info issue
         documentation.info.enable = false;
       };
