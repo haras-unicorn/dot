@@ -41,16 +41,32 @@
             description = "Current initialization hash";
           };
 
-          scripts = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [ ];
-            description = "List of SQL scripts to execute during initialization";
+          sql = {
+            scripts = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "List of SQL scripts (as strings) to execute during initialization";
+            };
+
+            files = lib.mkOption {
+              type = lib.types.listOf lib.types.path;
+              default = [ ];
+              description = "List of SQL file paths to execute during initialization";
+            };
           };
 
-          files = lib.mkOption {
-            type = lib.types.listOf lib.types.path;
-            default = [ ];
-            description = "List of SQL file paths to execute during initialization";
+          bash = {
+            scripts = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "List of bash scripts (as strings) to execute during initialization (init node only)";
+            };
+
+            files = lib.mkOption {
+              type = lib.types.listOf lib.types.path;
+              default = [ ];
+              description = "List of bash script file paths to execute during initialization (init node only)";
+            };
           };
         };
 
@@ -122,12 +138,20 @@
                     DATABASE_URL="${databaseUrl}"
                     INIT_URL="${initUrl}"
                     INIT_HASH="${cfg.init.hash}"
-                    INIT_SCRIPTS="${
+                    SQL_SCRIPTS="${
                       builtins.concatStringsSep "," (
                         (lib.imap1 (
-                          i: sql: pkgs.writeText "cockroach-init-${builtins.toString i}.sql" sql
-                        ) cfg.init.scripts)
-                        ++ cfg.init.files
+                          i: sql: pkgs.writeText "cockroach-sql-${builtins.toString i}.sql" sql
+                        ) cfg.init.sql.scripts)
+                        ++ cfg.init.sql.files
+                      )
+                    }"
+                    BASH_SCRIPTS="${
+                      builtins.concatStringsSep "," (
+                        (lib.imap1 (
+                          i: script: pkgs.writeText "cockroach-bash-${builtins.toString i}.sh" script
+                        ) cfg.init.bash.scripts)
+                        ++ cfg.init.bash.files
                       )
                     }"
 

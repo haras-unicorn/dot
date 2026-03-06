@@ -87,10 +87,10 @@ if [ "$IS_INIT_NODE" = "true" ]; then
     echo "Initialization not yet recorded, proceeding with SQL scripts..."
 
     # Step 3: Run SQL scripts (init node only)
-    IFS=',' read -ra scripts <<< "$INIT_SCRIPTS"
+    IFS=',' read -ra scripts <<< "$SQL_SCRIPTS"
     for script in "${scripts[@]}"; do
       [ -z "$script" ] && continue
-      echo "Running: $script"
+      echo "Running SQL script: $script"
       for i in $(seq 1 $MAX_RETRIES); do
         if timeout \
           ${SCRIPT_TIMEOUT}s \
@@ -98,21 +98,48 @@ if [ "$IS_INIT_NODE" = "true" ]; then
           "$DATABASE_URL" \
           --file "$script" \
           --set=ON_ERROR_STOP=1; then
-          echo "Script $script completed successfully"
+          echo "SQL script $script completed successfully"
           break
         fi
 
         if [ "$i" -eq $MAX_RETRIES ]; then
-          echo "Script $script failed after $MAX_RETRIES attempts"
+          echo "SQL script $script failed after $MAX_RETRIES attempts"
           exit 1
         fi
 
-        echo "Script $script attempt $i failed, retrying in $RETRY_DELAY seconds..."
+        echo "SQL script $script attempt $i failed, retrying in $RETRY_DELAY seconds..."
         sleep $RETRY_DELAY
       done
     done
 
-    # Step 4: Record successful initialization only after all scripts complete
+    # Step 4: Run bash scripts (init node only, after SQL scripts but before recording)
+    if [ -n "$BASH_SCRIPTS" ]; then
+      echo "Running bash scripts..."
+      IFS=',' read -ra bash_scripts <<< "$BASH_SCRIPTS"
+      for script in "${bash_scripts[@]}"; do
+        [ -z "$script" ] && continue
+        echo "Running bash script: $script"
+        for i in $(seq 1 $MAX_RETRIES); do
+          if timeout \
+            ${SCRIPT_TIMEOUT}s \
+            bash "$script"; then
+            echo "Bash script $script completed successfully"
+            break
+          fi
+
+          if [ "$i" -eq $MAX_RETRIES ]; then
+            echo "Bash script $script failed after $MAX_RETRIES attempts"
+            exit 1
+          fi
+
+          echo "Bash script $script attempt $i failed, retrying in $RETRY_DELAY seconds..."
+          sleep $RETRY_DELAY
+        done
+      done
+      echo "All bash scripts completed"
+    fi
+
+    # Step 5: Record successful initialization only after all scripts complete
     echo "Recording successful initialization..."
     for i in $(seq 1 $MAX_RETRIES); do
       if timeout \

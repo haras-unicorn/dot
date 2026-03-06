@@ -151,7 +151,7 @@
               "seaweedfs-master.service"
               "cockroachdb-init.target"
             ];
-            services.cockroachdb.init.files = [ config.sops.secrets."cockroach-seaweedfs-init".path ];
+            services.cockroachdb.init.sql.files = [ config.sops.secrets."cockroach-seaweedfs-init".path ];
 
             dot.consul.services = [
               {
