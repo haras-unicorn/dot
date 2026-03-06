@@ -81,7 +81,7 @@
           };
         };
 
-        services.cockroachdb.init.files = [ config.sops.secrets."cockroach-miniflux-init".path ];
+        services.cockroachdb.init.sql.files = [ config.sops.secrets."cockroach-miniflux-init".path ];
         systemd.services.miniflux.requires = [ "cockroachdb-init.service" ];
         systemd.services.miniflux.after = [ "cockroachdb-init.service" ];
 

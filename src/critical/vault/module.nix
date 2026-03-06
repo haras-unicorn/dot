@@ -73,7 +73,7 @@
 
         systemd.services.vault.requires = [ "cockroachdb-init.target" ];
         systemd.services.vault.after = [ "cockroachdb-init.target" ];
-        services.cockroachdb.init.files = [ config.sops.secrets."cockroach-vault-init".path ];
+        services.cockroachdb.init.sql.files = [ config.sops.secrets."cockroach-vault-init".path ];
 
         dot.consul.services = [
           {

@@ -183,7 +183,7 @@
           services.cockroachdb.init.enable = true;
           services.cockroachdb.init.runner = config.dot.host.ip == initHost;
           services.cockroachdb.init.hash = self.narHash;
-          services.cockroachdb.init.files = lib.mkBefore [ config.sops.secrets."cockroach-init".path ];
+          services.cockroachdb.init.sql.files = lib.mkBefore [ config.sops.secrets."cockroach-init".path ];
 
           dot.consul.services = [
             {
