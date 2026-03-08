@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-openssl =
@@ -30,7 +30,7 @@
         {
           importer = "vault-file";
           arguments = {
-            path = "kv/dot/shared";
+            path = self.lib.rumor.shared;
             file = "openssl-ca-private";
             allow_fail = true;
           };
@@ -38,7 +38,7 @@
         {
           importer = "vault-file";
           arguments = {
-            path = "kv/dot/shared";
+            path = self.lib.rumor.shared;
             file = "openssl-ca-public";
             allow_fail = true;
           };
@@ -46,7 +46,7 @@
         {
           importer = "vault-file";
           arguments = {
-            path = "kv/dot/shared";
+            path = self.lib.rumor.shared;
             file = "openssl-ca-serial";
             allow_fail = true;
           };
@@ -55,27 +55,10 @@
 
       rumor.specification.generations = lib.mkBefore [
         {
-          generator = "text";
+          generator = "tls-root";
           arguments = {
-            name = "openssl-ca-config";
-            text = ''
-              [req]
-              distinguished_name = req_distinguished_name
-              x509_extensions = v3_ca
-              prompt = no
-
-              [req_distinguished_name]
-              CN = Dot
-
-              [v3_ca]
-              basicConstraints = CA:TRUE
-              keyUsage = keyCertSign
-            '';
-          };
-        }
-        {
-          generator = "openssl-ca";
-          arguments = {
+            common_name = "dot";
+            organization = "Dot";
             config = "openssl-ca-config";
             private = "openssl-ca-private";
             public = "openssl-ca-public";
@@ -87,21 +70,21 @@
         {
           exporter = "vault-file";
           arguments = {
-            path = "kv/dot/shared";
+            path = self.lib.rumor.shared;
             file = "openssl-ca-private";
           };
         }
         {
           exporter = "vault-file";
           arguments = {
-            path = "kv/dot/shared";
+            path = self.lib.rumor.shared;
             file = "openssl-ca-public";
           };
         }
         {
           exporter = "vault-file";
           arguments = {
-            path = "kv/dot/shared";
+            path = self.lib.rumor.shared;
             file = "openssl-ca-serial";
           };
         }

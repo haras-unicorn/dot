@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-miniflux =
@@ -44,10 +44,7 @@
     in
     {
       options.dot = {
-        miniflux.enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-        };
+        miniflux.enable = lib.mkEnableOption "Miniflux";
       };
 
       config = lib.mkIf (hasNetwork && config.dot.miniflux.enable) {
@@ -62,7 +59,7 @@
           LISTEN_ADDR = "0.0.0.0:${builtins.toString port}";
           RUN_MIGRATIONS = 1;
           CREATE_ADMIN = 1;
-          BASE_URL = "https://miniflux.service.consul/";
+          BASE_URL = "https://miniflux.${config.dot.domains.service}/";
         };
         # NOTE: its named adminCredentialsFile but its just an EnvironmentFile setting
         services.miniflux.adminCredentialsFile = config.sops.secrets."miniflux-env".path;
@@ -82,24 +79,16 @@
         };
 
         services.cockroachdb.init.sql.files = [ config.sops.secrets."cockroach-miniflux-init".path ];
-        systemd.services.miniflux.requires = [ "cockroachdb-init.service" ];
-        systemd.services.miniflux.after = [ "cockroachdb-init.service" ];
+        systemd.services.miniflux.requires = [ "dot-database-initialized.target" ];
+        systemd.services.miniflux.after = [ "dot-database-initialized.target" ];
 
         networking.firewall.allowedTCPPorts = [ port ];
 
-        dot.consul.services = [
+        dot.services = [
           {
             name = "miniflux";
             port = port;
-            address = config.dot.host.ip;
-            tags = [
-              "dot.enable=true"
-            ];
-            check = {
-              http = "http://${config.dot.host.ip}:${builtins.toString port}/healthcheck";
-              interval = "30s";
-              timeout = "10s";
-            };
+            health = "http:///healthcheck";
           }
         ];
 
@@ -144,7 +133,7 @@
           {
             importer = "vault-file";
             arguments = {
-              path = "kv/dot/shared";
+              path = self.lib.rumor.shared;
               file = "${user}-password";
               allow_fail = false;
             };

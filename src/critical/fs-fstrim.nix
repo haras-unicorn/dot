@@ -1,4 +1,4 @@
-{ config, ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-fs-fstrim =
@@ -45,38 +45,34 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-fs-fstrim-standard = config.flake.lib.test.mkTest pkgs {
-        name = "critical-fs-fstrim-standard";
+      checks.test-critical-fs-fstrim = self.lib.test.mkTest pkgs {
+        name = "critical-fs-fstrim";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-fs-fstrim ];
-          options.dot.hardware.rpi."4".enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = false;
-          };
+          imports = [
+            self.nixosModules.critical-fs-fstrim
+          ];
+
+          dot.hardware.rpi."4".enable = false;
         };
-        script = ''
+        testScript = ''
           start_all()
-          # Verify fstrim service/timer is enabled
           machine.succeed("systemctl is-enabled fstrim.service || systemctl is-enabled fstrim.timer")
-          # Verify kernel modules are configured (check if module is loaded or available)
           machine.execute("lsmod | grep -q ext4 || grep -q ext4 /proc/modules || test -d /sys/module/ext4")
         '';
       };
 
-      checks.test-critical-fs-fstrim-rpi4 = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-fs-fstrim-rpi4 = self.lib.test.mkTest pkgs {
         name = "critical-fs-fstrim-rpi4";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-fs-fstrim ];
-          options.dot.hardware.rpi."4".enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = true;
-          };
+          imports = [
+            self.nixosModules.critical-fs-fstrim
+          ];
+
+          dot.hardware.rpi."4".enable = true;
         };
-        script = ''
+        testScript = ''
           start_all()
-          # Verify fstrim service/timer is enabled
           machine.succeed("systemctl is-enabled fstrim.service || systemctl is-enabled fstrim.timer")
-          # Verify the module is loaded by checking it's available
           machine.execute("lsmod | grep -q ext4 || grep -q ext4 /proc/modules || test -d /sys/module/ext4")
         '';
       };

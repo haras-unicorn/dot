@@ -40,13 +40,14 @@ def main [] {
 def "main secrets" [host?: string, --all] {
   let hosts = pick hosts $all false $host
 
-  rm -rf $artifacts
-  mkdir $artifacts
-  cd $artifacts
-
   for host in $hosts {
+    cd $root
+    rm -rf $artifacts
+    mkdir $artifacts
+    cd $artifacts
+
     let spec = nix eval --json $".#rumor.($host.configuration)"
-    $spec | rumor stdin json --stay
+    $spec | rumor from-stdin json --stay --allow-script
   }
 }
 

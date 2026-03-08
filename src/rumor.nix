@@ -1,7 +1,7 @@
 {
   inputs,
   lib,
-  config,
+  self,
   ...
 }:
 
@@ -80,6 +80,8 @@ in
   };
 
   config = {
+    libAttrs.rumor.shared = "kv/dot/shared";
+
     flake.nixosModules.rumor =
       { lib, ... }:
       {
@@ -145,9 +147,7 @@ in
             );
         })
         (
-          lib.filterAttrs (
-            _: conf: conf.config ? rumor && conf.config.rumor != null
-          ) config.flake.nixosConfigurations
+          lib.filterAttrs (_: conf: conf.config ? rumor && conf.config.rumor != null) self.nixosConfigurations
         );
 
     flake.checks = builtins.mapAttrs (

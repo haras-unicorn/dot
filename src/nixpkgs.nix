@@ -1,11 +1,12 @@
 { inputs, ... }:
 
 let
-  mkConfig =
+  common =
     {
       config,
       lib,
       pkgs,
+      ...
     }:
     {
       _module.args.unstablePkgs = import inputs.nixpkgs-unstable {
@@ -44,26 +45,11 @@ let
     };
 in
 {
-  flake.nixosModules.nixpkgs =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+  flake.nixosModules.nixpkgs = {
+    imports = [ common ];
+  };
 
-    {
-      config = mkConfig { inherit config lib pkgs; };
-    };
-
-  flake.homeModules.nixpkgs =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
-    {
-      config = mkConfig { inherit config lib pkgs; };
-    };
+  flake.homeModules.nixpkgs = {
+    imports = [ common ];
+  };
 }

@@ -1,4 +1,4 @@
-{ config, ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-network-manager =
@@ -8,7 +8,6 @@
       config,
       ...
     }:
-
     let
       hasNetwork = config.dot.hardware.network.enable;
     in
@@ -28,6 +27,26 @@
       };
     };
 
+  flake.homeModules.critical-network-manager =
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
+    let
+      hasNetwork = config.dot.hardware.network.enable;
+      hasMonitor = config.dot.hardware.monitor.enable;
+      hasMouse = config.dot.hardware.mouse.enable;
+
+      network = lib.getExe config.services.network-manager-applet.package;
+    in
+    lib.mkIf (hasNetwork && hasMonitor && hasMouse) {
+      services.network-manager-applet.enable = true;
+
+      dot.desktopEnvironment.network = network;
+    };
+
   systems = [
     "x86_64-linux"
     "aarch64-linux"
@@ -35,16 +54,14 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-network-manager = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-network-manager = self.lib.test.mkTest pkgs {
         name = "critical-network-manager";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-network-manager ];
-          options.dot.hardware.network.enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = true;
-          };
+          imports = [
+            self.nixosModules.critical-network-manager
+          ];
         };
-        script = ''
+        testScript = ''
           start_all()
           machine.succeed("systemctl is-enabled nftables.service")
           machine.succeed("systemctl is-enabled NetworkManager.service")

@@ -1,6 +1,207 @@
-{ ... }:
+{ self, ... }:
 
 {
+  flake.nixosModules.critical-vaultwarden =
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
+    let
+      hasNetwork = config.dot.hardware.network.enable;
+
+      hosts = builtins.filter (
+        host:
+        if lib.hasAttrByPath [ "system" "dot" "vaultwarden" "enable" ] host then
+          host.system.dot.vaultwarden.enable
+        else
+          false
+      ) config.dot.host.hosts;
+
+      port = 8222;
+
+      # TODO: remove mention of postgres here
+      package = pkgs.vaultwarden-postgresql.overrideAttrs (
+        final: prev: {
+          patches = (prev.patches or [ ]) ++ [
+            ./2020-08-02-025025-migration.patch
+            ./specify-integer-length-in-migrations.patch
+          ];
+        }
+      );
+
+      dataDir = "/var/lib/${config.systemd.services.vaultwarden.serviceConfig.StateDirectory}";
+
+      vaultwardenUser = config.systemd.services.vaultwarden.serviceConfig.User;
+    in
+    {
+      options.dot = {
+        vaultwarden = {
+          enable = lib.mkEnableOption "Vaultwarden";
+        };
+      };
+
+      config = lib.mkIf (hasNetwork && config.dot.vaultwarden.enable) {
+        services.vaultwarden.enable = true;
+        services.vaultwarden.package = package;
+        # TODO: remove mention of postgres here
+        services.vaultwarden.dbBackend = "postgresql";
+        services.vaultwarden.config = {
+          ROCKET_ADDRESS = "0.0.0.0";
+          ROCKET_PORT = port;
+          SIGNUPS_ALLOWED = true;
+          ENABLE_WEBSOCKET = false;
+          DOMAIN = "https://vaultwarden.${config.dot.domains.service}";
+        };
+        services.vaultwarden.environmentFile = config.sops.secrets."vaultwarden-env".path;
+        systemd.services.vaultwarden.requires = [ "dot-database-initialized.target" ];
+        systemd.services.vaultwarden.after = [ "dot-database-initialized.target" ];
+
+        networking.firewall.allowedTCPPorts = [ port ];
+
+        dot.services = [
+          {
+            name = "vaultwarden";
+            port = port;
+            health = "http:///alive";
+          }
+        ];
+
+        dot.database.apps.vaultwarden = {
+          hosts = builtins.map ({ name, ... }: name) hosts;
+          user = config.systemd.services.vaultwarden.serviceConfig.User;
+          group = config.systemd.services.vaultwarden.serviceConfig.User;
+          init.bash.script = ''
+            echo "Running vaultwarden migrations..."
+            export DATABASE_URL="$(grep DATABASE_URL ${
+              config.sops.secrets."vaultwarden-env".path
+            } | cut -d'"' -f2)"
+            export ADMIN_TOKEN="temp"
+            export ROCKET_ADDRESS="127.0.0.1"
+            export ROCKET_PORT="18222"
+            export SIGNUPS_ALLOWED="true"
+            export ENABLE_WEBSOCKET="false"
+            export DATA_FOLDER="${dataDir}"
+            export WEB_VAULT_ENABLED="false"
+            export EXTENDED_LOGGING="true"
+            export LOG_LEVEL="info"
+
+            mkdir -p "$DATA_FOLDER"
+            chown "${vaultwardenUser}:${vaultwardenUser}" "$DATA_FOLDER"
+
+            log_file=$(mktemp)
+            trap 'rm -f "$log_file"' EXIT
+
+            runuser -u "${vaultwardenUser}" -- "${lib.getExe package}" > "$log_file" 2>&1 &
+            vaultwarden_pid=$!
+            migrations_done=false
+
+            while IFS= read -r line; do
+                echo "vaultwarden: $line"
+                if echo "$line" | grep -q "Rocket has launched"; then
+                    echo "Vaultwarden server launched"
+                    migrations_done=true
+                    kill $vaultwarden_pid 2>/dev/null
+                    break
+                fi
+            done < <(tail -n +1 -f "$log_file")
+            wait $vaultwarden_pid
+
+            if [ "$migrations_done" != "true" ]; then
+                echo "Vaultwarden failed before migrations completed"
+                exit 1
+            fi
+
+            echo "Vaultwarden migrations completed successfully"
+          '';
+        };
+
+        sops.secrets."vaultwarden-env" = {
+          owner = config.systemd.services.vaultwarden.serviceConfig.User;
+          group = config.systemd.services.vaultwarden.serviceConfig.User;
+          mode = "0400";
+        };
+        sops.secrets."vaultwarden-auth-key" = {
+          path = "${dataDir}/rsa_key.pem";
+          owner = config.systemd.services.vaultwarden.serviceConfig.User;
+          group = config.systemd.services.vaultwarden.serviceConfig.User;
+          mode = "0400";
+        };
+
+        rumor.sops.keys = [
+          "vaultwarden-auth-key"
+          "vaultwarden-env"
+        ];
+        rumor.specification.imports = [
+          {
+            importer = "vault-file";
+            arguments = {
+              path = self.lib.rumor.shared;
+              file = "vaultwarden-admin-pass";
+              allow_fail = true;
+            };
+          }
+          {
+            importer = "vault-file";
+            arguments = {
+              path = self.lib.rumor.shared;
+              file = "vaultwarden-auth-key";
+              allow_fail = true;
+            };
+          }
+        ];
+        rumor.specification.generations = lib.mkAfter [
+          {
+            generator = "script";
+            arguments = {
+              name = "vaultwarden-auth-key-script";
+              text = ''
+                openssl genrsa -out vaultwarden-auth-key 4096
+              '';
+            };
+          }
+          {
+            generator = "key";
+            arguments = {
+              name = "vaultwarden-admin-pass";
+            };
+          }
+          {
+            generator = "moustache";
+            arguments = {
+              name = "vaultwarden-env";
+              renew = true;
+              variables = {
+                DATABASE_VAULTWARDEN_URL = config.dot.database.instances.vaultwarden.urlSecret;
+                ADMIN_TOKEN = "vaultwarden-admin-pass";
+              };
+              template = ''
+                DATABASE_URL="{{DATABASE_VAULTWARDEN_URL}}"
+                ADMIN_TOKEN="{{ADMIN_TOKEN}}"
+              '';
+            };
+          }
+        ];
+        rumor.specification.exports = [
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = self.lib.rumor.shared;
+              file = "vaultwarden-admin-pass";
+            };
+          }
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = self.lib.rumor.shared;
+              file = "vaultwarden-auth-key";
+            };
+          }
+        ];
+      };
+    };
+
   flake.homeModules.critical-vaultwarden =
     {
       lib,
@@ -11,6 +212,7 @@
     let
       hasNetwork = config.dot.hardware.network.enable;
       hasMonitor = config.dot.hardware.monitor.enable;
+      # TODO: remove mention of postgres here
       package = pkgs.vaultwarden-postgresql.overrideAttrs (
         final: prev: {
           patches = (prev.patches or [ ]) ++ [
@@ -32,263 +234,9 @@
           name = "Vaultwarden";
           exec =
             "${config.dot.browser.package}/bin/${config.dot.browser.bin} "
-            + "--new-window vaultwarden.service.consul";
+            + "--new-window vaultwarden.${config.dot.domains.service}";
           terminal = false;
         };
-      };
-    };
-
-  flake.nixosModules.critical-vaultwarden =
-    {
-      lib,
-      config,
-      pkgs,
-      ...
-    }:
-    let
-      hasNetwork = config.dot.hardware.network.enable;
-      user = config.dot.host.user;
-      vaultwardenCockroachdbUser = "vaultwarden_${config.dot.host.name}";
-      certs = "/etc/vaultwarden/certs";
-      port = 8222;
-      package = pkgs.vaultwarden-postgresql.overrideAttrs (
-        final: prev: {
-          patches = (prev.patches or [ ]) ++ [
-            ./2020-08-02-025025-migration.patch
-            ./specify-integer-length-in-migrations.patch
-          ];
-        }
-      );
-      dataDir = "/var/lib/${config.systemd.services.vaultwarden.serviceConfig.StateDirectory}";
-      vaultwardenUser = config.systemd.services.vaultwarden.serviceConfig.User;
-    in
-    {
-      options.dot = {
-        vaultwarden.enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-        };
-      };
-
-      config = lib.mkIf (hasNetwork && config.dot.vaultwarden.enable) {
-        services.vaultwarden.enable = true;
-        services.vaultwarden.package = package;
-        services.vaultwarden.dbBackend = "postgresql";
-        services.vaultwarden.config = {
-          ROCKET_ADDRESS = "0.0.0.0";
-          ROCKET_PORT = port;
-          SIGNUPS_ALLOWED = true;
-          ENABLE_WEBSOCKET = false;
-          DOMAIN = "https://vaultwarden.service.consul";
-        };
-        services.vaultwarden.environmentFile = config.sops.secrets."vaultwarden-env".path;
-
-        services.cockroachdb.init.sql.files = [ config.sops.secrets."cockroach-vaultwarden-init".path ];
-        services.cockroachdb.init.packages = [ package ];
-        services.cockroachdb.init.bash.scripts = [
-          ''
-            echo "Running vaultwarden migrations..."
-            export DATABASE_URL="$(grep DATABASE_URL ${
-              config.sops.secrets."vaultwarden-env".path
-            } | cut -d'"' -f2)"
-            export ADMIN_TOKEN="temp"
-            export ROCKET_ADDRESS="127.0.0.1"
-            export ROCKET_PORT="18222"
-            export SIGNUPS_ALLOWED="true"
-            export ENABLE_WEBSOCKET="false"
-            export DATA_FOLDER="${dataDir}"
-            export WEB_VAULT_ENABLED="false"
-            export EXTENDED_LOGGING="true"
-            export LOG_LEVEL="info"
-
-            mkdir -p "$DATA_FOLDER"
-            chown "${vaultwardenUser}:${vaultwardenUser}" "$DATA_FOLDER"
-
-            log_file=$(mktemp)
-            trap 'rm -f "$log_file"' EXIT
-
-            runuser -u "${vaultwardenUser}" -- vaultwarden > "$log_file" 2>&1 &
-            vaultwarden_pid=$!
-            migrations_done=false
-
-            while IFS= read -r line; do
-                echo "vaultwarden: $line"
-                if echo "$line" | grep -q "Rocket has launched"; then
-                    echo "Vaultwarden server launched"
-                    migrations_done=true
-                    kill $vaultwarden_pid 2>/dev/null
-                    break
-                fi
-            done < <(tail -n +1 -f "$log_file")
-            wait $vaultwarden_pid
-
-            if [ "$migrations_done" != "true" ]; then
-                echo "Vaultwarden failed before migrations completed"
-                exit 1
-            fi
-
-            echo "Vaultwarden migrations completed successfully"
-          ''
-        ];
-        systemd.services.vaultwarden.requires = [ "cockroachdb-init.target" ];
-        systemd.services.vaultwarden.after = [ "cockroachdb-init.target" ];
-
-        networking.firewall.allowedTCPPorts = [ port ];
-
-        dot.consul.services = [
-          {
-            name = "vaultwarden";
-            port = port;
-            address = config.dot.host.ip;
-            tags = [
-              "dot.enable=true"
-            ];
-            check = {
-              http = "http://${config.dot.host.ip}:${builtins.toString port}/alive";
-              interval = "30s";
-              timeout = "10s";
-            };
-          }
-        ];
-
-        sops.secrets."vaultwarden-env" = {
-          owner = config.systemd.services.vaultwarden.serviceConfig.User;
-          group = config.systemd.services.vaultwarden.serviceConfig.User;
-          mode = "0400";
-        };
-        sops.secrets."cockroach-vaultwarden-init" = {
-          owner = config.systemd.services.cockroachdb.serviceConfig.User;
-          group = config.systemd.services.cockroachdb.serviceConfig.User;
-          mode = "0400";
-        };
-        sops.secrets."cockroach-vaultwarden-ca-public" = {
-          key = "cockroach-ca-public";
-          path = "${certs}/ca.crt";
-          owner = config.systemd.services.vaultwarden.serviceConfig.User;
-          group = config.systemd.services.vaultwarden.serviceConfig.User;
-          mode = "0644";
-        };
-        sops.secrets."cockroach-vaultwarden-public" = {
-          path = "${certs}/client.vaultwarden.crt";
-          owner = config.systemd.services.vaultwarden.serviceConfig.User;
-          group = config.systemd.services.vaultwarden.serviceConfig.User;
-          mode = "0644";
-        };
-        sops.secrets."cockroach-vaultwarden-private" = {
-          path = "${certs}/client.vaultwarden.key";
-          owner = config.systemd.services.vaultwarden.serviceConfig.User;
-          group = config.systemd.services.vaultwarden.serviceConfig.User;
-          mode = "0400";
-        };
-        sops.secrets."vaultwarden-auth-key" = {
-          path = "${dataDir}/rsa_key.pem";
-          owner = config.systemd.services.vaultwarden.serviceConfig.User;
-          group = config.systemd.services.vaultwarden.serviceConfig.User;
-          mode = "0400";
-        };
-
-        rumor.sops.keys = [
-          "cockroach-vaultwarden-private"
-          "cockroach-vaultwarden-public"
-          "cockroach-vaultwarden-pass"
-          "cockroach-vaultwarden-init"
-          "vaultwarden-auth-key"
-          "vaultwarden-env"
-        ];
-        rumor.specification.imports = [
-          {
-            importer = "vault-file";
-            arguments = {
-              path = "kv/dot/shared";
-              file = "${user}-password";
-              allow_fail = false;
-            };
-          }
-          {
-            importer = "vault-file";
-            arguments = {
-              path = "kv/dot/shared";
-              file = "vaultwarden-auth-key";
-              allow_fail = false;
-            };
-          }
-        ];
-        rumor.specification.generations = [
-          {
-            generator = "cockroach-client";
-            arguments = {
-              renew = true;
-              ca_private = "cockroach-ca-private";
-              ca_public = "cockroach-ca-public";
-              private = "cockroach-vaultwarden-private";
-              public = "cockroach-vaultwarden-public";
-              user = vaultwardenCockroachdbUser;
-            };
-          }
-          {
-            generator = "key";
-            arguments = {
-              name = "cockroach-vaultwarden-pass";
-            };
-          }
-          {
-            generator = "moustache";
-            arguments = {
-              name = "cockroach-vaultwarden-init";
-              renew = true;
-              variables = {
-                COCKROACH_VAULTWARDEN_PASS = "cockroach-vaultwarden-pass";
-              };
-              template = ''
-                create user if not exists ${vaultwardenCockroachdbUser} password '{{COCKROACH_VAULTWARDEN_PASS}}';
-                create database if not exists vaultwarden;
-
-                \c vaultwarden
-                alter default privileges for all roles in schema public grant all on tables to ${vaultwardenCockroachdbUser};
-                alter default privileges for all roles in schema public grant all on sequences to ${vaultwardenCockroachdbUser};
-                alter default privileges for all roles in schema public grant all on functions to ${vaultwardenCockroachdbUser};
-
-                grant all on all tables in schema public to ${vaultwardenCockroachdbUser};
-                grant all on all sequences in schema public to ${vaultwardenCockroachdbUser};
-                grant all on all functions in schema public to ${vaultwardenCockroachdbUser};
-
-                alter default privileges for all roles in schema public grant all on tables to ${user};
-                alter default privileges for all roles in schema public grant all on sequences to ${user};
-                alter default privileges for all roles in schema public grant all on functions to ${user};
-
-                grant all on all tables in schema public to ${user};
-                grant all on all sequences in schema public to ${user};
-                grant all on all functions in schema public to ${user};
-              '';
-            };
-          }
-          {
-            generator = "moustache";
-            arguments = {
-              name = "vaultwarden-env";
-              renew = true;
-              variables = {
-                COCKROACH_VAULTWARDEN_PASS = "cockroach-vaultwarden-pass";
-                ADMIN_TOKEN = "${user}-password";
-              };
-              template =
-                let
-                  databaseUrl =
-                    "postgresql://${vaultwardenCockroachdbUser}:{{COCKROACH_VAULTWARDEN_PASS}}@localhost"
-                    + ":${builtins.toString config.services.cockroachdb.listen.port}"
-                    + "/vaultwarden"
-                    + "?sslmode=verify-full"
-                    + "&sslrootcert=${certs}/ca.crt"
-                    + "&sslcert=${certs}/client.vaultwarden.crt"
-                    + "&sslkey=${certs}/client.vaultwarden.key";
-                in
-                ''
-                  DATABASE_URL="${databaseUrl}"
-                  ADMIN_TOKEN="{{ADMIN_TOKEN}}"
-                '';
-            };
-          }
-        ];
       };
     };
 }

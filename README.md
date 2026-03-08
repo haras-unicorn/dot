@@ -29,7 +29,7 @@ relying on over the years which include but are not limited to:
 
 - [./src/lib/host.nix](./src/lib/host.nix)
 - [./src/capabilities/hardware.nix](./src/capabilities/hardware.nix)
-- [./src/lib/test.nix](./src/lib/test.nix)
+- [./src/lib/test/default/test.nix](./src/lib/test/default.nix)
 
 The project uses the [just] command runner for [running commands](./justfile)
 and [nushell] for running more [complicated commands](./scripts/hosts.nu) on my

@@ -90,41 +90,24 @@
       };
 
       config = lib.mkMerge [
-        {
-          networking.firewall.allowedTCPPorts = lib.optionals cfg.openPorts [
-            cfg.sql.port
-          ];
+        (lib.mkIf cfg.enable {
+          networking.firewall.allowedTCPPorts = lib.optional cfg.openPorts cfg.sql.port;
 
           services.cockroachdb.extraArgs = [
             "--sql-addr"
             "${cfg.sql.address}:${builtins.toString cfg.sql.port}"
           ];
-        }
-        (lib.mkIf cfg.init.enable {
-          systemd.targets.cockroachdb-init = {
-            description = "CockroachDB Initialization Target";
-            wantedBy = [ "multi-user.target" ];
-            after = [ "cockroachdb-init.service" ];
-            requires = [ "cockroachdb-init.service" ];
-          };
-
-          systemd.services.cockroachdb-init = {
+        })
+        (lib.mkIf (cfg.enable && cfg.init.enable) {
+          systemd.services.cockroachdb-initialization = {
             description = "CockroachDB Initialization";
-            after = [
-              "nebula-online.target"
-              "chronyd-synced.target"
-              "cockroachdb.service"
-            ];
-            requires = [
-              "nebula-online.target"
-              "chronyd-synced.target"
-              "cockroachdb.service"
-            ];
+            after = [ "cockroachdb.service" ];
+            requires = [ "cockroachdb.service" ];
             serviceConfig = {
               Type = "oneshot";
               ExecStart = lib.getExe (
                 pkgs.writeShellApplication {
-                  name = "cockroachdb-init-script";
+                  name = "cockroachdb-initialization";
                   runtimeInputs = [
                     pkgs.coreutils
                     pkgs.gnugrep

@@ -1,4 +1,4 @@
-{ config, ... }:
+{ self, ... }:
 
 # NOTE: do not enable NTS because time can be so far off sometimes
 # that it registers certs as invalid
@@ -37,9 +37,7 @@
       systemd.services.chronyd.after = [ "network-online.target" ];
       systemd.services.chronyd.requires = [ "network-online.target" ];
 
-      systemd.targets.chronyd-synced = {
-        description = "Chrony Daemon Synchronized";
-        wantedBy = [ "multi-user.target" ];
+      systemd.targets.dot-time-synchronized = {
         requires = [ "chronyd-sync-wait.service" ];
         after = [ "chronyd-sync-wait.service" ];
       };
@@ -86,12 +84,12 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-chronyd = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-chronyd = self.lib.test.mkTest pkgs {
         name = "critical-chronyd";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-chronyd ];
+          imports = [ self.nixosModules.critical-chronyd ];
         };
-        script = ''
+        testScript = ''
           start_all()
           machine.succeed("systemctl is-enabled chronyd.service")
           machine.succeed("which chronyd")

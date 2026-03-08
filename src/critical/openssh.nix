@@ -1,6 +1,6 @@
-{ config, ... }:
+{ self, ... }:
 
-# TODO: only allow from nebula
+# TODO: only allow from network
 
 {
   flake.nixosModules.critical-openssh =
@@ -35,7 +35,7 @@
         ];
         rumor.specification.generations = [
           {
-            generator = "ssh-keygen";
+            generator = "ssh-key";
             arguments = {
               name = config.networking.hostName;
               public = "ssh-public";
@@ -55,7 +55,7 @@
           {
             exporter = "vault-file";
             arguments = {
-              path = "kv/dot/shared";
+              path = self.lib.rumor.shared;
               file = "${config.networking.hostName}-ssh-public";
             };
           }
@@ -70,34 +70,14 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-openssh = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-openssh = self.lib.test.mkTest pkgs {
         name = "critical-openssh";
         nodes.machine = {
           imports = [
-            config.flake.nixosModules.critical-openssh
-            config.flake.nixosModules.rumor
+            self.nixosModules.critical-openssh
           ];
-          options.dot.hardware.network.enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = true;
-          };
-          options.dot.host.user = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "testuser";
-          };
-          options.sops.secrets = pkgs.lib.mkOption {
-            type = pkgs.lib.types.attrsOf pkgs.lib.types.raw;
-            default = { };
-          };
-          config = {
-            networking.hostName = "testhost";
-            users.users.testuser = {
-              isNormalUser = true;
-              home = "/home/testuser";
-            };
-          };
         };
-        script = ''
+        testScript = ''
           start_all()
           machine.succeed("systemctl is-enabled sshd.service")
           machine.succeed("grep 'PermitRootLogin no' /etc/ssh/sshd_config")

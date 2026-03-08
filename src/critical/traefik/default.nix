@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   flake.homeModules.critical-traefik =
     {
@@ -22,7 +20,7 @@
           name = "Traefik Dashboard";
           exec =
             "${config.dot.browser.package}/bin/${config.dot.browser.bin}"
-            + " --new-window traefik.service.consul";
+            + " --new-window traefik.${config.dot.domains.service}";
           terminal = false;
         };
       };
@@ -43,10 +41,7 @@
     in
     {
       options.dot = {
-        traefik.enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-        };
+        traefik.enable = lib.mkEnableOption "Traefik";
       };
 
       config = lib.mkIf (hasNetwork && config.dot.traefik.enable) {
@@ -89,7 +84,7 @@
             routers = {
               dashboard = {
                 rule =
-                  "Host(`traefik.service.consul`)"
+                  "Host(`traefik.${config.dot.domains.service}`)"
                   + " && (PathPrefix(`/api`) || PathPrefix(`/dashboard`) || Path(`/`))";
                 entryPoints = [ "websecure" ];
                 service = "api@internal";
@@ -129,7 +124,7 @@
             consulCatalog = {
               prefix = "dot";
               exposedByDefault = false;
-              defaultRule = "Host(`{{ normalize .Name }}.service.consul`)";
+              defaultRule = "Host(`{{ normalize .Name }}.${config.dot.domains.service}`)";
               endpoint = {
                 address = consulEndpoint;
                 scheme = "https";
@@ -144,16 +139,11 @@
           };
         };
 
-        dot.consul.services = [
+        dot.services = [
           {
             name = "traefik";
             port = httpsPort;
-            address = config.dot.host.ip;
-            check = {
-              tcp = "${config.dot.host.ip}:${builtins.toString httpsPort}";
-              interval = "30s";
-              timeout = "10s";
-            };
+            health = "tcp://";
           }
         ];
 
@@ -191,42 +181,23 @@
 
         rumor.specification.generations = [
           {
-            generator = "text";
+            generator = "tls-leaf";
             arguments = {
-              name = "traefik-cert-config";
-              renew = true;
-              text = ''
-                [req]
-                distinguished_name = req_distinguished_name
-                prompt = no
-
-                [req_distinguished_name]
-                CN = Traefik
-                O = Dot
-
-                [ext]
-                basicConstraints = CA:FALSE
-                keyUsage = nonRepudiation,digitalSignature,keyEncipherment
-                subjectAltName = @alt_names
-
-
-                [alt_names]
-                DNS.1 = *.service.consul
-                DNS.2 = ${config.dot.host.name}.dot
-                DNS.3 = localhost
-                IP.1 = ${config.dot.host.ip}
-                IP.2 = 127.0.0.1
-              '';
-            };
-          }
-          {
-            generator = "openssl";
-            arguments = {
+              common_name = "dot";
+              organization = "Dot";
+              sans = [
+                "*.${config.dot.domains.service}"
+                "localhost"
+                "${config.dot.host.ip}"
+                "127.0.0.1"
+              ];
+              config = "traefik-cert-config";
+              request_config = "traefik-cert-request-config";
+              private = "traefik-private";
+              request = "traefik-cert-request";
               ca_private = "openssl-ca-private";
               ca_public = "openssl-ca-public";
               serial = "openssl-ca-serial";
-              config = "traefik-cert-config";
-              private = "traefik-private";
               public = "traefik-public";
               renew = true;
             };

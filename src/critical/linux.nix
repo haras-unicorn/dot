@@ -1,4 +1,4 @@
-{ config, ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-linux =
@@ -39,51 +39,41 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-linux-standard = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-linux = self.lib.test.mkTest pkgs {
         name = "critical-linux-standard";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-linux ];
-          options.dot.hardware.rpi."4".enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = false;
-          };
-          options.dot.hardware.graphics.driver = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "";
-          };
-          options.dot.hardware.graphics.version = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "";
+          imports = [
+            self.nixosModules.critical-linux
+          ];
+
+          dot.hardware = {
+            rpi."4".enable = false;
+            graphics.driver = "nvidia";
+            graphics.version = "latest";
           };
         };
-        script = ''
+        testScript = ''
           start_all()
-          # Verify the system boots with zen kernel packages available
           machine.succeed("readlink /run/booted-system/kernel | grep -qi zen")
           machine.succeed("systemctl is-system-running --wait")
         '';
       };
 
-      checks.test-critical-linux-legacy-nvidia = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-linux-legacy-nvidia = self.lib.test.mkTest pkgs {
         name = "critical-linux-legacy-nvidia";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-linux ];
-          options.dot.hardware.rpi."4".enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = false;
-          };
-          options.dot.hardware.graphics.driver = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "nvidia";
-          };
-          options.dot.hardware.graphics.version = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "legacy";
+          imports = [
+            self.nixosModules.critical-linux
+          ];
+
+          dot.hardware = {
+            rpi."4".enable = false;
+            graphics.driver = "nvidia";
+            graphics.version = "legacy_470";
           };
         };
-        script = ''
+        testScript = ''
           start_all()
-          # Verify 6.6 kernel is used for legacy Nvidia
           machine.succeed("readlink /run/booted-system/kernel | grep -q '6.6'")
           machine.succeed("systemctl is-system-running --wait")
         '';

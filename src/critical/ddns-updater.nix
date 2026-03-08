@@ -1,21 +1,18 @@
-{ config, ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-ddns-updater =
     { lib, config, ... }:
     let
       hasNetwork = config.dot.hardware.network.enable;
-      isCoordinator = config.dot.ddns.enable;
+      isCoordinator = config.dot.ddns-updater.enable;
 
       httpPort = 8000;
       healthPort = 9999;
     in
     {
       options.dot = {
-        ddns.enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-        };
+        ddns-updater.enable = lib.mkEnableOption "ddns-updater";
       };
 
       config = lib.mkIf (hasNetwork && isCoordinator) {
@@ -46,19 +43,11 @@
           healthPort
         ];
 
-        dot.consul.services = [
+        dot.services = [
           {
             name = "ddns-updater";
             port = httpPort;
-            address = config.dot.host.ip;
-            tags = [
-              "dot.enable=true"
-            ];
-            check = {
-              http = "http://${config.dot.host.ip}:${builtins.toString healthPort}";
-              interval = "30s";
-              timeout = "10s";
-            };
+            health = "http://";
           }
         ];
 
@@ -73,14 +62,14 @@
           {
             importer = "vault-file";
             arguments = {
-              path = "kv/dot/shared";
+              path = self.lib.rumor.shared;
               file = "ddns-updater-duckdns";
             };
           }
           {
             importer = "vault-file";
             arguments = {
-              path = "kv/dot/shared";
+              path = self.lib.rumor.shared;
               file = "ddns-updater-cloudflare";
             };
           }
@@ -116,131 +105,52 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-ddns-updater-disabled = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-ddns-updater-disabled = self.lib.test.mkTest pkgs {
         name = "critical-ddns-updater-disabled";
-        nodes.machine = {
+        dot.test.disabledService.enable = true;
+        dot.test.disabledService.module = {
           imports = [
-            config.flake.nixosModules.critical-ddns-updater
-            config.flake.nixosModules.rumor
+            self.nixosModules.critical-ddns-updater
           ];
-          options.dot.hardware.network.enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = true;
-          };
-          options.dot.host.ip = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "127.0.0.1";
-          };
-          options.dot.host.user = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "testuser";
-          };
-          options.dot.consul.services = pkgs.lib.mkOption {
-            type = pkgs.lib.types.listOf pkgs.lib.types.raw;
-            default = [ ];
-          };
-          options.sops.secrets = pkgs.lib.mkOption {
-            type = pkgs.lib.types.attrsOf (
-              pkgs.lib.types.submodule {
-                options.path = pkgs.lib.mkOption {
-                  type = pkgs.lib.types.str;
-                };
-                options.owner = pkgs.lib.mkOption {
-                  type = pkgs.lib.types.str;
-                  default = "root";
-                };
-                options.group = pkgs.lib.mkOption {
-                  type = pkgs.lib.types.str;
-                  default = "root";
-                };
-                options.mode = pkgs.lib.mkOption {
-                  type = pkgs.lib.types.str;
-                  default = "0400";
-                };
-              }
-            );
-            default = { };
-          };
-          config = {
-            networking.hostName = "testhost";
-            # dot.ddns.enable defaults to false in the module
-            users.users.testuser = {
-              isNormalUser = true;
-              home = "/home/testuser";
-            };
-          };
         };
-        script = ''
-          start_all()
-          # When dot.ddns.enable is false, service should not be enabled
-          machine.fail("systemctl is-enabled ddns-updater.service")
-        '';
+        dot.test.disabledService.name = "ddns-updater";
+        dot.test.disabledService.config = "/run/secrets/ddns-udater-settings";
       };
 
-      checks.test-critical-ddns-updater-enabled = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-ddns-updater-enabled = self.lib.test.mkTest pkgs {
         name = "critical-ddns-updater-enabled";
-        nodes.machine = {
-          imports = [
-            config.flake.nixosModules.critical-ddns-updater
-            config.flake.nixosModules.rumor
-          ];
-          options.dot.hardware.network.enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = true;
-          };
-          options.dot.host.ip = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "127.0.0.1";
-          };
-          options.dot.host.user = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "testuser";
-          };
-          options.dot.consul.services = pkgs.lib.mkOption {
-            type = pkgs.lib.types.listOf pkgs.lib.types.raw;
-            default = [ ];
-          };
-          options.sops.secrets = pkgs.lib.mkOption {
-            type = pkgs.lib.types.attrsOf (
-              pkgs.lib.types.submodule {
-                options.path = pkgs.lib.mkOption {
-                  type = pkgs.lib.types.str;
-                };
-                options.owner = pkgs.lib.mkOption {
-                  type = pkgs.lib.types.str;
-                  default = "root";
-                };
-                options.group = pkgs.lib.mkOption {
-                  type = pkgs.lib.types.str;
-                  default = "root";
-                };
-                options.mode = pkgs.lib.mkOption {
-                  type = pkgs.lib.types.str;
-                  default = "0400";
-                };
-              }
-            );
-            default = { };
-          };
-          config = {
-            networking.hostName = "testhost";
-            dot.ddns.enable = true;
-            sops.secrets."ddns-updater-settings".path = "/run/secrets/ddns-updater-settings";
-            users.users.testuser = {
-              isNormalUser = true;
-              home = "/home/testuser";
+
+        dot.test.rumor.shared.specification.generations = [
+          {
+            generator = "text";
+            arguments = {
+              name = "ddns-updater-duckdns";
+              text = "1";
             };
+          }
+          {
+            generator = "text";
+            arguments = {
+              name = "ddns-updater-cloudflare";
+              text = "2";
+            };
+          }
+        ];
+
+        nodes.machine =
+          { lib, ... }:
+          {
+            imports = [
+              self.nixosModules.critical-ddns-updater
+            ];
+
+            dot.ddns-updater.enable = true;
           };
-        };
-        script = ''
+        testScript = ''
           start_all()
-          # Service should be enabled
           machine.succeed("systemctl is-enabled ddns-updater.service")
-          # Verify ddns-updater user exists
           machine.succeed("id ddns-updater")
-          # Verify ddns-updater group exists
           machine.succeed("getent group ddns-updater")
-          # Verify systemd service has correct user configuration
           machine.succeed("grep 'User=ddns-updater' /etc/systemd/system/ddns-updater.service")
           machine.succeed("grep 'Group=ddns-updater' /etc/systemd/system/ddns-updater.service")
         '';

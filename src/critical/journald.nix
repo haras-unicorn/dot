@@ -1,4 +1,4 @@
-{ config, ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-journald = {
@@ -16,12 +16,14 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-journald = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-journald = self.lib.test.mkTest pkgs {
         name = "critical-journald";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-journald ];
+          imports = [
+            self.nixosModules.critical-journald
+          ];
         };
-        script = ''
+        testScript = ''
           start_all()
           machine.succeed("grep 'SystemMaxUse=750M' /etc/systemd/journald.conf")
           machine.succeed("grep 'SystemMaxFileSize=100M' /etc/systemd/journald.conf")

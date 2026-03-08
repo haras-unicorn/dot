@@ -1,6 +1,6 @@
 {
   lib,
-  config,
+  self,
   inputs,
   ...
 }:
@@ -63,11 +63,11 @@
         (
           lib.filterAttrs (
             _: nixosConfig: nixosConfig ? deploy && nixosConfig.deploy ? node && nixosConfig.deploy.node != null
-          ) config.flake.nixosConfigurations
+          ) self.nixosConfigurations
         );
 
     flake.checks = builtins.mapAttrs (
-      system: deployLib: deployLib.deployChecks config.flake.deploy
+      system: deployLib: deployLib.deployChecks self.deploy
     ) inputs.deploy-rs.lib;
   };
 }

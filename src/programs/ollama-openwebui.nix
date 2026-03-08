@@ -1,13 +1,10 @@
-{ config, ... }:
+{ self, ... }:
 
 # FIXME: https://www.youtube.com/watch?v=GyWuQwEsbe8
 # ^^ use open webui from pkgs
 
 {
   flake.homeModules.programs-ollama-openwebui =
-    let
-      flakeConfig = config.flake;
-    in
     {
       aiPkgs,
       pkgs,
@@ -18,7 +15,7 @@
     let
       hasGpu = config.nixpkgs.config.cudaSupport || config.nixpkgs.config.rocmSupport;
 
-      chromium = config.dot.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
+      chromium = config.dot.chromium.wrap pkgs.ungoogled-chromium "chromium";
 
       ollamaPackage = pkgs.ollama;
       openWebuiPackage = aiPkgs.open-webui;
@@ -55,7 +52,7 @@
           '';
         };
 
-        desktopApp = flakeConfig.lib.serverClientApp.make pkgs {
+        desktopApp = self.lib.serverClientApp.make pkgs {
           name = "ollama-${instanceName}-app";
           display = "Ollama OpenWebUI (${instanceName})";
           runtimeInputs = [

@@ -18,7 +18,7 @@
     nix-unit.inputs.nixpkgs.follows = "nixpkgs";
     nix-unit.inputs.flake-parts.follows = "flake-parts";
 
-    rumor.url = "github:haras-unicorn/rumor/refs/tags/1.0.0";
+    rumor.url = "github:haras-unicorn/rumor/refs/tags/1.1.4";
     rumor.inputs.nixpkgs.follows = "nixpkgs";
 
     deploy-rs.url = "github:serokell/deploy-rs";
@@ -51,6 +51,8 @@
 
     certilia-overlay.url = "github:marijanp/certilia-overlay";
     certilia-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
   outputs =

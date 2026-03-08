@@ -1,4 +1,4 @@
-{ config, ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-resolved =
@@ -7,7 +7,6 @@
       config,
       ...
     }:
-
     let
       hasNetwork = config.dot.hardware.network.enable;
       nameservers = [
@@ -39,16 +38,14 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-resolved = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-resolved = self.lib.test.mkTest pkgs {
         name = "critical-resolved";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-resolved ];
-          options.dot.hardware.network.enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = true;
-          };
+          imports = [
+            self.nixosModules.critical-resolved
+          ];
         };
-        script = ''
+        testScript = ''
           start_all()
           machine.succeed("systemctl is-enabled systemd-resolved.service")
           machine.succeed("grep 'DNS=1.1.1.1 1.0.0.1 8.8.8.8 8.8.4.4' /etc/systemd/resolved.conf")

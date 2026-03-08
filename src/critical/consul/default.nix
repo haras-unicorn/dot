@@ -1,6 +1,9 @@
-{ ... }:
+{ self, ... }:
 
 {
+  dot.domains.topLevel = "dot";
+  dot.domains.service = "service.dot";
+
   flake.homeModules.critical-consul =
     {
       pkgs,
@@ -22,7 +25,7 @@
           name = "Consul";
           exec =
             "${config.dot.browser.package}/bin/${config.dot.browser.bin}"
-            + " --new-window consul-ui.services.consul";
+            + " --new-window consul-ui.${config.dot.domains.service}";
           terminal = false;
         };
       };
@@ -60,13 +63,8 @@
     in
     {
       options.dot = {
-        consul.enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-        };
-        consul.services = lib.mkOption {
-          type = lib.types.listOf (lib.types.attrsOf lib.types.anything);
-          default = [ ];
+        consul = {
+          enable = lib.mkEnableOption "Consul";
         };
       };
 
@@ -74,11 +72,11 @@
         (lib.mkIf (hasNetwork && !config.dot.consul.enable) {
           networking.networkmanager.dispatcherScripts = [
             {
-              source = pkgs.writeText "disable-dnssec-nebula" ''
-                if [ "$1" = "${config.dot.nebula.interface}" ] && [ "$2" = "up" ]; then
+              source = pkgs.writeText "disable-dnssec-${config.dot.host.interface}" ''
+                if [ "$1" = "${config.dot.host.interface}" ] && [ "$2" = "up" ]; then
                   ${pkgs.systemd}/bin/resolvectl dnssec $1 off
                   ${pkgs.systemd}/bin/resolvectl dnsovertls $1 off
-                  ${pkgs.systemd}/bin/resolvectl domain $1 ~dot ~service.consul
+                  ${pkgs.systemd}/bin/resolvectl domain $1 ~${config.dot.domains.topLevel}
                   ${pkgs.systemd}/bin/resolvectl dns $1 ${builtins.concatStringsSep " " hosts}
                 fi
               '';
@@ -88,23 +86,23 @@
 
         })
         (lib.mkIf (hasNetwork && config.dot.consul.enable) {
-          networking.networkmanager.ensureProfiles.profiles.${config.dot.nebula.interface} = {
+          networking.networkmanager.ensureProfiles.profiles.${config.dot.host.interface} = {
             connection = {
-              id = config.dot.nebula.interface;
+              id = config.dot.host.interface;
             };
             ipv4 = {
               dns = "127.0.0.1";
-              dns-search = "~dot;~service.consul";
+              dns-search = "~${config.dot.domains.topLevel};";
             };
           };
 
           systemd.services.consul.after = [
-            "nebula-online.target"
-            "chronyd-synced.target"
+            "dot-network-online.target"
+            "dot-time-synchronized.target"
           ];
           systemd.services.consul.requires = [
-            "nebula-online.target"
-            "chronyd-synced.target"
+            "dot-network-online.target"
+            "dot-time-synchronized.target"
           ];
 
           services.consul.enable = true;
@@ -112,6 +110,7 @@
           services.consul.dropPrivileges = false;
 
           services.consul.extraConfig = {
+            domain = config.dot.domains.topLevel;
             datacenter = "dot";
             node_name = config.dot.host.name;
             server = true;
@@ -170,23 +169,38 @@
               server = rpcPort;
             };
 
-            services = config.dot.consul.services;
+            services = builtins.map (service: {
+              inherit (service) name port address;
+              tags = [
+                "dot.enable=true"
+              ]
+              ++ (lib.optional service.tls "dot.http.services.${service.name}.loadbalancer.server.scheme=https");
+              check =
+                let
+                  protocol = builtins.head (
+                    builtins.filter (protocol: lib.hasPrefix protocol service.health) self.lib.services.protocols
+                  );
+                  key = if protocol == "tcp://" then "tcp" else "http";
+                in
+                {
+                  ${key} =
+                    protocol
+                    + service.address
+                    + ":"
+                    + builtins.toString service.port
+                    + lib.removePrefix protocol service.health;
+                  timeout = "30s";
+                  interval = "10s";
+                };
+            }) config.dot.services;
           };
 
-          dot.consul.services = [
+          dot.services = [
             {
               name = "consul-ui";
               port = port;
-              address = config.dot.host.ip;
-              tags = [
-                "dot.enable=true"
-                "dot.http.services.consul-ui.loadbalancer.server.scheme=https"
-              ];
-              check = {
-                http = "https://${config.dot.host.ip}:${builtins.toString port}/v1/status/leader";
-                interval = "30s";
-                timeout = "10s";
-              };
+              tls = true;
+              health = "https:///v1/status/leader";
             }
           ];
 
@@ -251,7 +265,7 @@
             {
               importer = "vault-file";
               arguments = {
-                path = "kv/dot/shared";
+                path = self.lib.rumor.shared;
                 file = "consul-gossip-key";
                 allow_fail = true;
               };
@@ -259,7 +273,7 @@
             {
               importer = "vault-file";
               arguments = {
-                path = "kv/dot/shared";
+                path = self.lib.rumor.shared;
                 file = "consul-bootstrap-token";
                 allow_fail = true;
               };
@@ -267,41 +281,24 @@
           ];
           rumor.specification.generations = [
             {
-              generator = "text";
+              generator = "tls-leaf";
               arguments = {
-                name = "consul-cert-config";
-                renew = true;
-                text = ''
-                  [req]
-                  distinguished_name = req_distinguished_name
-                  prompt = no
-
-                  [req_distinguished_name]
-                  CN = Consul
-                  O = Dot
-
-                  [ext]
-                  basicConstraints = CA:FALSE
-                  keyUsage = nonRepudiation,digitalSignature,keyEncipherment
-                  subjectAltName = @alt_names
-
-                  [alt_names]
-                  DNS.1 = consul.service.consul
-                  DNS.2 = ${config.dot.host.name}.dot
-                  DNS.3 = localhost
-                  IP.1 = ${config.dot.host.ip}
-                  IP.2 = 127.0.0.1
-                '';
-              };
-            }
-            {
-              generator = "openssl";
-              arguments = {
+                common_name = "dot";
+                organization = "Dot";
+                sans = [
+                  "consul.${config.dot.domains.service}"
+                  "consul-ui.${config.dot.domains.service}"
+                  "localhost"
+                  "${config.dot.host.ip}"
+                  "127.0.0.1"
+                ];
+                config = "consul-cert-config";
+                request_config = "consul-cert-request-config";
+                private = "consul-private";
+                request = "consul-cert-request";
                 ca_private = "openssl-ca-private";
                 ca_public = "openssl-ca-public";
                 serial = "openssl-ca-serial";
-                config = "consul-cert-config";
-                private = "consul-private";
                 public = "consul-public";
                 renew = true;
               };
@@ -344,14 +341,14 @@
             {
               exporter = "vault-file";
               arguments = {
-                path = "kv/dot/shared";
+                path = self.lib.rumor.shared;
                 file = "consul-gossip-key";
               };
             }
             {
               exporter = "vault-file";
               arguments = {
-                path = "kv/dot/shared";
+                path = self.lib.rumor.shared;
                 file = "consul-bootstrap-token";
               };
             }
