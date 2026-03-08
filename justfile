@@ -25,7 +25,7 @@ lint:
       | get exit_code) == 0 { exit 1 }
 
 test:
-    nix flake check --all-systems
+    nix flake check --all-systems --option sandbox-paths /dev/vhost-vsock
     nix-unit --flake .#tests
 
 test-e2e test *args:
