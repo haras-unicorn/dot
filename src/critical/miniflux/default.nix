@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  flake.nixosModules.clusters-miniflux =
+  flake.nixosModules.critical-miniflux =
     {
       lib,
       config,
@@ -234,7 +234,7 @@
       };
     };
 
-  flake.homeModules.clusters-miniflux =
+  flake.homeModules.critical-miniflux =
     {
       lib,
       config,
