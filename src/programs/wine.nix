@@ -94,7 +94,7 @@
           };
         };
     in
-    {
+    lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") {
       programs.lutris.winePackages = [
         wine32Package
         wine64Package
