@@ -18,16 +18,8 @@
     nix-unit.inputs.nixpkgs.follows = "nixpkgs";
     nix-unit.inputs.flake-parts.follows = "flake-parts";
 
-    perch.url = "github:haras-unicorn/perch/refs/tags/1.3.0";
-    perch.inputs.nixpkgs.follows = "nixpkgs";
-
-    perch-modules.url = "github:haras-unicorn/perch-modules/refs/tags/1.1.0";
-    perch-modules.inputs.nixpkgs.follows = "nixpkgs";
-    perch-modules.inputs.perch.follows = "perch";
-
     rumor.url = "github:haras-unicorn/rumor/refs/tags/1.0.0";
     rumor.inputs.nixpkgs.follows = "nixpkgs";
-    rumor.inputs.perch.follows = "perch";
 
     deploy-rs.url = "github:serokell/deploy-rs";
     deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
