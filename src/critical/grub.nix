@@ -1,4 +1,4 @@
-{ config, ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-grub =
@@ -27,47 +27,40 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-grub-efi = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-grub-efi = self.lib.test.mkTest pkgs {
         name = "critical-grub-efi";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-grub ];
-          options.dot.hardware.rpi."4".enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = false;
-          };
+          imports = [
+            self.nixosModules.critical-grub
+          ];
+
           options.stylix.targets.grub.useWallpaper = pkgs.lib.mkOption {
             type = pkgs.lib.types.bool;
-            default = true;
           };
+
+          config.dot.hardware.rpi."4".enable = false;
         };
-        script = ''
-          start_all()
-          # Verify GRUB tools are available in the system closure
+        dot.test.commands.suffix = ''
           machine.succeed("find /nix/store -name 'grub*' -type d | head -1")
-          # Verify system booted successfully
           machine.succeed("systemctl is-system-running --wait")
         '';
       };
 
-      checks.test-critical-grub-rpi4 = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-grub-rpi4 = self.lib.test.mkTest pkgs {
         name = "critical-grub-rpi4";
         nodes.machine = {
-          imports = [ config.flake.nixosModules.critical-grub ];
-          options.dot.hardware.rpi."4".enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = true;
-          };
+          imports = [
+            self.nixosModules.critical-grub
+          ];
+
           options.stylix.targets.grub.useWallpaper = pkgs.lib.mkOption {
             type = pkgs.lib.types.bool;
-            default = true;
           };
+
+          config.dot.hardware.rpi."4".enable = true;
         };
-        script = ''
-          start_all()
-          # On RPi4, extlinux-compatible should be enabled instead of GRUB
-          # Verify extlinux tools are present in the system
+        dot.test.commands.suffix = ''
           machine.succeed("find /nix/store -name '*extlinux*' -type f | head -1")
-          # System should boot successfully with extlinux config
           machine.succeed("systemctl is-system-running --wait")
         '';
       };

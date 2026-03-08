@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.critical-openssl =
@@ -8,103 +8,105 @@
       pkgs,
       ...
     }:
-    let
-      hasNetwork = config.dot.hardware.network.enable;
-    in
-    lib.mkIf hasNetwork {
-      security.pki.certificateFiles = [
-        ./ca.crt
-      ];
-
-      sops.secrets."openssl-ca-public" = {
-        owner = "root";
-        group = "root";
-        mode = "0644";
+    {
+      options.dot = {
+        openssl = {
+          enable = (lib.mkEnableOption "OpenSSL") // {
+            default = true;
+          };
+        };
       };
 
-      rumor.sops.keys = [
-        "openssl-ca-public"
-      ];
+      config = lib.mkIf config.dot.openssl.enable {
+        security.pki.certificatePaths = [ config.sops.secrets."openssl-ca-public".path ];
+        security.pki.buildOnActivation = true;
 
-      rumor.specification.imports = [
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "openssl-ca-private";
-            allow_fail = true;
-          };
-        }
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "openssl-ca-public";
-            allow_fail = true;
-          };
-        }
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "openssl-ca-serial";
-            allow_fail = true;
-          };
-        }
-      ];
+        sops.secrets."openssl-ca-public" = {
+          owner = "root";
+          group = "root";
+          mode = "0644";
+        };
 
-      rumor.specification.generations = lib.mkBefore [
-        {
-          generator = "text";
-          arguments = {
-            name = "openssl-ca-config";
-            text = ''
-              [req]
-              distinguished_name = req_distinguished_name
-              x509_extensions = v3_ca
-              prompt = no
+        cryl.sops.keys = [
+          "openssl-ca-public"
+        ];
 
-              [req_distinguished_name]
-              CN = Dot
+        cryl.specification.imports = [
+          {
+            importer = "vault-file";
+            arguments = {
+              path = self.lib.cryl.shared;
+              file = "openssl-ca-private";
+              allow_fail = true;
+            };
+          }
+          {
+            importer = "vault-file";
+            arguments = {
+              path = self.lib.cryl.shared;
+              file = "openssl-ca-public";
+              allow_fail = true;
+            };
+          }
+          {
+            importer = "vault-file";
+            arguments = {
+              path = self.lib.cryl.shared;
+              file = "openssl-ca-serial";
+              allow_fail = true;
+            };
+          }
+        ];
 
-              [v3_ca]
-              basicConstraints = CA:TRUE
-              keyUsage = keyCertSign
-            '';
-          };
-        }
-        {
-          generator = "openssl-ca";
-          arguments = {
-            config = "openssl-ca-config";
-            private = "openssl-ca-private";
-            public = "openssl-ca-public";
-          };
-        }
-      ];
-
-      rumor.specification.exports = [
-        {
-          exporter = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "openssl-ca-private";
-          };
-        }
-        {
-          exporter = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "openssl-ca-public";
-          };
-        }
-        {
-          exporter = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "openssl-ca-serial";
-          };
-        }
-      ];
+        cryl.specification.generations = lib.mkBefore [
+          {
+            generator = "tls-root";
+            arguments = {
+              common_name = "dot";
+              organization = "Dot";
+              config = "openssl-ca-config";
+              private = "openssl-ca-private";
+              public = "openssl-ca-public";
+            };
+          }
+        ];
+        cryl.specification.exports = [
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = self.lib.cryl.shared;
+              file = "openssl-ca-private";
+            };
+          }
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = self.lib.cryl.shared;
+              file = "openssl-ca-public";
+            };
+          }
+        ]
+        ++ (lib.optional
+          (builtins.any (
+            { generator, arguments }:
+            (
+              generator == "tls-leaf"
+              || generator == "tls-rsa-leaf"
+              || generator == "tls-intermediary"
+              || generator == "tls-rsa-intermediary"
+            )
+            && arguments.ca_public == "openssl-ca-public"
+            && arguments.ca_private == "openssl-ca-private"
+            && arguments.serial == "openssl-ca-serial"
+          ) config.cryl.specification.generations)
+          {
+            exporter = "vault-file";
+            arguments = {
+              path = self.lib.cryl.shared;
+              file = "openssl-ca-serial";
+            };
+          }
+        );
+      };
     };
 }

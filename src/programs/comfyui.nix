@@ -1,10 +1,7 @@
-{ inputs, config, ... }:
+{ inputs, self, ... }:
 
 {
   flake.homeModules.programs-comfyui =
-    let
-      flakeConfig = config.flake;
-    in
     {
       pkgs,
       lib,
@@ -14,7 +11,7 @@
     let
       hasGpu = config.nixpkgs.config.cudaSupport || config.nixpkgs.config.rocmSupport;
 
-      chromium = config.dot.chromium.wrap pkgs pkgs.ungoogled-chromium "chromium";
+      chromium = config.dot.chromium.wrap pkgs.ungoogled-chromium "chromium";
 
       packageName = if config.nixpkgs.config.cudaSupport then "cuda" else "default";
 
@@ -34,7 +31,7 @@
           '';
         };
 
-        desktopApp = flakeConfig.lib.serverClientApp.make pkgs {
+        desktopApp = self.lib.serverClientApp.make pkgs {
           name = "comfyui-${instanceName}-app";
           display = "ComfyUI (${instanceName})";
           runtimeInputs = [

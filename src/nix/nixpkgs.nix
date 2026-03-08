@@ -1,0 +1,55 @@
+{ inputs, ... }:
+
+let
+  common =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      _module.args.unstablePkgs = import inputs.nixpkgs-unstable {
+        system = pkgs.stdenv.hostPlatform.system;
+        config = config.nixpkgs.config;
+        overlays = config.nixpkgs.overlays;
+      };
+
+      _module.args.aiPkgs = import inputs.nixpkgs-ai {
+        system = pkgs.stdenv.hostPlatform.system;
+        config = config.nixpkgs.config;
+        overlays = config.nixpkgs.overlays;
+      };
+
+      nixpkgs.config = {
+        allowUnfree = true;
+        nvidia.acceptLicense = config.dot.hardware.graphics.driver == "nvidia";
+        cudaSupport =
+          (config.dot.hardware.graphics.driver == "nvidia")
+          && (
+            (config.dot.hardware.graphics.version == "latest")
+            || (config.dot.hardware.graphics.version == "production")
+          );
+        rocmSupport =
+          # NOTE: lots of packages broken right now
+          # config.dot.hardware.graphics.driver == "amdgpu"
+          false;
+      };
+
+      nixpkgs.overlays = lib.mkIf config.dot.hardware.rpi."4".enable [
+        (final: prev: {
+          # NOTE: https://github.com/NixOS/nixpkgs/issues/154163#issuecomment-1008362877
+          makeModulesClosure = x: prev.makeModulesClosure (x // { allowMissing = true; });
+        })
+      ];
+    };
+in
+{
+  flake.nixosModules.nixpkgs = {
+    imports = [ common ];
+  };
+
+  flake.homeModules.nixpkgs = {
+    imports = [ common ];
+  };
+}

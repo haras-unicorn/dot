@@ -1,12 +1,12 @@
-{ config, ... }:
+{ self, config, ... }:
 
 let
   name = "workbug";
   system = "x86_64-linux";
-  ip = "10.69.42.3";
+  ip = "${config.dot.network.subnet.prefix}.3";
 in
 {
-  flake.nixosConfigurations.${name} = config.flake.lib.host.mkHost {
+  flake.nixosConfigurations.${name} = self.lib.host.mkHost {
     inherit name system ip;
   };
 

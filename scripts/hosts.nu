@@ -40,13 +40,14 @@ def main [] {
 def "main secrets" [host?: string, --all] {
   let hosts = pick hosts $all false $host
 
-  rm -rf $artifacts
-  mkdir $artifacts
-  cd $artifacts
-
   for host in $hosts {
-    let spec = nix eval --json $".#rumor.($host.configuration)"
-    $spec | rumor stdin json --stay
+    cd $root
+    rm -rf $artifacts
+    mkdir $artifacts
+    cd $artifacts
+
+    let spec = nix eval --json $".#cryl.($host.configuration)"
+    $spec | cryl from-stdin json --stay --allow-script
   }
 }
 
@@ -219,11 +220,14 @@ def "main nebula" [ip: string, --host: string] {
         }
       }
     ]
-  } | to json | rumor stdin json --stay
+  } | to json | cryl stdin json --stay
 }
 
 def "pick hosts" [all: bool, with_secrets: bool, name?: string] {
-  mut hosts = open $hosts | get hosts
+  mut hosts = nix eval ".#hosts" --json
+    | from json
+    | transpose name value
+    | each { $in.value | update name $in.name }
 
   if ($name == null) and not ($all) {
     let wanted = (gum choose --header "Pick host name:" ...($hosts | get name ))
@@ -231,7 +235,7 @@ def "pick hosts" [all: bool, with_secrets: bool, name?: string] {
   }
 
   $hosts = $hosts | each { |host|
-    let configuration = $"($host.name)-($host.system.nixpkgs.system)"
+    let configuration = $"host-($host.name)"
     $host | insert configuration $configuration
   }
 
@@ -244,6 +248,6 @@ def "pick hosts" [all: bool, with_secrets: bool, name?: string] {
     let secrets = vault kv get -format=json $key
       | from json
       | get data.data
-    $host | insert secrets $secrets
+    $host | upsert secrets $secrets
   }
 }

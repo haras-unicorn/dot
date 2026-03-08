@@ -1,14 +1,4 @@
-{ ... }:
-
-# TODO: extract api keys into a desktop module
-
-let
-  mkPaths = user: {
-    deepseekPath = "/home/${user}/.secrets/deepseek-api-key";
-    openaiPath = "/home/${user}/.secrets/openai-api-key";
-    openrouterPath = "/home/${user}/.secrets/openrouter-api-key";
-  };
-in
+{ inputs, ... }:
 
 {
   flake.homeModules.programs-crush =
@@ -19,25 +9,25 @@ in
       ...
     }:
     let
-      user = config.dot.host.user;
-
       hasNetwork = config.dot.hardware.network.enable;
 
-      inherit (mkPaths user) deepseekPath openaiPath openrouterPath;
+      exports = builtins.concatStringsSep "\n" (
+        builtins.map (
+          { name, value, ... }:
+          ''
+            # shellcheck disable=SC2155
+            export ${lib.toUpper name}_API_KEY="cat "${value.homeKey}")"
+          ''
+        ) (lib.attrsToList config.dot.openai.apis)
+      );
 
       crush = pkgs.writeShellApplication {
         name = "crush";
         runtimeInputs = [
-          pkgs.coreutils
-          pkgs.nur.repos.charmbracelet.crush
+          inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.crush
         ];
         text = ''
-          # shellcheck disable=SC2155
-          export DEEPSEEK_API_KEY="$(cat ${deepseekPath})"
-          # shellcheck disable=SC2155
-          export OPENAI_API_KEY="$(cat ${openaiPath})"
-          # shellcheck disable=SC2155
-          export OPENROUTER_API_KEY="$(cat ${openrouterPath})"
+          ${exports}
           crush "$@"
         '';
       };
@@ -48,72 +38,5 @@ in
       ];
 
       xdg.configFile."crush/crush.json".source = ./crush.json;
-    };
-
-  flake.nixosModules.programs-crush =
-    {
-      pkgs,
-      config,
-      lib,
-      ...
-    }:
-    let
-      user = config.dot.host.user;
-
-      hasNetwork = config.dot.hardware.network.enable;
-
-      inherit (mkPaths user) deepseekPath openaiPath openrouterPath;
-    in
-    lib.mkIf hasNetwork {
-      sops.secrets."deepseek-api-key" = {
-        path = deepseekPath;
-        owner = user;
-        group = user;
-        mode = "0400";
-      };
-      sops.secrets."openai-api-key" = {
-        path = openaiPath;
-        owner = user;
-        group = user;
-        mode = "0400";
-      };
-      sops.secrets."openrouter-api-key" = {
-        path = openrouterPath;
-        owner = user;
-        group = user;
-        mode = "0400";
-      };
-
-      rumor.sops.keys = [
-        "deepseek-api-key"
-        "openai-api-key"
-        "openrouter-api-key"
-      ];
-      rumor.specification.imports = [
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "deepseek-api-key";
-            allow_fail = false;
-          };
-        }
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "openai-api-key";
-            allow_fail = false;
-          };
-        }
-        {
-          importer = "vault-file";
-          arguments = {
-            path = "kv/dot/shared";
-            file = "openrouter-api-key";
-            allow_fail = false;
-          };
-        }
-      ];
     };
 }

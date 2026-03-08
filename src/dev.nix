@@ -36,7 +36,7 @@
             # Tools
             nodePackages.cspell
             nixos-generators
-            inputs.rumor.packages.${system}.default
+            inputs.cryl.packages.${system}.default
             nebula
             openssh
             sshpass

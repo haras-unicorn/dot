@@ -1,4 +1,4 @@
-{ inputs, config, ... }:
+{ inputs, self, ... }:
 
 {
   flake.nixosModules.critical-comin =
@@ -14,7 +14,7 @@
 
       services.comin = {
         enable = true;
-        hostname = "${config.dot.host.name}-${pkgs.stdenv.hostPlatform.system}";
+        hostname = config.dot.host.name;
         remotes = [
           {
             name = "origin";
@@ -32,19 +32,14 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-comin = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-comin = self.lib.test.mkTest pkgs {
         name = "critical-comin";
         nodes.machine = {
           imports = [
-            config.flake.nixosModules.critical-comin
+            self.nixosModules.critical-comin
           ];
-          options.dot.host.name = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "testhost";
-          };
         };
-        script = ''
-          start_all()
+        dot.test.commands.suffix = ''
           machine.succeed("systemctl is-enabled comin.service")
           machine.succeed("which comin")
         '';

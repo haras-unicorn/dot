@@ -31,7 +31,7 @@
       stylix.opacity.popups = 1.0;
     };
 
-  flake.homeModules.stylix =
+  flake.homeModules.desktop-stylix =
     {
       config,
       pkgs,

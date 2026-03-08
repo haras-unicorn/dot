@@ -1,12 +1,12 @@
-{ config, ... }:
+{ self, config, ... }:
 
 let
   name = "hearth";
   system = "x86_64-linux";
-  ip = "10.69.42.2";
+  ip = "${config.dot.network.subnet.prefix}.2";
 in
 {
-  flake.nixosConfigurations.${name} = config.flake.lib.host.mkHost {
+  flake.nixosConfigurations.${name} = self.lib.host.mkHost {
     inherit name system ip;
   };
 
@@ -19,6 +19,8 @@ in
     dot.hardware.temp = "/sys/class/hwmon/hwmon2/temp1_input";
     dot.hardware.monitor.main = "DP-1";
     dot.host.pass = false;
+    dot.seaweedfs.enableHomeMount = true;
+    dot.cockroachdb.enableUserConnection = true;
   };
 
   flake.homeModules."hosts-${name}" = {

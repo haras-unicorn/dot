@@ -1,6 +1,6 @@
-{ config, ... }:
+{ self, ... }:
 
-# TODO: only allow from nebula
+# TODO: only allow from network
 
 {
   flake.nixosModules.critical-openssh =
@@ -28,14 +28,14 @@
           mode = "0644";
         };
 
-        rumor.sops.keys = [
+        cryl.sops.keys = [
           "ssh-authorized-keys"
           "ssh-public"
           "ssh-private"
         ];
-        rumor.specification.generations = [
+        cryl.specification.generations = [
           {
-            generator = "ssh-keygen";
+            generator = "ssh-key";
             arguments = {
               name = config.networking.hostName;
               public = "ssh-public";
@@ -43,7 +43,7 @@
             };
           }
         ];
-        rumor.specification.exports = [
+        cryl.specification.exports = [
           # TODO: generate with moustache from other hosts
           {
             exporter = "copy";
@@ -55,7 +55,7 @@
           {
             exporter = "vault-file";
             arguments = {
-              path = "kv/dot/shared";
+              path = self.lib.cryl.shared;
               file = "${config.networking.hostName}-ssh-public";
             };
           }
@@ -70,35 +70,14 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.test-critical-openssh = config.flake.lib.test.mkTest pkgs {
+      checks.test-critical-openssh = self.lib.test.mkTest pkgs {
         name = "critical-openssh";
         nodes.machine = {
           imports = [
-            config.flake.nixosModules.critical-openssh
-            config.flake.nixosModules.rumor
+            self.nixosModules.critical-openssh
           ];
-          options.dot.hardware.network.enable = pkgs.lib.mkOption {
-            type = pkgs.lib.types.bool;
-            default = true;
-          };
-          options.dot.host.user = pkgs.lib.mkOption {
-            type = pkgs.lib.types.str;
-            default = "testuser";
-          };
-          options.sops.secrets = pkgs.lib.mkOption {
-            type = pkgs.lib.types.attrsOf pkgs.lib.types.raw;
-            default = { };
-          };
-          config = {
-            networking.hostName = "testhost";
-            users.users.testuser = {
-              isNormalUser = true;
-              home = "/home/testuser";
-            };
-          };
         };
-        script = ''
-          start_all()
+        dot.test.commands.suffix = ''
           machine.succeed("systemctl is-enabled sshd.service")
           machine.succeed("grep 'PermitRootLogin no' /etc/ssh/sshd_config")
           machine.succeed("grep 'PasswordAuthentication no' /etc/ssh/sshd_config")

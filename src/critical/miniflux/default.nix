@@ -1,4 +1,6 @@
-{ ... }:
+# TODO: this should go into some kinda of app-service folder or something
+
+{ self, ... }:
 
 {
   flake.nixosModules.critical-miniflux =
@@ -44,10 +46,7 @@
     in
     {
       options.dot = {
-        miniflux.enable = lib.mkOption {
-          type = lib.types.bool;
-          default = false;
-        };
+        miniflux.enable = lib.mkEnableOption "Miniflux";
       };
 
       config = lib.mkIf (hasNetwork && config.dot.miniflux.enable) {
@@ -62,7 +61,7 @@
           LISTEN_ADDR = "0.0.0.0:${builtins.toString port}";
           RUN_MIGRATIONS = 1;
           CREATE_ADMIN = 1;
-          BASE_URL = "https://miniflux.service.consul/";
+          BASE_URL = "https://miniflux.${config.dot.domains.service}/";
         };
         # NOTE: its named adminCredentialsFile but its just an EnvironmentFile setting
         services.miniflux.adminCredentialsFile = config.sops.secrets."miniflux-env".path;
@@ -82,24 +81,17 @@
         };
 
         services.cockroachdb.init.sql.files = [ config.sops.secrets."cockroach-miniflux-init".path ];
-        systemd.services.miniflux.requires = [ "cockroachdb-init.service" ];
-        systemd.services.miniflux.after = [ "cockroachdb-init.service" ];
+        systemd.services.miniflux.wantedBy = [ "dot-database-initialized.target" ];
+        systemd.services.miniflux.requires = [ "dot-database-initialized.target" ];
+        systemd.services.miniflux.after = [ "dot-database-initialized.target" ];
 
         networking.firewall.allowedTCPPorts = [ port ];
 
-        dot.consul.services = [
+        dot.services = [
           {
             name = "miniflux";
             port = port;
-            address = config.dot.host.ip;
-            tags = [
-              "dot.enable=true"
-            ];
-            check = {
-              http = "http://${config.dot.host.ip}:${builtins.toString port}/healthcheck";
-              interval = "30s";
-              timeout = "10s";
-            };
+            health = "http:///healthcheck";
           }
         ];
 
@@ -133,24 +125,24 @@
           mode = "0400";
         };
 
-        rumor.sops.keys = [
+        cryl.sops.keys = [
           "cockroach-miniflux-private"
           "cockroach-miniflux-public"
           "cockroach-miniflux-pass"
           "cockroach-miniflux-init"
           "miniflux-env"
         ];
-        rumor.specification.imports = [
+        cryl.specification.imports = [
           {
             importer = "vault-file";
             arguments = {
-              path = "kv/dot/shared";
+              path = self.lib.cryl.shared;
               file = "${user}-password";
               allow_fail = false;
             };
           }
         ];
-        rumor.specification.generations = [
+        cryl.specification.generations = [
           {
             generator = "cockroach-client";
             arguments = {

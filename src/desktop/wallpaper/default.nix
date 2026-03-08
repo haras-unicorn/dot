@@ -1,11 +1,12 @@
 { ... }:
 
 let
-  mkOptions =
+  common =
     {
       lib,
       config,
       pkgs,
+      ...
     }:
     let
       hasWayland = config.dot.hardware.graphics.wayland;
@@ -34,36 +35,17 @@ let
     in
     {
       dot.wallpaper = {
-        path = lib.mkOption {
-          type = lib.types.str;
-          default = "${./wallpaper.mp4}";
-        };
-        image = lib.mkOption {
-          type = lib.types.str;
-          default = "${wallpaperImage}/image.png";
-        };
-        static = lib.mkOption {
-          type = lib.types.bool;
-          default = !hasWayland;
-        };
-        final = lib.mkOption {
-          type = lib.types.str;
-          default = if isStatic then config.dot.wallpaper.image else config.dot.wallpaper.path;
-        };
+        path = "${./wallpaper.mp4}";
+        image = "${wallpaperImage}/image.png";
+        static = lib.mkDefault (!hasWayland);
+        final = if isStatic then config.dot.wallpaper.image else config.dot.wallpaper.path;
       };
     };
 in
 {
-  flake.nixosModules.desktop-wallpaper =
-    {
-      lib,
-      config,
-      pkgs,
-      ...
-    }:
-    {
-      options = mkOptions { inherit lib config pkgs; };
-    };
+  flake.nixosModules.desktop-wallpaper = {
+    imports = [ common ];
+  };
 
   flake.homeModules.desktop-wallpaper =
     {
@@ -103,7 +85,7 @@ in
       };
     in
     {
-      options = mkOptions { inherit lib config pkgs; };
+      imports = [ common ];
 
       config = lib.mkIf hasMonitor {
         dot.desktopEnvironment.sessionStartup = lib.mkIf (hasWayland && !isStatic) [
@@ -111,6 +93,7 @@ in
         ];
 
         stylix.targets.hyprpaper.enable = lib.mkForce (hasWayland && isStatic);
+
         services.hyprpaper.enable = lib.mkForce (hasWayland && isStatic);
 
         stylix.targets.feh.enable = lib.mkForce ((!hasWayland) && isStatic);

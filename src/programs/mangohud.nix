@@ -1,3 +1,12 @@
+let
+  common =
+    { lib, pkgs, ... }:
+    {
+      options.dot = {
+        mangohud.package = lib.mkPackageOption pkgs "mangohud" { };
+      };
+    };
+in
 {
   flake.nixosModules.programs-mangohud =
     {
@@ -12,9 +21,7 @@
       hasKeyboard = config.dot.hardware.keyboard.enable;
     in
     {
-      options = {
-        dot.mangohud.package = lib.mkPackageOption pkgs "mangohud" { };
-      };
+      imports = [ common ];
 
       config = lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
         dot.mangohud.package = pkgs.mangohud;
@@ -38,12 +45,19 @@
       hasMouse = config.dot.hardware.mouse.enable;
       hasKeyboard = config.dot.hardware.keyboard.enable;
     in
-    lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
-      programs.mangohud.enable = true;
-      programs.mangohud.package = osConfig.dot.mangohud.package;
+    {
+      imports = [ common ];
 
-      programs.lutris.extraPackages = [
-        config.programs.mangohud.package
+      config = lib.mkMerge [
+        { dot.mangohud.package = lib.mkDefault osConfig.dot.mangohud.package; }
+        (lib.mkIf (hasMonitor && hasMouse && hasKeyboard) {
+          programs.mangohud.enable = true;
+          programs.mangohud.package = config.dot.mangohud.package;
+
+          programs.lutris.extraPackages = [
+            config.programs.mangohud.package
+          ];
+        })
       ];
     };
 }

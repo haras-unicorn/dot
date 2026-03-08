@@ -1,0 +1,5 @@
+{
+  libAttrs.database.protocols = [
+    "postgresql://"
+  ];
+}

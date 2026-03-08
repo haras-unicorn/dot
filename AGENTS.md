@@ -13,7 +13,7 @@ relying on over the years which include but are not limited to:
 
 - [./src/lib/host.nix](./src/lib/host.nix)
 - [./src/capabilities/hardware.nix](./src/capabilities/hardware.nix)
-- [./src/lib/test.nix](./src/lib/test.nix)
+- [./src/lib/test/default.nix](./src/lib/test/default.nix)
 
 The project uses the [just] command runner for [running commands](./justfile)
 and [nushell] for running more [complicated commands](./scripts/hosts.nu) on my
@@ -23,9 +23,9 @@ host machines. Both expect to be ran from inside the
 ## Testing
 
 The project uses [nix-unit] for unit testing and
-[`config.flake.lib.test.mkTest`] (a wrapper over `pkgs.testers.runNixOSTest`)
+[`self.lib.test.mkTest`] (a wrapper over `pkgs.testers.runNixOSTest`)
 for NixOS VM testing. An example of how to write tests can be found in the
-[library test file](./src/lib/test.nix).
+[library test file](./src/lib/test/default.nix).
 
 When adding test code (e2e or unit tests), commit the changes after tests pass
 successfully using [Conventional Commits] format (e.g.,
@@ -45,8 +45,8 @@ When writing e2e tests for modules that use `dot.*` options (e.g.,
 `nodes.<name>.options` attribute since they are defined in other modules which
 are not imported by default.
 
-For modules using external dependencies like [sops-nix] and [rumor], import
-their modules (e.g., `config.flake.nixosModules.rumor`) and mock required
+For modules using external dependencies like [sops-nix] and [cryl], import
+their modules (e.g., `self.nixosModules.cryl`) and mock required
 options. You generally don't need to set up actual secrets - the module will
 configure secret paths automatically based on `dot.host.user`.
 
@@ -86,13 +86,13 @@ you must `git add` them before Nix can evaluate them. This is a common source of
 
 ## Security Warning
 
-**IMPORTANT: Never execute or run anything related to [rumor] or secret
+**IMPORTANT: Never execute or run anything related to [cryl] or secret
 management tools.** This includes:
 
-- Do not run `rumor` commands or import and execute its generators/importers
+- Do not run `cryl` commands or import and execute its generators/importers
 - Do not generate, rotate, or export real certificates or keys
 - Do not access or modify production Vault, SOPS, or Age keys
-- Only mock the `rumor.*` option schema for NixOS module compatibility when
+- Only mock the `cryl.*` option schema for NixOS module compatibility when
   testing
 - Mock `sops.secrets` with dummy paths and test data only when testing
 
@@ -105,7 +105,7 @@ with real secret infrastructure.
 [just]: https://just.systems/
 [nushell]: https://www.nushell.sh/
 [nix-unit]: https://github.com/nix-community/nix-unit/
-[`config.flake.lib.test.mkTest`]: ./src/lib/test.nix
+[`self.lib.test.mkTest`]: ./src/lib/test/default.nix
 [Conventional Commits]: https://www.conventionalcommits.org/
 [sops-nix]: https://github.com/Mic92/sops-nix
-[rumor]: https://github.com/haras-unicorn/rumor
+[cryl]: https://github.com/haras-unicorn/cryl

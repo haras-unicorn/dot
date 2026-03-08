@@ -1,3 +1,12 @@
+let
+  common =
+    { pkgs, lib, ... }:
+    {
+      options.dot = {
+        gamemode.package = lib.mkPackageOption pkgs "gamemode" { };
+      };
+    };
+in
 {
   flake.nixosModules.programs-gamemode =
     {
@@ -14,9 +23,7 @@
       hasKeyboard = config.dot.hardware.keyboard.enable;
     in
     {
-      options = {
-        dot.gamemode.package = lib.mkPackageOption pkgs "gamemode" { };
-      };
+      imports = [ common ];
 
       config = lib.mkIf (hasKeyboard && hasMonitor && hasMouse) {
         dot.gamemode.package = pkgs.gamemode;
@@ -46,9 +53,16 @@
       hasMouse = config.dot.hardware.mouse.enable;
       hasKeyboard = config.dot.hardware.keyboard.enable;
     in
-    lib.mkIf (hasKeyboard && hasMonitor && hasMouse) {
-      programs.lutris.extraPackages = [
-        osConfig.dot.gamemode.package
+    {
+      imports = [ common ];
+
+      config = lib.mkMerge [
+        { dot.gamemode.package = lib.mkDefault osConfig.dot.gamemode.package; }
+        (lib.mkIf (hasKeyboard && hasMonitor && hasMouse) {
+          programs.lutris.extraPackages = [
+            config.dot.gamemode.package
+          ];
+        })
       ];
     };
 }
