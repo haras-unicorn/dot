@@ -19,7 +19,12 @@
 
       config = lib.mkIf enable {
         home.packages = [
-          pkgs.mommy
+          (pkgs.mommy.override {
+            mommySettings = {
+              caregiver = "daddy";
+              pronouns = "he him his his himself";
+            };
+          })
         ];
 
         programs.nushell.extraConfig = lib.mkAfter ''
