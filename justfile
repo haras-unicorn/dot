@@ -25,18 +25,18 @@ lint:
       | get exit_code) == 0 { exit 1 }
 
 test:
-    nix flake check --all-systems --option sandbox-paths /dev/vhost-vsock
+    nix flake check --all-systems
     nix-unit --flake .#tests
 
 test-e2e test *args:
     nix build \
-      `.#checks.x86_64-linux."{{ test }}"` \
+      `.#checks.x86_64-linux."{{ test }}".withSshBackdoor` \
       --option sandbox-paths /dev/vhost-vsock \
       {{ args }}
 
 test-e2e-interactive test *args:
     nix run \
-      `.#checks.x86_64-linux."{{ test }}".driverInteractive` \
+      `.#checks.x86_64-linux."{{ test }}".withSshBackdoor.driverInteractive` \
       --option sandbox-paths /dev/vhost-vsock \
       {{ args }}
 

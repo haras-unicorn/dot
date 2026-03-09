@@ -8,16 +8,24 @@
       nodes,
       script,
     }:
-    pkgs.testers.runNixOSTest {
-      inherit name nodes;
-      testScript = script;
-      sshBackdoor.enable = true;
-      defaults = {
-        virtualisation.memorySize = 8192; # in MiB
-        virtualisation.cores = 4;
-        # Workaround for nixpkgs gzip/install-info issue
-        documentation.info.enable = false;
-      };
+    let
+      mkTest =
+        { withSshBackdoor }:
+        pkgs.testers.runNixOSTest {
+          inherit name nodes;
+          testScript = script;
+          sshBackdoor.enable = withSshBackdoor;
+          defaults = {
+            virtualisation.memorySize = 8192; # in MiB
+            virtualisation.cores = 4;
+            # Workaround for nixpkgs gzip/install-info issue
+            documentation.info.enable = false;
+          };
+        };
+    in
+    (mkTest { withSshBackdoor = false; })
+    // {
+      withSshBackdoor = mkTest { withSshBackdoor = true; };
     };
 
   libAttrs.test.commonDotOptionsModule =
