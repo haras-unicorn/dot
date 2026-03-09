@@ -96,5 +96,17 @@
           inputs.home-manager.flakeModules.home-manager
           (inputs.import-tree ./src)
         ];
+
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "aarch64-darwin"
+          "x86_64-darwin"
+        ];
+        perSystem =
+          { ... }:
+          {
+            nix-unit.inputs = inputs;
+          };
       };
 }
