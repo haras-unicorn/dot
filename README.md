@@ -28,9 +28,8 @@ or both. Some of the modules define glue code for various tools that I started
 relying on over the years which include but are not limited to:
 
 - [./src/lib/host.nix](./src/lib/host.nix)
-- [./src/hardware/module.nix](./src/hardware/module.nix)
-- [./src/hardware/nvidia.nix](./src/hardware/nvidia.nix)
-- [./src/critical/vault.nix](./src/critical/vault.nix)
+- [./src/capabilities/hardware.nix](./src/capabilities/hardware.nix)
+- [./src/lib/test.nix](./src/lib/test.nix)
 
 The project uses the [just] command runner for [running commands](./justfile)
 and [nushell] for running more [complicated commands](./scripts/hosts.nu) on my

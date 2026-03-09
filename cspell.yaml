@@ -10,10 +10,10 @@ ignoreWords:
   - nushell
   - pkgs
   - attrset
+  - readlink
 ignorePaths:
   - justfile
   - flake.nix
   - cspell.yaml
   - src/
-  - assets/
   - scripts/
