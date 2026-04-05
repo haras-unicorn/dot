@@ -1,6 +1,78 @@
-#!/usr/bin/env nu
+def "main format" [] {
+  cd (flake-root)
+  prettier --write (flake-root)
+  nixfmt ...(fd '.*.nix$' (flake-root) | lines)
+}
 
-# TODO: load hosts through nix
+def "main lint" [] {
+  cd (flake-root)
+  prettier --check (flake-root)
+  nixfmt --check ...(fd '.*.nix$' (flake-root) | lines)
+  markdownlint --ignore-path .gitignore (flake-root)
+  cspell lint (flake-root) --no-progress
+  if (markdown-link-check
+    --config (flake-root)
+    ...(fd '^.*.md$' (flake-root) | lines)
+    | rg -q error
+    | complete
+    | get exit_code) == 0 {
+    exit 1
+  }
+}
+
+def "main test" [] {
+  cd (flake-root)
+  nix flake check --all-systems
+  nix-unit --flake .#tests
+}
+
+def --wrapped "main test e2e" [
+  test: string,
+  ...args: string
+] {
+  cd (flake-root)
+  (nix build
+    $".#checks.x86_64-linux.\"($test)\".withSshBackdoor"
+    --option sandbox-paths /dev/vhost-vsock
+    ...($args))
+}
+
+def --wrapped "main test e2e interactive" [
+  test: string,
+  ...args: string
+] {
+  cd (flake-root)
+  (nix build
+    $".#checks.x86_64-linux.\"($test)\".withSshBackdoor.driverInteractive"
+    --option sandbox-paths /dev/vhost-vsock
+    ...($args))
+}
+
+def --wrapped "main test unit" [
+  test: string,
+  ...args: string
+] {
+  cd (flake-root)
+  nix-unit --flake ".#tests" ...($args) out+err>| grep $test
+}
+
+def --wrapped "main rebuild switch" [
+  ...args: string
+] {
+  cd (flake-root)
+  (sudo nixos-rebuild switch
+    --flake $"(flake-root)#(hostname)"
+    ...($args))
+}
+
+def --wrapped "main rebuild boot" [
+  ...args: string
+] {
+  cd (flake-root)
+  (sudo nixos-rebuild boot
+    --flake $"(flake-root)#(hostname)"
+    ...($args))
+}
 
 let self = [ $env.FILE_PWD "hosts.nu" ] | path join
 let root = $env.FILE_PWD | path dirname
@@ -32,10 +104,6 @@ static_map:
   lookup_timeout: 10s
 preferred_ranges: [ '192.168.1.0/24' ]
 " | str trim
-
-def main [] {
-  nu -c $"($self) --help"
-}
 
 def "main secrets" [host?: string, --all] {
   let hosts = pick hosts $all false $host
