@@ -1,4 +1,5 @@
 {
+  self,
   specialArgs,
   inputs,
   root,
@@ -37,7 +38,7 @@
           {
             importer = "vault";
             arguments = {
-              path = "kv/dot/host/${config.dot.host.name}";
+              path = self.lib.vault.host config.dot.host.name;
               allow_fail = true;
             };
           }
@@ -46,7 +47,7 @@
           {
             exporter = "vault";
             arguments = {
-              path = "kv/dot/host/${config.dot.host.name}";
+              path = self.lib.vault.host config.dot.host.name;
             };
           }
         ];

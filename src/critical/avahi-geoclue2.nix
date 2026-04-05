@@ -36,7 +36,7 @@
         {
           importer = "vault-file";
           arguments = {
-            path = self.lib.cryl.shared;
+            path = self.lib.vault.shared;
             file = "geoclue-static-geolocation";
           };
         }

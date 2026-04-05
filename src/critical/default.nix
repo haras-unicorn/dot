@@ -15,7 +15,6 @@
         dot.traefik.enable = true;
         dot.cockroachdb.enable = true;
         dot.cockroachdb.enableBuiltinBackup = true;
-        dot.cockroachdb.enableRootConnection = true;
         dot.seaweedfs.enable = true;
         dot.vault.enable = true;
         dot.vaultwarden.enable = true;

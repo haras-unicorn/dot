@@ -1,3 +1,5 @@
+# TODO: just have a nixos module - it is enough
+
 {
   inputs,
   lib,
@@ -72,8 +74,6 @@ in
   };
 
   config = {
-    libAttrs.cryl.shared = "kv/dot/shared";
-
     flake.nixosModules.cryl =
       { lib, ... }:
       {

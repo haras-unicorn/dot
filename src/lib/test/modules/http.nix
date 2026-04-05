@@ -316,7 +316,7 @@
                     {
                       importer = "vault-file";
                       arguments = {
-                        path = self.lib.cryl.shared;
+                        path = self.lib.vault.shared;
                         file = "openssl-ca-private";
                         allow_fail = true;
                       };
@@ -324,7 +324,7 @@
                     {
                       importer = "vault-file";
                       arguments = {
-                        path = self.lib.cryl.shared;
+                        path = self.lib.vault.shared;
                         file = "openssl-ca-public";
                         allow_fail = true;
                       };
@@ -332,7 +332,7 @@
                     {
                       importer = "vault-file";
                       arguments = {
-                        path = self.lib.cryl.shared;
+                        path = self.lib.vault.shared;
                         file = "openssl-ca-serial";
                         allow_fail = true;
                       };

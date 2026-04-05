@@ -37,7 +37,7 @@
               {
                 importer = "vault-file";
                 arguments = {
-                  path = self.lib.cryl.shared;
+                  path = self.lib.vault.shared;
                   file = "cockroach-backup-pass";
                   allow_fail = true;
                 };
@@ -45,21 +45,21 @@
               {
                 importer = "vault-file";
                 arguments = {
-                  path = self.lib.cryl.shared;
+                  path = self.lib.vault.shared;
                   file = "cloudflare-r2-cockroachdb-endpoint";
                 };
               }
               {
                 importer = "vault-file";
                 arguments = {
-                  path = self.lib.cryl.shared;
+                  path = self.lib.vault.shared;
                   file = "cloudflare-r2-cockroachdb-access-key-id";
                 };
               }
               {
                 importer = "vault-file";
                 arguments = {
-                  path = self.lib.cryl.shared;
+                  path = self.lib.vault.shared;
                   file = "cloudflare-r2-cockroachdb-secret-access-key";
                 };
               }
@@ -113,7 +113,7 @@
               {
                 exporter = "vault-file";
                 arguments = {
-                  path = self.lib.cryl.shared;
+                  path = self.lib.vault.shared;
                   file = "cockroach-backup-pass";
                 };
               }

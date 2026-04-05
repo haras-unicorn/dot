@@ -1,4 +1,4 @@
-{ lib, self, ... }:
+{ self, ... }:
 
 {
   libAttrs.test = {
@@ -18,13 +18,18 @@
             sshBackdoor.enable = withSshBackdoor;
             # NOTE: needed to set nixpkgs config
             node.pkgsReadOnly = false;
-            defaults = {
-              imports =
-                (builtins.attrValues (
-                  lib.filterAttrs (name: _: lib.hasPrefix "capabilities" name) self.nixosModules
-                ))
-                ++ (builtins.attrValues self.lib.test.nixosModules);
-            };
+            defaults =
+              { lib, ... }:
+              {
+                imports =
+                  (builtins.attrValues (
+                    lib.filterAttrs (name: _: lib.hasPrefix "capabilities" name) self.nixosModules
+                  ))
+                  ++ (builtins.attrValues self.lib.test.nixosModules);
+
+                services.openssh.settings.PermitRootLogin = lib.mkForce "yes";
+                services.openssh.settings.PasswordAuthentication = lib.mkForce true;
+              };
           };
 
         original = mkTest { withSshBackdoor = false; };

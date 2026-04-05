@@ -154,7 +154,7 @@
             {
               importer = "vault-file";
               arguments = {
-                path = self.lib.cryl.shared;
+                path = self.lib.vault.shared;
                 file = "nebula-ca-private";
                 allow_fail = true;
               };
@@ -162,7 +162,7 @@
             {
               importer = "vault-file";
               arguments = {
-                path = self.lib.cryl.shared;
+                path = self.lib.vault.shared;
                 file = "nebula-ca-public";
                 allow_fail = true;
               };
@@ -170,7 +170,7 @@
             {
               importer = "vault-file";
               arguments = {
-                path = self.lib.cryl.shared;
+                path = self.lib.vault.shared;
                 file = if isLighthouseAndRelay then "nebula-lighthouse" else "nebula-non-lighthouse";
               };
             }
@@ -207,14 +207,14 @@
             {
               exporter = "vault-file";
               arguments = {
-                path = self.lib.cryl.shared;
+                path = self.lib.vault.shared;
                 file = "nebula-ca-private";
               };
             }
             {
               exporter = "vault-file";
               arguments = {
-                path = self.lib.cryl.shared;
+                path = self.lib.vault.shared;
                 file = "nebula-ca-public";
               };
             }

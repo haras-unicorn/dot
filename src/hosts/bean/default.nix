@@ -19,8 +19,6 @@ in
     dot.locality.rack = "shelf";
 
     dot.critical.enable = true;
-
-    dot.cockroachdb.enableRootConnection = true;
   };
 
   flake.homeModules."hosts-${name}" = { };

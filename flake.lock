@@ -198,16 +198,16 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1773948925,
-        "narHash": "sha256-Gu7HwXdJuwpvA5hY+EfRUo0OOBIkST2+Yz3eu96W3ps=",
+        "lastModified": 1775642560,
+        "narHash": "sha256-oCidhlRjl7Au9jEjRGpaD75xze5Y6k3vIVpCuNMzgko=",
         "owner": "haras-unicorn",
         "repo": "cryl",
-        "rev": "03d924ac95c4e5d462a2812af5c8fe96dc419621",
+        "rev": "73fd9abf3b9fe40dca7197279f8325b42080ee57",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/v0.1.1",
+        "ref": "refs/tags/v0.2.0",
         "repo": "cryl",
         "type": "github"
       }

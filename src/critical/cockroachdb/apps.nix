@@ -204,7 +204,7 @@
         cryl.specification.imports = builtins.map (name: {
           importer = "vault-file";
           arguments = {
-            path = self.lib.cryl.shared;
+            path = self.lib.vault.shared;
             file = "cockroach-${name}-pass";
             allow_fail = true;
           };
@@ -213,7 +213,7 @@
         cryl.specification.exports = builtins.map (name: {
           exporter = "vault-file";
           arguments = {
-            path = self.lib.cryl.shared;
+            path = self.lib.vault.shared;
             file = "cockroach-${name}-pass";
           };
         }) (builtins.attrNames apps);

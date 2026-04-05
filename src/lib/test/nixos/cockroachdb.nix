@@ -23,7 +23,6 @@
 
       config = lib.mkIf config.dot.test.cockroachdb.enable {
         dot.cockroachdb.enable = true;
-        dot.cockroachdb.enableRootConnection = true;
 
         nixpkgs.config = {
           allowUnfree = true;

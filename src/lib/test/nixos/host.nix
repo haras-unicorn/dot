@@ -34,11 +34,13 @@
           }
         ))
         {
-          dot.host.user = "test";
-          dot.host.group = "test";
+          dot.host.user = "haras";
+          dot.host.group = "haras";
           dot.host.uid = 1000;
           dot.host.gid = 1000;
-          dot.host.home = "/home/test";
+          dot.host.home = "/home/haras";
+          dot.host.pass = lib.mkDefault true;
+          dot.host.version = "24.11";
           users.groups.${config.dot.host.group} = {
             gid = config.dot.host.gid;
           };
@@ -72,6 +74,8 @@
 
           # Workaround for nixpkgs gzip/install-info issue
           documentation.info.enable = false;
+
+          system.stateVersion = config.dot.host.version;
 
           environment.systemPackages = [
             pkgs.curl

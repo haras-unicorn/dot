@@ -3,6 +3,7 @@
 {
   dot.domains.topLevel = "dot";
   dot.domains.service = "service.dot";
+  dot.domains.node = "node.dot";
 
   flake.homeModules.critical-consul =
     {
@@ -272,7 +273,7 @@
             {
               importer = "vault-file";
               arguments = {
-                path = self.lib.cryl.shared;
+                path = self.lib.vault.shared;
                 file = "consul-gossip-key";
                 allow_fail = true;
               };
@@ -280,7 +281,7 @@
             {
               importer = "vault-file";
               arguments = {
-                path = self.lib.cryl.shared;
+                path = self.lib.vault.shared;
                 file = "consul-bootstrap-token";
                 allow_fail = true;
               };
@@ -348,14 +349,14 @@
             {
               exporter = "vault-file";
               arguments = {
-                path = self.lib.cryl.shared;
+                path = self.lib.vault.shared;
                 file = "consul-gossip-key";
               };
             }
             {
               exporter = "vault-file";
               arguments = {
-                path = self.lib.cryl.shared;
+                path = self.lib.vault.shared;
                 file = "consul-bootstrap-token";
               };
             }

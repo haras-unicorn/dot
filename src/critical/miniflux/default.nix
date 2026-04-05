@@ -136,7 +136,7 @@
           {
             importer = "vault-file";
             arguments = {
-              path = self.lib.cryl.shared;
+              path = self.lib.vault.shared;
               file = "${user}-password";
               allow_fail = false;
             };

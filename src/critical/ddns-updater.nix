@@ -85,14 +85,14 @@
           {
             importer = "vault-file";
             arguments = {
-              path = self.lib.cryl.shared;
+              path = self.lib.vault.shared;
               file = "ddns-updater-duckdns";
             };
           }
           {
             importer = "vault-file";
             arguments = {
-              path = self.lib.cryl.shared;
+              path = self.lib.vault.shared;
               file = "ddns-updater-cloudflare";
             };
           }

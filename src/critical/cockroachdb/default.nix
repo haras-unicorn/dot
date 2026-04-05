@@ -45,8 +45,6 @@
       };
 
       config = lib.mkIf (hasNetwork && config.dot.cockroachdb.enable) {
-        dot.cockroachdb.enableCa = true;
-
         services.cockroachdb.extraArgs = [
           "--background"
           "--logtostderr=WARNING"

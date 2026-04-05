@@ -136,18 +136,18 @@
                     INIT_HASH="${cfg.init.hash}"
                     SQL_SCRIPTS="${
                       builtins.concatStringsSep "," (
-                        (lib.imap1 (
+                        cfg.init.sql.files
+                        ++ (lib.imap1 (
                           i: sql: pkgs.writeText "cockroach-sql-${builtins.toString i}.sql" sql
                         ) cfg.init.sql.scripts)
-                        ++ cfg.init.sql.files
                       )
                     }"
                     BASH_SCRIPTS="${
                       builtins.concatStringsSep "," (
-                        (lib.imap1 (
+                        cfg.init.bash.files
+                        ++ (lib.imap1 (
                           i: script: pkgs.writeText "cockroach-bash-${builtins.toString i}.sh" script
                         ) cfg.init.bash.scripts)
-                        ++ cfg.init.bash.files
                       )
                     }"
                     COCKROACHDB_USER=${config.systemd.services.cockroachdb.serviceConfig.User}

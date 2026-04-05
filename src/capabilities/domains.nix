@@ -19,6 +19,13 @@ let
               Service domain.
             '';
           };
+
+          node = lib.mkOption {
+            type = lib.types.str;
+            description = ''
+              Node domain.
+            '';
+          };
         };
       };
     };

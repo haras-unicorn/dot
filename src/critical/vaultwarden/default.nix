@@ -141,7 +141,7 @@
           {
             importer = "vault-file";
             arguments = {
-              path = self.lib.cryl.shared;
+              path = self.lib.vault.shared;
               file = "vaultwarden-admin-pass";
               allow_fail = true;
             };
@@ -149,7 +149,7 @@
           {
             importer = "vault-file";
             arguments = {
-              path = self.lib.cryl.shared;
+              path = self.lib.vault.shared;
               file = "vaultwarden-auth-key";
               allow_fail = true;
             };
@@ -191,14 +191,14 @@
           {
             exporter = "vault-file";
             arguments = {
-              path = self.lib.cryl.shared;
+              path = self.lib.vault.shared;
               file = "vaultwarden-admin-pass";
             };
           }
           {
             exporter = "vault-file";
             arguments = {
-              path = self.lib.cryl.shared;
+              path = self.lib.vault.shared;
               file = "vaultwarden-auth-key";
             };
           }

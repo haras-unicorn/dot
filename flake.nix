@@ -18,7 +18,7 @@
     nix-unit.inputs.nixpkgs.follows = "nixpkgs";
     nix-unit.inputs.flake-parts.follows = "flake-parts";
 
-    cryl.url = "github:haras-unicorn/cryl/refs/tags/v0.1.1";
+    cryl.url = "github:haras-unicorn/cryl/refs/tags/v0.2.0";
     cryl.inputs.nixpkgs.follows = "nixpkgs";
 
     deploy-rs.url = "github:serokell/deploy-rs";

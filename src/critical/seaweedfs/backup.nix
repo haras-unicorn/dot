@@ -17,6 +17,15 @@
           false
       ) config.dot.host.hosts;
 
+      filers = builtins.concatStringsSep "," (
+        builtins.map (
+          host:
+          host.system.services.seaweedfs.filers.dot.ip
+          + ":"
+          + (builtins.toString host.system.services.seaweedfs.filers.dot.httpPort)
+        ) hosts
+      );
+
       mkHostShell =
         host:
         if host.name == config.dot.host.name then
@@ -43,8 +52,110 @@
         + ":"
         + host.system.services.seaweedfs.volumes.dot.group;
 
-      backupPackage = pkgs.writeShellApplication {
-        name = "seaweedfs-manual-physical-backup";
+      stateDir = config.services.seaweedfs.filers.dot.stateDir;
+      backupDirRelative = "dot/backup/logical";
+      backupDir = "${stateDir}/extern/${backupDirRelative}";
+      mountDirRelative = "dot/backup/mount";
+      mountDir = "${stateDir}/extern/${mountDirRelative}";
+      cacheDirRelative = "dot/backup/cache";
+      cacheDir = "${stateDir}/extern/${cacheDirRelative}";
+
+      user = config.services.seaweedfs.filers.dot.user;
+      group = config.services.seaweedfs.filers.dot.group;
+
+      dataDir = "./seaweedfs";
+
+      logicalBackupPackage = pkgs.writeShellApplication {
+        name = "seaweedfs-logical-backup";
+        runtimeInputs = [
+          pkgs.util-linux
+        ];
+        text = ''
+          rm -rf "${backupDir}"
+          runuser -u "${user}" -g "${group}" -- mkdir -p "${backupDir}"
+          rm -rf "${mountDir}"
+          runuser -u "${user}" -g "${group}" -- mkdir -p "${mountDir}"
+          rm -rf "${cacheDir}"
+          runuser -u "${user}" -g "${group}" -- mkdir -p "${cacheDir}"
+
+          systemd-run --unit seaweedfs-logical-backup-mount weed mount \
+            -dir '${mountDir}' \
+            -cacheDir '${cacheDir}' \
+            -filer '${filers}' \
+            -filer.path '/'
+          systemctl is-active seaweedfs-logical-backup-mount
+          while ! mountpoint -q "${mountDir}"; do
+            sleep 1
+          done
+          shopt -s dotglob
+          cp -a "${mountDir}/"* "${backupDir}"
+          shopt -u dotglob
+          systemctl stop seaweedfs-logical-backup-mount
+          umount "${mountDir}" || true
+          fusermount -u "${mountDir}" || true
+          fusermount3 -u "${mountDir}" || true
+          while mountpoint -q "${mountDir}"; do
+            umount "${mountDir}" || true
+            fusermount -u "${mountDir}" || true
+            fusermount3 -u "${mountDir}" || true
+          done
+          ls -la "${mountDir}"
+
+          mv "${backupDir}" "${dataDir}"
+          chown -R "$(id -un):$(id -gn)" "${dataDir}"
+
+          rm -rf "${mountDir}"
+          rm -rf "${cacheDir}"
+        '';
+      };
+
+      logicalRestorePackage = pkgs.writeShellApplication {
+        name = "seaweedfs-logical-restore";
+        runtimeInputs = [
+          pkgs.util-linux
+        ];
+        text = ''
+          rm -rf "${backupDir}"
+          runuser -u "${user}" -g "${group}" -- mkdir -p "$(dirname "${backupDir}")"
+          rm -rf "${mountDir}"
+          runuser -u "${user}" -g "${group}" -- mkdir -p "${mountDir}"
+          rm -rf "${cacheDir}"
+          runuser -u "${user}" -g "${group}" -- mkdir -p "${cacheDir}"
+
+          mv "${dataDir}" "${backupDir}"
+          chown -R "${user}:${group}" "${backupDir}"
+
+          systemd-run --unit seaweedfs-logical-restore-mount weed mount \
+            -dir '${mountDir}' \
+            -cacheDir '${cacheDir}' \
+            -filer '${filers}' \
+            -filer.path '/'
+          systemctl is-active seaweedfs-logical-restore-mount
+          while ! mountpoint -q "${mountDir}"; do
+            sleep 1
+          done
+          shopt -s dotglob
+          mv "${backupDir}/"* "${mountDir}"
+          shopt -u dotglob
+          systemctl stop seaweedfs-logical-restore-mount
+          umount "${mountDir}" || true
+          fusermount -u "${mountDir}" || true
+          fusermount3 -u "${mountDir}" || true
+          while mountpoint -q "${mountDir}"; do
+            umount "${mountDir}" || true
+            fusermount -u "${mountDir}" || true
+            fusermount3 -u "${mountDir}" || true
+          done
+          ls -la "${mountDir}"
+
+          rm -rf "${backupDir}"
+          rm -rf "${mountDir}"
+          rm -rf "${cacheDir}"
+        '';
+      };
+
+      physicalBackupPackage = pkgs.writeShellApplication {
+        name = "seaweedfs-physical-backup";
         runtimeInputs = [
           pkgs.openssh
           pkgs.rsync
@@ -75,8 +186,8 @@
         '';
       };
 
-      restorePackage = pkgs.writeShellApplication {
-        name = "seaweedfs-manual-physical-restore";
+      physicalRestorePackage = pkgs.writeShellApplication {
+        name = "seaweedfs-physical-restore";
         runtimeInputs = [
           pkgs.openssh
           pkgs.rsync
@@ -107,7 +218,9 @@
       };
     in
     lib.mkIf (hasNetwork && config.dot.seaweedfs.enable) {
-      dot.backup.physical.files = [ (lib.getExe backupPackage) ];
-      dot.restore.physical.files = [ (lib.getExe restorePackage) ];
+      dot.backup.physical.files = [ (lib.getExe physicalBackupPackage) ];
+      dot.restore.physical.files = [ (lib.getExe physicalRestorePackage) ];
+      dot.backup.logical.files = [ (lib.getExe logicalBackupPackage) ];
+      dot.restore.logical.files = [ (lib.getExe logicalRestorePackage) ];
     };
 }

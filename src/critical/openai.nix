@@ -42,7 +42,7 @@ in
           {
             importer = "vault-file";
             arguments = {
-              path = self.lib.cryl.shared;
+              path = self.lib.vault.shared;
               file = "${name}-api-key";
               allow_fail = false;
             };

@@ -19,7 +19,7 @@
               if _import.importer == "vault" then
                 null
               else if _import.importer == "vault-file" then
-                if _import.arguments.path == self.lib.cryl.shared then
+                if _import.arguments.path == self.lib.vault.shared then
                   {
                     importer = "copy";
                     arguments = {
@@ -41,7 +41,7 @@
               if export.exporter == "vault" then
                 null
               else if export.exporter == "vault-file" then
-                if export.arguments.path == self.lib.cryl.shared then
+                if export.arguments.path == self.lib.vault.shared then
                   {
                     exporter = "copy";
                     arguments = {
@@ -195,6 +195,10 @@
               sops.defaultSopsFile = "${secrets}/${config.dot.host.name}/secrets.yaml";
               sops.age.keyFile = "/etc/sops/secrets.age";
               environment.etc."sops/secrets.age".source = "${secrets}/${config.dot.host.name}/secrets.age";
+              environment.sessionVariables = {
+                DOT_SECRETS_HOSTS = "${secrets}";
+                DOT_SECRETS_SHARED = "${secrets}/shared";
+              };
             };
           };
       };
