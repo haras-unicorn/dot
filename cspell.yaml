@@ -2,18 +2,23 @@
 useGitignore: true
 version: "0.2"
 language: en
+ignorePaths:
+  - assets/hardware/*.json
+  - assets/wallpaper/wallpaper.json
 ignoreWords:
-  - haras
-  - justfile
+  - nixpkgs
   - nixos
   - facter
-  - nushell
+  - haras
+  - stylix
+  - danth
+  - comfyui
+  - musnix
+  - certilia
+  - marijanp
+  - numtide
+  - substituters
+  - cachix
   - pkgs
   - attrset
-  - readlink
-ignorePaths:
-  - justfile
-  - flake.nix
-  - cspell.yaml
-  - src/
-  - scripts/
+  - cuda

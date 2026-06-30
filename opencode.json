@@ -1,0 +1,12 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "README.md",
+    "flake.nix",
+    "src/lib/*.nix",
+    "src/dev/*.nix",
+    "src/machines/*.nix",
+    "src/systems.nix",
+    "src/nixos/meta/*.nix"
+  ]
+}

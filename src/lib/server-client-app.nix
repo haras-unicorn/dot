@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  libAttrs.serverClientApp.make =
+  self.lib.serverClientApp.make =
     pkgs:
     {
       name,
