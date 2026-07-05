@@ -229,5 +229,6 @@
       xdg.userDirs.templates = "${config.home.homeDirectory}/templates";
       xdg.userDirs.documents = "${config.home.homeDirectory}/documents";
       xdg.userDirs.publicShare = "${config.home.homeDirectory}/public";
+      xdg.userDirs.projects = "${config.home.homeDirectory}/projects";
     };
 }
