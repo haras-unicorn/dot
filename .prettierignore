@@ -1,6 +1,3 @@
 .direnv
 .env
-secrets
-flake.lock
-src/hosts/*/hardware.json
-src/hosts/*/secrets.yaml
+*.lock

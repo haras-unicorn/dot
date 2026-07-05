@@ -1,6 +1,12 @@
 { config, lib, ... }:
 
 let
+  selfLib = config.self.lib;
+
+  flakeLib = lib.filterAttrsRecursive (
+    _: value: value ? _selfFlakeLib && value._selfFlakeLib
+  ) selfLib;
+
   recursiveAttrsOf =
     elemType:
     lib.types.mkOptionType {
@@ -12,15 +18,20 @@ let
     };
 in
 {
-  options.libAttrs = lib.mkOption {
-    type = recursiveAttrsOf lib.types.raw;
-    description = "Flake library that is merged across flake modules";
-    default = { };
+  options.self = {
+    lib = lib.mkOption {
+      type = recursiveAttrsOf lib.types.raw;
+      description = "self library merged attrset";
+      default = { };
+    };
   };
 
   config = {
-    flake.lib = config.libAttrs;
+    _module.args.selfLib = selfLib;
+    perSystem._module.args.selfLib = selfLib;
 
-    libAttrs.types.recursiveAttrsOf = recursiveAttrsOf;
+    flake.lib = flakeLib;
+
+    self.lib.types.recursiveAttrsOf = recursiveAttrsOf;
   };
 }
