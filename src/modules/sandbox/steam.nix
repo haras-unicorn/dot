@@ -50,7 +50,7 @@
 
       systemd.user.services.steam = {
         Unit.Description = "Steam daemon";
-        Service.ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent";
+        Service.ExecStart = "${lib.getExe osConfig.programs.steam.package} -nochatui -nofriendsui -silent";
         Install.WantedBy = [ "graphical-session.target" ];
         Unit.PartOf = [ "graphical-session.target" ];
         Unit.Requires = [ "tray.target" ];
