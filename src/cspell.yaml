@@ -441,3 +441,5 @@ ignoreWords:
   - openrouter
   - journalctl
   - hyprpolkitagent
+  - noto
+  - wezterm

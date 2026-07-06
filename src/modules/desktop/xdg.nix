@@ -156,8 +156,10 @@
           {
             mods = [ "super" ];
             key = "t";
-            command = "${terminal} ${shell}";
+            command = "${terminal}";
           }
+        ])
+        (lib.mkIf hardware.interface [
           {
             mods = [ "super" ];
             key = "Print";
