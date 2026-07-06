@@ -24,7 +24,9 @@
         General = {
           ConfigVersion = 2;
           NumberOfRememberedLastDatabases = 1;
-
+          LastActiveDatabase = "${config.home.homeDirectory}/.keepassxc.kdbx";
+          LastOpenedDatabases = "${config.home.homeDirectory}/.keepassxc.kdbx";
+          LastDatabases = "${config.home.homeDirectory}/.keepassxc.kdbx";
         };
         GUI = {
           ApplicationTheme = "classic";
@@ -40,10 +42,13 @@
           AdvancedMode = true;
           Length = 32;
           Logograms = true;
-
         };
         Security = {
           Security_HideNotes = true;
+        };
+        Browser = {
+          Enabled = true;
+          CustomBrowserType = 2;
         };
       };
 
