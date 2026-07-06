@@ -14,6 +14,7 @@
       dot.desktop.startup = [
         {
           name = "Hyprland";
+          type = "wayland";
           command = "${pkgs.hyprland}/bin/Hyprland";
         }
       ];

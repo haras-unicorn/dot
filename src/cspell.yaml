@@ -265,6 +265,7 @@ ignoreWords:
   - ntfs
   - woeusb
   - tuigreet
+  - xsessions
   - xwaylandvideobridge
   - pylsp
   - venv

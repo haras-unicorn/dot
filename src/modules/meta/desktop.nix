@@ -25,6 +25,16 @@
                     Desktop environement label (Wayland) or identifier (XServer).
                   '';
                 };
+                options.type = lib.mkOption {
+                  type = lib.types.enum [
+                    "wayland"
+                    "xserver"
+                  ];
+                  default = "wayland";
+                  description = ''
+                    Session type.
+                  '';
+                };
                 options.command = lib.mkOption {
                   type = lib.types.str;
                   description = ''
