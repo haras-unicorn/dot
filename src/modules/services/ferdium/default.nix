@@ -1,7 +1,7 @@
 # FIXME: ferdium screen sharing and WebRTC
 # NOTE: ferdium outlook - Self Hosted at https://outlook.office.com/mail/
 {
-  machines.nixosModules.ollama-openwebui =
+  machines.nixosModules.ferdium =
     { lib, config, ... }:
     let
       hardware = config.dot.hardware;
@@ -57,72 +57,64 @@
         progressbarAccentColor = config.lib.stylix.colors.withHashtag.cyan;
       };
 
-      mkFerdiumInstanceConfig =
-        instanceName:
-        let
-          dataDir = "${config.xdg.dataHome}/ferdium/${instanceName}";
-          prefix = "ferdium/${instanceName}";
-        in
-        {
-          systemd.user.services."ferdium@${instanceName}" = {
-            Unit = {
-              Description = "Ferdium (${instanceName})";
-              After = [ "graphical-session.target" ];
-              Requires = [ "graphical-session.target" ];
-            };
-            Service = {
-              ExecStartPre = [
-                "${pkgs.coreutils}/bin/mkdir -p ${dataDir}/config"
-              ];
-              ExecStart = "${ferdium}/bin/ferdium --user-data-dir=${dataDir}";
-              Restart = "on-failure";
-              WorkingDirectory = dataDir;
-            };
-            Install.WantedBy = [ "graphical-session.target" ];
-          };
-
-          xdg.dataFile."${prefix}/config/settings.json".text = builtins.toJSON settings;
-
-          xdg.dataFile."${prefix}/config/window-state.json".text = builtins.toJSON windowState;
-          xdg.dataFile."${prefix}/window-state.json".text = builtins.toJSON windowState;
-        };
+      dataDir = "${config.xdg.dataHome}/ferdium";
+      prefix = "ferdium";
     in
-    lib.mkIf hardware.interface (
-      lib.mkMerge [
+    lib.mkIf hardware.interface {
+      dot.desktop.windowrules = [
         {
-          dot.desktop.windowrules = [
-            {
-              rule = "float";
-              selector = "class";
-              arg = "ferdium";
-            }
-            {
-              rule = "float";
-              selector = "class";
-              arg = "teams-for-linux";
-            }
-            {
-              rule = "float";
-              selector = "class";
-              arg = "vesktop";
-            }
-          ];
-
-          home.packages = [
-            ferdium
-            teams
-            vesktop
-            slack
-          ];
-
-          xdg.configFile."teams-for-linux/config.json".text = builtins.toJSON {
-            closeAppOnCross = true;
-            trayIconEnabled = false;
-          };
-          xdg.configFile."teams-for-linux/window-state.json".text = builtins.toJSON windowState;
+          rule = "float";
+          selector = "class";
+          arg = "ferdium";
         }
-        (mkFerdiumInstanceConfig "personal")
-        # (mkFerdiumInstanceConfig "work")
-      ]
-    );
+        {
+          rule = "float";
+          selector = "class";
+          arg = "teams-for-linux";
+        }
+        {
+          rule = "float";
+          selector = "class";
+          arg = "vesktop";
+        }
+      ];
+
+      home.packages = [
+        ferdium
+        teams
+        vesktop
+        slack
+      ];
+
+      xdg.configFile."teams-for-linux/config.json".text = builtins.toJSON {
+        closeAppOnCross = true;
+        trayIconEnabled = false;
+      };
+      xdg.configFile."teams-for-linux/window-state.json".text = builtins.toJSON windowState;
+
+      systemd.user.services.ferdium = {
+        Install.WantedBy = [ "graphical-session.target" ];
+        Unit = {
+          Description = "Ferdium";
+          After = [
+            "tray.target"
+            "graphical-session.target"
+          ];
+          PartOf = [ "graphical-session.target" ];
+          Requires = [ "tray.target" ];
+        };
+        Service = {
+          ExecStartPre = [
+            "${pkgs.coreutils}/bin/mkdir -p ${dataDir}/config"
+          ];
+          ExecStart = "${ferdium}/bin/ferdium --user-data-dir=${dataDir}";
+          Restart = "on-failure";
+          WorkingDirectory = dataDir;
+        };
+      };
+
+      xdg.dataFile."${prefix}/config/settings.json".text = builtins.toJSON settings;
+      xdg.dataFile."${prefix}/config/window-state.json".text = builtins.toJSON windowState;
+      xdg.dataFile."${prefix}/window-state.json".text = builtins.toJSON windowState;
+    };
 }

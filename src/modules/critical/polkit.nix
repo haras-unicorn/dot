@@ -12,21 +12,24 @@
     {
       config = lib.mkIf hardware.graphics {
         security.polkit.enable = true;
+      };
+    };
 
-        environment.systemPackages = [
-          pkgs.polkit_gnome
-        ];
-
-        systemd.user.services.polkit-gnome-authentication-agent-1 = {
-          description = "polkit-gnome-authentication-agent-1";
-          wantedBy = [ "graphical-session.target" ];
-          requires = [ "graphical-session.target" ];
-          after = [ "graphical-session.target" ];
-          serviceConfig = {
-            ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-            Restart = "on-failure";
-          };
-        };
+  machines.homeModules.polkit =
+    {
+      pkgs,
+      osConfig,
+      config,
+      lib,
+      ...
+    }:
+    let
+      hardware = osConfig.dot.hardware;
+    in
+    {
+      config = lib.mkIf hardware.graphics {
+        services.polkit-gnome.enable = lib.mkIf (!config.wayland.windowManager.hyprland.enable) true;
+        services.hyprpolkitagent.enable = lib.mkIf config.wayland.windowManager.hyprland.enable true;
       };
     };
 }

@@ -36,7 +36,6 @@
           package = pkgs.writeShellApplication {
             inherit name;
             runtimeInputs = [
-              pkgs.coreutils
               fullscreenCheck
             ];
             text = ''
@@ -74,7 +73,7 @@
         }
         {
           timeout = 60 * 60;
-          command = suspendCallback.unwrapped;
+          command = suspendCallback.command;
         }
       ];
     };

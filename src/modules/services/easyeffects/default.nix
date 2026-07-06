@@ -42,7 +42,7 @@
         {
           rule = "float";
           selector = "class";
-          arg = "com.github.wwmm.easyeffects";
+          arg = "org.kde.easyeffects";
         }
       ];
 
@@ -51,6 +51,13 @@
       ];
 
       services.easyeffects.enable = true;
+      systemd.user.services.easyeffects = lib.mkIf hardware.graphics {
+        Unit.Requires = [ "tray.target" ];
+        Unit.After = [
+          "tray.target"
+          "graphical-session.target"
+        ];
+      };
 
       xdg.dataFile."easyeffects/output/krk.json".source = ./krk.json;
     };

@@ -15,8 +15,8 @@
 
       systemd.user.services.swaybg = {
         Install.WantedBy = [ "graphical-session.target" ];
-        Unit.PartOf = [ "graphical-session.target" ];
-        Unit.After = [ "graphical-session-pre.target" ];
+        Unit.After = [ "graphical-session.target" ];
+        Unit.Requires = [ "graphical-session.target" ];
         Service.ExecStart = "${lib.getExe pkgs.swaybg} -i ${lib.escapeShellArg osConfig.dot.wallpaper.image} -m fill";
       };
     };
