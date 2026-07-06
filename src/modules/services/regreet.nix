@@ -1,6 +1,3 @@
-# FIXME: startup options not showing
-# TODO: default startup option as first
-
 {
   machines.nixosModules.regreet =
     {
@@ -12,8 +9,8 @@
     }:
     let
       hardware = config.dot.hardware;
+      cfg = config.dot.desktop;
 
-      # https://github.com/rharish101/ReGreet/blob/c75486b2e1f3f5e1a30a93c2df050df2b5d61b9f/src/sysutil.rs#L146
       package = pkgs.symlinkJoin {
         name = "regreet";
         paths = [ pkgs.regreet ];
@@ -22,13 +19,11 @@
         meta.mainProgram = "regreet";
         postBuild = ''
           wrapProgram $out/bin/regreet \
-            --set SESSION_DIRS "${config.dot.desktop.sessions}" \
-            --unset XDG_DATA_DIRS
+            --set XDG_DATA_DIRS "${cfg.sessions}/share"
         '';
       };
     in
     lib.mkIf (hardware.visual && hardware.wayland) {
-      # NOTE: force because still keeping tuigreet config for now
       dot.desktop.login = lib.mkForce (
         (lib.getExe' pkgs.dbus "dbus-run-session")
         + " "
@@ -41,5 +36,6 @@
 
       programs.regreet.enable = true;
       programs.regreet.package = package;
+      programs.regreet.settings.skip_selection = true;
     };
 }

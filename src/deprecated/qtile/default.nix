@@ -16,6 +16,7 @@
       dot.desktop.startup = lib.mkBefore [
         {
           name = "qtile";
+          type = "xserver";
           command = "${package}/bin/qtile";
         }
       ];

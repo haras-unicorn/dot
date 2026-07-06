@@ -18,6 +18,7 @@
       dot.desktop.startup = lib.mkBefore [
         {
           name = "Niri";
+          type = "wayland";
           command = "${package}/bin/niri-session";
         }
       ];
