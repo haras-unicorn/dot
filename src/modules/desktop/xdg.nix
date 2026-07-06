@@ -11,7 +11,6 @@
       hardware = osConfig.dot.hardware;
 
       terminal = lib.getExe config.dot.programs.terminal.package;
-      shell = lib.getExe config.dot.programs.shell.package;
       browser = lib.getExe config.dot.programs.browser.package;
       visual = lib.getExe config.dot.programs.visual.package;
       editor = lib.getExe config.dot.programs.editor.package;

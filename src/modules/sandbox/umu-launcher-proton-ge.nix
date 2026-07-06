@@ -1,4 +1,12 @@
 {
+  machines.nixosModules.umu-launcher =
+    { pkgs, lib, ... }:
+    lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") {
+      programs.steam.extraCompatPackages = [
+        pkgs.proton-ge-bin
+      ];
+    };
+
   machines.homeModules.umu-launcher =
     { pkgs, lib, ... }:
     lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") {

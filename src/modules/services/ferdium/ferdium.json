@@ -55,7 +55,7 @@
   "iconSize": 20,
   "sentry": true,
   "navigationBarBehaviour": "always",
-  "webRTCIPHandlingPolicy": "disable_non_proxied_udp",
+  "webRTCIPHandlingPolicy": "default_public_and_private_interfaces",
   "searchEngine": "startPage",
   "translatorLanguage": "en",
   "translatorEngine": "LibreTranslate",

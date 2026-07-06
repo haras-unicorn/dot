@@ -35,7 +35,6 @@
         };
         autosave = "on_window_change";
         collaboration_panel.button = false;
-        features.edit_prediction_provider = "supermaven";
         git_panel.button = false;
         gutter = {
           folds = false;

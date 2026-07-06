@@ -1,11 +1,6 @@
 {
   machines.nixosModules.networkmanager =
-    {
-      pkgs,
-      lib,
-      config,
-      ...
-    }:
+    { lib, config, ... }:
     let
       hardware = config.dot.hardware;
     in
@@ -13,9 +8,22 @@
       systemd.network.enable = false;
       systemd.network.wait-online.enable = false;
 
-      networking.nftables.enable = true;
-      networking.firewall.enable = true;
-
       networking.networkmanager.enable = true;
+
+      programs.nm-applet.enable = lib.mkIf hardware.graphics true;
+    };
+
+  machines.homeModules.networkmanager =
+    {
+      pkgs,
+      lib,
+      osConfig,
+      ...
+    }:
+    let
+      hardware = osConfig.dot.hardware;
+    in
+    lib.mkIf (hardware.network && hardware.graphics) {
+      dot.desktop.network = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
     };
 }

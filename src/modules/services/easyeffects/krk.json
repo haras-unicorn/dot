@@ -361,7 +361,7 @@
       },
       "mode": "FIR",
       "num-bands": 32,
-      "output-gain": 5,
+      "output-gain": -10,
       "pitch-left": 0.0,
       "pitch-right": 0.0,
       "right": {

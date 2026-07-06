@@ -1,12 +1,12 @@
 {
   machines.homeModules.git-delta-lazygit =
-    { pkgs, ... }:
     {
-      dot.programs.shell.aliases = {
-        bruh = "${pkgs.lazygit}/bin/lazygit";
-        bru = "${pkgs.gitui}/bin/gitui";
-      };
-
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    {
       programs.delta.enable = true;
       programs.delta.enableGitIntegration = true;
 
@@ -24,6 +24,7 @@
       };
 
       programs.lazygit.enable = true;
+      programs.lazygit.shellWrapperName = "lg";
       programs.lazygit.settings = {
         notARepository = "quit";
         promptToReturnFromSubprocess = false;
@@ -39,7 +40,5 @@
           suspend = true;
         };
       };
-
-      programs.gitui.enable = true;
     };
 }

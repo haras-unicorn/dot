@@ -443,3 +443,11 @@ ignoreWords:
   - hyprpolkitagent
   - noto
   - wezterm
+  - veth
+  - postrouting
+  - conntrack
+  - ctstate
+  - resolv
+  - networkmanagerapplet
+  - lazyjournal
+  - netns

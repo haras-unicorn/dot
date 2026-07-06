@@ -86,9 +86,6 @@
           ];
         };
 
-      programs.direnv.enableBashIntegration = true;
-      programs.zoxide.enableBashIntegration = true;
-      programs.yazi.enableBashIntegration = true;
-      programs.starship.enableBashIntegration = true;
+      home.shell.enableBashIntegration = true;
     };
 }
