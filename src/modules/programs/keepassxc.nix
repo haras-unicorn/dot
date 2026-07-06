@@ -49,8 +49,12 @@
 
       systemd.user.services.keepassxc = {
         Install.WantedBy = [ "graphical-session.target" ];
-        Unit.After = [ "graphical-session.target" ];
-        Unit.Requires = [ "graphical-session.target" ];
+        Unit.PartOf = [ "graphical-session.target" ];
+        Unit.Requires = [ "tray.target" ];
+        Unit.After = [
+          "tray.target"
+          "graphical-session.target"
+        ];
         Service.ExecStart = lib.getExe config.programs.keepassxc.package;
       };
     };

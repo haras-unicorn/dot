@@ -18,6 +18,7 @@
     "memory",
     "cpu",
     "battery",
+    "systemd-failed-units",
     "custom/powermenu"
   ],
   "tray": { "spacing": 10 },
@@ -74,5 +75,10 @@
     "interval": 1,
     "tooltip": true,
     "tooltip-format": "{:%d %B %H:%M:%S}"
+  },
+  "systemd-failed-units": {
+    "hide-on-ok": false,
+    "format": "✗ {nr_failed}",
+    "format-ok": "✓"
   }
 }

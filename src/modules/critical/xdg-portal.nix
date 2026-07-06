@@ -30,9 +30,11 @@
         GTK_USE_PORTAL = "1";
       };
 
-      # NOTE: idk why but it solves problems xd
+      # NOTE: they seem to start at weird times and this fixes them
+      # the services themselves are from packages so its kinda hard to
+      # modify their start time from nix in a nice way
       dot.desktop.sessionStartup = [
-        "${pkgs.systemd}/bin/systemctl restart --user xdg-desktop-portal*"
+        "${pkgs.systemd}/bin/systemctl restart --user *xdg-desktop-portal*"
       ];
 
       services.gnome-keyring.enable = true;
