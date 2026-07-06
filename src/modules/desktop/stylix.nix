@@ -19,6 +19,8 @@
       stylix.fonts.sansSerif.package = pkgs.roboto;
       stylix.fonts.serif.name = "Roboto Serif";
       stylix.fonts.serif.package = pkgs.roboto-serif;
+      stylix.fonts.emoji.name = "Noto Color Emoji";
+      stylix.fonts.emoji.package = pkgs.noto-fonts-color-emoji;
       stylix.cursor.package = pkgs.pokemon-cursor;
       stylix.cursor.name = "Pokemon";
       stylix.cursor.size = 24;
