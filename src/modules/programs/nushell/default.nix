@@ -1,6 +1,3 @@
-# TODO: uncomment formatter when it gets better
-# TODO: command_not_found hook with nix run or nix search
-
 {
   machines.nixosModules.nushell =
     { pkgs, ... }:
@@ -77,18 +74,14 @@
           {
             name = "nu";
             language-servers = [ "nu-lsp" ];
-            # formatter = {
-            #   command = "${pkgs.nufmt}/bin/nufmt --stdin";
-            # };
-            # auto-format = true;
+            formatter = {
+              command = "${pkgs.nufmt}/bin/nufmt --stdin";
+            };
+            auto-format = true;
           }
         ];
       };
 
-      programs.direnv.enableNushellIntegration = true;
-      programs.zoxide.enableNushellIntegration = true;
-      programs.yazi.enableNushellIntegration = true;
-      programs.starship.enableNushellIntegration = true;
-      programs.carapace.enableNushellIntegration = true;
+      home.shell.enableNushellIntegration = true;
     };
 }

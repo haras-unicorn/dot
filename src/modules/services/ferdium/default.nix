@@ -1,5 +1,5 @@
-# FIXME: ferdium screen sharing and WebRTC
 # NOTE: ferdium outlook - Self Hosted at https://outlook.office.com/mail/
+# TODO: use network isolation when adding VPN
 {
   machines.nixosModules.ferdium =
     { lib, config, ... }:
@@ -104,12 +104,11 @@
           Requires = [ "tray.target" ];
         };
         Service = {
-          ExecStartPre = [
-            "${pkgs.coreutils}/bin/mkdir -p ${dataDir}/config"
-          ];
           ExecStart = "${ferdium}/bin/ferdium --user-data-dir=${dataDir}";
           Restart = "on-failure";
           WorkingDirectory = dataDir;
+          KillMode = "mixed";
+          TimeoutStopSec = 15;
         };
       };
 

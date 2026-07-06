@@ -23,6 +23,5 @@
       ];
 
       dot.desktop.monitor = "${pkgs.mission-center}/bin/missioncenter";
-      dot.desktop.network = "${pkgs.mission-center}/bin/missioncenter";
     };
 }
