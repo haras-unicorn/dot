@@ -87,7 +87,7 @@
         };
       };
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       home.packages = [
         package
       ];

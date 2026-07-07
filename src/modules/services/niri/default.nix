@@ -202,7 +202,7 @@
             	to="${colors.magenta}" \
             	angle=45 \
             	relative-to="workspace-view"
-            inactive-color "${colors.green}"
+            inactive-color "${colors.cyan}"
           }
           gaps 4
           struts {

@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.gtklock =
+  self.lib.deprecated.nixosModules.gtklock =
     {
       pkgs,
       lib,
@@ -28,7 +28,7 @@
       };
     };
 
-  machines.homeModules.gtklock =
+  self.lib.deprecated.homeModules.gtklock =
     {
       pkgs,
       lib,

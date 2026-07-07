@@ -10,27 +10,27 @@
     let
       hardware = osConfig.dot.hardware;
 
-      terminal = lib.getExe config.dot.programs.terminal.package;
       browser = lib.getExe config.dot.programs.browser.package;
       visual = lib.getExe config.dot.programs.visual.package;
       editor = lib.getExe config.dot.programs.editor.package;
 
       browserDesktopName = "dot-browser.desktop";
-      browserMime = {
-        "text/html" = browserDesktopName;
-        "x-scheme-handler/http" = browserDesktopName;
-        "x-scheme-handler/https" = browserDesktopName;
-      };
+      browserMime = [
+        "text/html"
+        "x-scheme-handler/http"
+        "x-scheme-handler/https"
+      ];
 
       visualDesktopName = "dot-visual.desktop";
-      visualMime = {
-        "text/css" = visualDesktopName;
-        "application/javascript" = visualDesktopName;
-        "application/json" = visualDesktopName;
-        "application/x-sh" = visualDesktopName;
-        "application/xhtml+xml" = visualDesktopName;
-        "application/xml" = visualDesktopName;
-      };
+      visualMime = [
+        "text/css"
+        "application/javascript"
+        "application/json"
+        "application/x-sh"
+        "application/xhtml+xml"
+        "application/xml"
+
+      ];
 
       copy = pkgs.writeShellApplication {
         name = "copy";
@@ -83,18 +83,6 @@
         '';
       };
 
-      type-clipboard = pkgs.writeShellApplication {
-        name = "type-clipboard";
-        runtimeInputs = [
-          pkgs.coreutils
-          config.dot.programs.shell.paste
-          config.dot.programs.shell.type
-        ];
-        text = ''
-          type "$(paste)"
-        '';
-      };
-
       mkScreenshot =
         { name, ... }:
         pkgs.writeShellApplication {
@@ -124,8 +112,22 @@
       regionshot = mkScreenshot { name = "regionshot"; };
 
       mime = lib.mkMerge [
-        (lib.mkIf hardware.interface browserMime)
-        (lib.mkIf hardware.visual visualMime)
+        (lib.mkIf hardware.browser (
+          builtins.listToAttrs (
+            builtins.map (name: {
+              inherit name;
+              value = browserDesktopName;
+            }) browserMime
+          )
+        ))
+        (lib.mkIf hardware.visual (
+          builtins.listToAttrs (
+            builtins.map (name: {
+              inherit name;
+              value = visualDesktopName;
+            }) visualMime
+          )
+        ))
       ];
     in
     {
@@ -139,66 +141,144 @@
         list = lib.mkDefault list;
       };
 
-      dot.desktop.keybinds = lib.mkMerge [
-        (lib.mkIf hardware.interface [
-          {
-            mods = [ "super" ];
-            key = "w";
-            command = "${browser}";
-          }
-        ])
-        (lib.mkIf hardware.interface [
-          {
-            mods = [ "super" ];
-            key = "t";
-            command = "${terminal}";
-          }
-        ])
-        (lib.mkIf hardware.interface [
-          {
-            mods = [ "super" ];
-            key = "Print";
-            command = lib.getExe config.dot.programs.shell.screenshot;
-          }
-        ])
-        (lib.mkIf hardware.interface [
-          {
-            mods = [
-              "super"
-              "shift"
-            ];
-            key = "Print";
-            command = lib.getExe config.dot.programs.shell.regionshot;
-          }
-        ])
-        (lib.mkIf hardware.visual [
-          {
-            mods = [
-              "ctrl"
-              "alt"
-            ];
-            key = "v";
-            command = lib.getExe type-clipboard;
-          }
-        ])
-      ];
+      dot.desktop.keybinds = lib.mkIf hardware.typing (
+        lib.mkMerge [
+          (lib.mkIf hardware.browser [
+            {
+              mods = [ "super" ];
+              key = "w";
+              command = browser;
+            }
+          ])
+          (lib.mkIf hardware.browser [
+            {
+              mods = [ "super" ];
+              key = "t";
+              command = lib.getExe config.dot.programs.terminal.package;
+            }
+          ])
+          (lib.mkIf hardware.browser [
+            {
+              mods = [ "super" ];
+              key = "p";
+              command = lib.getExe config.dot.programs.shell.screenshot;
+            }
+          ])
+          (lib.mkIf hardware.browser [
+            {
+              mods = [
+                "super"
+                "ctrl"
+              ];
+              key = "p";
+              command = lib.getExe config.dot.programs.shell.regionshot;
+            }
+          ])
+          (lib.mkIf hardware.visual [
+            {
+              mods = [
+                "super"
+              ];
+              key = "return";
+              command = lib.getExe config.dot.programs.shell.launcher;
+            }
+          ])
+          (lib.mkIf hardware.visual [
+            {
+              mods = [
+                "super"
+              ];
+              key = "e";
+              command = lib.getExe config.dot.programs.shell.emoji;
+            }
+          ])
+          (lib.mkIf hardware.sound [
+            {
+              mods = [
+                "super"
+                "shift"
+              ];
+              key = "v";
+              command = lib.getExe config.dot.programs.shell.volume-up;
+            }
+          ])
+          (lib.mkIf hardware.sound [
+            {
+              mods = [
+                "super"
+                "alt"
+              ];
+              key = "v";
+              command = lib.getExe config.dot.programs.shell.volume-down;
+            }
+          ])
+          (lib.mkIf hardware.sound [
+            {
+              mods = [
+                "super"
+                "ctrl"
+              ];
+              key = "v";
+              command = lib.getExe config.dot.programs.shell.volume-mute-unmute;
+            }
+          ])
+          (lib.mkIf hardware.sound [
+            {
+              mods = [
+                "super"
+              ];
+              key = "v";
+              command = lib.getExe config.dot.programs.shell.play-pause;
+            }
+          ])
+          (lib.mkIf hardware.graphics [
+            {
+              mods = [
+                "super"
+                "shift"
+              ];
+              key = "b";
+              command = lib.getExe config.dot.programs.shell.brightness-up;
+            }
+          ])
+          (lib.mkIf hardware.graphics [
+            {
+              mods = [
+                "super"
+                "alt"
+              ];
+              key = "b";
+              command = lib.getExe config.dot.programs.shell.brightness-down;
+            }
+          ])
+        ]
+      );
 
-      home.packages = [
-        pkgs.xdg-user-dirs
-        pkgs.xdg-utils
-        pkgs.shared-mime-info
-
-        config.dot.programs.shell.copy
-        config.dot.programs.shell.type
-        config.dot.programs.shell.paste
-        config.dot.programs.shell.screenshot
-        config.dot.programs.shell.regionshot
-        config.dot.programs.shell.tree
-        config.dot.programs.shell.list
-      ];
+      home.packages =
+        (with pkgs; [
+          xdg-user-dirs
+          xdg-utils
+          shared-mime-info
+        ])
+        ++ (with config.dot.programs.shell; [
+          copy
+          type
+          paste
+          screenshot
+          regionshot
+          tree
+          list
+          dmenu
+          launcher
+          emoji
+          volume-up
+          volume-down
+          brightness-up
+          brightness-down
+        ]);
 
       home.sessionVariables = lib.mkMerge [
-        (lib.mkIf hardware.interface {
+        (lib.mkIf hardware.browser {
           BROWSER = "${browser}";
         })
         (lib.mkIf hardware.visual {
@@ -210,16 +290,12 @@
       ];
 
       xdg.desktopEntries = lib.mkMerge [
-        (lib.mkIf hardware.interface {
+        (lib.mkIf hardware.browser {
           dot-browser = {
             name = "Dot Browser";
             exec = "${browser} %U";
             terminal = false;
-            mimeType = [
-              "text/html"
-              "x-scheme-handler/http"
-              "x-scheme-handler/https"
-            ];
+            mimeType = browserMime;
             noDisplay = true;
           };
         })
@@ -228,14 +304,7 @@
             name = "Dot Visual";
             exec = "${visual} %U";
             terminal = false;
-            mimeType = [
-              "text/css"
-              "application/javascript"
-              "application/json"
-              "application/x-sh"
-              "application/xhtml+xml"
-              "application/xml"
-            ];
+            mimeType = visualMime;
             noDisplay = true;
           };
         })

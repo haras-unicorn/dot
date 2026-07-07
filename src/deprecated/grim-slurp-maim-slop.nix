@@ -1,5 +1,5 @@
 {
-  machines.homeModules.grim-slurp-maim-slop =
+  self.lib.deprecated.homeModules.grim-slurp-maim-slop =
     {
       pkgs,
       lib,

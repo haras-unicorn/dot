@@ -32,6 +32,7 @@ let
         "https://cuda-maintainers.cachix.org"
         "https://comfyui.cachix.org"
         "https://cache.numtide.com"
+        "https://noctalia.cachix.org"
       ];
       settings.trusted-public-keys = [
         "haras.cachix.org-1:/HIo1JYqOIH1Nwk1EGXhuPPvDW0WekxIbY5CiXUZbYw="
@@ -40,6 +41,7 @@ let
         "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
         "comfyui.cachix.org-1:33mf9VzoIjzVbp0zwj+fT51HG0y31ZTK3nzYZAX0rec="
         "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       ];
     };
 in

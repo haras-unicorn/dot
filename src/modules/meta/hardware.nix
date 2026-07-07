@@ -62,9 +62,9 @@
             description = "Whether the machine can be used to edit files.";
           };
 
-          interface = lib.mkOption {
+          browser = lib.mkOption {
             type = lib.types.bool;
-            description = "Whether the machine can be used via graphical user interfaces.";
+            description = "Whether the machine can be used to browse the web.";
           };
 
           gaming = lib.mkOption {
@@ -112,7 +112,7 @@
             description = "Whether the machine network access.";
           };
 
-          gateway = lib.mkOption {
+          interface = lib.mkOption {
             type = lib.types.str;
             description = "Default machine network interface.";
           };
@@ -127,7 +127,7 @@
           pointing = capabilities.pointing;
           sound = capabilities.sound;
           multimedia = capabilities.sound && capabilities.graphics;
-          interface = capabilities.graphics && capabilities.typing && capabilities.pointing;
+          browser = capabilities.graphics && capabilities.typing && capabilities.pointing;
           editor = capabilities.typing || detection.network.enable;
           visual = capabilities.graphics && capabilities.typing;
           gaming =
@@ -137,7 +137,7 @@
           memory = detection.memory.size;
           network = detection.network.enable;
           dpi = detection.monitor.displays.default.dpi or 0;
-          gateway = detection.network.interfaces.default.name or "";
+          interface = detection.network.interfaces.default.name or "";
           height = detection.monitor.displays.default.height or 0;
           width = detection.monitor.displays.default.width or 0;
         };

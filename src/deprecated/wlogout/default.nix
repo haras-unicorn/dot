@@ -1,5 +1,5 @@
 {
-  machines.homeModules.wlogout =
+  self.lib.deprecated.homeModules.wlogout =
     {
       pkgs,
       lib,

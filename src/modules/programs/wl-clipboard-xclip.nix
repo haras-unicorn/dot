@@ -9,12 +9,14 @@
     let
       hardware = osConfig.dot.hardware;
 
+      wl-clipboard = pkgs.wl-clipboard;
+      xclip = pkgs.xclip;
+
       copyWayland = pkgs.writeShellApplication {
         name = "copy";
         runtimeInputs = [
-          pkgs.wl-clipboard
-          pkgs.xclip
-          pkgs.coreutils
+          wl-clipboard
+          xclip
         ];
         text = ''
           tmpfile="$(mktemp)"
@@ -29,10 +31,7 @@
 
       pasteWayland = pkgs.writeShellApplication {
         name = "paste";
-        runtimeInputs = [
-          pkgs.wl-clipboard
-          pkgs.coreutils
-        ];
+        runtimeInputs = [ wl-clipboard ];
         text = ''
           wl-paste "$@"
         '';
@@ -40,10 +39,7 @@
 
       copyXServer = pkgs.writeShellApplication {
         name = "copy";
-        runtimeInputs = [
-          pkgs.xclip
-          pkgs.coreutils
-        ];
+        runtimeInputs = [ xclip ];
         text = ''
           xclip -sel clip "$@"
         '';
@@ -51,10 +47,7 @@
 
       pasteXServer = pkgs.writeShellApplication {
         name = "paste";
-        runtimeInputs = [
-          pkgs.xclip
-          pkgs.coreutils
-        ];
+        runtimeInputs = [ xclip ];
         text = ''
           xclip -o -sel clip "$@"
         '';

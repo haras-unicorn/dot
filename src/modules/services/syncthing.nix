@@ -36,7 +36,7 @@ in
       services.syncthing.guiAddress = address;
       services.syncthing.tray.enable = lib.mkIf hardware.graphics true;
 
-      xdg.desktopEntries = lib.mkIf hardware.interface {
+      xdg.desktopEntries = lib.mkIf hardware.browser {
         syncthing = {
           name = "Syncthing";
           exec = lib.getExe (osConfig.dot.programs.chromium.launch "syncthing" address true);

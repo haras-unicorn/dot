@@ -3,61 +3,32 @@
     {
       pkgs,
       lib,
+      config,
       osConfig,
       ...
     }:
     let
       hardware = osConfig.dot.hardware;
+
+      rofiDmenu = pkgs.writeShellApplication {
+        name = "rofi-dmenu";
+        runtimeInputs = [ pkgs.rofi ];
+        text = ''
+          exec rofi -dmenu -config ${./keepmenu.rasi} "$@"
+        '';
+      };
+
+      rofiLauncher = pkgs.writeShellApplication {
+        name = "rofi-launcher";
+        runtimeInputs = [ pkgs.rofi ];
+        text = ''
+          exec rofi -show drun -modi run,drun,window -config ${./launcher.rasi} "$@"
+        '';
+      };
     in
     lib.mkIf (hardware.visual && !hardware.wayland) {
-      dot.desktop.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "return";
-          command = "${pkgs.rofi}/bin/rofi -show drun -modi run,drun,window -config '${osConfig.xdg.configHome}/rofi/launcher.rasi'";
-        }
-        {
-          mods = [ "super" ];
-          key = "p";
-          command = "${pkgs.keepmenu}/bin/keepmenu";
-        }
-        {
-          mods = [
-            "super"
-            "shift"
-          ];
-          key = "p";
-          command = "${pkgs.keepmenu}/bin/keepmenu -a '{PASSWORD}'";
-        }
-        {
-          mods = [
-            "super"
-            "alt"
-          ];
-          key = "p";
-          command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
-        }
-      ];
-
-      home.packages = [
-        pkgs.keepmenu
-      ];
-
-      # NOTE: ln -s <db location> <home>/.keepmenu.kdbx
-      xdg.configFile."keepmenu/config.ini".text = ''
-        [dmenu]
-        dmenu_command = ${pkgs.rofi}/bin/rofi -config ${osConfig.xdg.configHome}/rofi/keepmenu.rasi
-        pinentry = ${osConfig.dot.programs.pinentry.package}/bin/${osConfig.dot.programs.pinentry.bin}
-        title_path = False
-
-        [dmenu_passphrase]
-        obscure = True
-
-        [database]
-        database_1 = ~/.keepmenu.kdbx
-        pw_cache_period_min = 1
-        autotype_default = {USERNAME}{TAB}{PASSWORD}
-      '';
+      dot.programs.shell.dmenu = lib.mkDefault rofiDmenu;
+      dot.programs.shell.launcher = lib.mkDefault rofiLauncher;
 
       programs.rofi.enable = true;
       xdg.configFile."rofi/launcher.rasi".source = ./launcher.rasi;

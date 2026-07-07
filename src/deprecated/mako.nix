@@ -1,5 +1,5 @@
 {
-  machines.homeModules.mako =
+  self.lib.deprecated.homeModules.mako =
     {
       lib,
       osConfig,

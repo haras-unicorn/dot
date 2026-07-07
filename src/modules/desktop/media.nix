@@ -76,7 +76,7 @@
         "application/x-7z-compressed" = xarchiver;
       };
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       home.packages = [
         libreoffice
         pkgs.nomacs
