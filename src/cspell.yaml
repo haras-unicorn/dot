@@ -329,6 +329,9 @@ ignoreWords:
   - middlemouse
   - asrouter
   - userprefs
+  - webgl
+  - webgpu
+  - pdfjs
   - webrender
   - bruh
   - gitui
@@ -455,3 +458,5 @@ ignoreWords:
   - flatseal
   - librewolf
   - freetube
+  - appimage
+  - anythingllm

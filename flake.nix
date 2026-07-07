@@ -8,6 +8,7 @@
     import-tree.url = "github:vic/import-tree";
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nixos-facter-detection-modules.url = "github:haras-unicorn/nixos-facter-detection-modules/refs/tags/v1.0.0";
     nixos-facter-detection-modules.inputs.nixpkgs.follows = "nixpkgs";

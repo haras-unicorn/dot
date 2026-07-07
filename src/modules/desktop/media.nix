@@ -16,18 +16,14 @@
 
       libreoffice = pkgs.libreoffice-fresh;
 
-      writer = "${libreoffice}/share/applications/writer.desktop";
-      calc = "${libreoffice}/share/applications/calc.desktop";
-      impress = "${libreoffice}/share/applications/impress.desktop";
-      draw = "${libreoffice}/share/applications/draw.desktop";
-
-      nomacs = "${pkgs.nomacs}/share/applications/nomacs.desktop";
-
-      okular = "${pkgs.kdePackages.okular}/share/applications/okularApplication_pdf.desktop";
-
-      vlc = "${pkgs.vlc}/share/applications/vlc.desktop";
-
-      xarchiver = "${pkgs.xarchiver}/share/applications/xarchiver.desktop";
+      writer = "dot-writer.desktop";
+      calc = "dot-calc.desktop";
+      impress = "dot-impress.desktop";
+      draw = "dot-draw.desktop";
+      nomacs = "dot-nomacs.desktop";
+      okular = "dot-okular.desktop";
+      vlc = "dot-vlc.desktop";
+      xarchiver = "dot-xarchiver.desktop";
 
       mime = {
         "application/x-abiword" = writer;
@@ -95,6 +91,117 @@
         pkgs.video-downloader
         pkgs.gnome-maps
       ];
+
+      xdg.desktopEntries = {
+        dot-writer = {
+          name = "LibreOffice Writer";
+          exec = "${lib.getExe libreoffice} --writer %U";
+          terminal = false;
+          mimeType = [
+            "application/x-abiword"
+            "application/msword"
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            "application/vnd.oasis.opendocument.text"
+            "application/rtf"
+          ];
+          noDisplay = true;
+        };
+        dot-calc = {
+          name = "LibreOffice Calc";
+          exec = "${lib.getExe libreoffice} --calc %U";
+          terminal = false;
+          mimeType = [
+            "application/vnd.oasis.opendocument.spreadsheet"
+            "text/csv"
+          ];
+          noDisplay = true;
+        };
+        dot-impress = {
+          name = "LibreOffice Impress";
+          exec = "${lib.getExe libreoffice} --impress %U";
+          terminal = false;
+          mimeType = [
+            "application/vnd.oasis.opendocument.presentation"
+            "application/vnd.ms-powerpoint"
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+          ];
+          noDisplay = true;
+        };
+        dot-draw = {
+          name = "LibreOffice Draw";
+          exec = "${lib.getExe libreoffice} --draw %U";
+          terminal = false;
+          mimeType = [
+            "application/vnd.visio"
+          ];
+          noDisplay = true;
+        };
+        dot-nomacs = {
+          name = "Nomacs";
+          exec = "${lib.getExe pkgs.nomacs} %U";
+          terminal = false;
+          mimeType = [
+            "image/avif"
+            "image/bmp"
+            "image/gif"
+            "image/vnd.microsoft.icon"
+            "image/jpeg"
+            "image/png"
+            "image/svg+xml"
+            "image/tiff"
+            "image/webp"
+          ];
+          noDisplay = true;
+        };
+        dot-okular = {
+          name = "Okular";
+          exec = "${lib.getExe pkgs.kdePackages.okular} %U";
+          terminal = false;
+          mimeType = [
+            "application/pdf"
+          ];
+          noDisplay = true;
+        };
+        dot-vlc = {
+          name = "VLC";
+          exec = "${lib.getExe pkgs.vlc} %U";
+          terminal = false;
+          mimeType = [
+            "audio/aac"
+            "video/x-msvideo"
+            "audio/mpeg"
+            "video/mp4"
+            "video/mpeg"
+            "audio/ogg"
+            "video/ogg"
+            "audio/opus"
+            "video/mp2t"
+            "audio/wav"
+            "audio/webm"
+            "video/webm"
+            "video/3gpp"
+            "audio/3gpp"
+            "video/3gpp2"
+            "audio/3gpp2"
+          ];
+          noDisplay = true;
+        };
+        dot-xarchiver = {
+          name = "XArchiver";
+          exec = "${lib.getExe pkgs.xarchiver} %U";
+          terminal = false;
+          mimeType = [
+            "application/x-bzip"
+            "application/x-bzip2"
+            "application/gzip"
+            "application/vnd.rar"
+            "application/x-tar"
+            "application/zip"
+            "application/x-7z-compressed"
+          ];
+          noDisplay = true;
+        };
+      };
 
       xdg.mime.enable = true;
       xdg.mimeApps.enable = true;

@@ -27,7 +27,7 @@
         name = "list";
         runtimeInputs = [ config.programs.eza.package ];
         text = ''
-          eza ${baseArgs} --grid
+          eza ${baseArgs} --grid "$@"
         '';
       };
 
@@ -35,7 +35,7 @@
         name = "tree";
         runtimeInputs = [ config.programs.eza.package ];
         text = ''
-          eza ${baseArgs} --tree
+          eza ${baseArgs} --tree "$@"
         '';
       };
     in

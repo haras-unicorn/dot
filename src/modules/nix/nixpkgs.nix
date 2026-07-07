@@ -1,3 +1,5 @@
+{ inputs, ... }:
+
 {
   machines.nixosModules.nixpkgs =
     {
@@ -20,6 +22,10 @@
       };
 
       config = {
+        _module.args.unstablePkgs = import inputs.nixpkgs-unstable {
+          system = pkgs.stdenv.hostPlatform.system;
+        };
+
         # NOTE: lots of packages broken right now
         nixpkgs.config.rocmSupport = false;
         nixpkgs.config.allowUnfreePredicate =
@@ -28,6 +34,7 @@
     };
 
   machines.homeModules.nixpkgs = { osConfig, ... }: {
+    _module.args.unstablePkgs = osConfig._module.args.unstablePkgs;
     nixpkgs.config = osConfig.nixpkgs.config;
   };
 }
