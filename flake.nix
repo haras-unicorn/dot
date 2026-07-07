@@ -39,6 +39,9 @@
 
     # NOTE: https://github.com/numtide/llm-agents.nix/tree/8ed00a37b0800e810b8dd16efa2c6d78bdb3a091#binary-cache
     llm-agents.url = "github:numtide/llm-agents.nix";
+
+    # NOTE: https://github.com/Gerg-L/spicetify-nix/blob/d9d714243e2f8d10af28db5111f018ec2d77acc9/docs/usage.md
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
   };
 
   outputs =

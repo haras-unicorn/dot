@@ -38,17 +38,26 @@
         };
       };
 
-      extensions =
-        with pkgs.nur.repos.rycee.firefox-addons;
-        [
-          ublock-origin
-          darkreader
-          vimium-c
-          i-dont-care-about-cookies
-          bitwarden
-          keepassxc-browser
-        ]
-        ++ [ textarea-cache ];
+      extensions = {
+        force = true;
+        settings = {
+          "vimium-c@gdh1995.cn".settings = {
+            searchUrl = "https://duckduckgo.com/?q=$s duckduckgo";
+          };
+        };
+        packages =
+          with pkgs.nur.repos.rycee.firefox-addons;
+          [
+            ublock-origin
+            darkreader
+            vimium-c
+            i-dont-care-about-cookies
+            bitwarden
+            keepassxc-browser
+          ]
+          ++ [ textarea-cache ];
+
+      };
 
       settings = {
         "privacy.clearOnShutdown.cookies" = false;
@@ -61,8 +70,7 @@
       };
 
       profile = {
-        extensions.force = true;
-        extensions.packages = extensions;
+        inherit extensions;
       };
 
       profiles = [
