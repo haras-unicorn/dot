@@ -15,25 +15,21 @@
       visual = lib.getExe config.dot.programs.visual.package;
       editor = lib.getExe config.dot.programs.editor.package;
 
-      browserDesktop =
-        "${config.dot.programs.browser.package}/share/applications"
-        + "/${builtins.baseNameOf (lib.getExe config.dot.programs.browser.package)}.desktop";
+      browserDesktopName = "dot-browser.desktop";
       browserMime = {
-        "text/html" = browserDesktop;
-        "x-scheme-handler/http" = browserDesktop;
-        "x-scheme-handler/https" = browserDesktop;
+        "text/html" = browserDesktopName;
+        "x-scheme-handler/http" = browserDesktopName;
+        "x-scheme-handler/https" = browserDesktopName;
       };
 
-      visualDesktop =
-        "${config.dot.programs.visual.package}/share/applications"
-        + "/${builtins.baseNameOf (lib.getExe config.dot.programs.visual.package)}.desktop";
+      visualDesktopName = "dot-visual.desktop";
       visualMime = {
-        "text/css" = visualDesktop;
-        "application/javascript" = visualDesktop;
-        "application/json" = visualDesktop;
-        "application/x-sh" = visualDesktop;
-        "application/xhtml+xml" = visualDesktop;
-        "application/xml" = visualDesktop;
+        "text/css" = visualDesktopName;
+        "application/javascript" = visualDesktopName;
+        "application/json" = visualDesktopName;
+        "application/x-sh" = visualDesktopName;
+        "application/xhtml+xml" = visualDesktopName;
+        "application/xml" = visualDesktopName;
       };
 
       copy = pkgs.writeShellApplication {
@@ -210,6 +206,38 @@
         })
         (lib.mkIf hardware.editor {
           EDITOR = "${editor}";
+        })
+      ];
+
+      xdg.desktopEntries = lib.mkMerge [
+        (lib.mkIf hardware.interface {
+          dot-browser = {
+            name = "Dot Browser";
+            exec = "${browser} %U";
+            terminal = false;
+            mimeType = [
+              "text/html"
+              "x-scheme-handler/http"
+              "x-scheme-handler/https"
+            ];
+            noDisplay = true;
+          };
+        })
+        (lib.mkIf hardware.visual {
+          dot-visual = {
+            name = "Dot Visual";
+            exec = "${visual} %U";
+            terminal = false;
+            mimeType = [
+              "text/css"
+              "application/javascript"
+              "application/json"
+              "application/x-sh"
+              "application/xhtml+xml"
+              "application/xml"
+            ];
+            noDisplay = true;
+          };
         })
       ];
 

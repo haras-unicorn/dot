@@ -50,6 +50,16 @@
         ]
         ++ [ textarea-cache ];
 
+      settings = {
+        "privacy.clearOnShutdown.cookies" = false;
+        "privacy.clearOnShutdown.sessions" = false;
+        "privacy.clearOnShutdown.siteSettings" = false;
+        "privacy.clearOnShutdown.history" = false;
+        "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
+        "privacy.clearOnShutdown_v2.siteSettings" = false;
+        "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = false;
+      };
+
       profile = {
         extensions.force = true;
         extensions.packages = extensions;
@@ -71,7 +81,7 @@
 
       programs.librewolf = {
         enable = true;
-        inherit package;
+        inherit package settings;
         profiles = builtins.listToAttrs (
           lib.imap0 (id: name: {
             inherit name;

@@ -23,7 +23,7 @@
       hardware = osConfig.dot.hardware;
 
       mime = {
-        "inode/directory" = "${pkgs.pcmanfm}/share/applications/pcmanfm.desktop";
+        "inode/directory" = "dot-pcmanfm.desktop";
       };
     in
     lib.mkIf hardware.interface {
@@ -36,6 +36,16 @@
       ];
 
       home.packages = [ pkgs.pcmanfm ];
+
+      xdg.desktopEntries.dot-pcmanfm = {
+        name = "PCManFM";
+        exec = "${lib.getExe pkgs.pcmanfm} %U";
+        terminal = false;
+        mimeType = [
+          "inode/directory"
+        ];
+        noDisplay = true;
+      };
 
       xdg.mimeApps.associations.added = mime;
       xdg.mimeApps.defaultApplications = mime;
