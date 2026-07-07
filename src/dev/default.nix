@@ -25,6 +25,7 @@
         nixfmt
         nixos-facter
 
+        github-cli
         nushell
         helix
         opencode
