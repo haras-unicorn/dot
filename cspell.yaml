@@ -22,3 +22,5 @@ ignoreWords:
   - pkgs
   - attrset
   - cuda
+  - spicetify
+  - gerg

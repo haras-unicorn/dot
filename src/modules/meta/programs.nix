@@ -25,7 +25,7 @@
             };
 
             args = lib.mkOption {
-              type = lib.types.raw;
+              type = lib.types.listOf lib.types.str;
               description = ''
                 Arguments to wrap chromium with.
               '';

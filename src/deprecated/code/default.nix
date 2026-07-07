@@ -13,7 +13,7 @@
       hardware = osConfig.dot.hardware;
 
       package = pkgs.vscode.override {
-        commandLineArgs = config.dot.programs.chromium.args;
+        commandLineArgs = builtins.concatStringsSep " " config.dot.programs.chromium.args;
       };
     in
     lib.mkIf hardware.visual {

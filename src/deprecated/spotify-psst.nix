@@ -1,5 +1,5 @@
 {
-  machines.homeModules.spotify-psst =
+  self.lib.deprecated.homeModules.spotify-psst =
     { pkgs, ... }:
     {
       home.packages = [

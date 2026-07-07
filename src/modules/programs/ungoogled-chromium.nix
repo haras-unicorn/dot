@@ -9,7 +9,7 @@
     let
       hardware = config.dot.hardware;
 
-      rawArgs = [
+      args = [
         "--enable-gpu-rasterization"
         "--enable-zero-copy"
       ]
@@ -21,10 +21,12 @@
         "--use-gl=egl"
       ];
 
-      flags = builtins.concatStringsSep " " (builtins.map (x: "--append-flags '${x}'") rawArgs);
+      wrapAppendFlags = builtins.concatStringsSep " " (builtins.map (x: "--append-flags '${x}'") args);
     in
     lib.mkIf hardware.interface {
       dot.programs.chromium = {
+        inherit args;
+
         package = config.dot.programs.chromium.wrap pkgs.ungoogled-chromium "chromium";
 
         wrap =
@@ -33,10 +35,8 @@
             name = bin;
             paths = [ package ];
             buildInputs = [ pkgs.makeWrapper ];
-            postBuild = "wrapProgram $out/bin/${bin} ${flags}";
+            postBuild = "wrapProgram $out/bin/${bin} ${wrapAppendFlags}";
           };
-
-        args = builtins.concatStringsSep " " rawArgs;
 
         launch =
           name: address: incognito:
