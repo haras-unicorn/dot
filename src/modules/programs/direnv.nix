@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   machines.homeModules.direnv = {
     programs.direnv.enable = true;

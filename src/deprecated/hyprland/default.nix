@@ -15,7 +15,7 @@
         {
           name = "Hyprland";
           type = "wayland";
-          command = "${pkgs.hyprland}/bin/Hyprland";
+          command = lib.getExe pkgs.hyprland;
         }
       ];
 
@@ -40,7 +40,6 @@
       current-layout = pkgs.writeShellApplication {
         name = "current-layout";
         runtimeInputs = [
-          pkgs.coreutils
           pkgs.hyprland
           pkgs.jq
         ];
@@ -54,7 +53,6 @@
       switch-layout = pkgs.writeShellApplication {
         name = "switch-layout";
         runtimeInputs = [
-          pkgs.coreutils
           pkgs.hyprland
           pkgs.jq
         ];
@@ -63,7 +61,7 @@
             jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
             xargs -IR sh -c 'hyprctl switchxkblayout R next &>/dev/null'
 
-          ${current-layout}/bin/current-layout
+          ${lib.getExe current-layout}
         '';
       };
 
@@ -118,14 +116,6 @@
         Hyprland = fullscreenCheck;
       };
 
-      dot.desktop.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "c";
-          command = "${pkgs.hyprpicker}/bin/hyprpicker --no-fancy | ${pkgs.wl-clipboard}/bin/wl-copy";
-        }
-      ];
-
       home.sessionVariables = cfg.sessionVariables;
       systemd.user.sessionVariables = cfg.sessionVariables;
 
@@ -133,7 +123,6 @@
         switch-layout
         current-layout
         pkgs.hyprcursor
-        pkgs.hyprpicker
       ];
 
       xdg.portal.extraPortals = [
@@ -157,7 +146,7 @@
 
         ${builtins.readFile ./hyprland.conf}
 
-        bind = super, space, exec, ${switch-layout}/bin/switch-layout
+        bind = super, space, exec, ${lib.getExe switch-layout}
 
         env = XDG_CURRENT_DESKTOP, Hyprland
         env = XDG_SESSION_DESKTOP, Hyprland

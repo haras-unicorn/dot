@@ -19,7 +19,7 @@
       };
     in
     lib.mkIf hardware.visual {
-      dot.programs.shell.emoji = emote;
+      dot.commands.emoji = emote;
 
       dot.desktop.windowrules = [
         {

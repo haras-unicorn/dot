@@ -6,7 +6,6 @@
         name = "refactor";
         runtimeInputs = [
           pkgs.git
-          pkgs.coreutils
         ];
         text = ''
           USAGE="Usage: refactor <command> [name]

@@ -17,9 +17,6 @@
           builtins.attrNames cfg.sessionVariables
         )
       );
-
-      shell = config.dot.programs.shell;
-      editor = config.dot.programs.editor;
     in
     lib.mkIf hardware.visual {
       dot.programs.terminal.package = config.programs.kitty.package;
@@ -32,8 +29,8 @@
         cursor_blink_interval 0
         enable_audio_bell no
 
-        shell ${lib.getExe shell.package}
-        editor ${lib.getExe editor.package}
+        shell ${lib.getExe config.dot.programs.shell.package}
+        editor ${lib.getExe config.dot.programs.editor.package}
 
         ${vars}
       '';

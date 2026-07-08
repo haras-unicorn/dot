@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   self.lib.deprecated.homeModules.azure-cli =
     { pkgs, ... }:

@@ -19,21 +19,17 @@
       };
     in
     lib.mkIf hardware.visual {
+      dot.programs.terminal.package = config.programs.ghostty.package;
+
       xdg.configFile."ghostty/shaders/ghostty".source = ghostty-shaders;
       xdg.configFile."ghostty/shaders/self".source = ./shaders;
 
       programs.ghostty.enable = true;
       programs.ghostty.installVimSyntax = true;
       programs.ghostty.settings = {
-        config-file = "?dev";
-        font-family = "${config.stylix.fonts.monospace.name}";
-        font-family-bold = "${config.stylix.fonts.monospace.name} Bold";
-        font-family-italic = "${config.stylix.fonts.monospace.name} Italic";
-        font-family-bold-italic = "${config.stylix.fonts.monospace.name} Bold Italic";
         cursor-style = "block";
         cursor-style-blink = false;
         command = lib.getExe config.dot.programs.shell.package;
-        background-opacity = 0.7;
         background-blur = true;
       };
     };

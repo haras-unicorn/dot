@@ -12,7 +12,8 @@
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.gaming {
-      dot.programs.gamemode.package = pkgs.gamemode;
+      # NOTE: the package option doesn't exist :/
+      dot.commands.gamemode = pkgs.gamemode;
 
       programs.gamemode.enable = true;
       programs.gamemode.enableRenice = true;
@@ -22,7 +23,7 @@
       ];
 
       programs.steam.extraPackages = [
-        config.dot.programs.gamemode.package
+        config.dot.commands.gamemode
       ];
     };
 
@@ -38,7 +39,7 @@
     in
     lib.mkIf hardware.gaming {
       programs.lutris.extraPackages = [
-        osConfig.dot.programs.gamemode.package
+        osConfig.dot.commands.gamemode
       ];
     };
 }

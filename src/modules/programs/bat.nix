@@ -1,14 +1,8 @@
 {
   machines.homeModules.bat =
-    { pkgs, ... }:
+    { config, lib, ... }:
     {
-      dot.programs.shell.aliases = {
-        cat = "${pkgs.bat}/bin/bat";
-      };
-
-      home.sessionVariables = {
-        PAGER = "${pkgs.bat}/bin/bat";
-      };
+      dot.programs.pager.package = config.programs.bat.package;
 
       programs.bat.enable = true;
       programs.bat.config = {

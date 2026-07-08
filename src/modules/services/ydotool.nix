@@ -35,15 +35,13 @@
         name = "type";
         runtimeInputs = [
           pkgs.ydotool
-          pkgs.coreutils
-          config.dot.programs.shell.paste
         ];
         text = ''
-          printf "%s" "type '$1'" | ydotool
+          printf "%s" "type '$(cat /dev/stdin)'" | ydotool
         '';
       };
     in
     lib.mkIf hardware.visual {
-      dot.programs.shell.type = type;
+      dot.commands.type = type;
     };
 }

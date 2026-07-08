@@ -1,8 +1,11 @@
-{ ... }:
-
 {
   self.lib.deprecated.nixosModules.motd =
-    { pkgs, config, ... }:
+    {
+      lib,
+      pkgs,
+      config,
+      ...
+    }:
     let
       user = config.dot.user.user;
       host = config.networking.hostName;
@@ -20,7 +23,6 @@
         name = "motd-banner";
         runtimeInputs = [
           pkgs.curl
-          pkgs.coreutils
           pkgs.jq
         ];
         text = ''
@@ -46,7 +48,7 @@
         };
         banner = {
           color = "red";
-          command = "${banner}/bin/motd-banner";
+          command = lib.getExe banner;
         };
       };
 
@@ -60,9 +62,6 @@
     let
       motd-wrap = pkgs.writeShellApplication {
         name = "motd-wrap";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           cat /var/lib/rust-motd/motd
           exec "$@"

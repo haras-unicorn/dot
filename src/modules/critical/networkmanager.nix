@@ -24,6 +24,6 @@
       hardware = osConfig.dot.hardware;
     in
     lib.mkIf (hardware.network && hardware.graphics) {
-      dot.desktop.network = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
+      dot.desktop.network = lib.getExe' pkgs.networkmanagerapplet "nm-connection-editor";
     };
 }

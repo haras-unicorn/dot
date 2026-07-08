@@ -13,43 +13,43 @@
       hardware = osConfig.dot.hardware;
     in
     lib.mkIf (hardware.graphics && hardware.pointing && hardware.wayland) {
-      dot.desktop.logout = "${pkgs.wlogout}/bin/wlogout -p layer-shell";
+      dot.desktop.logout = "${lib.getExe pkgs.wlogout} -p layer-shell";
 
       programs.wlogout.enable = true;
       programs.wlogout.layout = [
         {
           label = "lock";
-          action = "${pkgs.systemd}/bin/loginctl lock-session";
+          action = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
           text = "Lock";
           keybind = "l";
         }
         {
           label = "logout";
-          action = "${pkgs.systemd}/bin/loginctl terminate-user $USER";
+          action = "${lib.getExe' pkgs.systemd "loginctl"} terminate-user $USER";
           text = "Logout";
           keybind = "e";
         }
         {
           label = "suspend";
-          action = "${pkgs.systemd}/bin/systemctl suspend-then-hibernate";
+          action = "${lib.getExe' pkgs.systemd "systemctl"} suspend-then-hibernate";
           text = "Suspend";
           keybind = "u";
         }
         {
           label = "hibernate";
-          action = "${pkgs.systemd}/bin/systemctl hibernate";
+          action = "${lib.getExe' pkgs.systemd "systemctl"} hibernate";
           text = "Hibernate";
           keybind = "h";
         }
         {
           label = "reboot";
-          action = "${pkgs.systemd}/bin/systemctl reboot";
+          action = "${lib.getExe' pkgs.systemd "systemctl"} reboot";
           text = "Reboot";
           keybind = "r";
         }
         {
           label = "shutdown";
-          action = "${pkgs.systemd}/bin/systemctl poweroff";
+          action = "${lib.getExe' pkgs.systemd "systemctl"} poweroff";
           text = "Shutdown";
           keybind = "s";
         }

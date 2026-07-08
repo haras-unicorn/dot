@@ -56,8 +56,8 @@
           ## References
 
           - `dot` flake URL: ${selfLib.source.url}
-          - the `tree` command (available via PATH): ${lib.getExe config.dot.programs.shell.tree}
-          - the `list` command (available via PATH): ${lib.getExe config.dot.programs.shell.list}
+          - the `tree` command (available via PATH): ${lib.getExe config.dot.commands.tree}
+          - the `list` command (available via PATH): ${lib.getExe config.dot.commands.list}
         '';
 
         themes.${theme}.theme.background = lib.mkForce "none";

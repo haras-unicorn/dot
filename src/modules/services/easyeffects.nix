@@ -26,7 +26,7 @@
       };
     in
     lib.mkIf hardware.sound {
-      dot.desktop.keybinds = lib.mkIf hardware.typing [
+      dot.desktop.keybinds = [
         {
           mods = [ "super" ];
           key = "x";
@@ -48,7 +48,7 @@
         ];
       };
 
-      dot.desktop.windowrules = lib.mkIf hardware.graphics [
+      dot.desktop.windowrules = [
         {
           rule = "float";
           selector = "class";

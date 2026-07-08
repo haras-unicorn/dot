@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   self.lib.deprecated.homeModules.dotnet =
     { pkgs, ... }:

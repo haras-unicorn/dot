@@ -23,25 +23,25 @@
 
       home.activation = {
         helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "${builtins.baseNameOf editor}" || true
+          ${lib.getExe' pkgs.procps "pkill"} --signal "SIGUSR1" "${builtins.baseNameOf editor}" || true
         '';
       };
 
       programs.helix.languages = {
         language-server = {
           nil = {
-            command = "${pkgs.nil}/bin/nil";
+            command = lib.getExe pkgs.nil;
           };
           taplo = {
-            command = "${pkgs.taplo}/bin/taplo";
+            command = lib.getExe pkgs.taplo;
             args = [ "server" ];
           };
           yaml-language-server = {
-            command = "${pkgs.yaml-language-server}/bin/yaml-language-server";
+            command = lib.getExe pkgs.yaml-language-server;
             args = [ "--stdio" ];
           };
           vscode-json-language-server = {
-            command = "${pkgs.vscode-json-languageserver}/bin/vscode-json-language-server";
+            command = lib.getExe pkgs.vscode-json-languageserver;
             args = [ "--stdio" ];
             config = {
               provideFormatter = true;
@@ -56,7 +56,7 @@
             };
           };
           marksman = {
-            command = "${pkgs.marksman}/bin/marksman";
+            command = lib.getExe pkgs.marksman;
             args = [ "server" ];
           };
         };
@@ -66,7 +66,7 @@
             name = "nix";
             auto-format = true;
             formatter = {
-              command = "${pkgs.nixfmt}/bin/nixfmt";
+              command = lib.getExe pkgs.nixfmt;
               args = [
                 "--filename"
                 "%{buffer_name}"
@@ -84,7 +84,7 @@
             name = "yaml";
             auto-format = true;
             formatter = {
-              command = "${pkgs.prettier}/bin/prettier";
+              command = lib.getExe pkgs.prettier;
               args = [
                 "--parser"
                 "yaml"
@@ -96,7 +96,7 @@
             name = "json";
             auto-format = true;
             formatter = {
-              command = "${pkgs.prettier}/bin/prettier";
+              command = lib.getExe pkgs.prettier;
               args = [
                 "--parser"
                 "json"
@@ -108,7 +108,7 @@
             name = "markdown";
             auto-format = true;
             formatter = {
-              command = "${pkgs.prettier}/bin/prettier";
+              command = lib.getExe pkgs.prettier;
               args = [
                 "--parser"
                 "json"
@@ -119,7 +119,7 @@
             name = "xml";
             auto-format = true;
             formatter = {
-              command = "${pkgs.html-tidy}/bin/tidy";
+              command = lib.getExe pkgs.html-tidy;
               args = [
                 "-xml"
                 "-i"

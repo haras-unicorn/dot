@@ -1,3 +1,5 @@
+# TODO: ensure -t and -l behavior for commands
+
 {
   machines.homeModules.wl-clipboard-xclip =
     {
@@ -55,12 +57,71 @@
     in
     lib.mkMerge [
       (lib.mkIf (hardware.graphics && hardware.wayland) {
-        dot.programs.shell.copy = copyWayland;
-        dot.programs.shell.paste = pasteWayland;
+        dot.processing = {
+          sources = {
+            wl-clipboard = {
+              note = "Paste contents of the clipboard";
+              tags = [
+                "clipboard"
+                "paste"
+              ];
+              output = "detect";
+              package = pasteWayland;
+            };
+          };
+          sinks = {
+            wl-clipboard = {
+              note = "Copy contents to the clipboard";
+              tags = [
+                "clipboard"
+                "copy"
+              ];
+              inputs = "any";
+              package = copyWayland;
+            };
+          };
+        };
+
+        dot.commands.copy = copyWayland;
+        dot.commands.paste = pasteWayland;
+
+        home.packages = [
+          wl-clipboard
+          xclip
+        ];
       })
       (lib.mkIf (hardware.graphics && !hardware.wayland) {
-        dot.programs.shell.copy = copyXServer;
-        dot.programs.shell.paste = pasteXServer;
+        dot.processing = {
+          sources = {
+            xclip = {
+              note = "Paste contents of the clipboard";
+              tags = [
+                "clipboard"
+                "paste"
+              ];
+              output = "detect";
+              package = pasteXServer;
+            };
+          };
+          sinks = {
+            xclip = {
+              note = "Copy contents to the clipboard";
+              tags = [
+                "clipboard"
+                "copy"
+              ];
+              inputs = "any";
+              package = copyXServer;
+            };
+          };
+        };
+
+        dot.commands.copy = copyXServer;
+        dot.commands.paste = pasteXServer;
+
+        home.packages = [
+          xclip
+        ];
       })
     ];
 }

@@ -22,6 +22,7 @@
       };
 
       home-manager.backupFileExtension = "backup";
+      home-manager.overwriteBackup = true;
       home-manager.users.${config.dot.user.user} = {
         imports = [
           inputs.nur.modules.homeManager.default

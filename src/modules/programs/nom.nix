@@ -8,6 +8,8 @@
     }:
     let
       package = pkgs.nix-output-monitor;
+
+      exe = lib.getExe package;
     in
     {
       home.packages = [
@@ -15,12 +17,12 @@
       ];
 
       dot.programs.shell.aliases = {
-        "nix build" = "${package}/bin/nom build";
-        "nix shell" = "${package}/bin/nom shell";
-        "nix develop" = "${package}/bin/nom develop";
+        "nix build" = "${exe} build";
+        "nix shell" = "${exe} shell";
+        "nix develop" = "${exe} develop";
 
-        "nix-build" = "${package}/bin/nom-build";
-        "nix-shell" = "${package}/bin/nom-shell";
+        "nix-build" = lib.getExe' package "nom-build";
+        "nix-shell" = lib.getExe' package "nom-shell";
       };
     };
 }

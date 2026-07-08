@@ -1,0 +1,187 @@
+let tools = r#'DOT_TOOLBELT_TOOLS'# | from json
+
+let data_dir = (
+  $env.XDG_RUNTIME_DIR?
+    | default "/run"
+    | path join "toolbelt"
+)
+mkdir $data_dir
+
+let tmp_dir = $data_dir | path join tmp
+rm -rf $tmp_dir
+mkdir $tmp_dir
+let tmp = $data_dir | path join (random uuid)
+
+let data_file = $data_dir | path join "data"
+let meta_file = $data_dir | path join "metadata.json"
+
+def "processor display" []: record -> string {
+  let display = $in.display
+  let note = $in.note
+  let output = $in.output?
+
+  let note_part = if ($note | is-empty) {
+    ""
+  } else {
+    $" ($note)"
+  }
+
+  let output_part = if ($output | is-empty) {
+    ""
+  } else {
+    $" \(($output)\)"
+  }
+
+  $display + ":" + $note_part + $output_part
+}
+
+def "file mime" []: string -> string {
+  file --mime-type -b $in | str trim
+}
+
+def "mime extension" []: string -> string {
+  python3 -c (
+    "import mimetypes"
+    + $"\nprint\(mimetypes.guess_extension\('($in)'\) or ''\)"
+    + "\n"
+  ) | str trim
+}
+
+let meta = if ($meta_file | path exists) {
+  open $meta_file
+} else if ($data_file | path exists) {
+  {
+    created: "unknown"
+    modified: "unknown"
+    pipeline: [ "unknown" ]
+    mime: "unknown"
+    extension: "unknown"
+  }
+} else {
+  {
+    created: null
+    modified: null
+    pipeline: [ ]
+    mime: null
+    extension: null
+  }
+}
+
+mut actions = []
+
+let sources = ($tools.sources | transpose name data)
+for source in $sources {
+  $actions = (
+    $actions
+      | append {
+          name: $source.name
+          kind: "source"
+          display: ($source.data | processor display)
+          exe: $source.data.exe
+          output: $source.data.output
+        }
+  )
+}
+
+if $meta.mime != null {
+  let nodes = (
+    $tools.nodes
+      | transpose name data
+      | where $meta.mime in $it.data.inputs or $it.data.inputs == "any"
+  )
+  for node in $nodes {
+    $actions = (
+      $actions
+        | append {
+            name: $node.name,
+            kind: "node",
+            display: ($node.data | processor display)
+            exe: $node.data.exe,
+            output: $node.data.output,
+          }
+    )
+  }
+}
+
+if $meta.mime != null {
+  let sinks = (
+    $tools.sinks
+      | transpose name data
+      | where $meta.mime in $it.data.inputs or $it.data.inputs == "any"
+  )
+  for sink in $sinks {
+    $actions = ($actions | append {
+      name: $sink.name
+      kind: "sink"
+      display: ($sink.data | processor display)
+      exe: $sink.data.exe,
+      output: null
+    })
+  }
+}
+
+if ($actions | length) == 0 {
+  "No actions available" | ui error
+  exit 1
+}
+
+let choice = (
+  $actions
+    | get display
+    | str join "\n"
+    | ui choose
+        $"Toolbelt content type: ($meta.mime | default "empty")"
+        "Pick a toolbelt action..."
+    | str trim
+)
+
+if $choice == null {
+  "No actions selected" | ui error
+  exit 1
+}
+
+let selected = $actions
+  | where display == $choice
+  | first
+
+match $selected.kind {
+  "source" => {
+    $"($selected.exe) > ($tmp)"
+      | ui wait $"Sourcing with ($selected.name)..."
+    mv -f $tmp $data_file
+    let mime = if $selected.output == "detect" {
+      $data_file | file mime
+    } else {
+      $selected.output
+    }
+    {
+      created: (date now | format date "%+")
+      modified: null
+      pipeline: [$selected.name]
+      mime: $mime
+      extension: ($mime | mime extension)
+    } | to json | save -f $meta_file
+  }
+  "node" => {
+    $"($selected.exe) < ($data_file) > ($tmp)"
+      | ui wait $"Processing with ($selected.name)..."
+    mv -f $tmp $data_file
+    let mime = if $selected.output == "detect" {
+      $data_file | file mime
+    } else {
+      $selected.output
+    }
+    {
+      created: $meta.created
+      modified: (date now | format date "%+")
+      pipeline: ($meta.pipeline ++ [ $selected.name ])
+      mime: $mime
+      extension: ($selected.output | mime extension)
+    } | to json | save -f $meta_file
+  }
+  "sink" => {
+    $"($selected.exe) < ($data_file)"
+      | ui wait $"Sinking with ($selected.name)..."
+    rm -f $data_file $meta_file
+  }
+}

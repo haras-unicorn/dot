@@ -1,9 +1,9 @@
 {
   machines.homeModules.ripgrep =
-    { pkgs, ... }:
+    { lib, config, ... }:
     {
       dot.programs.shell.aliases = {
-        grep = "${pkgs.ripgrep}/bin/rg";
+        grep = lib.getExe config.programs.ripgrep.package;
       };
 
       programs.ripgrep.enable = true;

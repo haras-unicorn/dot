@@ -27,7 +27,7 @@
 
       home.activation = {
         makoReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          ${pkgs.mako}/bin/makoctl reload || true
+          ${lib.getExe' pkgs.mako "makoctl"} reload || true
         '';
       };
     };

@@ -24,7 +24,6 @@
       // {
         runtimeInputs = runtimeInputs ++ [
           pkgs.zenity
-          pkgs.coreutils
         ];
         text = ''
           ${lib.concatStringsSep "\n" (

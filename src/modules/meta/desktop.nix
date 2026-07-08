@@ -160,6 +160,38 @@
               Logout command.
             '';
           };
+
+          screenshots = lib.mkOption {
+            type = lib.types.path;
+            default = "${config.xdg.userDirs.pictures}/screenshots";
+            description = ''
+              Screenshot location.
+            '';
+          };
+
+          capture = lib.mkOption {
+            type = lib.types.path;
+            default = "${config.xdg.userDirs.videos}/capture";
+            description = ''
+              Video capture location.
+            '';
+          };
+
+          recording = lib.mkOption {
+            type = lib.types.path;
+            default = "${config.xdg.userDirs.music}/recording";
+            description = ''
+              Audio recording location.
+            '';
+          };
+
+          timestamp = lib.mkOption {
+            type = lib.types.str;
+            default = "+%Y-%m-%d_%H-%M-%S";
+            description = ''
+              Screenshot/capture/recording timestamp format.
+            '';
+          };
         };
       };
     };

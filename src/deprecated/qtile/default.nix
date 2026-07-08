@@ -17,7 +17,7 @@
         {
           name = "qtile";
           type = "xserver";
-          command = "${package}/bin/qtile";
+          command = lib.getExe package;
         }
       ];
 
@@ -51,7 +51,6 @@
       current-layout = pkgs.writeShellApplication {
         name = "current-layout";
         runtimeInputs = [
-          pkgs.coreutils
           pkgs.hyprland
           pkgs.jq
         ];
@@ -65,7 +64,6 @@
       switch-layout = pkgs.writeShellApplication {
         name = "switch-layout";
         runtimeInputs = [
-          pkgs.coreutils
           pkgs.hyprland
           pkgs.jq
         ];
@@ -74,7 +72,7 @@
           #   jq -r '.keyboards[] | select(.name | contains("power") | not) | .name' | \
           #   xargs -IR sh -c 'hyprctl switchxkblayout R next &>/dev/null'
 
-          ${current-layout}/bin/current-layout
+          ${lib.getExe current-layout}
         '';
       };
 
@@ -145,7 +143,7 @@
 
       home.activation = {
         qtileReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          ${package}/bin/qtile cmd-obj -f reload_config || true
+          ${lib.getExe package} cmd-obj -f reload_config || true
         '';
       };
 
@@ -169,7 +167,7 @@
             Key(
                 ["mod4"],
                 "space",
-                lazy.spawn("${switch-layout}/bin/switch-layout")
+                lazy.spawn("${lib.getExe switch-layout}")
             )
         )
 

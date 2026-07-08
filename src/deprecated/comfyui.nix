@@ -12,7 +12,7 @@
     let
       cuda = config.nixpkgs.config.cudaSupport;
 
-      chromium = osConfig.dot.programs.chromium.wrap pkgs.ungoogled-chromium "chromium";
+      chromium = osConfig.dot.programs.chromium.package;
 
       package = if config.nixpkgs.config.cudaSupport then pkgs.comfy-ui-cuda else pkgs.comfy-ui;
 
@@ -21,7 +21,6 @@
           name = "comfyui-${instanceName}";
           runtimeInputs = [
             package
-            pkgs.coreutils
           ];
           text = ''
             mkdir -p "${config.xdg.dataHome}/comfyui/${instanceName}"
@@ -77,7 +76,7 @@
         xdg.desktopEntries = {
           comfyui-personal = {
             name = "ComfyUI";
-            exec = "${instances.personal.desktopApp}/bin/comfyui-personal-app";
+            exec = lib.getExe instances.personal.desktopApp;
             terminal = false;
           };
         };

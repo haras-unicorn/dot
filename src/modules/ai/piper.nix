@@ -1,5 +1,5 @@
 {
-  machines.homeModules.piper =
+  machines.nixosModules.piper =
     {
       pkgs,
       lib,
@@ -8,10 +8,13 @@
       ...
     }:
     let
-      hardware = osConfig.dot.hardware;
+      hardware = config.dot.hardware;
+
+      package = pkgs.piper-tts;
 
       voicesBaseUrl = "https://huggingface.co/rhasspy/piper-voices/resolve/main";
-      mkVoiceBaseUrl =
+
+      makeVoiceBaseUrl =
         voice:
         builtins.concatStringsSep "/" [
           voicesBaseUrl
@@ -20,18 +23,19 @@
           voice.name
           voice.quality
         ];
-      mkVoiceModelName = voice: "${voice.dialect}-${voice.name}-${voice.quality}.onnx";
-      mkVoiceConfigName = voice: "${voice.dialect}-${voice.name}-${voice.quality}.onnx.json";
-      mkVoice =
+      makeVoiceModelFullName = voice: "${voice.dialect}-${voice.name}-${voice.quality}";
+      makeVoice =
         voice:
         voice
         // rec {
+          full = makeVoiceModelFullName voice;
+          url = makeVoiceBaseUrl voice;
           model = pkgs.fetchurl {
-            url = "${mkVoiceBaseUrl voice}/${mkVoiceModelName voice}";
+            url = "${url}/${full}.onnx";
             sha256 = voice.modelHash;
           };
           config = pkgs.fetchurl {
-            url = "${mkVoiceBaseUrl voice}/${mkVoiceConfigName voice}";
+            url = "${url}/${full}.onnx.json";
             sha256 = voice.configHash;
           };
           sampleRate =
@@ -39,66 +43,119 @@
               json = builtins.fromJSON (builtins.readFile config);
             in
             json.audio.sample_rate;
+          format = "s16";
+          code = builtins.replaceStrings [ "_" ] [ "-" ] voice.dialect;
         };
 
       voices = {
-        amy = mkVoice {
+        amy = makeVoice {
           modelHash = "sha256-pakau33g8QQ1iiWt7UgN2s8f8HYohjJYhuxAai6GqrM=";
           configHash = "sha256-IlCppgW43DWhFnF/rcUFZpXdgJ40oV0C9yoPUtU9Prs=";
           language = "en";
           dialect = "en_US";
           name = "amy";
           quality = "low";
+          type = "FEMALE1";
+        };
+      };
+      defaultVoice = voices.amy;
+
+      voiceFormat = pkgs.formats.json { };
+      voicesFile = voiceFormat.generate "piper-voices.json" voices;
+
+      node = pkgs.writeScriptBin "piper-tts-processor" ''
+        #!${lib.getExe pkgs.nushell} --stdin
+
+        let voices = open '${voicesFile}'
+
+        def "main" [--voice: string] {
+          let voice = if $voice == null {
+            $voices | get '${defaultVoice.name}'
+          } else {
+            $voices | get $voice
+          }
+
+          ($in
+            | ${lib.getExe package}
+                --model $voice.model
+                --config $voice.config)
+        }
+      '';
+
+      addVoices = builtins.concatStringsSep "\n" (
+        builtins.map (
+          {
+            code,
+            type,
+            name,
+            ...
+          }:
+          ''AddVoice "${code}" "${type}" "${name}"''
+        ) (builtins.attrValues voices)
+      );
+    in
+    {
+      options.dot = {
+        piper = {
+          node = lib.mkOption {
+            type = lib.types.package;
+            internal = true;
+          };
         };
       };
 
-      speakVoice = voices.amy;
-      speak = pkgs.writeShellApplication {
-        name = "speak";
-        runtimeInputs = [
-          pkgs.piper-tts
-          pkgs.alsa-utils
-          pkgs.coreutils
-        ];
-        text = ''
-          cat \
-            | piper \
-                --model ${speakVoice.model} \
-                --config ${speakVoice.config} \
-                --output-raw \
-            | aplay \
-                --rate ${builtins.toString speakVoice.sampleRate} \
-                --format S16_LE \
-                --file-type raw \
-                --quiet \
-                2>/dev/null
+      config = lib.mkIf hardware.sound {
+        services.speechd.config = ''
+          AddModule "piper" "sd_generic" "piper.conf"
         '';
-      };
 
-      read = pkgs.writeShellApplication {
-        name = "read";
-        runtimeInputs = [
-          speak
-          config.dot.programs.shell.paste
-          pkgs.coreutils
-        ];
-        text = ''
-          paste | speak
+        services.speechd.modules.piper = ''
+          GenericExecuteSynth "echo \"$DATA\" | ${lib.getExe node} --voice \"$VOICE\""
+          ${addVoices}
+          DefaultVoice "${defaultVoice.name}"
         '';
+
+        dot.piper.node = node;
+
+        home-manager.users.${config.dot.user.user}.dot.ai.models.piper.files = builtins.concatMap (
+          {
+            model,
+            config,
+            ...
+          }:
+          [
+            model
+            config
+          ]
+        ) (builtins.attrValues voices);
+
+        environment.systemPackages = [
+          package
+        ];
       };
+    };
+
+  machines.homeModules.piper =
+    {
+      lib,
+      osConfig,
+      ...
+    }:
+    let
+      hardware = osConfig.dot.hardware;
     in
     lib.mkIf hardware.sound {
-      home.packages = [
-        speak
-        pkgs.piper-tts
-      ];
-
-      dot.desktop.keybinds = lib.mkIf hardware.visual [
-        {
-          mods = [ "super" ];
-          key = "s";
-          command = "${read}/bin/read";
-        }
-      ];
+      dot.processing.nodes.piper-tts = {
+        note = "Turn text into speech";
+        tags = [
+          "tts"
+          "text-to-speech"
+          "text"
+          "speech"
+        ];
+        inputs = [ "text/plain" ];
+        output = "audio/x-wav";
+        package = osConfig.dot.piper.node;
+      };
     };
 }

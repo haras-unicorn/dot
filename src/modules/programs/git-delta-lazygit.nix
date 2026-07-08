@@ -33,7 +33,7 @@
           showIcons = true;
           paging = {
             colorArg = "always";
-            pager = "${pkgs.delta}/bin/delta --paging=never";
+            pager = "${lib.getExe pkgs.delta} --paging=never";
           };
         };
         os = {

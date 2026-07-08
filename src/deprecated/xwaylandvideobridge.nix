@@ -20,7 +20,7 @@
 
         Service = {
           Type = "simple";
-          ExecStart = "${package}/bin/xwaylandvideobridge";
+          ExecStart = lib.getExe package;
           Restart = "on-failure";
         };
 

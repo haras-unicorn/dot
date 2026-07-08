@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   machines.homeModules.utils =
     {
@@ -11,9 +9,6 @@
     let
       run = pkgs.writeShellApplication {
         name = "run";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           "$@" &>/dev/null & disown %-
         '';
@@ -21,9 +16,6 @@
 
       repeat = pkgs.writeShellApplication {
         name = "repeat";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           while true; do "$@"; done
         '';
@@ -31,9 +23,6 @@
 
       nr = pkgs.writeShellApplication {
         name = "nr";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           name="$1"
           shift
@@ -43,9 +32,6 @@
 
       nru = pkgs.writeShellApplication {
         name = "nru";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           export NIXPKGS_ALLOW_UNFREE=1
           name="$1"
@@ -56,9 +42,6 @@
 
       nruu = pkgs.writeShellApplication {
         name = "nruu";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           export NIXPKGS_ALLOW_UNFREE=1
           name="$1"
@@ -69,9 +52,6 @@
 
       ezdd = pkgs.writeShellApplication {
         name = "ezdd";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           if="$1"
           of="$2"

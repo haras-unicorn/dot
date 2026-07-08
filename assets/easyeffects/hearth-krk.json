@@ -1,5 +1,15 @@
 {
   "output": {
+    "autogain#0": {
+      "bypass": false,
+      "force-silence": false,
+      "input-gain": 0.0,
+      "maximum-history": 30,
+      "output-gain": 0.0,
+      "reference": "Geometric Mean (MSI)",
+      "silence-threshold": -70.0,
+      "target": -12.0
+    },
     "blocklist": [],
     "equalizer#0": {
       "balance": 0.0,
@@ -361,7 +371,7 @@
       },
       "mode": "FIR",
       "num-bands": 32,
-      "output-gain": -10,
+      "output-gain": 0.0,
       "pitch-left": 0.0,
       "pitch-right": 0.0,
       "right": {
@@ -720,6 +730,33 @@
       },
       "split-channels": false
     },
-    "plugins_order": ["equalizer#0"]
+    "limiter#0": {
+      "alr": false,
+      "alr-attack": 5.0,
+      "alr-knee": 0.0,
+      "alr-knee-smooth": -5.0,
+      "alr-release": 50.0,
+      "attack": 5.0,
+      "bypass": false,
+      "dithering": "None",
+      "gain-boost": true,
+      "input-gain": 0.0,
+      "input-to-link": -80.01,
+      "input-to-sidechain": -80.01,
+      "link-to-input": -80.01,
+      "link-to-sidechain": -80.01,
+      "lookahead": 5.0,
+      "mode": "Herm Thin",
+      "output-gain": -20.0,
+      "oversampling": "None",
+      "release": 5.0,
+      "sidechain-preamp": 0.0,
+      "sidechain-to-input": -80.01,
+      "sidechain-to-link": -80.01,
+      "sidechain-type": "Internal",
+      "stereo-link": 100.0,
+      "threshold": 0.0
+    },
+    "plugins_order": ["equalizer#0", "autogain#0", "limiter#0"]
   }
 }

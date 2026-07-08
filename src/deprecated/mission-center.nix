@@ -1,5 +1,5 @@
 {
-  machines.homeModules.mission-center =
+  self.lib.deprecated.homeModules.mission-center =
     {
       lib,
       osConfig,
@@ -22,6 +22,6 @@
         }
       ];
 
-      dot.desktop.monitor = "${pkgs.mission-center}/bin/missioncenter";
+      dot.desktop.monitor = lib.getExe pkgs.mission-center;
     };
 }

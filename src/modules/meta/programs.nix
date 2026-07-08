@@ -7,15 +7,6 @@
     {
       options.dot = {
         programs = {
-          pinentry = {
-            package = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Default pinentry package.
-              '';
-            };
-          };
-
           chromium = {
             package = lib.mkOption {
               type = lib.types.package;
@@ -32,37 +23,23 @@
             };
 
             wrap = lib.mkOption {
-              type = lib.types.functionTo (lib.types.functionTo lib.types.package);
+              type = lib.types.functionTo lib.types.package;
               description = ''
-                Function (package -> string -> package) that takes in a package
-                and the name of the binary to wrap with chromium args.
+                Function (package -> package) that takes in a package
+                or path to wrap with chromium args.
               '';
             };
 
             launch = lib.mkOption {
-              type = lib.types.functionTo (lib.types.functionTo (lib.types.functionTo lib.types.package));
+              type = lib.types.functionTo lib.types.package;
               description = ''
-                Function (string -> string -> bool -> package) that takes in a name, an address
-                and whether to launch it in incognito mode and makes a package that
-                launches chromium at the provided address.
-              '';
-            };
-          };
+                Function (attrs -> package) that takes in attrs and makes
+                a program that launches chromium at the provided address.
 
-          mangohud = {
-            package = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Default mangohud package.
-              '';
-            };
-          };
-
-          gamemode = {
-            package = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Default gamemode package.
+                Attrs:
+                - name: Final package name.
+                - address: Address to navigate to.
+                - incognito: Whether to launch chromium in incognito.
               '';
             };
           };
@@ -101,14 +78,6 @@
               '';
             };
 
-            aliases = lib.mkOption {
-              type = with lib.types; lazyAttrsOf str;
-              default = { };
-              description = ''
-                Aliases to use in default shell.
-              '';
-            };
-
             sessionStartup = lib.mkOption {
               type = with lib.types; listOf str;
               default = [ ];
@@ -117,115 +86,20 @@
               '';
             };
 
-            copy = lib.mkOption {
-              type = lib.types.package;
+            aliases = lib.mkOption {
+              type = with lib.types; lazyAttrsOf str;
+              default = { };
               description = ''
-                Copy command.
+                Aliases to use in default shell.
               '';
             };
+          };
 
-            paste = lib.mkOption {
+          pager = {
+            package = lib.mkOption {
               type = lib.types.package;
               description = ''
-                Paste command.
-              '';
-            };
-
-            type = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Type command.
-              '';
-            };
-
-            screenshot = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Screenshot command.
-              '';
-            };
-
-            regionshot = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Region screenshot command.
-              '';
-            };
-
-            tree = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Directory tree command.
-              '';
-            };
-
-            list = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Directory list command.
-              '';
-            };
-
-            dmenu = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Dmenu command.
-              '';
-            };
-
-            launcher = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Program picker command.
-              '';
-            };
-
-            emoji = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Emoji picker command.
-              '';
-            };
-
-            volume-up = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Volume increase command.
-              '';
-            };
-
-            volume-down = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Volume decrease command.
-              '';
-            };
-
-            volume-mute-unmute = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Mute/unmute command.
-              '';
-            };
-
-            play-pause = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Play/pause command.
-              '';
-            };
-
-            brightness-up = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Brightness increase command.
-              '';
-            };
-
-            brightness-down = lib.mkOption {
-              type = lib.types.package;
-              description = ''
-                Brightness decrease command.
+                Default pager package.
               '';
             };
           };
@@ -277,6 +151,15 @@
               type = lib.types.package;
               description = ''
                 Default browser package.
+              '';
+            };
+          };
+
+          files = {
+            package = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Default file manager package.
               '';
             };
           };

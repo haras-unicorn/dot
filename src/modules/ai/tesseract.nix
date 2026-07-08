@@ -2,35 +2,31 @@
   machines.homeModules.tesseract =
     { pkgs, config, ... }:
     let
-      transcribe = pkgs.writeShellApplication {
-        name = "transcribe";
-        runtimeInputs = [
-          config.dot.programs.shell.paste
-          config.dot.programs.shell.copy
-          pkgs.coreutils
-          pkgs.tesseract
-          pkgs.libnotify
-        ];
+      package = pkgs.tesseract;
+
+      processor = pkgs.writeShellApplication {
+        name = "tesseract-processor";
+        runtimeInputs = [ package ];
         text = ''
-          text="$(paste -t image/png | tesseract --psm 1 --oem 1 stdin stdout)"
-          trimmed="$(echo "$text" | xargs)"
-          echo "$trimmed" | copy
-          notify-send Clipboard "copied '$trimmed'" --transient
+          cat | tesseract --psm 1 --oem 1 stdin stdout "$@" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
         '';
       };
     in
     {
-      dot.desktop.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "o";
-          command = "${transcribe}/bin/transcribe";
-        }
-      ];
+      dot.processing.nodes.tesseract-ocr = {
+        note = "Recognize the characters in the image";
+        tags = [
+          "ocr"
+          "image"
+          "text"
+        ];
+        inputs = [ "image/png" ];
+        output = "text/plain";
+        package = processor;
+      };
 
       home.packages = [
-        pkgs.tesseract
-        transcribe
+        package
       ];
     };
 }

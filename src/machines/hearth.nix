@@ -36,8 +36,10 @@
         xdg.dataFile."easyeffects/output/redmi.json".source =
           "${self}/assets/easyeffects/hearth-redmi.json";
 
-        xdg.configFile."obs-studio/basic/scenes/Untitled.json".source =
-          "${self}/assets/obs/hearth-scene.json";
+        xdg.configFile."obs-studio/basic/scenes/Untitled.json" = {
+          force = true;
+          source = "${self}/assets/obs/hearth-scene.json";
+        };
       };
     };
 }

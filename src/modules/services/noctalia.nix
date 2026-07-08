@@ -39,12 +39,12 @@
       imports = [ inputs.noctalia.homeModules.default ];
 
       config = lib.mkIf (hardware.visual && hardware.wayland) {
-        dot.programs.shell = {
+        dot.commands = {
           launcher = makeCommand "launcher" "msg panel-toggle launcher";
           emoji = makeCommand "emoji" "msg panel-toggle launcher /emo";
           dmenu = makeCommand "dmenu" "dmenu";
           screenshot = makeCommand "screenshot" "msg screenshot-fullscreen pick";
-          regionshot = makeCommand "screenshot" "msg screenshot-region";
+          regionshot = makeCommand "regionshot" "msg screenshot-region";
           volume-up = makeCommand "volume-up" "msg volume-up";
           volume-down = makeCommand "volume-down" "msg volume-down";
           volume-mute-unmute = makeCommand "volume-mute-unmute" "msg volume-mute";
@@ -60,14 +60,14 @@
               setup_wizard_enabled = false;
               external_ip_enabled = true;
               polkit_agent = false;
-              avatar_path = osConfig.dot.profile.image;
+              avatar_path = osConfig.dot.user.image;
               panel = {
                 transparency_mode = "soft";
                 floating_offset = margin;
               };
               screenshot = {
-                filename_pattern = "%Y-%m-%d_%H-%M-%S";
-                directory = "${config.xdg.userDirs.pictures}/screenshots";
+                filename_pattern = config.dot.desktop.timestamp;
+                directory = config.dot.desktop.screenshots;
                 copy_to_clipboard = true;
               };
             };
@@ -174,9 +174,21 @@
               blurred_desktop = true;
             };
 
-            location.address = osConfig.dot.location.address;
+            nightlight = {
+              enabled = true;
+            };
 
-            backdrop.enabled = true;
+            battery = {
+              warning_threshold = 20;
+            };
+
+            location = {
+              address = osConfig.dot.location.address;
+            };
+
+            backdrop = {
+              enabled = true;
+            };
           };
 
           customPalettes.${theme}.${polarity} = with colors; {
@@ -241,6 +253,12 @@
               default.path = wallpaper;
             };
           };
+        };
+
+        systemd.user.services.noctalia = {
+          Service.Environment = [
+            "NOCTALIA_LOG_LEVEL=warn"
+          ];
         };
 
         # NOTE: noctalia tells systemd it started too early

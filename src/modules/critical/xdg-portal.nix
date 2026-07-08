@@ -54,7 +54,7 @@
       # the services themselves are from packages so its kinda hard to
       # modify their start time from nix in a nice way
       dot.desktop.sessionStartup = [
-        "${pkgs.systemd}/bin/systemctl restart --user *xdg-desktop-portal*"
+        "${lib.getExe' pkgs.systemd "systemctl"} restart --user *xdg-desktop-portal*"
       ];
 
       xdg.portal.enable = true;
