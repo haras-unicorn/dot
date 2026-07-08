@@ -1,3 +1,5 @@
+{ self, ... }:
+
 {
   machines.machines.hearth =
     { config, ... }:
@@ -21,7 +23,21 @@
       dot.location.address = "Zagreb, Croatia";
 
       home-manager.users.${config.dot.user.user} = {
-        services.easyeffects.preset = "krk";
+        xdg.dataFile."easyeffects/autoload/output/krk.json".source =
+          "${self}/assets/easyeffects/hearth-krk-autoload.json";
+        xdg.dataFile."easyeffects/output/krk.json".source = "${self}/assets/easyeffects/hearth-krk.json";
+
+        xdg.dataFile."easyeffects/autoload/input/rode.json".source =
+          "${self}/assets/easyeffects/hearth-rode-autoload.json";
+        xdg.dataFile."easyeffects/input/rode.json".source = "${self}/assets/easyeffects/hearth-rode.json";
+
+        xdg.dataFile."easyeffects/autoload/output/redmi.json".source =
+          "${self}/assets/easyeffects/hearth-redmi-autoload.json";
+        xdg.dataFile."easyeffects/output/redmi.json".source =
+          "${self}/assets/easyeffects/hearth-redmi.json";
+
+        xdg.configFile."obs-studio/basic/scenes/Untitled.json".source =
+          "${self}/assets/obs/hearth-scene.json";
       };
     };
 }

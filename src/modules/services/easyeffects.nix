@@ -40,9 +40,6 @@
       ];
 
       services.easyeffects.enable = true;
-      services.easyeffects.extraPresets = {
-        krk = builtins.fromJSON (builtins.readFile ./krk.json);
-      };
       systemd.user.services.easyeffects = lib.mkIf hardware.graphics {
         Unit.Requires = [ "tray.target" ];
         Unit.After = [
