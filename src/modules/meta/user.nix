@@ -15,13 +15,10 @@
             type = lib.types.str;
             description = "Machine user group.";
           };
-        };
-      };
-
-      config.dot = {
-        user = {
-          user = "haras";
-          group = "haras";
+          image = lib.mkOption {
+            type = lib.types.path;
+            description = "Path to the profile image.";
+          };
         };
       };
     };

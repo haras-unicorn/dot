@@ -10,10 +10,10 @@
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.gaming {
-      dot.programs.mangohud.package = pkgs.mangohud;
+      dot.commands.mangohud = pkgs.mangohud;
 
       programs.steam.extraPackages = [
-        config.dot.programs.mangohud.package
+        config.dot.commands.mangohud
       ];
     };
 
@@ -30,10 +30,10 @@
     in
     lib.mkIf hardware.gaming {
       programs.mangohud.enable = true;
-      programs.mangohud.package = osConfig.dot.programs.mangohud.package;
+      programs.mangohud.package = osConfig.dot.commands.mangohud;
 
       programs.lutris.extraPackages = [
-        osConfig.dot.programs.mangohud.package
+        osConfig.dot.commands.mangohud
       ];
     };
 }

@@ -12,7 +12,7 @@
     in
     lib.mkIf (hardware.visual && !hardware.wayland) {
       dot.desktop.sessionStartup = [
-        "${pkgs.betterlockscreen}/bin/betterlockscreen --update '${config.stylix.image}'"
+        "${lib.getExe pkgs.betterlockscreen} --update '${config.stylix.image}'"
       ];
 
       services.betterlockscreen.enable = true;

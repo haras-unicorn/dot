@@ -30,10 +30,7 @@
           autoupdate = false;
           share = "disabled";
           compaction.prune = true;
-          provider.openrouter.models = {
-            "deepseek/deepseek-v4-pro".options.provider.only = [ "deepseek" ];
-            "deepseek/deepseek-v4-flash".options.provider.only = [ "deepseek" ];
-          };
+          enabled_providers = [ "deepseek" ];
           model = "deepseek/deepseek-v4-pro";
           small_model = "deepseek/deepseek-v4-flash";
           lsp = true;
@@ -56,8 +53,8 @@
           ## References
 
           - `dot` flake URL: ${selfLib.source.url}
-          - the `tree` command (available via PATH): ${lib.getExe config.dot.programs.shell.tree}
-          - the `list` command (available via PATH): ${lib.getExe config.dot.programs.shell.list}
+          - the `tree` command (available via PATH): ${lib.getExe config.dot.commands.tree}
+          - the `list` command (available via PATH): ${lib.getExe config.dot.commands.list}
         '';
 
         themes.${theme}.theme.background = lib.mkForce "none";

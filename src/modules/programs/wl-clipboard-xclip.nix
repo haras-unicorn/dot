@@ -1,3 +1,5 @@
+# TODO: ensure -t and -l behavior for commands
+
 {
   machines.homeModules.wl-clipboard-xclip =
     {
@@ -13,54 +15,112 @@
       xclip = pkgs.xclip;
 
       copyWayland = pkgs.writeShellApplication {
-        name = "copy";
+        name = "copy-wlx";
         runtimeInputs = [
           wl-clipboard
           xclip
         ];
         text = ''
-          tmpfile="$(mktemp)"
-          trap 'rm -f "$tmpfile"' EXIT
-
-          cat > "$tmpfile"
-
-          wl-copy "$@" < "$tmpfile"
-          xclip -sel clipboard "$@" < "$tmpfile"
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          cat > "$tmp"
+          wl-copy "$@" < "$tmp"
+          xclip -sel clip "$@" < "$tmp"
         '';
       };
 
       pasteWayland = pkgs.writeShellApplication {
-        name = "paste";
+        name = "paste-wlx";
         runtimeInputs = [ wl-clipboard ];
         text = ''
-          wl-paste "$@"
+          wl-paste "$@" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
         '';
       };
 
       copyXServer = pkgs.writeShellApplication {
-        name = "copy";
+        name = "copy-wlx";
         runtimeInputs = [ xclip ];
         text = ''
-          xclip -sel clip "$@"
+          cat | xclip -sel clip "$@"
+          printf "copy done" 1>&2
         '';
       };
 
       pasteXServer = pkgs.writeShellApplication {
-        name = "paste";
+        name = "paste-wlx";
         runtimeInputs = [ xclip ];
         text = ''
-          xclip -o -sel clip "$@"
+          xclip -o -sel clip "$@" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
         '';
       };
     in
     lib.mkMerge [
       (lib.mkIf (hardware.graphics && hardware.wayland) {
-        dot.programs.shell.copy = copyWayland;
-        dot.programs.shell.paste = pasteWayland;
+        dot.processing = {
+          sources = {
+            wl-clipboard = {
+              note = "Paste contents of the clipboard";
+              tags = [
+                "clipboard"
+                "paste"
+              ];
+              output = "detect";
+              package = pasteWayland;
+            };
+          };
+          sinks = {
+            wl-clipboard = {
+              note = "Copy contents to the clipboard";
+              tags = [
+                "clipboard"
+                "copy"
+              ];
+              inputs = "any";
+              package = copyWayland;
+            };
+          };
+        };
+
+        dot.commands.copy = copyWayland;
+        dot.commands.paste = pasteWayland;
+
+        home.packages = [
+          wl-clipboard
+          xclip
+        ];
       })
       (lib.mkIf (hardware.graphics && !hardware.wayland) {
-        dot.programs.shell.copy = copyXServer;
-        dot.programs.shell.paste = pasteXServer;
+        dot.processing = {
+          sources = {
+            xclip = {
+              note = "Paste contents of the clipboard";
+              tags = [
+                "clipboard"
+                "paste"
+              ];
+              output = "detect";
+              package = pasteXServer;
+            };
+          };
+          sinks = {
+            xclip = {
+              note = "Copy contents to the clipboard";
+              tags = [
+                "clipboard"
+                "copy"
+              ];
+              inputs = "any";
+              package = copyXServer;
+            };
+          };
+        };
+
+        dot.commands.copy = copyXServer;
+        dot.commands.paste = pasteXServer;
+
+        home.packages = [
+          xclip
+        ];
       })
     ];
 }

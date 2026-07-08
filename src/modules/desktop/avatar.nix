@@ -2,12 +2,14 @@
 
 {
   machines.nixosModules.avatar = { config, ... }: {
-    dot.profile = {
+    dot.user = {
+      user = "haras";
+      group = "haras";
       image = "${self}/assets/profile/avatar.png";
     };
 
     systemd.tmpfiles.rules = [
-      "L+ /var/lib/AccountsService/icons/${config.dot.user.user} - - - - ${config.dot.profile.image}"
+      "L+ /var/lib/AccountsService/icons/${config.dot.user.user} - - - - ${config.dot.user.image}"
     ];
   };
 }

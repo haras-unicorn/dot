@@ -1,15 +1,18 @@
 {
   machines.nixosModules.nushell =
-    { pkgs, ... }:
+    { lib, pkgs, ... }:
+    let
+      exe = lib.getExe pkgs.nushell;
+    in
     {
       dot.desktop.startup = [
         {
           name = "Nushell";
-          command = "${pkgs.nushell}/bin/nu --login";
+          command = "${exe} --login";
         }
       ];
 
-      environment.shells = [ "${pkgs.nushell}/bin/nu" ];
+      environment.shells = [ exe ];
     };
 
   machines.homeModules.nushell =
@@ -66,7 +69,7 @@
 
       programs.helix.languages = {
         language-server.nu-lsp = {
-          command = "${pkgs.nushell}/bin/nu";
+          command = lib.getExe config.programs.nushell.package;
           args = [ "--lsp" ];
         };
 
@@ -75,7 +78,7 @@
             name = "nu";
             language-servers = [ "nu-lsp" ];
             formatter = {
-              command = "${pkgs.nufmt}/bin/nufmt --stdin";
+              command = "${lib.getExe pkgs.nufmt} --stdin";
             };
             auto-format = true;
           }

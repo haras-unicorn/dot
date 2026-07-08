@@ -27,8 +27,8 @@
       };
     in
     lib.mkIf (hardware.visual && hardware.wayland) {
-      dot.programs.shell.dmenu = lib.mkDefault wofiDmenu;
-      dot.programs.shell.launcher = lib.mkDefault wofiLauncher;
+      dot.commands.dmenu = lib.mkDefault wofiDmenu;
+      dot.commands.launcher = lib.mkDefault wofiLauncher;
 
       programs.wofi.enable = true;
 

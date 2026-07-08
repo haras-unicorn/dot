@@ -5,11 +5,13 @@
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.gaming {
+      dot.commands.gamescope = config.programs.gamescope.package;
+
       programs.gamescope.enable = true;
       programs.gamescope.capSysNice = true;
 
       programs.steam.extraPackages = [
-        config.programs.gamescope.package
+        config.dot.commands.gamescope
       ];
     };
 
@@ -24,7 +26,7 @@
     in
     lib.mkIf hardware.gaming {
       programs.lutris.extraPackages = [
-        osConfig.programs.gamescope.package
+        osConfig.dot.commands.gamescope
       ];
     };
 }

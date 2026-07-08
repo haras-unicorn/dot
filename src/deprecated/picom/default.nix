@@ -15,7 +15,7 @@
     lib.mkIf (hardware.graphics && !hardware.wayland) {
       home.activation = {
         picomReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "picom" || true
+          ${lib.getExe' pkgs.procps "pkill"} --signal "SIGUSR1" "picom" || true
         '';
       };
 

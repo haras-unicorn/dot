@@ -27,8 +27,8 @@
       };
     in
     lib.mkIf (hardware.visual && !hardware.wayland) {
-      dot.programs.shell.dmenu = lib.mkDefault rofiDmenu;
-      dot.programs.shell.launcher = lib.mkDefault rofiLauncher;
+      dot.commands.dmenu = lib.mkDefault rofiDmenu;
+      dot.commands.launcher = lib.mkDefault rofiLauncher;
 
       programs.rofi.enable = true;
       xdg.configFile."rofi/launcher.rasi".source = ./launcher.rasi;

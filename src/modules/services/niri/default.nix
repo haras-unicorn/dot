@@ -19,7 +19,7 @@
         {
           name = "Niri";
           type = "wayland";
-          command = "${package}/bin/niri-session";
+          command = lib.getExe' package "niri-session";
         }
       ];
     };
@@ -165,7 +165,7 @@
       };
 
       xdg.configFile."niri/config.kdl".text = ''
-        screenshot-path "${config.xdg.userDirs.pictures}/screenshots"
+        screenshot-path "${config.dot.desktop.screenshots}"
 
         output "${hardware.display}" {
           variable-refresh-rate

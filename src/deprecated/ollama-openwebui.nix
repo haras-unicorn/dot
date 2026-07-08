@@ -29,7 +29,7 @@
     let
       cuda = config.nixpkgs.config.cudaSupport;
 
-      chromium = osConfig.dot.programs.chromium.wrap pkgs.ungoogled-chromium "chromium";
+      chromium = osConfig.dot.programs.chromium.package;
 
       ollamaPackage = pkgs.ollama;
       openWebuiPackage = pkgs.open-webui;
@@ -52,7 +52,6 @@
           name = "open-webui-${instanceName}";
           runtimeInputs = [
             openWebuiPackage
-            pkgs.coreutils
           ];
           text = ''
             mkdir -p "${config.xdg.dataHome}/ollama/${instanceName}/ui"
@@ -109,7 +108,7 @@
         xdg.desktopEntries = {
           ollama-personal = {
             name = "Ollama OpenWebUI";
-            exec = "${instances.personal.desktopApp}/bin/ollama-personal-app";
+            exec = lib.getExe instances.personal.desktopApp;
             terminal = false;
           };
         };

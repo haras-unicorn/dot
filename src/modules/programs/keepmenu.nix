@@ -9,13 +9,15 @@
     }:
     let
       hardware = osConfig.dot.hardware;
+
+      package = pkgs.keepmenu;
     in
     lib.mkIf (hardware.visual && hardware.wayland) {
       dot.desktop.keybinds = [
         {
           mods = [ "super" ];
           key = "z";
-          command = "${pkgs.keepmenu}/bin/keepmenu";
+          command = "${lib.getExe package}";
         }
         {
           mods = [
@@ -23,7 +25,7 @@
             "shift"
           ];
           key = "z";
-          command = "${pkgs.keepmenu}/bin/keepmenu -a '{PASSWORD}'";
+          command = "${lib.getExe package} -a '{PASSWORD}'";
         }
         {
           mods = [
@@ -31,19 +33,19 @@
             "alt"
           ];
           key = "z";
-          command = "${pkgs.keepmenu}/bin/keepmenu -a '{TOTP}'";
+          command = "${lib.getExe package} -a '{TOTP}'";
         }
       ];
 
       home.packages = [
-        pkgs.keepmenu
+        package
         pkgs.wtype
       ];
 
       xdg.configFile."keepmenu/config.ini".text = ''
         [dmenu]
-        dmenu_command = ${lib.getExe config.dot.programs.shell.dmenu}
-        pinentry = ${lib.getExe osConfig.dot.programs.pinentry.package}
+        dmenu_command = ${lib.getExe config.dot.commands.dmenu}
+        pinentry = ${lib.getExe osConfig.dot.commands.pinentry}
         title_path = False
 
         [dmenu_passphrase]

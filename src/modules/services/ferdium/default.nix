@@ -1,23 +1,6 @@
 # NOTE: ferdium outlook - Self Hosted at https://outlook.office.com/mail/
 # TODO: use network isolation when adding VPN
 {
-  machines.nixosModules.ferdium =
-    { lib, config, ... }:
-    let
-      hardware = config.dot.hardware;
-    in
-    lib.mkIf hardware.browser {
-      dot.nixpkgs.allowUnfreePredicates = [
-        (
-          package:
-          let
-            name = lib.getName package;
-          in
-          name == "slack"
-        )
-      ];
-    };
-
   machines.homeModules.ferdium =
     {
       config,
@@ -31,10 +14,14 @@
       monitorWidth = hardware.width;
       monitorHeight = hardware.height;
 
-      ferdium = osConfig.dot.programs.chromium.wrap pkgs.ferdium "ferdium";
-      slack = osConfig.dot.programs.chromium.wrap pkgs.slack "slack";
-      teams = osConfig.dot.programs.chromium.wrap pkgs.teams-for-linux "teams-for-linux";
-      vesktop = osConfig.dot.programs.chromium.wrap pkgs.vesktop "vesktop";
+      package = pkgs.symlinkJoin {
+        name = "ferdium";
+        paths = [ (osConfig.dot.programs.chromium.wrap "${lib.getExe' pkgs.ferdium "ferdium"}") ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/ferdium --append-flags '--user-data-dir=${dataDir}'
+        '';
+      };
 
       windowState = {
         width = monitorWidth * 3 / 4;
@@ -67,30 +54,19 @@
           selector = "class";
           arg = "ferdium";
         }
+      ];
+
+      dot.desktop.keybinds = [
         {
-          rule = "float";
-          selector = "class";
-          arg = "teams-for-linux";
-        }
-        {
-          rule = "float";
-          selector = "class";
-          arg = "vesktop";
+          mods = [ "super" ];
+          key = "r";
+          command = lib.getExe' package "ferdium";
         }
       ];
 
       home.packages = [
-        ferdium
-        teams
-        vesktop
-        slack
+        package
       ];
-
-      xdg.configFile."teams-for-linux/config.json".text = builtins.toJSON {
-        closeAppOnCross = true;
-        trayIconEnabled = false;
-      };
-      xdg.configFile."teams-for-linux/window-state.json".text = builtins.toJSON windowState;
 
       systemd.user.services.ferdium = {
         Install.WantedBy = [ "graphical-session.target" ];
@@ -104,7 +80,7 @@
           Requires = [ "tray.target" ];
         };
         Service = {
-          ExecStart = "${ferdium}/bin/ferdium --user-data-dir=${dataDir}";
+          ExecStart = lib.getExe' package "ferdium";
           Restart = "on-failure";
           WorkingDirectory = dataDir;
           KillMode = "mixed";

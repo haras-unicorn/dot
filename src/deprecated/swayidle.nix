@@ -47,12 +47,12 @@
         in
         {
           inherit name package;
-          command = "${package}/bin/${name}";
+          command = lib.getExe' package name;
           unwrapped = command;
         };
 
-      lockCallback = mkCallback "swayidle-lock" "${pkgs.systemd}/bin/loginctl lock-session";
-      suspendCallback = mkCallback "swayidle-suspend" "${pkgs.systemd}/bin/systemctl suspend-then-hibernate";
+      lockCallback = mkCallback "swayidle-lock" "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
+      suspendCallback = mkCallback "swayidle-suspend" "${lib.getExe' pkgs.systemd "systemctl"} suspend-then-hibernate";
     in
     lib.mkIf (hardware.visual && hardware.wayland) {
       home.packages = [

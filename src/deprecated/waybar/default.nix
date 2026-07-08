@@ -80,7 +80,7 @@
             pkgs.writeShellApplication {
               name = "wait-for-waybar-tray";
               text = ''
-                while ! ${pkgs.systemd}/bin/journalctl --user -u waybar.service --no-pager -n 100 -q \
+                while ! ${lib.getExe' pkgs.systemd "journalctl"} --user -u waybar.service --no-pager -n 100 -q \
                   | grep -q "Bar configured"; do
                   sleep 0.1
                 done

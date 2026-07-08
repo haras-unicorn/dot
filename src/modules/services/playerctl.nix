@@ -21,7 +21,7 @@
       };
     in
     lib.mkIf hardware.sound {
-      dot.programs.shell.play-pause = play-pause;
+      dot.commands.play-pause = play-pause;
 
       home.packages = [ package ];
 

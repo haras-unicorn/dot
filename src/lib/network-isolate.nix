@@ -15,7 +15,6 @@
         iproute2
         iptables
         procps
-        coreutils
         sudo
       ];
       text = ''
