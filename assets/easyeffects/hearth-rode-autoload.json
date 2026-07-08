@@ -1,0 +1,6 @@
+{
+  "device": "alsa_input.usb-PreSonus_AudioBox_USB_96_000000000000-00.analog-stereo",
+  "device-description": "AudioBox USB 96 Analog Stereo",
+  "device-profile": "Analog Input",
+  "preset-name": "rode"
+}

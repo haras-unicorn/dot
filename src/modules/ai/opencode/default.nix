@@ -11,6 +11,8 @@
     }:
     let
       hardware = osConfig.dot.hardware;
+
+      theme = "stylix";
     in
     lib.mkIf hardware.editor {
       home.sessionVariables = {
@@ -19,6 +21,11 @@
 
       programs.opencode = {
         enable = true;
+
+        tui = {
+          theme = theme;
+          scroll_acceleration = true;
+        };
         settings = {
           autoupdate = false;
           share = "disabled";
@@ -52,6 +59,8 @@
           - the `tree` command (available via PATH): ${lib.getExe config.dot.programs.shell.tree}
           - the `list` command (available via PATH): ${lib.getExe config.dot.programs.shell.list}
         '';
+
+        themes.${theme}.theme.background = lib.mkForce "none";
       };
     };
 }
