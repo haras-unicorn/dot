@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.power-management-tlp =
+  machines.nixosModules.power-management-upower-ppd =
     {
       pkgs,
       lib,
@@ -12,13 +12,8 @@
       powerManagement.enable = true;
       powerManagement.powertop.enable = true;
 
-      services.tlp.enable = true;
-      services.tlp.settings = {
-        CPU_SCALING_GOVERNOR_ON_AC = "performance";
-        CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      services.upower.enable = true;
 
-        START_CHARGE_THRESH_BAT0 = 40;
-        STOP_CHARGE_THRESH_BAT0 = 80;
-      };
+      services.power-profiles-daemon.enable = true;
     };
 }

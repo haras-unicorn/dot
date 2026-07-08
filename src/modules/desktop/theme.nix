@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  machines.nixosModules.stylix =
+  machines.nixosModules.theme =
     {
       config,
       pkgs,
@@ -30,7 +30,7 @@
       stylix.opacity.popups = 1.0;
     };
 
-  machines.homeModules.desktop-stylix =
+  machines.homeModules.theme =
     {
       config,
       pkgs,

@@ -442,6 +442,7 @@ ignoreWords:
   - ints
   - crosspipe
   - swaybg
+  - upower
   - openrouter
   - journalctl
   - hyprpolkitagent
@@ -461,3 +462,5 @@ ignoreWords:
   - appimage
   - anythingllm
   - wayprompt
+  - tmpfiles
+  - unmute

@@ -12,7 +12,7 @@
 
       hardware = osConfig.dot.hardware;
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       systemd.user.services.eww = {
         Unit.Description = "Eww daemon";
         Service.ExecStart = "${package}/bin/eww daemon";

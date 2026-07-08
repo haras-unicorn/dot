@@ -20,4 +20,13 @@ hotkey-overlay {
 window-rule {
   geometry-corner-radius 8 8 8 8
   clip-to-geometry true
+
+  background-effect {
+    blur true
+    xray true
+  }
+}
+
+overview {
+    zoom 0.25
 }

@@ -1,5 +1,5 @@
 {
-  machines.homeModules.swayidle =
+  self.lib.deprecated.homeModules.swayidle =
     {
       lib,
       config,

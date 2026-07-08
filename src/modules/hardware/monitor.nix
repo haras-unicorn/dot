@@ -27,27 +27,30 @@
       ...
     }:
     let
-      hardware = osConfig.dot.hardware;
+      brightnessctl = pkgs.brightnessctl;
+
+      brightness-up = pkgs.writeShellApplication {
+        name = "brightnessctl-brightness-up";
+        runtimeInputs = [ brightnessctl ];
+        text = ''
+          exec brightnessctl set +2% "$@"
+        '';
+      };
+
+      brightness-down = pkgs.writeShellApplication {
+        name = "brightnessctl-brightness-down";
+        runtimeInputs = [ brightnessctl ];
+        text = ''
+          exec brightnessctl set -2% "$@"
+        '';
+      };
     in
     lib.mkIf osConfig.hardware.facter.detection.monitor.enable {
-      dot.desktop.keybinds = lib.mkIf hardware.typing [
-        {
-          mods = [
-            "super"
-            "shift"
-          ];
-          key = "b";
-          command = "${pkgs.brightnessctl}/bin/brightnessctl set +2%";
-        }
-        {
-          mods = [ "super" ];
-          key = "b";
-          command = "${pkgs.brightnessctl}/bin/brightnessctl set 2%-";
-        }
-      ];
+      dot.programs.shell.brightness-up = lib.mkDefault brightness-up;
+      dot.programs.shell.brightness-down = lib.mkDefault brightness-down;
 
       home.packages = [
-        pkgs.brightnessctl
+        brightnessctl
         pkgs.ddcutil # NOTE: because ddccontrol might core dump with nvidia
         pkgs.ddccontrol
         pkgs.ddccontrol-db

@@ -23,7 +23,7 @@
 
       wrapAppendFlags = builtins.concatStringsSep " " (builtins.map (x: "--append-flags '${x}'") args);
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       dot.programs.chromium = {
         inherit args;
 
@@ -62,7 +62,7 @@
     let
       hardware = osConfig.dot.hardware;
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       programs.chromium.enable = true;
       programs.chromium.package = osConfig.dot.programs.chromium.package;
       programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [

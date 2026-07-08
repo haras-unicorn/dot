@@ -9,7 +9,7 @@
     let
       hardware = config.dot.hardware;
     in
-    lib.mkIf (hardware.interface && hardware.network) {
+    lib.mkIf (hardware.browser && hardware.network) {
       services.teamviewer.enable = true;
       environment.systemPackages = with pkgs; [
         teamviewer

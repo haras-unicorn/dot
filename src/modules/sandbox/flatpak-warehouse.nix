@@ -8,7 +8,7 @@
     let
       hardware = config.dot.hardware;
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       services.flatpak.enable = true;
     };
 
@@ -22,7 +22,7 @@
     let
       hardware = osConfig.dot.hardware;
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       home.packages = [
         pkgs.warehouse
       ];

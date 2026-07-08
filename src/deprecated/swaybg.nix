@@ -1,5 +1,5 @@
 {
-  machines.homeModules.swaybg =
+  self.lib.deprecated.homeModules.swaybg =
     {
       lib,
       config,
@@ -17,7 +17,7 @@
         Install.WantedBy = [ "graphical-session.target" ];
         Unit.After = [ "graphical-session.target" ];
         Unit.Requires = [ "graphical-session.target" ];
-        Service.ExecStart = "${lib.getExe pkgs.swaybg} -i ${lib.escapeShellArg osConfig.dot.wallpaper.image} -m fill";
+        Service.ExecStart = "${lib.getExe pkgs.swaybg} -i ${lib.escapeShellArg config.stylix.image} -m fill";
       };
     };
 }

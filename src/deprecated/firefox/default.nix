@@ -103,7 +103,7 @@
         extensions.packages = extensions;
       };
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       dot.programs.browser.package = package;
 
       stylix.targets.firefox = {

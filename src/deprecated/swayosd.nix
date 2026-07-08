@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.swayosd =
+  self.lib.deprecated.nixosModules.swayosd =
     {
       pkgs,
       lib,
@@ -29,7 +29,7 @@
       };
     };
 
-  machines.homeModules.swayosd =
+  self.lib.deprecated.homeModules.swayosd =
     {
       lib,
       osConfig,

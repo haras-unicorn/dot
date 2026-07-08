@@ -42,6 +42,9 @@
 
     # NOTE: https://github.com/Gerg-L/spicetify-nix/blob/d9d714243e2f8d10af28db5111f018ec2d77acc9/docs/usage.md
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+
+    # NOTE: https://github.com/noctalia-dev/noctalia-docs/blob/cec177a6b9bf928d148a669c6979cd0f62da0757/src/content/docs/v5/getting-started/nixos.mdx
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
   };
 
   outputs =
@@ -56,6 +59,7 @@
       "https://cuda-maintainers.cachix.org"
       "https://comfyui.cachix.org"
       "https://cache.numtide.com"
+      "https://noctalia.cachix.org"
     ];
     extra-trusted-public-keys = [
       # cspell:disable
@@ -65,6 +69,7 @@
       "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
       "comfyui.cachix.org-1:33mf9VzoIjzVbp0zwj+fT51HG0y31ZTK3nzYZAX0rec="
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       # cspell:enable
     ];
   };

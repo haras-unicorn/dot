@@ -1,5 +1,5 @@
 {
-  machines.homeModules.waybar =
+  self.lib.deprecated.homeModules.waybar =
     {
       pkgs,
       config,
@@ -19,7 +19,7 @@
         (pkgs.lib.attrsets.recursiveUpdate (builtins.fromJSON (builtins.readFile ./config.json)) {
           output = hardware.display;
           network = {
-            interface = hardware.gateway;
+            interface = hardware.interface;
           };
           temperature = {
             hwmon-path = hardware.temperature;

@@ -165,6 +165,69 @@
                 Directory list command.
               '';
             };
+
+            dmenu = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Dmenu command.
+              '';
+            };
+
+            launcher = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Program picker command.
+              '';
+            };
+
+            emoji = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Emoji picker command.
+              '';
+            };
+
+            volume-up = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Volume increase command.
+              '';
+            };
+
+            volume-down = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Volume decrease command.
+              '';
+            };
+
+            volume-mute-unmute = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Mute/unmute command.
+              '';
+            };
+
+            play-pause = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Play/pause command.
+              '';
+            };
+
+            brightness-up = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Brightness increase command.
+              '';
+            };
+
+            brightness-down = lib.mkOption {
+              type = lib.types.package;
+              description = ''
+                Brightness decrease command.
+              '';
+            };
           };
 
           editor = {

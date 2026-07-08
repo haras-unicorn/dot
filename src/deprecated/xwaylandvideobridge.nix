@@ -1,5 +1,5 @@
 {
-  machines.homeModules.xwaylandvideobridge =
+  self.lib.deprecated.homeModules.xwaylandvideobridge =
     {
       lib,
       osConfig,

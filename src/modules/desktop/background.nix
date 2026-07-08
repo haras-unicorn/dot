@@ -35,9 +35,9 @@
     in
     {
       dot.wallpaper = {
-        path = "${self}/assets/wallpaper/wallpaper.mp4";
+        path = "${self}/assets/wallpaper/background.mp4";
         image = "${wallpaperImage}/image.png";
-        scheme = "${self}/assets/wallpaper/wallpaper.json";
+        scheme = "${self}/assets/wallpaper/background.json";
         static = lib.mkDefault (!hardware.wayland);
         final = if isStatic then config.dot.wallpaper.image else config.dot.wallpaper.path;
       };

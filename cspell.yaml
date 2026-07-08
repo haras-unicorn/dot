@@ -3,8 +3,7 @@ useGitignore: true
 version: "0.2"
 language: en
 ignorePaths:
-  - assets/hardware/*.json
-  - assets/wallpaper/wallpaper.json
+  - assets/**/*
 ignoreWords:
   - nixpkgs
   - nixos
@@ -19,6 +18,8 @@ ignoreWords:
   - numtide
   - substituters
   - cachix
+  - noctalia
+  - noctalia-dev
   - pkgs
   - attrset
   - cuda

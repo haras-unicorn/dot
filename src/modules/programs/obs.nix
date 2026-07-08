@@ -9,7 +9,7 @@
     let
       hardware = osConfig.dot.hardware;
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       programs.obs-studio.enable = true;
       programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
         wlrobs

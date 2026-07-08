@@ -42,7 +42,7 @@
           accent = colors.base06;
           danger = colors.red;
           monitor = hardware.display;
-          network-interface = hardware.gateway;
+          network-interface = hardware.interface;
           cpu-hwmon = hardware.temperature;
           font =
             (builtins.toString config.stylix.fonts.sansSerif.name)

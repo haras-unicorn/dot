@@ -10,13 +10,12 @@
     let
       hardware = osConfig.dot.hardware;
 
+      easyeffects = config.services.easyeffects.package;
+
       # FIXME: https://github.com/wwmm/easyeffects/issues/4402
-      toggleEasyeffectsBypass = pkgs.writeShellApplication {
-        name = "toggle-easyeffects-bypass";
-        runtimeInputs = [
-          pkgs.easyeffects
-          pkgs.coreutils
-        ];
+      toggle-bypass = pkgs.writeShellApplication {
+        name = "easyeffects-toggle-bypass";
+        runtimeInputs = [ easyeffects ];
         text = ''
           if [ "$(easyeffects -b 3)" = "1" ]; then
             easyeffects -b 2
@@ -29,28 +28,21 @@
     lib.mkIf hardware.sound {
       dot.desktop.keybinds = lib.mkIf hardware.typing [
         {
-          mods = [
-            "shift"
-            "super"
-          ];
-          key = "v";
-          command = "${toggleEasyeffectsBypass}/toggle-easyeffects-bypass";
-        }
-      ];
-
-      dot.desktop.windowrules = lib.mkIf hardware.graphics [
-        {
-          rule = "float";
-          selector = "class";
-          arg = "org.kde.easyeffects";
+          mods = [ "super" ];
+          key = "x";
+          command = lib.getExe toggle-bypass;
         }
       ];
 
       home.packages = [
-        pkgs.easyeffects
+        easyeffects
+        toggle-bypass
       ];
 
       services.easyeffects.enable = true;
+      services.easyeffects.extraPresets = {
+        krk = builtins.fromJSON (builtins.readFile ./krk.json);
+      };
       systemd.user.services.easyeffects = lib.mkIf hardware.graphics {
         Unit.Requires = [ "tray.target" ];
         Unit.After = [
@@ -59,6 +51,12 @@
         ];
       };
 
-      xdg.dataFile."easyeffects/output/krk.json".source = ./krk.json;
+      dot.desktop.windowrules = lib.mkIf hardware.graphics [
+        {
+          rule = "float";
+          selector = "class";
+          arg = "org.kde.easyeffects";
+        }
+      ];
     };
 }

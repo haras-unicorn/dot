@@ -10,7 +10,7 @@
     let
       hardware = osConfig.dot.hardware;
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       dot.desktop.windowrules = [
         {
           rule = "float";

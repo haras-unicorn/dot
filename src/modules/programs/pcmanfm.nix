@@ -26,7 +26,7 @@
         "inode/directory" = "dot-pcmanfm.desktop";
       };
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       dot.desktop.windowrules = [
         {
           rule = "float";

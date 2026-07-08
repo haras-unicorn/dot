@@ -6,7 +6,7 @@
     let
       hardware = config.dot.hardware;
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       dot.nixpkgs.allowUnfreePredicates = [
         (
           package:
@@ -60,7 +60,7 @@
       dataDir = "${config.xdg.dataHome}/ferdium";
       prefix = "ferdium";
     in
-    lib.mkIf hardware.interface {
+    lib.mkIf hardware.browser {
       dot.desktop.windowrules = [
         {
           rule = "float";
