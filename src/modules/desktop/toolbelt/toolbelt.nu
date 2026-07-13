@@ -1,19 +1,8 @@
 let tools = r#'DOT_TOOLBELT_TOOLS'# | from json
 
-let data_dir = (
-  $env.XDG_RUNTIME_DIR?
-    | default "/run"
-    | path join "toolbelt"
-)
-mkdir $data_dir
-
-let tmp_dir = $data_dir | path join tmp
-rm -rf $tmp_dir
-mkdir $tmp_dir
-let tmp = $data_dir | path join (random uuid)
-
-let data_file = $data_dir | path join "data"
-let meta_file = $data_dir | path join "metadata.json"
+def "mime base" []: string -> string {
+  $in | split row ";" | first | str trim
+}
 
 def "processor display" []: record -> string {
   let display = $in.display
@@ -47,25 +36,42 @@ def "mime extension" []: string -> string {
   ) | str trim
 }
 
+ui log "startup" (
+  $"loaded "
+  + $"($tools.sources | length) sources, "
+  + $"($tools.nodes | length) nodes, "
+  + $"($tools.sinks | length) sinks, "
+  + $"($tools.pipelines | length) pipelines"
+)
+
+let data_dir = (
+  $env.XDG_RUNTIME_DIR?
+    | default "/run"
+    | path join "toolbelt"
+)
+mkdir $data_dir
+
+let tmp_dir = $data_dir | path join tmp
+rm -rf $tmp_dir
+mkdir $tmp_dir
+let tmp = $data_dir | path join (random uuid)
+
+let data_file = $data_dir | path join "data"
+let meta_file = $data_dir | path join "metadata.json"
+
 let meta = if ($meta_file | path exists) {
   open $meta_file
-} else if ($data_file | path exists) {
-  {
-    created: "unknown"
-    modified: "unknown"
-    pipeline: [ "unknown" ]
-    mime: "unknown"
-    extension: "unknown"
-  }
 } else {
   {
     created: null
     modified: null
-    pipeline: [ ]
+    pipeline: []
     mime: null
     extension: null
   }
 }
+
+ui log "state" $"mime=($meta.mime | default "empty") pipeline=($meta.pipeline | str join ",")"
 
 mut actions = []
 
@@ -83,11 +89,13 @@ for source in $sources {
   )
 }
 
+ui log "actions" $"($sources | length) sources matched, ($actions | length) actions total"
+
 if $meta.mime != null {
   let nodes = (
     $tools.nodes
       | transpose name data
-      | where $meta.mime in $it.data.inputs or $it.data.inputs == "any"
+      | where ($meta.mime | mime base) in ($it.data.inputs | each { mime base }) or $it.data.inputs == "any"
   )
   for node in $nodes {
     $actions = (
@@ -101,13 +109,15 @@ if $meta.mime != null {
           }
     )
   }
+
+  ui log "actions" $"($nodes | length) nodes matched, ($actions | length) actions total"
 }
 
 if $meta.mime != null {
   let sinks = (
     $tools.sinks
       | transpose name data
-      | where $meta.mime in $it.data.inputs or $it.data.inputs == "any"
+      | where ($meta.mime | mime base) in ($it.data.inputs | each { mime base }) or $it.data.inputs == "any"
   )
   for sink in $sinks {
     $actions = ($actions | append {
@@ -118,9 +128,14 @@ if $meta.mime != null {
       output: null
     })
   }
+
+  ui log "actions" $"($sinks | length) sinks matched, ($actions | length) actions total"
 }
 
+ui log "actions" $"($actions | length) actions total"
+
 if ($actions | length) == 0 {
+  ui log "error" "no actions available"
   "No actions available" | ui error
   exit 1
 }
@@ -136,24 +151,34 @@ let choice = (
 )
 
 if $choice == null {
+  ui log "error" "no action selected"
   "No actions selected" | ui error
   exit 1
 }
 
 let selected = $actions
-  | where display == $choice
+  | where ($it | processor display) == $choice
   | first
+
+ui log "choice" $"($selected.kind) ($selected.name)"
 
 match $selected.kind {
   "source" => {
-    $"($selected.exe) > ($tmp)"
-      | ui wait $"Sourcing with ($selected.name)..."
+    ui log "exec" $"source ($selected.name) -> ($tmp)"
+    with-env {
+      DOT_TOOLBELT_EXTENSION: ""
+      DOT_TOOLBELT_MIME: "none"
+    } {
+      $"($selected.exe) > ($tmp)"
+        | ui wait $"Sourcing with ($selected.name)..."
+    }
     mv -f $tmp $data_file
     let mime = if $selected.output == "detect" {
       $data_file | file mime
     } else {
       $selected.output
     }
+    ui log "result" $"source ($selected.name) output mime=($mime)"
     {
       created: (date now | format date "%+")
       modified: null
@@ -163,14 +188,21 @@ match $selected.kind {
     } | to json | save -f $meta_file
   }
   "node" => {
-    $"($selected.exe) < ($data_file) > ($tmp)"
-      | ui wait $"Processing with ($selected.name)..."
+    ui log "exec" $"node ($selected.name) mime=($meta.mime) -> ($tmp)"
+    with-env {
+      DOT_TOOLBELT_EXTENSION: $meta.extension
+      DOT_TOOLBELT_MIME: $meta.mime
+    } {
+      $"($selected.exe) < ($data_file) > ($tmp)"
+        | ui wait $"Processing with ($selected.name)..."
+    }
     mv -f $tmp $data_file
     let mime = if $selected.output == "detect" {
       $data_file | file mime
     } else {
       $selected.output
     }
+    ui log "result" $"node ($selected.name) output mime=($mime)"
     {
       created: $meta.created
       modified: (date now | format date "%+")
@@ -180,8 +212,14 @@ match $selected.kind {
     } | to json | save -f $meta_file
   }
   "sink" => {
-    $"($selected.exe) < ($data_file)"
-      | ui wait $"Sinking with ($selected.name)..."
+    ui log "exec" $"sink ($selected.name) mime=($meta.mime)"
+    with-env {
+      DOT_TOOLBELT_EXTENSION: $meta.extension
+      DOT_TOOLBELT_MIME: $meta.mime
+    } {
+      $"($selected.exe) < ($data_file)"
+        | ui wait $"Sinking with ($selected.name)..."
+    }
     rm -f $data_file $meta_file
   }
 }

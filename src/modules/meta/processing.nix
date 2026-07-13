@@ -22,14 +22,25 @@
             default = "";
             description = "Additional explanatory note";
           };
+        };
+      };
+
+      processor = { name, ... }: {
+        imports = [ common ];
+
+        options = {
+          aliases = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            description = "Processor aliases";
+          };
           package = lib.mkOption {
             type = lib.types.package;
-            description = "Package";
+            description = "Processor package";
           };
           form = lib.mkOption {
             type = lib.types.nullOr lib.types.deferredModule;
             default = null;
-            description = "Optional options";
+            description = "Optional processor options";
           };
         };
       };
@@ -42,7 +53,7 @@
             default = { };
             type = lib.types.attrsOf (
               lib.types.submodule {
-                imports = [ common ];
+                imports = [ processor ];
 
                 options = {
                   output = lib.mkOption {
@@ -62,7 +73,7 @@
             default = { };
             type = lib.types.attrsOf (
               lib.types.submodule {
-                imports = [ common ];
+                imports = [ processor ];
 
                 options = {
                   inputs = lib.mkOption {
@@ -89,7 +100,7 @@
             default = { };
             type = lib.types.attrsOf (
               lib.types.submodule {
-                imports = [ common ];
+                imports = [ processor ];
 
                 options = {
                   inputs = lib.mkOption {
@@ -98,6 +109,34 @@
                       (lib.types.enum [ "any" ])
                     ];
                     description = "Sink input MIME types";
+                  };
+                };
+              }
+            );
+          };
+
+          pipelines = lib.mkOption {
+            description = "Processing pipelines";
+            default = [ ];
+            type = lib.types.attrsOf (
+              lib.types.submodule {
+                imports = [ common ];
+
+                options = {
+                  source = lib.mkOption {
+                    type = lib.types.str;
+                    description = "Source name or alias for this pipeline";
+                  };
+
+                  nodes = lib.mkOption {
+                    type = lib.type.listOf lib.types.str;
+                    default = [ ];
+                    description = "List of nodes names or aliases for this pipeline";
+                  };
+
+                  sink = lib.mkOption {
+                    type = lib.types.str;
+                    description = "Sink for this pipeline";
                   };
                 };
               }

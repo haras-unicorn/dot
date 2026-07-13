@@ -1,8 +1,14 @@
-def "ui error" []: string -> nothing {
+def "main ui log" [area: string msg: string] {
+  let timestamp = (date now | format date %+)
+  let script = ($env.DOT_TOOLBELT_SCRIPT? | default "unknown")
+  print -e $"[($timestamp)] [($script)/tui] [($area)]: ($msg)"
+}
+
+def "main ui error" []: string -> nothing {
   print -e $in
 }
 
-def "ui choose" [title: string text: string]: string -> string {
+def "main ui choose" [title: string text: string]: string -> string {
   let result = (
     $in
       | gum choose
@@ -18,7 +24,7 @@ def "ui choose" [title: string text: string]: string -> string {
   return $result.stdout | str trim
 }
 
-def "ui wait" [title: string]: string -> nothing {
+def "main ui wait" [title: string]: string -> nothing {
   do -i {
     (gum spin
       --title $title

@@ -1,3 +1,5 @@
+{ selfLib, ... }:
+
 {
   machines.homeModules.zed =
     {
@@ -9,9 +11,33 @@
     }:
     let
       hardware = osConfig.dot.hardware;
+
+      package = config.programs.zed-editor.package;
+
+      node = pkgs.writeShellApplication {
+        name = "zed-editor-node";
+        runtimeInputs = [ package ];
+        text = ''
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          cat > "$tmp"
+          zeditor -n "$tmp" &>/dev/null
+        '';
+      };
     in
     lib.mkIf hardware.visual {
-      dot.programs.visual.package = config.programs.zed-editor.package;
+      dot.programs.visual.package = package;
+
+      dot.processing.nodes.zed-editor = {
+        note = "Edit text";
+        tags = [
+          "text"
+          "editor"
+        ];
+        inputs = selfLib.mime.editor;
+        output = "detect";
+        package = node;
+      };
 
       programs.zed-editor.enable = true;
       programs.zed-editor.extensions = [

@@ -1,21 +1,49 @@
-# FIXME: stylix conflicts
-# TODO: proper theming as explained here: https://docs.helix-editor.com/themes.html
+{ selfLib, ... }:
 
 {
   machines.homeModules.helix =
     {
+      osConfig,
       config,
       lib,
       pkgs,
       ...
     }:
     let
-      cfg = config.dot.programs.editor;
+      hardware = osConfig.dot.hardware;
 
-      editor = lib.getExe cfg.package;
+      package = config.programs.helix.package;
+
+      editor = lib.getExe package;
+
+      terminal = lib.getExe config.dot.programs.terminal.package;
+
+      nodeCommand = if hardware.graphics then ''${terminal} hx "$tmp"'' else ''hx "$tmp"'';
+
+      node = pkgs.writeShellApplication {
+        name = "helix-editor-node";
+        runtimeInputs = [ package ];
+        text = ''
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          cat > "$tmp"
+          ${nodeCommand} &>/dev/null
+        '';
+      };
     in
-    {
-      dot.programs.editor.package = config.programs.helix.package;
+    lib.mkIf hardware.editor {
+      dot.programs.editor.package = package;
+
+      dot.processing.nodes.helix-editor = {
+        note = "Edit text";
+        tags = [
+          "text"
+          "editor"
+        ];
+        inputs = selfLib.mime.editor;
+        output = "detect";
+        package = node;
+      };
 
       programs.helix.enable = true;
 

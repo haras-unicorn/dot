@@ -28,13 +28,23 @@
       };
 
       imagePrompt = ''
-        Describe the image for captioning purposes.
-        Only include the image caption in your output (e.g. a cat wearing a hat).
+        You are an image captioner.
+        You only include the image caption in your output (e.g. a cat wearing a hat).
       '';
 
       audioPrompt = ''
-        Describe the audio for captioning purposes.
-        Only include the audio caption in your output (e.g. a cat meowing).
+        You are an audio captioner.
+        You only include the audio caption in your output (e.g. a cat meowing).
+      '';
+
+      textPrompt = ''
+        You are a text captioner.
+        You only include the text caption in your output (e.g. a poem about cats).
+      '';
+
+      generatePrompt = ''
+        You are a text generator.
+        You only include the generated text in your output.
       '';
 
       node-describe-image = pkgs.writeShellApplication {
@@ -55,8 +65,9 @@
             --flash-attn on \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
+            --system-prompt ${lib.escapeShellArg imagePrompt} \
+            --prompt "Describe this image." \
             --image "$tmpin" \
-            --prompt ${lib.escapeShellArg imagePrompt} \
             --single-turn \
             --no-show-timings \
             --simple-io \
@@ -85,8 +96,69 @@
             --flash-attn on \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
+            --system-prompt ${lib.escapeShellArg audioPrompt} \
+            --prompt "Describe this audio." \
             --audio "$tmpin" \
-            --prompt ${lib.escapeShellArg audioPrompt} \
+            --single-turn \
+            --no-show-timings \
+            --simple-io \
+            --log-disable \
+            | awk '/^\[End thinking\]$/{flag=1; next} flag && /^Exiting\.\.\.$/{exit} flag' \
+            > "$tmpout"
+          cat "$tmpout" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
+        '';
+      };
+
+      node-describe-text = pkgs.writeShellApplication {
+        name = "llama-cpp-node-describe-text";
+        runtimeInputs = [
+          pkgs.llama-cpp
+        ];
+        text = ''
+          tmpin="$(mktemp --suffix .txt)"
+          tmpout="$(mktemp --suffix .txt)"
+          trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
+          cat > "$tmpin"
+          llama-cli \
+            --model ${model} \
+            --mmproj ${mmproj} \
+            --mmap \
+            --gpu-layers all \
+            --flash-attn on \
+            --cache-type-k q8_0 \
+            --cache-type-v q8_0 \
+            --system-prompt ${lib.escapeShellArg textPrompt} \
+            --prompt "$(cat "$tmpin")\n\nDescribe the text before this sentence." \
+            --single-turn \
+            --no-show-timings \
+            --simple-io \
+            --log-disable \
+            | awk '/^\[End thinking\]$/{flag=1; next} flag && /^Exiting\.\.\.$/{exit} flag' \
+            > "$tmpout"
+          cat "$tmpout" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
+        '';
+      };
+
+      node-generate-text = pkgs.writeShellApplication {
+        name = "llama-cpp-node-generate-text";
+        runtimeInputs = [
+          pkgs.llama-cpp
+        ];
+        text = ''
+          tmpin="$(mktemp --suffix .txt)"
+          tmpout="$(mktemp --suffix .txt)"
+          trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
+          cat > "$tmpin"
+          llama-cli \
+            --model ${model} \
+            --mmproj ${mmproj} \
+            --mmap \
+            --gpu-layers all \
+            --flash-attn on \
+            --cache-type-k q8_0 \
+            --cache-type-v q8_0 \
+            --system-prompt ${lib.escapeShellArg generatePrompt} \
+            --prompt "$(cat "$tmpin")" \
             --single-turn \
             --no-show-timings \
             --simple-io \
@@ -120,6 +192,26 @@
           inputs = [ "audio/wav" ];
           output = "text/plain";
           package = node-describe-audio;
+        };
+        llama-cpp-describe-text = {
+          note = "Describe text into text";
+          tags = [
+            "describe"
+            "text"
+          ];
+          inputs = [ "text/plain" ];
+          output = "text/plain";
+          package = node-describe-text;
+        };
+        llama-cpp-generate-text = {
+          note = "Generate text from text";
+          tags = [
+            "generate"
+            "text"
+          ];
+          inputs = [ "text/plain" ];
+          output = "text/plain";
+          package = node-generate-text;
         };
       };
 

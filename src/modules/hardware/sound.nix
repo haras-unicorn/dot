@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ selfLib, inputs, ... }:
 
 {
   machines.nixosModules.sound =
@@ -70,12 +70,26 @@
               "speakers"
               "headphones"
             ];
-            inputs = [ "audio/x-wav" ];
+            inputs = [
+              "audio/wav"
+              "audio/x-wav"
+              selfLib.mime.toolbelt.audio
+            ];
             package = pkgs.writeShellApplication {
               name = "pipewire-sink-play";
               runtimeInputs = [ package ];
               text = ''
-                cat > pw-play -
+                if echo "$DOT_TOOLBELT_MIME" | grep -q "^${selfLib.mime.toolbelt.audio}"; then
+                  rate=$(echo "$DOT_TOOLBELT_MIME" | sed -n 's/.*rate=\([[:digit:]]*\).*/\1/p')
+                  channels=$(echo "$DOT_TOOLBELT_MIME" | sed -n 's/.*channels=\([[:digit:]]*\).*/\1/p')
+                  format=$(echo "$DOT_TOOLBELT_MIME" | sed -n 's/.*format=\([a-zA-Z0-9\-_]*\).*/\1/p')
+                  rate=''${rate:-48000}
+                  channels=''${channels:-2}
+                  format=''${format:-s16}
+                  pw-play --format "$format" --rate "$rate" --channels "$channels" --format "$format" -
+                else
+                  cat > pw-play -
+                fi
               '';
             };
           };
@@ -89,7 +103,7 @@
               "interface"
               "microphone"
             ];
-            output = "audio/x-wav";
+            output = "audio/x-raw; rate=48000; channels=2; format=s16";
             package =
               let
                 easyeffectsSource = "easyeffects_source";
@@ -119,10 +133,6 @@
                     --affirmative="Stop" \
                     --negative="Cancel" \
                 '';
-
-                # NOTE: just as a safety measure
-                # 48000 * 60 * 60
-                hourSamples = "172800000";
               in
               pkgs.writeShellApplication {
                 name = "pipewire-source-record";
@@ -132,22 +142,25 @@
                   pkgs.jq
                 ];
                 text = ''
-                  tmp="$(mktemp)"
-                  trap 'rm -f "$tmp"' EXIT
-
                   if [ "$(pw-dump \
                     | jq -e ${lib.escapeShellArg jqEasyeffectsSelector})" \
                     -eq 1 ]; then
-                    pw-record \
-                      --sample-count ${hourSamples} \
+                    pw-cat \
+                      --record \
+                      --format s16 \
+                      --rate 48000 \
+                      --channels 2 \
                       --target ${lib.escapeShellArg easyeffectsSource} \
-                      "$tmp" \
+                      - \
                       2>/dev/null \
                       &
                   else
-                    pw-record \
-                      --sample-count ${hourSamples} \
-                      "$tmp" \
+                    pw-cat \
+                      --record \
+                      --format s16 \
+                      --rate 48000 \
+                      --channels 2 \
+                      - \
                       2>/dev/null \
                       &
                   fi
@@ -156,7 +169,6 @@
                   if ${if hardware.graphics then zenityCheck else gumCheck} 2>/dev/null; then
                     kill "$pid" 2>/dev/null || true
                     wait "$pid" 2>/dev/null || true
-                    cat "$tmp"
                   else
                     kill "$pid" 2>/dev/null || true
                     wait "$pid" 2>/dev/null || true

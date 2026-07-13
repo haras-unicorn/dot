@@ -1,8 +1,5 @@
-# TODO: point it straight at the files
-# TODO: somehow point it at actual speech cloning files
-
 {
-  machines.homeModules.mistral-rs =
+  self.lib.deprecated.homeModules.mistral-rs =
     {
       pkgs,
       config,

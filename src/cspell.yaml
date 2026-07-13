@@ -467,3 +467,32 @@ ignoreWords:
   - redmi
   - nemo
   - otxt
+  - toolbelt
+  - tmpin
+  - tmpout
+  - mistralrs
+  - safetensors
+  - matroska
+  - mmproj
+  - captioner
+  - mmap
+  - speechd
+  - freedns
+  - controld
+  - dnssec
+  - kando
+  - mimetypes
+  - screenrecord
+  - regionrecord
+  - libav
+  - losslesscut
+  - GETPIN
+  - nvenc
+  - libx
+  - zeditor
+  - nari
+  - wiremix
+  - screenrecords
+  - flac
+  - rawvideo
+  - vcodec

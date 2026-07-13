@@ -37,11 +37,21 @@
           pkgs.ydotool
         ];
         text = ''
-          printf "%s" "type '$(cat /dev/stdin)'" | ydotool
+          ydotool type --file -
         '';
       };
     in
     lib.mkIf hardware.visual {
       dot.commands.type = type;
+
+      dot.processing.sinks."ydotool type" = {
+        note = "Type text from stdin via ydotool";
+        aliases = [
+          "ydotool type"
+          "type"
+        ];
+        inputs = [ "text/plain" ];
+        package = type;
+      };
     };
 }

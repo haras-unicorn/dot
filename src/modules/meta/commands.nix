@@ -117,6 +117,33 @@
             '';
           };
 
+          screenrecord = lib.mkOption {
+            type = lib.types.package;
+            description = ''
+              Screenrecord command.
+
+              The package's main program should take a screenrecord,
+              save it in "config.dot.desktop.screenrecords"
+              with the "config.dot.desktop.timestamp" formatted timestamp
+              and "mp4" extension, notify the user via libnotify,
+              and copy the screenrecord to clipboard.
+            '';
+          };
+
+          regionrecord = lib.mkOption {
+            type = lib.types.package;
+            description = ''
+              Region screenrecord command.
+
+              The package's main program should ask the user to select a screen region,
+              take a screenrecord of the selected region,
+              save it in "config.dot.desktop.screenrecords"
+              with the "config.dot.desktop.timestamp" formatted timestamp
+              and "mp4" extension, notify the user via libnotify,
+              and copy the screenrecord to clipboard.
+            '';
+          };
+
           tree = lib.mkOption {
             type = lib.types.package;
             description = ''

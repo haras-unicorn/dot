@@ -43,6 +43,23 @@
               '';
             };
           };
+
+          gstreamer = {
+            plugins = lib.mkOption {
+              type = lib.types.listOf lib.types.package;
+              description = ''
+                List of active GStreamer plugins.
+              '';
+            };
+
+            wrap = lib.mkOption {
+              type = lib.types.functionTo lib.types.package;
+              description = ''
+                Wrapper function that takes a package and wraps it
+                in GStreamer plugin environment.
+              '';
+            };
+          };
         };
       };
     };

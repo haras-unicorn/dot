@@ -41,19 +41,19 @@
           '';
         };
 
-      screenshotCommandWayland = makeScreenshotCommand {
+      grimCommand = makeScreenshotCommand {
         name = "screenshot";
         runtimeInputs = [ pkgs.grim ];
         command = ''grim -t "$type" "$tmp/$name.$type"'';
       };
 
-      screenshotCommandXServer = makeScreenshotCommand {
+      maimCommand = makeScreenshotCommand {
         name = "screenshot";
         runtimeInputs = [ pkgs.maim ];
         command = ''maim -u "$tmp/$name.$type"'';
       };
 
-      regionshotCommandWayland = makeScreenshotCommand {
+      grimSlurpCommand = makeScreenshotCommand {
         name = "regionshot";
         runtimeInputs = [
           pkgs.grim
@@ -62,7 +62,7 @@
         command = ''grim -g "$(slurp)" -t "$type" "$tmp/$name.$type"'';
       };
 
-      regionshotCommandXServer = makeScreenshotCommand {
+      maimSlopCommand = makeScreenshotCommand {
         name = "regionshot";
         runtimeInputs = [
           pkgs.maim
@@ -71,19 +71,19 @@
         command = ''maim -u -g "$(slop -f "%wx%h+%x+%y")" "$tmp/$name.$type"'';
       };
 
-      grim-source = pkgs.writeShellApplication {
+      grimSource = pkgs.writeShellApplication {
         name = "grim-source";
         runtimeInputs = [ pkgs.grim ];
         text = ''grim -t "png" -'';
       };
 
-      maim-source = pkgs.writeShellApplication {
+      maimSource = pkgs.writeShellApplication {
         name = "maim-source";
         runtimeInputs = [ pkgs.maim ];
         text = ''maim -u -f "png"'';
       };
 
-      grim-slurp-source = pkgs.writeShellApplication {
+      grimSlurpSource = pkgs.writeShellApplication {
         name = "grim-slurp-source";
         runtimeInputs = [
           pkgs.grim
@@ -92,7 +92,7 @@
         text = ''grim -g "$(slurp)" -t "png" -'';
       };
 
-      maim-slop-source = pkgs.writeShellApplication {
+      maimSlopSource = pkgs.writeShellApplication {
         name = "maim-slop-source";
         runtimeInputs = [
           pkgs.maim
@@ -113,7 +113,7 @@
                 "screen"
               ];
               output = "image/png";
-              package = grim-source;
+              package = grimSource;
             };
           }
           (lib.mkIf hardware.pointing {
@@ -126,13 +126,13 @@
                 "region"
               ];
               output = "image/png";
-              package = grim-slurp-source;
+              package = grimSlurpSource;
             };
           })
         ];
 
-        dot.commands.screenshot = lib.mkDefault screenshotCommandWayland;
-        dot.commands.regionshot = lib.mkIf hardware.typing (lib.mkDefault regionshotCommandWayland);
+        dot.commands.screenshot = lib.mkDefault grimCommand;
+        dot.commands.regionshot = lib.mkIf hardware.typing (lib.mkDefault grimSlurpCommand);
 
         home.packages = [
           pkgs.grim
@@ -150,7 +150,7 @@
                 "screen"
               ];
               output = "image/png";
-              package = maim-source;
+              package = maimSource;
             };
           }
           (lib.mkIf hardware.pointing {
@@ -163,13 +163,13 @@
                 "region"
               ];
               output = "image/png";
-              package = maim-slop-source;
+              package = maimSlopSource;
             };
           })
         ];
 
-        dot.commands.screenshot = lib.mkDefault screenshotCommandXServer;
-        dot.commands.regionshot = lib.mkIf hardware.pointing (lib.mkDefault regionshotCommandXServer);
+        dot.commands.screenshot = lib.mkDefault maimCommand;
+        dot.commands.regionshot = lib.mkIf hardware.pointing (lib.mkDefault maimSlopCommand);
 
         home.packages = [
           pkgs.maim

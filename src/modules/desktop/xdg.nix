@@ -1,3 +1,5 @@
+{ selfLib, ... }:
+
 {
   machines.nixosModules.xdg = { config, ... }: {
     environment.systemPackages = builtins.attrValues config.dot.commands;
@@ -184,6 +186,27 @@
             command = lib.getExe config.dot.commands.regionshot;
           }
         ])
+        (lib.mkIf hardware.browser [
+          {
+            mods = [
+              "super"
+              "shift"
+            ];
+            key = "p";
+            command = lib.getExe config.dot.commands.screenrecord;
+          }
+        ])
+        (lib.mkIf hardware.browser [
+          {
+            mods = [
+              "super"
+              "shift"
+              "ctrl"
+            ];
+            key = "p";
+            command = lib.getExe config.dot.commands.regionrecord;
+          }
+        ])
         (lib.mkIf hardware.visual [
           {
             mods = [
@@ -267,32 +290,25 @@
         (lib.mkIf hardware.browser [
           {
             package = config.dot.programs.browser.package;
-            types = [
-              "text/html"
-              "x-scheme-handler/http"
-              "x-scheme-handler/https"
-            ];
+            types = selfLib.mime.browser;
           }
         ])
         (lib.mkIf hardware.visual [
           {
             package = config.dot.programs.visual.package;
-            types = [
-              "text/css"
-              "application/javascript"
-              "application/json"
-              "application/x-sh"
-              "application/xhtml+xml"
-              "application/xml"
-            ];
+            types = selfLib.mime.editor;
+          }
+        ])
+        (lib.mkIf hardware.editor [
+          {
+            package = config.dot.programs.editor.package;
+            types = selfLib.mime.editor;
           }
         ])
         (lib.mkIf hardware.browser [
           {
             package = config.dot.programs.files.package;
-            types = [
-              "inode/directory"
-            ];
+            types = selfLib.mime.files;
           }
         ])
       ];

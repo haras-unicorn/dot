@@ -27,13 +27,13 @@
         hash = "sha256-kh5M+Ghv3Zk9zQgaXaW2w2W/3hFi5ysI11rHUomSCx8=";
       };
 
-      processor = pkgs.writeShellApplication {
+      transcribeNode = pkgs.writeShellApplication {
         name = "whisper-cpp-node-transcribe";
         runtimeInputs = [
           package
         ];
         text = ''
-          tmpin="$(mktemp --suffix .wav)"
+          tmpin="$(mktemp --suffix ".$DOT_TOOLBELT_EXTENSION")"
           tmpout="$(mktemp --suffix .txt)"
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
@@ -52,8 +52,41 @@
           cat "$tmpout" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
         '';
       };
+
+      streamSource = pkgs.writeShellApplication {
+        name = "whisper-stream-source";
+        runtimeInputs = [
+          package
+        ];
+        text = ''
+          whisper-stream \
+            --model ${model} \
+            --flash-attn ${if cuda then "on" else "off"} \
+            --no-gpu ${if cuda then "off" else "on"} \
+            --language en \
+            --length ${1 * 60 * 60 * 1000} \
+            2>/dev/null \
+            | sed 's/\\[.*\\]//'
+        '';
+      };
     in
     {
+      dot.processing.sources.whisper-stream = {
+        note = "Real-time speech recognition streaming from microphone";
+        tags = [
+          "transcription"
+          "transcribe"
+          "speech"
+          "text"
+          "stt"
+          "speech-to-text"
+          "stream"
+          "streaming"
+        ];
+        output = "text/plain";
+        package = streamSource;
+      };
+
       dot.processing.nodes.whisper-cpp = {
         note = "Transcribe speech into text";
         tags = [
@@ -67,9 +100,12 @@
         inputs = [
           "audio/wav"
           "audio/x-wav"
+          "audio/mpeg"
+          "audio/ogg"
+          "audio/flac"
         ];
         output = "text/plain";
-        package = processor;
+        package = transcribeNode;
       };
 
       dot.ai.models.whisper.files = [

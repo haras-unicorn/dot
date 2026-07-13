@@ -101,6 +101,10 @@
             type = lib.types.package;
             internal = true;
           };
+          sampleRate = lib.mkOption {
+            type = lib.types.int;
+            internal = true;
+          };
         };
       };
 
@@ -116,6 +120,7 @@
         '';
 
         dot.piper.node = node;
+        dot.piper.sampleRate = defaultVoice.sampleRate;
 
         home-manager.users.${config.dot.user.user}.dot.ai.models.piper.files = builtins.concatMap (
           {
@@ -154,7 +159,7 @@
           "speech"
         ];
         inputs = [ "text/plain" ];
-        output = "audio/x-wav";
+        output = "audio/x-raw; rate=${toString osConfig.dot.piper.sampleRate}; channels=1; format=s16";
         package = osConfig.dot.piper.node;
       };
     };
