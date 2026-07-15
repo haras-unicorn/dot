@@ -4,17 +4,10 @@ def "main log" [area: string msg: string] {
   print -e $"[($timestamp)] [($script)/tui] [($area)]: ($msg)"
 }
 
-def "main error" []: string -> nothing {
-  print -e $in
-}
-
-def "main choose" [title: string text: string]: string -> string {
+def "main menu" [title: string text: string]: string -> string {
   let result = (
     $in
-      | gum choose
-          --limit=1
-          --header $title
-          --placeholder $text
+      | ^$env.DOT_TOOLBELT_DMENU -p $text
       | complete
   )
   if $result.exit_code != 0 or ($result.stdout | is-empty) {
@@ -24,10 +17,15 @@ def "main choose" [title: string text: string]: string -> string {
   return $result.stdout | str trim
 }
 
-def "main menu" [title: string text: string]: string -> string {
+def "main error" []: string -> nothing {
+  print -e $in
+}
+
+def "main choose" [title: string text: string]: string -> string {
   let result = (
     $in
-      | gum filter
+      | gum choose
+          --limit=1
           --header $title
           --placeholder $text
       | complete

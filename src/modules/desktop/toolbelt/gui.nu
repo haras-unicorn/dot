@@ -4,18 +4,10 @@ def "main log" [area: string msg: string] {
   print -e $"[($timestamp)] [($script)/gui] [($area)]: ($msg)"
 }
 
-def "main error" []: string -> nothing {
-  zenity --error --title="Toolbelt" $"--text=($in)"
-}
-
-def "main choose" [title: string text: string]: string -> string {
+def "main menu" [title: string text: string]: string -> string {
   let result = (
     $in
-      | zenity
-          --list
-          $"--title=($title)"
-          $"--text=($text)"
-          --column=Name
+      | ^$env.DOT_TOOLBELT_DMENU -p $text
       | complete
   )
   if $result.exit_code != 0 or ($result.stdout | is-empty) {
@@ -25,7 +17,11 @@ def "main choose" [title: string text: string]: string -> string {
   return $result.stdout | str trim
 }
 
-def "main menu" [title: string text: string]: string -> string {
+def "main error" []: string -> nothing {
+  zenity --error --title="Toolbelt" $"--text=($in)"
+}
+
+def "main choose" [title: string text: string]: string -> string {
   let result = (
     $in
       | zenity

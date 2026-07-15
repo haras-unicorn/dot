@@ -58,13 +58,13 @@
       uiPackage = pkgs.writeScriptBin "ui" ''
         #!${lib.getExe pkgs.nushell} --stdin
 
+        $env.DOT_TOOLBELT_DMENU = "${lib.getExe config.dot.commands.dmenu}"
         $env.DOT_TOOLBELT_SCRIPT = "ui"
         $env.PATH ++= [ ${uiPath} ]
 
         def "main" [] {
-        }
-
         ${uiRender}
+        }
       '';
 
       tools = builtins.toJSON {

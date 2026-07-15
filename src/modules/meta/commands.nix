@@ -174,8 +174,9 @@
               The package's main program should emulate dmenu behavior
               (https://tools.suckless.org/dmenu/). It should take strings
               from stdin delimited by newline characters,
-              display a graphical menu where the strings from stdin are choices
-              and print the user selected string on stdout.
+              display a graphical or terminal menu where the strings
+              from stdin are choices and print the user selected
+              string on stdout.
             '';
           };
 
