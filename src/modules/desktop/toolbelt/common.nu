@@ -15,4 +15,6 @@ def "common handle" [name: string --on-fail: closure]: record -> nothing {
   }
 
   log "exec" $"command '($name)' exited with exit code 0"
+
+  return $result
 }
