@@ -5,10 +5,13 @@ def "main menu" [title: string text: string]: string -> string {
       | complete
   )
   if $result.exit_code != 0 or ($result.stdout | is-empty) {
+    log "menu" "nothing picked"
     return null
   }
 
-  return $result.stdout | str trim
+  let result = $result.stdout | str trim
+  log "menu" $"picked: '($result)'"
+  return $result
 }
 
 def "main error" []: string -> nothing {
@@ -27,15 +30,22 @@ def "main choose" [title: string text: string]: string -> string {
       | complete
   )
   if $result.exit_code != 0 or ($result.stdout | is-empty) {
+    log "choose" "nothing picked"
     return null
   }
 
-  return $result.stdout | str trim
+  let result = $result.stdout | str trim
+  log "choose" $"picked: ($result)"
+  return $result
 }
 
 def "main wait" [title: string]: string -> record {
-  (gum spin
+  let command = $in
+
+  let result = (gum spin
     --title $title
-    -- nu -c $"sh -c r#'($in)'# | complete | to json")
+    -- nu -c $"sh -c r#'($command)'# | complete | to json")
     | from json
+  log "wait" $"'($command)' ended with ($result.exit_code)"
+  return $result
 }
