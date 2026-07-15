@@ -73,9 +73,7 @@ def "ui wait" [title: string]: string -> record {
   }
   log "wait" $"($title) zenity ($unit) started"
 
-  let result = sh -c $command
-    | complete
-    | common handle $"command '($command)'"
+  let result = sh -c $command | complete
 
   while (systemctl status --user $"($unit).scope"
     | complete
