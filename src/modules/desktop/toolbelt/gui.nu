@@ -1,6 +1,7 @@
-def "main menu" [title: string text: string]: string -> string {
+def "main menu" [title: string text: string]: list -> string {
   let result = (
     $in
+      | str join "\n"
       | ^$env.DOT_TOOLBELT_DMENU -p $text
       | complete
   )
@@ -21,9 +22,10 @@ def "main error" []: string -> nothing {
   zenity --error --title="Toolbelt" $"--text=($text)"
 }
 
-def "main choose" [title: string text: string]: string -> string {
+def "main choose" [title: string text: string]: list -> string {
   let result = (
     $in
+      | str join "\n"
       | zenity
           --list
           $"--title=($title)"

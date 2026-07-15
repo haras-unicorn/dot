@@ -49,7 +49,6 @@ let pipelines = $tools.pipelines | transpose name data
 let choice = (
   $pipelines
     | each { get data | pipeline display }
-    | str join "\n"
     | ui menu "Toolbelt" "Pick a toolbelt pipeline..."
     | str trim
 )

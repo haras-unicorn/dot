@@ -142,7 +142,6 @@ if ($actions | length) == 0 {
 let choice = (
   $actions
     | get display
-    | str join "\n"
     | ui menu
         $"Toolbelt content type: ($meta.mime | default "empty")"
         "Pick a toolbelt action..."

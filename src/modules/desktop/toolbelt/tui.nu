@@ -1,6 +1,7 @@
-def "main menu" [title: string text: string]: string -> string {
+def "main menu" [title: string text: string]: list -> string {
   let result = (
     $in
+      | str join "\n"
       | ^$env.DOT_TOOLBELT_DMENU -p $text
       | complete
   )
@@ -20,9 +21,10 @@ def "main error" []: string -> nothing {
   print -e $in
 }
 
-def "main choose" [title: string text: string]: string -> string {
+def "main choose" [title: string text: string]: list -> string {
   let result = (
     $in
+      | str join "\n"
       | gum choose
           --limit=1
           --header $title
