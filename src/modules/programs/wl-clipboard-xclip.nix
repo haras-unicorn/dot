@@ -18,7 +18,11 @@
         name = "copy-wlx";
         runtimeInputs = [ wl-clipboard ];
         text = ''
-          cat | wl-copy "$@"
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          cat > "$tmp"
+          printf "clipboard: %s" "$(cat "$tmp")" 1>2
+          cat "$tmp" | wl-copy "$@"
         '';
       };
 
