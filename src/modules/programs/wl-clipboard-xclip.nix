@@ -21,7 +21,7 @@
           tmp="$(mktemp)"
           trap 'rm -f "$tmp"' EXIT
           cat > "$tmp"
-          printf "clipboard: %s" "$(cat "$tmp")" 1>2
+          printf "clipboard: %s" "$(cat "$tmp")" >&2
           wl-copy "$@" < "$tmp"
         '';
       };
