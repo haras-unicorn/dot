@@ -79,7 +79,7 @@ def "ui wait" [title: string]: string -> record {
   while (systemctl status --user $"($unit).scope"
     | complete
     | get exit_code) == 0 {
-    systemctl kill --user --signal SIGINT $"($unit).scope"
+    do -i { systemctl kill --user --signal SIGINT $"($unit).scope" }
   }
   log "wait" $"($title) zenity ($unit) stopped"
 
