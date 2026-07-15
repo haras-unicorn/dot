@@ -36,7 +36,7 @@ def "mime extension" []: string -> string {
   ) | str trim
 }
 
-ui log "startup" (
+log "startup" (
   "loaded"
   + $" ($tools.sources | transpose | length) sources,"
   + $" ($tools.nodes | transpose | length) nodes,"
@@ -71,7 +71,7 @@ let meta = if ($meta_file | path exists) {
   }
 }
 
-ui log "state" $"mime=($meta.mime | default "empty") pipeline=($meta.pipeline | str join ",")"
+log "state" $"mime=($meta.mime | default "empty") pipeline=($meta.pipeline | str join ",")"
 
 mut actions = []
 
@@ -89,7 +89,7 @@ for source in $sources {
   )
 }
 
-ui log "actions" $"($sources | length) sources matched, ($actions | length) actions total"
+log "actions" $"($sources | length) sources matched, ($actions | length) actions total"
 
 if $meta.mime != null {
   let nodes = (
@@ -110,7 +110,7 @@ if $meta.mime != null {
     )
   }
 
-  ui log "actions" $"($nodes | length) nodes matched, ($actions | length) actions total"
+  log "actions" $"($nodes | length) nodes matched, ($actions | length) actions total"
 }
 
 if $meta.mime != null {
@@ -129,13 +129,13 @@ if $meta.mime != null {
     })
   }
 
-  ui log "actions" $"($sinks | length) sinks matched, ($actions | length) actions total"
+  log "actions" $"($sinks | length) sinks matched, ($actions | length) actions total"
 }
 
-ui log "actions" $"($actions | length) actions total"
+log "actions" $"($actions | length) actions total"
 
 if ($actions | length) == 0 {
-  ui log "error" "no actions available"
+  log "error" "no actions available"
   "No actions available" | ui error
   exit 1
 }
@@ -151,7 +151,7 @@ let choice = (
 )
 
 if $choice == null {
-  ui log "error" "no action selected"
+  log "error" "no action selected"
   "No actions selected" | ui error
   exit 1
 }
@@ -160,25 +160,41 @@ let selected = $actions
   | where $it.display == $choice
   | first
 
-ui log "choice" $"($selected.kind) ($selected.name)"
+log "choice" $"($selected.kind) ($selected.name)"
 
 match $selected.kind {
   "source" => {
-    ui log "exec" $"source ($selected.name) -> ($tmp)"
-    with-env {
+    log "exec" $"source ($selected.name) -> ($tmp)"
+    let result = with-env {
       DOT_TOOLBELT_EXTENSION: ""
       DOT_TOOLBELT_MIME: "none"
     } {
       $"($selected.exe) > ($tmp)"
         | ui wait $"Sourcing with ($selected.name)..."
     }
+
+    if $result.exit_code != 0 {
+      log "error" $"command exited with exit code ($result.exit_code)"
+      log "error" $"stdout:\n($result.stdout)\n"
+      log "error" $"stderr:\n($result.stderr)\n"
+
+      [
+        $"Command exited with exit code ($result.exit_code)."
+        $"Stdout:\n($result.stdout)\n"
+        $"Stderr:\n($result.stderr)\n"
+      ] | str join "\n" | ui error
+
+      rm -f $tmp
+      exit 1
+    }
+
     mv -f $tmp $data_file
     let mime = if $selected.output == "detect" {
       $data_file | file mime
     } else {
       $selected.output
     }
-    ui log "result" $"source ($selected.name) output mime=($mime)"
+    log "result" $"source ($selected.name) output mime=($mime)"
     {
       created: (date now | format date "%+")
       modified: null
@@ -188,21 +204,37 @@ match $selected.kind {
     } | to json | save -f $meta_file
   }
   "node" => {
-    ui log "exec" $"node ($selected.name) mime=($meta.mime) -> ($tmp)"
-    with-env {
+    log "exec" $"node ($selected.name) mime=($meta.mime) -> ($tmp)"
+    let result = with-env {
       DOT_TOOLBELT_EXTENSION: $meta.extension
       DOT_TOOLBELT_MIME: $meta.mime
     } {
       $"($selected.exe) < ($data_file) > ($tmp)"
         | ui wait $"Processing with ($selected.name)..."
     }
+
+    if $result.exit_code != 0 {
+      log "error" $"command exited with exit code ($result.exit_code)"
+      log "error" $"stdout:\n($result.stdout)\n"
+      log "error" $"stderr:\n($result.stderr)\n"
+
+      [
+        $"Command exited with exit code ($result.exit_code)."
+        $"Stdout:\n($result.stdout)\n"
+        $"Stderr:\n($result.stderr)\n"
+      ] | str join "\n" | ui error
+
+      rm -f $tmp
+      exit 1
+    }
+
     mv -f $tmp $data_file
     let mime = if $selected.output == "detect" {
       $data_file | file mime
     } else {
       $selected.output
     }
-    ui log "result" $"node ($selected.name) output mime=($mime)"
+    log "result" $"node ($selected.name) output mime=($mime)"
     {
       created: $meta.created
       modified: (date now | format date "%+")
@@ -212,14 +244,29 @@ match $selected.kind {
     } | to json | save -f $meta_file
   }
   "sink" => {
-    ui log "exec" $"sink ($selected.name) mime=($meta.mime)"
-    with-env {
+    log "exec" $"sink ($selected.name) mime=($meta.mime)"
+    let result = with-env {
       DOT_TOOLBELT_EXTENSION: $meta.extension
       DOT_TOOLBELT_MIME: $meta.mime
     } {
       $"($selected.exe) < ($data_file)"
         | ui wait $"Sinking with ($selected.name)..."
     }
+
+    if $result.exit_code != 0 {
+      log "error" $"command exited with exit code ($result.exit_code)"
+      log "error" $"stdout:\n($result.stdout)\n"
+      log "error" $"stderr:\n($result.stderr)\n"
+
+      [
+        $"Command exited with exit code ($result.exit_code)."
+        $"Stdout:\n($result.stdout)\n"
+        $"Stderr:\n($result.stderr)\n"
+      ] | str join "\n" | ui error
+
+      exit 1
+    }
+
     rm -f $data_file $meta_file
   }
 }

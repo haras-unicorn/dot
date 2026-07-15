@@ -33,6 +33,14 @@
         (builtins.map ({ package, ... }: package) (builtins.attrValues config.dot.processing.sinks))
       ];
 
+      logPackage = pkgs.writeScriptBin "log" ''
+        #!${lib.getExe pkgs.nushell} --stdin
+
+        $env.DOT_TOOLBELT_SCRIPT = "log"
+
+        ${builtins.readFile ./log.nu}
+      '';
+
       uiInputs =
         if hardware.graphics then
           [
@@ -43,7 +51,7 @@
             pkgs.gum
           ]
         else
-          [ ];
+          [ logPackage ];
 
       uiPath = builtins.concatStringsSep " " (map (package: ''"${lib.getBin package}/bin"'') uiInputs);
 
@@ -116,6 +124,7 @@
         pkgs.file
         pkgs.python3
         uiPackage
+        logPackage
       ];
 
       toolbeltPath = builtins.concatStringsSep " " (

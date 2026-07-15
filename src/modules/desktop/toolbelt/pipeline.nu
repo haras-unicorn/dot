@@ -37,10 +37,10 @@ def "mime extension" []: string -> string {
   ) | str trim
 }
 
-ui log "startup" $"($tools.pipelines | length) pipelines available"
+log "startup" $"($tools.pipelines | length) pipelines available"
 
 if ($tools.pipelines | length) == 0 {
-  ui log "error" "no pipelines available"
+  log "error" "no pipelines available"
   "No pipelines available" | ui error
   exit 1
 }
@@ -56,7 +56,7 @@ let choice = (
 )
 
 if $choice == null {
-  ui log "error" "no pipeline selected"
+  log "error" "no pipeline selected"
   "No pipeline selected" | ui error
   exit 1
 }
@@ -67,22 +67,22 @@ let selected = (
     | first
 )
 
-ui log "choice" $"pipeline ($selected.data.display)"
+log "choice" $"pipeline ($selected.data.display)"
 
 let source = $selected.data.source
   | resolve "sources"
-ui log "resolve" $"source ($source.name) output=($source.data.output)"
+log "resolve" $"source ($source.name) output=($source.data.output)"
 
 let nodes = $selected.data.nodes
   | default []
   | each { resolve "nodes" }
 for node in $nodes {
-  ui log "resolve" $"node ($node.name) inputs=($node.data.inputs | str join ",") output=($node.data.output)"
+  log "resolve" $"node ($node.name) inputs=($node.data.inputs | str join ",") output=($node.data.output)"
 }
 
 let sink = $selected.data.sink
   | resolve "sinks"
-ui log "resolve" $"sink ($sink.name) inputs=($sink.data.inputs | str join ",")"
+log "resolve" $"sink ($sink.name) inputs=($sink.data.inputs | str join ",")"
 
 let actions = ([ $source ] ++ $nodes ++ [ $sink ]) | enumerate
 
@@ -122,7 +122,21 @@ let command = $actions
     }
   | str join " | "
 
-ui log "exec" $"command: ($command)"
-ui log "exec" $"mimes: ($mimes | str join ' -> ')"
+log "exec" $"command: ($command)"
+log "exec" $"mimes: ($mimes | str join ' -> ')"
 
-$command | ui wait $"Running ($selected.data.display)..."
+let result = $command | ui wait $"Running ($selected.data.display)..."
+
+if $result.exit_code != 0 {
+  log "error" $"command exited with exit code ($result.exit_code)"
+  log "error" $"stdout:\n($result.stdout)\n"
+  log "error" $"stderr:\n($result.stderr)\n"
+
+  [
+    $"Command exited with exit code ($result.exit_code)."
+    $"Stdout:\n($result.stdout)\n"
+    $"Stderr:\n($result.stderr)\n"
+  ] | str join "\n" | ui error
+
+  exit 1
+}
