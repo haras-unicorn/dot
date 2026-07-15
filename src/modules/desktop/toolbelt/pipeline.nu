@@ -125,18 +125,6 @@ let command = $actions
 log "exec" $"command: ($command)"
 log "exec" $"mimes: ($mimes | str join ' -> ')"
 
-let result = $command | ui wait $"Running ($selected.data.display)..."
-
-if $result.exit_code != 0 {
-  log "error" $"command exited with exit code ($result.exit_code)"
-  log "error" $"stdout:\n($result.stdout)\n"
-  log "error" $"stderr:\n($result.stderr)\n"
-
-  [
-    $"Command exited with exit code ($result.exit_code)."
-    $"Stdout:\n($result.stdout)\n"
-    $"Stderr:\n($result.stderr)\n"
-  ] | str join "\n" | ui error
-
-  exit 1
-}
+$command
+  | ui wait $"Running ($selected.data.display)..."
+  | common handle $"pipeline ($selected.data.display)"

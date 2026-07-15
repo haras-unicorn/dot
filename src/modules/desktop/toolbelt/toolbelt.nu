@@ -165,27 +165,13 @@ log "choice" $"($selected.kind) ($selected.name)"
 match $selected.kind {
   "source" => {
     log "exec" $"source ($selected.name) -> ($tmp)"
-    let result = with-env {
+    with-env {
       DOT_TOOLBELT_EXTENSION: ""
       DOT_TOOLBELT_MIME: "none"
     } {
       $"($selected.exe) > ($tmp)"
         | ui wait $"Sourcing with ($selected.name)..."
-    }
-
-    if $result.exit_code != 0 {
-      log "error" $"command exited with exit code ($result.exit_code)"
-      log "error" $"stdout:\n($result.stdout)\n"
-      log "error" $"stderr:\n($result.stderr)\n"
-
-      [
-        $"Command exited with exit code ($result.exit_code)."
-        $"Stdout:\n($result.stdout)\n"
-        $"Stderr:\n($result.stderr)\n"
-      ] | str join "\n" | ui error
-
-      rm -f $tmp
-      exit 1
+        | common handle $"source ($selected.name)" --on-fail { rm -f $tmp }
     }
 
     mv -f $tmp $data_file
@@ -205,27 +191,13 @@ match $selected.kind {
   }
   "node" => {
     log "exec" $"node ($selected.name) mime=($meta.mime) -> ($tmp)"
-    let result = with-env {
+    with-env {
       DOT_TOOLBELT_EXTENSION: $meta.extension
       DOT_TOOLBELT_MIME: $meta.mime
     } {
       $"($selected.exe) < ($data_file) > ($tmp)"
         | ui wait $"Processing with ($selected.name)..."
-    }
-
-    if $result.exit_code != 0 {
-      log "error" $"command exited with exit code ($result.exit_code)"
-      log "error" $"stdout:\n($result.stdout)\n"
-      log "error" $"stderr:\n($result.stderr)\n"
-
-      [
-        $"Command exited with exit code ($result.exit_code)."
-        $"Stdout:\n($result.stdout)\n"
-        $"Stderr:\n($result.stderr)\n"
-      ] | str join "\n" | ui error
-
-      rm -f $tmp
-      exit 1
+        | common handle $"node ($selected.name)" --on-fail { rm -f $tmp }
     }
 
     mv -f $tmp $data_file
@@ -245,26 +217,13 @@ match $selected.kind {
   }
   "sink" => {
     log "exec" $"sink ($selected.name) mime=($meta.mime)"
-    let result = with-env {
+    with-env {
       DOT_TOOLBELT_EXTENSION: $meta.extension
       DOT_TOOLBELT_MIME: $meta.mime
     } {
       $"($selected.exe) < ($data_file)"
         | ui wait $"Sinking with ($selected.name)..."
-    }
-
-    if $result.exit_code != 0 {
-      log "error" $"command exited with exit code ($result.exit_code)"
-      log "error" $"stdout:\n($result.stdout)\n"
-      log "error" $"stderr:\n($result.stderr)\n"
-
-      [
-        $"Command exited with exit code ($result.exit_code)."
-        $"Stdout:\n($result.stdout)\n"
-        $"Stderr:\n($result.stderr)\n"
-      ] | str join "\n" | ui error
-
-      exit 1
+        | common handle $"sink ($selected.name)"
     }
 
     rm -f $data_file $meta_file

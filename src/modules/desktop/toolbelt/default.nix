@@ -75,6 +75,24 @@
         }
       '';
 
+      commonInputs = [
+        logPackage
+        uiPackage
+      ];
+
+      commonPath = builtins.concatStringsSep " " (
+        map (package: ''"${lib.getBin package}/bin"'') commonInputs
+      );
+
+      commonPackage = pkgs.writeScriptBin "common" ''
+        #!${lib.getExe pkgs.nushell} --stdin
+
+        $env.DOT_TOOLBELT_SCRIPT = "common"
+        $env.PATH ++= [ ${commonPath} ]
+
+        ${builtins.readFile ./common.nu}
+      '';
+
       tools = builtins.toJSON {
         sources = builtins.mapAttrs (_: source: {
           inherit (source)
@@ -125,6 +143,7 @@
         pkgs.python3
         uiPackage
         logPackage
+        commonPackage
       ];
 
       toolbeltPath = builtins.concatStringsSep " " (
