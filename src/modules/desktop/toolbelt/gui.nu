@@ -56,7 +56,7 @@ def "ui wait" [title: string]: string -> record {
 
   let unit = $"zenity-(random uuid)"
   (systemd-run --user --scope $"--unit=($unit)"
-    zenity --progress --pulsating --auto-close $"--text=($title)")
+    zenity --progress --pulsate --no-cancel $"--text=($title)")
     | complete
     | common handle "systemd zenity"
   log "wait" $"($title) zenity ($unit) started"
