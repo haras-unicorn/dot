@@ -12,6 +12,8 @@ def "main menu" [title: string text: string]: string -> string {
 }
 
 def "main error" []: string -> nothing {
+  let text = $in
+  log "error" $text
   print -e $in
 }
 

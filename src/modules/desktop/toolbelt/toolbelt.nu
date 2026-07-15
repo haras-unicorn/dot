@@ -21,7 +21,7 @@ def "processor display" []: record -> string {
     $" \(($output)\)"
   }
 
-  $display + ":" + $note_part + $output_part
+  ($display + ":" + $note_part + $output_part) | str trim
 }
 
 def "file mime" []: string -> string {
@@ -123,7 +123,7 @@ if $meta.mime != null {
     $actions = ($actions | append {
       name: $sink.name
       kind: "sink"
-      display: ($sink.data | processor display | str trim)
+      display: ($sink.data | processor display)
       exe: $sink.data.exe,
       output: null
     })
@@ -135,7 +135,6 @@ if $meta.mime != null {
 log "actions" $"($actions | length) actions total"
 
 if ($actions | length) == 0 {
-  log "error" "no actions available"
   "No actions available" | ui error
   exit 1
 }
@@ -151,7 +150,6 @@ let choice = (
 )
 
 if $choice == null {
-  log "error" "no action selected"
   "No actions selected" | ui error
   exit 1
 }

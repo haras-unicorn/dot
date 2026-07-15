@@ -12,7 +12,9 @@ def "main menu" [title: string text: string]: string -> string {
 }
 
 def "main error" []: string -> nothing {
-  zenity --error --title="Toolbelt" $"--text=($in)"
+  let text = $in
+  log "error" $text
+  zenity --error --title="Toolbelt" $"--text=($text)"
 }
 
 def "main choose" [title: string text: string]: string -> string {

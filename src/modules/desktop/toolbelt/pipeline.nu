@@ -10,7 +10,7 @@ def "pipeline display" []: record -> string {
     $" ($note)"
   }
 
-  $display + ":" + $note_part
+  ($display + ":" + $note_part) | str trim
 }
 
 def "resolve" [from: string]: string -> record {
@@ -40,7 +40,6 @@ def "mime extension" []: string -> string {
 log "startup" $"($tools.pipelines | length) pipelines available"
 
 if ($tools.pipelines | length) == 0 {
-  log "error" "no pipelines available"
   "No pipelines available" | ui error
   exit 1
 }
@@ -56,7 +55,6 @@ let choice = (
 )
 
 if $choice == null {
-  log "error" "no pipeline selected"
   "No pipeline selected" | ui error
   exit 1
 }
