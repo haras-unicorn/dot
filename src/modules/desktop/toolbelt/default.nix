@@ -33,66 +33,6 @@
         (builtins.map ({ package, ... }: package) (builtins.attrValues config.dot.processing.sinks))
       ];
 
-      logPackage = pkgs.writeScriptBin "log" ''
-        #!${lib.getExe pkgs.nushell} --stdin
-
-        $env.DOT_TOOLBELT_SCRIPT = "log"
-
-        ${builtins.readFile ./log.nu}
-      '';
-
-      uiInputs =
-        if hardware.graphics then
-          [
-            pkgs.zenity
-          ]
-        else if hardware.editor then
-          [
-            pkgs.gum
-          ]
-        else
-          [ logPackage ];
-
-      uiPath = builtins.concatStringsSep " " (map (package: ''"${lib.getBin package}/bin"'') uiInputs);
-
-      uiRender =
-        if hardware.graphics then
-          builtins.readFile ./gui.nu
-        else if hardware.editor then
-          builtins.readFile ./tui.nu
-        else
-          "";
-
-      uiPackage = pkgs.writeScriptBin "ui" ''
-        #!${lib.getExe pkgs.nushell} --stdin
-
-        $env.DOT_TOOLBELT_DMENU = "${lib.getExe config.dot.commands.dmenu}"
-        $env.DOT_TOOLBELT_SCRIPT = "ui"
-        $env.PATH ++= [ ${uiPath} ]
-
-        def "main" [] {
-        ${uiRender}
-        }
-      '';
-
-      commonInputs = [
-        logPackage
-        uiPackage
-      ];
-
-      commonPath = builtins.concatStringsSep " " (
-        map (package: ''"${lib.getBin package}/bin"'') commonInputs
-      );
-
-      commonPackage = pkgs.writeScriptBin "common" ''
-        #!${lib.getExe pkgs.nushell} --stdin
-
-        $env.DOT_TOOLBELT_SCRIPT = "common"
-        $env.PATH ++= [ ${commonPath} ]
-
-        ${builtins.readFile ./common.nu}
-      '';
-
       tools = builtins.toJSON {
         sources = builtins.mapAttrs (_: source: {
           inherit (source)
@@ -137,6 +77,64 @@
             ;
         }) config.dot.processing.pipelines;
       };
+
+      logPackage = pkgs.writeScriptBin "log" ''
+        #!${lib.getExe pkgs.nushell} --stdin
+
+        $env.DOT_TOOLBELT_SCRIPT = "log"
+
+        ${builtins.readFile ./log.nu}
+      '';
+
+      uiInputs =
+        if hardware.graphics then
+          [
+            pkgs.zenity
+          ]
+        else if hardware.editor then
+          [
+            pkgs.gum
+          ]
+        else
+          [ logPackage ];
+
+      uiPath = builtins.concatStringsSep " " (map (package: ''"${lib.getBin package}/bin"'') uiInputs);
+
+      uiRender =
+        if hardware.graphics then
+          builtins.readFile ./gui.nu
+        else if hardware.editor then
+          builtins.readFile ./tui.nu
+        else
+          "";
+
+      uiPackage = pkgs.writeScriptBin "ui" ''
+        #!${lib.getExe pkgs.nushell} --stdin
+
+        $env.DOT_TOOLBELT_DMENU = "${lib.getExe config.dot.commands.dmenu}"
+        $env.DOT_TOOLBELT_SCRIPT = "ui"
+        $env.PATH ++= [ ${uiPath} ]
+
+        ${uiRender}
+      '';
+
+      commonInputs = [
+        logPackage
+        uiPackage
+      ];
+
+      commonPath = builtins.concatStringsSep " " (
+        map (package: ''"${lib.getBin package}/bin"'') commonInputs
+      );
+
+      commonPackage = pkgs.writeScriptBin "common" ''
+        #!${lib.getExe pkgs.nushell} --stdin
+
+        $env.DOT_TOOLBELT_SCRIPT = "common"
+        $env.PATH ++= [ ${commonPath} ]
+
+        ${builtins.readFile ./common.nu}
+      '';
 
       toolbeltInputs = [
         pkgs.file
