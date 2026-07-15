@@ -117,8 +117,8 @@
 
         ${builtins.readFile ./common.nu}
 
-        def "main tools" []: nothing -> record {
-          $env.DOT_TOOLBELT_TOOLS
+        def "main tools" []: nothing -> string {
+          $env.DOT_TOOLBELT_TOOLS | to json
         }
       '';
 
