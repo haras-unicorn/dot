@@ -21,7 +21,7 @@
       nodeCommand = if hardware.graphics then ''${terminal} hx "$tmp"'' else ''hx "$tmp"'';
 
       source = pkgs.writeShellApplication {
-        name = "helix-editor-node";
+        name = "helix-editor-source";
         runtimeInputs = [ package ];
         text = ''
           tmp="$(mktemp)"
