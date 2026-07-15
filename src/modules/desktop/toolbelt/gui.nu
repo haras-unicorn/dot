@@ -1,14 +1,14 @@
-def "main ui log" [area: string msg: string] {
+def "main log" [area: string msg: string] {
   let timestamp = (date now | format date "%Y-%m-%dT%H:%M:%S")
   let script = ($env.DOT_TOOLBELT_SCRIPT? | default "unknown")
   print -e $"[($timestamp)] [($script)/gui] [($area)]: ($msg)"
 }
 
-def "main ui error" []: string -> nothing {
+def "main error" []: string -> nothing {
   zenity --error --title="Toolbelt" $"--text=($in)"
 }
 
-def "main ui choose" [title: string text: string]: string -> string {
+def "main choose" [title: string text: string]: string -> string {
   let result = (
     $in
       | zenity
@@ -25,7 +25,7 @@ def "main ui choose" [title: string text: string]: string -> string {
   return $result.stdout | str trim
 }
 
-def "main ui wait" [title: string]: string -> nothing {
+def "main wait" [title: string]: string -> nothing {
   let command = $in
   ([ 100 ]
     | each { do -i { sh -c $command }; echo $in }
