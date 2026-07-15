@@ -1,4 +1,4 @@
-let tools = r#'DOT_TOOLBELT_TOOLS'# | from json
+let tools = $env.DOT_TOOLBELT_TOOLS
 
 def "pipeline display" []: record -> string {
   let display = $in.display

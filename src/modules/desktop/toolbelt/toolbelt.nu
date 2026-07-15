@@ -1,4 +1,4 @@
-let tools = r#'DOT_TOOLBELT_TOOLS'# | from json
+let tools = $env.DOT_TOOLBELT_TOOLS
 
 def "mime base" []: string -> string {
   $in | split row ";" | first | str trim
