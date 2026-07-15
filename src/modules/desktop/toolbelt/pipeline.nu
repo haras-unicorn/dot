@@ -51,7 +51,7 @@ let choice = (
   $pipelines
     | each { get data | pipeline display }
     | str join "\n"
-    | ui choose "Toolbelt" "Pick a toolbelt pipeline..."
+    | ui menu "Toolbelt" "Pick a toolbelt pipeline..."
     | str trim
 )
 

@@ -24,6 +24,21 @@ def "main choose" [title: string text: string]: string -> string {
   return $result.stdout | str trim
 }
 
+def "main menu" [title: string text: string]: string -> string {
+  let result = (
+    $in
+      | gum filter
+          --header $title
+          --placeholder $text
+      | complete
+  )
+  if $result.exit_code != 0 or ($result.stdout | is-empty) {
+    return null
+  }
+
+  return $result.stdout | str trim
+}
+
 def "main wait" [title: string]: string -> nothing {
   do -i {
     (gum spin

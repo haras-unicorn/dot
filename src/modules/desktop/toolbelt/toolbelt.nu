@@ -144,7 +144,7 @@ let choice = (
   $actions
     | get display
     | str join "\n"
-    | ui choose
+    | ui menu
         $"Toolbelt content type: ($meta.mime | default "empty")"
         "Pick a toolbelt action..."
     | str trim
