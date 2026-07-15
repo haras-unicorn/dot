@@ -20,7 +20,7 @@
         text = ''
           tmp="$(mktemp)"
           trap 'rm -f "$tmp"' EXIT
-          zeditor -n "$tmp" &>/dev/null
+          zeditor --foreground -n "$tmp" &>/dev/null
           cat "$tmp"
         '';
       };
@@ -32,7 +32,7 @@
           tmp="$(mktemp)"
           trap 'rm -f "$tmp"' EXIT
           cat > "$tmp"
-          zeditor -n "$tmp" &>/dev/null
+          zeditor --foreground -n "$tmp" &>/dev/null
         '';
       };
     in
