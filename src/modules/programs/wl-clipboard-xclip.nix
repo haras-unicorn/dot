@@ -15,7 +15,7 @@
       xclip = pkgs.xclip;
 
       copyWayland = pkgs.writeShellApplication {
-        name = "copy";
+        name = "copy-wlx";
         runtimeInputs = [ wl-clipboard ];
         text = ''
           cat | wl-copy "$@"
@@ -23,7 +23,7 @@
       };
 
       pasteWayland = pkgs.writeShellApplication {
-        name = "paste";
+        name = "paste-wlx";
         runtimeInputs = [ wl-clipboard ];
         text = ''
           wl-paste "$@" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
@@ -31,7 +31,7 @@
       };
 
       copyXServer = pkgs.writeShellApplication {
-        name = "copy";
+        name = "copy-wlx";
         runtimeInputs = [ xclip ];
         text = ''
           cat | xclip -sel clip "$@"
@@ -39,7 +39,7 @@
       };
 
       pasteXServer = pkgs.writeShellApplication {
-        name = "paste";
+        name = "paste-wlx";
         runtimeInputs = [ xclip ];
         text = ''
           xclip -o -sel clip "$@" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
