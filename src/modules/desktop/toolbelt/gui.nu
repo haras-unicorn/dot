@@ -1,4 +1,4 @@
-def "main menu" [title: string text: string]: list -> string {
+def "ui menu" [title: string text: string]: list -> string {
   let choices = $in
   log "menu" $"choosing:\n($choices | str join "\n")"
 
@@ -19,14 +19,14 @@ def "main menu" [title: string text: string]: list -> string {
   return $result
 }
 
-def "main error" []: string -> nothing {
+def "ui error" []: string -> nothing {
   let text = $in
   log "error" $text
 
   zenity --error --title="Toolbelt" $"--text=($text)"
 }
 
-def "main choose" [title: string text: string]: list -> string {
+def "ui choose" [title: string text: string]: list -> string {
   let choices = $in
   log "choose" $"choosing:\n($choices | str join "\n")"
 
@@ -50,7 +50,7 @@ def "main choose" [title: string text: string]: list -> string {
   return $result
 }
 
-def "main wait" [title: string]: string -> record {
+def "ui wait" [title: string]: string -> record {
   let command = $in
   log "wait" $"running ($title) '($command)'"
 
