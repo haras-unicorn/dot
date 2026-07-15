@@ -80,20 +80,6 @@
 
       logRender = builtins.readFile ./log.nu;
 
-      uiInputs =
-        if hardware.graphics then
-          [
-            pkgs.zenity
-          ]
-        else if hardware.editor then
-          [
-            pkgs.gum
-          ]
-        else
-          [ ];
-
-      uiPath = builtins.concatStringsSep " " (map (package: ''"${lib.getBin package}/bin"'') uiInputs);
-
       uiRender =
         if hardware.graphics then
           builtins.readFile ./gui.nu
@@ -102,77 +88,61 @@
         else
           "";
 
-      uiPackage = pkgs.writeScriptBin "ui" ''
-        #!${lib.getExe pkgs.nushell} --stdin
+      commonRender = builtins.readFile ./common.nu;
 
-        $env.DOT_TOOLBELT_DMENU = "${lib.getExe config.dot.commands.dmenu}"
-        $env.DOT_TOOLBELT_SCRIPT = "ui"
-        $env.PATH ++= [ ${uiPath} ]
+      inputs =
+        (
+          if hardware.graphics then
+            [
+              pkgs.zenity
+            ]
+          else if hardware.editor then
+            [
+              pkgs.gum
+            ]
+          else
+            [ ]
+        )
+        ++ [
+          pkgs.file
+          pkgs.python3
+        ];
 
-        ${logRender}
+      path = builtins.concatStringsSep " " (map (package: ''"${lib.getBin package}/bin"'') inputs);
 
-        ${uiRender}
-      '';
-
-      commonInputs = [
-        uiPackage
-      ];
-
-      commonPath = builtins.concatStringsSep " " (
-        map (package: ''"${lib.getBin package}/bin"'') commonInputs
-      );
-
-      commonPackage = pkgs.writeScriptBin "common" ''
-        #!${lib.getExe pkgs.nushell} --stdin
-
-        $env.DOT_TOOLBELT_SCRIPT = "common"
-        $env.PATH ++= [ ${commonPath} ]
-
-        ${logRender}
-
-        ${builtins.readFile ./common.nu}
-      '';
-
-      toolbeltInputs = [
-        pkgs.file
-        pkgs.python3
-        uiPackage
-        commonPackage
-      ];
-
-      toolbeltPath = builtins.concatStringsSep " " (
-        map (package: ''"${lib.getBin package}/bin"'') toolbeltInputs
-      );
-
-      toolbeltRender = builtins.replaceStrings [ "DOT_TOOLBELT_TOOLS" ] [ tools ] (
-        builtins.readFile ./toolbelt.nu
-      );
+      render = file: builtins.replaceStrings [ "DOT_TOOLBELT_TOOLS" ] [ tools ] (builtins.readFile file);
 
       toolbeltPackage = pkgs.writeScriptBin "toolbelt" ''
         #!${lib.getExe pkgs.nushell} --stdin
 
         $env.DOT_TOOLBELT_SCRIPT = "toolbelt"
-        $env.PATH ++= [ ${toolbeltPath} ]
+        $env.PATH ++= [ ${path} ]
 
         ${logRender}
 
+        ${uiRender}
+
+        ${commonRender}
+
         def "main" [] {
-        ${toolbeltRender}
+        ${render ./toolbelt.nu}
         }
       '';
-
-      pipelineRender = builtins.replaceStrings [ "DOT_TOOLBELT_TOOLS" ] [ tools ] (
-        builtins.readFile ./pipeline.nu
-      );
 
       pipelinePackage = pkgs.writeScriptBin "pipeline" ''
         #!${lib.getExe pkgs.nushell} --stdin
 
         $env.DOT_TOOLBELT_SCRIPT = "pipeline"
-        $env.PATH ++= [ ${toolbeltPath} ]
+        $env.PATH ++= [ ${path} ]
+
+        ${logRender}
+
+        ${uiRender}
+
+        ${commonRender}
 
         def "main" [] {
-        ${pipelineRender}
+        ${render ./pipeline.nu}
         }
       '';
     in
