@@ -82,6 +82,7 @@ def "ui wait" [title: string]: string -> record {
     do -i {
       systemctl kill --user --signal SIGINT $"($unit).scope" e+o>| ignore
     }
+    sleep 200ms
   }
   log "wait" $"($title) zenity ($unit) stopped"
 
