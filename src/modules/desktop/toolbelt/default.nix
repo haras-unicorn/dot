@@ -109,7 +109,7 @@
           "";
 
       common = ''
-        $env.DOT_TOOLBELT_TOOLS = r#'${tools}'#r | from json
+        $env.DOT_TOOLBELT_TOOLS = r#'${tools}'# | from json
         $env.DOT_TOOLBELT_DMENU = "${dmenu}"
         $env.PATH ++= [ ${path} ]
 
