@@ -100,8 +100,6 @@
 
       dmenu = lib.getExe config.dot.commands.dmenu;
 
-      log = builtins.readFile ./log.nu;
-
       ui =
         if hardware.graphics then
           builtins.readFile ./gui.nu
@@ -114,6 +112,8 @@
         $env.DOT_TOOLBELT_DMENU = "${dmenu}"
         $env.PATH ++= [ ${path} ]
 
+        ${builtins.readFile ./log.nu}
+
         ${builtins.readFile ./common.nu}
       '';
 
@@ -125,8 +125,6 @@
         $env.DOT_TOOLBELT_SCRIPT = "toolbelt"
 
         ${common}
-
-        ${log}
 
         ${ui}
 
