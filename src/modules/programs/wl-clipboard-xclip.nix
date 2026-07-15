@@ -16,18 +16,9 @@
 
       copyWayland = pkgs.writeShellApplication {
         name = "copy";
-        runtimeInputs = [
-          wl-clipboard
-          xclip
-        ];
+        runtimeInputs = [ wl-clipboard ];
         text = ''
-          tmpfile="$(mktemp)"
-          trap 'rm -f "$tmpfile"' EXIT
-
-          cat > "$tmpfile"
-
-          wl-copy "$@" < "$tmpfile"
-          xclip -sel clipboard "$@" < "$tmpfile"
+          cat | wl-copy "$@"
         '';
       };
 
@@ -35,7 +26,7 @@
         name = "paste";
         runtimeInputs = [ wl-clipboard ];
         text = ''
-          wl-paste "$@"
+          wl-paste "$@" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
         '';
       };
 
@@ -43,7 +34,7 @@
         name = "copy";
         runtimeInputs = [ xclip ];
         text = ''
-          xclip -sel clip "$@"
+          cat | xclip -sel clip "$@"
         '';
       };
 
@@ -51,7 +42,7 @@
         name = "paste";
         runtimeInputs = [ xclip ];
         text = ''
-          xclip -o -sel clip "$@"
+          xclip -o -sel clip "$@" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
         '';
       };
     in

@@ -59,9 +59,7 @@
 
       commands = builtins.attrValues config.dot.commands ++ builtins.attrValues osConfig.dot.commands;
 
-      programs = builtins.attrValues (
-        builtins.mapAttrs (_: { package, ... }: package) config.dot.programs
-      );
+      programs = builtins.map ({ package, ... }: package) (builtins.attrValues config.dot.programs);
 
       makeScreenshot =
         name:
