@@ -20,6 +20,17 @@
 
       nodeCommand = if hardware.graphics then ''${terminal} hx "$tmp"'' else ''hx "$tmp"'';
 
+      source = pkgs.writeShellApplication {
+        name = "helix-editor-node";
+        runtimeInputs = [ package ];
+        text = ''
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          ${nodeCommand} &>/dev/null
+          cat "$tmp"
+        '';
+      };
+
       node = pkgs.writeShellApplication {
         name = "helix-editor-node";
         runtimeInputs = [ package ];
@@ -34,15 +45,27 @@
     lib.mkIf hardware.editor {
       dot.programs.editor.package = package;
 
-      dot.processing.nodes.helix-editor = {
-        note = "Edit text";
-        tags = [
-          "text"
-          "editor"
-        ];
-        inputs = selfLib.mime.editor;
-        output = "detect";
-        package = node;
+      dot.processing = {
+        sources.helix-editor = {
+          note = "Write text";
+          tags = [
+            "text"
+            "write"
+          ];
+          output = "text/plain";
+          package = source;
+        };
+
+        nodes.helix-editor = {
+          note = "Edit text";
+          tags = [
+            "text"
+            "editor"
+          ];
+          inputs = selfLib.mime.editor;
+          output = "detect";
+          package = node;
+        };
       };
 
       programs.helix.enable = true;
