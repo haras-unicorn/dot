@@ -123,7 +123,7 @@ if $meta.mime != null {
     $actions = ($actions | append {
       name: $sink.name
       kind: "sink"
-      display: ($sink.data | processor display)
+      display: ($sink.data | processor display | str trim)
       exe: $sink.data.exe,
       output: null
     })
