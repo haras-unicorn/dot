@@ -109,15 +109,18 @@
           "";
 
       common = ''
+        $env.DOT_TOOLBELT_TOOLS = r#'${tools}'#r | from json
         $env.DOT_TOOLBELT_DMENU = "${dmenu}"
         $env.PATH ++= [ ${path} ]
 
         ${builtins.readFile ./log.nu}
 
         ${builtins.readFile ./common.nu}
-      '';
 
-      render = file: builtins.replaceStrings [ "DOT_TOOLBELT_TOOLS" ] [ tools ] (builtins.readFile file);
+        def "main tools" []: nothing -> record {
+          $env.DOT_TOOLBELT_TOOLS
+        }
+      '';
 
       toolbelt = pkgs.writeScriptBin "toolbelt" ''
         #!${lib.getExe pkgs.nushell} --stdin
@@ -129,7 +132,7 @@
         ${ui}
 
         def "main" [] {
-        ${render ./toolbelt.nu}
+        ${builtins.readFile ./toolbelt.nu}
         }
       '';
 
@@ -143,7 +146,7 @@
         ${ui}
 
         def "main" [] {
-        ${render ./pipeline.nu}
+        ${builtins.readFile ./pipeline.nu}
         }
       '';
     in
