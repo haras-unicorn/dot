@@ -8,7 +8,9 @@ def "common handle" [name: string --on-fail: closure]: record -> nothing {
       $"Stderr:\n($result.stderr)\n"
     ] | str join "\n" | ui error
 
-    do $on_fail
+    if $on_fail != null {
+      do $on_fail
+    }
     exit 1
   }
 }
