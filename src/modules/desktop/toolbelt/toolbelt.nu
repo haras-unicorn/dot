@@ -38,10 +38,10 @@ def "mime extension" []: string -> string {
 
 ui log "startup" (
   $"loaded "
-  + $"($tools.sources | length) sources, "
-  + $"($tools.nodes | length) nodes, "
-  + $"($tools.sinks | length) sinks, "
-  + $"($tools.pipelines | length) pipelines"
+  + $"($tools.sources | transpose | length) sources, "
+  + $"($tools.nodes | transpose | length) nodes, "
+  + $"($tools.sinks | transpose | length) sinks, "
+  + $"($tools.pipelines | transpose | length) pipelines"
 )
 
 let data_dir = (
