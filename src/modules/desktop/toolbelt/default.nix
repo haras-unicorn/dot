@@ -138,11 +138,9 @@
 
         $env.DOT_TOOLBELT_SCRIPT = "pipeline"
 
-        ${log}
+        ${common}
 
         ${ui}
-
-        ${common}
 
         def "main" [] {
         ${render ./pipeline.nu}
