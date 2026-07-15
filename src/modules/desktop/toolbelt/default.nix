@@ -62,8 +62,9 @@
         $env.PATH ++= [ ${uiPath} ]
 
         def "main" [] {
-        ${uiRender}
         }
+
+        ${uiRender}
       '';
 
       tools = builtins.toJSON {
