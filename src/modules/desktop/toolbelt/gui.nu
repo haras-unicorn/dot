@@ -1,6 +1,8 @@
 def "main menu" [title: string text: string]: list -> string {
+  let choices = $in
+  log "menu" $"choosing:\n($choices | str join "\n")"
   let result = (
-    $in
+    $choices
       | str join "\n"
       | ^$env.DOT_TOOLBELT_DMENU -p $text
       | complete
@@ -23,8 +25,10 @@ def "main error" []: string -> nothing {
 }
 
 def "main choose" [title: string text: string]: list -> string {
+  let choices = $in
+  log "choose" $"choosing:\n($choices | str join "\n")"
   let result = (
-    $in
+    $choices
       | str join "\n"
       | zenity
           --list
