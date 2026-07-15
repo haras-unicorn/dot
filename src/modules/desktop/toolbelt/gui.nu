@@ -55,8 +55,11 @@ def "ui wait" [title: string]: string -> record {
   log "wait" $"running ($title) '($command)'"
 
   let unit = $"zenity-(random uuid)"
-  (systemd-run --user --scope $"--unit=($unit)"
-    zenity --progress --pulsate --no-cancel $"--text=($title)")
+  sh -c (
+    $"systemd-run --user --scope '--unit=($unit)'"
+    + " zenity --progress --pulsate --no-cancel '--text=($title)'"
+    + " &>/dev/null & disown %-"
+  )
     | complete
     | common handle "systemd zenity"
   log "wait" $"($title) zenity ($unit) started"
@@ -64,7 +67,9 @@ def "ui wait" [title: string]: string -> record {
   let result = sh -c $command | complete
   log "wait" $"($title) '($command)' ended with ($result.exit_code)"
 
-  do -i { systemctl stop --user $"($unit).scope" }
+  systemctl kill --user --signal SIGINT $"($unit).scope"
+    | complete
+    | common handle "systemd zenity"
   log "wait" $"($title) zenity ($unit) stopped"
 
   return $result
