@@ -37,10 +37,9 @@ def "main choose" [title: string text: string]: string -> string {
   return $result.stdout | str trim
 }
 
-def "main wait" [title: string]: string -> nothing {
-  do -i {
-    (gum spin
-      --title $title
-      -- sh -c $in)
-  }
+def "main wait" [title: string]: string -> record {
+  (gum spin
+    --title $title
+    -- nu -c $"sh -c r#'($in)'# | complete | to json")
+    | from json
 }

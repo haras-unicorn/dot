@@ -38,11 +38,16 @@ def "main choose" [title: string text: string]: string -> string {
   return $result.stdout | str trim
 }
 
-def "main wait" [title: string]: string -> nothing {
+def "main wait" [title: string]: string -> record {
   let command = $in
-  ([ 100 ]
-    | each { do -i { sh -c $command }; echo $in }
-    | zenity --progress --pulsating --auto-close $"--text=($title)"
-    e+o>| ignore)
+  let unit = $"zenity-(random uuid)"
+  (systemd-run --user --scope $"--unit=($unit)"
+    zenity --progress --pulsating --auto-close $"--text=($title)")
+
+  let result = sh -c $command | complete
+
+  systemctl stop --user $"($unit).scope"
+
+  $result
 }
 
