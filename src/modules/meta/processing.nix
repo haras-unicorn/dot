@@ -117,7 +117,7 @@
 
           pipelines = lib.mkOption {
             description = "Processing pipelines";
-            default = [ ];
+            default = { };
             type = lib.types.attrsOf (
               lib.types.submodule {
                 imports = [ common ];
