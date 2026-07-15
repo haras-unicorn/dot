@@ -156,7 +156,7 @@ if $choice == null {
 
 let selected = $actions
   | where $it.display == $choice
-  | first
+  | first --strict
 
 log "choice" $"($selected.kind) ($selected.name)"
 

@@ -26,7 +26,7 @@ def "resolve" [from: string]: string -> record {
     exit 1
   }
 
-  $results | first
+  $results | first --strict
 }
 
 def "mime extension" []: string -> string {
@@ -62,7 +62,7 @@ if $choice == null {
 let selected = (
   $pipelines
     | where ($it.data | pipeline display) == $choice
-    | first
+    | first --strict
 )
 
 log "choice" $"pipeline ($selected.data.display)"
