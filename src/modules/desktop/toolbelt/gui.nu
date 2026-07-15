@@ -57,7 +57,11 @@ def "ui wait" [title: string]: string -> record {
   let unit = $"zenity-(random uuid)"
   sh -c (
     $"systemd-run --user --scope '--unit=($unit)'"
-    + $" zenity --progress --pulsate --no-cancel --auto-close '--text=($title)'"
+    + (
+      " nu -c \"[ 100 ]"
+      + " | each { sleep 3600sec; echo $in }"
+      + $" | zenity --progress --pulsate --no-cancel --auto-close '--text=($title)'\""
+    )
     + " &>/dev/null & disown %-"
   )
     | complete
