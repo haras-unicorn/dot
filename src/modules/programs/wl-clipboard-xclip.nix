@@ -18,7 +18,7 @@
         name = "copy-wlx";
         runtimeInputs = [ wl-clipboard ];
         text = ''
-          wl-copy --paste-once "$@"
+          cat | wl-copy "$@"
         '';
       };
 
