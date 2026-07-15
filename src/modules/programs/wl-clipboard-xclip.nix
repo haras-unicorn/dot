@@ -22,7 +22,7 @@
           trap 'rm -f "$tmp"' EXIT
           cat > "$tmp"
           printf "clipboard: %s" "$(cat "$tmp")" 1>2
-          cat "$tmp" | wl-copy "$@"
+          wl-copy "$@" < "$tmp"
         '';
       };
 
