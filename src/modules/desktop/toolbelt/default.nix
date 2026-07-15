@@ -56,7 +56,7 @@
           "";
 
       uiPackage = pkgs.writeScriptBin "ui" ''
-        #!${lib.getExe pkgs.nushell}
+        #!${lib.getExe pkgs.nushell} --stdin
 
         $env.DOT_TOOLBELT_SCRIPT = "ui"
         $env.PATH ++= [ ${uiPath} ]
@@ -127,7 +127,7 @@
       );
 
       toolbeltPackage = pkgs.writeScriptBin "toolbelt" ''
-        #!${lib.getExe pkgs.nushell}
+        #!${lib.getExe pkgs.nushell} --stdin
 
         $env.DOT_TOOLBELT_SCRIPT = "toolbelt"
         $env.PATH ++= [ ${toolbeltPath} ]
@@ -142,7 +142,7 @@
       );
 
       pipelinePackage = pkgs.writeScriptBin "pipeline" ''
-        #!${lib.getExe pkgs.nushell}
+        #!${lib.getExe pkgs.nushell} --stdin
 
         $env.DOT_TOOLBELT_SCRIPT = "pipeline"
         $env.PATH ++= [ ${toolbeltPath} ]
