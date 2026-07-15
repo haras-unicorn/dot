@@ -1,5 +1,5 @@
 def "main log" [area: string msg: string] {
-  let timestamp = (date now | format date "%Y-%m-%dT%H:%M:%S")
+  let timestamp = (date now | format date %+)
   let script = ($env.DOT_TOOLBELT_SCRIPT? | default "unknown")
   print -e $"[($timestamp)] [($script)/gui] [($area)]: ($msg)"
 }
