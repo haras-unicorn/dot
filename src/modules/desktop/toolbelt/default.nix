@@ -27,7 +27,7 @@
     let
       hardware = osConfig.dot.hardware;
 
-      toolPackages = builtins.concatLists [
+      packages = builtins.concatLists [
         (builtins.map ({ package, ... }: package) (builtins.attrValues config.dot.processing.sources))
         (builtins.map ({ package, ... }: package) (builtins.attrValues config.dot.processing.nodes))
         (builtins.map ({ package, ... }: package) (builtins.attrValues config.dot.processing.sinks))
@@ -78,18 +78,6 @@
         }) config.dot.processing.pipelines;
       };
 
-      logRender = builtins.readFile ./log.nu;
-
-      uiRender =
-        if hardware.graphics then
-          builtins.readFile ./gui.nu
-        else if hardware.editor then
-          builtins.readFile ./tui.nu
-        else
-          "";
-
-      commonRender = builtins.readFile ./common.nu;
-
       inputs =
         (
           if hardware.graphics then
@@ -110,36 +98,53 @@
 
       path = builtins.concatStringsSep " " (map (package: ''"${lib.getBin package}/bin"'') inputs);
 
+      dmenu = lib.getExe config.dot.commands.dmenu;
+
+      log = builtins.readFile ./log.nu;
+
+      ui =
+        if hardware.graphics then
+          builtins.readFile ./gui.nu
+        else if hardware.editor then
+          builtins.readFile ./tui.nu
+        else
+          "";
+
+      common = ''
+        $env.DOT_TOOLBELT_DMENU = "${dmenu}"
+        $env.PATH ++= [ ${path} ]
+
+        ${builtins.readFile ./common.nu}
+      '';
+
       render = file: builtins.replaceStrings [ "DOT_TOOLBELT_TOOLS" ] [ tools ] (builtins.readFile file);
 
-      toolbeltPackage = pkgs.writeScriptBin "toolbelt" ''
+      toolbelt = pkgs.writeScriptBin "toolbelt" ''
         #!${lib.getExe pkgs.nushell} --stdin
 
         $env.DOT_TOOLBELT_SCRIPT = "toolbelt"
-        $env.PATH ++= [ ${path} ]
 
-        ${logRender}
+        ${common}
 
-        ${uiRender}
+        ${log}
 
-        ${commonRender}
+        ${ui}
 
         def "main" [] {
         ${render ./toolbelt.nu}
         }
       '';
 
-      pipelinePackage = pkgs.writeScriptBin "pipeline" ''
+      pipeline = pkgs.writeScriptBin "pipeline" ''
         #!${lib.getExe pkgs.nushell} --stdin
 
         $env.DOT_TOOLBELT_SCRIPT = "pipeline"
-        $env.PATH ++= [ ${path} ]
 
-        ${logRender}
+        ${log}
 
-        ${uiRender}
+        ${ui}
 
-        ${commonRender}
+        ${common}
 
         def "main" [] {
         ${render ./pipeline.nu}
@@ -148,10 +153,10 @@
     in
     lib.mkIf (hardware.editor || hardware.graphics) {
       home.packages = [
-        toolbeltPackage
-        pipelinePackage
+        toolbelt
+        pipeline
       ]
-      ++ toolPackages;
+      ++ packages;
 
       dot.desktop.keybinds = [
         {
@@ -159,7 +164,7 @@
             "super"
           ];
           key = "s";
-          command = lib.getExe pipelinePackage;
+          command = lib.getExe pipeline;
         }
         {
           mods = [
@@ -167,7 +172,7 @@
             "ctrl"
           ];
           key = "s";
-          command = lib.getExe toolbeltPackage;
+          command = lib.getExe toolbelt;
         }
       ];
     };
