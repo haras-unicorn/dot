@@ -64,7 +64,7 @@
             --flash-attn ${if cuda then "on" else "off"} \
             --no-gpu ${if cuda then "off" else "on"} \
             --language en \
-            --length ${1 * 60 * 60 * 1000} \
+            --length ${builtins.toString (1 * 60 * 60 * 1000)} \
             2>/dev/null \
             | sed 's/\\[.*\\]//'
         '';
