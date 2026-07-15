@@ -78,13 +78,7 @@
         }) config.dot.processing.pipelines;
       };
 
-      logPackage = pkgs.writeScriptBin "log" ''
-        #!${lib.getExe pkgs.nushell} --stdin
-
-        $env.DOT_TOOLBELT_SCRIPT = "log"
-
-        ${builtins.readFile ./log.nu}
-      '';
+      logRender = builtins.readFile ./log.nu;
 
       uiInputs =
         if hardware.graphics then
@@ -96,7 +90,7 @@
             pkgs.gum
           ]
         else
-          [ logPackage ];
+          [ ];
 
       uiPath = builtins.concatStringsSep " " (map (package: ''"${lib.getBin package}/bin"'') uiInputs);
 
@@ -115,11 +109,12 @@
         $env.DOT_TOOLBELT_SCRIPT = "ui"
         $env.PATH ++= [ ${uiPath} ]
 
+        ${logRender}
+
         ${uiRender}
       '';
 
       commonInputs = [
-        logPackage
         uiPackage
       ];
 
@@ -133,6 +128,8 @@
         $env.DOT_TOOLBELT_SCRIPT = "common"
         $env.PATH ++= [ ${commonPath} ]
 
+        ${logRender}
+
         ${builtins.readFile ./common.nu}
       '';
 
@@ -140,7 +137,6 @@
         pkgs.file
         pkgs.python3
         uiPackage
-        logPackage
         commonPackage
       ];
 
@@ -157,6 +153,8 @@
 
         $env.DOT_TOOLBELT_SCRIPT = "toolbelt"
         $env.PATH ++= [ ${toolbeltPath} ]
+
+        ${logRender}
 
         def "main" [] {
         ${toolbeltRender}
