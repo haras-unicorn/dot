@@ -157,7 +157,7 @@ if $choice == null {
 }
 
 let selected = $actions
-  | where ($it | processor display) == $choice
+  | where $it.display == $choice
   | first
 
 ui log "choice" $"($selected.kind) ($selected.name)"
