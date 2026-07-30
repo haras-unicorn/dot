@@ -12,7 +12,7 @@
     in
     lib.mkIf (hardware.visual && hardware.wayland) {
       dot.desktop.login =
-        "${pkgs.tuigreet}/bin/tuigreet"
+        lib.getExe pkgs.tuigreet
         + " --sessions '${config.dot.desktop.sessions}'"
         + " --user-menu"
         + " --theme '${theme}'"

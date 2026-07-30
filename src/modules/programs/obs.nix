@@ -15,7 +15,6 @@
         wlrobs
         obs-vaapi
         obs-pipewire-audio-capture
-        obs-gstreamer
       ];
     };
 }

@@ -46,8 +46,8 @@
       };
     in
     lib.mkIf osConfig.hardware.facter.detection.monitor.enable {
-      dot.programs.shell.brightness-up = lib.mkDefault brightness-up;
-      dot.programs.shell.brightness-down = lib.mkDefault brightness-down;
+      dot.commands.brightness-up = lib.mkDefault brightness-up;
+      dot.commands.brightness-down = lib.mkDefault brightness-down;
 
       home.packages = [
         brightnessctl

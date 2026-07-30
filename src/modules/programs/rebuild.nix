@@ -15,9 +15,6 @@
 
       rebuild = pkgs.writeShellApplication {
         name = "rebuild";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           sudo nixos-rebuild switch \
             --flake "${path}#${osConfig.networking.hostName}-${system}" \
@@ -28,9 +25,6 @@
 
       rebuild-trace = pkgs.writeShellApplication {
         name = "rebuild-trace";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           sudo nixos-rebuild switch \
             --flake "${path}#${osConfig.networking.hostName}-${system}" \
@@ -42,9 +36,6 @@
 
       rebuild-chroot = pkgs.writeShellApplication {
         name = "rebuild-chroot";
-        runtimeInputs = [
-          pkgs.coreutils
-        ];
         text = ''
           sudo nixos-rebuild switch \
             --flake "${path}#${osConfig.networking.hostName}-${system}" \

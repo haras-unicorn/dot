@@ -23,7 +23,7 @@
         serviceConfig = {
           Type = "dbus";
           BusName = "org.erikreider.swayosd";
-          ExecStart = "${pkgs.swayosd}/bin/swayosd-libinput-backend";
+          ExecStart = lib.getExe' pkgs.swayosd "swayosd-libinput-backend";
           Restart = "on-failure";
         };
       };

@@ -1,5 +1,5 @@
 {
-  machines.homeModules.gammastep =
+  self.lib.deprecated.homeModules.gammastep =
     { osConfig, lib, ... }:
     let
       hardware = osConfig.dot.hardware;

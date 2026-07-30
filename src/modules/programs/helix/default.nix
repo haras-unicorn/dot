@@ -1,21 +1,72 @@
-# FIXME: stylix conflicts
-# TODO: proper theming as explained here: https://docs.helix-editor.com/themes.html
+{ selfLib, ... }:
 
 {
   machines.homeModules.helix =
     {
+      osConfig,
       config,
       lib,
       pkgs,
       ...
     }:
     let
-      cfg = config.dot.programs.editor;
+      hardware = osConfig.dot.hardware;
 
-      editor = lib.getExe cfg.package;
+      package = config.programs.helix.package;
+
+      editor = lib.getExe package;
+
+      terminal = lib.getExe config.dot.programs.terminal.package;
+
+      nodeCommand = if hardware.graphics then ''${terminal} hx "$tmp"'' else ''hx "$tmp"'';
+
+      source = pkgs.writeShellApplication {
+        name = "helix-editor-source";
+        runtimeInputs = [ package ];
+        text = ''
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          ${nodeCommand} &>/dev/null
+          cat "$tmp"
+        '';
+      };
+
+      node = pkgs.writeShellApplication {
+        name = "helix-editor-node";
+        runtimeInputs = [ package ];
+        text = ''
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          cat > "$tmp"
+          ${nodeCommand} &>/dev/null
+        '';
+      };
     in
-    {
-      dot.programs.editor.package = config.programs.helix.package;
+    lib.mkIf hardware.editor {
+      dot.programs.editor.package = package;
+
+      dot.processing = {
+        sources.helix-editor = {
+          note = "Write text";
+          tags = [
+            "text"
+            "write"
+          ];
+          output = "text/plain";
+          package = source;
+        };
+
+        nodes.helix-editor = {
+          note = "Edit text";
+          tags = [
+            "text"
+            "editor"
+          ];
+          inputs = selfLib.mime.editor;
+          output = "detect";
+          package = node;
+        };
+      };
 
       programs.helix.enable = true;
 
@@ -23,25 +74,25 @@
 
       home.activation = {
         helixReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          ${pkgs.procps}/bin/pkill --signal "SIGUSR1" "${builtins.baseNameOf editor}" || true
+          ${lib.getExe' pkgs.procps "pkill"} --signal "SIGUSR1" "${builtins.baseNameOf editor}" || true
         '';
       };
 
       programs.helix.languages = {
         language-server = {
           nil = {
-            command = "${pkgs.nil}/bin/nil";
+            command = lib.getExe pkgs.nil;
           };
           taplo = {
-            command = "${pkgs.taplo}/bin/taplo";
+            command = lib.getExe pkgs.taplo;
             args = [ "server" ];
           };
           yaml-language-server = {
-            command = "${pkgs.yaml-language-server}/bin/yaml-language-server";
+            command = lib.getExe pkgs.yaml-language-server;
             args = [ "--stdio" ];
           };
           vscode-json-language-server = {
-            command = "${pkgs.vscode-json-languageserver}/bin/vscode-json-language-server";
+            command = lib.getExe pkgs.vscode-json-languageserver;
             args = [ "--stdio" ];
             config = {
               provideFormatter = true;
@@ -56,7 +107,7 @@
             };
           };
           marksman = {
-            command = "${pkgs.marksman}/bin/marksman";
+            command = lib.getExe pkgs.marksman;
             args = [ "server" ];
           };
         };
@@ -66,7 +117,7 @@
             name = "nix";
             auto-format = true;
             formatter = {
-              command = "${pkgs.nixfmt}/bin/nixfmt";
+              command = lib.getExe pkgs.nixfmt;
               args = [
                 "--filename"
                 "%{buffer_name}"
@@ -84,7 +135,7 @@
             name = "yaml";
             auto-format = true;
             formatter = {
-              command = "${pkgs.prettier}/bin/prettier";
+              command = lib.getExe pkgs.prettier;
               args = [
                 "--parser"
                 "yaml"
@@ -96,7 +147,7 @@
             name = "json";
             auto-format = true;
             formatter = {
-              command = "${pkgs.prettier}/bin/prettier";
+              command = lib.getExe pkgs.prettier;
               args = [
                 "--parser"
                 "json"
@@ -108,7 +159,7 @@
             name = "markdown";
             auto-format = true;
             formatter = {
-              command = "${pkgs.prettier}/bin/prettier";
+              command = lib.getExe pkgs.prettier;
               args = [
                 "--parser"
                 "json"
@@ -119,7 +170,7 @@
             name = "xml";
             auto-format = true;
             formatter = {
-              command = "${pkgs.html-tidy}/bin/tidy";
+              command = lib.getExe pkgs.html-tidy;
               args = [
                 "-xml"
                 "-i"

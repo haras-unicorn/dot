@@ -13,8 +13,6 @@
 
       cfg = config.dot.programs.terminal;
 
-      shell = config.dot.programs.shell;
-
       vars = lib.generators.toLua { multiline = false; } cfg.sessionVariables;
     in
     lib.mkIf hardware.visual {
@@ -29,7 +27,7 @@
       stylix.targets.wezterm.luaBody = ''
         default_cursor_style = "SteadyBar",
         audible_bell = "Disabled",
-        default_prog = { "${lib.getExe shell.package}" },
+        default_prog = { "${lib.getExe config.dot.programs.shell.package}" },
         set_environment_variables = ${vars},
         enable_tab_bar = false,
         window_padding = {

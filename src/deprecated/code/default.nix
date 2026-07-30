@@ -13,14 +13,11 @@
       hardware = osConfig.dot.hardware;
 
       package = pkgs.vscode.override {
-        commandLineArgs = builtins.concatStringsSep " " config.dot.programs.chromium.args;
+        commandLineArgs = builtins.concatStringsSep " " osConfig.dot.programs.chromium.args;
       };
     in
     lib.mkIf hardware.visual {
-      dot.visual = {
-        inherit package;
-        bin = "code";
-      };
+      dot.visual.package = package;
 
       nixpkgs.overlays = [
         inputs.nix-vscode-extensions.overlays.default
@@ -34,20 +31,19 @@
         enableUpdateCheck = false;
         keybindings = (builtins.fromJSON (builtins.readFile ./keybindings.json));
         userSettings = (builtins.fromJSON (builtins.readFile ./settings.json)) // {
-          "terminal.external.linuxExec" =
-            "${config.dot.programs.terminal.package}/bin/${config.dot.programs.terminal.bin}";
+          "terminal.external.linuxExec" = lib.getExe config.dot.programs.terminal.package;
           "terminal.integrated.profiles.linux" = {
-            "${config.dot.programs.shell.bin}" = {
-              "path" = "${config.dot.programs.shell.package}/bin/${config.dot.programs.shell.bin}";
+            ${lib.getName config.dot.programs.shell.package} = {
+              "path" = lib.getExe config.dot.programs.shell.package;
             };
             "bash" = {
-              "path" = "${pkgs.bashInteractive}/bin/bash";
+              "path" = lib.getExe pkgs.bashInteractive;
               "icon" = "terminal-bash";
             };
           };
-          "terminal.integrated.defaultProfile.linux" = "${config.dot.programs.shell.bin}";
+          "terminal.integrated.defaultProfile.linux" = lib.getName config.dot.programs.shell.package;
           "terminal.integrated.automationProfile.linux" = {
-            "path" = "${pkgs.bashInteractive}/bin/bash";
+            "path" = lib.getExe pkgs.bashInteractive;
           };
           "workbench.iconTheme" = "material-icon-theme";
         };

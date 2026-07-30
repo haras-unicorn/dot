@@ -20,14 +20,13 @@
     lib.mkIf (hardware.graphics && !hardware.wayland) {
       home.activation = {
         polybarReloadAction = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          ${package}/bin/polybar-msg cmd restart || true
+          ${lib.getExe' package "polybar-msg"} cmd restart || true
         '';
       };
 
       services.polybar.enable = true;
       services.polybar.config = ./config.ini;
       services.polybar.package = package;
-      services.polybar.script = "${package}/bin/polybar top &>/dev/null & disown %-";
       services.polybar.settings = rec {
         nix = {
           width = "${builtins.toString (hardware.width - 16)}px";

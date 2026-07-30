@@ -20,7 +20,7 @@
           "sleep.target"
         ];
         before = [ "sleep.target" ];
-        script = "${pkgs.gtklock}/bin/gtklock";
+        script = lib.getExe pkgs.gtklock;
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
@@ -44,8 +44,8 @@
       ];
 
       services.swayidle.events = {
-        lock = "${pkgs.gtklock}/bin/gtklock -d";
-        before-sleep = "${pkgs.gtklock}/bin/gtklock -d";
+        lock = "${lib.getExe pkgs.gtklock} -d";
+        before-sleep = "${lib.getExe pkgs.gtklock} -d";
       };
     };
 }

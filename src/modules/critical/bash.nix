@@ -3,6 +3,7 @@
 {
   machines.nixosModules.bash =
     {
+      lib,
       pkgs,
       ...
     }:
@@ -10,7 +11,7 @@
       dot.desktop.startup = [
         {
           name = "Bash";
-          command = "${pkgs.bashInteractive}/bin/bash --login";
+          command = "${lib.getExe pkgs.bashInteractive} --login";
         }
       ];
 
@@ -70,7 +71,7 @@
         in
         {
           language-server.bash-language-server = {
-            command = "${bash-language-server}/bin/bash-language-server";
+            command = lib.getExe bash-language-server;
             args = [ "start" ];
           };
 
@@ -79,7 +80,7 @@
               name = "bash";
               language-servers = [ "bash-language-server" ];
               formatter = {
-                command = "${pkgs.shfmt}/bin/shfmt";
+                command = lib.getExe pkgs.shfmt;
               };
               auto-format = true;
             }

@@ -1,3 +1,5 @@
+{ selfLib, ... }:
+
 {
   machines.nixosModules.ydotool =
     {
@@ -35,15 +37,20 @@
         name = "type";
         runtimeInputs = [
           pkgs.ydotool
-          pkgs.coreutils
-          config.dot.programs.shell.paste
         ];
         text = ''
-          printf "%s" "type '$1'" | ydotool
+          ydotool type --file -
         '';
       };
     in
     lib.mkIf hardware.visual {
-      dot.programs.shell.type = type;
+      dot.commands.type = type;
+
+      dot.processing.sinks."ydotool type" = {
+        note = "Type text from stdin via ydotool";
+        aliases = [ selfLib.processing.sinks.type ];
+        inputs = [ "text/plain" ];
+        package = type;
+      };
     };
 }
