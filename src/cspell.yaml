@@ -502,3 +502,6 @@ ignoreWords:
   - astimezone
   - isoformat
   - timespec
+  - steamcompattool
+  - protonpath
+  - gameid
