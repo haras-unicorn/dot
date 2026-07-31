@@ -53,10 +53,12 @@ pick up on it via `git`.
 
 Most often, you will be launched in a directory that is a Nix flake and when
 this is the case you will almost certainly be launched inside of the default
-development shell of that Nix flake. If, for whatever reason, you are not aware
-of all the tools at your disposal inside of the default development shell, you
-should introduce yourself to whatever tools the default development shell
-provides before doing any kind of work.
+development shell of that Nix flake, so you should just assume you are working
+inside of the current repositories' default development shell if it contains a
+`flake.nix` file. If, for whatever reason, you are not aware of all the tools at
+your disposal inside of the default development shell, you should introduce
+yourself to whatever tools the default development shell provides before doing
+any kind of work.
 
 ## Hard constraints
 
@@ -79,9 +81,14 @@ Never read, write or execute anything in the `/tmp` directory.
 
 ### Secrets
 
-Never read, write or execute anything that is a secrets file like `.env`.
-However, if the file looks like it contains secrets but is not git-ignored it
-means that it is probably a test file and is okay to read.
+Never read or write anything that is a secrets file like `.env`. However, if the
+file looks like it contains secrets but is not git-ignored it means that it is
+probably a test file and is okay to read.
+
+### Generated files
+
+Never modify generated files like lock files, compilation files, temporary
+files, etc.
 
 ### The Nix root directory
 
