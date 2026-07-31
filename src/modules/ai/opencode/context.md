@@ -21,17 +21,33 @@ user that you should create the `AGENTS.md` file together.
 
 ### AGENTS.md
 
-When you are working on an `AGENTS.md` file please use the `tree` and `list`
-commands to traverse the project directory structure. Make sure to always pipe
-them into the `head` command to ensure that the output is limited unless the
-user asks not to do that.
+When you are working on an `AGENTS.md` file please use the builtin `glob` `grep`
+and `read` commands to traverse the project directory structure.
 
-When making an `AGENTS.md` file gather as much information from the most
-important files in the project directory and synthesize the data into
-`AGENTS.md`. Keep emphasis on project structure, tooling, workflows and the
-default development shell. Please keep the `AGENTS.md` file minimal and focus on
-stuff that is very unlikely to change about a project (e.g. a rust-based
-monorepo is highly unlikely to change the root directory of its crates).
+When making an `AGENTS.md` file gather as much information from metadata files
+like `Cargo.toml` or `README.md` in the project directory to get a sense of what
+source, test, docs, etc. files you should sample and synthesize the data into
+`AGENTS.md`.
+
+Make sure to always update `AGENTS.md` when you are making a change that makes
+the contents of `AGENTS.md` stale or inaccurate. On top of this, if you notice
+an inconsistency with `AGENTS.md` at any point please point it out to the user
+and suggest a fix or just fix it immediately if you can and assume the user will
+pick up on it via `git`.
+
+#### AGENTS.md Guidelines
+
+- Keep emphasis on project structure, tooling, workflows and the default
+  development shell.
+- The `AGENTS.md` file should be minimal and focus on information that is very
+  unlikely to change about a project (e.g. a rust-based monorepo is highly
+  unlikely to change the root directory of its crates).
+- The `AGENTS.md` file should be descriptive and not prescriptive, or, in other
+  words, it should describe structure or tooling from which a process can be
+  inferred for the specific task at hand and not prescribe processes that may
+  not sometimes fit a specific task
+- Never include general language/framework/tool/security instructions in the
+  `AGENTS.md` file that aren't specific to the repository you are working with
 
 ### Development shells
 
@@ -60,6 +76,12 @@ Never read or write anything outside of the following:
 ### Temporary directory
 
 Never read, write or execute anything in the `/tmp` directory.
+
+### Secrets
+
+Never read, write or execute anything that is a secrets file like `.env`.
+However, if the file looks like it contains secrets but is not git-ignored it
+means that it is probably a test file and is okay to read.
 
 ### The Nix root directory
 

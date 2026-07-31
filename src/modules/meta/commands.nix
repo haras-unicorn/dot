@@ -150,8 +150,8 @@
               Directory tree command.
 
               The package's main program should print the directory structure
-              of the working directory recursively in a tree-like format
-              to stdout ignoring gitignore-d files.
+              of the working directory (or provided directory)
+              recursively in a tree-like format to stdout ignoring gitignore-d files.
             '';
           };
 
@@ -161,8 +161,8 @@
               Directory list command.
 
               The package's main program should print the directory structure
-              of the working directory in a list-like format
-              to stdout ignoring gitignore-d files.
+              of the working directory (or provided directory)
+              in a list-like format to stdout ignoring gitignore-d files.
             '';
           };
 
