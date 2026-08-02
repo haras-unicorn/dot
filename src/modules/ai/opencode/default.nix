@@ -31,8 +31,8 @@
           share = "disabled";
           compaction.prune = true;
           enabled_providers = [ "deepseek" ];
-          model = "deepseek/deepseek-v4-pro";
-          small_model = "deepseek/deepseek-v4-flash";
+          model = "openrouter/deepseek/deepseek-v4-flash-0731";
+          small_model = "openrouter/deepseek/deepseek-v4-flash-0731";
           lsp = true;
           permission = {
             bash = {
