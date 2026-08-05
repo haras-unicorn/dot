@@ -25,3 +25,14 @@ ignoreWords:
   - cuda
   - spicetify
   - gerg
+  - GCRA
+  - sandboxing
+  - openfang
+  - modelcontextprotocol
+  - zeroization
+  - Zeroizing
+  - HSTS
+  - Tauri
+  - libwebkit
+  - libappindicator
+  - librsvg
