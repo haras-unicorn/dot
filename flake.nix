@@ -28,9 +28,6 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
 
-    # NOTE: https://github.com/utensils/comfyui-nix/tree/308a863c136ffc35fce293a81eac5d229b31d56d#binary-cache
-    # comfyui-nix.url = "github:utensils/comfyui-nix/refs/tags/v0.25.0";
-
     musnix.url = "github:musnix/musnix";
     musnix.inputs.nixpkgs.follows = "nixpkgs";
 
