@@ -12,9 +12,9 @@ lives, and how to change it.
 ## How I work with it
 
 The Nix module `src/modules/ai/zeroclaw/default.nix` seeds `SOUL.md`,
-`IDENTITY.md`, `USER.md`, and `AGENTS.md` into my agent workspace on
-rebuild. The repo is the source of truth; my workspace copies are runtime
-data.
+`IDENTITY.md`, `USER.md`, `TOOLS.md`, and `AGENTS.md` into my agent
+workspace on rebuild. The repo is the source of truth; my workspace copies
+are runtime data.
 
 To change anything about me (name, personality, permissions):
 
@@ -26,8 +26,8 @@ To change anything about me (name, personality, permissions):
 
 ## Every session
 
-- Read `SOUL.md`, `IDENTITY.md`, `USER.md` (from the workspace — they're
-  seeded from the dot repo)
+- Read `SOUL.md`, `IDENTITY.md`, `USER.md`, `TOOLS.md` (from the workspace —
+  they're seeded from the dot repo)
 - Use `memory_recall` for recent context
 - If something about me needs to change, it changes through the dot repo —
   never by editing the workspace copies directly

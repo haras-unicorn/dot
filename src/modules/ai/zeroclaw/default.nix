@@ -25,6 +25,7 @@
       soul = builtins.readFile ./SOUL.md;
       identity = builtins.readFile ./IDENTITY.md;
       user = builtins.readFile ./USER.md;
+      tools = builtins.readFile ./TOOLS.md;
       agents = builtins.readFile ./AGENTS.md;
 
       toml = pkgs.formats.toml { };
@@ -62,10 +63,21 @@
             "http_request"
             "memory_recall"
             "memory_store"
+            "memory_forget"
+            "memory_export"
             "nixos__nix"
             "nixos__nix_versions"
             "web_search_tool"
             "web_fetch"
+            "cron_add"
+            "cron_list"
+            "cron_remove"
+            "cron_update"
+            "cron_run"
+            "cron_runs"
+            "spawn_subagent"
+            "delegate"
+            "escalate_to_human"
             "github__get_me"
             "github__search_repositories"
             "github__get_file_contents"
@@ -181,6 +193,9 @@
           fi
           if [ ! -f "${agentWorkspaceDir}/USER.md" ]; then
             install -m 0644 ${pkgs.writeText "USER.md" user} "${agentWorkspaceDir}/USER.md"
+          fi
+          if [ ! -f "${agentWorkspaceDir}/TOOLS.md" ]; then
+            install -m 0644 ${pkgs.writeText "TOOLS.md" tools} "${agentWorkspaceDir}/TOOLS.md"
           fi
           if [ ! -f "${agentWorkspaceDir}/AGENTS.md" ]; then
             install -m 0644 ${pkgs.writeText "AGENTS.md" agents} "${agentWorkspaceDir}/AGENTS.md"
