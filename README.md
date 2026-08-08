@@ -2,19 +2,9 @@
 
 My NixOS configurations.
 
-## Quick Start
-
-```sh
-nix develop
-```
-
 ## Development
 
 Use the `dev -h` command to inspect all commands.
-
-## Structure
-
-Modules live under `src/modules/`, with AI-related services in `src/modules/ai/`.
 
 ## Contributing
 

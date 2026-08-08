@@ -40,6 +40,7 @@
         agents.main = {
           model_provider = "deepseek.main";
           risk_profile = "main";
+          runtime_profile = "main";
           channels = [ "matrix.main" ];
           mcp_bundles = [ "dev" ];
         };
@@ -91,6 +92,10 @@
           ];
         };
 
+        runtime_profiles.main = {
+          max_tool_iterations = 100;
+        };
+
         channels.matrix.main = {
           enabled = true;
           homeserver = "$MATRIX_HOMESERVER";
@@ -122,12 +127,19 @@
                 GITHUB_PERSONAL_ACCESS_TOKEN = "$GITHUB_PERSONAL_ACCESS_TOKEN";
               };
             }
+            {
+              name = "nixos";
+              transport = "stdio";
+              command = lib.getExe pkgs.mcp-nixos;
+              args = [ ];
+            }
           ];
         };
 
         mcp_bundles.dev = {
           servers = [
             "github"
+            "nixos"
           ];
         };
 
