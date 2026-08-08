@@ -18,6 +18,7 @@
         pull.rebase = true;
         push.default = "upstream";
         push.followTags = true;
+        push.autoSetupRemote = true;
         rerere.enabled = true;
         color.ui = "auto";
         fetch.prune = true;

@@ -27,12 +27,27 @@ ignoreWords:
   - gerg
   - GCRA
   - sandboxing
+  - openclaw
   - openfang
+  - zeroclaw
+  - zeroclawlabs
+  - fenix
+  - xtask
+  - envsubst
+  - pipefail
+  - Tunables
+  - codegen
+  - suidsgid
+  - homeserver
+  - duckduckgo
+  - deepseek
+  - github-mcp-server
+  - bookworm
+  - searxng
+  - clawhub
+  - claude
+  - anthropic
   - modelcontextprotocol
-  - zeroization
-  - Zeroizing
-  - HSTS
-  - Tauri
-  - libwebkit
-  - libappindicator
-  - librsvg
+  - rustc
+  - performatively
+  - unstar
