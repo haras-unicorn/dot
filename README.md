@@ -2,6 +2,12 @@
 
 My NixOS configurations.
 
+## Quick Start
+
+```sh
+nix develop
+```
+
 ## Development
 
 Use the `dev -h` command to inspect all commands.
