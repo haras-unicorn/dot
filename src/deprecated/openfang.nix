@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  machines.homeModules.openfang =
+  self.lib.deprecated.homeModules.openfang =
     {
       pkgs,
       lib,
@@ -24,24 +24,26 @@
         address = "http://${listenAddr}";
       };
 
+      toolchainBin = lib.makeBinPath [
+        pkgs.python3
+        pkgs.nodejs
+        pkgs.rustc
+        pkgs.cargo
+        osConfig.dot.programs.chromium.package
+      ];
+
       configFormat = pkgs.formats.toml { };
 
       settings = {
+        include = [ "local.toml" ];
+
         api_listen = listenAddr;
         log_level = "warn";
         mode = "stable";
         usage_footer = "off";
 
-        default_model = {
-          provider = "deepseek";
-          model = "deepseek-v4-flash";
-          api_key_env = "DEEPSEEK_API_KEY";
-        };
-
-        web.search_provider = "duck_duck_go";
+        exec_policy.mode = "deny";
       };
-
-      configFile = configFormat.generate "config.toml" settings;
     in
     lib.mkMerge [
       {
@@ -49,10 +51,7 @@
           openfang
         ];
 
-        home.file.".openfang/config.toml" = {
-          force = true;
-          source = configFile;
-        };
+        home.file.".openfang/config.toml".source = configFormat.generate "config.toml" settings;
 
         systemd.user.services.openfang = {
           Install = {
@@ -67,20 +66,16 @@
             ExecStop = "${lib.getExe openfang} stop";
             Restart = "on-failure";
             RestartSec = 5;
+            Environment = [ "PATH=${toolchainBin}" ];
 
             ProtectSystem = "strict";
-            ProtectHome = "read-only";
-            ReadWritePaths = [
-              systemdHome
-            ];
+            ProtectHome = true;
+            BindPaths = [ systemdHome ];
 
             PrivateTmp = true;
             PrivateDevices = true;
-            PrivateIPC = true;
 
             RestrictAddressFamilies = "AF_INET AF_INET6";
-            IPAddressDeny = "any";
-            IPAddressAllow = "127.0.0.0/8 ::1";
 
             NoNewPrivileges = true;
             LockPersonality = true;
@@ -108,5 +103,4 @@
         };
       })
     ];
-
 }
