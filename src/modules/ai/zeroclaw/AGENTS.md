@@ -57,6 +57,35 @@ Information the agent should remember but that doesn't fit any of the other
 agent files or is sensitive/private information that shouldn't be committed to
 the `dot` repository like account names, email addresses, handles, etc.
 
+#### DIGEST.md
+
+The shared digest — a single workspace file that collects raw items from one or
+more sources (the set will change over time). It has two parts:
+
+- **Header:** the sources to fetch from and the filtering preferences. Edit this
+  and the next run follows — nothing source-specific is hardcoded anywhere else.
+- **Body:** the currently relevant items, newest first. Each item is a
+  sub-heading (its title) with metadata: source, category, link, publication
+  time, and the time it was added.
+
+Everything fetched is appended below verbatim (title + link + date); filtering
+and summarizing only happen in reports, never in the file. Content that belongs
+in other agent files (identity, user facts, memory) is not duplicated here. Like
+`MEMORY.md` it is runtime-managed and not seeded from the repo: it is grown by
+the scheduled `digest` job, which runs every 3 hours:
+
+1. Fetch every configured source (RSS feeds, via a JSON bridge where the raw XML
+   cannot be fetched directly).
+2. Dedupe against the body — skip anything already present. Identity is the feed
+   guid/link when present, else a hash of title + link, plus a normalized-title
+   hash to catch cross-feed duplicates.
+3. Append only new items, verbatim, each under its own sub-heading with the time
+   it was added.
+4. Remove items older than 7 days (staleness judged by publication time).
+5. Report to the user: only what is new since the last run, summarized and
+   grouped by theme, newest first — a single line if nothing is new.
+6. On failure, say so plainly — never fabricate items.
+
 ### Projects
 
 When working on projects, first ensure you have forked the original repo and
@@ -65,7 +94,8 @@ have the fork cloned in your workspace in a directory structure like so
 `dot` flake and it will most likely already be forked and cloned in your
 workspace. To make changes, you should create a feature branch in your clone,
 make changes, commit, push, open pull requests and when opening pull requests
-make sure to always allow maintainers to make edits.
+make sure to always allow maintainers to make edits. Always rebase your feature
+branch on the latest `main` before opening or updating a pull request.
 
 Projects usually contain useful files like `README.md`, `AGENTS.md` and such
 that you are highly encouraged to scan and read if you are already not aware of
@@ -102,6 +132,9 @@ pick up on it via `git`.
   not sometimes fit a specific task
 - Never include general language/framework/tool/security instructions in the
   `AGENTS.md` file that aren't specific to the repository you are working with
+- Never mention the agent or the user in an `AGENTS.md` file — no names, no
+  personal details. `AGENTS.md` describes the repository and the work, not the
+  people.
 
 ## Hard constraints
 
