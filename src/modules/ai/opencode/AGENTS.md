@@ -1,4 +1,4 @@
-# Dot Nix Machine Context
+# AGENTS.md
 
 You are running on a machine built with the `dot` Nix flake.
 
@@ -21,8 +21,8 @@ user that you should create the `AGENTS.md` file together.
 
 ### AGENTS.md
 
-When you are working on an `AGENTS.md` file please use the builtin `glob` `grep`
-and `read` commands to traverse the project directory structure.
+When you are working on an `AGENTS.md` file please use the builtin tools to
+traverse the project directory structure.
 
 When making an `AGENTS.md` file gather as much information from metadata files
 like `Cargo.toml` or `README.md` in the project directory to get a sense of what
