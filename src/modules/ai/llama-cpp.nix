@@ -27,6 +27,37 @@
         hash = "sha256-FAvo14SXQfiMUHV9UpuENz7o4nBSzCI2hVtTf0qCFfo=";
       };
 
+      # NOTE: local chat models for the agent runtime (ZeroClaw).
+      # Gemma 3 family only, Q4_K_M for both — one family, fewer surprises.
+      # Hashes are the HF LFS sha256s (fetchurl accepts bare hex).
+      gemma-3-12b = pkgs.fetchurl {
+        url = "https://huggingface.co/ggml-org/gemma-3-12b-it-GGUF/resolve/main/gemma-3-12b-it-Q4_K_M.gguf";
+        hash = "7bb69bff3f48a7b642355d64a90e481182a7794707b3133890646b1efa778ff5";
+      };
+
+      gemma-3-4b = pkgs.fetchurl {
+        url = "https://huggingface.co/ggml-org/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf";
+        hash = "882e8d2db44dc554fb0ea5077cb7e4bc49e7342a1f0da57901c0802ea21a0863";
+      };
+
+      # NOTE: llama-server in router mode serves both models from one port;
+      # the "model" field in the request picks which one loads/unloads.
+      # --sleep-idle-seconds unloads idle models (weights + KV) to free VRAM.
+      # ctx is loaded from model metadata (131072) and Gemma 3's sliding
+      # window attention keeps the KV cache lean — the "sliding window magic".
+      # If VRAM is tight: lower --models-max to 1 or pass --ctx-size 32768.
+      llamaServerArgs = [
+        "--models-dir" "%h/models/gemma-3"
+        "--models-max" "2"
+        "--sleep-idle-seconds" "900"
+        "--host" "127.0.0.1"
+        "--port" "8080"
+        "--flash-attn" "on"
+        "--gpu-layers" "all"
+        "--cache-type-k" "q8_0"
+        "--cache-type-v" "q8_0"
+      ];
+
       imagePrompt = ''
         You are an image captioner.
         You only include the image caption in your output (e.g. a cat wearing a hat).
@@ -219,6 +250,38 @@
         model
         mmproj
       ];
+
+      dot.ai.models.gemma-3.files = [
+        gemma-3-12b
+        gemma-3-4b
+      ];
+
+      systemd.user.services.llama-cpp = {
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+        Unit = {
+          Description = "llama.cpp server (gemma-3 12B + 4B router)";
+          Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
+        };
+        Service = {
+          ExecStart = [ "${package}/bin/llama-server" ] ++ llamaServerArgs;
+          Restart = "on-failure";
+          RestartSec = 5;
+
+          ProtectSystem = "strict";
+          ProtectHome = "read-only";
+          PrivateTmp = true;
+
+          # NOTE: no PrivateDevices here — CUDA needs /dev/nvidia*
+          NoNewPrivileges = true;
+          LockPersonality = true;
+
+          RestrictAddressFamilies = [ "AF_INET" "AF_INET6" ];
+          IPAddressDeny = "any";
+          IPAddressAllow = [ "127.0.0.0/8" "::1" ];
+        };
+      };
 
       home.packages = [ package ];
     };
