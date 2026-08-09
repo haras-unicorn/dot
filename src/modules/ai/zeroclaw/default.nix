@@ -203,7 +203,17 @@
             "ZEROCLAW_WORKSPACE=${dataDir}/workspace"
           ];
           ExecStartPre = [ (lib.getExe resolveConfig) ];
-          ExecStart = "${lib.getExe zeroclaw} daemon";
+          ExecStart = lib.getExe (
+            pkgs.writeShellApplication {
+              name = "zeroclaw-daemon";
+              runtimeInputs = [
+                zeroclaw
+                pkgs.git
+                pkgs.curl
+              ];
+              text = "zeroclaw daemon";
+            }
+          );
           Restart = "on-failure";
           RestartSec = "5s";
 
