@@ -69,6 +69,7 @@
             "delegate"
             "escalate_to_human"
             "calculator"
+            "reaction"
             "github__get_me"
             "github__search_repositories"
             "github__search_users"
