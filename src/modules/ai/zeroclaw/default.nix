@@ -67,6 +67,7 @@
             "spawn_subagent"
             "delegate"
             "escalate_to_human"
+            "calculator"
             "github__get_me"
             "github__search_repositories"
             "github__search_users"
