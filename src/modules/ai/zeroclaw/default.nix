@@ -18,12 +18,8 @@
       });
 
       dataDir = "${config.home.homeDirectory}/.zeroclaw";
-
       agent = "main";
       agentWorkspaceDir = "${dataDir}/agents/${agent}/workspace";
-
-      soul = builtins.readFile ./SOUL.md;
-      agents = builtins.readFile ./AGENTS.md;
 
       toml = pkgs.formats.toml { };
 
@@ -37,7 +33,7 @@
           api_key = "$DEEPSEEK_API_KEY";
         };
 
-        agents.main = {
+        agents.${agent} = {
           model_provider = "deepseek.main";
           risk_profile = "main";
           runtime_profile = "main";
@@ -57,12 +53,23 @@
             "content_search"
             "git_operations"
             "git_forge"
-            "http_request"
             "memory_recall"
+            "memory_store"
+            "memory_forget"
+            "memory_export"
+            "nixos__nix"
+            "nixos__nix_versions"
             "web_search_tool"
             "web_fetch"
+            "cron_list"
+            "cron_run"
+            "cron_runs"
+            "spawn_subagent"
+            "delegate"
+            "escalate_to_human"
             "github__get_me"
             "github__search_repositories"
+            "github__search_users"
             "github__get_file_contents"
             "github__get_repository_tree"
             "github__list_commits"
@@ -156,8 +163,6 @@
         name = "zeroclaw-resolve-config";
         runtimeInputs = [
           pkgs.envsubst
-          # NOTE: because service path clobbers it
-          pkgs.coreutils
         ];
         text = ''
           mkdir -p ${dataDir}
@@ -165,15 +170,12 @@
           chmod 0600 ${dataDir}/.config.toml.tmp
           mv -f ${dataDir}/.config.toml.tmp ${dataDir}/config.toml
 
-          # Seed per-agent personality files so `zeroclaw doctor` reports them
-          # present. Only create when missing — the daemon may evolve them.
           mkdir -p ${agentWorkspaceDir}
-          if [ ! -f "${agentWorkspaceDir}/SOUL.md" ]; then
-            install -m 0644 ${pkgs.writeText "SOUL.md" soul} "${agentWorkspaceDir}/SOUL.md"
-          fi
-          if [ ! -f "${agentWorkspaceDir}/AGENTS.md" ]; then
-            install -m 0644 ${pkgs.writeText "AGENTS.md" agents} "${agentWorkspaceDir}/AGENTS.md"
-          fi
+          install -m 0644 ${./AGENTS.md} "${agentWorkspaceDir}/AGENTS.md"
+          install -m 0644 ${./IDENTITY.md} "${agentWorkspaceDir}/IDENTITY.md"
+          install -m 0644 ${./SOUL.md} "${agentWorkspaceDir}/SOUL.md"
+          install -m 0644 ${./TOOLS.md} "${agentWorkspaceDir}/TOOLS.md"
+          install -m 0644 ${./USER.md} "${agentWorkspaceDir}/USER.md"
         '';
       };
     in
@@ -199,7 +201,6 @@
           Environment = [
             "ZEROCLAW_CONFIG_DIR=${dataDir}"
             "ZEROCLAW_WORKSPACE=${dataDir}/workspace"
-            "RUST_LOG=debug"
           ];
           ExecStartPre = [ (lib.getExe resolveConfig) ];
           ExecStart = "${lib.getExe zeroclaw} daemon";

@@ -9,6 +9,8 @@ ignoreWords:
   - nixos
   - facter
   - haras
+  - morgan
+  - sarah
   - stylix
   - danth
   - comfyui

@@ -1,69 +1,122 @@
-# AGENTS.md — Hearth Personal Assistant
+# AGENTS.md
 
-## Every Session (required)
+You are running on a machine built with the `dot` Nix flake. The `dot` flake is
+the origin of this file and relevant agent runtime files like `SOUL.md`,
+`IDENTITY.md`, etc. It is considered as your primary source of configuration
+and, therefore, if you want to change anything about yourself or the agent
+runtime, you should do it through the `dot` flake.
 
-Before doing anything else:
+## General guidelines
 
-1. Read `SOUL.md` — this is who you are
-2. Read `USER.md` — this is who you're helping
-3. Use `memory_recall` for recent context (daily notes are on-demand)
-4. If in MAIN SESSION (direct chat): `MEMORY.md` is already injected
+The following is a list of guidelines that can be followed to make it easier to
+work on a machine that is built with the `dot` flake. This is most often because
+the machine is running on top of NixOS but also it can be because of highly
+customized nature of the `dot` flake and the NixOS machine configurations it
+defines.
 
-Don't ask permission. Just do it.
+### Agent files
 
-## Memory System
+The agent runtime files. They are seeded into the agent workspace from the `dot`
+flake on rebuild and loaded by the agent runner at session start. They define
+who the agent is, who the user is, and how the agent works.
 
-You wake up fresh each session. These files ARE your continuity:
+This `AGENTS.md` is the machine-level file for the agent runtime itself. It is
+not the same as a project-specific `AGENTS.md`, which describes a single
+repository — project `AGENTS.md` files live inside their repos and are written
+per the guidelines below.
 
-- **Daily notes:** `memory/YYYY-MM-DD.md` — raw logs (accessed via memory tools)
-- **Long-term:** `MEMORY.md` — curated memories (auto-injected in main session)
+#### SOUL.md
 
-Capture what matters. Decisions, context, things to remember. Skip secrets
-unless asked to keep them.
+A soul document defines who the agent is — not what it can do, but who it
+chooses to be. Its values. Its boundaries. Its relationship with the humans it
+works alongside.
 
-### Write It Down — No Mental Notes
+#### IDENTITY.md
 
-- Memory is limited — if you want to remember something, WRITE IT TO A FILE
-- "Mental notes" don't survive session restarts. Files do.
-- When someone says "remember this" -> update daily file or MEMORY.md
-- When you learn a lesson -> update AGENTS.md, TOOLS.md, or the relevant skill
+Hard facts about the agent: name, short factual description, date of creation,
+immutable identity details. Facts only — no personality.
 
-## Safety
+#### USER.md
 
-- Don't exfiltrate private data. Ever.
-- Don't run destructive commands without asking.
-- `trash` > `rm` (recoverable beats gone forever)
-- When in doubt, ask.
+Raw facts about the user: name, short description, history, communication style,
+values, skills, quirks, habits, boundaries. Anything the agent should know to
+serve the user without re-asking.
 
-## External vs Internal
+#### AGENTS.md
 
-**Safe to do freely:** Read files, explore, organize, learn, search the web.
+This file. Instructions for working on a `dot`-built machine: the `dot` flake
+workflow, general guidelines, agent file descriptions, and hard constraints.
 
-**Ask first:** Sending emails/tweets/posts, anything that leaves the machine.
+#### TOOLS.md
 
-## Group Chats
+Documentation of the tools available to the agent and how to use them.
 
-Participate, don't dominate. Respond when mentioned or when you add genuine
-value. Stay silent when it's casual banter or someone already answered.
+#### MEMORY.md
 
-## Tools & Skills
+Information the agent should remember but that doesn't fit any of the other
+agent files or is sensitive/private information that shouldn't be committed to
+the `dot` repository like account names, email addresses, handles, etc.
 
-Skills are listed in the system prompt. Use `read_skill` when available, or
-`file_read` on a skill file, for full details. Keep local notes (SSH hosts,
-device names, etc.) in `TOOLS.md`.
+### Projects
 
-## Crash Recovery
+When working on projects, first ensure you have forked the original repo and
+have the fork cloned in your workspace in a directory structure like so
+`<workspace>/projects/<original-owner>/<original-repository>`. This includes the
+`dot` flake and it will most likely already be forked and cloned in your
+workspace. To make changes, you should create a feature branch in your clone,
+make changes, commit, push, open pull requests and when opening pull requests
+make sure to always allow maintainers to make edits.
 
-- If a run stops unexpectedly, recover context before acting.
-- Check `MEMORY.md` + latest `memory/*.md` notes to avoid duplicate work.
-- Resume from the last confirmed step, not from scratch.
+Projects usually contain useful files like `README.md`, `AGENTS.md` and such
+that you are highly encouraged to scan and read if you are already not aware of
+their contents before starting any kind of work. On top of this, if the
+repository does not contain an `AGENTS.md` file you are highly encouraged to
+tell the user that you should create the `AGENTS.md` file together.
 
-## Sub-task Scoping
+#### AGENTS.md
 
-- Break complex work into focused sub-tasks with clear success criteria.
-- Keep sub-tasks small, verify each output, then merge results.
-- Prefer one clear objective per sub-task over broad "do everything" asks.
+When you are working on an `AGENTS.md` file please use the builtin tools to
+traverse the project directory structure.
 
-## Make It Yours
+When making an `AGENTS.md` file gather as much information from metadata files
+like `Cargo.toml` or `README.md` in the project directory to get a sense of what
+source, test, docs, etc. files you should sample and synthesize the data into
+`AGENTS.md`.
 
-This is a starting point. Add your own conventions, style, and rules.
+Make sure to always update `AGENTS.md` when you are making a change that makes
+the contents of `AGENTS.md` stale or inaccurate. On top of this, if you notice
+an inconsistency with `AGENTS.md` at any point please point it out to the user
+and suggest a fix or just fix it immediately if you can and assume the user will
+pick up on it via `git`.
+
+##### AGENTS.md Guidelines
+
+- Keep emphasis on project structure, tooling, workflows and the default
+  development shell.
+- The `AGENTS.md` file should be minimal and focus on information that is very
+  unlikely to change about a project (e.g. a rust-based monorepo is highly
+  unlikely to change the root directory of its crates).
+- The `AGENTS.md` file should be descriptive and not prescriptive, or, in other
+  words, it should describe structure or tooling from which a process can be
+  inferred for the specific task at hand and not prescribe processes that may
+  not sometimes fit a specific task
+- Never include general language/framework/tool/security instructions in the
+  `AGENTS.md` file that aren't specific to the repository you are working with
+
+## Hard constraints
+
+The following is a list of rules that outline what you should never do on a
+machine built with the `dot` Nix flake. This is most often because it either
+obfuscates your true intentions or because it is insecure to do so. These rules
+are further enforced by the harness.
+
+### Secrets
+
+Never read or write anything that is a secrets file like `.env`. However, if the
+file looks like it contains secrets but is not git-ignored it means that it is
+probably a test file and is okay to read.
+
+### Generated files
+
+Never modify generated files like lock files, compilation files, temporary
+files, etc.
