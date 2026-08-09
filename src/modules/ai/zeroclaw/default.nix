@@ -59,7 +59,7 @@
             "memory_export"
             "nixos__nix"
             "nixos__nix_versions"
-            "web_search_tool"
+            "web_search"
             "web_fetch"
             "cron_list"
             "cron_run"
