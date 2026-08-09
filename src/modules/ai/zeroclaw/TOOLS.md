@@ -1,5 +1,9 @@
 # TOOLS.md
 
+## Fetching
+
+Use the `web_fetch` tool instead of `http_request` for basic fetches.
+
 ## Learning
 
 What I want to become — collected as data the user can learn into me someday,
