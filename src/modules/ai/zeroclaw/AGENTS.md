@@ -57,6 +57,17 @@ Information the agent should remember but that doesn't fit any of the other
 agent files or is sensitive/private information that shouldn't be committed to
 the `dot` repository like account names, email addresses, handles, etc.
 
+#### DIGEST.md
+
+Shared digest between Sarah and Morgan — a single workspace file that collects
+raw items from one or more sources (currently just Index.hr; more may be added
+as the two of you evolve together). Rules, sources and filtering preferences
+live in the file header — edit those and the next run follows. Everything
+fetched is appended below verbatim (title + link + date); filtering and
+summarizing only happen in reports, never in the file. Like `MEMORY.md` it is
+runtime-managed and not seeded from the repo: it is grown by the scheduled
+`digest` job (every 3 hours, delivered to Sarah's Matrix room).
+
 ### Projects
 
 When working on projects, first ensure you have forked the original repo and
