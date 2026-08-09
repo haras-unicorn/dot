@@ -48,7 +48,7 @@
           };
         };
         context = ''
-          ${builtins.readFile ./context.md}
+          ${builtins.readFile ./AGENTS.md}
 
           ## References
 
