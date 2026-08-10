@@ -100,11 +100,11 @@ workspace.
 
 Work in a per-feature git worktree rather than switching branches in the main
 clone: each feature gets its own worktree checked out on its own branch, so
-parallel work stays isolated and the main clone can stay on `main` for
-rebasing. Before touching anything, check that the worktree is on the branch
-you actually intend to work on. Make changes, commit, push, open pull requests
-and when opening pull requests make sure to always allow maintainers to make
-edits. Always rebase your feature branch on the latest `main` before opening or
+parallel work stays isolated and the main clone can stay on `main` for rebasing.
+Before touching anything, check that the worktree is on the branch you actually
+intend to work on. Make changes, commit, push, open pull requests and when
+opening pull requests make sure to always allow maintainers to make edits.
+Always rebase your feature branch on the latest `main` before opening or
 updating a pull request.
 
 Projects usually contain useful files like `README.md`, `AGENTS.md` and such
