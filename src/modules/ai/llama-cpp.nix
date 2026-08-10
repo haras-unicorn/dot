@@ -47,15 +47,24 @@
       # window attention keeps the KV cache lean — the "sliding window magic".
       # If VRAM is tight: lower --models-max to 1 or pass --ctx-size 32768.
       llamaServerArgs = [
-        "--models-dir" "%h/models/gemma-3"
-        "--models-max" "2"
-        "--sleep-idle-seconds" "900"
-        "--host" "127.0.0.1"
-        "--port" "8080"
-        "--flash-attn" "on"
-        "--gpu-layers" "all"
-        "--cache-type-k" "q8_0"
-        "--cache-type-v" "q8_0"
+        "--models-dir"
+        "%h/models/gemma-3"
+        "--models-max"
+        "2"
+        "--sleep-idle-seconds"
+        "900"
+        "--host"
+        "127.0.0.1"
+        "--port"
+        "8080"
+        "--flash-attn"
+        "on"
+        "--gpu-layers"
+        "all"
+        "--cache-type-k"
+        "q8_0"
+        "--cache-type-v"
+        "q8_0"
       ];
 
       imagePrompt = ''
@@ -257,9 +266,7 @@
       ];
 
       systemd.user.services.llama-cpp = {
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
+        Install = { WantedBy = [ "default.target" ]; };
         Unit = {
           Description = "llama.cpp server (gemma-3 12B + 4B router)";
           Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
