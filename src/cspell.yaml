@@ -516,3 +516,4 @@ ignoreWords:
   - gnugrep
   - findutils
   - huggingface
+  - qwen

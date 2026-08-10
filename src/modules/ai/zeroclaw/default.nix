@@ -26,23 +26,17 @@
 
       toml = pkgs.formats.toml { };
 
-      configFile = toml.generate "zeroclaw-config.toml" {
-        schema_version = 3;
-
-        runtime.shell = lib.getExe pkgs.bash;
-
-        providers.models.deepseek.main = {
-          model = "deepseek-v4-flash";
-          api_key = "$DEEPSEEK_API_KEY";
-        };
-
+      generalConfig = {
         agents.${agent} = {
-          model_provider = "deepseek.main";
           risk_profile = "main";
           runtime_profile = "main";
           channels = [ "matrix.main" ];
           mcp_bundles = [ "dev" ];
         };
+
+        schema_version = 3;
+
+        runtime.shell = lib.getExe pkgs.bash;
 
         knowledge.enabled = true;
 
@@ -257,9 +251,74 @@
           search_provider = "duckduckgo";
         };
 
-        # NOTE: for now without embedding provider that requires llama.cpp most likely
-        memory.search_mode = "bm25";
+        memory = {
+          search_mode = "hybrid";
+          embedding_provider = "custom:http://127.0.0.1:8081/v1";
+          embedding_model = "Qwen3-Embedding-0.6B-Q8_0";
+          embedding_dimensions = 1024;
+        };
       };
+
+      deepseekConfig = {
+        providers.models.deepseek.main = {
+          model = "deepseek-v4-flash";
+          api_key = "$DEEPSEEK_API_KEY";
+        };
+
+        agents.${agent} = {
+          model_provider = "deepseek.main";
+        };
+      };
+
+      # TODO: use when moe gpu compute gets fixed
+      # llamaConfig = {
+      #   providers.models.llamacpp.main = {
+      #     model = "Qwen3.6-35B-A3B-UD-Q4_K_M";
+      #     timeout_secs = 600;
+      #     vision = false;
+      #     fallback = [ "deepseek.main" ];
+      #   };
+
+      #   providers.models.llamacpp.small = {
+      #     model = "Qwen3.5-4B-Q4_K_M";
+      #     timeout_secs = 300;
+      #     vision = false;
+      #     fallback = [ "deepseek.main" ];
+      #   };
+
+      #   agents.${agent} = {
+      #     model_provider = "llamacpp.main";
+      #     delegates = [
+      #       {
+      #         agent = "small";
+      #         mode = "bounded";
+      #       }
+      #       {
+      #         agent = "reasoner";
+      #         mode = "bounded";
+      #       }
+      #     ];
+      #   };
+
+      #   # NOTE: delegate-only agents — no channels, reached via the delegate
+      #   # tool from agents.main.
+      #   # Workspace is space as agent that spawns them (main).
+      #   agents.small = {
+      #     model_provider = "llamacpp.small";
+      #     risk_profile = "main";
+      #     runtime_profile = "main";
+      #   };
+
+      #   agents.reasoner = {
+      #     model_provider = "deepseek.main";
+      #     risk_profile = "main";
+      #     runtime_profile = "main";
+      #   };
+      # };
+
+      configFile = toml.generate "zeroclaw-config.toml" (
+        lib.recursiveUpdate deepseekConfig generalConfig
+      );
 
       preStart = pkgs.writeShellApplication {
         name = "zeroclaw-pre-start";

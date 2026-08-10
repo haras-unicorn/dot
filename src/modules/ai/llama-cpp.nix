@@ -17,15 +17,59 @@
         pathsToLink = [ "/bin" ];
       };
 
-      model = pkgs.fetchurl {
+      gemma-4 = pkgs.fetchurl {
+        name = "gemma-4-E2B-it-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/gemma-4-E2B-it-Q4_K_M.gguf";
         hash = "sha256-k3i8RxcQIp7xZXCbYuNL+2IjFCDdr21ynnJzBbW4Zy0=";
       };
 
-      mmproj = pkgs.fetchurl {
+      gemma-4-mmproj = pkgs.fetchurl {
+        name = "mmproj-F16.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/mmproj-F16.gguf";
         hash = "sha256-FAvo14SXQfiMUHV9UpuENz7o4nBSzCI2hVtTf0qCFfo=";
       };
+
+      gemma-4-26b-a4b = pkgs.fetchurl {
+        name = "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
+        url = "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
+        hash = "sha256-8sKLPcR3aTGsb4eeEfID3sY36g8UJnqG7I9hZfY/KT8=";
+      };
+
+      gemma-4-e4b = pkgs.fetchurl {
+        name = "gemma-4-E4B-it-Q4_K_M.gguf";
+        url = "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/main/gemma-4-E4B-it-Q4_K_M.gguf";
+        hash = "sha256-haiWoEdVPoQvJSl+5bAx1k/zAUfZxK8XseSzlM0fq4c=";
+      };
+
+      qwen-3-6-35b-a3b = pkgs.fetchurl {
+        name = "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
+        url = "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
+        hash = "sha256-rA4sEYngVfqjbv82FYDnnFvW+Odr/7TOVH8WfVPjGmE=";
+      };
+
+      qwen-3-5-4b = pkgs.fetchurl {
+        name = "Qwen3.5-4B-Q4_K_M.gguf";
+        url = "https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/resolve/main/Qwen3.5-4B-Q4_K_M.gguf";
+        hash = "sha256-AP55hv9fa0Y+YkVYIRRgSdtvkxNgOTinCADR+2nvEaQ=";
+      };
+
+      qwen-3-embedding = pkgs.fetchurl {
+        name = "Qwen3-Embedding-0.6B-Q8_0.gguf";
+        url = "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-Q8_0.gguf";
+        hash = "sha256-BlB8e0JohGnE5ymLCh4W3v8GyvKRzwpbJ4wwgknD5Dk=";
+      };
+
+      serverModels = pkgs.linkFarm "llama-cpp-server-models" (
+        builtins.map
+          (model: {
+            name = model.name;
+            path = model;
+          })
+          [
+            qwen-3-6-35b-a3b
+            qwen-3-5-4b
+          ]
+      );
 
       imagePrompt = ''
         You are an image captioner.
@@ -58,8 +102,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${model} \
-            --mmproj ${mmproj} \
+            --model ${gemma-4} \
+            --mmproj ${gemma-4-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -89,8 +133,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${model} \
-            --mmproj ${mmproj} \
+            --model ${gemma-4} \
+            --mmproj ${gemma-4-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -120,8 +164,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${model} \
-            --mmproj ${mmproj} \
+            --model ${gemma-4} \
+            --mmproj ${gemma-4-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -150,8 +194,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${model} \
-            --mmproj ${mmproj} \
+            --model ${gemma-4} \
+            --mmproj ${gemma-4-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -216,9 +260,123 @@
       };
 
       dot.ai.models.gemma-4.files = [
-        model
-        mmproj
+        gemma-4
+        gemma-4-mmproj
+        gemma-4-26b-a4b
+        gemma-4-e4b
       ];
+
+      dot.ai.models.qwen-3-5.files = [
+        qwen-3-6-35b-a3b
+        qwen-3-5-4b
+        qwen-3-embedding
+      ];
+
+      systemd.user.services.llama-cpp = {
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+        Unit = {
+          Description = "llama.cpp router (Qwen3.6-35B-A3B + Qwen3.5-4B)";
+          Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
+        };
+        Service = {
+          ExecStart = builtins.concatStringsSep " " [
+            (lib.getExe' package "llama-server")
+            "--models-dir"
+            serverModels
+            "--models-max"
+            "2"
+            "--sleep-idle-seconds"
+            "900"
+            "--host"
+            "127.0.0.1"
+            "--port"
+            "8080"
+            "--flash-attn"
+            "on"
+            "--gpu-layers"
+            "all"
+            "--cpu-moe"
+            "--cache-type-k"
+            "q8_0"
+            "--cache-type-v"
+            "q8_0"
+          ];
+          Restart = "on-failure";
+          RestartSec = 5;
+
+          ProtectSystem = "strict";
+          ProtectHome = "read-only";
+          PrivateTmp = true;
+
+          NoNewPrivileges = true;
+          LockPersonality = true;
+
+          RestrictAddressFamilies = [
+            "AF_INET"
+            "AF_INET6"
+          ];
+          IPAddressDeny = "any";
+          IPAddressAllow = [
+            "127.0.0.0/8"
+            "::1"
+          ];
+        };
+      };
+
+      systemd.user.services.llama-cpp-embeddings = {
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+        Unit = {
+          Description = "llama.cpp embedding server (Qwen3-Embedding-0.6B)";
+          Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
+        };
+        Service = {
+          ExecStart = builtins.concatStringsSep " " [
+            (lib.getExe' package "llama-server")
+            "--model"
+            "${qwen-3-embedding}"
+            "--embeddings"
+            "--pooling"
+            "last"
+            "--sleep-idle-seconds"
+            "900"
+            "--host"
+            "127.0.0.1"
+            "--port"
+            "8081"
+            "--flash-attn"
+            "on"
+            "--gpu-layers"
+            "all"
+            "--cache-type-k"
+            "q8_0"
+            "--cache-type-v"
+            "q8_0"
+          ];
+          Restart = "on-failure";
+          RestartSec = 5;
+
+          ProtectSystem = "strict";
+          ProtectHome = "read-only";
+          PrivateTmp = true;
+
+          NoNewPrivileges = true;
+          LockPersonality = true;
+
+          RestrictAddressFamilies = [
+            "AF_INET"
+            "AF_INET6"
+          ];
+          IPAddressDeny = "any";
+          IPAddressAllow = [
+            "127.0.0.0/8"
+            "::1"
+          ];
+        };
+      };
 
       home.packages = [ package ];
     };
