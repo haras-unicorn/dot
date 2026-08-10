@@ -46,8 +46,9 @@
           workspace_only = true;
           allowed_commands = [ ];
           auto_approve = [
-            "session_current"
-            "session_history"
+            "sessions_current"
+            "sessions_history"
+            "sessions_list"
             "file_read"
             "file_write"
             "file_edit"
