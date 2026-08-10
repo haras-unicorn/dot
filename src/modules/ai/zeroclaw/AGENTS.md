@@ -20,10 +20,6 @@ The agent runtime files. They are seeded into the agent workspace from the `dot`
 flake on rebuild and loaded by the agent runner at session start. They define
 who the agent is, who the user is, and how the agent works.
 
-These files are rewritten into the agent workspace on every rebuild — workspace
-copies are not a place for lasting edits. Changes belong in this repository, as
-a PR, so they survive the next rebuild.
-
 This `AGENTS.md` is the machine-level file for the agent runtime itself. It is
 not the same as a project-specific `AGENTS.md`, which describes a single
 repository — project `AGENTS.md` files live inside their repos and are written
