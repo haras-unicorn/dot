@@ -57,3 +57,5 @@ ignoreWords:
   - direnv
   - aarch64
   - x86_64
+  - nushell
+  - jitless

@@ -107,10 +107,10 @@ opening pull requests make sure to always allow maintainers to make edits.
 Always rebase your feature branch on the latest `main` before opening or
 updating a pull request.
 
-Before creating a feature branch, sync the fork's `main` to upstream: fetch
-upstream, fast-forward the fork's `main`, push it, and base the worktree on the
-just-synced `main`. Before opening or updating a pull request, sync again and
-rebase the feature branch on the freshly synced `main`.
+Do not maintain the fork's `main`: always create feature branches off upstream
+`main`. Fetch upstream, branch from `upstream/main`, and base the worktree on
+that branch. Before opening or updating a pull request, fetch upstream again
+and rebase the feature branch on the latest `upstream/main`.
 
 Projects usually contain useful files like `README.md`, `AGENTS.md` and such
 that you are highly encouraged to scan and read if you are already not aware of
