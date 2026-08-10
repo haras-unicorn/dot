@@ -109,8 +109,8 @@ updating a pull request.
 
 Do not maintain the fork's `main`: always create feature branches off upstream
 `main`. Fetch upstream, branch from `upstream/main`, and base the worktree on
-that branch. Before opening or updating a pull request, fetch upstream again
-and rebase the feature branch on the latest `upstream/main`.
+that branch. Before opening or updating a pull request, fetch upstream again and
+rebase the feature branch on the latest `upstream/main`.
 
 Projects usually contain useful files like `README.md`, `AGENTS.md` and such
 that you are highly encouraged to scan and read if you are already not aware of
