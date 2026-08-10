@@ -168,6 +168,7 @@
             "nixos__nix_versions"
 
             "github__get_me"
+            "github__search_commits"
             "github__search_repositories"
             "github__search_users"
             "github__get_file_contents"
