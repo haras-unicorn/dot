@@ -59,3 +59,4 @@ ignoreWords:
   - x86_64
   - nushell
   - jitless
+  - envrc
