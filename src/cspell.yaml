@@ -505,3 +505,7 @@ ignoreWords:
   - steamcompattool
   - protonpath
   - gameid
+  - worktree
+  - emptively
+  - bwrap
+  - bubblewrap
