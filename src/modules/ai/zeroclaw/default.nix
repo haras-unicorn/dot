@@ -270,55 +270,54 @@
         };
       };
 
-      llamaConfig = {
-        providers.models.llamacpp.main = {
-          model = "Qwen3.6-35B-A3B-UD-Q4_K_M";
-          timeout_secs = 600;
-          vision = false;
-          fallback = [ "deepseek.main" ];
-        };
+      # TODO: use when moe gpu compute gets fixed
+      # llamaConfig = {
+      #   providers.models.llamacpp.main = {
+      #     model = "Qwen3.6-35B-A3B-UD-Q4_K_M";
+      #     timeout_secs = 600;
+      #     vision = false;
+      #     fallback = [ "deepseek.main" ];
+      #   };
 
-        providers.models.llamacpp.small = {
-          model = "Qwen3.5-4B-Q4_K_M";
-          timeout_secs = 300;
-          vision = false;
-          fallback = [ "deepseek.main" ];
-        };
+      #   providers.models.llamacpp.small = {
+      #     model = "Qwen3.5-4B-Q4_K_M";
+      #     timeout_secs = 300;
+      #     vision = false;
+      #     fallback = [ "deepseek.main" ];
+      #   };
 
-        agents.${agent} = {
-          model_provider = "llamacpp.main";
-          delegates = [
-            {
-              agent = "small";
-              mode = "bounded";
-            }
-            {
-              agent = "reasoner";
-              mode = "bounded";
-            }
-          ];
-        };
+      #   agents.${agent} = {
+      #     model_provider = "llamacpp.main";
+      #     delegates = [
+      #       {
+      #         agent = "small";
+      #         mode = "bounded";
+      #       }
+      #       {
+      #         agent = "reasoner";
+      #         mode = "bounded";
+      #       }
+      #     ];
+      #   };
 
-        # NOTE: delegate-only agents — no channels, reached via the delegate
-        # tool from agents.main.
-        # Workspace is space as agent that spawns them (main).
-        agents.small = {
-          model_provider = "llamacpp.small";
-          risk_profile = "main";
-          runtime_profile = "main";
-        };
+      #   # NOTE: delegate-only agents — no channels, reached via the delegate
+      #   # tool from agents.main.
+      #   # Workspace is space as agent that spawns them (main).
+      #   agents.small = {
+      #     model_provider = "llamacpp.small";
+      #     risk_profile = "main";
+      #     runtime_profile = "main";
+      #   };
 
-        agents.reasoner = {
-          model_provider = "deepseek.main";
-          risk_profile = "main";
-          runtime_profile = "main";
-        };
-      };
+      #   agents.reasoner = {
+      #     model_provider = "deepseek.main";
+      #     risk_profile = "main";
+      #     runtime_profile = "main";
+      #   };
+      # };
 
       configFile = toml.generate "zeroclaw-config.toml" (
-        lib.recursiveUpdate (lib.recursiveUpdate deepseekConfig generalConfig)
-          # llamaConfig
-          { }
+        lib.recursiveUpdate deepseekConfig generalConfig
       );
 
       preStart = pkgs.writeShellApplication {
