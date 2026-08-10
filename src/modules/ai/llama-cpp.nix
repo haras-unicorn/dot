@@ -27,6 +27,54 @@
         hash = "sha256-FAvo14SXQfiMUHV9UpuENz7o4nBSzCI2hVtTf0qCFfo=";
       };
 
+      # NOTE: local chat models for the agent runtime (ZeroClaw).
+      # gemma-4-26b is the MoE (25.2B total / ~3.8B active) daily driver;
+      # gemma-4-e4b is the small dense edge model for cheap delegated tasks.
+      # Both from unsloth; hashes are the HF LFS sha256s converted to SRI.
+      # UD-* is the unsloth dynamic quant line.
+      gemma-4-26b = pkgs.fetchurl {
+        url = "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
+        hash = "sha256-8sKLPcR3aTGsb4eeEfID3sY36g8UJnqG7I9hZfY/KT8=";
+      };
+
+      gemma-4-e4b = pkgs.fetchurl {
+        url = "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/main/gemma-4-E4B-it-Q4_K_M.gguf";
+        hash = "sha256-haiWoEdVPoQvJSl+5bAx1k/zAUfZxK8XseSzlM0fq4c=";
+      };
+
+      # NOTE: llama-server in router mode serves both chat models from one
+      # port; the "model" field in the request picks which one loads/unloads
+      # (model id = GGUF filename). --models-max 2 lets both stay loaded;
+      # --sleep-idle-seconds unloads idle models (weights + KV) to free VRAM.
+      # --cpu-moe keeps all MoE experts in RAM (a no-op for the dense E4B) —
+      # the 26B's active weights + KV cache fit in VRAM while the expert pool
+      # lives in system RAM. Don't combine --cpu-moe with --load-mode mlock
+      # (double-buffering OOM regression); plain mmap is the default.
+      # ctx comes from model metadata (128K E4B / 256K 26B) and gemma's
+      # sliding-window attention keeps the KV cache lean. --fit adjusts unset
+      # args to fit device memory.
+      llamaServerArgs = [
+        "--models-dir"
+        "%h/models/gemma-4-chat"
+        "--models-max"
+        "2"
+        "--sleep-idle-seconds"
+        "900"
+        "--host"
+        "127.0.0.1"
+        "--port"
+        "8080"
+        "--flash-attn"
+        "on"
+        "--gpu-layers"
+        "all"
+        "--cpu-moe"
+        "--cache-type-k"
+        "q8_0"
+        "--cache-type-v"
+        "q8_0"
+      ];
+
       imagePrompt = ''
         You are an image captioner.
         You only include the image caption in your output (e.g. a cat wearing a hat).
@@ -219,6 +267,44 @@
         model
         mmproj
       ];
+
+      dot.ai.models.gemma-4-chat.files = [
+        gemma-4-26b
+        gemma-4-e4b
+      ];
+
+      systemd.user.services.llama-cpp = {
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+        Unit = {
+          Description = "llama.cpp server (gemma-4 26B A4B + E4B router)";
+          Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
+        };
+        Service = {
+          ExecStart = [ "${package}/bin/llama-server" ] ++ llamaServerArgs;
+          Restart = "on-failure";
+          RestartSec = 5;
+
+          ProtectSystem = "strict";
+          ProtectHome = "read-only";
+          PrivateTmp = true;
+
+          # NOTE: no PrivateDevices here — CUDA needs /dev/nvidia*
+          NoNewPrivileges = true;
+          LockPersonality = true;
+
+          RestrictAddressFamilies = [
+            "AF_INET"
+            "AF_INET6"
+          ];
+          IPAddressDeny = "any";
+          IPAddressAllow = [
+            "127.0.0.0/8"
+            "::1"
+          ];
+        };
+      };
 
       home.packages = [ package ];
     };

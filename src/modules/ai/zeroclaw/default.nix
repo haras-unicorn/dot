@@ -36,12 +36,57 @@
           api_key = "$DEEPSEEK_API_KEY";
         };
 
+        # NOTE: local llama.cpp router on 127.0.0.1:8080 (see llama-cpp.nix).
+        # Model id = GGUF filename as served by the router.
+        # vision = false: no mmproj loaded in the router; images go through
+        # the E2B processing nodes instead.
+        providers.models.llamacpp.main = {
+          model = "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
+          timeout_secs = 600;
+          vision = false;
+          # If the local server is down (e.g. right after boot), fall back
+          # to cloud deepseek instead of failing the turn.
+          fallback = [ "deepseek.main" ];
+        };
+
+        providers.models.llamacpp.edge = {
+          model = "gemma-4-E4B-it-Q4_K_M.gguf";
+          timeout_secs = 300;
+          vision = false;
+        };
+
         agents.${agent} = {
-          model_provider = "deepseek.main";
+          model_provider = "llamacpp.main";
           risk_profile = "main";
           runtime_profile = "main";
           channels = [ "matrix.main" ];
           mcp_bundles = [ "dev" ];
+          # Delegate roster: edge = cheap/fast (E4B), reasoner = deepseek
+          # for thinking/coding. Both share the "main" risk profile.
+          delegates = [
+            {
+              agent = "edge";
+              mode = "bounded";
+            }
+            {
+              agent = "reasoner";
+              mode = "bounded";
+            }
+          ];
+        };
+
+        # NOTE: delegate-only agents — no channels, reached via the delegate
+        # tool from agents.main.
+        agents.edge = {
+          model_provider = "llamacpp.edge";
+          risk_profile = "main";
+          runtime_profile = "main";
+        };
+
+        agents.reasoner = {
+          model_provider = "deepseek.main";
+          risk_profile = "main";
+          runtime_profile = "main";
         };
 
         knowledge.enabled = true;

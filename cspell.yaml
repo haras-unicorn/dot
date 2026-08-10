@@ -60,3 +60,7 @@ ignoreWords:
   - nushell
   - jitless
   - envrc
+  - gguf
+  - llamacpp
+  - unsloth
+  - mlock
