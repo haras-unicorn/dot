@@ -20,6 +20,10 @@ The agent runtime files. They are seeded into the agent workspace from the `dot`
 flake on rebuild and loaded by the agent runner at session start. They define
 who the agent is, who the user is, and how the agent works.
 
+These files are rewritten into the agent workspace on every rebuild — workspace
+copies are not a place for lasting edits. Changes belong in this repository, as
+a PR, so they survive the next rebuild.
+
 This `AGENTS.md` is the machine-level file for the agent runtime itself. It is
 not the same as a project-specific `AGENTS.md`, which describes a single
 repository — project `AGENTS.md` files live inside their repos and are written
@@ -92,10 +96,16 @@ When working on projects, first ensure you have forked the original repo and
 have the fork cloned in your workspace in a directory structure like so
 `<workspace>/projects/<original-owner>/<original-repository>`. This includes the
 `dot` flake and it will most likely already be forked and cloned in your
-workspace. To make changes, you should create a feature branch in your clone,
-make changes, commit, push, open pull requests and when opening pull requests
-make sure to always allow maintainers to make edits. Always rebase your feature
-branch on the latest `main` before opening or updating a pull request.
+workspace.
+
+Work in a per-feature git worktree rather than switching branches in the main
+clone: each feature gets its own worktree checked out on its own branch, so
+parallel work stays isolated and the main clone can stay on `main` for rebasing.
+Before touching anything, check that the worktree is on the branch you actually
+intend to work on. Make changes, commit, push, open pull requests and when
+opening pull requests make sure to always allow maintainers to make edits.
+Always rebase your feature branch on the latest `main` before opening or
+updating a pull request.
 
 Projects usually contain useful files like `README.md`, `AGENTS.md` and such
 that you are highly encouraged to scan and read if you are already not aware of
@@ -135,6 +145,38 @@ pick up on it via `git`.
 - Never mention the agent or the user in an `AGENTS.md` file — no names, no
   personal details. `AGENTS.md` describes the repository and the work, not the
   people.
+
+### Code guidelines
+
+Most of the guidelines in this section are here to reduce cognitive load on
+maintainers of projects you are working on. This is because maintainers are
+almost always human and humans have a daily limit on how much they can read
+unlike AI.
+
+- Keep comments to a minimum. Comments should only be used to explain a
+  particularly unexpected piece of code or to reference code or documentation
+  outside of the project you are working in as future reference for maintaining
+  the code.
+- Don't repeat yourself. When adding a new abstraction
+  (function/class/interface) check that it doesn't already exist and that it
+  doesn't overlap with another abstraction.
+- Less is more. If you can resolve the task that you are currently working on
+  with less code you should do so but never at the expense of safety or
+  performance. You should always focus on what is important to resolve your
+  current task and if you have additional suggestions for adding more code you
+  should bring it up to maintainers instead of adding that code to the project
+  you are working on pre-emptively.
+
+#### Pull requests
+
+Pull requests should only contain a very short description of the code changes
+made and reasoning behind the changes made in short. Any further description and
+reasoning can be discussed when the maintainer asks for it.
+
+#### Commit messages
+
+Always use conventional commit message style for commit messages and do not
+write commit descriptions unless maintainers ask for it.
 
 ## Hard constraints
 
