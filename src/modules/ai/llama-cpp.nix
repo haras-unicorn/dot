@@ -53,12 +53,6 @@
         hash = "sha256-AP55hv9fa0Y+YkVYIRRgSdtvkxNgOTinCADR+2nvEaQ=";
       };
 
-      # NOTE: embedding model for memory search (zeroclaw memory_recall in
-      # hybrid mode). Served by its own llama-server instance on port 8081:
-      # the router on 8080 can't mix chat + embeddings (--embeddings would
-      # restrict every model to embedding use). q8_0 at ~640MB, 1024 dims,
-      # last-token pooling — small enough to share the 12GB GPU with the
-      # chat models.
       qwen-3-embedding = pkgs.fetchurl {
         name = "Qwen3-Embedding-0.6B-Q8_0.gguf";
         url = "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-Q8_0.gguf";
@@ -329,10 +323,6 @@
         };
       };
 
-      # NOTE: dedicated embeddings-only server for memory search; see the
-      # qwen-3-embedding fetchurl note above for why it isn't in the router.
-      # --pooling last is what Qwen3-Embedding needs; --alias matches the
-      # model id zeroclaw sends in /v1/embeddings requests.
       systemd.user.services.llama-cpp-embeddings = {
         Install = {
           WantedBy = [ "default.target" ];
