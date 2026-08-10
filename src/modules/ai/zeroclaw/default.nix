@@ -44,23 +44,94 @@
           mcp_bundles = [ "dev" ];
         };
 
-        agent.tool_receipts.show_in_response = true;
-
         knowledge.enabled = true;
+
+        verifiable_intent.enabled = true;
+
+        link_enricher.enabled = true;
+
+        project_intel.enabled = true;
+
+        web_fetch = {
+          enabled = true;
+          allowed_domains = [
+            "en.wikipedia.org"
+            "wiki.archlinux.org"
+            "docs.zeroclawlabs.ai"
+            "nixos.org"
+            "nix.dev"
+            "docs.rs"
+            "developer.mozilla.org"
+          ];
+        };
 
         risk_profiles.main = {
           level = "supervised";
           workspace_only = true;
           sandbox_backend = "bwrap";
           sandbox_enabled = true;
-          allowed_commands = [ "nix" ];
+
+          tool_receipts = {
+            enabled = true;
+            show_in_response = true;
+          };
+
+          allowed_commands = [
+            "ls"
+            "pwd"
+            "tree"
+            "stat"
+            "file"
+            "readlink"
+            "du"
+            "df"
+            "cat"
+            "head"
+            "tail"
+            "wc"
+            "sed"
+            "jq"
+            "grep"
+            "rg"
+            "find"
+            "fd"
+            "env"
+            "whoami"
+            "id"
+            "date"
+            "uname"
+            "uptime"
+            "ps"
+            "free"
+            "echo"
+            "printf"
+            "sha256sum"
+            "sleep"
+            "true"
+            "false"
+
+            "nix"
+            "git"
+          ];
+
           excluded_tools = [
-            "shell"
-            "http_request"
             "browser"
             "schedule"
+            "screenshot"
+            "browser_open"
+            "proxy_config"
+            "model_switch"
+            "model_routing_config"
+            "memory_export"
+            "memory_purge"
           ];
+
           auto_approve = [
+            # NOTE: it looks scary but it gets parsed
+            # and denied when certain metacharacters get used and such
+            # more discussion is needed but as things stand it looks
+            # safe to use with a list of allowed commands
+            "shell"
             "sessions_current"
             "sessions_history"
             "sessions_list"
@@ -76,8 +147,6 @@
             "memory_store"
             "memory_forget"
             "memory_export"
-            "nixos__nix"
-            "nixos__nix_versions"
             "web_search"
             "web_search_tool"
             "web_fetch"
@@ -87,8 +156,16 @@
             "spawn_subagent"
             "delegate"
             "escalate_to_human"
+            "ask_user"
             "calculator"
             "reaction"
+            "send_message_to_peer"
+            "sessions_send"
+            "project_intel"
+
+            "nixos__nix"
+            "nixos__nix_versions"
+
             "github__get_me"
             "github__search_repositories"
             "github__search_users"
@@ -123,8 +200,6 @@
 
         runtime_profiles.main = {
           max_tool_iterations = 100;
-          # NOTE: schema default is far lower and shared with subagents;
-          # 1000/hour is effectively frictionless, u32::MAX is truly unlimited
           max_actions_per_hour = 1000;
         };
 
@@ -142,7 +217,7 @@
           channel = "matrix.main";
           agents = [ "main" ];
           # NOTE: affects rooms as well
-          external_peers = [ "*" ];
+          external_peers = [ "$MATRIX_PEER" ];
         };
 
         mcp = {
@@ -184,8 +259,8 @@
         memory.search_mode = "bm25";
       };
 
-      resolveConfig = pkgs.writeShellApplication {
-        name = "zeroclaw-resolve-config";
+      preStart = pkgs.writeShellApplication {
+        name = "zeroclaw-pre-start";
         runtimeInputs = [
           pkgs.envsubst
         ];
@@ -203,6 +278,44 @@
           install -m 0644 ${./USER.md} "${agentWorkspaceDir}/USER.md"
         '';
       };
+
+      start = pkgs.writeShellApplication {
+        name = "zeroclaw-start";
+        runtimeInputs = [
+          zeroclaw
+
+          pkgs.git
+          pkgs.curl
+          pkgs.bubblewrap
+
+          pkgs.coreutils
+          pkgs.procps
+          pkgs.gnused
+          pkgs.gnugrep
+          pkgs.findutils
+          pkgs.ripgrep
+          pkgs.fd
+          pkgs.tree
+          pkgs.file
+          pkgs.jq
+
+          pkgs.git
+          pkgs.nix
+        ];
+        text = "zeroclaw daemon";
+      };
+
+      trace = pkgs.writeShellApplication {
+        name = "zeroclaw-trace-bridge";
+        runtimeInputs = [
+          pkgs.coreutils
+          pkgs.systemd
+        ];
+        text = ''
+          tail -n0 -F "${dataDir}/data/state/runtime-trace.jsonl" \
+            | systemd-cat -t zeroclaw-jsonl
+        '';
+      };
     in
     {
       home.packages = [
@@ -212,7 +325,6 @@
       systemd.user.services.zeroclaw = {
         Unit = {
           Description = "ZeroClaw agent";
-          After = [ "network-online.target" ];
         };
 
         Install = {
@@ -227,19 +339,8 @@
             "ZEROCLAW_CONFIG_DIR=${dataDir}"
             "ZEROCLAW_WORKSPACE=${dataDir}/workspace"
           ];
-          ExecStartPre = [ (lib.getExe resolveConfig) ];
-          ExecStart = lib.getExe (
-            pkgs.writeShellApplication {
-              name = "zeroclaw-daemon";
-              runtimeInputs = [
-                zeroclaw
-                pkgs.git
-                pkgs.curl
-                pkgs.bubblewrap
-              ];
-              text = "zeroclaw daemon";
-            }
-          );
+          ExecStartPre = [ (lib.getExe preStart) ];
+          ExecStart = lib.getExe start;
           Restart = "on-failure";
           RestartSec = "5s";
 
@@ -275,6 +376,15 @@
             nixCache
             nixState
           ];
+        };
+      };
+
+      systemd.user.services.zeroclaw-trace = {
+        Unit.Description = "Tail ZeroClaw JSONL trace into journal";
+        Install.WantedBy = [ "default.target" ];
+        Service = {
+          ExecStart = lib.getExe trace;
+          Restart = "always";
         };
       };
     };

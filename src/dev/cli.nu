@@ -22,17 +22,27 @@ def "main detect" []: nothing -> nothing {
 # Format repository
 def "main format" []: nothing -> nothing {
   cd (flake-root)
-  prettier --write .
+  # NOTE: to make it work in agent sandbox
+  with-env { NODE_OPTIONS: "--jitless" } { prettier --write . }
   nixfmt ...(fd '.*\.nix$' . | lines)
 }
 
 # Lint the repository
 def "main lint" []: nothing -> nothing {
   cd (flake-root)
-  prettier --check .
+  # NOTE: to make it work in agent sandbox
+  with-env { NODE_OPTIONS: "--jitless" } { prettier --check . }
   nixfmt --check ...(fd '.*\.nix$' . | lines)
   markdownlint --ignore-path .gitignore .
-  cspell lint . --no-progress
+  # NOTE: to make it work in agent sandbox
+  let cspell_result = cspell lint . --no-progress | complete
+  if $cspell_result.exit_code != 0 {
+    print $"CSpell failed"
+    print $"Stdout: ($cspell_result.stdout)"
+    print $"Stderr: ($cspell_result.stderr)"
+    exit 1
+  }
+  print $cspell_result.stdout
   if $env.NIX_BUILD_TOP? == null {
     let md_result = (
       markdown-link-check
