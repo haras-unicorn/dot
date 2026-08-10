@@ -22,17 +22,17 @@ def "main detect" []: nothing -> nothing {
 # Format repository
 def "main format" []: nothing -> nothing {
   cd (flake-root)
-  prettier --write .
+  with-env { NODE_OPTIONS: "--jitless" } { prettier --write . }
   nixfmt ...(fd '.*\.nix$' . | lines)
 }
 
 # Lint the repository
 def "main lint" []: nothing -> nothing {
   cd (flake-root)
-  prettier --check .
+  with-env { NODE_OPTIONS: "--jitless" } { prettier --check . }
   nixfmt --check ...(fd '.*\.nix$' . | lines)
   markdownlint --ignore-path .gitignore .
-  cspell lint . --no-progress
+  cspell lint . --no-progress out> /dev/stderr
   if $env.NIX_BUILD_TOP? == null {
     let md_result = (
       markdown-link-check
