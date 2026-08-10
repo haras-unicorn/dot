@@ -41,20 +41,16 @@
         # vision = false: no mmproj loaded in the router; images go through
         # the E2B processing nodes instead.
         providers.models.llamacpp.main = {
-          model = "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
+          model = "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
           timeout_secs = 600;
           vision = false;
-          # If the local server is down (e.g. right after boot), fall back
-          # to cloud deepseek instead of failing the turn.
           fallback = [ "deepseek.main" ];
         };
 
         providers.models.llamacpp.small = {
-          model = "gemma-4-E4B-it-Q4_K_M.gguf";
+          model = "Qwen3.5-4B-Q4_K_M.gguf";
           timeout_secs = 300;
           vision = false;
-          # Same fallback as main: a cold llama-server (or a crashed one)
-          # shouldn't take down the cheap path too.
           fallback = [ "deepseek.main" ];
         };
 
@@ -64,9 +60,6 @@
           runtime_profile = "main";
           channels = [ "matrix.main" ];
           mcp_bundles = [ "dev" ];
-          # Delegate roster: small = cheap/fast local (E4B), reasoner =
-          # deepseek for thinking/coding. Both share the "main" risk profile
-          # and run under main's workspace envelope.
           delegates = [
             {
               agent = "small";
@@ -81,6 +74,7 @@
 
         # NOTE: delegate-only agents — no channels, reached via the delegate
         # tool from agents.main.
+        # Workspace is space as agent that spawns them (main).
         agents.small = {
           model_provider = "llamacpp.small";
           risk_profile = "main";

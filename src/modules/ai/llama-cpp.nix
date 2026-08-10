@@ -17,30 +17,19 @@
         pathsToLink = [ "/bin" ];
       };
 
-      # NOTE: every fetchurl below carries an explicit `name` = the GGUF
-      # basename. The default fetchurl name is "source", which would collide
-      # inside dot.ai.models (xdg.nix builds ~/.config/models/<group>/<name>)
-      # and inside the symlinkJoin models dir for the router.
-
-      # Vision model for the llama-cli processing nodes (image/audio/text).
-      model = pkgs.fetchurl {
+      gemma-4 = pkgs.fetchurl {
         name = "gemma-4-E2B-it-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/gemma-4-E2B-it-Q4_K_M.gguf";
         hash = "sha256-k3i8RxcQIp7xZXCbYuNL+2IjFCDdr21ynnJzBbW4Zy0=";
       };
 
-      mmproj = pkgs.fetchurl {
+      gemma-4-mmproj = pkgs.fetchurl {
         name = "mmproj-F16.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/mmproj-F16.gguf";
         hash = "sha256-FAvo14SXQfiMUHV9UpuENz7o4nBSzCI2hVtTf0qCFfo=";
       };
 
-      # NOTE: chat models for the agent runtime (ZeroClaw), served by the
-      # llama-server router. gemma-4-26b is the MoE (25.2B total / ~3.8B
-      # active) daily driver; gemma-4-e4b is the small dense model for cheap
-      # delegated tasks. Both from unsloth; hashes are the HF LFS sha256s
-      # converted to SRI. UD-* is the unsloth dynamic quant line.
-      gemma-4-26b = pkgs.fetchurl {
+      gemma-4-26b-a4b = pkgs.fetchurl {
         name = "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
         hash = "sha256-8sKLPcR3aTGsb4eeEfID3sY36g8UJnqG7I9hZfY/KT8=";
@@ -52,65 +41,25 @@
         hash = "sha256-haiWoEdVPoQvJSl+5bAx1k/zAUfZxK8XseSzlM0fq4c=";
       };
 
-      # NOTE: qwen models for the model registry only (dot.ai.models) — the
-      # router keeps serving the gemma chat pair. Qwen3.6-35B-A3B (MoE, ~3B
-      # active) is the big one; Qwen3.5-4B (dense) the small one. Unsloth has
-      # silently re-quantized the 35B file before (same basename, different
-      # bytes), so it is pinned to a specific HF commit; the hash is the
-      # NUR-verified pair for that commit.
-      qwen-3.6-a3b = pkgs.fetchurl {
+      qwen-3-6-35b-a3b = pkgs.fetchurl {
         name = "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
         hash = "sha256-OakWBEx6wZYHGezOk0COu3s74dNNVDT6Mb4U4GJpayU=";
       };
 
-      qwen-3.5-4b = pkgs.fetchurl {
+      qwen-3-5-4b = pkgs.fetchurl {
         name = "Qwen3.5-4B-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/resolve/main/Qwen3.5-4B-Q4_K_M.gguf";
         hash = "sha256-AP55hv9fa0Y+YkVYIRRgSdtvkxNgOTinCADR+2nvEaQ=";
       };
 
-      # NOTE: a nix-store folder that symlinks the two chat models, so the
-      # router gets a path that actually exists. The previous
-      # `%h/models/gemma-4-chat` pointed at a $HOME folder nothing in this
-      # flake created — unwarranted coupling that was bound to break.
-      chatModelsDir = pkgs.symlinkJoin {
-        name = "gemma-4-chat-models";
-        paths = [ gemma-4-26b gemma-4-e4b ];
+      serverModels = pkgs.symlinkJoin {
+        name = "llama-cpp-server-models";
+        paths = [
+          qwen-3-6-35b-a3b
+          qwen-3-5-4b
+        ];
       };
-
-      # NOTE: llama-server in router mode serves both chat models from one
-      # port; the "model" field in the request picks which one loads/unloads
-      # (model id = GGUF filename). --models-max 2 lets both stay loaded;
-      # --sleep-idle-seconds unloads idle models (weights + KV) to free VRAM.
-      # --cpu-moe keeps all MoE experts in RAM (a no-op for the dense E4B) —
-      # the 26B's active weights + KV cache fit in VRAM while the expert pool
-      # lives in system RAM. Don't combine --cpu-moe with --load-mode mlock
-      # (double-buffering OOM regression); plain mmap is the default.
-      # ctx comes from model metadata (128K E4B / 256K 26B) and gemma's
-      # sliding-window attention keeps the KV cache lean. --fit adjusts unset
-      # args to fit device memory.
-      llamaServerArgs = [
-        "--models-dir"
-        chatModelsDir
-        "--models-max"
-        "2"
-        "--sleep-idle-seconds"
-        "900"
-        "--host"
-        "127.0.0.1"
-        "--port"
-        "8080"
-        "--flash-attn"
-        "on"
-        "--gpu-layers"
-        "all"
-        "--cpu-moe"
-        "--cache-type-k"
-        "q8_0"
-        "--cache-type-v"
-        "q8_0"
-      ];
 
       imagePrompt = ''
         You are an image captioner.
@@ -143,8 +92,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${model} \
-            --mmproj ${mmproj} \
+            --model ${gemma-4} \
+            --mmproj ${gemma-4-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -174,8 +123,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${model} \
-            --mmproj ${mmproj} \
+            --model ${gemma-4} \
+            --mmproj ${gemma-4-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -205,8 +154,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${model} \
-            --mmproj ${mmproj} \
+            --model ${gemma-4} \
+            --mmproj ${gemma-4-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -235,8 +184,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${model} \
-            --mmproj ${mmproj} \
+            --model ${gemma-4} \
+            --mmproj ${gemma-4-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -301,15 +250,15 @@
       };
 
       dot.ai.models.gemma-4.files = [
-        model
-        mmproj
-        gemma-4-26b
+        gemma-4
+        gemma-4-mmproj
+        gemma-4-26b-a4b
         gemma-4-e4b
       ];
 
-      dot.ai.models.qwen-3.5.files = [
-        qwen-3.6-a3b
-        qwen-3.5-4b
+      dot.ai.models.qwen-3-5.files = [
+        qwen-3-6-35b-a3b
+        qwen-3-5-4b
       ];
 
       systemd.user.services.llama-cpp = {
@@ -321,7 +270,30 @@
           Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
         };
         Service = {
-          ExecStart = [ "${package}/bin/llama-server" ] ++ llamaServerArgs;
+          ExecStart = [
+            "${package}/bin/llama-server"
+          ]
+          ++ [
+            "--models-dir"
+            serverModels
+            "--models-max"
+            "2"
+            "--sleep-idle-seconds"
+            "900"
+            "--host"
+            "127.0.0.1"
+            "--port"
+            "8080"
+            "--flash-attn"
+            "on"
+            "--gpu-layers"
+            "all"
+            "--cpu-moe"
+            "--cache-type-k"
+            "q8_0"
+            "--cache-type-v"
+            "q8_0"
+          ];
           Restart = "on-failure";
           RestartSec = 5;
 
@@ -329,7 +301,6 @@
           ProtectHome = "read-only";
           PrivateTmp = true;
 
-          # NOTE: no PrivateDevices here — CUDA needs /dev/nvidia*
           NoNewPrivileges = true;
           LockPersonality = true;
 
