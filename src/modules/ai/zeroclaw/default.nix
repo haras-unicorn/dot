@@ -312,7 +312,7 @@
           pkgs.systemd
         ];
         text = ''
-          tail -n0 -F %h/.zeroclaw/data/state/runtime-trace.jsonl \
+          tail -n0 -F "${dataDir}/data/state/runtime-trace.jsonl" \
             | systemd-cat -t zeroclaw-jsonl
         '';
       };
