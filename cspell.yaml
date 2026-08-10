@@ -64,3 +64,5 @@ ignoreWords:
   - llamacpp
   - unsloth
   - mlock
+  - ongunm
+  - llama-moe-cache

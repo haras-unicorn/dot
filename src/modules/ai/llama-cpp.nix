@@ -9,11 +9,29 @@
     let
       cuda = config.nixpkgs.config.cudaSupport;
 
+      # NOTE: FATE build — llama.cpp fork with a GPU-resident expert cache
+      # + predictive prefetch for MoE offloading (github:ongunm/llama-moe-cache).
+      # Built from the fork's own vendored nix packaging against our nixpkgs
+      # (cudaSupport is inherited from config). Without --fate it behaves like
+      # vanilla llama.cpp, so the CLI nodes below are unaffected.
+      #
+      # Fetched as a source tarball (fetchFromGitHub), not a flake input: we
+      # only import the fork's vendored nix packaging, never its flake
+      # outputs, so keeping it out of flake.lock costs nothing. Rev/hash must
+      # stay in sync with packages.llama-cpp-fate in src/dev/default.nix.
+      fateSrc = pkgs.fetchFromGitHub {
+        owner = "ongunm";
+        repo = "llama-moe-cache";
+        rev = "77c8767d26bd6285b2fe351c58143ee4d6b72fa6";
+        hash = "sha256-5sAd5aSmC926ND1IZY5FtkAjRcJCvSzlJHTXJk+jjj8=";
+      };
+      fate = (pkgs.callPackage "${fateSrc}/.devops/nix/scope.nix" { }).llama-cpp;
+
       # NOTE: like this because some libs
       # otherwise conflict with other packages
       package = pkgs.buildEnv {
         name = "llama-cpp";
-        paths = [ pkgs.llama-cpp ];
+        paths = [ fate ];
         pathsToLink = [ "/bin" ];
       };
 
@@ -297,7 +315,14 @@
             "on"
             "--gpu-layers"
             "all"
-            "--cpu-moe"
+            # NOTE: FATE replaces --cpu-moe: experts stay in RAM but the hot
+            # set is cached in a VRAM pool with predictive prefetch, instead
+            # of every expert crossing PCIe on every use. Pool sized at 2GB —
+            # as much free VRAM as the 12GB card has after the resident
+            # weights + KV cache. Tune with --fate-cache if VRAM pressure.
+            "--fate"
+            "--fate-cache"
+            "2048"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"

@@ -85,6 +85,23 @@
       ...
     }:
     let
+      # FATE llama.cpp — same src/hash as src/modules/ai/llama-cpp.nix, so
+      # `nix build .#llama-cpp-fate` tests exactly what the machine builds.
+      # The CUDA-enabled nixpkgs instance mirrors the machine's nixpkgs
+      # config (see src/modules/hardware/nvidia/default.nix).
+      fatePkgs = import inputs.nixpkgs {
+        config = {
+          allowUnfree = true;
+          cudaSupport = true;
+        };
+        inherit system;
+      };
+      fateSrc = fatePkgs.fetchFromGitHub {
+        owner = "ongunm";
+        repo = "llama-moe-cache";
+        rev = "77c8767d26bd6285b2fe351c58143ee4d6b72fa6";
+        hash = "sha256-5sAd5aSmC926ND1IZY5FtkAjRcJCvSzlJHTXJk+jjj8=";
+      };
       shell = pkgs.mkShell {
         packages = selfLib.dev.makePackages pkgs;
       };
@@ -92,5 +109,7 @@
     {
       devShells.dev = shell;
       devShells.default = shell;
+
+      packages.llama-cpp-fate = (fatePkgs.callPackage "${fateSrc}/.devops/nix/scope.nix" { }).llama-cpp;
     };
 }
