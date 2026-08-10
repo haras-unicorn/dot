@@ -44,6 +44,8 @@
           mcp_bundles = [ "dev" ];
         };
 
+        agent.tool_receipts.show_in_response = true;
+
         knowledge.enabled = true;
 
         risk_profiles.main = {
