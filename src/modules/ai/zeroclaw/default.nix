@@ -44,7 +44,7 @@
         risk_profiles.main = {
           level = "supervised";
           workspace_only = true;
-          allowed_commands = [ ];
+          allowed_commands = [ "nix" ];
           auto_approve = [
             "sessions_current"
             "sessions_history"
