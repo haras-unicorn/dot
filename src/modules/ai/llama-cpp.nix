@@ -281,10 +281,8 @@
           Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
         };
         Service = {
-          ExecStart = [
-            "${package}/bin/llama-server"
-          ]
-          ++ [
+          ExecStart = builtins.concatStringsSep " " [
+            (lib.getExe' package "llama-server")
             "--models-dir"
             serverModels
             "--models-max"
@@ -336,8 +334,8 @@
           Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
         };
         Service = {
-          ExecStart = [
-            "${package}/bin/llama-server"
+          ExecStart = builtins.concatStringsSep " " [
+            (lib.getExe' package "llama-server")
             "--model"
             "${qwen-3-embedding}"
             "--embeddings"
