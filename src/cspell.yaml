@@ -507,3 +507,5 @@ ignoreWords:
   - gameid
   - worktree
   - emptively
+  - bwrap
+  - bubblewrap

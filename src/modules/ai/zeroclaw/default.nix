@@ -44,14 +44,25 @@
           mcp_bundles = [ "dev" ];
         };
 
+        knowledge.enabled = true;
+
         risk_profiles.main = {
           level = "supervised";
           workspace_only = true;
+          sandbox_backend = "bwrap";
+          sandbox_enabled = true;
           allowed_commands = [ "nix" ];
+          excluded_tools = [
+            "shell"
+            "http_request"
+            "browser"
+            "schedule"
+          ];
           auto_approve = [
             "sessions_current"
             "sessions_history"
             "sessions_list"
+            "knowledge"
             "file_read"
             "file_write"
             "file_edit"
@@ -222,6 +233,7 @@
                 zeroclaw
                 pkgs.git
                 pkgs.curl
+                pkgs.bubblewrap
               ];
               text = "zeroclaw daemon";
             }
