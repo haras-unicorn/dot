@@ -36,10 +36,6 @@
           api_key = "$DEEPSEEK_API_KEY";
         };
 
-        # NOTE: local llama.cpp router on 127.0.0.1:8080 (see llama-cpp.nix).
-        # Model id = GGUF filename as served by the router.
-        # vision = false: no mmproj loaded in the router; images go through
-        # the E2B processing nodes instead.
         providers.models.llamacpp.main = {
           model = "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
           timeout_secs = 600;
