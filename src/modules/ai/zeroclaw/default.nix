@@ -37,14 +37,14 @@
         };
 
         providers.models.llamacpp.main = {
-          model = "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
+          model = "Qwen3.6-35B-A3B-UD-Q4_K_M";
           timeout_secs = 600;
           vision = false;
           fallback = [ "deepseek.main" ];
         };
 
         providers.models.llamacpp.small = {
-          model = "Qwen3.5-4B-Q4_K_M.gguf";
+          model = "Qwen3.5-4B-Q4_K_M";
           timeout_secs = 300;
           vision = false;
           fallback = [ "deepseek.main" ];
@@ -299,7 +299,7 @@
         memory = {
           search_mode = "hybrid";
           embedding_provider = "custom:http://127.0.0.1:8081/v1";
-          embedding_model = "Qwen3-Embedding-0.6B-Q8_0.gguf";
+          embedding_model = "Qwen3-Embedding-0.6B-Q8_0";
           embedding_dimensions = 1024;
         };
       };
