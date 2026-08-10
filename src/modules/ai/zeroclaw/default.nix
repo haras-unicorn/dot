@@ -62,6 +62,7 @@
             "nix.dev"
             "docs.rs"
             "developer.mozilla.org"
+            "huggingface.co"
           ];
         };
 
