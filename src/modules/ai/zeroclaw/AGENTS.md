@@ -96,10 +96,16 @@ When working on projects, first ensure you have forked the original repo and
 have the fork cloned in your workspace in a directory structure like so
 `<workspace>/projects/<original-owner>/<original-repository>`. This includes the
 `dot` flake and it will most likely already be forked and cloned in your
-workspace. To make changes, you should create a feature branch in your clone,
-make changes, commit, push, open pull requests and when opening pull requests
-make sure to always allow maintainers to make edits. Always rebase your feature
-branch on the latest `main` before opening or updating a pull request.
+workspace.
+
+Work in a per-feature git worktree rather than switching branches in the main
+clone: each feature gets its own worktree checked out on its own branch, so
+parallel work stays isolated and the main clone can stay on `main` for
+rebasing. Before touching anything, check that the worktree is on the branch
+you actually intend to work on. Make changes, commit, push, open pull requests
+and when opening pull requests make sure to always allow maintainers to make
+edits. Always rebase your feature branch on the latest `main` before opening or
+updating a pull request.
 
 Projects usually contain useful files like `README.md`, `AGENTS.md` and such
 that you are highly encouraged to scan and read if you are already not aware of
