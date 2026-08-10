@@ -336,8 +336,6 @@
             "${package}/bin/llama-server"
             "--model"
             "${qwen-3-embedding}"
-            "--alias"
-            "qwen3-embedding-0.6b"
             "--embeddings"
             "--pooling"
             "last"

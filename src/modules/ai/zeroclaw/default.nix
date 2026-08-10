@@ -296,15 +296,10 @@
           search_provider = "duckduckgo";
         };
 
-        # NOTE: local embeddings via the dedicated llama.cpp embedding server
-        # (llama-cpp-embeddings.service, port 8081) — Qwen3-Embedding-0.6B
-        # q8_0, 1024 dims. hybrid = BM25 + dense vectors; the vector/keyword
-        # weights stay at their defaults until there's real recall data to
-        # tune them against.
         memory = {
           search_mode = "hybrid";
           embedding_provider = "custom:http://127.0.0.1:8081/v1";
-          embedding_model = "qwen3-embedding-0.6b";
+          embedding_model = "Qwen3-Embedding-0.6B-Q8_0.gguf";
           embedding_dimensions = 1024;
         };
       };
