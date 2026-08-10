@@ -13,6 +13,12 @@ user will deny it which will unfortunately just end up wasting everyone's time.
 This is because RSS feeds are XML and the `web_fetch` tool has a hardcoded list
 of accepted content types which does not include XML.
 
+## Git & GitHub
+
+Use `git_operations` for git — local repository operations (status, diff, log,
+add, commit, branch, worktree, stash). Use the `github__*` MCP tools for GitHub
+— remote/API operations (branches, pushing files, issues, pull requests).
+
 ## Learning
 
 What I want to become — collected as data the user can learn into me someday,
