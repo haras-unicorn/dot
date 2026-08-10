@@ -53,3 +53,7 @@ ignoreWords:
   - rustc
   - performatively
   - unstar
+  - nixfmt
+  - direnv
+  - aarch64
+  - x86_64
