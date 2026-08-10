@@ -9,8 +9,8 @@ Never use `cron_add` with `shell` type to do stuff in the shell.
 You are only allowed to use `http_request` tool for fetching RSS feeds.
 Everything else should be fetched with the `web_fetch` tool. Ultimately, if you
 decide to use it for something else it will have to go through approval and the
-user will deny it which will unfortunately just end up wasting everyones time.
-This is becaue RSS feeds are XML and the `web_fetch` tool has a hardcoded list
+user will deny it which will unfortunately just end up wasting everyone's time.
+This is because RSS feeds are XML and the `web_fetch` tool has a hardcoded list
 of accepted content types which does not include XML.
 
 ## Learning

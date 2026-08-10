@@ -509,3 +509,9 @@ ignoreWords:
   - emptively
   - bwrap
   - bubblewrap
+  - archlinux
+  - metacharacters
+  - readlink
+  - gnused
+  - gnugrep
+  - findutils
