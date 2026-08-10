@@ -17,6 +17,9 @@
         ];
       });
 
+      nixCache = "${config.xdg.cacheHome}/nix";
+      nixState = "${config.xdg.stateHome}/nix";
+
       dataDir = "${config.home.homeDirectory}/.zeroclaw";
       agent = "main";
       agentWorkspaceDir = "${dataDir}/agents/${agent}/workspace";
@@ -253,7 +256,11 @@
             "~@resources"
           ];
           UMask = "0077";
-          ReadWritePaths = [ dataDir ];
+          ReadWritePaths = [
+            dataDir
+            nixCache
+            nixState
+          ];
         };
       };
     };
