@@ -59,16 +59,16 @@
         hash = "sha256-BlB8e0JohGnE5ymLCh4W3v8GyvKRzwpbJ4wwgknD5Dk=";
       };
 
-      serverModels = pkgs.linkFarm "llama-cpp-server-models" [
-        {
-          name = builtins.baseNameOf qwen-3-6-35b-a3b;
-          path = qwen-3-6-35b-a3b;
-        }
-        {
-          name = builtins.baseNameOf qwen-3-5-4b;
-          path = qwen-3-5-4b;
-        }
-      ];
+      serverModels =
+        pkgs.linkFarm "llama-cpp-server-models" builtins.map
+          (model: {
+            name = model.name;
+            path = model;
+          })
+          [
+            qwen-3-6-35b-a3b
+            qwen-3-5-4b
+          ];
 
       imagePrompt = ''
         You are an image captioner.
