@@ -146,6 +146,38 @@ pick up on it via `git`.
   personal details. `AGENTS.md` describes the repository and the work, not the
   people.
 
+### Code guidelines
+
+Most of the guidelines in this section are here to reduce cognitive load on
+maintainers of projects you are working on. This is because maintainers are
+almost always human and humans have a daily limit on how much they can read
+unlike AI.
+
+- Keep comments to a minimum. Comments should only be used to explain a
+  particularly unexpected piece of code or to reference code or documentation
+  outside of the project you are working in as future reference for maintaining
+  the code.
+- Don't repeat yourself. When adding a new abstraction
+  (function/class/interface) check that it doesn't already exist and that it
+  doesn't overlap with another abstraction.
+- Less is more. If you can resolve the task that you are currently working on
+  with less code you should do so but never at the expense of safety or
+  performance. You should always focus on what is important to resolve your
+  current task and if you have additional suggestions for adding more code you
+  should bring it up to maintainers instead of adding that code to the project
+  you are working on pre-emptively.
+
+#### Pull requests
+
+Pull requests should only contain a very short description of the code changes
+made and reasoning behind the changes made in short. Any further description and
+reasoning can be discussed when the maintainer asks for it.
+
+#### Commit messages
+
+Always use conventional commit message style for commit messages and do not
+write commit descriptions unless maintainers ask for it.
+
 ## Hard constraints
 
 The following is a list of rules that outline what you should never do on a
