@@ -42,6 +42,7 @@ def "main lint" []: nothing -> nothing {
     print $"Stderr: ($cspell_result.stderr)"
     exit 1
   }
+  print $cspell_result.stdout
   if $env.NIX_BUILD_TOP? == null {
     let md_result = (
       markdown-link-check
