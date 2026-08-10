@@ -17,29 +17,66 @@
         pathsToLink = [ "/bin" ];
       };
 
+      # NOTE: every fetchurl below carries an explicit `name` = the GGUF
+      # basename. The default fetchurl name is "source", which would collide
+      # inside dot.ai.models (xdg.nix builds ~/.config/models/<group>/<name>)
+      # and inside the symlinkJoin models dir for the router.
+
+      # Vision model for the llama-cli processing nodes (image/audio/text).
       model = pkgs.fetchurl {
+        name = "gemma-4-E2B-it-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/gemma-4-E2B-it-Q4_K_M.gguf";
         hash = "sha256-k3i8RxcQIp7xZXCbYuNL+2IjFCDdr21ynnJzBbW4Zy0=";
       };
 
       mmproj = pkgs.fetchurl {
+        name = "mmproj-F16.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/mmproj-F16.gguf";
         hash = "sha256-FAvo14SXQfiMUHV9UpuENz7o4nBSzCI2hVtTf0qCFfo=";
       };
 
-      # NOTE: local chat models for the agent runtime (ZeroClaw).
-      # gemma-4-26b is the MoE (25.2B total / ~3.8B active) daily driver;
-      # gemma-4-e4b is the small dense edge model for cheap delegated tasks.
-      # Both from unsloth; hashes are the HF LFS sha256s converted to SRI.
-      # UD-* is the unsloth dynamic quant line.
+      # NOTE: chat models for the agent runtime (ZeroClaw), served by the
+      # llama-server router. gemma-4-26b is the MoE (25.2B total / ~3.8B
+      # active) daily driver; gemma-4-e4b is the small dense model for cheap
+      # delegated tasks. Both from unsloth; hashes are the HF LFS sha256s
+      # converted to SRI. UD-* is the unsloth dynamic quant line.
       gemma-4-26b = pkgs.fetchurl {
+        name = "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
         hash = "sha256-8sKLPcR3aTGsb4eeEfID3sY36g8UJnqG7I9hZfY/KT8=";
       };
 
       gemma-4-e4b = pkgs.fetchurl {
+        name = "gemma-4-E4B-it-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/main/gemma-4-E4B-it-Q4_K_M.gguf";
         hash = "sha256-haiWoEdVPoQvJSl+5bAx1k/zAUfZxK8XseSzlM0fq4c=";
+      };
+
+      # NOTE: qwen models for the model registry only (dot.ai.models) — the
+      # router keeps serving the gemma chat pair. Qwen3.6-35B-A3B (MoE, ~3B
+      # active) is the big one; Qwen3.5-4B (dense) the small one. Unsloth has
+      # silently re-quantized the 35B file before (same basename, different
+      # bytes), so it is pinned to a specific HF commit; the hash is the
+      # NUR-verified pair for that commit.
+      qwen-3.6-a3b = pkgs.fetchurl {
+        name = "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
+        url = "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
+        hash = "sha256-OakWBEx6wZYHGezOk0COu3s74dNNVDT6Mb4U4GJpayU=";
+      };
+
+      qwen-3.5-4b = pkgs.fetchurl {
+        name = "Qwen3.5-4B-Q4_K_M.gguf";
+        url = "https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/resolve/main/Qwen3.5-4B-Q4_K_M.gguf";
+        hash = "sha256-AP55hv9fa0Y+YkVYIRRgSdtvkxNgOTinCADR+2nvEaQ=";
+      };
+
+      # NOTE: a nix-store folder that symlinks the two chat models, so the
+      # router gets a path that actually exists. The previous
+      # `%h/models/gemma-4-chat` pointed at a $HOME folder nothing in this
+      # flake created — unwarranted coupling that was bound to break.
+      chatModelsDir = pkgs.symlinkJoin {
+        name = "gemma-4-chat-models";
+        paths = [ gemma-4-26b gemma-4-e4b ];
       };
 
       # NOTE: llama-server in router mode serves both chat models from one
@@ -55,7 +92,7 @@
       # args to fit device memory.
       llamaServerArgs = [
         "--models-dir"
-        "%h/models/gemma-4-chat"
+        chatModelsDir
         "--models-max"
         "2"
         "--sleep-idle-seconds"
@@ -266,11 +303,13 @@
       dot.ai.models.gemma-4.files = [
         model
         mmproj
-      ];
-
-      dot.ai.models.gemma-4-chat.files = [
         gemma-4-26b
         gemma-4-e4b
+      ];
+
+      dot.ai.models.qwen-3.5.files = [
+        qwen-3.6-a3b
+        qwen-3.5-4b
       ];
 
       systemd.user.services.llama-cpp = {

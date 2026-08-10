@@ -49,10 +49,13 @@
           fallback = [ "deepseek.main" ];
         };
 
-        providers.models.llamacpp.edge = {
+        providers.models.llamacpp.small = {
           model = "gemma-4-E4B-it-Q4_K_M.gguf";
           timeout_secs = 300;
           vision = false;
+          # Same fallback as main: a cold llama-server (or a crashed one)
+          # shouldn't take down the cheap path too.
+          fallback = [ "deepseek.main" ];
         };
 
         agents.${agent} = {
@@ -61,11 +64,12 @@
           runtime_profile = "main";
           channels = [ "matrix.main" ];
           mcp_bundles = [ "dev" ];
-          # Delegate roster: edge = cheap/fast (E4B), reasoner = deepseek
-          # for thinking/coding. Both share the "main" risk profile.
+          # Delegate roster: small = cheap/fast local (E4B), reasoner =
+          # deepseek for thinking/coding. Both share the "main" risk profile
+          # and run under main's workspace envelope.
           delegates = [
             {
-              agent = "edge";
+              agent = "small";
               mode = "bounded";
             }
             {
@@ -77,8 +81,8 @@
 
         # NOTE: delegate-only agents — no channels, reached via the delegate
         # tool from agents.main.
-        agents.edge = {
-          model_provider = "llamacpp.edge";
+        agents.small = {
+          model_provider = "llamacpp.small";
           risk_profile = "main";
           runtime_profile = "main";
         };
