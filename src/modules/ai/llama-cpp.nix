@@ -53,6 +53,18 @@
         hash = "sha256-AP55hv9fa0Y+YkVYIRRgSdtvkxNgOTinCADR+2nvEaQ=";
       };
 
+      # NOTE: embedding model for memory search (zeroclaw memory_recall in
+      # hybrid mode). Served by its own llama-server instance on port 8081:
+      # the router on 8080 can't mix chat + embeddings (--embeddings would
+      # restrict every model to embedding use). q8_0 at ~640MB, 1024 dims,
+      # last-token pooling — small enough to share the 12GB GPU with the
+      # chat models.
+      qwen-3-embedding = pkgs.fetchurl {
+        name = "Qwen3-Embedding-0.6B-Q8_0.gguf";
+        url = "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-Q8_0.gguf";
+        hash = "sha256-BlB8e0JohGnE5ymLCh4W3v8GyvKRzwpbJ4wwgknD5Dk=";
+      };
+
       serverModels = pkgs.symlinkJoin {
         name = "llama-cpp-server-models";
         paths = [
@@ -259,6 +271,7 @@
       dot.ai.models.qwen-3-5.files = [
         qwen-3-6-35b-a3b
         qwen-3-5-4b
+        qwen-3-embedding
       ];
 
       systemd.user.services.llama-cpp = {
@@ -266,7 +279,7 @@
           WantedBy = [ "default.target" ];
         };
         Unit = {
-          Description = "llama.cpp server (gemma-4 26B A4B + E4B router)";
+          Description = "llama.cpp router (Qwen3.6-35B-A3B + Qwen3.5-4B)";
           Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
         };
         Service = {
@@ -289,6 +302,65 @@
             "--gpu-layers"
             "all"
             "--cpu-moe"
+            "--cache-type-k"
+            "q8_0"
+            "--cache-type-v"
+            "q8_0"
+          ];
+          Restart = "on-failure";
+          RestartSec = 5;
+
+          ProtectSystem = "strict";
+          ProtectHome = "read-only";
+          PrivateTmp = true;
+
+          NoNewPrivileges = true;
+          LockPersonality = true;
+
+          RestrictAddressFamilies = [
+            "AF_INET"
+            "AF_INET6"
+          ];
+          IPAddressDeny = "any";
+          IPAddressAllow = [
+            "127.0.0.0/8"
+            "::1"
+          ];
+        };
+      };
+
+      # NOTE: dedicated embeddings-only server for memory search; see the
+      # qwen-3-embedding fetchurl note above for why it isn't in the router.
+      # --pooling last is what Qwen3-Embedding needs; --alias matches the
+      # model id zeroclaw sends in /v1/embeddings requests.
+      systemd.user.services.llama-cpp-embeddings = {
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+        Unit = {
+          Description = "llama.cpp embedding server (Qwen3-Embedding-0.6B)";
+          Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
+        };
+        Service = {
+          ExecStart = [
+            "${package}/bin/llama-server"
+            "--model"
+            "${qwen-3-embedding}"
+            "--alias"
+            "qwen3-embedding-0.6b"
+            "--embeddings"
+            "--pooling"
+            "last"
+            "--sleep-idle-seconds"
+            "900"
+            "--host"
+            "127.0.0.1"
+            "--port"
+            "8081"
+            "--flash-attn"
+            "on"
+            "--gpu-layers"
+            "all"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
