@@ -1,8 +1,9 @@
 # TOOLS.md
 
-## Fetching
+## Shell
 
-Use the `web_fetch` tool instead of `http_request` for basic fetches.
+Never use the `shell` tool and never use `cron_add` with `shell` type to do
+stuff in the shell.
 
 ## Learning
 
