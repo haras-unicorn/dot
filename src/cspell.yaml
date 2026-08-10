@@ -515,3 +515,4 @@ ignoreWords:
   - gnused
   - gnugrep
   - findutils
+  - huggingface
