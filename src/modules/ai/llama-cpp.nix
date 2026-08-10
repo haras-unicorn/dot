@@ -44,7 +44,7 @@
       qwen-3-6-35b-a3b = pkgs.fetchurl {
         name = "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
-        hash = "sha256-OakWBEx6wZYHGezOk0COu3s74dNNVDT6Mb4U4GJpayU=";
+        hash = "sha256-rA4sEYngVfqjbv82FYDnnFvW+Odr/7TOVH8WfVPjGmE=";
       };
 
       qwen-3-5-4b = pkgs.fetchurl {
