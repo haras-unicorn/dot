@@ -15,7 +15,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "cyanheads";
         repo = "git-mcp-server";
-        rev = "v2.15.1";
+        # NOTE: v2.15.1
+        rev = "31dd1918500a51129f0a086ed3471527961c7572";
         hash = "sha256-CzKb4HRVrf/XyldYm69KJWn6cIpVAfz9Vg7q2j6SBdc=";
       };
     in
@@ -32,6 +33,7 @@
         dontRunLifecycleScripts = true;
 
         buildPhase = ''
+          cp ${src}/tsconfig.json .
           bun run build
         '';
 
