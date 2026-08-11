@@ -12,7 +12,7 @@
 
       bun2nix = bun2nixFlake.packages.${system}.default;
 
-      src = pkgs.fetchFromGitHub {
+      src = pkgs.fetchgit {
         owner = "cyanheads";
         repo = "git-mcp-server";
         # NOTE: v2.15.1
@@ -33,7 +33,6 @@
         dontRunLifecycleScripts = true;
 
         buildPhase = ''
-          cp ${src}/tsconfig.json .
           bun run build
         '';
 
