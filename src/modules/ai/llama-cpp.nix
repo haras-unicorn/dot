@@ -423,6 +423,8 @@
             "q8_0"
             "--cache-type-v"
             "q8_0"
+            "-c"
+            "4096"
           ];
           Restart = "on-failure";
           RestartSec = 5;
