@@ -12,12 +12,12 @@
 
       bun2nix = bun2nixFlake.packages.${system}.default;
 
+      # NOTE: fetch git because fetchFromGitHub doesn't download tsconfig.json
       src = pkgs.fetchgit {
-        owner = "cyanheads";
-        repo = "git-mcp-server";
+        url = "https://github.com/cyanheads/git-mcp-server";
         # NOTE: v2.15.1
         rev = "31dd1918500a51129f0a086ed3471527961c7572";
-        hash = "sha256-CzKb4HRVrf/XyldYm69KJWn6cIpVAfz9Vg7q2j6SBdc=";
+        hash = "sha256-zJdkkEbmXMHHnj1ISMTeUVpARL7t5RVhOnm1PIfjOqg=";
       };
     in
     {
