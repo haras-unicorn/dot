@@ -15,16 +15,7 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
 
-      zeroclaw = (inputs.llm-agents.packages.${system}.zeroclaw).overrideAttrs (
-        final: prev: {
-          patches = (prev.patches or [ ]) ++ [
-            ./bwrap-nix-store.patch
-          ];
-          cargoBuildFlags = (prev.cargoBuildFlags or [ ]) ++ [
-            "--all-features"
-          ];
-        }
-      );
+      zeroclaw = self.packages.${system}.zeroclaw;
 
       nixCache = "${config.xdg.cacheHome}/nix";
       nixState = "${config.xdg.stateHome}/nix";
