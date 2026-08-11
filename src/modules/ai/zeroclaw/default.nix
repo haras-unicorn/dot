@@ -254,7 +254,7 @@
         memory = {
           search_mode = "hybrid";
           embedding_provider = "custom:http://127.0.0.1:8081/v1";
-          embedding_model = "Qwen3-Embedding-0.6B-Q8_0";
+          embedding_model = "qwen-3-embedding";
           embedding_dimensions = 1024;
         };
       };
@@ -273,14 +273,14 @@
       # TODO: use when moe gpu compute gets fixed
       # llamaConfig = {
       #   providers.models.llamacpp.main = {
-      #     model = "Qwen3.6-35B-A3B-UD-Q4_K_M";
+      #     model = "qwen-3-6-35b-a3b";
       #     timeout_secs = 600;
       #     vision = false;
       #     fallback = [ "deepseek.main" ];
       #   };
 
       #   providers.models.llamacpp.small = {
-      #     model = "Qwen3.5-4B-Q4_K_M";
+      #     model = "qwen-3-5-4b";
       #     timeout_secs = 300;
       #     vision = false;
       #     fallback = [ "deepseek.main" ];
