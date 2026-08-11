@@ -1,0 +1,14 @@
+diff --git a/crates/zeroclaw-runtime/src/security/bubblewrap.rs b/crates/zeroclaw-runtime/src/security/bubblewrap.rs
+index b3c632cdd..f07399b36 100644
+--- a/crates/zeroclaw-runtime/src/security/bubblewrap.rs
++++ b/crates/zeroclaw-runtime/src/security/bubblewrap.rs
+@@ -121,6 +121,9 @@ impl BubblewrapSandbox {
+             "--ro-bind",
+             "/sbin",
+             "/sbin",
++            "--ro-bind",
++            "/nix/store",
++            "/nix/store",
+             "--dev",
+             "/dev",
+             "--proc",
