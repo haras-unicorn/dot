@@ -78,6 +78,8 @@
         pathsToLink = [ "/bin" ];
       };
 
+      # NOTE: don't use UD with FATE - it doesn't account for it
+
       gemma-4-e2b = pkgs.fetchurl {
         name = "gemma-4-E2B-it-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/gemma-4-E2B-it-Q4_K_M.gguf";
@@ -91,9 +93,9 @@
       };
 
       gemma-4-26b-a4b = pkgs.fetchurl {
-        name = "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
-        url = "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/resolve/main/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf";
-        hash = "sha256-8sKLPcR3aTGsb4eeEfID3sY36g8UJnqG7I9hZfY/KT8=";
+        name = "google_gemma-4-26B-A4B-it-Q4_K_M.gguf";
+        url = "https://huggingface.co/bartowski/google_gemma-4-26B-A4B-it-GGUF/resolve/main/google_gemma-4-26B-A4B-it-Q4_K_M.gguf";
+        hash = "sha256-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=";
       };
 
       gemma-4-e4b = pkgs.fetchurl {
@@ -103,9 +105,9 @@
       };
 
       qwen-3-6-35b-a3b = pkgs.fetchurl {
-        name = "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
-        url = "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf";
-        hash = "sha256-rA4sEYngVfqjbv82FYDnnFvW+Odr/7TOVH8WfVPjGmE=";
+        name = "Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf";
+        url = "https://huggingface.co/bartowski/Qwen_Qwen3.6-35B-A3B-GGUF/resolve/main/Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf";
+        hash = "sha256-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=";
       };
 
       qwen-3-5-4b = pkgs.fetchurl {
