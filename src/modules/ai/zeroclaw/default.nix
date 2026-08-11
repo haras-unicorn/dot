@@ -1,4 +1,9 @@
-{ inputs, lib, ... }:
+{
+  self,
+  inputs,
+  lib,
+  ...
+}:
 
 {
   machines.homeModules.zeroclaw =
@@ -231,29 +236,40 @@
           enabled = true;
           servers = [
             {
-              name = "github";
-              transport = "stdio";
-              command = lib.getExe pkgs.github-mcp-server;
-              args = [
-                "stdio"
-              ];
-              env = {
-                GITHUB_PERSONAL_ACCESS_TOKEN = "$GITHUB_PERSONAL_ACCESS_TOKEN";
-              };
-            }
-            {
               name = "nixos";
               transport = "stdio";
               command = lib.getExe pkgs.mcp-nixos;
               args = [ ];
+            }
+            {
+              name = "git";
+              transport = "stdio";
+              command = lib.getExe self.packages.${system}.git-mcp-server;
+              env = {
+                MCP_TRANSPORT_TYPE = "stdio";
+                MCP_LOG_LEVEL = "warn";
+                GIT_SSH_COMMAND = "echo '$GIT_SSH_KEY' | ssh -i /dev/stdin";
+                GIT_USER = "$GIT_USER";
+                GIT_EMAIL = "$GIT_EMAIL";
+              };
+            }
+            {
+              name = "github";
+              transport = "stdio";
+              command = lib.getExe pkgs.github-mcp-server;
+              args = [ "stdio" ];
+              env = {
+                GITHUB_PERSONAL_ACCESS_TOKEN = "$GITHUB_PERSONAL_ACCESS_TOKEN";
+              };
             }
           ];
         };
 
         mcp_bundles.dev = {
           servers = [
-            "github"
             "nixos"
+            "git"
+            "github"
           ];
         };
 
