@@ -73,6 +73,11 @@
 
           allowed_commands = [
             "ls"
+            "mkdir"
+            "cp"
+            "mv"
+            "rm"
+            "touch"
             "pwd"
             "tree"
             "stat"
