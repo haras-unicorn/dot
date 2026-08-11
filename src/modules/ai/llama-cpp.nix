@@ -83,7 +83,7 @@
       gemma-4-e2b = pkgs.fetchurl {
         name = "gemma-4-e2b.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/gemma-4-E2B-it-Q4_K_M.gguf";
-        hash = "sha256-k3i8RxcQIp7xZXCbYuNL+2IjFCDdr21ynnJzBbW4Zy0=";
+        hash = "sha256-dAGFsh0izrg6EcOqYq1YQu8yxw9gltdWu+6FoeTsNLg=";
       };
 
       gemma-4-e2b-mmproj = pkgs.fetchurl {
@@ -356,13 +356,14 @@
             "127.0.0.1"
             "--port"
             "8080"
+            "--mmap"
             "--flash-attn"
             "on"
             "--gpu-layers"
             "all"
             "--fate"
             "--fate-cache"
-            "4096"
+            "2048"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"

@@ -251,12 +251,7 @@
           search_provider = "duckduckgo";
         };
 
-        memory = {
-          search_mode = "hybrid";
-          embedding_provider = "custom:http://127.0.0.1:8081/v1";
-          embedding_model = "qwen-3-embedding";
-          embedding_dimensions = 1024;
-        };
+        memory.search_mode = "bm25";
       };
 
       deepseekConfig = {
@@ -313,6 +308,13 @@
       #     model_provider = "deepseek.main";
       #     risk_profile = "main";
       #     runtime_profile = "main";
+      #   };
+      #
+      #   memory = {
+      #     search_mode = "hybrid";
+      #     embedding_provider = "custom:http://127.0.0.1:8081/v1";
+      #     embedding_model = "qwen-3-embedding";
+      #     embedding_dimensions = 1024;
       #   };
       # };
 
