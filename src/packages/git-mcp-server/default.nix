@@ -11,24 +11,23 @@
       );
 
       bun2nix = bun2nixFlake.packages.${system}.default;
+
+      src = pkgs.fetchFromGitHub {
+        owner = "cyanheads";
+        repo = "git-mcp-server";
+        rev = "v2.15.1";
+        hash = "sha256-CzKb4HRVrf/XyldYm69KJWn6cIpVAfz9Vg7q2j6SBdc=";
+      };
     in
     {
       packages.git-mcp-server = bun2nix.mkDerivation (final: {
-        pname = "git-mcp-server";
-        version = "2.15.1";
+        inherit src;
 
-        src = pkgs.fetchFromGitHub {
-          owner = "cyanheads";
-          repo = "git-mcp-server";
-          rev = "v${final.version}";
-          hash = "sha256-CzKb4HRVrf/XyldYm69KJWn6cIpVAfz9Vg7q2j6SBdc=";
-        };
+        packageJson = "${src}/package.json";
 
         bunDeps = bun2nix.fetchBunDeps {
           bunNix = ./bun.nix.lock;
         };
-
-        module = "src/index.ts";
       });
     };
 }
