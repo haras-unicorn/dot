@@ -20,7 +20,7 @@
       };
     in
     {
-      packages.git-mcp-server = bun2nix.writeBunApplication {
+      packages.git-mcp-server = bun2nix.mkDerivation (final: {
         inherit src;
 
         packageJson = "${src}/package.json";
@@ -28,6 +28,10 @@
         bunDeps = bun2nix.fetchBunDeps {
           bunNix = ./bun.nix.lock;
         };
-      };
+
+        startScript = ''
+          bun run start
+        '';
+      });
     };
 }
