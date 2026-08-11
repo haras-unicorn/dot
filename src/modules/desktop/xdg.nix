@@ -365,6 +365,7 @@
           builtins.map (file: {
             name = "models/${name}/${lib.getName file}";
             value.source = file;
+            value.force = true;
           }) files
         ) (builtins.attrValues config.dot.ai.models)
       );
