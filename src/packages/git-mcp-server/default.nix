@@ -53,6 +53,8 @@
 
           runHook postInstall
         '';
+
+        meta.mainProgram = "git-mcp-server";
       };
     };
 }
