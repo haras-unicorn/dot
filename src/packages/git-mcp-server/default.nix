@@ -11,19 +11,20 @@
       );
 
       bun2nix = bun2nixFlake.packages.${system}.default;
-
-      src = pkgs.fetchFromGitHub {
-        owner = "cyanheads";
-        repo = "git-mcp-server";
-        rev = "v2.15.1";
-        hash = "sha256-CzKb4HRVrf/XyldYm69KJWn6cIpVAfz9Vg7q2j6SBdc=";
-      };
     in
     {
       packages.git-mcp-server = bun2nix.writeBunApplication (final: {
-        inherit src;
+        pname = "git-mcp-server";
+        version = "2.15.1";
 
-        packageJson = "${src}/package.json";
+        src = pkgs.fetchFromGitHub {
+          owner = "cyanheads";
+          repo = "git-mcp-server";
+          rev = "v${final.version}";
+          hash = "sha256-CzKb4HRVrf/XyldYm69KJWn6cIpVAfz9Vg7q2j6SBdc=";
+        };
+
+        module = "src/index.ts";
 
         bunDeps = bun2nix.fetchBunDeps {
           bunNix = ./bun.nix.lock;
