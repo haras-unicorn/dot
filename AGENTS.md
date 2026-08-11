@@ -1,7 +1,7 @@
 # AGENTS.md
 
 NixOS configuration flake built with `flake-parts` and `import-tree` over the
-`src` directory.
+`src` directory. Every Nix module in the flake is a `flake-parts` module.
 
 ## Structure
 
