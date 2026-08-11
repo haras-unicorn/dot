@@ -2,7 +2,10 @@
   perSystem =
     { lib, pkgs, ... }:
     let
-      bun2nix = builtins.getFlake "github:nix-community/bun2nix";
+      bun2nix = builtins.getFlake (
+        "github:nix-community/bun2nix/refs/tags/2.1.2"
+        + "?narHash=sha256-9BMxlTxCCDAeoNLtb1a/st7udtTIJep%2BwpUzquA29VU%3D"
+      );
     in
     {
       packages.git-mcp-server = pkgs.stdenv.mkDerivation (final: {
