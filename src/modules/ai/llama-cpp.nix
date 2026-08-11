@@ -81,43 +81,43 @@
       # NOTE: don't use UD with FATE - it doesn't account for it
 
       gemma-4-e2b = pkgs.fetchurl {
-        name = "gemma-4-E2B-it-Q4_K_M.gguf";
+        name = "gemma-4-e2b.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/gemma-4-E2B-it-Q4_K_M.gguf";
         hash = "sha256-k3i8RxcQIp7xZXCbYuNL+2IjFCDdr21ynnJzBbW4Zy0=";
       };
 
       gemma-4-e2b-mmproj = pkgs.fetchurl {
-        name = "mmproj-F16.gguf";
+        name = "gemma-4-e2b-mmproj.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/mmproj-F16.gguf";
         hash = "sha256-FAvo14SXQfiMUHV9UpuENz7o4nBSzCI2hVtTf0qCFfo=";
       };
 
       gemma-4-26b-a4b = pkgs.fetchurl {
-        name = "google_gemma-4-26B-A4B-it-Q4_K_M.gguf";
+        name = "gemma-4-26b-a4b.gguf";
         url = "https://huggingface.co/bartowski/google_gemma-4-26B-A4B-it-GGUF/resolve/main/google_gemma-4-26B-A4B-it-Q4_K_M.gguf";
         hash = "sha256-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=";
       };
 
       gemma-4-e4b = pkgs.fetchurl {
-        name = "gemma-4-E4B-it-Q4_K_M.gguf";
+        name = "gemma-4-e4b.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/main/gemma-4-E4B-it-Q4_K_M.gguf";
         hash = "sha256-haiWoEdVPoQvJSl+5bAx1k/zAUfZxK8XseSzlM0fq4c=";
       };
 
       qwen-3-6-35b-a3b = pkgs.fetchurl {
-        name = "Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf";
+        name = "qwen-3-6-35b-a3b.gguf";
         url = "https://huggingface.co/bartowski/Qwen_Qwen3.6-35B-A3B-GGUF/resolve/main/Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf";
         hash = "sha256-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=";
       };
 
       qwen-3-5-4b = pkgs.fetchurl {
-        name = "Qwen3.5-4B-Q4_K_M.gguf";
+        name = "qwen-3-5-4b.gguf";
         url = "https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/resolve/main/Qwen3.5-4B-Q4_K_M.gguf";
         hash = "sha256-AP55hv9fa0Y+YkVYIRRgSdtvkxNgOTinCADR+2nvEaQ=";
       };
 
       qwen-3-embedding = pkgs.fetchurl {
-        name = "Qwen3-Embedding-0.6B-Q8_0.gguf";
+        name = "qwen-3-embedding.gguf";
         url = "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-Q8_0.gguf";
         hash = "sha256-BlB8e0JohGnE5ymLCh4W3v8GyvKRzwpbJ4wwgknD5Dk=";
       };
