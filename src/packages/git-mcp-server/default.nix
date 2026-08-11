@@ -20,7 +20,7 @@
       };
     in
     {
-      packages.git-mcp-server = bun2nix.mkDerivation (final: {
+      packages.git-mcp-server = bun2nix.writeBunApplication (final: {
         inherit src;
 
         packageJson = "${src}/package.json";
