@@ -78,13 +78,13 @@
         pathsToLink = [ "/bin" ];
       };
 
-      gemma-4 = pkgs.fetchurl {
+      gemma-4-e2b = pkgs.fetchurl {
         name = "gemma-4-E2B-it-Q4_K_M.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/gemma-4-E2B-it-Q4_K_M.gguf";
         hash = "sha256-k3i8RxcQIp7xZXCbYuNL+2IjFCDdr21ynnJzBbW4Zy0=";
       };
 
-      gemma-4-mmproj = pkgs.fetchurl {
+      gemma-4-e2b-mmproj = pkgs.fetchurl {
         name = "mmproj-F16.gguf";
         url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/mmproj-F16.gguf";
         hash = "sha256-FAvo14SXQfiMUHV9UpuENz7o4nBSzCI2hVtTf0qCFfo=";
@@ -163,8 +163,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${gemma-4} \
-            --mmproj ${gemma-4-mmproj} \
+            --model ${gemma-4-e2b} \
+            --mmproj ${gemma-4-e2b-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -194,8 +194,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${gemma-4} \
-            --mmproj ${gemma-4-mmproj} \
+            --model ${gemma-4-e2b} \
+            --mmproj ${gemma-4-e2b-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -225,8 +225,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${gemma-4} \
-            --mmproj ${gemma-4-mmproj} \
+            --model ${gemma-4-e2b} \
+            --mmproj ${gemma-4-e2b-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -255,8 +255,8 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           llama-cli \
-            --model ${gemma-4} \
-            --mmproj ${gemma-4-mmproj} \
+            --model ${gemma-4-e2b} \
+            --mmproj ${gemma-4-e2b-mmproj} \
             --mmap \
             --gpu-layers all \
             --flash-attn on \
@@ -321,10 +321,10 @@
       };
 
       dot.ai.models.gemma-4.files = [
-        gemma-4
-        gemma-4-mmproj
-        gemma-4-26b-a4b
+        gemma-4-e2b
+        gemma-4-e2b-mmproj
         gemma-4-e4b
+        gemma-4-26b-a4b
       ];
 
       dot.ai.models.qwen-3-5.files = [
