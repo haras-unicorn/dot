@@ -29,6 +29,10 @@
           bunNix = ./bun.nix.lock;
         };
 
+        buildPhase = ''
+          bun run build
+        '';
+
         startScript = ''
           bun run start
         '';
