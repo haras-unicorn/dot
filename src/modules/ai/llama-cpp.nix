@@ -360,7 +360,7 @@
             "all"
             "--fate"
             "--fate-cache"
-            "2048"
+            "4096"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
