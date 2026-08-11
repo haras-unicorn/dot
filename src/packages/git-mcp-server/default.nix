@@ -29,6 +29,13 @@
           bunNix = ./bun.nix.lock;
         };
 
+        postPatch = ''
+          sed -i 's/: "\^/: "/g; s/: "~/: "/g' package.json bun.lock
+        '';
+
+        dontRunLifecycleScripts = true;
+        bunInstallFlags = "--linker=isolated --offline";
+
         buildPhase = ''
           bun run build
         '';
