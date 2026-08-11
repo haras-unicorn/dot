@@ -19,7 +19,8 @@
           ];
 
           cargoBuildFlags = (prev.cargoBuildFlags or [ ]) ++ [
-            "--all-features"
+            "--features"
+            "voice-wake,channel-matrix,sandbox-bubblewrap"
           ];
         }
       );
