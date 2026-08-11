@@ -40,7 +40,11 @@
 
       system = pkgs.stdenv.hostPlatform.system;
 
-      llama-cpp = self.packages.${system}.llama-moe-cache;
+      llama-cpp =
+        if cuda then
+          self.packages.${system}.llama-moe-cache-cuda
+        else
+          self.packages.${system}.llama-moe-cache-vulkan;
 
       # NOTE: like this because some libs
       # otherwise conflict with other packages
