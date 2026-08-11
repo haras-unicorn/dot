@@ -10,12 +10,16 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
 
-      zeroclaw = (inputs.llm-agents.packages.${system}.zeroclaw).overrideAttrs (old: {
-        cargoBuildFlags = (old.cargoBuildFlags or [ ]) ++ [
-          "--features"
-          "channel-matrix"
-        ];
-      });
+      zeroclaw = (inputs.llm-agents.packages.${system}.zeroclaw).overrideAttrs (
+        final: prev: {
+          patches = (prev.patches or [ ]) ++ [
+            ./bwrap-nix-store.patch
+          ];
+          cargoBuildFlags = (prev.cargoBuildFlags or [ ]) ++ [
+            "--all-features"
+          ];
+        }
+      );
 
       nixCache = "${config.xdg.cacheHome}/nix";
       nixState = "${config.xdg.stateHome}/nix";
@@ -63,6 +67,7 @@
         risk_profiles.main = {
           level = "supervised";
           workspace_only = true;
+
           sandbox_backend = "bwrap";
           sandbox_enabled = true;
 
@@ -162,6 +167,7 @@
             "send_message_to_peer"
             "sessions_send"
             "project_intel"
+            "TodoWrite"
 
             "nixos__nix"
             "nixos__nix_versions"
@@ -367,7 +373,6 @@
           pkgs.file
           pkgs.jq
 
-          pkgs.git
           pkgs.nix
         ];
         text = "zeroclaw daemon";
@@ -421,7 +426,6 @@
           ProtectHostname = true;
           MemoryDenyWriteExecute = true;
           RemoveIPC = true;
-          RestrictNamespaces = true;
           RestrictRealtime = true;
           RestrictSUIDSGID = true;
           RestrictAddressFamilies = [
