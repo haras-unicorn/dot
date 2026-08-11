@@ -1,18 +1,32 @@
 { self, ... }:
 
 {
-  perSystem = { pkgs, ... }: {
-    packages.llama-moe-cache =
-      let
-        src = pkgs.fetchFromGitHub {
-          owner = "ongunm";
-          repo = "llama-moe-cache";
-          rev = "77c8767d26bd6285b2fe351c58143ee4d6b72fa6";
-          hash = "sha256-5sAd5aSmC926ND1IZY5FtkAjRcJCvSzlJHTXJk+jjj8=";
+  perSystem =
+    { pkgs, ... }:
+    let
+      src = pkgs.fetchFromGitHub {
+        owner = "ongunm";
+        repo = "llama-moe-cache";
+        rev = "77c8767d26bd6285b2fe351c58143ee4d6b72fa6";
+        hash = "sha256-5sAd5aSmC926ND1IZY5FtkAjRcJCvSzlJHTXJk+jjj8=";
+      };
+
+      scope = pkgs.callPackage "${src}/.devops/nix/scope.nix" { };
+    in
+    {
+      packages = {
+        llama-moe-cache = scope.llama-cpp;
+        llama-moe-cache-cuda = scope.llama-cpp.override {
+          useCuda = true;
         };
-      in
-      (pkgs.callPackage "${src}/.devops/nix/scope.nix" { }).llama-cpp;
-  };
+        llama-moe-cache-rocm = scope.llama-cpp.override {
+          useRocm = true;
+        };
+        llama-moe-cache-vulkan = scope.llama-cpp.override {
+          useVulkan = true;
+        };
+      };
+    };
 
   machines.homeModules.llama-cpp =
     {
