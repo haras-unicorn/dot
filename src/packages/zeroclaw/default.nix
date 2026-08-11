@@ -10,9 +10,14 @@
       in
       zeroclaw.overrideAttrs (
         final: prev: {
+          nativeBuildInputs = (prev.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+
+          buildInputs = (prev.buildInputs or [ ]) ++ [ pkgs.alsa-lib ];
+
           patches = (prev.patches or [ ]) ++ [
             ./bwrap-nix-store.patch
           ];
+
           cargoBuildFlags = (prev.cargoBuildFlags or [ ]) ++ [
             "--all-features"
           ];

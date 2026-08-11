@@ -1,9 +1,4 @@
-{
-  self,
-  inputs,
-  lib,
-  ...
-}:
+{ self, lib, ... }:
 
 {
   machines.homeModules.zeroclaw =
