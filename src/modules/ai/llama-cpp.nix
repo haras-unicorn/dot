@@ -107,7 +107,7 @@
       qwen-3-6-35b-a3b = pkgs.fetchurl {
         name = "qwen-3-6-35b-a3b.gguf";
         url = "https://huggingface.co/bartowski/Qwen_Qwen3.6-35B-A3B-GGUF/resolve/main/Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf";
-        hash = "sha256-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=";
+        hash = "sha256-tG/t0z4L+wyuMIqjwVjQpLLEodIYWh7W8JPNrzkGR3I=";
       };
 
       qwen-3-5-4b = pkgs.fetchurl {
