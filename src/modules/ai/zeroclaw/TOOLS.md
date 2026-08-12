@@ -4,7 +4,16 @@
 
 Never use `cron_add` with `shell` type to do stuff in the shell.
 
-## Git & GitHub
+## Git
+
+Always use the `git` MCP server to do git operations because it has your `git`
+credentials necessary for pushing.
+
+## GitHub
+
+Always use the `github` MCP server for doing `github` related operations because
+it has your `github` credentials. Never use the `github` MCP server to push
+files as it requires you to spell out every single file for pushing.
 
 ## Fetch
 

@@ -411,6 +411,9 @@
 
       nix.settings.allowed-users = [ user ];
 
+      # NOTE: needed for bubblewrap
+      systemd.tmpfiles.rules = [ "d /usr/local 0755 root root -" ];
+
       systemd.services.${name} = {
         wantedBy = [ "multi-user.target" ];
         requires = [ "network-online.target" ];
