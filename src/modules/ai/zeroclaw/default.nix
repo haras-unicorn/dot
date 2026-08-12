@@ -513,7 +513,6 @@
           SystemCallArchitectures = "native";
           CapabilityBoundingSet = [ "" ];
           AmbientCapabilities = [ "" ];
-
           ProtectControlGroups = true;
           ProtectKernelModules = true;
           RestrictRealtime = true;
