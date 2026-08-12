@@ -406,6 +406,7 @@
       users.users.${user} = {
         group = user;
         isSystemUser = true;
+        home = dataDir;
       };
 
       nix.settings.allowed-users = [ user ];
@@ -440,7 +441,6 @@
           ProtectHostname = true;
           MemoryDenyWriteExecute = true;
           RemoveIPC = true;
-          RestrictRealtime = true;
           RestrictSUIDSGID = true;
           RestrictAddressFamilies = [
             "AF_INET"
@@ -451,11 +451,6 @@
           SystemCallArchitectures = "native";
           CapabilityBoundingSet = [ "" ];
           AmbientCapabilities = [ "" ];
-          SystemCallFilter = [
-            "@system-service"
-            "~@privileged"
-            "~@resources"
-          ];
           UMask = "0077";
         };
       };
