@@ -10,14 +10,22 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
 
-      zeroclaw = self.packages.${system}.zeroclaw;
-
       name = "zeroclaw";
       user = name;
       cacheDir = "/var/cache/${name}";
       dataDir = "/var/lib/${name}";
       agent = "main";
       agentWorkspaceDir = "${dataDir}/agents/${agent}/workspace";
+
+      zeroclaw = self.packages.${system}.zeroclaw;
+      zeroclawCli = pkgs.writeShellApplication {
+        name = "zeroclaw";
+        runtimeInputs = [ zeroclaw ];
+        text = ''
+          export ZEROCLAW_CONFIG_DIR="${dataDir}"
+          ${lib.getExe config.security.sudo.package} -u "${user}" "$@"
+        '';
+      };
 
       toml = pkgs.formats.toml { };
 
@@ -389,12 +397,8 @@
     in
     {
       environment.systemPackages = [
-        zeroclaw
+        zeroclawCli
       ];
-
-      environment.sessionVariables = {
-        ZEROCLAW_CONFIG_DIR = dataDir;
-      };
 
       users.groups.${user} = { };
       users.users.${user} = {
