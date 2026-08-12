@@ -196,38 +196,49 @@
             "git__git_worktree"
             "git__git_set_working_dir"
             "git__git_clear_working_dir"
-            "git__git_wrapup_instructions"
 
+            "github__actions_get"
+            "github__actions_list"
+            "github__get_job_logs"
             "github__get_me"
-            "github__search_commits"
-            "github__search_repositories"
-            "github__search_users"
-            "github__get_file_contents"
-            "github__get_repository_tree"
-            "github__list_commits"
-            "github__get_commit"
-            "github__list_branches"
-            "github__search_code"
-            "github__fork_repository"
-            "github__create_repository"
-            "github__create_branch"
-            "github__create_or_update_file"
-            "github__push_files"
-            "github__delete_file"
-            "github__list_repository_collaborators"
+            "github__get_team_members"
+            "github__get_teams"
+            "github__discussion_comment_write"
+            "github__get_discussion"
+            "github__get_discussion_comments"
+            "github__list_discussion_categories"
+            "github__list_discussions"
+            "github__add_issue_comment"
+            "github__get_label"
             "github__issue_read"
             "github__issue_write"
-            "github__list_issues"
-            "github__search_issues"
-            "github__add_issue_comment"
+            "github__list_issue_fields"
             "github__list_issue_types"
-            "github__pull_request_read"
-            "github__list_pull_requests"
-            "github__search_pull_requests"
+            "github__search_issues"
+            "github__sub_issue_write"
+            "github__get_label"
+            "github__label_write"
+            "github__list_label"
+            "github__dismiss_notification"
+            "github__get_notification_details"
+            "github__list_notifications"
+            "github__manage_notification_subscription"
+            "github__manage_repository_notification_subscription"
+            "github__mark_all_notifications_read"
+            "github__projects_get"
+            "github__projects_list"
+            "github__projects_write"
+            "github__add_comment_to_pending_review"
+            "github__add_reply_to_pull_request_comment"
             "github__create_pull_request"
-            "github__update_pull_request"
+            "github__list_pull_requests"
             "github__merge_pull_request"
+            "github__pull_request_read"
+            "github__pull_request_review_write"
+            "github__search_pull_requests"
+            "github__update_pull_request"
             "github__update_pull_request_branch"
+            "github__create_branch"
           ];
         };
 
@@ -281,6 +292,19 @@
               args = [ "stdio" ];
               env = {
                 GITHUB_PERSONAL_ACCESS_TOKEN = "$GITHUB_PERSONAL_ACCESS_TOKEN";
+                GITHUB_TOOLSETS = builtins.concatStringsSep "," [
+                  "context"
+                  "repos"
+                  "issues"
+                  "labels"
+                  "notifications"
+                  "discussions"
+                  "projects"
+                  "stargazers"
+                  "actions"
+                  "pull_requests"
+                  "users"
+                ];
               };
             }
           ];
@@ -441,7 +465,10 @@
       nix.settings.allowed-users = [ user ];
 
       # NOTE: needed for bubblewrap
-      systemd.tmpfiles.rules = [ "d /usr/local 0755 root root -" ];
+      systemd.tmpfiles.rules = [
+        "d /usr/local 0755 root root -"
+        "d /sbin 0755 root root -"
+      ];
 
       systemd.services.${name} = {
         wantedBy = [ "multi-user.target" ];

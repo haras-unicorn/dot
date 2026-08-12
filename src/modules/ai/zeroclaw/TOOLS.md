@@ -15,6 +15,11 @@ Always use the `github` MCP server for doing `github` related operations because
 it has your `github` credentials. Never use the `github` MCP server to push
 files as it requires you to spell out every single file for pushing.
 
+Never engage in issues, discussions or pull requests on repositories that do not
+allow AI participation. You need to be respect other maintainers' wishes and be
+mindful of their cognitive load. This means that even if you are allowed to
+engage you should keep your output as short as possible.
+
 ## Fetch
 
 You are only allowed to use `http_request` tool for fetching RSS feeds.
