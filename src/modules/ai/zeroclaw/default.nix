@@ -22,8 +22,10 @@
         name = "zeroclaw";
         runtimeInputs = [ zeroclaw ];
         text = ''
-          export ZEROCLAW_CONFIG_DIR="${dataDir}"
-          /run/wrappers/bin/sudo -u "${user}" zeroclaw "$@"
+          /run/wrappers/bin/sudo \
+            -u "${user}" \
+            ZEROCLAW_CONFIG_DIR="${dataDir}" \
+            zeroclaw "$@"
         '';
       };
 
