@@ -494,6 +494,7 @@
 
           # NOTE: be very careful how you harden here
           # because of bwrap
+          # NOTE: zeroclaw uses this bwrap --ro-bind /usr /usr --ro-bind /usr/local /usr/local --ro-bind /bin /bin --ro-bind /sbin /sbin --ro-bind /nix/store /nix/store --dev /dev --proc /proc --bind /tmp /tmp --unshare-all --die-with-parent --cap-drop CAP_SYS_ADMIN --cap-drop CAP_SYS_PTRACE
           ProtectHome = true;
           ProtectClock = true;
           PrivateDevices = true;
@@ -512,6 +513,12 @@
           SystemCallArchitectures = "native";
           CapabilityBoundingSet = [ "" ];
           AmbientCapabilities = [ "" ];
+
+          ProtectControlGroups = true;
+          ProtectKernelModules = true;
+          RestrictRealtime = true;
+          ProtectProc = "invisible";
+          PrivateIPC = true;
         };
       };
 
