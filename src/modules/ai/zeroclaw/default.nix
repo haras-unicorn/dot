@@ -69,7 +69,7 @@
           level = "supervised";
           workspace_only = true;
 
-          sandbox_backend = "bwrap";
+          sandbox_backend = "bubblewrap";
           sandbox_enabled = true;
 
           tool_receipts = {
