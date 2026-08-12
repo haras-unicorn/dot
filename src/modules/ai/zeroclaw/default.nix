@@ -459,7 +459,10 @@
 
       systemd.services.zeroclaw-trace = {
         wantedBy = [ "multi-user.target" ];
-        after = [ "network-online.target" ];
+        after = [
+          "network-online.target"
+          "zeroclaw.service"
+        ];
         serviceConfig = {
           ExecStart = lib.getExe trace;
           Restart = "always";
