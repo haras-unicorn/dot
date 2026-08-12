@@ -23,7 +23,7 @@
         runtimeInputs = [ zeroclaw ];
         text = ''
           export ZEROCLAW_CONFIG_DIR="${dataDir}"
-          ${lib.getExe config.security.sudo.package} -u "${user}" "$@"
+          /run/wrappers/bin/sudo -u "${user}" "$@"
         '';
       };
 
