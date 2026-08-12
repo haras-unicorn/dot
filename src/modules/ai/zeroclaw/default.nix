@@ -410,64 +410,6 @@
       # };
 
       configFile = toml.generate "${name}-config.toml" (lib.recursiveUpdate deepseekConfig generalConfig);
-
-      preStart = pkgs.writeShellApplication {
-        name = "${name}-pre-start";
-        runtimeInputs = [
-          pkgs.envsubst
-        ];
-        text = ''
-          mkdir -p ${dataDir}
-          envsubst < ${configFile} > ${dataDir}/.config.toml.tmp
-          chmod 0600 ${dataDir}/.config.toml.tmp
-          mv -f ${dataDir}/.config.toml.tmp ${dataDir}/config.toml
-
-          mkdir -p ${agentWorkspaceDir}
-          install -m 0644 ${./AGENTS.md} "${agentWorkspaceDir}/AGENTS.md"
-          install -m 0644 ${./IDENTITY.md} "${agentWorkspaceDir}/IDENTITY.md"
-          install -m 0644 ${./SOUL.md} "${agentWorkspaceDir}/SOUL.md"
-          install -m 0644 ${./TOOLS.md} "${agentWorkspaceDir}/TOOLS.md"
-          install -m 0644 ${./USER.md} "${agentWorkspaceDir}/USER.md"
-        '';
-      };
-
-      start = pkgs.writeShellApplication {
-        name = "${name}-start";
-        runtimeInputs = [
-          zeroclaw
-
-          # NOTE: needed for runtime
-          pkgs.git
-          pkgs.curl
-          pkgs.bubblewrap
-
-          # NOTE: agent commands
-          pkgs.coreutils
-          pkgs.procps
-          pkgs.gnused
-          pkgs.gnugrep
-          pkgs.findutils
-          pkgs.ripgrep
-          pkgs.fd
-          pkgs.tree
-          pkgs.file
-          pkgs.jq
-          pkgs.nix
-        ];
-        text = "zeroclaw daemon";
-      };
-
-      trace = pkgs.writeShellApplication {
-        name = "${name}-trace";
-        runtimeInputs = [
-          pkgs.coreutils
-          pkgs.systemd
-        ];
-        text = ''
-          tail -n0 -F "${dataDir}/data/state/runtime-trace.jsonl" \
-            | systemd-cat -t zeroclaw-trace
-        '';
-      };
     in
     {
       environment.systemPackages = [
@@ -493,6 +435,45 @@
         wantedBy = [ "multi-user.target" ];
         requires = [ "network-online.target" ];
         after = [ "network-online.target" ];
+        path = [
+          pkgs.envsubst
+
+          zeroclaw
+
+          # NOTE: needed for runtime
+          pkgs.git
+          pkgs.curl
+          pkgs.bubblewrap
+
+          # NOTE: agent commands
+          pkgs.coreutils
+          pkgs.procps
+          pkgs.gnused
+          pkgs.gnugrep
+          pkgs.findutils
+          pkgs.ripgrep
+          pkgs.fd
+          pkgs.tree
+          pkgs.file
+          pkgs.jq
+          pkgs.nix
+        ];
+        preStart = ''
+          mkdir -p ${dataDir}
+          envsubst < ${configFile} > ${dataDir}/.config.toml.tmp
+          chmod 0600 ${dataDir}/.config.toml.tmp
+          mv -f ${dataDir}/.config.toml.tmp ${dataDir}/config.toml
+
+          mkdir -p ${agentWorkspaceDir}
+          install -m 0644 ${./AGENTS.md} "${agentWorkspaceDir}/AGENTS.md"
+          install -m 0644 ${./IDENTITY.md} "${agentWorkspaceDir}/IDENTITY.md"
+          install -m 0644 ${./SOUL.md} "${agentWorkspaceDir}/SOUL.md"
+          install -m 0644 ${./TOOLS.md} "${agentWorkspaceDir}/TOOLS.md"
+          install -m 0644 ${./USER.md} "${agentWorkspaceDir}/USER.md"
+        '';
+        script = ''
+          zeroclaw daemon
+        '';
         serviceConfig = {
           WorkingDirectory = dataDir;
           StateDirectory = builtins.baseNameOf dataDir;
@@ -506,8 +487,6 @@
             "XDG_STATE_HOME=${dataDir}"
             "XDG_CACHE_HOME=${cacheDir}"
           ];
-          ExecStartPre = lib.getExe preStart;
-          ExecStart = lib.getExe start;
           Restart = "on-failure";
           RestartSec = "5s";
           NoNewPrivileges = true;
@@ -544,10 +523,14 @@
           "network-online.target"
           "zeroclaw.service"
         ];
-        serviceConfig = {
-          ExecStart = lib.getExe trace;
-          Restart = "always";
-        };
+        path = [
+          pkgs.coreutils
+          pkgs.systemd
+        ];
+        script = ''
+          tail -n0 -F "${dataDir}/data/state/runtime-trace.jsonl" \
+            | systemd-cat -t zeroclaw-trace
+        '';
       };
     };
 }
