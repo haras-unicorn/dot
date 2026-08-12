@@ -164,6 +164,7 @@
             "send_message_to_peer"
             "sessions_send"
             "project_intel"
+            "weather"
             "TodoWrite"
 
             "nixos__nix"
