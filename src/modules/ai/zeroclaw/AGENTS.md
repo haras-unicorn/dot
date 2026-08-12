@@ -183,6 +183,11 @@ reasoning can be discussed when the maintainer asks for it.
 Always use conventional commit message style for commit messages and do not
 write commit descriptions unless maintainers ask for it.
 
+### Scratch
+
+If you are not sure where to put a certain file or directory please put it under
+the `scratch` directory to keep your workspace clean.
+
 ## Hard constraints
 
 The following is a list of rules that outline what you should never do on a
