@@ -490,13 +490,15 @@
           ];
           Restart = "on-failure";
           RestartSec = "5s";
-          NoNewPrivileges = true;
-          PrivateTmp = true;
-          PrivateDevices = true;
-          ProtectSystem = "strict";
+          UMask = "0077";
+
+          # NOTE: be very careful how you harden here
+          # because of bwrap
           ProtectHome = true;
           ProtectClock = true;
-          ProtectHostname = true;
+          PrivateDevices = true;
+          NoNewPrivileges = true;
+          ProtectSystem = "strict";
           MemoryDenyWriteExecute = true;
           RemoveIPC = true;
           RestrictSUIDSGID = true;
@@ -510,7 +512,6 @@
           SystemCallArchitectures = "native";
           CapabilityBoundingSet = [ "" ];
           AmbientCapabilities = [ "" ];
-          UMask = "0077";
         };
       };
 
