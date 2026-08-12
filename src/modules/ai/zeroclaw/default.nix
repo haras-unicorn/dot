@@ -410,6 +410,7 @@
 
       systemd.services.${name} = {
         wantedBy = [ "multi-user.target" ];
+        requires = [ "network-online.target" ];
         after = [ "network-online.target" ];
         serviceConfig = {
           WorkingDirectory = dataDir;
@@ -459,6 +460,10 @@
 
       systemd.services.zeroclaw-trace = {
         wantedBy = [ "multi-user.target" ];
+        requires = [
+          "network-online.target"
+          "zeroclaw.service"
+        ];
         after = [
           "network-online.target"
           "zeroclaw.service"

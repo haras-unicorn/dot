@@ -55,6 +55,7 @@
             runHook postInstall
           '';
         })
+        # NOTE: bun2nix mkDerivation hardcodes it to name from package.json
         // {
           meta.mainProgram = "git-mcp-server";
         };
