@@ -120,11 +120,9 @@
             "memory_purge"
           ];
 
+          # NOTE: shell is ok because sandboxing and zeroclaw also parses it to check for
+          # allowed commands and disallows certain metacharacters
           auto_approve = [
-            # NOTE: it looks scary but it gets parsed
-            # and denied when certain metacharacters get used and such
-            # more discussion is needed but as things stand it looks
-            # safe to use with a list of allowed commands
             "shell"
             "sessions_current"
             "sessions_history"
@@ -415,6 +413,7 @@
           Environment = [
             "ZEROCLAW_CONFIG_DIR=${dataDir}"
             "ZEROCLAW_WORKSPACE=${dataDir}/workspace"
+            # NOTE: for nix client
             "XDG_STATE_HOME=${dataDir}"
             "XDG_CACHE_HOME=${cacheDir}"
           ];
