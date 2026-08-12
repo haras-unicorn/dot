@@ -392,6 +392,10 @@
         zeroclaw
       ];
 
+      environment.sessionVariables = {
+        ZEROCLAW_CONFIG_DIR = dataDir;
+      };
+
       users.groups.${user} = { };
       users.users.${user} = {
         group = user;
@@ -403,7 +407,7 @@
       systemd.services.${name} = {
         wantedBy = [ "multi-user.target" ];
         after = [ "network-online.target" ];
-        Service = {
+        serviceConfig = {
           WorkingDirectory = dataDir;
           StateDirectory = builtins.baseNameOf dataDir;
           CacheDirectory = builtins.baseNameOf cacheDir;
@@ -412,7 +416,6 @@
           EnvironmentFile = "-${dataDir}/.env";
           Environment = [
             "ZEROCLAW_CONFIG_DIR=${dataDir}"
-            "ZEROCLAW_WORKSPACE=${dataDir}/workspace"
             # NOTE: for nix client
             "XDG_STATE_HOME=${dataDir}"
             "XDG_CACHE_HOME=${cacheDir}"
