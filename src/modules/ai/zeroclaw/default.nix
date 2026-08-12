@@ -1,7 +1,7 @@
 { self, lib, ... }:
 
 {
-  machines.homeModules.zeroclaw =
+  machines.nixosModules.zeroclaw =
     {
       pkgs,
       config,
@@ -15,7 +15,7 @@
       nixCache = "${config.xdg.cacheHome}/nix";
       nixState = "${config.xdg.stateHome}/nix";
 
-      dataDir = "${config.home.homeDirectory}/.zeroclaw";
+      dataDir = "/var/lib/zeroclaw";
       agent = "main";
       agentWorkspaceDir = "${dataDir}/agents/${agent}/workspace";
 
@@ -105,9 +105,7 @@
             "sleep"
             "true"
             "false"
-
             "nix"
-            "git"
           ];
 
           excluded_tools = [
@@ -360,10 +358,12 @@
         runtimeInputs = [
           zeroclaw
 
+          # NOTE: needed for runtime
           pkgs.git
           pkgs.curl
           pkgs.bubblewrap
 
+          # NOTE: agent commands
           pkgs.coreutils
           pkgs.procps
           pkgs.gnused
@@ -374,7 +374,6 @@
           pkgs.tree
           pkgs.file
           pkgs.jq
-
           pkgs.nix
         ];
         text = "zeroclaw daemon";
@@ -393,37 +392,30 @@
       };
     in
     {
-      home.packages = [
+      environment.systemPackages = [
         zeroclaw
       ];
 
-      systemd.user.services.zeroclaw = {
-        Unit = {
-          Description = "ZeroClaw agent";
-        };
-
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
-
+      systemd.services.zeroclaw = {
+        wantedBy = [ "multi-user.target" ];
+        after = [ "network-online.target" ];
         Service = {
-          Type = "simple";
           WorkingDirectory = dataDir;
+          StateDirectory = builtins.baseNameOf dataDir;
           EnvironmentFile = "-${dataDir}/.env";
           Environment = [
             "ZEROCLAW_CONFIG_DIR=${dataDir}"
             "ZEROCLAW_WORKSPACE=${dataDir}/workspace"
           ];
-          ExecStartPre = [ (lib.getExe preStart) ];
+          ExecStartPre = lib.getExe preStart;
           ExecStart = lib.getExe start;
           Restart = "on-failure";
           RestartSec = "5s";
-
           NoNewPrivileges = true;
           PrivateTmp = true;
           PrivateDevices = true;
           ProtectSystem = "strict";
-          ProtectHome = "read-only";
+          ProtectHome = true;
           ProtectClock = true;
           ProtectHostname = true;
           MemoryDenyWriteExecute = true;
@@ -454,8 +446,8 @@
       };
 
       systemd.user.services.zeroclaw-trace = {
-        Unit.Description = "Tail ZeroClaw JSONL trace into journal";
-        Install.WantedBy = [ "default.target" ];
+        wantedBy = [ "multi-user.target" ];
+        after = [ "network-online.target" ];
         Service = {
           ExecStart = lib.getExe trace;
           Restart = "always";
