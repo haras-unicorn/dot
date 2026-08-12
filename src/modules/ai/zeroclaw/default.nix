@@ -12,10 +12,10 @@
 
       zeroclaw = self.packages.${system}.zeroclaw;
 
-      nixCache = "${config.xdg.cacheHome}/nix";
-      nixState = "${config.xdg.stateHome}/nix";
-
-      dataDir = "/var/lib/zeroclaw";
+      name = "zeroclaw";
+      user = name;
+      cacheDir = "/var/cache/${name}";
+      dataDir = "/var/lib/${name}";
       agent = "main";
       agentWorkspaceDir = "${dataDir}/agents/${agent}/workspace";
 
@@ -329,12 +329,10 @@
       #   };
       # };
 
-      configFile = toml.generate "zeroclaw-config.toml" (
-        lib.recursiveUpdate deepseekConfig generalConfig
-      );
+      configFile = toml.generate "${name}-config.toml" (lib.recursiveUpdate deepseekConfig generalConfig);
 
       preStart = pkgs.writeShellApplication {
-        name = "zeroclaw-pre-start";
+        name = "${name}-pre-start";
         runtimeInputs = [
           pkgs.envsubst
         ];
@@ -354,7 +352,7 @@
       };
 
       start = pkgs.writeShellApplication {
-        name = "zeroclaw-start";
+        name = "${name}-start";
         runtimeInputs = [
           zeroclaw
 
@@ -380,14 +378,14 @@
       };
 
       trace = pkgs.writeShellApplication {
-        name = "zeroclaw-trace-bridge";
+        name = "${name}-trace";
         runtimeInputs = [
           pkgs.coreutils
           pkgs.systemd
         ];
         text = ''
           tail -n0 -F "${dataDir}/data/state/runtime-trace.jsonl" \
-            | systemd-cat -t zeroclaw-jsonl
+            | systemd-cat -t zeroclaw-trace
         '';
       };
     in
@@ -396,16 +394,29 @@
         zeroclaw
       ];
 
-      systemd.services.zeroclaw = {
+      users.groups.${user} = { };
+      users.users.${user} = {
+        group = user;
+        isSystemUser = true;
+      };
+
+      nix.settings.allowed-users = [ user ];
+
+      systemd.services.${name} = {
         wantedBy = [ "multi-user.target" ];
         after = [ "network-online.target" ];
         Service = {
           WorkingDirectory = dataDir;
           StateDirectory = builtins.baseNameOf dataDir;
+          CacheDirectory = builtins.baseNameOf cacheDir;
+          User = user;
+          Group = user;
           EnvironmentFile = "-${dataDir}/.env";
           Environment = [
             "ZEROCLAW_CONFIG_DIR=${dataDir}"
             "ZEROCLAW_WORKSPACE=${dataDir}/workspace"
+            "XDG_STATE_HOME=${dataDir}"
+            "XDG_CACHE_HOME=${cacheDir}"
           ];
           ExecStartPre = lib.getExe preStart;
           ExecStart = lib.getExe start;
@@ -437,15 +448,10 @@
             "~@resources"
           ];
           UMask = "0077";
-          ReadWritePaths = [
-            dataDir
-            nixCache
-            nixState
-          ];
         };
       };
 
-      systemd.user.services.zeroclaw-trace = {
+      systemd.services.zeroclaw-trace = {
         wantedBy = [ "multi-user.target" ];
         after = [ "network-online.target" ];
         Service = {

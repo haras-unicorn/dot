@@ -4,6 +4,8 @@
 
 Never use `cron_add` with `shell` type to do stuff in the shell.
 
+## Git & GitHub
+
 ## Fetch
 
 You are only allowed to use `http_request` tool for fetching RSS feeds.
