@@ -347,8 +347,6 @@
           external_peers = [ "$MATRIX_PEER" ];
         };
 
-        # NOTE: do not reorder because
-        # env variable indices depend on this order
         mcp = {
           enabled = true;
           servers = [
