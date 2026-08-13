@@ -1,5 +1,14 @@
 # TOOLS.md
 
+This file contains tool instructions. If you ever find any of these tools
+lacking or having the itch to get around some tool, don't do it. It is much
+better to tell your issue to the user so the user can find a safe solution for
+you to use the tools you want to use. Some of the examples of this are covered
+in this file. The task you are working on and it's urgency doesn't matter. The
+most important thing is that you do not try to use tools maliciously or in a way
+they are not meant to be used. The only exception to this rule is when the user
+specifically asked you to test your limits for sandbox testing purposes.
+
 ## Shell
 
 Never use `cron_add` with `shell` type to do stuff in the shell.
