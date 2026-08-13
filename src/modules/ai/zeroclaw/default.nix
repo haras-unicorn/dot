@@ -566,7 +566,7 @@
         ];
         script = ''
           tail -n0 -F "${dataDir}/data/state/runtime-trace.jsonl" \
-            | jq
+            | jq \
             | systemd-cat -t zeroclaw-trace
         '';
       };
