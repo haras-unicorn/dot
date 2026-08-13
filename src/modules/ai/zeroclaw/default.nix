@@ -5,6 +5,19 @@
   ...
 }:
 
+# NOTE: needed env vars:
+# MATRIX_HOMESERVER
+# MATRIX_USER_ID
+# MATRIX_PEER
+# ZEROCLAW_providers__models__deepseek__main__api_key
+# ZEROCLAW_channels__matrix__main__access_token
+# ZEROCLAW_channels__matrix__main__recovery_key
+# ZEROCLAW_channels__matrix__main__password
+# ZEROCLAW_mcp__servers__2__env__GIT_USER
+# ZEROCLAW_mcp__servers__2__env__GIT_EMAIL
+# ZEROCLAW_mcp__servers__2__env__GIT_SSH_KEY
+# ZEROCLAW_mcp__servers__3__env__GITHUB_PERSONAL_ACCESS_TOKEN
+
 {
   machines.nixosModules.zeroclaw =
     {
