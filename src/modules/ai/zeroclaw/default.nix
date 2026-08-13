@@ -21,6 +21,7 @@
       dataDir = "/var/lib/${name}";
       agent = "main";
       agentWorkspaceDir = "${dataDir}/agents/${agent}/workspace";
+      sshDir = "${dataDir}/.ssh";
 
       zeroclaw = self.packages.${system}.zeroclaw;
       zeroclawCli = pkgs.writeShellApplication {
@@ -313,7 +314,12 @@
               env = {
                 MCP_TRANSPORT_TYPE = "stdio";
                 MCP_LOG_LEVEL = "warn";
-                GIT_SSH_COMMAND = "echo '$GIT_SSH_KEY' | ssh -i /dev/stdin";
+                GIT_SSH_COMMAND =
+                  "echo '$GIT_SSH_KEY'"
+                  + " | ssh -i /dev/stdin"
+                  + " -o IdentitiesOnly=yes"
+                  + " -o StrictHostKeyChecking=accept-new"
+                  + " -o UserKnownHostsFile=${sshDir}/known_hosts";
                 GIT_USER = "$GIT_USER";
                 GIT_EMAIL = "$GIT_EMAIL";
               };
@@ -444,10 +450,8 @@
 
       nix.settings.allowed-users = [ user ];
 
-      # NOTE: needed for bubblewrap
       systemd.tmpfiles.rules = [
-        "d /usr/local 0755 root root -"
-        "d /sbin 0755 root root -"
+        "d ${sshDir} 0700 ${user} ${user} -"
       ];
 
       systemd.services.${name} = {
