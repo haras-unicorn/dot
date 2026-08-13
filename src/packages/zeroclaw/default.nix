@@ -16,6 +16,7 @@
 
           patches = (prev.patches or [ ]) ++ [
             ./bwrap-nix-store.patch
+            ./bwrap-tmpfs-tmp.patch
           ];
 
           cargoBuildFlags = (prev.cargoBuildFlags or [ ]) ++ [

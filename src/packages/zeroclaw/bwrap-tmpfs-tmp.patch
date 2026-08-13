@@ -1,0 +1,14 @@
+diff --git a/crates/zeroclaw-runtime/src/security/bubblewrap.rs b/crates/zeroclaw-runtime/src/security/bubblewrap.rs
+index f07399b36..fa4dc3238 100644
+--- a/crates/zeroclaw-runtime/src/security/bubblewrap.rs
++++ b/crates/zeroclaw-runtime/src/security/bubblewrap.rs
+@@ -128,8 +128,7 @@ impl BubblewrapSandbox {
+             "/dev",
+             "--proc",
+             "/proc",
+-            "--bind",
+-            "/tmp",
++            "--tmpfs",
+             "/tmp",
+             "--unshare-all",
+             "--die-with-parent",
