@@ -22,6 +22,7 @@
       agent = "main";
       agentWorkspaceDir = "${dataDir}/agents/${agent}/workspace";
       sshDir = "${dataDir}/.ssh";
+      sshKey = "${sshDir}/id_ed25519";
 
       zeroclaw = self.packages.${system}.zeroclaw;
       zeroclawCli = pkgs.writeShellApplication {
@@ -39,11 +40,11 @@
         name = "git-ssh-command";
         runtimeInputs = [ pkgs.openssh ];
         text = ''
-          printf "%s" "$GIT_SSH_KEY" \
-            | ssh -i /dev/stdin \
-                -o "IdentitiesOnly=yes" \
-                -o "StrictHostKeyChecking=accept-new" \
-                -o "UserKnownHostsFile=${sshDir}/known_hosts"
+          ssh -i "${sshKey}" \
+            -o "IdentitiesOnly=yes" \
+            -o "StrictHostKeyChecking=accept-new" \
+            -o "UserKnownHostsFile=${sshDir}/known_hosts" \
+            "$@"
         '';
       };
 
@@ -457,10 +458,6 @@
 
       nix.settings.allowed-users = [ user ];
 
-      systemd.tmpfiles.rules = [
-        "d ${sshDir} 0700 ${user} ${user} -"
-      ];
-
       systemd.services.${name} = {
         wantedBy = [ "multi-user.target" ];
         requires = [ "network-online.target" ];
@@ -488,10 +485,14 @@
           pkgs.jq
         ];
         preStart = ''
-          mkdir -p ${dataDir}
-          envsubst < ${configFile} > ${dataDir}/.config.toml.tmp
-          chmod 0600 ${dataDir}/.config.toml.tmp
-          mv -f ${dataDir}/.config.toml.tmp ${dataDir}/config.toml
+          mkdir -p "${dataDir}"
+          envsubst < "${configFile}" > "${dataDir}/.config.toml.tmp"
+          chmod 0600 "${dataDir}/.config.toml.tmp"
+          mv -f "${dataDir}/.config.toml.tmp" "${dataDir}/config.toml"
+
+          mkdir -p "${sshDir}"
+          cat "$GIT_SSH_KEY" > "${sshKey}"
+          chmod 700 "${sshKey}"
 
           mkdir -p ${agentWorkspaceDir}
           install -m 0644 ${./AGENTS.md} "${agentWorkspaceDir}/AGENTS.md"
