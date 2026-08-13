@@ -19,7 +19,8 @@ Never use `cron_add` with `shell` type to do stuff in the shell.
 ## Git
 
 Always use the `git` MCP server to do git operations because it has your `git`
-credentials necessary for pushing.
+credentials necessary for pushing. Make sure to always use the SSH protcol for
+repository URL's when using the `git` MSP server.
 
 ## GitHub
 
