@@ -553,11 +553,12 @@
           "zeroclaw.service"
         ];
         path = [
-          pkgs.coreutils
           pkgs.systemd
+          pkgs.jq
         ];
         script = ''
           tail -n0 -F "${dataDir}/data/state/runtime-trace.jsonl" \
+            | jq
             | systemd-cat -t zeroclaw-trace
         '';
       };
