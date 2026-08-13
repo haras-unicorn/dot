@@ -15,8 +15,7 @@
           buildInputs = (prev.buildInputs or [ ]) ++ [ pkgs.alsa-lib ];
 
           patches = (prev.patches or [ ]) ++ [
-            ./bwrap-nix-store.patch
-            ./bwrap-tmpfs-tmp.patch
+            ./bwrap-nixos.patch
           ];
 
           cargoBuildFlags = (prev.cargoBuildFlags or [ ]) ++ [

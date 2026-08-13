@@ -1,0 +1,37 @@
+diff --git a/crates/zeroclaw-runtime/src/security/bubblewrap.rs b/crates/zeroclaw-runtime/src/security/bubblewrap.rs
+index b3c632cdd..c22e67649 100644
+--- a/crates/zeroclaw-runtime/src/security/bubblewrap.rs
++++ b/crates/zeroclaw-runtime/src/security/bubblewrap.rs
+@@ -113,28 +113,21 @@ impl BubblewrapSandbox {
+             "/usr",
+             "/usr",
+             "--ro-bind",
+-            "/usr/local",
+-            "/usr/local",
+-            "--ro-bind",
+             "/bin",
+             "/bin",
+-            "--ro-bind",
+-            "/sbin",
+-            "/sbin",
+             "--dev",
+             "/dev",
+             "--proc",
+             "/proc",
+-            "--bind",
+-            "/tmp",
++            "--tmpfs",
+             "/tmp",
+             "--unshare-all",
+             "--die-with-parent",
+         ]);
+         Self::append_capability_drops(&mut bwrap_cmd, support);
+-        for lib_dir in &["/lib64", "/lib"] {
+-            if std::path::Path::new(lib_dir).exists() {
+-                bwrap_cmd.args(["--ro-bind", lib_dir, lib_dir]);
++        for optional_dir in &["/lib64", "/lib", "/nix/store", "/sbin"] {
++            if std::path::Path::new(optional_dir).exists() {
++                bwrap_cmd.args(["--ro-bind", optional_dir, optional_dir]);
+             }
+         }
+         bwrap_cmd.arg(&program);
