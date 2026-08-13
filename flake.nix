@@ -43,8 +43,8 @@
     # NOTE: https://github.com/noctalia-dev/noctalia-docs/blob/cec177a6b9bf928d148a669c6979cd0f62da0757/src/content/docs/v5/getting-started/nixos.mdx
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
-    # NOTE: https://github.com/haras-unicorn/mcp-nix/blob/v0.1.2/README.md
-    mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.2";
+    # NOTE: https://github.com/haras-unicorn/mcp-nix/blob/v0.1.3/README.md
+    mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.3";
   };
 
   outputs =
