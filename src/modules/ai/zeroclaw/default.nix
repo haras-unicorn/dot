@@ -220,6 +220,7 @@
             "project_intel"
             "weather"
             "TodoWrite"
+            "mcp_resources"
 
             "nixos__nix"
             "nixos__nix_versions"
