@@ -55,7 +55,8 @@
           self.packages.${system}.git-mcp-server
         ];
         text = ''
-          printf "%s" "$GIT_SSH_KEY" | ssh-add -
+          printf "%s" "$GIT_SSH_KEY" | sed 's/\\n/\n/g' | ssh-add -
+          unset GIT_SSH_KEY
           git-mcp-server
         '';
       };
