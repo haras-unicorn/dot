@@ -35,6 +35,18 @@
         '';
       };
 
+      gitSshCommand = pkgs.writeShellApplication {
+        name = "git-ssh-command";
+        runtimeInputs = [ pkgs.openssh ];
+        text = ''
+          printf "%s" "$GIT_SSH_KEY" \
+            | ssh -i /dev/stdin \
+                -o "IdentitiesOnly=yes" \
+                -o "StrictHostKeyChecking=accept-new" \
+                -o "UserKnownHostsFile=${sshDir}/known_hosts"
+        '';
+      };
+
       toml = pkgs.formats.toml { };
 
       generalConfig = {
@@ -314,12 +326,7 @@
               env = {
                 MCP_TRANSPORT_TYPE = "stdio";
                 MCP_LOG_LEVEL = "warn";
-                GIT_SSH_COMMAND =
-                  "printf \"$GIT_SSH_KEY\""
-                  + " | ssh -i /dev/stdin"
-                  + " -o IdentitiesOnly=yes"
-                  + " -o StrictHostKeyChecking=accept-new"
-                  + " -o UserKnownHostsFile=${sshDir}/known_hosts";
+                GIT_SSH_COMMAND = lib.getExe gitSshCommand;
                 GIT_USER = "$GIT_USER";
                 GIT_EMAIL = "$GIT_EMAIL";
               };
