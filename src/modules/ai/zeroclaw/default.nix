@@ -1,4 +1,9 @@
-{ self, lib, ... }:
+{
+  self,
+  lib,
+  inputs,
+  ...
+}:
 
 {
   machines.nixosModules.zeroclaw =
@@ -115,7 +120,6 @@
             "sleep"
             "true"
             "false"
-            "nix"
           ];
 
           excluded_tools = [
@@ -169,6 +173,11 @@
 
             "nixos__nix"
             "nixos__nix_versions"
+
+            "nix__nix_build"
+            "nix__nix_run"
+            "nix__nix_develop"
+            "nix__nix_check"
 
             "git__git_init"
             "git__git_clone"
@@ -291,7 +300,11 @@
               name = "nixos";
               transport = "stdio";
               command = lib.getExe pkgs.mcp-nixos;
-              args = [ ];
+            }
+            {
+              name = "nix";
+              transport = "stdio";
+              command = lib.getExe pkgs.mcp-nix;
             }
             {
               name = "git";
@@ -333,6 +346,7 @@
         mcp_bundles.dev = {
           servers = [
             "nixos"
+            "nix"
             "git"
             "github"
           ];
@@ -413,6 +427,10 @@
       configFile = toml.generate "${name}-config.toml" (lib.recursiveUpdate deepseekConfig generalConfig);
     in
     {
+      nixpkgs.overlays = [
+        inputs.mcp-nix.overlays.default
+      ];
+
       environment.systemPackages = [
         zeroclawCli
       ];
@@ -457,7 +475,6 @@
           pkgs.tree
           pkgs.file
           pkgs.jq
-          pkgs.nix
         ];
         preStart = ''
           mkdir -p ${dataDir}
