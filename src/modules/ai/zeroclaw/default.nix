@@ -22,7 +22,6 @@
       agent = "main";
       agentWorkspaceDir = "${dataDir}/agents/${agent}/workspace";
       sshDir = "${dataDir}/.ssh";
-      sshKey = "${sshDir}/id_ed25519";
 
       zeroclaw = self.packages.${system}.zeroclaw;
       zeroclawCli = pkgs.writeShellApplication {
@@ -40,12 +39,34 @@
         name = "git-ssh-command";
         runtimeInputs = [ pkgs.openssh ];
         text = ''
-          ssh -i "${sshKey}" \
+          mkdir -p "${sshDir}"
+          ssh \
             -o "IdentitiesOnly=yes" \
             -o "StrictHostKeyChecking=accept-new" \
             -o "UserKnownHostsFile=${sshDir}/known_hosts" \
             "$@"
         '';
+      };
+
+      gitMcpServerUnwrapped = pkgs.writeShellApplication {
+        name = "git-mcp-server-unwrapped";
+        runtimeInputs = [
+          pkgs.openssh
+          self.packages.${system}.git-mcp-server
+        ];
+        text = ''
+          printf "%s" "$GIT_SSH_KEY" | ssh-add -
+          git-mcp-server
+        '';
+      };
+
+      gitMcpServer = pkgs.writeShellApplication {
+        name = "git-mcp-server";
+        runtimeInputs = [
+          pkgs.openssh
+          gitMcpServerUnwrapped
+        ];
+        text = "ssh-agent git-mcp-server-unwrapped ";
       };
 
       toml = pkgs.formats.toml { };
@@ -323,7 +344,7 @@
             {
               name = "git";
               transport = "stdio";
-              command = lib.getExe self.packages.${system}.git-mcp-server;
+              command = lib.getExe gitMcpServer;
               env = {
                 MCP_TRANSPORT_TYPE = "stdio";
                 MCP_LOG_LEVEL = "warn";
@@ -489,10 +510,6 @@
           envsubst < "${configFile}" > "${dataDir}/.config.toml.tmp"
           chmod 0600 "${dataDir}/.config.toml.tmp"
           mv -f "${dataDir}/.config.toml.tmp" "${dataDir}/config.toml"
-
-          mkdir -p "${sshDir}"
-          printf "%s" "$GIT_SSH_KEY" > "${sshKey}"
-          chmod 700 "${sshKey}"
 
           mkdir -p ${agentWorkspaceDir}
           install -m 0644 ${./AGENTS.md} "${agentWorkspaceDir}/AGENTS.md"
