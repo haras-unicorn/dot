@@ -41,7 +41,6 @@
         text = ''
           mkdir -p "${sshDir}"
           ssh \
-            -o "IdentitiesOnly=yes" \
             -o "StrictHostKeyChecking=accept-new" \
             -o "UserKnownHostsFile=${sshDir}/known_hosts" \
             "$@"
