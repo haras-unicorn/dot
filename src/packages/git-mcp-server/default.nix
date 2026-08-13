@@ -49,6 +49,12 @@
             cp -r node_modules $out/lib/git-mcp-server/node_modules
 
             makeWrapper ${lib.getExe pkgs.bun} $out/bin/git-mcp-server \
+              --prefix PATH : ${
+                lib.makeBinPath [
+                  pkgs.git
+                  pkgs.openssh
+                ]
+              } \
               --argv0 git-mcp-server \
               --add-flags "$out/lib/git-mcp-server/dist/index.js"
 
