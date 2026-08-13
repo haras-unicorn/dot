@@ -491,7 +491,7 @@
           mv -f "${dataDir}/.config.toml.tmp" "${dataDir}/config.toml"
 
           mkdir -p "${sshDir}"
-          cat "$GIT_SSH_KEY" > "${sshKey}"
+          printf "%s" "$GIT_SSH_KEY" > "${sshKey}"
           chmod 700 "${sshKey}"
 
           mkdir -p ${agentWorkspaceDir}
