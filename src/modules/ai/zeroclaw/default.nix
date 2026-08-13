@@ -317,8 +317,6 @@
           enabled = true;
           homeserver = "$MATRIX_HOMESERVER";
           user_id = "$MATRIX_USER_ID";
-          password = "$MATRIX_PASSWORD";
-          recovery_key = "$MATRIX_RECOVERY_KEY";
           allowed_rooms = [ ];
           reply_in_thread = false;
         };
@@ -353,8 +351,6 @@
                 MCP_TRANSPORT_TYPE = "stdio";
                 MCP_LOG_LEVEL = "warn";
                 GIT_SSH_COMMAND = lib.getExe gitSshCommand;
-                GIT_USER = "$GIT_USER";
-                GIT_EMAIL = "$GIT_EMAIL";
               };
             }
             {
@@ -363,7 +359,6 @@
               command = lib.getExe pkgs.github-mcp-server;
               args = [ "stdio" ];
               env = {
-                GITHUB_PERSONAL_ACCESS_TOKEN = "$GITHUB_PERSONAL_ACCESS_TOKEN";
                 GITHUB_TOOLSETS = builtins.concatStringsSep "," [
                   "context"
                   "repos"
@@ -402,7 +397,6 @@
       deepseekConfig = {
         providers.models.deepseek.main = {
           model = "deepseek-v4-flash";
-          api_key = "$DEEPSEEK_API_KEY";
         };
 
         agents.${agent} = {
@@ -488,6 +482,8 @@
         requires = [ "network-online.target" ];
         after = [ "network-online.target" ];
         path = [
+          pkgs.envsubst
+
           zeroclaw
 
           # NOTE: needed for runtime
@@ -509,7 +505,7 @@
         ];
         preStart = ''
           mkdir -p "${dataDir}"
-          cat "${configFile}" > "${dataDir}/.config.toml.tmp"
+          envsubst < "${configFile}" > "${dataDir}/.config.toml.tmp"
           chmod 0600 "${dataDir}/.config.toml.tmp"
           mv -f "${dataDir}/.config.toml.tmp" "${dataDir}/config.toml"
 
