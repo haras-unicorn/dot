@@ -16,6 +16,7 @@
 
           patches = (prev.patches or [ ]) ++ [
             ./bwrap-nixos.patch
+            ./bwrap-workspace.patch
           ];
 
           cargoBuildFlags = (prev.cargoBuildFlags or [ ]) ++ [
