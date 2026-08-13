@@ -315,7 +315,7 @@
                 MCP_TRANSPORT_TYPE = "stdio";
                 MCP_LOG_LEVEL = "warn";
                 GIT_SSH_COMMAND =
-                  "echo \"$GIT_SSH_KEY\""
+                  "printf \"$GIT_SSH_KEY\""
                   + " | ssh -i /dev/stdin"
                   + " -o IdentitiesOnly=yes"
                   + " -o StrictHostKeyChecking=accept-new"
