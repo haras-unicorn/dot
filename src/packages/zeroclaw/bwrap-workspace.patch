@@ -1,5 +1,5 @@
 diff --git a/crates/zeroclaw-runtime/src/security/bubblewrap.rs b/crates/zeroclaw-runtime/src/security/bubblewrap.rs
-index c22e67649..ae481ca67 100644
+index c22e67649..66047933e 100644
 --- a/crates/zeroclaw-runtime/src/security/bubblewrap.rs
 +++ b/crates/zeroclaw-runtime/src/security/bubblewrap.rs
 @@ -13,12 +13,18 @@ struct BubblewrapHardeningSupport {
@@ -28,7 +28,7 @@ index c22e67649..ae481ca67 100644
              }
          }
 +        if let Some(ws) = &self.workspace_dir {
-+            bwrap_cmd.extend(["--bind".into(), ws.clone().into_os_string(), ws.clone().into_os_string()]);
++            bwrap_cmd.args(["--bind".into(), ws.clone().into_os_string(), ws.clone().into_os_string()]);
 +        }
          bwrap_cmd.arg(&program);
          bwrap_cmd.args(&args);
