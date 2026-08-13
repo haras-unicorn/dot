@@ -127,6 +127,12 @@
           sandbox_backend = "bubblewrap";
           sandbox_enabled = true;
 
+          # NOTE: touch is considered medium risk, for instance,
+          # and we already have a sandbox
+          # also there is a weird bug where the agent can't even ask
+          # for approval because shell is in auto_approve right now
+          require_approval_for_medium_risk = false;
+
           tool_receipts = {
             enabled = true;
             show_in_response = true;
@@ -137,7 +143,6 @@
             "mkdir"
             "cp"
             "mv"
-            "rm"
             "touch"
             "pwd"
             "tree"
