@@ -17,6 +17,8 @@
 
       name = "zeroclaw";
       user = name;
+      etcDir = "/etc/zeroclaw";
+      envFile = "${etcDir}/.env";
       cacheDir = "/var/cache/${name}";
       dataDir = "/var/lib/${name}";
       agent = "main";
@@ -328,6 +330,8 @@
           external_peers = [ "$MATRIX_PEER" ];
         };
 
+        # NOTE: do not reorder because
+        # env variable indices depend on this order
         mcp = {
           enabled = true;
           servers = [
@@ -484,8 +488,6 @@
         requires = [ "network-online.target" ];
         after = [ "network-online.target" ];
         path = [
-          pkgs.envsubst
-
           zeroclaw
 
           # NOTE: needed for runtime
@@ -507,7 +509,7 @@
         ];
         preStart = ''
           mkdir -p "${dataDir}"
-          envsubst < "${configFile}" > "${dataDir}/.config.toml.tmp"
+          cat "${configFile}" > "${dataDir}/.config.toml.tmp"
           chmod 0600 "${dataDir}/.config.toml.tmp"
           mv -f "${dataDir}/.config.toml.tmp" "${dataDir}/config.toml"
 
@@ -522,12 +524,12 @@
           zeroclaw daemon
         '';
         serviceConfig = {
+          EnvironmentFile = envFile;
           WorkingDirectory = dataDir;
           StateDirectory = builtins.baseNameOf dataDir;
           CacheDirectory = builtins.baseNameOf cacheDir;
           User = user;
           Group = user;
-          EnvironmentFile = "-${dataDir}/.env";
           Environment = [
             "ZEROCLAW_CONFIG_DIR=${dataDir}"
             # NOTE: for nix client
