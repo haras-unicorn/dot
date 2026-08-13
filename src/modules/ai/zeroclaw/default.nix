@@ -66,7 +66,7 @@
           pkgs.openssh
           gitMcpServerUnwrapped
         ];
-        text = "ssh-agent git-mcp-server-unwrapped ";
+        text = "ssh-agent git-mcp-server-unwrapped";
       };
 
       toml = pkgs.formats.toml { };
