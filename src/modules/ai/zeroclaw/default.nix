@@ -28,6 +28,10 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
 
+      graphics = config.hardware.facter.detection.graphics;
+      default = graphics.cards.default;
+      hasNvidia = default.type == "nvidia";
+
       name = "zeroclaw";
       user = name;
       etcDir = "/etc/zeroclaw";
@@ -362,65 +366,70 @@
               command = lib.getExe pkgs.mcp-nix;
               env = {
                 # NOTE: default + agent workspace directory
-                MCP_NIX_SANDBOX = builtins.concatStringsSep " " [
-                  "--die-with-parent"
-                  "--unshare-all"
-                  "--ro-bind-try"
-                  "/nix/store"
-                  "/nix/store"
-                  "--ro-bind"
-                  "/usr"
-                  "/usr"
-                  "--ro-bind"
-                  "/bin"
-                  "/bin"
-                  "--ro-bind-try"
-                  "/sbin"
-                  "/sbin"
-                  "--ro-bind-try"
-                  "/lib"
-                  "/lib"
-                  "--ro-bind-try"
-                  "/lib64"
-                  "/lib64"
-                  "--tmpfs"
-                  "/tmp"
-                  "--proc"
-                  "/proc"
-                  # NOTE: CUDA runtime libs live behind this symlink on NixOS
-                  # (points into /nix/store/...-nvidia-.../lib); target is
-                  # already covered by the /nix/store ro-bind above.
-                  "--ro-bind-try"
-                  "/run/opengl-driver"
-                  "/run/opengl-driver"
-                  "--dev"
-                  "/dev"
-                  # NOTE: GPU passthrough for CUDA/llama.cpp inside the
-                  # sandbox. `--dev` above mounts a fresh minimal /dev, so
-                  # the real device nodes are bound in explicitly. `-try`
-                  # variants so machines without a GPU still evaluate.
-                  "--dev-bind-try"
-                  "/dev/dri"
-                  "/dev/dri"
-                  "--dev-bind-try"
-                  "/dev/nvidia0"
-                  "/dev/nvidia0"
-                  "--dev-bind-try"
-                  "/dev/nvidiactl"
-                  "/dev/nvidiactl"
-                  "--dev-bind-try"
-                  "/dev/nvidia-modeset"
-                  "/dev/nvidia-modeset"
-                  "--dev-bind-try"
-                  "/dev/nvidia-uvm"
-                  "/dev/nvidia-uvm"
-                  "--dev-bind-try"
-                  "/dev/nvidia-uvm-tools"
-                  "/dev/nvidia-uvm-tools"
-                  "--bind"
-                  "${agentWorkspaceDir}"
-                  "${agentWorkspaceDir}"
-                ];
+                MCP_NIX_SANDBOX = builtins.concatStringsSep " " (
+                  [
+                    "--die-with-parent"
+                    "--unshare-all"
+                    "--ro-bind-try"
+                    "/nix/store"
+                    "/nix/store"
+                    "--ro-bind"
+                    "/usr"
+                    "/usr"
+                    "--ro-bind"
+                    "/bin"
+                    "/bin"
+                    "--ro-bind-try"
+                    "/sbin"
+                    "/sbin"
+                    "--ro-bind-try"
+                    "/lib"
+                    "/lib"
+                    "--ro-bind-try"
+                    "/lib64"
+                    "/lib64"
+                    "--tmpfs"
+                    "/tmp"
+                    "--proc"
+                    "/proc"
+                    "--dev"
+                    "/dev"
+                    "--bind"
+                    "${agentWorkspaceDir}"
+                    "${agentWorkspaceDir}"
+                  ]
+                  ++ lib.optionals hasNvidia [
+                    # NOTE: CUDA runtime libs live behind this symlink on NixOS
+                    # (points into /nix/store/...-nvidia-.../lib); target is
+                    # already covered by the /nix/store ro-bind above.
+                    "--ro-bind-try"
+                    "/run/opengl-driver"
+                    "/run/opengl-driver"
+                    # NOTE: GPU passthrough for CUDA/llama.cpp inside the
+                    # sandbox. `--dev` above mounts a fresh minimal /dev, so
+                    # the real device nodes are bound in explicitly. `-try`
+                    # variants so machines without a GPU still evaluate.
+                    "--dev-bind-try"
+                    "/dev/dri"
+                    "/dev/dri"
+                    "--dev-bind-try"
+                    "/dev/nvidia0"
+                    "/dev/nvidia0"
+                    "--dev-bind-try"
+                    "/dev/nvidiactl"
+                    "/dev/nvidiactl"
+                    "--dev-bind-try"
+                    "/dev/nvidia-modeset"
+                    "/dev/nvidia-modeset"
+                    "--dev-bind-try"
+                    "/dev/nvidia-uvm"
+                    "/dev/nvidia-uvm"
+                    "--dev-bind-try"
+                    "/dev/nvidia-uvm-tools"
+                    "/dev/nvidia-uvm-tools"
+                  ]
+                );
+
               };
             }
             {
@@ -553,8 +562,7 @@
         group = user;
         isSystemUser = true;
         home = dataDir;
-        # NOTE: GPU device nodes (e.g. /dev/dri/renderD128) are group-owned
-        extraGroups = [ "video" ];
+        extraGroups = lib.mkIf hasNvidia [ "video" ];
       };
 
       nix.settings.allowed-users = [ user ];
@@ -622,9 +630,7 @@
           # because of bwrap
           ProtectHome = true;
           ProtectClock = true;
-          # NOTE: no PrivateDevices — the bwrap sandbox needs the host /dev
-          # to bind GPU nodes (nvidia, dri) through to nix tools. The service
-          # still runs unprivileged with an empty capability bounding set.
+          PrivateDevices = !hasNvidia;
           NoNewPrivileges = true;
           ProtectSystem = "strict";
           MemoryDenyWriteExecute = true;
