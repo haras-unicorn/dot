@@ -1,22 +1,18 @@
+{ inputs, ... }:
+
 {
   perSystem =
-    {
-      pkgs,
-      system,
-      ...
-    }:
+    { system, ... }:
     let
-      # NOTE: the default perSystem pkgs (nixpkgs.legacyPackages) is imported
-      # without nixpkgs.config, so CUDA EULA packages (cuda_cccl, libcublas, ...)
-      # get refused at eval time. Import nixpkgs with allowUnfree for this build.
-      cudaPkgs = import pkgs.path {
+      cudaPkgs = import inputs.nixpkgs {
         inherit system;
         config = {
           allowUnfree = true;
+          cudaSupport = true;
         };
       };
 
-      llama-moe-cache-cuda = (cudaPkgs.llama-cpp.override { cudaSupport = true; }).overrideAttrs {
+      llama-moe-cache-cuda = cudaPkgs.llama-cpp.overrideAttrs {
         version = "10362";
         src = cudaPkgs.fetchFromGitHub {
           owner = "haras-unicorn";
