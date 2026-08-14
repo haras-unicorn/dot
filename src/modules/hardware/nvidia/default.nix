@@ -23,17 +23,10 @@
       dot.nixpkgs.allowUnfreePredicates = [
         (
           package:
-          lib.traceSeq
-            {
-              name = lib.getName package;
-              version = if package ? cudaMajorVersion then package.cudaMajorVersion else "unknown";
-            }
-            (
-              lib.getName package == "nvidia-x11"
-              || lib.getName package == "nvidia-settings"
-              || lib.getName package == "cuda-merged"
-              || package ? cudaMajorVersion
-            )
+          lib.getName package == "nvidia-x11"
+          || lib.getName package == "nvidia-settings"
+          || lib.getName package == "cuda-merged"
+          || package ? cudaMajorVersion
         )
       ];
 
