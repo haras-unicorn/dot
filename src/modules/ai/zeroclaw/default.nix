@@ -387,6 +387,12 @@
                   "/tmp"
                   "--proc"
                   "/proc"
+                  # NOTE: CUDA runtime libs live behind this symlink on NixOS
+                  # (points into /nix/store/...-nvidia-.../lib); target is
+                  # already covered by the /nix/store ro-bind above.
+                  "--ro-bind-try"
+                  "/run/opengl-driver"
+                  "/run/opengl-driver"
                   "--dev"
                   "/dev"
                   # NOTE: GPU passthrough for CUDA/llama.cpp inside the
