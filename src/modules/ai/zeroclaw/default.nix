@@ -399,16 +399,9 @@
                     "${agentWorkspaceDir}"
                   ]
                   ++ lib.optionals hasNvidia [
-                    # NOTE: CUDA runtime libs live behind this symlink on NixOS
-                    # (points into /nix/store/...-nvidia-.../lib); target is
-                    # already covered by the /nix/store ro-bind above.
                     "--ro-bind-try"
                     "/run/opengl-driver"
                     "/run/opengl-driver"
-                    # NOTE: GPU passthrough for CUDA/llama.cpp inside the
-                    # sandbox. `--dev` above mounts a fresh minimal /dev, so
-                    # the real device nodes are bound in explicitly. `-try`
-                    # variants so machines without a GPU still evaluate.
                     "--dev-bind-try"
                     "/dev/dri"
                     "/dev/dri"
