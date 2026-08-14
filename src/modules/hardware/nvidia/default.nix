@@ -25,7 +25,8 @@
           package:
           lib.getName package == "nvidia-x11"
           || lib.getName package == "nvidia-settings"
-          || lib.hasPrefix "cuda" (lib.getName package)
+          || lib.getName package == "cuda-merged"
+          || lib.getName package == "cuda_cccl"
           || package ? cudaMajorVersion
         )
       ];
