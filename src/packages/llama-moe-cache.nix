@@ -3,7 +3,7 @@
     { pkgs, ... }:
     {
       packages.llama-moe-cache-cuda = (pkgs.llama-cpp.override { cudaSupport = true; }).overrideAttrs {
-        version = "10362-fate";
+        version = "10362";
         src = pkgs.fetchFromGitHub {
           owner = "haras-unicorn";
           repo = "llama.cpp";
