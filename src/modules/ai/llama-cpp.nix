@@ -80,8 +80,8 @@
           [
             qwen-3-6-35b-a3b
             qwen-3-5-4b
-            gemma-4-26b-a4b
-            gemma-4-e4b
+            # gemma-4-26b-a4b
+            # gemma-4-e4b
           ]
       );
 
