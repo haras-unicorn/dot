@@ -7,7 +7,7 @@
         src = pkgs.fetchFromGitHub {
           owner = "haras-unicorn";
           repo = "llama.cpp";
-          rev = "d7e9b46b3c052be760f4d2786a0fa16e8e7fb7a4";
+          rev = "03c4325d236f1c8cd91949ea330468bf8ff7e6b7";
           hash = "sha256-zyu4oWrrrHSbvzfRZOgbx1YCGd5X3Lp6rMUfIDVUtfU=";
           leaveDotGit = true;
           postFetch = ''
