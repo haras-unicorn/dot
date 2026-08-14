@@ -262,6 +262,7 @@
             "git__git_worktree"
             "git__git_set_working_dir"
             "git__git_clear_working_dir"
+            "git__git_submodule"
 
             "github__actions_get"
             "github__actions_list"
@@ -359,6 +360,40 @@
               name = "nix";
               transport = "stdio";
               command = lib.getExe pkgs.mcp-nix;
+              env = {
+                # NOTE: default + agent workspace directory
+                MCP_NIX_SANDBOX = builtins.concatStringsSep " " [
+                  "--die-with-parent"
+                  "--unshare-all"
+                  "--ro-bind-try"
+                  "/nix/store"
+                  "/nix/store"
+                  "--ro-bind"
+                  "/usr"
+                  "/usr"
+                  "--ro-bind"
+                  "/bin"
+                  "/bin"
+                  "--ro-bind-try"
+                  "/sbin"
+                  "/sbin"
+                  "--ro-bind-try"
+                  "/lib"
+                  "/lib"
+                  "--ro-bind-try"
+                  "/lib64"
+                  "/lib64"
+                  "--tmpfs"
+                  "/tmp"
+                  "--proc"
+                  "/proc"
+                  "--dev"
+                  "/dev"
+                  "--bind"
+                  "${agentWorkspaceDir}"
+                  "${agentWorkspaceDir}"
+                ];
+              };
             }
             {
               name = "git";
