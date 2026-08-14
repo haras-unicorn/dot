@@ -389,6 +389,28 @@
                   "/proc"
                   "--dev"
                   "/dev"
+                  # NOTE: GPU passthrough for CUDA/llama.cpp inside the
+                  # sandbox. `--dev` above mounts a fresh minimal /dev, so
+                  # the real device nodes are bound in explicitly. `-try`
+                  # variants so machines without a GPU still evaluate.
+                  "--dev-bind-try"
+                  "/dev/dri"
+                  "/dev/dri"
+                  "--dev-bind-try"
+                  "/dev/nvidia0"
+                  "/dev/nvidia0"
+                  "--dev-bind-try"
+                  "/dev/nvidiactl"
+                  "/dev/nvidiactl"
+                  "--dev-bind-try"
+                  "/dev/nvidia-modeset"
+                  "/dev/nvidia-modeset"
+                  "--dev-bind-try"
+                  "/dev/nvidia-uvm"
+                  "/dev/nvidia-uvm"
+                  "--dev-bind-try"
+                  "/dev/nvidia-uvm-tools"
+                  "/dev/nvidia-uvm-tools"
                   "--bind"
                   "${agentWorkspaceDir}"
                   "${agentWorkspaceDir}"
@@ -525,6 +547,8 @@
         group = user;
         isSystemUser = true;
         home = dataDir;
+        # NOTE: GPU device nodes (e.g. /dev/dri/renderD128) are group-owned
+        extraGroups = [ "video" ];
       };
 
       nix.settings.allowed-users = [ user ];
@@ -592,7 +616,9 @@
           # because of bwrap
           ProtectHome = true;
           ProtectClock = true;
-          PrivateDevices = true;
+          # NOTE: no PrivateDevices — the bwrap sandbox needs the host /dev
+          # to bind GPU nodes (nvidia, dri) through to nix tools. The service
+          # still runs unprivileged with an empty capability bounding set.
           NoNewPrivileges = true;
           ProtectSystem = "strict";
           MemoryDenyWriteExecute = true;
