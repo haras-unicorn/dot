@@ -1,7 +1,8 @@
 { self, ... }:
 
-# NOTE: try UD models - they might still work with FATE
-# NOTE: try speculative decoding - this is a perfect scenario for it
+# TODO: try UD models - they might still work with FATE
+# TODO: try speculative decoding - this is a perfect scenario for it
+# NOTE: ubatch ~= in tps, fate cache ~= out tps, ctx size ~= smart
 
 {
   machines.homeModules.llama-cpp =
@@ -295,13 +296,14 @@
             "--gpu-layers"
             "all"
             "--fate"
-            "--fate-cache"
-            # NOTE: 38 tps while leaving room for full 256K context on 3060 12GB
-            "5120"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
             "q8_0"
+            "--ubatch-size"
+            "2048"
+            "--fate-cache"
+            "4096"
             "--ctx-size"
             "262144"
           ];
@@ -356,6 +358,8 @@
             "q8_0"
             "--cache-type-v"
             "q8_0"
+            "--ubatch-size"
+            "2048"
             "--ctx-size"
             "131072"
           ];
@@ -409,6 +413,8 @@
             "q8_0"
             "--cache-type-v"
             "q8_0"
+            "--ubatch-size"
+            "2048"
             "--ctx-size"
             "32768"
           ];
