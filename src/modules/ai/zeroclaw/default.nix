@@ -211,7 +211,6 @@
             "memory_recall"
             "memory_store"
             "memory_forget"
-            "memory_export"
             "web_search"
             "web_search_tool"
             "web_fetch"
