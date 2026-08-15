@@ -279,7 +279,6 @@
             "github__list_discussion_categories"
             "github__list_discussions"
             "github__add_issue_comment"
-            "github__get_label"
             "github__issue_read"
             "github__issue_write"
             "github__list_issue_fields"
