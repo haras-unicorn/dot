@@ -94,7 +94,7 @@
       node-describe-image = pkgs.writeShellApplication {
         name = "llama-cpp-node-describe-image";
         runtimeInputs = [
-          pkgs.llama-cpp
+          llama-cpp
         ];
         text = ''
           tmpin="$(mktemp --suffix .png)"
@@ -125,7 +125,7 @@
       node-describe-audio = pkgs.writeShellApplication {
         name = "llama-cpp-node-describe-audio";
         runtimeInputs = [
-          pkgs.llama-cpp
+          llama-cpp
         ];
         text = ''
           tmpin="$(mktemp --suffix .wav)"
@@ -156,7 +156,7 @@
       node-describe-text = pkgs.writeShellApplication {
         name = "llama-cpp-node-describe-text";
         runtimeInputs = [
-          pkgs.llama-cpp
+          llama-cpp
         ];
         text = ''
           tmpin="$(mktemp --suffix .txt)"
@@ -186,7 +186,7 @@
       node-generate-text = pkgs.writeShellApplication {
         name = "llama-cpp-node-generate-text";
         runtimeInputs = [
-          pkgs.llama-cpp
+          llama-cpp
         ];
         text = ''
           tmpin="$(mktemp --suffix .txt)"
@@ -337,6 +337,8 @@
             (lib.getExe' package "llama-server")
             "--model"
             gemma-4-e2b
+            "--mmproj"
+            gemma-4-e2b-mmproj
             "--sleep-idle-seconds"
             "900"
             "--host"
