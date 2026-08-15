@@ -18,7 +18,7 @@
           owner = "haras-unicorn";
           repo = "llama.cpp";
           rev = "4f3701bc44ec7e51b5401593c6269b8cc694fe28";
-          hash = "";
+          hash = "sha256-Z2S+RBm5uBuGfuFNWhI+lOLW73k+cKEkt5FMB2nxepo=";
           leaveDotGit = true;
           postFetch = ''
             git -C "$out" rev-parse --short HEAD > $out/COMMIT
