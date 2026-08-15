@@ -333,6 +333,8 @@
         runtime_profiles.main = {
           max_tool_iterations = 100;
           max_actions_per_hour = 1000;
+          max_history_messages = 64;
+          max_context_tokens = 262144;
         };
 
         channels.matrix.main = {
@@ -484,60 +486,61 @@
         };
       };
 
-      # TODO: use when moe gpu compute gets fixed
-      # llamaConfig = {
-      #   providers.models.llamacpp.main = {
-      #     uri = "http://127.0.0.1:8080/v1";
-      #     model = "qwen-3-6-35b-a3b";
-      #     vision = false;
-      #     fallback = [ "deepseek.main" ];
-      #   };
+      llamaConfig = {
+        providers.models.llamacpp.main = {
+          uri = "http://127.0.0.1:8080/v1";
+          model = "qwen-3-6-35b-a3b";
+          vision = false;
+          fallback = [ "deepseek.main" ];
+        };
 
-      #   providers.models.llamacpp.small = {
-      #     uri = "http://127.0.0.1:8081/v1";
-      #     model = "gemma-4-e2b";
-      #     vision = true;
-      #     fallback = [ "deepseek.main" ];
-      #   };
+        providers.models.llamacpp.small = {
+          uri = "http://127.0.0.1:8081/v1";
+          model = "gemma-4-e2b";
+          vision = true;
+          fallback = [ "deepseek.main" ];
+        };
 
-      #   agents.${agent} = {
-      #     model_provider = "llamacpp.main";
-      #     delegates = [
-      #       {
-      #         agent = "small";
-      #         mode = "bounded";
-      #       }
-      #       {
-      #         agent = "reasoner";
-      #         mode = "bounded";
-      #       }
-      #     ];
-      #   };
+        agents.${agent} = {
+          model_provider = "llamacpp.main";
+          delegates = [
+            {
+              agent = "small";
+              mode = "bounded";
+            }
+            {
+              agent = "reasoner";
+              mode = "bounded";
+            }
+          ];
+        };
 
-      #   # NOTE: delegate-only agents — no channels, reached via the delegate
-      #   # tool from agents.main.
-      #   # Workspace is space as agent that spawns them (main).
-      #   agents.small = {
-      #     model_provider = "llamacpp.small";
-      #     risk_profile = "main";
-      #     runtime_profile = "main";
-      #   };
+        # NOTE: delegate-only agents — no channels, reached via the delegate
+        # tool from agents.main.
+        # Workspace is space as agent that spawns them (main).
+        agents.small = {
+          model_provider = "llamacpp.small";
+          risk_profile = "main";
+          runtime_profile = "main";
+        };
 
-      #   agents.reasoner = {
-      #     model_provider = "deepseek.main";
-      #     risk_profile = "main";
-      #     runtime_profile = "main";
-      #   };
-      #
-      #   memory = {
-      #     search_mode = "hybrid";
-      #     embedding_provider = "custom:http://127.0.0.1:8082/v1";
-      #     embedding_model = "qwen-3-embedding";
-      #     embedding_dimensions = 1024;
-      #   };
-      # };
+        agents.reasoner = {
+          model_provider = "deepseek.main";
+          risk_profile = "main";
+          runtime_profile = "main";
+        };
 
-      configFile = toml.generate "${name}-config.toml" (lib.recursiveUpdate deepseekConfig generalConfig);
+        memory = {
+          search_mode = "hybrid";
+          embedding_provider = "custom:http://127.0.0.1:8082/v1";
+          embedding_model = "qwen-3-embedding";
+          embedding_dimensions = 1024;
+        };
+      };
+
+      configFile = toml.generate "${name}-config.toml" (
+        lib.recursiveUpdate (lib.recursiveUpdate deepseekConfig generalConfig) llamaConfig
+      );
     in
     {
       nixpkgs.overlays = [
