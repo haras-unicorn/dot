@@ -489,16 +489,16 @@
       # TODO: use when moe gpu compute gets fixed
       # llamaConfig = {
       #   providers.models.llamacpp.main = {
+      #     uri = "http://127.0.0.1:8080/v1";
       #     model = "qwen-3-6-35b-a3b";
-      #     timeout_secs = 600;
       #     vision = false;
       #     fallback = [ "deepseek.main" ];
       #   };
 
       #   providers.models.llamacpp.small = {
-      #     model = "qwen-3-5-4b";
-      #     timeout_secs = 300;
-      #     vision = false;
+      #     uri = "http://127.0.0.1:8081/v1";
+      #     model = "gemma-4-e2b";
+      #     vision = true;
       #     fallback = [ "deepseek.main" ];
       #   };
 
@@ -533,7 +533,7 @@
       #
       #   memory = {
       #     search_mode = "hybrid";
-      #     embedding_provider = "custom:http://127.0.0.1:8081/v1";
+      #     embedding_provider = "custom:http://127.0.0.1:8082/v1";
       #     embedding_model = "qwen-3-embedding";
       #     embedding_dimensions = 1024;
       #   };
