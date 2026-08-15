@@ -17,8 +17,8 @@
         src = cudaPkgs.fetchFromGitHub {
           owner = "haras-unicorn";
           repo = "llama.cpp";
-          rev = "03c4325d236f1c8cd91949ea330468bf8ff7e6b7";
-          hash = "sha256-P7XYSrMdLF4asEpw3AiDWix4rmvWLpIWh4fQaOEmqLM=";
+          rev = "4f3701bc44ec7e51b5401593c6269b8cc694fe28";
+          hash = "";
           leaveDotGit = true;
           postFetch = ''
             git -C "$out" rev-parse --short HEAD > $out/COMMIT
