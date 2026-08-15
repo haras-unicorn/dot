@@ -44,7 +44,7 @@
       gemma-4-26b-a4b = pkgs.fetchurl {
         name = "gemma-4-26b-a4b.gguf";
         url = "https://huggingface.co/bartowski/google_gemma-4-26B-A4B-it-GGUF/resolve/main/google_gemma-4-26B-A4B-it-Q4_K_M.gguf";
-        hash = "sha256-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=";
+        hash = "sha256-oH9yIh6OP3dFWrDX92UtAan2PCYrlUqmkypTJ1oOiVo=";
       };
 
       gemma-4-e4b = pkgs.fetchurl {
