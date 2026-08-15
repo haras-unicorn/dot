@@ -142,6 +142,9 @@ in
 
       systemd.services.llama-cpp-gemma-4-e2b = {
         wantedBy = [ "multi-user.target" ];
+        environment = {
+          CUDA_VISIBLE_DEVICES = "";
+        };
         serviceConfig = {
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
@@ -194,6 +197,9 @@ in
 
       systemd.services.llama-cpp-qwen-3-embedding-600M = {
         wantedBy = [ "multi-user.target" ];
+        environment = {
+          CUDA_VISIBLE_DEVICES = "";
+        };
         serviceConfig = {
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
@@ -288,6 +294,7 @@ in
           tmpout="$(mktemp --suffix .txt)"
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
+          export CUDA_VISIBLE_DEVICES=""
           llama-cli \
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
@@ -318,6 +325,7 @@ in
           tmpout="$(mktemp --suffix .txt)"
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
+          export CUDA_VISIBLE_DEVICES=""
           llama-cli \
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
@@ -348,6 +356,7 @@ in
           tmpout="$(mktemp --suffix .txt)"
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
+          export CUDA_VISIBLE_DEVICES=""
           llama-cli \
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
@@ -377,6 +386,7 @@ in
           tmpout="$(mktemp --suffix .txt)"
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
+          export CUDA_VISIBLE_DEVICES=""
           llama-cli \
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
