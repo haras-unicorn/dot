@@ -17,7 +17,7 @@
         if cuda then
           self.packages.${system}.llama-moe-cache-cuda
         else
-          self.packages.${system}.llama-moe-cache-vulkan;
+          builtins.throw "current llama.cpp version (FATE) doesn't support non-CUDA backends";
 
       # NOTE: like this because some libs
       # otherwise conflict with other packages
