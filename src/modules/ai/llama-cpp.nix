@@ -1,5 +1,8 @@
 { self, ... }:
 
+# NOTE: try UD models - they might still work with FATE
+# NOTE: try speculative decoding - this is a perfect scenario for it
+
 {
   machines.homeModules.llama-cpp =
     {
@@ -26,8 +29,6 @@
         paths = [ llama-cpp ];
         pathsToLink = [ "/bin" ];
       };
-
-      # NOTE: try UD models - they might still work with FATE
 
       gemma-4-e2b = pkgs.fetchurl {
         name = "gemma-4-e2b.gguf";
