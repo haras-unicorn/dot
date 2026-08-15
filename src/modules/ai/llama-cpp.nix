@@ -27,7 +27,7 @@
         pathsToLink = [ "/bin" ];
       };
 
-      # NOTE: don't use UD with FATE - it doesn't account for it
+      # NOTE: try UD models - they might still work with FATE
 
       gemma-4-e2b = pkgs.fetchurl {
         name = "gemma-4-e2b.gguf";
