@@ -8,7 +8,7 @@ let
   makePackage =
     pkgs:
     let
-      cuda = pkgs.config.nixpkgs.config.cudaSupport;
+      cuda = pkgs.config.cudaSupport;
 
       system = pkgs.stdenv.hostPlatform.system;
 
@@ -104,13 +104,13 @@ in
             "on"
             "--gpu-layers"
             "all"
-            "--fate"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
             "q8_0"
             "--ubatch-size"
             "2048"
+            "--fate"
             "--fate-cache"
             "4096"
             "--ctx-size"
