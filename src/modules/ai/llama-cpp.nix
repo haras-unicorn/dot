@@ -351,7 +351,7 @@
             "--flash-attn"
             "on"
             "--gpu-layers"
-            "all"
+            "0"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
