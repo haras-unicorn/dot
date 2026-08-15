@@ -363,7 +363,7 @@
         builtins.concatMap (
           { name, files }:
           builtins.map (file: {
-            name = "models/${name}/${lib.getName file}";
+            name = "models/${name}/${file.name}";
             value.source = file;
             value.force = true;
           }) files

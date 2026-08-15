@@ -71,20 +71,6 @@
         hash = "sha256-BlB8e0JohGnE5ymLCh4W3v8GyvKRzwpbJ4wwgknD5Dk=";
       };
 
-      serverModels = pkgs.linkFarm "llama-cpp-server-models" (
-        builtins.map
-          (model: {
-            name = model.name;
-            path = model;
-          })
-          [
-            qwen-3-6-35b-a3b
-            qwen-3-5-4b
-            # gemma-4-26b-a4b
-            # gemma-4-e4b
-          ]
-      );
-
       imagePrompt = ''
         You are an image captioner.
         You only include the image caption in your output (e.g. a cat wearing a hat).
@@ -118,7 +104,7 @@
           llama-cli \
             --model ${gemma-4-e2b} \
             --mmproj ${gemma-4-e2b-mmproj} \
-            --mmap \
+            --load-mode mmap \
             --gpu-layers all \
             --flash-attn on \
             --cache-type-k q8_0 \
@@ -149,7 +135,7 @@
           llama-cli \
             --model ${gemma-4-e2b} \
             --mmproj ${gemma-4-e2b-mmproj} \
-            --mmap \
+            --load-mode mmap \
             --gpu-layers all \
             --flash-attn on \
             --cache-type-k q8_0 \
@@ -180,7 +166,7 @@
           llama-cli \
             --model ${gemma-4-e2b} \
             --mmproj ${gemma-4-e2b-mmproj} \
-            --mmap \
+            --load-mode mmap \
             --gpu-layers all \
             --flash-attn on \
             --cache-type-k q8_0 \
@@ -210,7 +196,7 @@
           llama-cli \
             --model ${gemma-4-e2b} \
             --mmproj ${gemma-4-e2b-mmproj} \
-            --mmap \
+            --load-mode mmap \
             --gpu-layers all \
             --flash-attn on \
             --cache-type-k q8_0 \
@@ -286,39 +272,37 @@
         qwen-3-embedding
       ];
 
-      systemd.user.services.llama-cpp = {
+      systemd.user.services.llama-cpp-qwen-3-6-35b-a3b = {
         Install = {
           WantedBy = [ "default.target" ];
-        };
-        Unit = {
-          Description = "llama.cpp router (Qwen3.6-35B-A3B + Qwen3.5-4B)";
-          Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
         };
         Service = {
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
-            "--models-dir"
-            serverModels
-            "--models-max"
-            "2"
+            "--model"
+            qwen-3-6-35b-a3b
             "--sleep-idle-seconds"
             "900"
             "--host"
             "127.0.0.1"
             "--port"
             "8080"
-            "--mmap"
+            "--load-mode"
+            "mmap"
             "--flash-attn"
             "on"
             "--gpu-layers"
             "all"
             "--fate"
             "--fate-cache"
-            "2048"
+            # NOTE: 38 tps while leaving room for full 256K context on 3060 12GB
+            "5120"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
             "q8_0"
+            "--ctx-size"
+            "262144"
           ];
           Restart = "on-failure";
           RestartSec = 5;
@@ -344,13 +328,61 @@
         };
       };
 
-      systemd.user.services.llama-cpp-embeddings = {
+      systemd.user.services.llama-cpp-gemma-4-e2b = {
         Install = {
           WantedBy = [ "default.target" ];
         };
-        Unit = {
-          Description = "llama.cpp embedding server (Qwen3-Embedding-0.6B)";
-          Documentation = "https://github.com/ggml-org/llama.cpp/tree/master/tools/server";
+        Service = {
+          ExecStart = builtins.concatStringsSep " " [
+            (lib.getExe' package "llama-server")
+            "--model"
+            gemma-4-e2b
+            "--sleep-idle-seconds"
+            "900"
+            "--host"
+            "127.0.0.1"
+            "--port"
+            "8081"
+            "--load-mode"
+            "mmap"
+            "--flash-attn"
+            "on"
+            "--gpu-layers"
+            "all"
+            "--cache-type-k"
+            "q8_0"
+            "--cache-type-v"
+            "q8_0"
+            "--ctx-size"
+            "131072"
+          ];
+          Restart = "on-failure";
+          RestartSec = 5;
+
+          ProtectSystem = "strict";
+          ProtectHome = "read-only";
+          PrivateTmp = true;
+
+          NoNewPrivileges = true;
+          LockPersonality = true;
+
+          RestrictAddressFamilies = [
+            "AF_INET"
+            "AF_INET6"
+            "AF_NETLINK"
+            "AF_UNIX"
+          ];
+          IPAddressDeny = "any";
+          IPAddressAllow = [
+            "127.0.0.0/8"
+            "::1"
+          ];
+        };
+      };
+
+      systemd.user.services.llama-cpp-qwen-3-embedding-600M = {
+        Install = {
+          WantedBy = [ "default.target" ];
         };
         Service = {
           ExecStart = builtins.concatStringsSep " " [
@@ -365,17 +397,17 @@
             "--host"
             "127.0.0.1"
             "--port"
-            "8081"
-            "--flash-attn"
-            "on"
+            "8082"
+            "--load-mode"
+            "mmap"
             "--gpu-layers"
-            "all"
+            "0"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
             "q8_0"
-            "-c"
-            "4096"
+            "--ctx-size"
+            "32768"
           ];
           Restart = "on-failure";
           RestartSec = 5;
