@@ -157,10 +157,8 @@ in
             "8081"
             "--load-mode"
             "mmap"
-            "--flash-attn"
-            "on"
-            "--gpu-layers"
-            "0"
+            "--cpu-strict"
+            "1"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
@@ -212,8 +210,8 @@ in
             "8082"
             "--load-mode"
             "mmap"
-            "--gpu-layers"
-            "0"
+            "--cpu-strict"
+            "1"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
@@ -294,8 +292,7 @@ in
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
             --load-mode mmap \
-            --gpu-layers all \
-            --flash-attn on \
+            --cpu-strict 1 \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
             --system-prompt ${lib.escapeShellArg imagePrompt} \
@@ -325,7 +322,7 @@ in
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
             --load-mode mmap \
-            --gpu-layers 0 \
+            --cpu-strict 1 \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
             --system-prompt ${lib.escapeShellArg audioPrompt} \
@@ -355,7 +352,7 @@ in
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
             --load-mode mmap \
-            --gpu-layers 0 \
+            --cpu-strict 1 \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
             --system-prompt ${lib.escapeShellArg textPrompt} \
@@ -384,7 +381,7 @@ in
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
             --load-mode mmap \
-            --gpu-layers 0 \
+            --cpu-strict 1 \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
             --system-prompt ${lib.escapeShellArg generatePrompt} \
