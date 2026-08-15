@@ -131,6 +131,8 @@
           sandbox_backend = "bubblewrap";
           sandbox_enabled = true;
 
+          delegation_policy.mode = "allow";
+
           # NOTE: touch is considered medium risk, for instance,
           # and we already have a sandbox
           # also there is a weird bug where the agent can't even ask
