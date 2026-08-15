@@ -25,6 +25,7 @@
       # NOTE: https://github.com/nix-community/stylix/blob/release-26.05/modules/wezterm/hm.nix
       # stylix overrides home-manager settings so we need to write it like this in 26.05...
       stylix.targets.wezterm.luaBody = ''
+        front_end = "Software",
         default_cursor_style = "SteadyBar",
         audible_bell = "Disabled",
         default_prog = { "${lib.getExe config.dot.programs.shell.package}" },
