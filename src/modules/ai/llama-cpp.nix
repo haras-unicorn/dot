@@ -86,10 +86,8 @@ in
       ];
 
       systemd.services.llama-cpp-qwen-3-6-35b-a3b = {
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
-        Service = {
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
             "--model"
@@ -143,10 +141,8 @@ in
       };
 
       systemd.services.llama-cpp-gemma-4-e2b = {
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
-        Service = {
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
             "--model"
@@ -199,10 +195,8 @@ in
       };
 
       systemd.services.llama-cpp-qwen-3-embedding-600M = {
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
-        Service = {
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
             "--model"
