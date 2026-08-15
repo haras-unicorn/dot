@@ -160,8 +160,6 @@ in
             "8081"
             "--load-mode"
             "mmap"
-            "--device"
-            "none"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
@@ -216,8 +214,6 @@ in
             "8082"
             "--load-mode"
             "mmap"
-            "--device"
-            "none"
             "--cache-type-k"
             "q8_0"
             "--cache-type-v"
@@ -299,7 +295,6 @@ in
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
             --load-mode mmap \
-            --device none \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
             --system-prompt ${lib.escapeShellArg imagePrompt} \
@@ -330,7 +325,6 @@ in
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
             --load-mode mmap \
-            --device none \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
             --system-prompt ${lib.escapeShellArg audioPrompt} \
@@ -361,7 +355,6 @@ in
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
             --load-mode mmap \
-            --device none \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
             --system-prompt ${lib.escapeShellArg textPrompt} \
@@ -391,7 +384,6 @@ in
             --model ${models.gemma-4-e2b} \
             --mmproj ${models.gemma-4-e2b-mmproj} \
             --load-mode mmap \
-            --device none \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
             --system-prompt ${lib.escapeShellArg generatePrompt} \
