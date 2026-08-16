@@ -519,3 +519,11 @@ ignoreWords:
   - qwen
   - ongunm
   - llama-moe-cache
+  - ubatch
+  - netlink
+  - reflog
+  - tmpfs
+  - nvidiactl
+  - toolsets
+  - chdir
+  - fetchgit
