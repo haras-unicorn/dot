@@ -20,6 +20,10 @@ let
       };
       settings.auto-optimise-store = true;
 
+      settings.allowed-users = [
+        "root"
+        "@wheel"
+      ];
       settings.trusted-users = [
         "root"
         "@wheel"

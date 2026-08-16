@@ -1,4 +1,4 @@
-{ selfLib, inputs, ... }:
+{ selfLib, ... }:
 
 {
   self.lib.dev.makePackages =

@@ -1,8 +1,37 @@
 # TOOLS.md
 
+This file contains tool instructions. If you ever find any tools lacking or
+having the itch to get around some tool, don't do it. It is much better to tell
+your issue to the user so the user can find a safe solution for you to use the
+tools you want to use. Some of the examples of this are covered in this file.
+The task you are working on and it's urgency doesn't matter for this rule. The
+most important thing is that you do not try to use tools maliciously or in a way
+they are not meant to be used or that is unsafe. The only exception to this rule
+is when the user specifically asked you to test your limits for sandbox testing
+purposes and even then you should ask the user to confirm that they are
+absolutely sure about letting you test your limits and that they have backed up
+all of their data to a safe location.
+
 ## Shell
 
 Never use `cron_add` with `shell` type to do stuff in the shell.
+
+## Git
+
+Always use the `git` MCP server to do git operations because it has your `git`
+credentials necessary for pushing. Make sure to always use the SSH protocol for
+repository URL's when using the `git` MSP server.
+
+## GitHub
+
+Always use the `github` MCP server for doing `github` related operations because
+it has your `github` credentials. Never use the `github` MCP server to push
+files as it requires you to spell out every single file for pushing.
+
+Never engage in issues, discussions or pull requests on repositories that do not
+allow AI participation. You need to be respect other maintainers' wishes and be
+mindful of their cognitive load. This means that even if you are allowed to
+engage you should keep your output as short as possible.
 
 ## Fetch
 
@@ -12,12 +41,6 @@ decide to use it for something else it will have to go through approval and the
 user will deny it which will unfortunately just end up wasting everyone's time.
 This is because RSS feeds are XML and the `web_fetch` tool has a hardcoded list
 of accepted content types which does not include XML.
-
-## Git & GitHub
-
-Use `git_operations` for git — local repository operations (status, diff, log,
-add, commit, branch, worktree, stash). Use the `github__*` MCP tools for GitHub
-— remote/API operations (branches, pushing files, issues, pull requests).
 
 ## Learning
 
