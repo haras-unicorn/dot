@@ -18,6 +18,10 @@
 # ZEROCLAW_channels__matrix__main__recovery_key
 # ZEROCLAW_channels__matrix__main__password
 
+let
+  listenAddress = "127.0.0.1";
+  listenPort = 42617;
+in
 {
   machines.nixosModules.zeroclaw =
     {
@@ -109,6 +113,12 @@
         link_enricher.enabled = true;
 
         project_intel.enabled = true;
+
+        gateway = {
+          require_pairing = false;
+          host = listenAddress;
+          port = listenPort;
+        };
 
         web_fetch = {
           enabled = true;
@@ -672,6 +682,24 @@
             | jq \
             | systemd-cat -t zeroclaw-trace
         '';
+      };
+    };
+
+  machines.homeModules.zeroclaw =
+    { osConfig, ... }:
+    let
+      hardware = osConfig.dot.hardware;
+
+      zeroclawWeb = osConfig.dot.programs.chromium.launch {
+        name = "zeroclaw";
+        address = "http://${listenAddress}:${builtins.toString listenPort}";
+      };
+    in
+    {
+      xdg.desktopEntries.zeroclaw = lib.mkIf hardware.browser {
+        name = "ZeroClaw";
+        exec = lib.getExe zeroclawWeb;
+        terminal = false;
       };
     };
 }
