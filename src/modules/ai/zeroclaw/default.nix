@@ -121,6 +121,9 @@
             "docs.rs"
             "developer.mozilla.org"
             "huggingface.co"
+            "github.com"
+            "githubusercontent.com"
+            "flakehub.com"
           ];
         };
 
