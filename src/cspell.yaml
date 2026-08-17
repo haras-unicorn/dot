@@ -527,3 +527,4 @@ ignoreWords:
   - toolsets
   - chdir
   - fetchgit
+  - flakehub
