@@ -110,6 +110,8 @@
 
         project_intel.enabled = true;
 
+        gateway.require_pairing = false;
+
         web_fetch = {
           enabled = true;
           allowed_domains = [
