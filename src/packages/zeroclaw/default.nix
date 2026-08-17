@@ -21,7 +21,7 @@
 
           cargoBuildFlags = (prev.cargoBuildFlags or [ ]) ++ [
             "--features"
-            "voice-wake,channel-matrix,sandbox-bubblewrap"
+            "voice-wake,channel-matrix,sandbox-bubblewrap,embedded-web"
           ];
         }
       );
