@@ -85,6 +85,7 @@
         "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
         "privacy.clearOnShutdown_v2.siteSettings" = false;
         "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = false;
+        "keyword.URL" = "${searchUrl}/?q=%s";
       };
 
       profiles = [
