@@ -530,3 +530,15 @@ ignoreWords:
   - flakehub
   - codeberg
   - sourcehut
+  - uwsgi
+  - startpage
+  - crossref
+  - freesound
+  - piratebay
+  - zlibrary
+  - openlibrary
+  - alpinelinux
+  - gitc
+  - gitea
+  - ahmia
+  - hackernews

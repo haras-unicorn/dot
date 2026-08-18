@@ -14,6 +14,8 @@
 
       package = pkgs.librewolf;
 
+      searchUrl = osConfig.dot.search.url;
+
       textarea-cache = pkgs.stdenvNoCC.mkDerivation {
         name = "textarea-cache";
         version = "5.0.7";
@@ -42,7 +44,7 @@
         force = true;
         settings = {
           "vimium-c@gdh1995.cn".settings = {
-            searchUrl = "https://duckduckgo.com/?q=$s duckduckgo";
+            searchUrl = "${searchUrl}/?q=$s";
           };
         };
         packages =
@@ -59,6 +61,22 @@
 
       };
 
+      search = {
+        force = true;
+        default = "dot-search";
+        privateDefault = "dot-search";
+        engines = {
+          dot-search = {
+            name = "dot search";
+            urls = [
+              {
+                template = "${searchUrl}?q={searchTerms}";
+              }
+            ];
+          };
+        };
+      };
+
       settings = {
         "privacy.clearOnShutdown.cookies" = false;
         "privacy.clearOnShutdown.sessions" = false;
@@ -67,10 +85,8 @@
         "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
         "privacy.clearOnShutdown_v2.siteSettings" = false;
         "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = false;
-      };
-
-      profile = {
-        inherit extensions;
+        "keyword.URL" = "${searchUrl}/?q=%s";
+        "browser.startup.homepage" = searchUrl;
       };
 
       profiles = [
@@ -93,8 +109,13 @@
         profiles = builtins.listToAttrs (
           lib.imap0 (id: name: {
             inherit name;
-            value = profile // {
-              inherit name id;
+            value = {
+              inherit
+                name
+                id
+                extensions
+                search
+                ;
               isDefault = id == 0;
             };
           }) profiles

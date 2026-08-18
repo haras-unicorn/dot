@@ -30,6 +30,8 @@ in
       ...
     }:
     let
+      hardware = config.dot.hardware;
+
       system = pkgs.stdenv.hostPlatform.system;
 
       graphics = config.hardware.facter.detection.graphics;
@@ -151,10 +153,6 @@ in
 
           sandbox_backend = "bubblewrap";
           sandbox_enabled = true;
-
-          allowed_roots = [
-            "/nix/store"
-          ];
 
           delegation_policy.mode = "allow";
 
@@ -497,7 +495,8 @@ in
 
         web_search = {
           enabled = true;
-          search_provider = "duckduckgo";
+          search_provider = "searxng";
+          searxng_instance_url = config.dot.search.url;
         };
 
         memory.search_mode = "bm25";
@@ -571,7 +570,7 @@ in
         lib.recursiveUpdate (lib.recursiveUpdate deepseekConfig generalConfig) llamaConfig
       );
     in
-    {
+    lib.mkIf hardware.network {
       nixpkgs.overlays = [
         inputs.mcp-nix.overlays.default
       ];

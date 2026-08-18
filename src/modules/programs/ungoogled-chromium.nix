@@ -24,8 +24,20 @@
       wrapAppendFlags = builtins.concatStringsSep " " (
         builtins.map (arg: "--append-flags ${lib.escapeShellArg arg}") args
       );
+
+      searchUrl = config.dot.search.url;
     in
     lib.mkIf hardware.browser {
+      # NOTE: this only configures chromium
+      # it doesn't actually install it
+      programs.chromium = {
+        enable = true;
+        homepageLocation = searchUrl;
+        defaultSearchProviderSearchURL = searchUrl + "/?q={searchTerms}";
+        defaultSearchProviderSuggestURL = searchUrl + "/suggest?q={searchTerms}";
+        defaultSearchProviderEnabled = true;
+      };
+
       dot.programs.chromium = {
         inherit args;
 
