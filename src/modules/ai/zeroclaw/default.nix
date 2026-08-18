@@ -123,17 +123,25 @@ in
         web_fetch = {
           enabled = true;
           allowed_domains = [
-            "en.wikipedia.org"
-            "wiki.archlinux.org"
             "docs.zeroclawlabs.ai"
-            "nixos.org"
-            "nix.dev"
-            "docs.rs"
+
+            "en.wikipedia.org"
+
+            "wiki.archlinux.org"
             "developer.mozilla.org"
+
             "huggingface.co"
             "github.com"
             "githubusercontent.com"
             "flakehub.com"
+            "codeberg.org"
+            # NOTE: sourcehut
+            "sr.ht"
+
+            "nixos.org"
+
+            "docs.rs"
+            "crates.io"
           ];
         };
 
