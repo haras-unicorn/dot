@@ -154,10 +154,6 @@ in
           sandbox_backend = "bubblewrap";
           sandbox_enabled = true;
 
-          allowed_roots = [
-            "/nix/store"
-          ];
-
           delegation_policy.mode = "allow";
 
           # NOTE: touch is considered medium risk, for instance,
