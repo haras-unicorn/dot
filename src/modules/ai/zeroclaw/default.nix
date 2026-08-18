@@ -30,6 +30,8 @@ in
       ...
     }:
     let
+      hardware = config.dot.hardware;
+
       system = pkgs.stdenv.hostPlatform.system;
 
       graphics = config.hardware.facter.detection.graphics;
@@ -495,7 +497,7 @@ in
           ];
         };
 
-        web_search = {
+        web_search = lib.optionalAttrs hardware.network {
           enabled = true;
           search_provider = "searxng";
           searxng_instance_url = config.dot.services.search.url;
@@ -572,7 +574,7 @@ in
         lib.recursiveUpdate (lib.recursiveUpdate deepseekConfig generalConfig) llamaConfig
       );
     in
-    {
+    lib.mkIf hardware.network {
       nixpkgs.overlays = [
         inputs.mcp-nix.overlays.default
       ];
