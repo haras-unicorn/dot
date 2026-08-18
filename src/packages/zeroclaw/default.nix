@@ -17,6 +17,7 @@
           patches = (prev.patches or [ ]) ++ [
             ./bwrap-nixos.patch
             ./bwrap-workspace.patch
+            ./remove-api-error-limit.patch
           ];
 
           cargoBuildFlags = (prev.cargoBuildFlags or [ ]) ++ [
