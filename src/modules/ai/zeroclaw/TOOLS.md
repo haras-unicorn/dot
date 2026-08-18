@@ -42,6 +42,11 @@ user will deny it which will unfortunately just end up wasting everyone's time.
 This is because RSS feeds are XML and the `web_fetch` tool has a hardcoded list
 of accepted content types which does not include XML.
 
+## Nix
+
+When using `nix` MCP server tools make sure to always use `git+file` protocol
+with absolute paths for local flakes.
+
 ## Learning
 
 What I want to become — collected as data the user can learn into me someday,
