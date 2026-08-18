@@ -1,5 +1,5 @@
 {
-  self.lib.deprecated.homeModules.kitty =
+  machines.homeModules.kitty =
     {
       config,
       osConfig,
