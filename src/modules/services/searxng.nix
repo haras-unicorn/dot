@@ -59,8 +59,6 @@
                 "crates"
                 "docker_hub"
                 "annas_archive"
-                "discourse"
-                "chatnoir"
                 "alpinelinux"
                 "archlinux"
                 "findfiles"
