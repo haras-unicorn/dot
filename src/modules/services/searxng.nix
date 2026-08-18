@@ -43,7 +43,7 @@
                 if builtins.isAttrs engine then
                   engine
                   // {
-                    name = engine.name or builtins.replaceStrings [ "_" ] [ " " ] engine;
+                    name = engine.name or (builtins.replaceStrings [ "_" ] [ " " ] engine.engine);
                     disabled = false;
                     inactive = false;
                   }
