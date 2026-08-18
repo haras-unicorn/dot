@@ -43,11 +43,11 @@
                 if builtins.isAttrs engine then
                   let
                     name = engine.name or (builtins.replaceStrings [ "_" ] [ " " ] engine.engine);
+                    shortcut = engine.shortcut or (builtins.substring 0 4 name);
                   in
                   engine
                   // {
-                    inherit name;
-                    shortcut = builtins.substring 0 4 name;
+                    inherit name shortcut;
                     disabled = false;
                     inactive = false;
                   }
