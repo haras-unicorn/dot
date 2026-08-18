@@ -53,6 +53,18 @@
                 "arxiv"
                 "crossref"
                 "semantic_scholar"
+                "github"
+                "github_code"
+                "gitlab"
+                "crates"
+                "docker_hub"
+                "annas_archive"
+                "discourse"
+                "chatnoir"
+                "alpinelinux"
+                "archlinux"
+                "findfiles"
+                "deepl"
               ]
           );
         };
