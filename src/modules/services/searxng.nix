@@ -32,8 +32,6 @@
             limiter = false;
           };
           use_default_settings.engines.remove = [
-            "google"
-            "duckduckgo"
             "ahmia"
             "torch"
             "wikidata"
@@ -46,6 +44,8 @@
                 disabled = false;
               })
               [
+                "google"
+                "duckduckgo"
                 "bing"
                 "startpage"
                 "brave"
