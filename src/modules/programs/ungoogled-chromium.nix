@@ -25,7 +25,7 @@
         builtins.map (arg: "--append-flags ${lib.escapeShellArg arg}") args
       );
 
-      searchUrl = config.dot.services.search.url;
+      searchUrl = config.dot.search.url;
     in
     lib.mkIf hardware.browser {
       # NOTE: this only configures chromium
