@@ -63,6 +63,8 @@
 
       search = {
         force = true;
+        default = "dot-search";
+        privateDefault = "dot-search";
         engines = {
           dot-search = {
             name = "dot search";
