@@ -38,31 +38,69 @@
           ];
           engines = (
             builtins.map
-              (name: {
-                name = builtins.replaceStrings [ "_" ] [ " " ] name;
-                engine = name;
-                disabled = false;
-              })
+              (
+                engine:
+                if builtins.isAttrs engine then
+                  engine
+                  // {
+                    name = engine.name or builtins.replaceStrings [ "_" ] [ " " ] engine;
+                    disabled = false;
+                    inactive = false;
+                  }
+                else
+                  {
+                    inherit engine;
+                    name = builtins.replaceStrings [ "_" ] [ " " ] engine;
+                    disabled = false;
+                    inactive = false;
+                  }
+              )
               [
-                "google"
-                "duckduckgo"
-                "bing"
-                "startpage"
-                "brave"
-                "wikipedia"
-                "arxiv"
+                # general
+                "findfiles"
+                "freesound"
+                "piratebay"
+                "neocities"
+                "steam"
+
+                # wikis and academic
                 "crossref"
                 "semantic_scholar"
-                "github"
-                "github_code"
-                "gitlab"
-                "crates"
-                "docker_hub"
                 "annas_archive"
+                "zlibrary"
+                "openlibrary"
+                "hackernews"
                 "alpinelinux"
                 "archlinux"
-                "findfiles"
-                "deepl"
+                {
+                  name = "nixos wiki";
+                  engine = "mediawiki";
+                  base_url = "https://wiki.nixos.org/";
+                }
+
+                # packages
+                "crates"
+                "npm"
+                "docker_hub"
+                "huggingface"
+                "github"
+                {
+                  engine = "github_code";
+                  ghc_auth = {
+                    type = "none";
+                    token = "token";
+                  };
+                }
+                {
+                  engine = "gitlab";
+                  base_url = "https://gitlab.com";
+                }
+                "sourcehut"
+                {
+                  name = "codeberg";
+                  engine = "gitea";
+                  base_url = "https://codeberg.org";
+                }
               ]
           );
         };
