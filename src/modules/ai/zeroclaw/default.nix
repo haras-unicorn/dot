@@ -497,7 +497,8 @@ in
 
         web_search = {
           enabled = true;
-          search_provider = "duckduckgo";
+          search_provider = "searxng";
+          searxng_instance_url = osConfig.dot.services.search.url;
         };
 
         memory.search_mode = "bm25";
