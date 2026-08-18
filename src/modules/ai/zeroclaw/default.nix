@@ -357,7 +357,7 @@ in
           max_tool_iterations = 100;
           max_actions_per_hour = 1000;
           max_history_messages = 64;
-          max_context_tokens = 262144;
+          max_context_tokens = 196608;
         };
 
         channels.matrix.main = {
