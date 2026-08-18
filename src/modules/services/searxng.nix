@@ -25,32 +25,32 @@
         settings.server.bind_address = address;
         settings.use_default_settings = true;
         settings.engines =
-          (lib.listToAttrs (
-            map
-              (name: {
-                name = name;
-                value.enabled = true;
-              })
-              [
-                "bing"
-                "startpage"
-                "brave"
-                "wikipedia"
-                "arxiv"
-                "crossref"
-                "semantic_scholar"
-              ]
-          ))
-          // lib.listToAttrs (
-            map
-              (name: {
-                name = name;
-                value.enabled = false;
-              })
-              [
-                "google"
-                "duckduckgo"
-              ]
+          (builtins.map
+            (name: {
+              inherit name;
+              engine = name;
+              disabled = false;
+            })
+            [
+              "bing"
+              "startpage"
+              "brave"
+              "wikipedia"
+              "arxiv"
+              "crossref"
+              "semantic_scholar"
+            ]
+          )
+          ++ (builtins.map
+            (name: {
+              inherit name;
+              engine = name;
+              disabled = true;
+            })
+            [
+              "google"
+              "duckduckgo"
+            ]
           );
       };
     };
