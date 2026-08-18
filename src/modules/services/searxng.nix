@@ -49,12 +49,14 @@
                   // {
                     inherit name shortcut;
                     disabled = false;
+                    inactive = false;
                   }
                 else
                   {
                     inherit engine;
                     name = builtins.replaceStrings [ "_" ] [ " " ] engine;
                     disabled = false;
+                    inactive = false;
                   }
               )
               [
