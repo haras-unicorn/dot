@@ -497,7 +497,7 @@ in
           ];
         };
 
-        web_search = lib.optionalAttrs hardware.network {
+        web_search = {
           enabled = true;
           search_provider = "searxng";
           searxng_instance_url = config.dot.services.search.url;

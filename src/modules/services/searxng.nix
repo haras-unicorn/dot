@@ -1,7 +1,3 @@
-# SearXNG - a privacy-respecting metasearch engine
-#
-# Aggregates results from Bing, Startpage, Brave, Wikipedia, and
-# many other sources. Queries are never logged or profiled.
 {
   machines.nixosModules.searxng =
     {
@@ -10,23 +6,24 @@
       ...
     }:
     let
+      address = "127.0.0.1";
+      port = 8888;
+
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.network {
+      dot.services.search.url = "http://${address}:${builtins.toString port}";
+
       services.searx = {
         enable = true;
 
-        settings.server.port = 8888;
-        settings.server.bind_address = "127.0.0.1";
-
-        # Built-in server — no uwsgi, no redis needed for local use
         configureUwsgi = false;
         redisCreateLocally = false;
-
         limiterSettings.enabled = false;
 
+        settings.server.port = port;
+        settings.server.bind_address = address;
         settings.use_default_settings = true;
-
         settings.engines =
           (lib.listToAttrs (
             map
@@ -56,7 +53,5 @@
               ]
           );
       };
-
-      dot.services.search.url = "http://127.0.0.1:8888";
     };
 }

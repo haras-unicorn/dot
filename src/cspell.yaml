@@ -530,3 +530,6 @@ ignoreWords:
   - flakehub
   - codeberg
   - sourcehut
+  - uwsgi
+  - startpage
+  - crossref
