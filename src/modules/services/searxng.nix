@@ -7,7 +7,7 @@
     }:
     let
       address = "127.0.0.1";
-      port = 8888;
+      port = 8889;
 
       hardware = config.dot.hardware;
     in
@@ -30,6 +30,8 @@
           use_default_settings.engines.remove = [
             "google"
             "duckduckgo"
+            "ahmie"
+            "torch"
           ];
           engines = (
             builtins.map
