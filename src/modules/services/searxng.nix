@@ -41,9 +41,13 @@
               (
                 engine:
                 if builtins.isAttrs engine then
+                  let
+                    name = engine.name or (builtins.replaceStrings [ "_" ] [ " " ] engine.engine);
+                  in
                   engine
                   // {
-                    name = engine.name or (builtins.replaceStrings [ "_" ] [ " " ] engine.engine);
+                    inherit name;
+                    shortcut = builtins.substring 0 4 name;
                     disabled = false;
                     inactive = false;
                   }
@@ -84,6 +88,7 @@
                 "github"
                 {
                   engine = "github_code";
+                  shortcut = "gitc";
                   ghc_auth = {
                     type = "none";
                     token = "token";
