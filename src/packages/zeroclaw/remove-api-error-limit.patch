@@ -1,0 +1,35 @@
+diff --git a/crates/zeroclaw-providers/src/lib.rs b/crates/zeroclaw-providers/src/lib.rs
+index e48057cb9..1799d86bb 100644
+--- a/crates/zeroclaw-providers/src/lib.rs
++++ b/crates/zeroclaw-providers/src/lib.rs
+@@ -44,7 +44,6 @@ use reliable::{ReliableModelProvider, ReliableModelProviderEntry};
+ use serde::Deserialize;
+ use std::path::PathBuf;
+
+-const MAX_API_ERROR_CHARS: usize = 500;
+ const MINIMAX_INTL_BASE_URL: &str = "https://api.minimax.io/v1";
+ /// MiniMax-published OAuth client_id (same one their portal uses).
+ /// Operators with a custom OAuth app override via
+@@ -827,20 +826,9 @@ pub fn scrub_secret_patterns(input: &str) -> String {
+     scrubbed
+ }
+
+-/// Sanitize API error text by scrubbing secrets and truncating length.
++/// Sanitize API error text by scrubbing secrets.
+ pub fn sanitize_api_error(input: &str) -> String {
+-    let scrubbed = scrub_secret_patterns(input);
+-
+-    if scrubbed.chars().count() <= MAX_API_ERROR_CHARS {
+-        return scrubbed;
+-    }
+-
+-    let mut end = MAX_API_ERROR_CHARS;
+-    while end > 0 && !scrubbed.is_char_boundary(end) {
+-        end -= 1;
+-    }
+-
+-    format!("{}...", &scrubbed[..end])
++    scrub_secret_patterns(input)
+ }
+
+ /// Format an error including its full source chain and sanitize the result.
