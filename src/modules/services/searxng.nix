@@ -52,9 +52,12 @@
                     inactive = false;
                   }
                 else
-                  {
-                    inherit engine;
+                  let
                     name = builtins.replaceStrings [ "_" ] [ " " ] engine;
+                    shortcut = builtins.substring 0 4 engine;
+                  in
+                  {
+                    inherit engine name shortcut;
                     disabled = false;
                     inactive = false;
                   }
