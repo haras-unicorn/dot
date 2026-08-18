@@ -21,37 +21,34 @@
         redisCreateLocally = false;
         limiterSettings.enabled = false;
 
-        settings.server.port = port;
-        settings.server.bind_address = address;
-        settings.use_default_settings = true;
-        settings.engines =
-          (builtins.map
-            (name: {
-              inherit name;
-              engine = name;
-              disabled = false;
-            })
-            [
-              "bing"
-              "startpage"
-              "brave"
-              "wikipedia"
-              "arxiv"
-              "crossref"
-              "semantic_scholar"
-            ]
-          )
-          ++ (builtins.map
-            (name: {
-              inherit name;
-              engine = name;
-              disabled = true;
-            })
-            [
-              "google"
-              "duckduckgo"
-            ]
+        settings = {
+          server = {
+            port = port;
+            bind_address = address;
+            secret_key = "local-only";
+          };
+          use_default_settings.engines.remove = [
+            "google"
+            "duckduckgo"
+          ];
+          engines = (
+            builtins.map
+              (name: {
+                inherit name;
+                engine = name;
+                disabled = false;
+              })
+              [
+                "bing"
+                "startpage"
+                "brave"
+                "wikipedia"
+                "arxiv"
+                "crossref"
+                "semantic_scholar"
+              ]
           );
+        };
       };
     };
 }
