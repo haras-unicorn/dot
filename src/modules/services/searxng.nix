@@ -57,10 +57,8 @@
               )
               [
                 # general
-                "findfiles"
                 "freesound"
                 "piratebay"
-                "neocities"
                 "steam"
 
                 # wikis and academic
