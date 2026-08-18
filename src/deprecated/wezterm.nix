@@ -1,5 +1,5 @@
 {
-  machines.homeModules.wezterm =
+  self.lib.deprecated.homeModules.wezterm =
     {
       config,
       osConfig,
