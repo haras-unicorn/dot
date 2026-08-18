@@ -14,6 +14,8 @@
 
       package = pkgs.librewolf;
 
+      searchUrl = osConfig.dot.search.url;
+
       textarea-cache = pkgs.stdenvNoCC.mkDerivation {
         name = "textarea-cache";
         version = "5.0.7";
@@ -42,7 +44,7 @@
         force = true;
         settings = {
           "vimium-c@gdh1995.cn".settings = {
-            searchUrl = "${osConfig.dot.search.url}/?q=$s";
+            searchUrl = "${searchUrl}/?q=$s";
           };
         };
         packages =
@@ -59,6 +61,20 @@
 
       };
 
+      search = {
+        force = true;
+        engines = {
+          dot-search = {
+            name = "dot search";
+            urls = [
+              {
+                template = "${searchUrl}?q={searchTerms}";
+              }
+            ];
+          };
+        };
+      };
+
       settings = {
         "privacy.clearOnShutdown.cookies" = false;
         "privacy.clearOnShutdown.sessions" = false;
@@ -67,11 +83,6 @@
         "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
         "privacy.clearOnShutdown_v2.siteSettings" = false;
         "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = false;
-        "keyword.URL" = osConfig.dot.search.url + "/?q=%s";
-      };
-
-      profile = {
-        inherit extensions;
       };
 
       profiles = [
@@ -94,8 +105,13 @@
         profiles = builtins.listToAttrs (
           lib.imap0 (id: name: {
             inherit name;
-            value = profile // {
-              inherit name id;
+            value = {
+              inherit
+                name
+                id
+                extensions
+                search
+                ;
               isDefault = id == 0;
             };
           }) profiles
