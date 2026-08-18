@@ -30,8 +30,6 @@
           use_default_settings.engines.remove = [
             "google"
             "duckduckgo"
-            "ahmie"
-            "torch"
           ];
           engines = (
             builtins.map
