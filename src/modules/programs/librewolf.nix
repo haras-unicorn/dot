@@ -67,8 +67,6 @@
         "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
         "privacy.clearOnShutdown_v2.siteSettings" = false;
         "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = false;
-
-        # Use SearXNG as default search engine
         "keyword.URL" = osConfig.dot.search.url + "/?q=%s";
       };
 

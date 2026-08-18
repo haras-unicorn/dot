@@ -34,7 +34,7 @@
           engines = (
             builtins.map
               (name: {
-                inherit name;
+                name = builtins.replaceStrings [ "_" ] [ " " ] name;
                 engine = name;
                 disabled = false;
               })
