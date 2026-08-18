@@ -19,17 +19,20 @@
 
         configureUwsgi = false;
         redisCreateLocally = false;
-        limiterSettings.enabled = false;
 
         settings = {
           server = {
             port = port;
             bind_address = address;
             secret_key = "local-only";
+            limiter = false;
           };
           use_default_settings.engines.remove = [
             "google"
             "duckduckgo"
+            "ahmia"
+            "torch"
+            "wikidata"
           ];
           engines = (
             builtins.map
