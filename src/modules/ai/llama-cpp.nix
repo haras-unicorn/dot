@@ -109,7 +109,7 @@ in
             "--cache-type-v"
             "q8_0"
             "--ubatch-size"
-            "2048"
+            "1024"
             "--fate"
             "--fate-cache"
             "4096"
