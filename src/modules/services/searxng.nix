@@ -21,6 +21,10 @@
         redisCreateLocally = false;
 
         settings = {
+          search.formats = [
+            "html"
+            "json"
+          ];
           server = {
             port = port;
             bind_address = address;
