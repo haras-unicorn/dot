@@ -11,13 +11,12 @@
     }:
     let
       hardware = config.dot.hardware;
-      searchUrl = config.dot.services.search.url;
     in
     lib.mkIf hardware.network {
       services.searx = {
         enable = true;
 
-        settings.server.port = config.dot.services.search.searxng.port;
+        settings.server.port = 8888;
         settings.server.bind_address = "127.0.0.1";
 
         # Built-in server — no uwsgi, no redis needed for local use
@@ -57,5 +56,7 @@
               ]
           );
       };
+
+      dot.services.search.url = "http://127.0.0.1:8888";
     };
 }

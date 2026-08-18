@@ -8,7 +8,6 @@
     }:
     let
       hardware = config.dot.hardware;
-      searchUrl = config.dot.services.search.url;
 
       args = [
         "--enable-gpu-rasterization"
@@ -27,13 +26,6 @@
       );
     in
     lib.mkIf hardware.browser {
-      programs.chromium = {
-        enable = true;
-        defaultSearchProviderSearchURL = searchUrl + "/?q={searchTerms}";
-        defaultSearchProviderSuggestURL = searchUrl + "/suggest?q={searchTerms}";
-        defaultSearchProviderEnabled = true;
-      };
-
       dot.programs.chromium = {
         inherit args;
 
