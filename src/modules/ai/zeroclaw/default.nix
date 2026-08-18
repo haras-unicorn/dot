@@ -512,6 +512,7 @@ in
       llamaConfig = {
         providers.models.llamacpp.main = {
           uri = "http://127.0.0.1:8080/v1";
+          timeout_secs = 300;
           model = "qwen-3-6-35b-a3b";
           vision = false;
           fallback = [ "deepseek.main" ];
@@ -519,6 +520,7 @@ in
 
         providers.models.llamacpp.small = {
           uri = "http://127.0.0.1:8081/v1";
+          timeout_secs = 300;
           model = "gemma-4-e2b";
           vision = true;
           fallback = [ "deepseek.main" ];
