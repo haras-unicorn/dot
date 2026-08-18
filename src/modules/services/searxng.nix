@@ -12,7 +12,7 @@
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.network {
-      dot.services.search.url = "http://${address}:${builtins.toString port}";
+      dot.search.url = "http://${address}:${builtins.toString port}";
 
       services.searx = {
         enable = true;

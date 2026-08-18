@@ -24,8 +24,19 @@
       wrapAppendFlags = builtins.concatStringsSep " " (
         builtins.map (arg: "--append-flags ${lib.escapeShellArg arg}") args
       );
+
+      searchUrl = config.dot.services.search.url;
     in
     lib.mkIf hardware.browser {
+      # NOTE: this only configures chromium
+      # it doesn't actually install it
+      programs.chromium = {
+        enable = true;
+        defaultSearchProviderSearchURL = searchUrl + "/?q={searchTerms}";
+        defaultSearchProviderSuggestURL = searchUrl + "/suggest?q={searchTerms}";
+        defaultSearchProviderEnabled = true;
+      };
+
       dot.programs.chromium = {
         inherit args;
 
@@ -77,14 +88,10 @@
     }:
     let
       hardware = osConfig.dot.hardware;
-      searchUrl = osConfig.dot.services.search.url;
     in
     lib.mkIf hardware.browser {
       programs.chromium.enable = true;
       programs.chromium.package = osConfig.dot.programs.chromium.package;
-      programs.chromium.defaultSearchProviderSearchURL = searchUrl + "/?q={searchTerms}";
-      programs.chromium.defaultSearchProviderSuggestURL = searchUrl + "/suggest?q={searchTerms}";
-      programs.chromium.defaultSearchProviderEnabled = true;
       programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
         en_US
       ];

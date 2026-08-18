@@ -42,7 +42,7 @@
         force = true;
         settings = {
           "vimium-c@gdh1995.cn".settings = {
-            searchUrl = "${osConfig.dot.services.search.url}/?q=$s";
+            searchUrl = "${osConfig.dot.search.url}/?q=$s";
           };
         };
         packages =
@@ -69,7 +69,7 @@
         "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = false;
 
         # Use SearXNG as default search engine
-        "keyword.URL" = osConfig.dot.services.search.url + "/?q=%s";
+        "keyword.URL" = osConfig.dot.search.url + "/?q=%s";
       };
 
       profile = {

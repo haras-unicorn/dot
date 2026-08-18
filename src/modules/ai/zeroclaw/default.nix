@@ -500,7 +500,7 @@ in
         web_search = {
           enabled = true;
           search_provider = "searxng";
-          searxng_instance_url = config.dot.services.search.url;
+          searxng_instance_url = config.dot.search.url;
         };
 
         memory.search_mode = "bm25";
