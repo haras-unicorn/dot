@@ -32,6 +32,7 @@
       # it doesn't actually install it
       programs.chromium = {
         enable = true;
+        homepageLocation = searchUrl;
         defaultSearchProviderSearchURL = searchUrl + "/?q={searchTerms}";
         defaultSearchProviderSuggestURL = searchUrl + "/suggest?q={searchTerms}";
         defaultSearchProviderEnabled = true;
