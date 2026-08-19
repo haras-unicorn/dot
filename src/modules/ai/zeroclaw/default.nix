@@ -9,6 +9,7 @@
 # MATRIX_HOMESERVER
 # MATRIX_USER_ID
 # MATRIX_PEER
+# MATRIX_DIGEST_ROOM
 # GIT_USER
 # GIT_EMAIL
 # GIT_SSH_KEY
@@ -259,6 +260,9 @@ in
             "TodoWrite"
             "mcp_resources"
 
+            "rss__get_articles"
+            "rss__fetch_article"
+
             "nixos__nix"
             "nixos__nix_versions"
 
@@ -493,16 +497,20 @@ in
           ];
         };
 
-        mcp_bundles.dev = {
-          servers = [
-            "nixos"
-            "nix"
-            "git"
-            "github"
-          ];
-          digest = [
-            "rss"
-          ];
+        mcp_bundles = {
+          dev = {
+            servers = [
+              "nixos"
+              "nix"
+              "git"
+              "github"
+            ];
+          };
+          digest = {
+            servers = [
+              "rss"
+            ];
+          };
         };
 
         cron = {
@@ -516,7 +524,7 @@ in
             delivery = {
               mode = "announce";
               channel = "matrix.main";
-              to = "$MATRIX_PEER";
+              to = "$MATRIX_DIGEST_ROOM";
             };
           };
         };
