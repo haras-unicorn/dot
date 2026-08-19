@@ -10,6 +10,28 @@
       port = 8889;
 
       hardware = config.dot.hardware;
+
+      failingEngines = [
+        # NOTE: these don't even pass a start check
+        "torch"
+        "ahmia"
+        "wikidata"
+        # NOTE: not sure why this didn't work
+        "google cse"
+        "google cse images"
+        # NOTE: immediate captcha
+        "startpage"
+        "startpage news"
+        "startpage images"
+        # NOTE: immediate "too many requests"
+        "brave"
+        "brave.images"
+        "brave.videos"
+        "brave.news"
+      ];
+      defaultEngines = builtins.filter ({ name, ... }: !(builtins.elem name failingEngines)) (
+        builtins.fromJSON (builtins.readFile ./engines.json)
+      );
     in
     lib.mkIf hardware.network {
       dot.search.url = "http://${address}:${builtins.toString port}";
@@ -31,13 +53,10 @@
             secret_key = "local-only";
             limiter = false;
           };
-          use_default_settings.engines.remove = [
-            "ahmia"
-            "torch"
-            "wikidata"
-          ];
-          engines = (
-            builtins.map
+          use_default_settings.engines.remove = failingEngines;
+          engines =
+            defaultEngines
+            ++ (builtins.map
               (
                 engine:
                 if builtins.isAttrs engine then
@@ -64,7 +83,6 @@
               )
               [
                 # general
-                "freesound"
                 "piratebay"
                 "steam"
 
@@ -108,7 +126,7 @@
                   base_url = "https://codeberg.org";
                 }
               ]
-          );
+            );
         };
       };
     };

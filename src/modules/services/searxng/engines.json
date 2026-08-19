@@ -1,0 +1,471 @@
+[
+  {
+    "name": "ahmia",
+    "engine": "ahmia",
+    "timeout": 20.0,
+    "categories": "onions",
+    "enable_http": true,
+    "shortcut": "ah"
+  },
+  { "name": "arch linux wiki", "engine": "archlinux", "shortcut": "al" },
+  { "name": "artic", "engine": "artic", "shortcut": "arc", "timeout": 4.0 },
+  { "name": "arxiv", "engine": "arxiv", "shortcut": "arx" },
+  {
+    "name": "bandcamp",
+    "engine": "bandcamp",
+    "shortcut": "bc",
+    "categories": "music"
+  },
+  {
+    "name": "wikipedia",
+    "engine": "wikipedia",
+    "shortcut": "wp",
+    "display_type": ["infobox"],
+    "categories": ["general"]
+  },
+  { "name": "bing images", "engine": "bing_images", "shortcut": "bii" },
+  { "name": "bing news", "engine": "bing_news", "shortcut": "bin" },
+  { "name": "bing videos", "engine": "bing_videos", "shortcut": "biv" },
+  {
+    "name": "openverse",
+    "engine": "openverse",
+    "categories": "images",
+    "shortcut": "opv"
+  },
+  { "name": "chefkoch", "engine": "chefkoch", "shortcut": "chef" },
+  { "name": "currency", "engine": "currency_convert", "shortcut": "cc" },
+  {
+    "name": "devicons",
+    "engine": "devicons",
+    "shortcut": "di",
+    "timeout": 3.0
+  },
+  {
+    "name": "docker hub",
+    "engine": "docker_hub",
+    "shortcut": "dh",
+    "categories": ["it", "packages"]
+  },
+  {
+    "name": "wikidata",
+    "engine": "wikidata",
+    "shortcut": "wd",
+    "timeout": 3.0,
+    "weight": 2,
+    "display_type": ["infobox"],
+    "categories": ["general"]
+  },
+  { "name": "duckduckgo", "engine": "duckduckgo", "shortcut": "ddg" },
+  {
+    "name": "duckduckgo images",
+    "engine": "duckduckgo_extra",
+    "categories": ["images"],
+    "ddg_category": "images",
+    "shortcut": "ddi"
+  },
+  {
+    "name": "duckduckgo videos",
+    "engine": "duckduckgo_extra",
+    "categories": ["videos"],
+    "ddg_category": "videos",
+    "shortcut": "ddv"
+  },
+  {
+    "name": "duckduckgo news",
+    "engine": "duckduckgo_extra",
+    "categories": ["news"],
+    "ddg_category": "news",
+    "shortcut": "ddn"
+  },
+  {
+    "name": "etymonline",
+    "engine": "xpath",
+    "paging": true,
+    "search_url": "https://etymonline.com/search?page={pageno}&q={query}",
+    "url_xpath": "//a[contains(@class, \"word__name--\")]/@href",
+    "title_xpath": "//a[contains(@class, \"word__name--\")]",
+    "content_xpath": "//section[contains(@class, \"word__defination\")]",
+    "first_page_num": 1,
+    "shortcut": "et",
+    "categories": ["dictionaries"],
+    "about": {
+      "website": "https://www.etymonline.com/",
+      "wikidata_id": "Q1188617",
+      "use_official_api": false,
+      "require_api_key": false,
+      "results": "HTML"
+    }
+  },
+  {
+    "name": "flickr",
+    "categories": "images",
+    "shortcut": "fl",
+    "engine": "flickr_noapi"
+  },
+  { "name": "genius", "engine": "genius", "shortcut": "gen" },
+  {
+    "name": "gentoo",
+    "engine": "mediawiki",
+    "shortcut": "ge",
+    "categories": ["it", "software wikis"],
+    "base_url": "https://wiki.gentoo.org/",
+    "api_path": "api.php",
+    "search_type": "text",
+    "timeout": 10
+  },
+  { "name": "github", "engine": "github", "shortcut": "gh" },
+  { "name": "google news", "engine": "google_news", "shortcut": "gon" },
+  { "name": "google cse", "engine": "google_cse", "shortcut": "goc" },
+  {
+    "name": "google cse images",
+    "engine": "google_cse",
+    "categories": ["images", "web"],
+    "google_categ": "image",
+    "shortcut": "goci"
+  },
+  { "name": "google scholar", "engine": "google_scholar", "shortcut": "gos" },
+  {
+    "name": "hoogle",
+    "engine": "xpath",
+    "search_url": "https://hoogle.haskell.org/?hoogle={query}",
+    "results_xpath": "//div[@class=\"result\"]",
+    "title_xpath": ".//div[@class=\"ans\"]//a",
+    "url_xpath": ".//div[@class=\"ans\"]//a/@href",
+    "content_xpath": ".//div[@class=\"from\"]",
+    "page_size": 20,
+    "categories": ["it", "packages"],
+    "shortcut": "ho",
+    "about": {
+      "website": "https://hoogle.haskell.org/",
+      "wikidata_id": "Q34010",
+      "official_api_documentation": "https://hackage.haskell.org/api",
+      "use_official_api": false,
+      "require_api_key": false,
+      "results": "JSON"
+    }
+  },
+  {
+    "name": "kickass",
+    "engine": "kickass",
+    "base_url": [
+      "https://kickasstorrents.to",
+      "https://kickasstorrents.cr",
+      "https://kickasstorrent.cr",
+      "https://kickass.sx",
+      "https://kat.am"
+    ],
+    "shortcut": "kc",
+    "timeout": 4.0
+  },
+  {
+    "name": "lemmy communities",
+    "engine": "lemmy",
+    "lemmy_type": "Communities",
+    "shortcut": "leco"
+  },
+  {
+    "name": "lemmy users",
+    "engine": "lemmy",
+    "network": "lemmy communities",
+    "lemmy_type": "Users",
+    "shortcut": "leus"
+  },
+  {
+    "name": "lemmy posts",
+    "engine": "lemmy",
+    "network": "lemmy communities",
+    "lemmy_type": "Posts",
+    "shortcut": "lepo"
+  },
+  {
+    "name": "lemmy comments",
+    "engine": "lemmy",
+    "network": "lemmy communities",
+    "lemmy_type": "Comments",
+    "shortcut": "lecom"
+  },
+  { "name": "lingva", "engine": "lingva", "shortcut": "lv", "timeout": 6.0 },
+  { "name": "lucide", "engine": "lucide", "shortcut": "luc", "timeout": 3.0 },
+  {
+    "name": "mastodon users",
+    "engine": "mastodon",
+    "mastodon_type": "accounts",
+    "base_url": "https://mastodon.social",
+    "shortcut": "mau"
+  },
+  {
+    "name": "mastodon hashtags",
+    "engine": "mastodon",
+    "mastodon_type": "hashtags",
+    "base_url": "https://mastodon.social",
+    "shortcut": "mah"
+  },
+  {
+    "name": "mdn",
+    "shortcut": "mdn",
+    "engine": "json_engine",
+    "categories": ["it"],
+    "paging": true,
+    "search_url": "https://developer.mozilla.org/api/v1/search?q={query}&page={pageno}",
+    "results_query": "documents",
+    "url_query": "mdn_url",
+    "url_prefix": "https://developer.mozilla.org",
+    "title_query": "title",
+    "content_query": "summary",
+    "about": {
+      "website": "https://developer.mozilla.org",
+      "wikidata_id": "Q3273508",
+      "use_official_api": false,
+      "require_api_key": false,
+      "results": "JSON"
+    }
+  },
+  { "name": "mixcloud", "engine": "mixcloud", "shortcut": "mc" },
+  {
+    "name": "mankier",
+    "engine": "json_engine",
+    "search_url": "https://www.mankier.com/api/v2/mans/?q={query}",
+    "results_query": "results",
+    "url_query": "url",
+    "title_query": "name",
+    "content_query": "description",
+    "categories": "it",
+    "shortcut": "man",
+    "about": {
+      "website": "https://www.mankier.com/",
+      "official_api_documentation": "https://www.mankier.com/api",
+      "use_official_api": true,
+      "require_api_key": false,
+      "results": "JSON"
+    }
+  },
+  {
+    "name": "openairedatasets",
+    "engine": "json_engine",
+    "paging": true,
+    "search_url": "https://api.openaire.eu/search/datasets?format=json&page={pageno}&size=10&title={query}",
+    "results_query": "response/results/result",
+    "url_query": "metadata/oaf:entity/oaf:result/children/instance/webresource/url/$",
+    "title_query": "metadata/oaf:entity/oaf:result/title/$",
+    "content_query": "metadata/oaf:entity/oaf:result/description/$",
+    "content_html_to_text": true,
+    "categories": "science",
+    "shortcut": "oad",
+    "timeout": 5.0,
+    "about": {
+      "website": "https://www.openaire.eu/",
+      "wikidata_id": "Q25106053",
+      "official_api_documentation": "https://api.openaire.eu/",
+      "use_official_api": false,
+      "require_api_key": false,
+      "results": "JSON"
+    }
+  },
+  {
+    "name": "openairepublications",
+    "engine": "json_engine",
+    "paging": true,
+    "search_url": "https://api.openaire.eu/search/publications?format=json&page={pageno}&size=10&title={query}",
+    "results_query": "response/results/result",
+    "url_query": "metadata/oaf:entity/oaf:result/children/instance/webresource/url/$",
+    "title_query": "metadata/oaf:entity/oaf:result/title/$",
+    "content_query": "metadata/oaf:entity/oaf:result/description/$",
+    "content_html_to_text": true,
+    "categories": "science",
+    "shortcut": "oap",
+    "timeout": 5.0,
+    "about": {
+      "website": "https://www.openaire.eu/",
+      "wikidata_id": "Q25106053",
+      "official_api_documentation": "https://api.openaire.eu/",
+      "use_official_api": false,
+      "require_api_key": false,
+      "results": "JSON"
+    }
+  },
+  { "name": "openstreetmap", "engine": "openstreetmap", "shortcut": "osm" },
+  { "name": "pdbe", "engine": "pdbe", "shortcut": "pdb" },
+  { "name": "pexels", "engine": "pexels", "shortcut": "pe" },
+  { "name": "photon", "engine": "photon", "shortcut": "ph" },
+  { "name": "pinterest", "engine": "pinterest", "shortcut": "pin" },
+  {
+    "name": "piratebay",
+    "engine": "piratebay",
+    "shortcut": "tpb",
+    "url": "https://thepiratebay.org/",
+    "timeout": 3.0
+  },
+  { "name": "pubmed", "engine": "pubmed", "shortcut": "pub" },
+  { "name": "pypi", "shortcut": "pypi", "engine": "pypi" },
+  { "name": "radio browser", "engine": "radio_browser", "shortcut": "rb" },
+  { "name": "reuters", "engine": "reuters", "shortcut": "reu" },
+  { "name": "sepiasearch", "engine": "sepiasearch", "shortcut": "sep" },
+  { "name": "soundcloud", "engine": "soundcloud", "shortcut": "sc" },
+  {
+    "name": "stackoverflow",
+    "engine": "stackexchange",
+    "shortcut": "st",
+    "api_site": "stackoverflow",
+    "categories": ["it", "q&a"]
+  },
+  {
+    "name": "askubuntu",
+    "engine": "stackexchange",
+    "shortcut": "ubuntu",
+    "api_site": "askubuntu",
+    "categories": ["it", "q&a"]
+  },
+  {
+    "name": "superuser",
+    "engine": "stackexchange",
+    "shortcut": "su",
+    "api_site": "superuser",
+    "categories": ["it", "q&a"]
+  },
+  {
+    "name": "semantic scholar",
+    "engine": "semantic_scholar",
+    "shortcut": "se"
+  },
+  {
+    "name": "startpage",
+    "engine": "startpage",
+    "shortcut": "sp",
+    "startpage_categ": "web",
+    "categories": ["general", "web"]
+  },
+  {
+    "name": "startpage news",
+    "engine": "startpage",
+    "startpage_categ": "news",
+    "categories": ["news", "web"],
+    "shortcut": "spn"
+  },
+  {
+    "name": "startpage images",
+    "engine": "startpage",
+    "startpage_categ": "images",
+    "categories": ["images", "web"],
+    "shortcut": "spi"
+  },
+  {
+    "name": "solidtorrents",
+    "engine": "solidtorrents",
+    "shortcut": "solid",
+    "timeout": 4.0,
+    "base_url": ["https://solidtorrents.to", "https://bitsearch.to"]
+  },
+  {
+    "name": "torch",
+    "engine": "xpath",
+    "paging": true,
+    "search_url": "http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion/cgi-bin/omega/omega?P={query}&DEFAULTOP=and",
+    "results_xpath": "//table//tr",
+    "url_xpath": "./td[2]/a",
+    "title_xpath": "./td[2]/b",
+    "content_xpath": "./td[2]/small",
+    "categories": "onions",
+    "enable_http": true,
+    "shortcut": "tch"
+  },
+  { "name": "unsplash", "engine": "unsplash", "shortcut": "us" },
+  { "name": "youtube", "shortcut": "yt", "engine": "youtube_noapi" },
+  { "name": "dailymotion", "engine": "dailymotion", "shortcut": "dm" },
+  { "name": "vimeo", "engine": "vimeo", "shortcut": "vm" },
+  {
+    "name": "wikinews",
+    "engine": "mediawiki",
+    "shortcut": "wn",
+    "categories": ["news", "wikimedia"],
+    "base_url": "https://{language}.wikinews.org/",
+    "search_type": "text",
+    "srsort": "create_timestamp_desc",
+    "about": { "website": "https://www.wikinews.org/", "wikidata_id": "Q964" }
+  },
+  {
+    "name": "wiktionary",
+    "engine": "mediawiki",
+    "shortcut": "wt",
+    "categories": ["dictionaries", "wikimedia"],
+    "base_url": "https://{language}.wiktionary.org/",
+    "search_type": "text",
+    "about": { "website": "https://www.wiktionary.org/", "wikidata_id": "Q151" }
+  },
+  {
+    "name": "wikicommons.images",
+    "engine": "wikicommons",
+    "shortcut": "wci",
+    "categories": "images",
+    "wc_search_type": "image"
+  },
+  {
+    "name": "wikicommons.videos",
+    "engine": "wikicommons",
+    "shortcut": "wcv",
+    "categories": "videos",
+    "wc_search_type": "video"
+  },
+  {
+    "name": "wikicommons.audio",
+    "engine": "wikicommons",
+    "shortcut": "wca",
+    "categories": "music",
+    "wc_search_type": "audio"
+  },
+  {
+    "name": "wikicommons.files",
+    "engine": "wikicommons",
+    "shortcut": "wcf",
+    "categories": "files",
+    "wc_search_type": "file"
+  },
+  { "name": "dictzone", "engine": "dictzone", "shortcut": "dc" },
+  {
+    "name": "mymemory translated",
+    "engine": "translated",
+    "shortcut": "tl",
+    "timeout": 5.0
+  },
+  {
+    "name": "wordnik",
+    "engine": "wordnik",
+    "shortcut": "wnik",
+    "timeout": 5.0
+  },
+  { "name": "tootfinder", "engine": "tootfinder", "shortcut": "toot" },
+  { "name": "wttr.in", "engine": "wttr", "shortcut": "wttr", "timeout": 9.0 },
+  {
+    "name": "brave",
+    "engine": "brave",
+    "shortcut": "br",
+    "time_range_support": true,
+    "paging": true,
+    "categories": ["general", "web"],
+    "brave_category": "search"
+  },
+  {
+    "name": "brave.images",
+    "engine": "brave",
+    "network": "brave",
+    "shortcut": "brimg",
+    "categories": ["images", "web"],
+    "brave_category": "images"
+  },
+  {
+    "name": "brave.videos",
+    "engine": "brave",
+    "network": "brave",
+    "shortcut": "brvid",
+    "categories": ["videos", "web"],
+    "brave_category": "videos"
+  },
+  {
+    "name": "brave.news",
+    "engine": "brave",
+    "network": "brave",
+    "shortcut": "brnews",
+    "categories": "news",
+    "brave_category": "news"
+  },
+  { "name": "bt4g", "engine": "bt4g", "shortcut": "bt4g" }
+]
