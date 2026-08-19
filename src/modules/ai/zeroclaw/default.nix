@@ -9,6 +9,7 @@
 # MATRIX_HOMESERVER
 # MATRIX_USER_ID
 # MATRIX_PEER
+# MATRIX_DIGEST_ROOM
 # GIT_USER
 # GIT_EMAIL
 # GIT_SSH_KEY
@@ -101,7 +102,11 @@ in
           risk_profile = "main";
           runtime_profile = "main";
           channels = [ "matrix.main" ];
-          mcp_bundles = [ "dev" ];
+          mcp_bundles = [
+            "dev"
+            "digest"
+          ];
+          cron_jobs = [ "digest" ];
         };
 
         schema_version = 3;
@@ -254,6 +259,9 @@ in
             "weather"
             "TodoWrite"
             "mcp_resources"
+
+            "rss__get_articles"
+            "rss__fetch_article"
 
             "nixos__nix"
             "nixos__nix_versions"
@@ -481,16 +489,44 @@ in
                 ];
               };
             }
+            {
+              name = "rss";
+              transport = "stdio";
+              command = lib.getExe inputs.mcp-rss.packages.${system}.mcp-rss;
+            }
           ];
         };
 
-        mcp_bundles.dev = {
-          servers = [
-            "nixos"
-            "nix"
-            "git"
-            "github"
-          ];
+        mcp_bundles = {
+          dev = {
+            servers = [
+              "nixos"
+              "nix"
+              "git"
+              "github"
+            ];
+          };
+          digest = {
+            servers = [
+              "rss"
+            ];
+          };
+        };
+
+        cron = {
+          digest = {
+            job_type = "agent";
+            schedule = {
+              kind = "cron";
+              expr = "0 6 * * *";
+            };
+            prompt = builtins.readFile ./cron/DIGEST.md;
+            delivery = {
+              mode = "announce";
+              channel = "matrix.main";
+              to = "$MATRIX_DIGEST_ROOM";
+            };
+          };
         };
 
         web_search = {
@@ -627,11 +663,11 @@ in
           mv -f "${dataDir}/.config.toml.tmp" "${dataDir}/config.toml"
 
           mkdir -p ${agentWorkspaceDir}
-          install -m 0644 ${./AGENTS.md} "${agentWorkspaceDir}/AGENTS.md"
-          install -m 0644 ${./IDENTITY.md} "${agentWorkspaceDir}/IDENTITY.md"
-          install -m 0644 ${./SOUL.md} "${agentWorkspaceDir}/SOUL.md"
-          install -m 0644 ${./TOOLS.md} "${agentWorkspaceDir}/TOOLS.md"
-          install -m 0644 ${./USER.md} "${agentWorkspaceDir}/USER.md"
+          install -m 0644 ${./agent/AGENTS.md} "${agentWorkspaceDir}/AGENTS.md"
+          install -m 0644 ${./agent/IDENTITY.md} "${agentWorkspaceDir}/IDENTITY.md"
+          install -m 0644 ${./agent/SOUL.md} "${agentWorkspaceDir}/SOUL.md"
+          install -m 0644 ${./agent/TOOLS.md} "${agentWorkspaceDir}/TOOLS.md"
+          install -m 0644 ${./agent/USER.md} "${agentWorkspaceDir}/USER.md"
         '';
         script = ''
           zeroclaw daemon
