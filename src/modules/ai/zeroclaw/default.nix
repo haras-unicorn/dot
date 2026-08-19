@@ -513,6 +513,11 @@ in
       };
 
       llamaConfig = {
+        reliability = {
+          provider_backoff_ms = 1000;
+          provider_retries = 30;
+        };
+
         providers.models.llamacpp.main = {
           uri = "http://127.0.0.1:8080/v1";
           timeout_secs = 300;
