@@ -2,6 +2,8 @@
 useGitignore: true
 version: "0.2"
 language: en
+ignorePaths:
+  - modules/services/searxng/engines.json
 ignoreWords:
   - nixfmt
   - langservers
