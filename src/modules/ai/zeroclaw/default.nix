@@ -481,6 +481,11 @@ in
                 ];
               };
             }
+            {
+              name = "rss";
+              transport = "stdio";
+              command = lib.getExe inputs.mcp-rss.packages.${system}.mcp-rss;
+            }
           ];
         };
 
@@ -490,6 +495,22 @@ in
             "nix"
             "git"
             "github"
+            "rss"
+          ];
+        };
+
+        cron = {
+          enabled = true;
+          jobs = [
+            {
+              name = "digest";
+              schedule = {
+                kind = "every";
+                every_ms = 10800000;
+              };
+              agent = "main";
+              prompt = "Run the digest job. Fetch new items from the configured sources, dedupe, append to the digest file, and report.";
+            }
           ];
         };
 

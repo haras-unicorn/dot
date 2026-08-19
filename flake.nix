@@ -45,6 +45,9 @@
 
     # NOTE: https://github.com/haras-unicorn/mcp-nix/blob/v0.1.3/README.md
     mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.3";
+
+    # NOTE: https://github.com/haras-unicorn/mcp-rss
+    mcp-rss.url = "github:haras-unicorn-dot-openfang/mcp-rss";
   };
 
   outputs =
