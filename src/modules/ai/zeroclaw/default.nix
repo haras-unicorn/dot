@@ -101,7 +101,11 @@ in
           risk_profile = "main";
           runtime_profile = "main";
           channels = [ "matrix.main" ];
-          mcp_bundles = [ "dev" ];
+          mcp_bundles = [
+            "dev"
+            "digest"
+          ];
+          cron_jobs = [ "digest" ];
         };
 
         schema_version = 3;
@@ -495,23 +499,26 @@ in
             "nix"
             "git"
             "github"
+          ];
+          digest = [
             "rss"
           ];
         };
 
         cron = {
-          enabled = true;
-          jobs = [
-            {
-              name = "digest";
-              schedule = {
-                kind = "every";
-                every_ms = 10800000;
-              };
-              agent = "main";
-              prompt = "Run the digest job. Fetch new items from the configured sources, dedupe, append to the digest file, and report.";
-            }
-          ];
+          digest = {
+            job_type = "agent";
+            schedule = {
+              kind = "cron";
+              expr = "0 6 * * *";
+            };
+            prompt = builtins.readFile ./cron/DIGEST.md;
+            delivery = {
+              mode = "announce";
+              channel = "matrix.main";
+              to = "$MATRIX_PEER";
+            };
+          };
         };
 
         web_search = {
@@ -648,11 +655,11 @@ in
           mv -f "${dataDir}/.config.toml.tmp" "${dataDir}/config.toml"
 
           mkdir -p ${agentWorkspaceDir}
-          install -m 0644 ${./AGENTS.md} "${agentWorkspaceDir}/AGENTS.md"
-          install -m 0644 ${./IDENTITY.md} "${agentWorkspaceDir}/IDENTITY.md"
-          install -m 0644 ${./SOUL.md} "${agentWorkspaceDir}/SOUL.md"
-          install -m 0644 ${./TOOLS.md} "${agentWorkspaceDir}/TOOLS.md"
-          install -m 0644 ${./USER.md} "${agentWorkspaceDir}/USER.md"
+          install -m 0644 ${./agent/AGENTS.md} "${agentWorkspaceDir}/AGENTS.md"
+          install -m 0644 ${./agent/IDENTITY.md} "${agentWorkspaceDir}/IDENTITY.md"
+          install -m 0644 ${./agent/SOUL.md} "${agentWorkspaceDir}/SOUL.md"
+          install -m 0644 ${./agent/TOOLS.md} "${agentWorkspaceDir}/TOOLS.md"
+          install -m 0644 ${./agent/USER.md} "${agentWorkspaceDir}/USER.md"
         '';
         script = ''
           zeroclaw daemon
