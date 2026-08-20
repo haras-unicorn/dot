@@ -466,6 +466,7 @@ in
                 MCP_TRANSPORT_TYPE = "stdio";
                 MCP_LOG_LEVEL = "warn";
                 GIT_SSH_COMMAND = lib.getExe gitSshCommand;
+                GIT_BASE_DIR = "${agentWorkspaceDir}/projects";
               };
             }
             {
