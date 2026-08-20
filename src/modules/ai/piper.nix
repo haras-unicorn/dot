@@ -122,17 +122,28 @@
         dot.piper.node = node;
         dot.piper.sampleRate = defaultVoice.sampleRate;
 
-        home-manager.users.${config.dot.user.user}.dot.ai.models.piper.files = builtins.concatMap (
-          {
-            model,
-            config,
-            ...
-          }:
-          [
-            model
-            config
-          ]
-        ) (builtins.attrValues voices);
+        dot.ai.models = builtins.listToAttrs (
+          builtins.map (
+            {
+              model,
+              config,
+              ...
+            }:
+            let
+              json = builtins.fromJSON (builtins.readFile config);
+            in
+            {
+              name = "piper-${json.dataset}";
+              value = {
+                family = "piper";
+                files = [
+                  model
+                  config
+                ];
+              };
+            }
+          ) (builtins.attrValues voices)
+        );
 
         environment.systemPackages = [
           package

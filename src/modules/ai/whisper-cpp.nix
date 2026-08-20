@@ -1,6 +1,42 @@
 { selfLib, ... }:
 
+let
+  makeModels = pkgs: {
+    tinyVad = pkgs.fetchurl {
+      url = "https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v6.2.0.bin";
+      hash = "sha256-KqJpt4XutTqCmDogUB3ffB2cSOM6tjpBORrGyff7aYc=";
+    };
+
+    tinyModel = pkgs.fetchurl {
+      url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en.bin";
+      hash = "sha256-kh5M+Ghv3Zk9zQgaXaW2w2W/3hFi5ysI11rHUomSCx8=";
+    };
+  };
+in
 {
+  machines.nixosModules.whisper-cpp =
+    {
+      pkgs,
+      config,
+      lib,
+      ...
+    }:
+    let
+      cuda = config.nixpkgs.config.cudaSupport;
+
+      models = makeModels pkgs;
+    in
+    lib.mkIf cuda {
+      dot.ai.models.whisper-tiny = {
+        name = "tiny";
+        family = "whisper";
+        files = [
+          models.tinyModel
+          models.tinyVad
+        ];
+      };
+    };
+
   machines.homeModules.whisper-cpp =
     {
       pkgs,
@@ -14,22 +50,14 @@
 
       cuda = config.nixpkgs.config.cudaSupport;
 
+      models = makeModels pkgs;
+
       # NOTE: like this because some libs
       # otherwise conflict with other packages
       package = pkgs.buildEnv {
         name = "whisper-cpp";
         paths = [ pkgs.whisper-cpp ];
         pathsToLink = [ "/bin" ];
-      };
-
-      vad = pkgs.fetchurl {
-        url = "https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v6.2.0.bin";
-        hash = "sha256-KqJpt4XutTqCmDogUB3ffB2cSOM6tjpBORrGyff7aYc=";
-      };
-
-      model = pkgs.fetchurl {
-        url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny.en.bin";
-        hash = "sha256-kh5M+Ghv3Zk9zQgaXaW2w2W/3hFi5ysI11rHUomSCx8=";
       };
 
       transcribeNode = pkgs.writeShellApplication {
@@ -43,11 +71,11 @@
           trap 'rm -f "$tmpin"; rm -f "$tmpout"' EXIT
           cat > "$tmpin"
           whisper-cli \
-            --model ${model} \
+            --model ${models.tinyModel} \
             --flash-attn ${if cuda then "on" else "off"} \
             --no-gpu ${if cuda then "off" else "on"} \
             --vad \
-            --vad-model "${vad}" \
+            --vad-model "${models.tinyVad}" \
             --no-timestamps \
             --no-prints \
             --output-txt \
@@ -83,7 +111,7 @@
           ];
           text = ''
             whisper-stream \
-              --model ${model} \
+              --model ${models.tinyModel} \
               ${lib.optionalString cuda "--flash-attn"} \
               ${lib.optionalString (!cuda) "--no-gpu"} \
               --language en \
@@ -143,11 +171,6 @@
         output = "text/plain";
         package = transcribeNode;
       };
-
-      dot.ai.models.whisper.files = [
-        model
-        vad
-      ];
 
       home.packages = [
         package

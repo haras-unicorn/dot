@@ -361,13 +361,18 @@
 
       home.file = builtins.listToAttrs (
         builtins.concatMap (
-          { name, files }:
+          {
+            family,
+            name,
+            files,
+            ...
+          }:
           builtins.map (file: {
-            name = "models/${name}/${file.name}";
+            name = "models/${family}/${name}/${file.name}";
             value.source = file;
             value.force = true;
           }) files
-        ) (builtins.attrValues config.dot.ai.models)
+        ) (builtins.attrValues osConfig.dot.ai.models)
       );
     };
 }

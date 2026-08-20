@@ -2,6 +2,7 @@
 
 # TODO: try UD models - they might still work with FATE
 # TODO: try speculative decoding - this is a perfect scenario for it
+# TODO: pick models based on vram somehow??
 # NOTE: ubatch ~= in tps, fate cache ~= out tps, ctx size ~= smart
 
 let
@@ -25,46 +26,62 @@ let
     };
 
   makeModels = pkgs: {
-    gemma-4-e2b = pkgs.fetchurl {
-      name = "gemma-4-e2b.gguf";
-      url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/gemma-4-E2B-it-Q4_K_M.gguf";
-      hash = "sha256-dAGFsh0izrg6EcOqYq1YQu8yxw9gltdWu+6FoeTsNLg=";
+    gemma-4 = {
+      e2b = {
+        model = pkgs.fetchurl {
+          name = "gemma-4-e2b.gguf";
+          url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/gemma-4-E2B-it-Q4_K_M.gguf";
+          hash = "sha256-dAGFsh0izrg6EcOqYq1YQu8yxw9gltdWu+6FoeTsNLg=";
+
+        };
+        mmproj = pkgs.fetchurl {
+          name = "gemma-4-e2b-mmproj.gguf";
+          url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/mmproj-F16.gguf";
+          hash = "sha256-FAvo14SXQfiMUHV9UpuENz7o4nBSzCI2hVtTf0qCFfo=";
+        };
+      };
+
+      "26b-a4b" = {
+        model = pkgs.fetchurl {
+          name = "gemma-4-26b-a4b.gguf";
+          url = "https://huggingface.co/bartowski/google_gemma-4-26B-A4B-it-GGUF/resolve/main/google_gemma-4-26B-A4B-it-Q4_K_M.gguf";
+          hash = "sha256-oH9yIh6OP3dFWrDX92UtAan2PCYrlUqmkypTJ1oOiVo=";
+        };
+      };
+
+      e4b = {
+        model = pkgs.fetchurl {
+          name = "gemma-4-e4b.gguf";
+          url = "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/main/gemma-4-E4B-it-Q4_K_M.gguf";
+          hash = "sha256-haiWoEdVPoQvJSl+5bAx1k/zAUfZxK8XseSzlM0fq4c=";
+        };
+      };
     };
 
-    gemma-4-e2b-mmproj = pkgs.fetchurl {
-      name = "gemma-4-e2b-mmproj.gguf";
-      url = "https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF/resolve/main/mmproj-F16.gguf";
-      hash = "sha256-FAvo14SXQfiMUHV9UpuENz7o4nBSzCI2hVtTf0qCFfo=";
-    };
+    qwen-3 = {
+      "35b-a3b" = {
+        model = pkgs.fetchurl {
+          name = "qwen-3-35b-a3b.gguf";
+          url = "https://huggingface.co/bartowski/Qwen_Qwen3.6-35B-A3B-GGUF/resolve/main/Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf";
+          hash = "sha256-tG/t0z4L+wyuMIqjwVjQpLLEodIYWh7W8JPNrzkGR3I=";
+        };
+      };
 
-    gemma-4-26b-a4b = pkgs.fetchurl {
-      name = "gemma-4-26b-a4b.gguf";
-      url = "https://huggingface.co/bartowski/google_gemma-4-26B-A4B-it-GGUF/resolve/main/google_gemma-4-26B-A4B-it-Q4_K_M.gguf";
-      hash = "sha256-oH9yIh6OP3dFWrDX92UtAan2PCYrlUqmkypTJ1oOiVo=";
-    };
+      "4b" = {
+        model = pkgs.fetchurl {
+          name = "qwen-3-4b.gguf";
+          url = "https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/resolve/main/Qwen3.5-4B-Q4_K_M.gguf";
+          hash = "sha256-AP55hv9fa0Y+YkVYIRRgSdtvkxNgOTinCADR+2nvEaQ=";
+        };
+      };
 
-    gemma-4-e4b = pkgs.fetchurl {
-      name = "gemma-4-e4b.gguf";
-      url = "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/main/gemma-4-E4B-it-Q4_K_M.gguf";
-      hash = "sha256-haiWoEdVPoQvJSl+5bAx1k/zAUfZxK8XseSzlM0fq4c=";
-    };
-
-    qwen-3-6-35b-a3b = pkgs.fetchurl {
-      name = "qwen-3-6-35b-a3b.gguf";
-      url = "https://huggingface.co/bartowski/Qwen_Qwen3.6-35B-A3B-GGUF/resolve/main/Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf";
-      hash = "sha256-tG/t0z4L+wyuMIqjwVjQpLLEodIYWh7W8JPNrzkGR3I=";
-    };
-
-    qwen-3-5-4b = pkgs.fetchurl {
-      name = "qwen-3-5-4b.gguf";
-      url = "https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/resolve/main/Qwen3.5-4B-Q4_K_M.gguf";
-      hash = "sha256-AP55hv9fa0Y+YkVYIRRgSdtvkxNgOTinCADR+2nvEaQ=";
-    };
-
-    qwen-3-embedding = pkgs.fetchurl {
-      name = "qwen-3-embedding.gguf";
-      url = "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-Q8_0.gguf";
-      hash = "sha256-BlB8e0JohGnE5ymLCh4W3v8GyvKRzwpbJ4wwgknD5Dk=";
+      embedding = {
+        model = pkgs.fetchurl {
+          name = "qwen-3-embedding.gguf";
+          url = "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/main/Qwen3-Embedding-0.6B-Q8_0.gguf";
+          hash = "sha256-BlB8e0JohGnE5ymLCh4W3v8GyvKRzwpbJ4wwgknD5Dk=";
+        };
+      };
     };
   };
 in
@@ -91,7 +108,7 @@ in
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
             "--model"
-            models.qwen-3-6-35b-a3b
+            models.qwen-3."35b-a3b".model
             "--sleep-idle-seconds"
             "900"
             "--host"
@@ -149,9 +166,9 @@ in
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
             "--model"
-            models.gemma-4-e2b
+            models.gemma-4.e2b.model
             "--mmproj"
-            models.gemma-4-e2b-mmproj
+            models.gemma-4.e2b.mmproj
             "--sleep-idle-seconds"
             "900"
             "--host"
@@ -202,7 +219,7 @@ in
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
             "--model"
-            models.qwen-3-embedding
+            models.qwen-3.embedding.model
             "--embeddings"
             "--pooling"
             "last"
@@ -247,6 +264,40 @@ in
         };
       };
 
+      dot.ai.models = builtins.listToAttrs (
+        builtins.concatMap (
+          { name, value }:
+          let
+            family = name;
+            models = value;
+          in
+          builtins.map ({ name, value }: {
+            name = "${family}-${name}";
+            value = {
+              inherit name family;
+              files = builtins.attrValues value;
+            };
+          }) (lib.attrsToList models)
+        ) (lib.attrsToList models)
+      );
+
+      dot.ai.apis = {
+        gpu = {
+          url = "http://127.0.0.1:8080/v1";
+          model = "qwen-3-35b-a3b";
+          context = 196608;
+        };
+        cpu = {
+          url = "http://127.0.0.1:8081/v1";
+          vision = true;
+          model = "gemma-4-e2b";
+          context = 131072;
+        };
+        embedding = {
+          url = "http://127.0.0.1:8082/v1";
+          model = "qwen-3-embedding";
+        };
+      };
     };
 
   machines.homeModules.llama-cpp =
@@ -292,8 +343,8 @@ in
           cat > "$tmpin"
           export CUDA_VISIBLE_DEVICES=""
           llama-cli \
-            --model ${models.gemma-4-e2b} \
-            --mmproj ${models.gemma-4-e2b-mmproj} \
+            --model ${models.gemma-4.e2b.model} \
+            --mmproj ${models.gemma-4.e2b.mmproj} \
             --load-mode mmap \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
@@ -322,8 +373,8 @@ in
           cat > "$tmpin"
           export CUDA_VISIBLE_DEVICES=""
           llama-cli \
-            --model ${models.gemma-4-e2b} \
-            --mmproj ${models.gemma-4-e2b-mmproj} \
+            --model ${models.gemma-4.e2b.model} \
+            --mmproj ${models.gemma-4.e2b.mmproj} \
             --load-mode mmap \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
@@ -352,8 +403,8 @@ in
           cat > "$tmpin"
           export CUDA_VISIBLE_DEVICES=""
           llama-cli \
-            --model ${models.gemma-4-e2b} \
-            --mmproj ${models.gemma-4-e2b-mmproj} \
+            --model ${models.gemma-4.e2b.model} \
+            --mmproj ${models.gemma-4.e2b.mmproj} \
             --load-mode mmap \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
@@ -381,8 +432,8 @@ in
           cat > "$tmpin"
           export CUDA_VISIBLE_DEVICES=""
           llama-cli \
-            --model ${models.gemma-4-e2b} \
-            --mmproj ${models.gemma-4-e2b-mmproj} \
+            --model ${models.gemma-4.e2b.model} \
+            --mmproj ${models.gemma-4.e2b.mmproj} \
             --load-mode mmap \
             --cache-type-k q8_0 \
             --cache-type-v q8_0 \
@@ -443,17 +494,5 @@ in
           package = node-generate-text;
         };
       };
-
-      dot.ai.models = builtins.listToAttrs (
-        builtins.map
-          (family: {
-            name = family;
-            value.files = builtins.filter (lib.hasPrefix family) (builtins.attrValues models);
-          })
-          [
-            "gemma-4"
-            "qwen-3"
-          ]
-      );
     };
 }

@@ -30,9 +30,10 @@
           autoupdate = false;
           share = "disabled";
           compaction.prune = true;
-          enabled_providers = [ "deepseek" ];
-          model = "openrouter/deepseek/deepseek-v4-flash-0731";
-          small_model = "openrouter/deepseek/deepseek-v4-flash-0731";
+          provider.openrouter.options = selfLib.ai.openrouter.options;
+          enabled_providers = [ "openrouter" ];
+          model = selfLib.ai.openrouter.model;
+          small_model = selfLib.ai.openrouter.model;
           lsp = true;
           permission = {
             bash = {

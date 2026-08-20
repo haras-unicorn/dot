@@ -1,4 +1,45 @@
+let
+  makeModels = pkgs: {
+    dia = pkgs.fetchurl {
+      url = "https://huggingface.co/nari-labs/Dia-1.6B/resolve/main/model.safetensors";
+      hash = "sha256-yroom2D219Hlj8dE9NwlquiJlfzKRr49BeIguXFIaiY=";
+    };
+
+    dieConfig = pkgs.fetchurl {
+      url = "https://huggingface.co/nari-labs/Dia-1.6B/resolve/main/config.json";
+      hash = "sha256-kUDoX9FbgtfyaMVoGkH7HeaFc+wga4fLOlhi/lxZjW4=";
+    };
+
+    diaDac = pkgs.fetchurl {
+      name = "dac.safetensors";
+      url = "https://huggingface.co/EricB/dac_44khz/resolve/main/model.safetensors";
+      hash = "sha256-bkAWHz1cXaXC26ZL5o/C9pgyvHq0+nNsuYdkFpBfcYA=";
+    };
+  };
+in
 {
+  self.lib.deprecated.nixosModules.mistral-rs =
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
+    let
+      cuda = config.nixpkgs.config.cudaSupport;
+
+      models = makeModels pkgs;
+    in
+    lib.mkIf cuda {
+      dot.ai.models.dia = {
+        files = [
+          models.dia
+          models.dieConfig
+          models.diaDac
+        ];
+      };
+    };
+
   self.lib.deprecated.homeModules.mistral-rs =
     {
       pkgs,
@@ -11,23 +52,7 @@
 
       package = pkgs.mistral-rs;
 
-      model = pkgs.fetchurl {
-        url = "https://huggingface.co/nari-labs/Dia-1.6B/resolve/main/model.safetensors";
-        hash = "sha256-yroom2D219Hlj8dE9NwlquiJlfzKRr49BeIguXFIaiY=";
-      };
-
-      modelConfig = pkgs.fetchurl {
-        url = "https://huggingface.co/nari-labs/Dia-1.6B/resolve/main/config.json";
-        hash = "sha256-kUDoX9FbgtfyaMVoGkH7HeaFc+wga4fLOlhi/lxZjW4=";
-      };
-
-      dac = pkgs.fetchurl {
-        name = "dac.safetensors";
-        url = "https://huggingface.co/EricB/dac_44khz/resolve/main/model.safetensors";
-        hash = "sha256-bkAWHz1cXaXC26ZL5o/C9pgyvHq0+nNsuYdkFpBfcYA=";
-      };
-
-      node-generate = pkgs.writeShellApplication {
+      node-describe = pkgs.writeShellApplication {
         name = "mistral-rs-node-describe";
         runtimeInputs = [
           package
@@ -46,12 +71,6 @@
       };
     in
     lib.mkIf cuda {
-      dot.ai.models.dia.files = [
-        model
-        modelConfig
-        dac
-      ];
-
       dot.processing.nodes.mistral-rs-clone-speech = {
         note = "Clone speech";
         tags = [
@@ -63,7 +82,7 @@
         ];
         inputs = [ "text/plain" ];
         output = "audio/wav";
-        package = node-generate;
+        package = node-describe;
       };
 
       home.packages = [
