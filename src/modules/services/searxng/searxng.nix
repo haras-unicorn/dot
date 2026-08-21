@@ -34,7 +34,10 @@
       );
     in
     lib.mkIf hardware.network {
-      dot.search.url = "http://${address}:${builtins.toString port}";
+      dot.search = {
+        type = "searxng";
+        url = "http://${address}:${builtins.toString port}";
+      };
 
       services.searx = {
         enable = true;
