@@ -533,6 +533,7 @@ ignoreWords:
   - codeberg
   - sourcehut
   - uwsgi
+  - valkey
   - startpage
   - crossref
   - freesound
