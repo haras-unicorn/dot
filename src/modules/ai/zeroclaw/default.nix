@@ -47,17 +47,7 @@
       digestAgent = "digest";
       juniorDevAgent = "junior_dev";
       seniorDevAgent = "senior_dev";
-      workspaceDir = "${dataDir}/agents/${delegateAgent}/workspace";
-      workspace = {
-        path = workspaceDir;
-        read_memory_from = [
-          chatAgent
-          delegateAgent
-          digestAgent
-          juniorDevAgent
-          seniorDevAgent
-        ];
-      };
+      workspaceDir = "${dataDir}/workspace";
       sshDir = "${dataDir}/.ssh";
 
       gpuApi = config.dot.ai.apis.gpu;
@@ -290,9 +280,20 @@
         };
       };
 
+      workspaceConfig = {
+        path = workspaceDir;
+        read_memory_from = [
+          chatAgent
+          delegateAgent
+          digestAgent
+          juniorDevAgent
+          seniorDevAgent
+        ];
+      };
+
       chatAgentConfig = {
         agents.${chatAgent} = {
-          inherit workspace;
+          workspace = workspaceConfig;
           model_provider = "openrouter.main";
           risk_profile = chatAgent;
           runtime_profile = chatAgent;
@@ -313,7 +314,7 @@
 
       delegateAgentConfig = {
         agents.${delegateAgent} = {
-          inherit workspace;
+          workspace = workspaceConfig;
           model_provider = if gpuApi != null then "custom.gpu" else "openrouter.main";
           risk_profile = delegateAgent;
           runtime_profile = delegateAgent;
@@ -334,7 +335,7 @@
 
       juniorDevAgentConfig = {
         agents.${juniorDevAgent} = {
-          inherit workspace;
+          workspace = workspaceConfig;
           model_provider = if cpuApi != null then "custom.gpu" else "openrouter.main";
           risk_profile = juniorDevAgent;
           runtime_profile = juniorDevAgent;
@@ -355,7 +356,7 @@
 
       seniorDevAgentConfig = {
         agents.${seniorDevAgent} = {
-          inherit workspace;
+          workspace = workspaceConfig;
           model_provider = "openrouter.main";
           risk_profile = seniorDevAgent;
           runtime_profile = seniorDevAgent;
@@ -376,8 +377,8 @@
 
       digestAgentConfig = {
         agents.${digestAgent} = {
-          inherit workspace;
-          model_provider = if gpuApi != null then "custom.gpu" else "openrouter.main";
+          workspace = workspaceConfig;
+          model_provider = if cpuApi != null then "custom.cpu" else "openrouter.main";
           risk_profile = digestAgent;
           runtime_profile = digestAgent;
           mcp_bundles = [ "digest" ];
@@ -392,7 +393,7 @@
         };
 
         runtime_profiles.${digestAgent} = selfLib.ai.zeroclaw.runtimeProfile // {
-          max_context_tokens = if gpuApi != null then gpuApi.context else selfLib.ai.openrouter.context;
+          max_context_tokens = if cpuApi != null then cpuApi.context else selfLib.ai.openrouter.context;
         };
       };
 
