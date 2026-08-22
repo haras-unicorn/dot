@@ -238,6 +238,7 @@
       "nix__nix_run"
       "nix__nix_develop"
       "nix__nix_check"
+      "nix__nix_log"
 
       "git__git_init"
       "git__git_clone"
@@ -399,6 +400,7 @@
       "nix__nix_check"
       "nix__nix_build"
       "nix__nix_develop"
+      "nix__nix_log"
 
       "git__git_stash"
       "git__git_reflog"
