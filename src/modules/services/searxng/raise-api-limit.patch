@@ -1,0 +1,13 @@
+diff --git a/searx/botdetection/ip_limit.py b/searx/botdetection/ip_limit.py
+index b2559a97b..fbdc318fe 100644
+--- a/searx/botdetection/ip_limit.py
++++ b/searx/botdetection/ip_limit.py
+@@ -79,7 +79,7 @@ LONG_MAX_SUSPICIOUS = 10
+ API_WINDOW = 3600
+ """Time (sec) before sliding window for API requests (format != html) expires."""
+
+-API_MAX = 4
++API_MAX = 60
+ """Maximum requests from one IP in the :py:obj:`API_WINDOW`"""
+
+ SUSPICIOUS_IP_WINDOW = 3600 * 24 * 30

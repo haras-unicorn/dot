@@ -1,6 +1,7 @@
 {
   machines.nixosModules.searxng =
     {
+      pkgs,
       config,
       lib,
       ...
@@ -10,6 +11,10 @@
       port = 8889;
 
       hardware = config.dot.hardware;
+
+      searxng = pkgs.searxng.overridePythonAttrs (old: {
+        patches = (old.patches or [ ]) ++ [ ./raise-api-limit.patch ];
+      });
 
       failingEngines = [
         # NOTE: these don't even pass a start check
@@ -39,24 +44,31 @@
         url = "http://${address}:${builtins.toString port}";
       };
 
+      services.redis.package = pkgs.valkey;
+
       services.searx = {
         enable = true;
 
+        package = searxng;
+
         configureUwsgi = false;
-        redisCreateLocally = false;
+        redisCreateLocally = true;
 
         settings = {
           search.formats = [
             "html"
             "json"
           ];
+
           server = {
             port = port;
             bind_address = address;
             secret_key = "local-only";
-            limiter = false;
+            limiter = true;
           };
+
           use_default_settings.engines.remove = failingEngines;
+
           engines =
             defaultEngines
             ++ (builtins.map
