@@ -7,6 +7,7 @@
       "en.wikipedia.org"
 
       "wiki.archlinux.org"
+      "omarchy.org"
       "developer.mozilla.org"
 
       "huggingface.co"
