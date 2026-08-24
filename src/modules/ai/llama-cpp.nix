@@ -41,19 +41,25 @@ let
         };
       };
 
-      "26b-a4b" = {
-        model = pkgs.fetchurl {
-          name = "gemma-4-26b-a4b.gguf";
-          url = "https://huggingface.co/bartowski/google_gemma-4-26B-A4B-it-GGUF/resolve/main/google_gemma-4-26B-A4B-it-Q4_K_M.gguf";
-          hash = "sha256-oH9yIh6OP3dFWrDX92UtAan2PCYrlUqmkypTJ1oOiVo=";
-        };
-      };
-
       e4b = {
         model = pkgs.fetchurl {
           name = "gemma-4-e4b.gguf";
           url = "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/main/gemma-4-E4B-it-Q4_K_M.gguf";
           hash = "sha256-haiWoEdVPoQvJSl+5bAx1k/zAUfZxK8XseSzlM0fq4c=";
+        };
+
+        mmproj = pkgs.fetchurl {
+          name = "gemma-4-e4b-mmproj.gguf";
+          url = "https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF/resolve/main/mmproj-F16.gguf";
+          hash = "sha256-3fRsIdcHjpUzjPwiMGsZsnaimlrQiQI0Sd1U1LYXClE=";
+        };
+      };
+
+      "26b-a4b" = {
+        model = pkgs.fetchurl {
+          name = "gemma-4-26b-a4b.gguf";
+          url = "https://huggingface.co/bartowski/google_gemma-4-26B-A4B-it-GGUF/resolve/main/google_gemma-4-26B-A4B-it-Q4_K_M.gguf";
+          hash = "sha256-oH9yIh6OP3dFWrDX92UtAan2PCYrlUqmkypTJ1oOiVo=";
         };
       };
     };
@@ -157,7 +163,7 @@ in
         };
       };
 
-      systemd.services.llama-cpp-gemma-4-e2b = {
+      systemd.services.llama-cpp-gemma-4-e4b = {
         wantedBy = [ "multi-user.target" ];
         environment = {
           CUDA_VISIBLE_DEVICES = "";
@@ -166,9 +172,9 @@ in
           ExecStart = builtins.concatStringsSep " " [
             (lib.getExe' package "llama-server")
             "--model"
-            models.gemma-4.e2b.model
+            models.gemma-4.e4b.model
             "--mmproj"
-            models.gemma-4.e2b.mmproj
+            models.gemma-4.e4b.mmproj
             "--sleep-idle-seconds"
             "900"
             "--host"
@@ -290,7 +296,7 @@ in
         cpu = {
           url = "http://127.0.0.1:8081/v1";
           vision = true;
-          model = "gemma-4-e2b";
+          model = "gemma-4-e4b";
           context = 131072;
         };
         embedding = {
