@@ -1,7 +1,7 @@
 { self, ... }:
 
 {
-  machines.nixosModules.avatar = { config, ... }: {
+  self.nixosModules.avatar.value = { config, ... }: {
     dot.user = {
       user = "haras";
       group = "haras";

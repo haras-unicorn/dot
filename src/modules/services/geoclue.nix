@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.geoclue =
+  self.nixosModules.geoclue.value =
     {
       config,
       lib,

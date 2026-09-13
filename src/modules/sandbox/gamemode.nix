@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.gamemode =
+  self.nixosModules.gamemode.value =
     {
       config,
       pkgs,
@@ -27,7 +27,7 @@
       ];
     };
 
-  machines.homeModules.gamemode =
+  self.homeModules.gamemode.value =
     {
       osConfig,
       config,

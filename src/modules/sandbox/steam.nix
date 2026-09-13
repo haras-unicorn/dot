@@ -1,5 +1,10 @@
 {
-  machines.nixosModules.steam =
+  self.nixpkgs.config.allowUnfreePackageNames = [
+    "steam"
+    "steam-unwrapped"
+  ];
+
+  self.nixosModules.steam.value =
     {
       pkgs,
       config,
@@ -10,11 +15,6 @@
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.gaming {
-      dot.nixpkgs.allowUnfreePackageNames = [
-        "steam"
-        "steam-unwrapped"
-      ];
-
       programs.steam.enable = true;
       programs.steam.protontricks.enable = true;
       # NOTE: bitburner
@@ -23,7 +23,7 @@
       ];
     };
 
-  machines.homeModules.steam =
+  self.homeModules.steam.value =
     {
       pkgs,
       config,

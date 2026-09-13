@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.wallpaper =
+  self.nixosModules.wallpaper.value =
     {
       pkgs,
       lib,

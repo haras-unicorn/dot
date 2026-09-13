@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.umu-launcher =
+  self.nixosModules.umu-launcher.value =
     { pkgs, lib, ... }:
     lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") {
       programs.steam.extraCompatPackages = [
@@ -7,7 +7,7 @@
       ];
     };
 
-  machines.homeModules.umu-launcher =
+  self.homeModules.umu-launcher.value =
     {
       pkgs,
       config,

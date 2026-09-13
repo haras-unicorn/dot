@@ -1,62 +1,28 @@
 { inputs, ... }:
 
 {
-  machines.nixosModules.nixpkgs =
+  self.nixosModules.nixpkgs.value =
     {
       pkgs,
       lib,
       config,
       ...
     }:
+    let
+      hardware = config.dot.hardware;
+    in
     {
-      options.dot = {
-        nixpkgs = {
-          allowUnfreePackageNames = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [ ];
-            description = ''
-              List of package names to convert to a predicate
-              in dot.nixpkgs.allowUnfreePredicates.
-            '';
-          };
-
-          allowUnfreePredicates = lib.mkOption {
-            type = lib.types.listOf (lib.types.functionTo lib.types.bool);
-            default = [ ];
-            description = ''
-              List of predicates to merge with a logical OR (||)
-              for the nixpkgs.config.allowUnfreePredicate option.
-            '';
-          };
-        };
+      nixpkgs.config = {
+        cudaSupport = hardware.cuda;
+        rocmSupport = hardware.rocm;
       };
 
-      config =
-        let
-          hardware = config.dot.hardware;
-        in
-        {
-          _module.args.unstablePkgs = import inputs.nixpkgs-unstable {
-            system = pkgs.stdenv.hostPlatform.system;
-          };
-
-          dot.nixpkgs.allowUnfreePredicates = [
-            (
-              package:
-              builtins.any (name: (lib.getName package == name)) config.dot.nixpkgs.allowUnfreePackageNames
-            )
-          ];
-
-          nixpkgs.config.cudaSupport = hardware.cuda;
-          # NOTE: lots of packages broken right now
-          nixpkgs.config.rocmSupport = hardware.rocm;
-          nixpkgs.config.allowUnfreePredicate =
-            package: builtins.any (predicate: predicate package) config.dot.nixpkgs.allowUnfreePredicates;
-        };
+      _module.args.unstablePkgs = import inputs.nixpkgs-unstable {
+        inherit (config.nixpkgs) system config overlays;
+      };
     };
 
-  machines.homeModules.nixpkgs = { osConfig, ... }: {
+  self.homeModules.nixpkgs.value = { osConfig, ... }: {
     _module.args.unstablePkgs = osConfig._module.args.unstablePkgs;
-    nixpkgs.config = osConfig.nixpkgs.config;
   };
 }

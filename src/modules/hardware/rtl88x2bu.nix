@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.rtl88x2bu =
+  self.nixosModules.rtl88x2bu.value =
     {
       config,
       lib,

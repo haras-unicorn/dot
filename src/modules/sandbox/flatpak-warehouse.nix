@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.flatpak-warehouse =
+  self.nixosModules.flatpak-warehouse.value =
     {
       config,
       lib,
@@ -12,7 +12,7 @@
       services.flatpak.enable = true;
     };
 
-  machines.homeModules.flatpak-warehouse =
+  self.homeModules.flatpak-warehouse.value =
     {
       pkgs,
       lib,

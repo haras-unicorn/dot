@@ -1,5 +1,5 @@
 {
-  machines.homeModules.starship =
+  self.homeModules.starship.value =
     { config, ... }:
     let
       colors = config.lib.stylix.colors.withHashtag;

@@ -1,5 +1,5 @@
 {
-  machines.homeModules.freetube =
+  self.homeModules.freetube.value =
     { osConfig, lib, ... }:
     let
       hardware = osConfig.dot.hardware;

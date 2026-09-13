@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.programs =
+  self.nixosModules.programs.value =
     {
       lib,
       ...
@@ -64,7 +64,7 @@
       };
     };
 
-  machines.homeModules.programs =
+  self.homeModules.programs.value =
     {
       lib,
       pkgs,

@@ -1,7 +1,7 @@
 # TODO: please or doas
 
 {
-  machines.nixosModules.sudo =
+  self.nixosModules.sudo.value =
     { pkgs, ... }:
     {
       security.sudo.package = pkgs.sudo.override { withInsults = true; };

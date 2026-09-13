@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.homeModules.footage =
+  self.homeModules.footage.value =
     {
       osConfig,
       lib,

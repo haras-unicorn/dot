@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.mangohud =
+  self.nixosModules.mangohud.value =
     {
       pkgs,
       lib,
@@ -17,7 +17,7 @@
       ];
     };
 
-  machines.homeModules.mangohud =
+  self.homeModules.mangohud.value =
     {
       pkgs,
       config,

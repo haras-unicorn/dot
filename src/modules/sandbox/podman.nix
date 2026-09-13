@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.podman = { config, pkgs, ... }: {
+  self.nixosModules.podman.value = { config, pkgs, ... }: {
     virtualisation.containers.enable = true;
 
     virtualisation.podman = {
@@ -16,7 +16,7 @@
     ];
   };
 
-  machines.homeModules.podman = { lib, pkgs, ... }: {
+  self.homeModules.podman.value = { lib, pkgs, ... }: {
     dot.programs.shell.aliases = {
       lp = lib.getExe pkgs.lazydocker;
     };

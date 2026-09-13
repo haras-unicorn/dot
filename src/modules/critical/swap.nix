@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.swap =
+  self.nixosModules.swap.value =
     { config, ... }:
     let
       hardware = config.dot.hardware;

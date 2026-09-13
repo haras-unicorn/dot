@@ -1,5 +1,5 @@
 {
-  machines.homeModules.obs =
+  self.homeModules.obs.value =
     {
       pkgs,
       osConfig,

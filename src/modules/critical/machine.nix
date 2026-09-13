@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  machines.nixosModules.machine =
+  self.nixosModules.machine.value =
     { config, ... }:
     {
       imports = [
@@ -23,9 +23,9 @@
 
       home-manager.backupFileExtension = "backup";
       home-manager.overwriteBackup = true;
+      home-manager.useGlobalPkgs = true;
       home-manager.users.${config.dot.user.user} = {
         imports = [
-          inputs.nur.modules.homeManager.default
           inputs.nix-index-database.homeModules.nix-index
         ];
 

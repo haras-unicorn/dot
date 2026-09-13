@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.monitor =
+  self.nixosModules.monitor.value =
     {
       pkgs,
       lib,
@@ -18,7 +18,7 @@
       ];
     };
 
-  machines.homeModules.monitor =
+  self.homeModules.monitor.value =
     {
       pkgs,
       lib,

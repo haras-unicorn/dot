@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.nushell =
+  self.nixosModules.nushell.value =
     { lib, pkgs, ... }:
     let
       exe = lib.getExe pkgs.nushell;
@@ -15,7 +15,7 @@
       environment.shells = [ exe ];
     };
 
-  machines.homeModules.nushell =
+  self.homeModules.nushell.value =
     {
       pkgs,
       lib,

@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.location =
+  self.nixosModules.location.value =
     { lib, ... }:
     {
       options.dot = {

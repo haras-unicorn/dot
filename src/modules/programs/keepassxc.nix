@@ -1,5 +1,5 @@
 {
-  machines.homeModules.keepassxc =
+  self.homeModules.keepassxc.value =
     {
       osConfig,
       config,

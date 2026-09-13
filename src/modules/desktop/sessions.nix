@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.sessions =
+  self.nixosModules.sessions.value =
     {
       pkgs,
       lib,

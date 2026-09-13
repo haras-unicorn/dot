@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.binfmt =
+  self.nixosModules.binfmt.value =
     { lib, pkgs, ... }:
     {
       boot.binfmt.preferStaticEmulators = true;

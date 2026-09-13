@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.localtimed = {
+  self.nixosModules.localtimed.value = {
     services.localtimed.enable = true;
   };
 }

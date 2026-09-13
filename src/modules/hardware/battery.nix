@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.power-management-upower-ppd =
+  self.nixosModules.power-management-upower-ppd.value =
     {
       pkgs,
       lib,

@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.nix =
+  self.nixosModules.nix.value =
     { lib, config, ... }:
     {
       options.dot = {

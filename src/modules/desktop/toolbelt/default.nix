@@ -13,7 +13,7 @@
 # TODO: video description node
 # TODO: video audio extraction node
 {
-  machines.homeModules.toolbelt =
+  self.homeModules.toolbelt.value =
     {
       pkgs,
       lib,

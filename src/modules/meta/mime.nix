@@ -1,5 +1,5 @@
 {
-  machines.homeModules.mime =
+  self.homeModules.mime.value =
     { lib, ... }:
     {
       options.dot = {

@@ -1,5 +1,5 @@
 {
-  machines.homeModules.hyprpicker =
+  self.homeModules.hyprpicker.value =
     { pkgs, ... }:
     let
       package = pkgs.hyprpicker;

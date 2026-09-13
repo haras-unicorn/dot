@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.homeModules.helix =
+  self.homeModules.helix.value =
     {
       osConfig,
       config,
@@ -19,6 +19,27 @@
       terminal = lib.getExe config.dot.programs.terminal.package;
 
       nodeCommand = if hardware.graphics then ''${terminal} hx "$tmp"'' else ''hx "$tmp"'';
+
+      builtinLanguages =
+        (builtins.fromTOML (builtins.readFile (pkgs.helix-unwrapped.src + "/languages.toml"))).language;
+
+      addTypos =
+        language: language // { language-servers = (language.language-servers or [ ]) ++ [ "typos" ]; };
+
+      withTypos =
+        explicit:
+        let
+          explicitNames = builtins.map (language: language.name) explicit;
+          rest = builtins.filter (language: !(builtins.elem language.name explicitNames)) builtinLanguages;
+        in
+        builtins.map addTypos explicit
+        ++ builtins.map (
+          language:
+          addTypos {
+            inherit (language) name;
+            language-servers = language.language-servers or [ ];
+          }
+        ) rest;
 
       source = pkgs.writeShellApplication {
         name = "helix-editor-source";
@@ -110,9 +131,12 @@
             command = lib.getExe pkgs.marksman;
             args = [ "server" ];
           };
+          typos = {
+            command = lib.getExe pkgs.typos-lsp;
+          };
         };
 
-        language = [
+        language = withTypos [
           {
             name = "nix";
             auto-format = true;
@@ -162,9 +186,10 @@
               command = lib.getExe pkgs.prettier;
               args = [
                 "--parser"
-                "json"
+                "markdown"
               ];
             };
+            language-servers = [ "marksman" ];
           }
           {
             name = "xml";

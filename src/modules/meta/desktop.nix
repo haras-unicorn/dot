@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.desktop =
+  self.nixosModules.desktop.value =
     {
       pkgs,
       lib,
@@ -55,7 +55,7 @@
       };
     };
 
-  machines.homeModules.desktop =
+  self.homeModules.desktop.value =
     {
       pkgs,
       lib,

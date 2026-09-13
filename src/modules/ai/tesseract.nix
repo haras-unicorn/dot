@@ -1,5 +1,5 @@
 {
-  machines.homeModules.tesseract =
+  self.homeModules.tesseract.value =
     { pkgs, config, ... }:
     let
       package = pkgs.tesseract;

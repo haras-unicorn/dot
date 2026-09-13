@@ -1,5 +1,5 @@
 {
-  machines.homeModules.kitty =
+  self.homeModules.kitty.value =
     {
       config,
       osConfig,

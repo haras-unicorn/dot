@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  machines.nixosModules.wsl =
+  self.nixosModules.wsl.value =
     {
       config,
       lib,

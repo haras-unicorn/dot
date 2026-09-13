@@ -1,24 +1,26 @@
+{ lib, ... }:
+
 let
   host = "127.0.0.1";
   port = 8085;
 in
 {
+  self.nixpkgs.config.allowUnfreePredicates = [
+    (
+      package:
+      let
+        name = lib.getName package;
+      in
+      name == "open-webui"
+    )
+  ];
+
   self.lib.deprecated.nixosModules.open-webui =
     { config, lib, ... }:
     let
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.browser {
-      dot.nixpkgs.allowUnfreePredicates = [
-        (
-          package:
-          let
-            name = lib.getName package;
-          in
-          name == "open-webui"
-        )
-      ];
-
       services.open-webui = {
         inherit
           host

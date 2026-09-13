@@ -1,7 +1,7 @@
 # NOTE: https://github.com/nix-community/nur-combined/blob/master/repos/rycee/pkgs/firefox-addons/addons.json
 
 {
-  machines.homeModules.librewolf =
+  self.homeModules.librewolf.value =
     {
       pkgs,
       config,

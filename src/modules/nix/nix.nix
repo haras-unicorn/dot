@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ ... }:
 
 let
   makeNix =
@@ -7,28 +7,6 @@ let
       hardware = config.dot.hardware;
     in
     {
-      registry.nixpkgs.flake = inputs.nixpkgs;
-
-      settings.experimental-features = [
-        "nix-command"
-        "flakes"
-        # NOTE: needed for uid-range
-        "auto-allocate-uids"
-        # NOTE: needed for uid-range
-        "cgroups"
-      ];
-      settings.system-features = [
-        # NOTE: defaults
-        "benchmark"
-        "big-parallel"
-        "kvm"
-        "nixos-test"
-        # NOTE: needed for nixos container tests
-        "uid-range"
-      ];
-      # NOTE: needed for uid-range
-      settings.auto-allocate-uids = true;
-
       settings.max-jobs = hardware.threads / 3;
       settings.cores = 2;
 
@@ -37,15 +15,6 @@ let
         options = "--delete-older-than 30d";
       };
       settings.auto-optimise-store = true;
-
-      settings.allowed-users = [
-        "root"
-        "@wheel"
-      ];
-      settings.trusted-users = [
-        "root"
-        "@wheel"
-      ];
 
       settings.substituters = [
         "https://haras.cachix.org"
@@ -70,13 +39,13 @@ let
     };
 in
 {
-  machines.nixosModules.nix =
+  self.nixosModules.nix.value =
     { lib, config, ... }:
     {
       nix = makeNix lib config;
     };
 
-  machines.homeModules.nix =
+  self.homeModules.nix.value =
     { lib, osConfig, ... }:
     {
       nix = makeNix lib osConfig;

@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.homeModules.grim-slurp-maim-slop =
+  self.homeModules.grim-slurp-maim-slop.value =
     {
       pkgs,
       lib,

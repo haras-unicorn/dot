@@ -2,7 +2,7 @@
 # line-by-line list and not a grid
 
 {
-  machines.homeModules.eza =
+  self.homeModules.eza.value =
     {
       lib,
       pkgs,
@@ -12,13 +12,9 @@
     let
       eza = lib.getExe config.programs.eza.package;
 
-      baseOptions = [
+      humanOptions = [
         "--all"
         "--git-ignore"
-      ];
-      baseArgs = lib.escapeShellArgs baseOptions;
-
-      humanOptions = baseOptions ++ [
         "--group-directories-first"
         "--color=always"
         "--icons"
@@ -30,21 +26,8 @@
     in
     {
       dot.commands = {
-        list = pkgs.writeShellApplication {
-          name = "list";
-          runtimeInputs = [ config.programs.eza.package ];
-          text = ''
-            eza ${baseArgs} --grid "$@"
-          '';
-        };
-
-        tree = pkgs.writeShellApplication {
-          name = "tree";
-          runtimeInputs = [ config.programs.eza.package ];
-          text = ''
-            eza ${baseArgs} --tree "$@"
-          '';
-        };
+        list = pkgs.harasPackages.list;
+        tree = pkgs.harasPackages.tree;
       };
 
       dot.programs.shell = {

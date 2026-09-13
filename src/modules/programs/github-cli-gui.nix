@@ -1,5 +1,5 @@
 {
-  machines.homeModules.github-cli =
+  self.homeModules.github-cli.value =
     {
       osConfig,
       config,

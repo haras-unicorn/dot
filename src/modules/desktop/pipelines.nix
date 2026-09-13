@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.homeModules.pipelines =
+  self.homeModules.pipelines.value =
     {
       config,
       osConfig,

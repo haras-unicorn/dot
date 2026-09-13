@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.homeModules.tenacity =
+  self.homeModules.tenacity.value =
     {
       osConfig,
       lib,

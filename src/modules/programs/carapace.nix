@@ -1,5 +1,5 @@
 {
-  machines.homeModules.carapace = {
+  self.homeModules.carapace.value = {
     programs.carapace.enable = true;
   };
 }

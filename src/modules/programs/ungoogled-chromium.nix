@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.chromium =
+  self.nixosModules.chromium.value =
     {
       config,
       pkgs,
@@ -80,7 +80,7 @@
       };
     };
 
-  machines.homeModules.chromium =
+  self.homeModules.chromium.value =
     {
       osConfig,
       pkgs,

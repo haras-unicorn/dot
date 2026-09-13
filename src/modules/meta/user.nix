@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.user =
+  self.nixosModules.user.value =
     {
       lib,
       ...

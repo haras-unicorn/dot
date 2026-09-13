@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ... }:
 
 {
   self.lib.deprecated.homeModules.anythingllm =
@@ -14,7 +14,7 @@
 
       dataDir = "${config.xdg.dataHome}/anythingllm";
 
-      package = self.packages.${pkgs.stdenv.hostPlatform.system}.anythingllm;
+      package = pkgs.harasPackages.anythingllm;
     in
     lib.mkIf hardware.browser {
       home.packages = [

@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.search = { lib, ... }: {
+  self.nixosModules.search.value = { lib, ... }: {
     options.dot.search = {
       type = lib.mkOption {
         type = lib.types.enum [ "searxng" ];

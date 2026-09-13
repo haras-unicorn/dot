@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.avahi =
+  self.nixosModules.avahi.value =
     {
       config,
       lib,

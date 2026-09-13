@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.linux =
+  self.nixosModules.linux.value =
     { pkgs, config, ... }:
     {
       boot.kernelPackages = pkgs.linuxPackages_zen;

@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.firewall =
+  self.nixosModules.firewall.value =
     { lib, config, ... }:
     let
       hardware = config.dot.hardware;

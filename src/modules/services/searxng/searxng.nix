@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.searxng =
+  self.nixosModules.searxng.value =
     {
       pkgs,
       config,

@@ -1,7 +1,7 @@
 # TODO: add service for tray
 
 {
-  machines.nixosModules.hardware-logitech =
+  self.nixosModules.hardware-logitech.value =
     { config, ... }:
     {
       hardware.logitech.wireless.enable = config.hardware.facter.detection.logitech.enable;

@@ -1,5 +1,5 @@
 {
-  machines.homeModules.vivid =
+  self.homeModules.vivid.value =
     { pkgs, config, ... }:
     {
       dot.programs.shell.sessionVariables = {

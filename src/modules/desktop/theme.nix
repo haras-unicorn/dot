@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  machines.nixosModules.theme =
+  self.nixosModules.theme.value =
     {
       config,
       pkgs,
@@ -30,35 +30,15 @@
       stylix.opacity.popups = 1.0;
     };
 
-  machines.homeModules.theme =
+  self.homeModules.theme.value =
     {
-      config,
       pkgs,
       ...
     }:
-    let
-      inspect-gtk = pkgs.writeShellApplication {
-        name = "inspect-gtk";
-        text = ''
-          export GTK_DEBUG=interactive
-          exec "$@"
-        '';
-      };
-
-      inspect-qt = pkgs.writeShellApplication {
-        name = "inspect-qt";
-        runtimeInputs = [
-          pkgs.gammaray
-        ];
-        text = ''
-          exec gammaray "$@"
-        '';
-      };
-    in
     {
       home.packages = [
-        inspect-gtk
-        inspect-qt
+        pkgs.harasPackages.inspect-gtk
+        pkgs.harasPackages.inspect-qt
         inputs.stylix.packages.${pkgs.stdenv.hostPlatform.system}.palette-generator
       ];
 

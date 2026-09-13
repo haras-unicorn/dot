@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.fs = {
+  self.nixosModules.fs.value = {
     boot.initrd.kernelModules = [
       "ext4"
       "vfat"

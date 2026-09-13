@@ -1,7 +1,7 @@
 { selfLib, inputs, ... }:
 
 {
-  machines.nixosModules.sound =
+  self.nixosModules.sound.value =
     {
       pkgs,
       lib,
@@ -46,7 +46,7 @@
       };
     };
 
-  machines.homeModules.sound =
+  self.homeModules.sound.value =
     {
       pkgs,
       lib,

@@ -1,5 +1,5 @@
 {
-  machines.homeModules.bat =
+  self.homeModules.bat.value =
     { config, lib, ... }:
     {
       dot.programs.pager.package = config.programs.bat.package;

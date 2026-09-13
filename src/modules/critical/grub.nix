@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.grub = {
+  self.nixosModules.grub.value = {
     boot.loader.efi.canTouchEfiVariables = false;
     boot.loader.grub.enable = true;
     boot.loader.grub.device = "nodev";

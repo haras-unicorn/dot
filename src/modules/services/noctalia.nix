@@ -4,7 +4,7 @@
 # TODO: remove theme stuff if/when it lands in nixpkgs stable
 
 {
-  machines.homeModules.noctalia =
+  self.homeModules.noctalia.value =
     {
       pkgs,
       lib,

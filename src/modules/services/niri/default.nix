@@ -1,7 +1,7 @@
 # FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
 
 {
-  machines.nixosModules.niri =
+  self.nixosModules.niri.value =
     {
       pkgs,
       lib,
@@ -24,7 +24,7 @@
       ];
     };
 
-  machines.homeModules.niri =
+  self.homeModules.niri.value =
     {
       pkgs,
       lib,
