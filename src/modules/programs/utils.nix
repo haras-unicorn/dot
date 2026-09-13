@@ -7,22 +7,15 @@
       ...
     }:
     let
-      run = pkgs.writeShellApplication {
-        name = "run";
+      run-disowned = pkgs.writeShellApplication {
+        name = "run-disowned";
         text = ''
           "$@" &>/dev/null & disown %-
         '';
       };
 
-      repeat = pkgs.writeShellApplication {
-        name = "repeat";
-        text = ''
-          while true; do "$@"; done
-        '';
-      };
-
-      nr = pkgs.writeShellApplication {
-        name = "nr";
+      nix-run-nixpkgs = pkgs.writeShellApplication {
+        name = "nix-run-nixpkgs";
         text = ''
           name="$1"
           shift
@@ -30,34 +23,68 @@
         '';
       };
 
-      nru = pkgs.writeShellApplication {
-        name = "nru";
-        text = ''
-          export NIXPKGS_ALLOW_UNFREE=1
-          name="$1"
-          shift
-          exec nix run --impure "nixpkgs#$name" -- "$@"
-        '';
-      };
-
-      nruu = pkgs.writeShellApplication {
+      nix-run-unstable = pkgs.writeShellApplication {
         name = "nruu";
         text = ''
-          export NIXPKGS_ALLOW_UNFREE=1
           name="$1"
           shift
           exec nix run --impure "github:nixos/nixpkgs/nixos-unstable#$name" -- "$@"
         '';
       };
 
-      ezdd = pkgs.writeShellApplication {
-        name = "ezdd";
+      nix-unfree = pkgs.writeShellApplication {
+        name = "nix-unfree";
+        text = ''
+          export NIXPKGS_ALLOW_UNFREE=1
+          exec "$@"
+        '';
+      };
+
+      nix-fast = pkgs.writeShellApplication {
+        name = "nix-fast";
+        text = ''
+          export NIX_CONFIG="''${NIX_CONFIG:-}
+          max-jobs = auto
+          cores = 0"
+          exec "$@"
+        '';
+      };
+
+      nix-trace = pkgs.writeShellApplication {
+        name = "nix-trace";
+        text = ''
+          export NIX_CONFIG="''${NIX_CONFIG:-}
+          show-trace = true"
+          exec "$@"
+        '';
+      };
+
+      dd-if-of = pkgs.writeShellApplication {
+        name = "dd-if-of";
         text = ''
           if="$1"
           of="$2"
           shift
           shift
           exec dd "if=$if" "of=$of" bs=4M conv=sync,noerror oflag=direct status=progress "$@"
+        '';
+      };
+
+      ssh-test-container = pkgs.writeShellApplication {
+        name = "ssh-test-container";
+        runtimeInputs = [
+          pkgs.openssh
+          pkgs.socat
+        ];
+        text = ''
+          name="$1"
+          shift
+          ssh \
+            -o User=root \
+            -o ProxyCommand="socat - UNIX-CLIENT:/run/systemd/nspawn/unix-export/$name/ssh" \
+            -o "UserKnownHostsFile=/dev/null" \
+            -o "StrictHostKeyChecking=accept-new" \
+            bash "$@"
         '';
       };
     in
@@ -70,12 +97,14 @@
       };
 
       home.packages = [
-        run
-        repeat
-        nr
-        nru
-        nruu
-        ezdd
+        run-disowned
+        nix-run-nixpkgs
+        nix-run-unstable
+        nix-unfree
+        nix-fast
+        nix-trace
+        dd-if-of
+        ssh-test-container
         pkgs.htop
         pkgs.duf
         pkgs.man-pages
@@ -88,6 +117,11 @@
         pkgs.rnr
         pkgs.ast-grep
         pkgs.tree-sitter
+        pkgs.lnav
+        pkgs.jq
+        pkgs.tokei
+        pkgs.openssh
+        pkgs.openssl
         (pkgs.rustPlatform.buildRustPackage (
           let
             version = "1.3.0";

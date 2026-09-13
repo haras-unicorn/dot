@@ -10,7 +10,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    nixos-facter-detection-modules.url = "github:haras-unicorn/nixos-facter-detection-modules/refs/tags/v1.1.0";
+    nixos-facter-detection-modules.url = "github:haras-unicorn/nixos-facter-detection-modules/refs/tags/v1.1.2";
     nixos-facter-detection-modules.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
@@ -45,6 +45,10 @@
 
     # NOTE: https://github.com/noctalia-dev/noctalia-docs/blob/cec177a6b9bf928d148a669c6979cd0f62da0757/src/content/docs/v5/getting-started/nixos.mdx
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
+
+    # NOTE: https://github.com/Ap6661/septabee-flake
+    septabee.url = "github:Ap6661/septabee-flake";
+    septabee.inputs.nixpkgs.follows = "nixpkgs";
 
     # NOTE: https://github.com/haras-unicorn/mcp-nix/blob/v0.1.4/README.md
     mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.4";
