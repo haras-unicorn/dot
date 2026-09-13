@@ -16,7 +16,8 @@ NixOS configuration flake built with `flake-parts` and `import-tree` over the
     - `meta/` — defines the `dot.*` option interface the rest consumes
     - `critical/`, `desktop/`, `hardware/`, `nix/`, `programs/`, `sandbox/`,
       `services/`, `ai/` — module implementations
-    - `deprecated/` — retired modules kept for reference
+  - `deprecated/` — retired modules kept for reference; they register under
+    `self.lib.deprecated.*` and are inert unless imported explicitly
   - `lib/` — `self.lib` helpers shared across the flake
   - `dev/` — the development shell and tooling (see below)
 - `assets/` — static files referenced by modules (hardware reports, wallpapers,
@@ -26,7 +27,9 @@ NixOS configuration flake built with `flake-parts` and `import-tree` over the
 Modules register themselves under `machines.nixosModules.<name>` or
 `machines.homeModules.<name>`: `meta/` files declare the `dot.*` options,
 everything else consumes them and defines the concrete NixOS or home-manager
-configuration.
+configuration. Every `machines.*Modules.*` entry is included automatically;
+`deprecated/` modules register under `self.lib.deprecated.*` and stay inert
+until imported explicitly.
 
 ## Development
 
@@ -40,3 +43,10 @@ provides the `dev` command (a Nushell CLI; `dev -h` lists everything):
   (hostname read from `/etc/hostname`)
 - `dev detect` — run `nixos-facter` and save the hardware report to
   `assets/hardware/<hostname>.json`
+
+The root `justfile` re-exports tooling as convenience recipes:
+
+- `just diagnose` — GPU/display diagnostics from `src/dev/cli.nu` (the bundled
+  `dev` binary is a store snapshot, so this runs the working-tree source)
+- `just eval` / `just login` — evaluate the current host's configuration and
+  print its resolved login command

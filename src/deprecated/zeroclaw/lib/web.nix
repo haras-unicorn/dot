@@ -1,5 +1,5 @@
 {
-  self.lib.ai.web = {
+  self.lib.deprecated.lib.ai.web = {
     allowedDomains = [
       "docs.zeroclawlabs.ai"
       "opencode.ai"

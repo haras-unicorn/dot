@@ -362,21 +362,5 @@
       xdg.desktopEntries = entries;
       xdg.mimeApps.associations.added = mime;
       xdg.mimeApps.defaultApplications = mime;
-
-      home.file = builtins.listToAttrs (
-        builtins.concatMap (
-          {
-            family,
-            name,
-            files,
-            ...
-          }:
-          builtins.map (file: {
-            name = "models/${family}/${name}/${file.name}";
-            value.source = file;
-            value.force = true;
-          }) files
-        ) (builtins.attrValues osConfig.dot.ai.models)
-      );
     };
 }
