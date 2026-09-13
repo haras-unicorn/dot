@@ -53,8 +53,11 @@
     # NOTE: https://github.com/haras-unicorn/mcp-nix/blob/v0.1.4/README.md
     mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.4";
 
-    # NOTE: https://github.com/haras-unicorn/mcp-rss/blob/v0.2.0/README.md
-    mcp-rss.url = "github:haras-unicorn/mcp-rss/refs/tags/v0.2.0";
+    # NOTE: https://github.com/haras-unicorn/mcp-rss/blob/v0.2.1/README.md
+    mcp-rss.url = "github:haras-unicorn/mcp-rss/refs/tags/v0.2.1";
+
+    # NOTE: https://github.com/haras-unicorn/mcp-plan/blob/v0.1.10/README.md
+    mcp-plan.url = "github:haras-unicorn/mcp-plan/refs/tags/v0.1.10";
   };
 
   outputs =

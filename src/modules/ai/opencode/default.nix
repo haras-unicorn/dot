@@ -13,6 +13,19 @@
       hardware = osConfig.dot.hardware;
 
       theme = "stylix";
+
+      opencode = pkgs.writeShellApplication {
+        name = "opencode";
+        runtimeInputs = [
+          pkgs.opencode
+          pkgs.libuuid
+        ];
+        text = ''
+          OPENCODE__PROVIDER__OPENROUTER__OPTIONS__SESSION_ID="$(uuidgen)"
+          export OPENCODE__PROVIDER__OPENROUTER__OPTIONS__SESSION_ID
+          opencode "$@"
+        '';
+      };
     in
     lib.mkIf hardware.editor {
       home.sessionVariables = {
@@ -22,18 +35,23 @@
       programs.opencode = {
         enable = true;
 
+        package = opencode;
+
         tui = {
           theme = theme;
           scroll_acceleration = true;
         };
+
         settings = {
           autoupdate = false;
           share = "disabled";
           compaction.prune = true;
-          provider.openrouter.options = selfLib.ai.openrouter.options;
+          provider.openrouter.options = selfLib.ai.openrouter.profiles.dev.options // {
+            session_id = "{env:OPENCODE__PROVIDER__OPENROUTER__OPTIONS__SESSION_ID}";
+          };
           enabled_providers = [ "openrouter" ];
-          model = selfLib.ai.openrouter.model;
-          small_model = selfLib.ai.openrouter.model;
+          model = selfLib.ai.openrouter.profiles.dev.model;
+          small_model = selfLib.ai.openrouter.profiles.dev.model;
           lsp = true;
           permission = {
             bash = {

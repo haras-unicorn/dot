@@ -21,10 +21,21 @@ let
         type = lib.types.ints.unsigned;
         description = "Allocated context size";
       };
+
       vision = lib.mkOption {
         type = lib.types.bool;
         default = false;
         description = "Whether the API supports vision";
+      };
+
+      tpsIn = lib.mkOption {
+        type = lib.types.ints.unsigned;
+        description = "Token speed in tokens per second for input";
+      };
+
+      tpsOut = lib.mkOption {
+        type = lib.types.ints.unsigned;
+        description = "Token speed in tokens per second for output";
       };
     };
   };

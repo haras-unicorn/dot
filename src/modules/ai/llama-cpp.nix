@@ -108,6 +108,7 @@ in
       ];
 
       systemd.services.llama-cpp-qwen-3-6-35b-a3b = {
+        enable = false;
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           ExecStart = builtins.concatStringsSep " " [
@@ -163,6 +164,7 @@ in
       };
 
       systemd.services.llama-cpp-gemma-4-e4b = {
+        enable = false;
         wantedBy = [ "multi-user.target" ];
         environment = {
           CUDA_VISIBLE_DEVICES = "";
@@ -287,17 +289,21 @@ in
       );
 
       dot.ai.apis = {
-        gpu = {
-          url = "http://127.0.0.1:8080/v1";
-          model = "qwen-3-35b-a3b";
-          context = 196608;
-        };
-        cpu = {
-          url = "http://127.0.0.1:8081/v1";
-          vision = true;
-          model = "gemma-4-e4b";
-          context = 131072;
-        };
+        # gpu = {
+        #   url = "http://127.0.0.1:8080/v1";
+        #   model = "qwen-3-35b-a3b";
+        #   context = 196608;
+        #   tpsIn = 800;
+        #   tpsOut = 30;
+        # };
+        # cpu = {
+        #   url = "http://127.0.0.1:8081/v1";
+        #   vision = true;
+        #   model = "gemma-4-e4b";
+        #   context = 131072;
+        #   tpsIn = 20;
+        #   tpsOut = 20;
+        # };
         embedding = {
           url = "http://127.0.0.1:8082/v1";
           model = "qwen-3-embedding";

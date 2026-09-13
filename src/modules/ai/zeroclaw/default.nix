@@ -11,6 +11,7 @@
 # MATRIX_MORGAN_FETCH_USER_ID
 # MATRIX_PEER
 # MATRIX_DIGEST_ROOM
+# MATRIX_HEARTBEAT_ROOM
 # GIT_USER
 # GIT_EMAIL
 # GIT_SSH_KEY
@@ -45,10 +46,16 @@
       chatAgent = "main";
       delegateAgent = "delegate";
       digestAgent = "digest";
+      writerAgent = "writer";
       juniorDevAgent = "junior_dev";
       seniorDevAgent = "senior_dev";
       workspaceDir = "${dataDir}/workspace";
       sshDir = "${dataDir}/.ssh";
+      planDb = "${dataDir}/plan.db";
+      zeroclawConfigFile = "${dataDir}/config.toml";
+      sopRunStateDir = "${dataDir}/sop";
+      matrixChannelName = "morgan_fetch";
+      matrixChannel = "matrix.morgan_fetch";
 
       gpuApi = config.dot.ai.apis.gpu;
       cpuApi = config.dot.ai.apis.cpu;
@@ -102,6 +109,30 @@
 
       toml = pkgs.formats.toml { };
 
+      planConfig = toml.generate "plan-config.toml" {
+        runtime = {
+          tps_in = if gpuApi != null then gpuApi.tpsIn else 10000;
+          tps_out = if gpuApi != null then gpuApi.tpsOut else 50;
+          max_task_duration_secs = 600;
+          queue_limit = 10;
+          max_retries = 3;
+        };
+        sources = [
+          {
+            id = "chat";
+            title = "Chat";
+            description = "Tasks added via '${chatAgent}' agent.";
+            type = "manual";
+          }
+          {
+            id = "github";
+            title = "GitHub";
+            description = ''Run the `github` SOP with `sop_execute("github")`'';
+            type = "poll";
+          }
+        ];
+      };
+
       generalConfig = lib.recursiveUpdate selfLib.ai.zeroclaw.config {
         runtime.shell = lib.getExe pkgs.bash;
 
@@ -112,14 +143,19 @@
 
         web_search = {
           enabled = true;
-          search_provider =
-            if config.dot.search.type == "searxng" then
-              "searxng"
-            else
-              builtins.throw "Unsupported search type ${config.dot.search.type}";
         }
         // lib.optionalAttrs (config.dot.search.type == "searxng") {
+          search_provider = "searxng";
           searxng_instance_url = config.dot.search.url;
+        };
+
+        cost = {
+          enabled = true;
+          daily_limit_usd = 2;
+          monthly_limit_usd = 60;
+          warn_at_percent = 80;
+          enforcement.mode = "block";
+          rates.tools.web_search.per_call = 0;
         };
       };
 
@@ -186,6 +222,19 @@
               transport = "stdio";
               command = lib.getExe inputs.mcp-rss.packages.${system}.mcp-rss;
             }
+            {
+              name = "plan";
+              transport = "stdio";
+              command = lib.getExe pkgs.mcp-plan;
+              args = [
+                "--config"
+                planConfig
+                "run"
+              ];
+              env = {
+                MCP_PLAN__DATABASE__URL = "sqlite://${planDb}";
+              };
+            }
           ];
         };
 
@@ -198,16 +247,28 @@
               "github"
             ];
           };
+          delegate = {
+            servers = [
+              "plan"
+              "github"
+            ];
+          };
           digest = {
             servers = [
               "rss"
+            ];
+          };
+          chat = {
+            servers = [
+              "rss"
+              "plan"
             ];
           };
         };
       };
 
       channelConfig = {
-        channels.matrix.morgan_fetch = {
+        channels.matrix.${matrixChannelName} = {
           enabled = true;
           homeserver = "$MATRIX_MORGAN_FETCH_HOMESERVER";
           user_id = "$MATRIX_MORGAN_FETCH_USER_ID";
@@ -215,9 +276,12 @@
           reply_in_thread = false;
         };
 
-        peer_groups.morgan_fetch = {
-          channel = "matrix.morgan_fetch";
-          agents = [ delegateAgent ];
+        peer_groups.${matrixChannelName} = {
+          channel = matrixChannel;
+          agents = [
+            delegateAgent
+            chatAgent
+          ];
           # NOTE: affects rooms as well
           external_peers = [ "$MATRIX_PEER" ];
         };
@@ -239,26 +303,55 @@
 
         providers.models = {
           openrouter.main = {
-            model = selfLib.ai.openrouter.model;
-            provider_extra = selfLib.ai.openrouter.options;
+            model = selfLib.ai.openrouter.profiles.default.model;
+            timeout_secs = 5 * 60;
+            provider_extra = selfLib.ai.openrouter.profiles.default.options;
           };
           custom =
             lib.optionalAttrs (gpuApi != null) {
               gpu = {
+                native_tools = true;
                 uri = gpuApi.url;
-                timeout_secs = 300;
+                timeout_secs = 10 * 60;
                 model = gpuApi.model;
                 fallback = [ "openrouter.main" ];
               };
             }
             // lib.optionalAttrs (cpuApi != null) {
               cpu = {
+                native_tools = true;
                 uri = cpuApi.url;
-                timeout_secs = 300;
+                timeout_secs = 30 * 60;
                 model = cpuApi.model;
                 fallback = [ "openrouter.main" ];
               };
             };
+        };
+
+        cost.rates = {
+          providers.models = {
+            openrouter.main = {
+              input_per_mtok = selfLib.ai.openrouter.profiles.default.costInCents / 100.0;
+              cached_input_per_mtok = selfLib.ai.openrouter.profiles.default.costCachedCents / 100.0;
+              output_per_mtok = selfLib.ai.openrouter.profiles.default.costOutCents / 100.0;
+            };
+
+            custom =
+              lib.optionalAttrs (gpuApi != null) {
+                gpu = {
+                  input_per_mtok = 0;
+                  cached_input_per_mtok = 0;
+                  output_per_mtok = 0;
+                };
+              }
+              // lib.optionalAttrs (cpuApi != null) {
+                cpu = {
+                  input_per_mtok = 0;
+                  cached_input_per_mtok = 0;
+                  output_per_mtok = 0;
+                };
+              };
+          };
         };
       };
 
@@ -273,11 +366,29 @@
             prompt = builtins.readFile ./cron/DIGEST.md;
             delivery = {
               mode = "announce";
-              channel = "matrix.morgan_fetch";
+              channel = matrixChannel;
               to = "$MATRIX_DIGEST_ROOM";
             };
           };
+          heartbeat = {
+            job_type = "agent";
+            schedule = {
+              kind = "cron";
+              expr = "0 6 * * *";
+            };
+            prompt = builtins.readFile ./cron/HEARTBEAT.md;
+            delivery = {
+              mode = "announce";
+              channel = matrixChannel;
+              to = "$MATRIX_HEARTBEAT_ROOM";
+            };
+          };
         };
+      };
+
+      identityConfig = {
+        format = "aieos";
+        aieos_path = ./morgan-fetch.json;
       };
 
       workspaceConfig = {
@@ -286,6 +397,7 @@
           chatAgent
           delegateAgent
           digestAgent
+          writerAgent
           juniorDevAgent
           seniorDevAgent
         ];
@@ -293,69 +405,114 @@
 
       chatAgentConfig = {
         agents.${chatAgent} = {
+          identity = identityConfig;
           workspace = workspaceConfig;
           model_provider = "openrouter.main";
           risk_profile = chatAgent;
           runtime_profile = chatAgent;
-          channels = [ "matrix.morgan_fetch" ];
+          channels = [ matrixChannel ];
+          mcp_bundles = [ "chat" ];
         };
 
         risk_profiles.${chatAgent} = selfLib.ai.zeroclaw.riskProfile // {
-          excluded_tools = selfLib.ai.zeroclaw.excludedTools;
-          allowed_tools = selfLib.ai.zeroclaw.chatTools;
-          auto_approve = selfLib.ai.zeroclaw.chatTools;
+          excluded_tools = selfLib.ai.zeroclaw.tools.excludeExcept "chat";
+          auto_approve = selfLib.ai.zeroclaw.tools.chat;
           allowed_commands = selfLib.ai.shell.allowedCommands;
         };
 
-        runtime_profiles.main = selfLib.ai.zeroclaw.runtimeProfile // {
-          max_context_tokens = selfLib.ai.openrouter.context;
+        runtime_profiles.${chatAgent} = selfLib.ai.zeroclaw.runtimeProfile // {
+          max_context_tokens = selfLib.ai.openrouter.profiles.default.context;
         };
       };
 
       delegateAgentConfig = {
         agents.${delegateAgent} = {
+          identity = identityConfig;
           workspace = workspaceConfig;
           model_provider = if gpuApi != null then "custom.gpu" else "openrouter.main";
           risk_profile = delegateAgent;
           runtime_profile = delegateAgent;
+          channels = [ matrixChannel ];
+          mcp_bundles = [ "delegate" ];
+          cron_jobs = [ "heartbeat" ];
+          delegates = [
+            {
+              agent = writerAgent;
+              mode = "independent";
+            }
+            {
+              agent = juniorDevAgent;
+              mode = "independent";
+            }
+            {
+              agent = seniorDevAgent;
+              mode = "independent";
+            }
+          ];
         };
 
         risk_profiles.${delegateAgent} = selfLib.ai.zeroclaw.riskProfile // {
-          excluded_tools = selfLib.ai.zeroclaw.excludedTools;
-          allowed_tools = selfLib.ai.zeroclaw.delegateTools;
-          auto_approve = selfLib.ai.zeroclaw.delegateTools;
+          excluded_tools = selfLib.ai.zeroclaw.tools.excludeExcept "delegate";
+          auto_approve = selfLib.ai.zeroclaw.tools.delegate;
           allowed_commands = selfLib.ai.shell.allowedCommands;
           delegation_policy.mode = "allow";
         };
 
-        runtime_profiles.main = selfLib.ai.zeroclaw.runtimeProfile // {
-          max_context_tokens = if gpuApi != null then gpuApi.context else selfLib.ai.openrouter.context;
+        runtime_profiles.${delegateAgent} = selfLib.ai.zeroclaw.runtimeProfile // {
+          max_context_tokens =
+            if gpuApi != null then gpuApi.context else selfLib.ai.openrouter.profiles.default.context;
+          task_timeout_secs = 3 * 60 * 60;
+        };
+      };
+
+      writerAgentConfig = {
+        agents.${writerAgent} = {
+          identity = identityConfig;
+          workspace = workspaceConfig;
+          model_provider = if gpuApi != null then "custom.gpu" else "openrouter.main";
+          risk_profile = writerAgent;
+          runtime_profile = writerAgent;
+        };
+
+        risk_profiles.${writerAgent} = selfLib.ai.zeroclaw.riskProfile // {
+          excluded_tools = selfLib.ai.zeroclaw.tools.excludeExcept "writer";
+          auto_approve = selfLib.ai.zeroclaw.tools.writer;
+          allowed_commands = selfLib.ai.shell.allowedCommands;
+        };
+
+        runtime_profiles.${writerAgent} = selfLib.ai.zeroclaw.runtimeProfile // {
+          agentic = true;
+          max_context_tokens =
+            if gpuApi != null then gpuApi.context else selfLib.ai.openrouter.profiles.default.context;
         };
       };
 
       juniorDevAgentConfig = {
         agents.${juniorDevAgent} = {
+          identity = identityConfig;
           workspace = workspaceConfig;
-          model_provider = if cpuApi != null then "custom.gpu" else "openrouter.main";
+          model_provider = if gpuApi != null then "custom.gpu" else "openrouter.main";
           risk_profile = juniorDevAgent;
           runtime_profile = juniorDevAgent;
           mcp_bundles = [ "dev" ];
         };
 
         risk_profiles.${juniorDevAgent} = selfLib.ai.zeroclaw.riskProfile // {
-          excluded_tools = selfLib.ai.zeroclaw.excludedTools;
-          allowed_tools = selfLib.ai.zeroclaw.devTools;
-          auto_approve = selfLib.ai.zeroclaw.devTools;
+          excluded_tools = selfLib.ai.zeroclaw.tools.excludeExcept "dev";
+          auto_approve = selfLib.ai.zeroclaw.tools.dev;
           allowed_commands = selfLib.ai.shell.allowedCommands;
         };
 
         runtime_profiles.${juniorDevAgent} = selfLib.ai.zeroclaw.runtimeProfile // {
-          max_context_tokens = if gpuApi != null then gpuApi.context else selfLib.ai.openrouter.context;
+          agentic = true;
+          max_context_tokens =
+            if gpuApi != null then gpuApi.context else selfLib.ai.openrouter.profiles.default.context;
         };
       };
 
       seniorDevAgentConfig = {
         agents.${seniorDevAgent} = {
+          identity = identityConfig;
           workspace = workspaceConfig;
           model_provider = "openrouter.main";
           risk_profile = seniorDevAgent;
@@ -364,19 +521,20 @@
         };
 
         risk_profiles.${seniorDevAgent} = selfLib.ai.zeroclaw.riskProfile // {
-          excluded_tools = selfLib.ai.zeroclaw.excludedTools;
-          allowed_tools = selfLib.ai.zeroclaw.devTools;
-          auto_approve = selfLib.ai.zeroclaw.devTools;
+          excluded_tools = selfLib.ai.zeroclaw.tools.excludeExcept "dev";
+          auto_approve = selfLib.ai.zeroclaw.tools.dev;
           allowed_commands = selfLib.ai.shell.allowedCommands;
         };
 
         runtime_profiles.${seniorDevAgent} = selfLib.ai.zeroclaw.runtimeProfile // {
-          max_context_tokens = selfLib.ai.openrouter.context;
+          agentic = true;
+          max_context_tokens = selfLib.ai.openrouter.profiles.default.context;
         };
       };
 
       digestAgentConfig = {
         agents.${digestAgent} = {
+          identity = identityConfig;
           workspace = workspaceConfig;
           model_provider = if cpuApi != null then "custom.cpu" else "openrouter.main";
           risk_profile = digestAgent;
@@ -386,18 +544,19 @@
         };
 
         risk_profiles.${digestAgent} = selfLib.ai.zeroclaw.riskProfile // {
-          excluded_tools = selfLib.ai.zeroclaw.excludedTools;
-          allowed_tools = selfLib.ai.zeroclaw.devTools;
-          auto_approve = selfLib.ai.zeroclaw.devTools;
+          excluded_tools = selfLib.ai.zeroclaw.tools.excludeExcept "digest";
+          auto_approve = selfLib.ai.zeroclaw.tools.digest;
           allowed_commands = selfLib.ai.shell.allowedCommands;
         };
 
         runtime_profiles.${digestAgent} = selfLib.ai.zeroclaw.runtimeProfile // {
-          max_context_tokens = if cpuApi != null then cpuApi.context else selfLib.ai.openrouter.context;
+          agentic = true;
+          max_context_tokens =
+            if cpuApi != null then cpuApi.context else selfLib.ai.openrouter.profiles.default.context;
         };
       };
 
-      configFile = toml.generate "${name}-config.toml" (
+      zeroclawConfig = toml.generate "${name}-config.toml" (
         builtins.foldl' lib.recursiveUpdate { } [
           generalConfig
           mcpConfig
@@ -406,6 +565,7 @@
           cronConfig
           chatAgentConfig
           delegateAgentConfig
+          writerAgentConfig
           juniorDevAgentConfig
           seniorDevAgentConfig
           digestAgentConfig
@@ -415,6 +575,7 @@
     lib.mkIf hardware.network {
       nixpkgs.overlays = [
         inputs.mcp-nix.overlays.default
+        inputs.mcp-plan.overlays.default
       ];
 
       environment.systemPackages = [
@@ -459,16 +620,9 @@
         ];
         preStart = ''
           mkdir -p "${dataDir}"
-          envsubst < "${configFile}" > "${dataDir}/.config.toml.tmp"
-          chmod 0600 "${dataDir}/.config.toml.tmp"
-          mv -f "${dataDir}/.config.toml.tmp" "${dataDir}/config.toml"
-
-          mkdir -p ${workspaceDir}
-          install -m 0644 ${./agent/AGENTS.md} "${workspaceDir}/AGENTS.md"
-          install -m 0644 ${./agent/IDENTITY.md} "${workspaceDir}/IDENTITY.md"
-          install -m 0644 ${./agent/SOUL.md} "${workspaceDir}/SOUL.md"
-          install -m 0644 ${./agent/TOOLS.md} "${workspaceDir}/TOOLS.md"
-          install -m 0644 ${./agent/USER.md} "${workspaceDir}/USER.md"
+          envsubst < "${zeroclawConfig}" > "${dataDir}/.zeroclaw.config.toml.tmp"
+          chmod 0600 "${dataDir}/.zeroclaw.config.toml.tmp"
+          mv -f "${dataDir}/.zeroclaw.config.toml.tmp" "${zeroclawConfigFile}"
         '';
         script = ''
           zeroclaw daemon
