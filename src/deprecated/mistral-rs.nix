@@ -20,25 +20,14 @@ in
 {
   self.lib.deprecated.nixosModules.mistral-rs =
     {
-      pkgs,
-      lib,
       config,
+      lib,
       ...
     }:
     let
       cuda = config.dot.hardware.cuda;
-
-      models = makeModels pkgs;
     in
-    lib.mkIf cuda {
-      dot.ai.models.dia = {
-        files = [
-          models.dia
-          models.dieConfig
-          models.diaDac
-        ];
-      };
-    };
+    lib.mkIf cuda { };
 
   self.lib.deprecated.homeModules.mistral-rs =
     {
