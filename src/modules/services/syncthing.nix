@@ -13,7 +13,7 @@ in
     let
       hardware = config.dot.hardware;
     in
-    lib.mkIf hardware.network {
+    lib.mkIf (hardware.network && hardware.browser) {
       networking.firewall.allowedTCPPorts = [
         port
       ];
@@ -30,7 +30,7 @@ in
     let
       hardware = osConfig.dot.hardware;
     in
-    lib.mkIf hardware.network {
+    lib.mkIf (hardware.network && hardware.browser) {
       services.syncthing.enable = true;
       services.syncthing.guiAddress = address;
       services.syncthing.tray.enable = lib.mkIf hardware.graphics true;

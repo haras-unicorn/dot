@@ -8,7 +8,7 @@
       ...
     }:
     let
-      cuda = config.nixpkgs.config.cudaSupport;
+      cuda = osConfig.dot.hardware.cuda;
 
       codec = if cuda then "hevc_nvenc" else "libx265";
 

@@ -76,7 +76,8 @@
         programs = {
           shell = {
             package = lib.mkOption {
-              type = lib.types.package;
+              type = lib.types.nullOr lib.types.package;
+              default = null;
               description = "Default shell package";
             };
 
@@ -114,7 +115,8 @@
 
           pager = {
             package = lib.mkOption {
-              type = lib.types.package;
+              type = lib.types.nullOr lib.types.package;
+              default = null;
               description = ''
                 Default pager package.
               '';
@@ -123,7 +125,8 @@
 
           editor = {
             package = lib.mkOption {
-              type = lib.types.package;
+              type = lib.types.nullOr lib.types.package;
+              default = null;
               description = ''
                 Default editor package.
               '';
@@ -132,7 +135,8 @@
 
           terminal = {
             package = lib.mkOption {
-              type = lib.types.package;
+              type = lib.types.nullOr lib.types.package;
+              default = null;
               description = ''
                 Default terminal package.
               '';
@@ -156,7 +160,8 @@
 
           visual = {
             package = lib.mkOption {
-              type = lib.types.package;
+              type = lib.types.nullOr lib.types.package;
+              default = null;
               description = ''
                 Default visual editor package.
               '';
@@ -165,7 +170,8 @@
 
           browser = {
             package = lib.mkOption {
-              type = lib.types.package;
+              type = lib.types.nullOr lib.types.package;
+              default = null;
               description = ''
                 Default browser package.
               '';
@@ -174,7 +180,8 @@
 
           files = {
             package = lib.mkOption {
-              type = lib.types.package;
+              type = lib.types.nullOr lib.types.package;
+              default = null;
               description = ''
                 Default file manager package.
               '';

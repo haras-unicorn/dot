@@ -35,7 +35,7 @@ in
       ...
     }:
     let
-      cuda = config.nixpkgs.config.cudaSupport;
+      cuda = config.dot.hardware.cuda;
 
       models = makeModels pkgs;
     in
@@ -62,7 +62,7 @@ in
       ...
     }:
     let
-      cuda = config.nixpkgs.config.cudaSupport;
+      cuda = osConfig.dot.hardware.cuda;
 
       models = makeModels pkgs;
 

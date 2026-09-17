@@ -175,6 +175,22 @@
         "type": "github"
       }
     },
+    "flake-compat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767039857,
+        "narHash": "sha256-vNpUSpF5Nuw8xvDLj2KCwwksIbjua2LZCqhV1LNRDns=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -608,17 +624,39 @@
         ]
       },
       "locked": {
-        "lastModified": 1782941409,
-        "narHash": "sha256-MIPkSMwStyZxdlh4/rdTg0q1Me/A2hb+UnYtm3FGhKc=",
+        "lastModified": 1789709555,
+        "narHash": "sha256-G61pnHerbFZgABasSb+b/Ttb8cUPH5RWQZGBdMWJyIg=",
         "owner": "haras-unicorn",
         "repo": "nixos-facter-detection-modules",
-        "rev": "ac52c95b56102a84d6db2832286cd0fd43817cb6",
+        "rev": "8d5e7cb643a8b9d30321636789efbd3519444be6",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/v1.0.0",
+        "ref": "refs/tags/v1.1.0",
         "repo": "nixos-facter-detection-modules",
+        "type": "github"
+      }
+    },
+    "nixos-wsl": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789164534,
+        "narHash": "sha256-DoYGPM6QpnYBLWj9gGw6ZwAzIX+HrAVov1BoT+8Jixo=",
+        "owner": "nix-community",
+        "repo": "NixOS-WSL",
+        "rev": "72c92b11bb8289e6651c7fef29cc0a885fd6a255",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "main",
+        "repo": "NixOS-WSL",
         "type": "github"
       }
     },
@@ -822,6 +860,7 @@
         "nix-index-database": "nix-index-database",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixos-facter-detection-modules": "nixos-facter-detection-modules",
+        "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "noctalia": "noctalia",

@@ -30,10 +30,9 @@
         )
       ];
 
-      nixpkgs.config = {
-        nvidia.acceptLicense = true;
-        cudaSupport = cuda;
-      };
+      nixpkgs.config.nvidia.acceptLicense = true;
+      dot.hardware.cuda = cuda;
+      dot.hardware.rocm = false;
 
       # NOTE: needed for early splash
       boot.initrd.availableKernelModules = [

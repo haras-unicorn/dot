@@ -7,9 +7,8 @@
 
 let
   makePackage =
-    pkgs:
+    pkgs: cuda:
     let
-      cuda = pkgs.config.cudaSupport;
 
       system = pkgs.stdenv.hostPlatform.system;
 
@@ -101,9 +100,9 @@ in
     }:
     let
       models = makeModels pkgs;
-      package = makePackage pkgs;
+      package = makePackage pkgs config.dot.hardware.cuda;
     in
-    lib.mkIf config.nixpkgs.config.cudaSupport {
+    lib.mkIf config.dot.hardware.cuda {
       environment.systemPackages = [
         package
       ];
@@ -311,11 +310,12 @@ in
       lib,
       config,
       pkgs,
+      osConfig,
       ...
     }:
     let
       models = makeModels pkgs;
-      package = makePackage pkgs;
+      package = makePackage pkgs osConfig.dot.hardware.cuda;
 
       imagePrompt = ''
         You are an image captioner.
@@ -455,7 +455,7 @@ in
         '';
       };
     in
-    lib.mkIf config.nixpkgs.config.cudaSupport {
+    lib.mkIf osConfig.dot.hardware.cuda {
       dot.processing.nodes = {
         llama-cpp-describe-image = {
           note = "Describe an image into text";

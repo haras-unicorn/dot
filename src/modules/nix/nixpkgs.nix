@@ -21,16 +21,21 @@
         };
       };
 
-      config = {
-        _module.args.unstablePkgs = import inputs.nixpkgs-unstable {
-          system = pkgs.stdenv.hostPlatform.system;
-        };
+      config =
+        let
+          hardware = config.dot.hardware;
+        in
+        {
+          _module.args.unstablePkgs = import inputs.nixpkgs-unstable {
+            system = pkgs.stdenv.hostPlatform.system;
+          };
 
-        # NOTE: lots of packages broken right now
-        nixpkgs.config.rocmSupport = false;
-        nixpkgs.config.allowUnfreePredicate =
-          package: builtins.any (predicate: predicate package) config.dot.nixpkgs.allowUnfreePredicates;
-      };
+          nixpkgs.config.cudaSupport = hardware.cuda;
+          # NOTE: lots of packages broken right now
+          nixpkgs.config.rocmSupport = hardware.rocm;
+          nixpkgs.config.allowUnfreePredicate =
+            package: builtins.any (predicate: predicate package) config.dot.nixpkgs.allowUnfreePredicates;
+        };
     };
 
   machines.homeModules.nixpkgs = { osConfig, ... }: {

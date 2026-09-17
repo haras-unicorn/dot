@@ -30,6 +30,10 @@
         helix
         opencode
         fd
+        ripgrep
+        fastmod
+        lazygit
+        git
 
         prettier
         yaml-language-server
