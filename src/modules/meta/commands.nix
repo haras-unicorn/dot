@@ -8,7 +8,8 @@
       options.dot = {
         commands = {
           pinentry = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Default pinentry package.
 
@@ -18,7 +19,8 @@
           };
 
           mangohud = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Default mangohud package.
 
@@ -28,7 +30,8 @@
           };
 
           gamemode = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Default gamemode package.
 
@@ -38,7 +41,8 @@
           };
 
           gamescope = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Default gamescope package.
 
@@ -56,7 +60,8 @@
       options.dot = {
         commands = {
           copy = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Copy command.
 
@@ -69,7 +74,8 @@
           };
 
           paste = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Paste command.
 
@@ -81,7 +87,8 @@
           };
 
           type = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Type command.
 
@@ -91,7 +98,8 @@
           };
 
           screenshot = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Screenshot command.
 
@@ -104,7 +112,8 @@
           };
 
           regionshot = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Region screenshot command.
 
@@ -118,7 +127,8 @@
           };
 
           screenrecord = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Screenrecord command.
 
@@ -131,7 +141,8 @@
           };
 
           regionrecord = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Region screenrecord command.
 
@@ -145,7 +156,8 @@
           };
 
           tree = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Directory tree command.
 
@@ -156,7 +168,8 @@
           };
 
           list = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Directory list command.
 
@@ -167,7 +180,8 @@
           };
 
           dmenu = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Dmenu command.
 
@@ -181,7 +195,8 @@
           };
 
           launcher = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Program picker command.
 
@@ -192,7 +207,8 @@
           };
 
           emoji = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Emoji picker command.
 
@@ -202,7 +218,8 @@
           };
 
           volume-up = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Volume increase command.
 
@@ -212,7 +229,8 @@
           };
 
           volume-down = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Volume decrease command.
 
@@ -222,7 +240,8 @@
           };
 
           volume-mute-unmute = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Mute/unmute command.
 
@@ -232,7 +251,8 @@
           };
 
           play-pause = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Play/pause command.
 
@@ -242,7 +262,8 @@
           };
 
           brightness-up = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Brightness increase command.
 
@@ -252,7 +273,8 @@
           };
 
           brightness-down = lib.mkOption {
-            type = lib.types.package;
+            type = lib.types.nullOr lib.types.package;
+            default = null;
             description = ''
               Brightness decrease command.
 

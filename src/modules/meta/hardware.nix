@@ -12,6 +12,7 @@
             type = lib.types.enum [
               "generic"
               "rpi4"
+              "wsl"
             ];
             default = "generic";
             description = "Machine device type.";
@@ -70,6 +71,16 @@
           gaming = lib.mkOption {
             type = lib.types.bool;
             description = "Whether the machine can be used to game.";
+          };
+
+          cuda = lib.mkOption {
+            type = lib.types.bool;
+            description = "Whether the machine supports CUDA.";
+          };
+
+          rocm = lib.mkOption {
+            type = lib.types.bool;
+            description = "Whether the machine supports ROCm.";
           };
 
           wayland = lib.mkOption {
@@ -132,6 +143,8 @@
           visual = capabilities.graphics && capabilities.typing;
           gaming =
             capabilities.sound && capabilities.graphics && capabilities.typing && capabilities.pointing;
+          cuda = lib.mkDefault false;
+          rocm = lib.mkDefault false;
           wayland = detection.graphics.cards.default.wayland or false;
           threads = detection.cpu.threads;
           memory = detection.memory.size;

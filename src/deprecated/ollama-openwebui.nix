@@ -4,7 +4,7 @@
   self.lib.deprecated.nixosModules.ollama-openwebui =
     { lib, config, ... }:
     let
-      cuda = config.nixpkgs.config.cudaSupport;
+      cuda = config.dot.hardware.cuda;
     in
     lib.mkIf cuda {
       dot.nixpkgs.allowUnfreePredicates = [
@@ -27,7 +27,7 @@
       ...
     }:
     let
-      cuda = config.nixpkgs.config.cudaSupport;
+      cuda = osConfig.dot.hardware.cuda;
 
       chromium = osConfig.dot.programs.chromium.package;
 

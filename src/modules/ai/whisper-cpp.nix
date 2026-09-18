@@ -22,7 +22,7 @@ in
       ...
     }:
     let
-      cuda = config.nixpkgs.config.cudaSupport;
+      cuda = config.dot.hardware.cuda;
 
       models = makeModels pkgs;
     in
@@ -48,7 +48,7 @@ in
     let
       hardware = osConfig.dot.hardware;
 
-      cuda = config.nixpkgs.config.cudaSupport;
+      cuda = hardware.cuda;
 
       models = makeModels pkgs;
 

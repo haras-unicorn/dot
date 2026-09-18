@@ -10,11 +10,11 @@
       ...
     }:
     let
-      cuda = config.nixpkgs.config.cudaSupport;
+      cuda = osConfig.dot.hardware.cuda;
 
       chromium = osConfig.dot.programs.chromium.package;
 
-      package = if config.nixpkgs.config.cudaSupport then pkgs.comfy-ui-cuda else pkgs.comfy-ui;
+      package = if cuda then pkgs.comfy-ui-cuda else pkgs.comfy-ui;
 
       mkComfyuiInstance = instanceName: rec {
         comfyui = pkgs.writeShellApplication {

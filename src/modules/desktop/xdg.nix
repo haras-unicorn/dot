@@ -2,7 +2,9 @@
 
 {
   machines.nixosModules.xdg = { config, ... }: {
-    environment.systemPackages = builtins.attrValues config.dot.commands;
+    environment.systemPackages = builtins.filter (package: package != null) (
+      builtins.attrValues config.dot.commands
+    );
   };
 
   machines.homeModules.xdg =
@@ -14,8 +16,6 @@
       ...
     }:
     let
-      hardware = osConfig.dot.hardware;
-
       copy = pkgs.writeShellApplication {
         name = "copy";
         text = ''
@@ -57,9 +57,13 @@
         '';
       };
 
-      commands = builtins.attrValues config.dot.commands ++ builtins.attrValues osConfig.dot.commands;
+      commands = builtins.filter (package: package != null) (
+        builtins.attrValues config.dot.commands ++ builtins.attrValues osConfig.dot.commands
+      );
 
-      programs = builtins.map ({ package, ... }: package) (builtins.attrValues config.dot.programs);
+      programs = builtins.filter (package: package != null) (
+        builtins.map ({ package, ... }: package) (builtins.attrValues config.dot.programs)
+      );
 
       makeScreenshot =
         name:
@@ -153,28 +157,28 @@
       };
 
       dot.desktop.keybinds = lib.mkMerge [
-        (lib.mkIf hardware.browser [
+        (lib.mkIf (config.dot.programs.browser.package != null) [
           {
             mods = [ "super" ];
             key = "w";
             command = lib.getExe config.dot.programs.browser.package;
           }
         ])
-        (lib.mkIf hardware.browser [
+        (lib.mkIf (config.dot.programs.terminal.package != null) [
           {
             mods = [ "super" ];
             key = "t";
             command = lib.getExe config.dot.programs.terminal.package;
           }
         ])
-        (lib.mkIf hardware.browser [
+        (lib.mkIf (config.dot.commands.screenshot != null) [
           {
             mods = [ "super" ];
             key = "p";
             command = lib.getExe config.dot.commands.screenshot;
           }
         ])
-        (lib.mkIf hardware.browser [
+        (lib.mkIf (config.dot.commands.regionshot != null) [
           {
             mods = [
               "super"
@@ -184,7 +188,7 @@
             command = lib.getExe config.dot.commands.regionshot;
           }
         ])
-        (lib.mkIf hardware.browser [
+        (lib.mkIf (config.dot.commands.screenrecord != null) [
           {
             mods = [
               "super"
@@ -194,7 +198,7 @@
             command = lib.getExe config.dot.commands.screenrecord;
           }
         ])
-        (lib.mkIf hardware.browser [
+        (lib.mkIf (config.dot.commands.regionrecord != null) [
           {
             mods = [
               "super"
@@ -205,7 +209,7 @@
             command = lib.getExe config.dot.commands.regionrecord;
           }
         ])
-        (lib.mkIf hardware.visual [
+        (lib.mkIf (config.dot.commands.launcher != null) [
           {
             mods = [
               "super"
@@ -214,7 +218,7 @@
             command = lib.getExe config.dot.commands.launcher;
           }
         ])
-        (lib.mkIf hardware.visual [
+        (lib.mkIf (config.dot.commands.emoji != null) [
           {
             mods = [
               "super"
@@ -223,7 +227,7 @@
             command = lib.getExe config.dot.commands.emoji;
           }
         ])
-        (lib.mkIf hardware.sound [
+        (lib.mkIf (config.dot.commands.volume-up != null) [
           {
             mods = [
               "super"
@@ -233,7 +237,7 @@
             command = lib.getExe config.dot.commands.volume-up;
           }
         ])
-        (lib.mkIf hardware.sound [
+        (lib.mkIf (config.dot.commands.volume-down != null) [
           {
             mods = [
               "super"
@@ -243,7 +247,7 @@
             command = lib.getExe config.dot.commands.volume-down;
           }
         ])
-        (lib.mkIf hardware.sound [
+        (lib.mkIf (config.dot.commands.volume-mute-unmute != null) [
           {
             mods = [
               "super"
@@ -253,7 +257,7 @@
             command = lib.getExe config.dot.commands.volume-mute-unmute;
           }
         ])
-        (lib.mkIf hardware.sound [
+        (lib.mkIf (config.dot.commands.play-pause != null) [
           {
             mods = [
               "super"
@@ -262,7 +266,7 @@
             command = lib.getExe config.dot.commands.play-pause;
           }
         ])
-        (lib.mkIf hardware.graphics [
+        (lib.mkIf (config.dot.commands.brightness-up != null) [
           {
             mods = [
               "super"
@@ -272,7 +276,7 @@
             command = lib.getExe config.dot.commands.brightness-up;
           }
         ])
-        (lib.mkIf hardware.graphics [
+        (lib.mkIf (config.dot.commands.brightness-down != null) [
           {
             mods = [
               "super"
@@ -285,25 +289,25 @@
       ];
 
       dot.mime.apps = lib.mkMerge [
-        (lib.mkIf hardware.browser [
+        (lib.mkIf (config.dot.programs.browser.package != null) [
           {
             package = config.dot.programs.browser.package;
             types = selfLib.mime.browser;
           }
         ])
-        (lib.mkIf hardware.visual [
+        (lib.mkIf (config.dot.programs.visual.package != null) [
           {
             package = config.dot.programs.visual.package;
             types = selfLib.mime.editor;
           }
         ])
-        (lib.mkIf hardware.editor [
+        (lib.mkIf (config.dot.programs.editor.package != null) [
           {
             package = config.dot.programs.editor.package;
             types = selfLib.mime.editor;
           }
         ])
-        (lib.mkIf hardware.browser [
+        (lib.mkIf (config.dot.programs.files.package != null) [
           {
             package = config.dot.programs.files.package;
             types = selfLib.mime.files;
@@ -328,13 +332,13 @@
         {
           PAGER = lib.getExe config.dot.programs.pager.package;
         }
-        (lib.mkIf hardware.browser {
+        (lib.mkIf (config.dot.programs.browser.package != null) {
           BROWSER = lib.getExe config.dot.programs.browser.package;
         })
-        (lib.mkIf hardware.visual {
+        (lib.mkIf (config.dot.programs.visual.package != null) {
           VISUAL = lib.getExe config.dot.programs.visual.package;
         })
-        (lib.mkIf hardware.editor {
+        (lib.mkIf (config.dot.programs.editor.package != null) {
           EDITOR = lib.getExe config.dot.programs.editor.package;
         })
       ];

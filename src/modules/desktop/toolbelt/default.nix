@@ -97,7 +97,7 @@
 
       dmenu = lib.getExe config.dot.commands.dmenu;
 
-      kandoCmd = config.dot.commands.kando;
+      kando = lib.getExe config.dot.commands.kando;
 
       ui =
         if hardware.graphics then
@@ -110,7 +110,7 @@
       common = ''
         $env.DOT_TOOLBELT_TOOLS = r#'${tools}'# | from json
         $env.DOT_TOOLBELT_DMENU = "${dmenu}"
-        $env.DOT_TOOLBELT_KANDO = "${if kandoCmd != null then lib.getExe kandoCmd else ""}"
+        $env.DOT_TOOLBELT_KANDO = "${kando}"
         $env.PATH ++= [ ${path} ]
 
         ${builtins.readFile ./log.nu}
@@ -150,29 +150,35 @@
         }
       '';
     in
-    lib.mkIf (hardware.editor || hardware.graphics) {
-      home.packages = [
-        toolbelt
-        pipeline
-      ]
-      ++ packages;
+    lib.mkIf
+      (
+        (hardware.editor || hardware.graphics)
+        && config.dot.commands.dmenu != null
+        && config.dot.commands.kando != null
+      )
+      {
+        home.packages = [
+          toolbelt
+          pipeline
+        ]
+        ++ packages;
 
-      dot.desktop.keybinds = [
-        {
-          mods = [
-            "super"
-          ];
-          key = "q";
-          command = lib.getExe pipeline;
-        }
-        {
-          mods = [
-            "super"
-            "ctrl"
-          ];
-          key = "q";
-          command = lib.getExe toolbelt;
-        }
-      ];
-    };
+        dot.desktop.keybinds = [
+          {
+            mods = [
+              "super"
+            ];
+            key = "q";
+            command = lib.getExe pipeline;
+          }
+          {
+            mods = [
+              "super"
+              "ctrl"
+            ];
+            key = "q";
+            command = lib.getExe toolbelt;
+          }
+        ];
+      };
 }
