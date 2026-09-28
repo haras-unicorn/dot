@@ -30,9 +30,19 @@
         )
       ];
 
-      nixpkgs.config.nvidia.acceptLicense = true;
       dot.hardware.cuda = cuda;
       dot.hardware.rocm = false;
+
+      nixpkgs.config = {
+        nvidia.acceptLicense = true;
+        cudaSupport = cuda;
+      };
+
+      # NOTE: https://applicative.systems/nixos-test-driver-manual/tutorials/cuda-tests
+      programs.nix-required-mounts = {
+        enable = true;
+        presets.nvidia-gpu.enable = true;
+      };
 
       # NOTE: needed for early splash
       boot.initrd.availableKernelModules = [
@@ -84,6 +94,7 @@
       hardware.nvidia.prime.amdgpuBusId = lib.mkIf (integrated.type == "amd") integrated.pci;
       hardware.nvidia.prime.intelBusId = lib.mkIf (integrated.type == "intel") integrated.pci;
 
+      boot.blacklistedKernelModules = [ "nouveau" ];
       services.xserver.videoDrivers = [ "nvidia" ];
 
       hardware.graphics.enable = true;

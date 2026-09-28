@@ -624,16 +624,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1789709555,
-        "narHash": "sha256-G61pnHerbFZgABasSb+b/Ttb8cUPH5RWQZGBdMWJyIg=",
+        "lastModified": 1790628854,
+        "narHash": "sha256-ju8Flkmv1/HYiFzepXrn640TCJmhJcSFZWbxf+cj6tg=",
         "owner": "haras-unicorn",
         "repo": "nixos-facter-detection-modules",
-        "rev": "8d5e7cb643a8b9d30321636789efbd3519444be6",
+        "rev": "4e1541a67b033570ea6d88988bf42e0dab345954",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/v1.1.0",
+        "ref": "refs/tags/v1.1.2",
         "repo": "nixos-facter-detection-modules",
         "type": "github"
       }
@@ -865,6 +865,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "noctalia": "noctalia",
         "nur": "nur",
+        "septabee": "septabee",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix"
       }
@@ -925,6 +926,26 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "septabee": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790358517,
+        "narHash": "sha256-+75LUB+6fpF5I9OGNZZRigxeHZGzZ0hoW6U9xJ5KBeU=",
+        "owner": "Ap6661",
+        "repo": "septabee-flake",
+        "rev": "59625c31deea34a289403eeb984af2696420edb9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Ap6661",
+        "repo": "septabee-flake",
         "type": "github"
       }
     },

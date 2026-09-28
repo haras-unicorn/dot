@@ -555,3 +555,7 @@ ignoreWords:
   - multimodal
   - omarchy
   - gabi
+  - socat
+  - nspawn
+  - lnav
+  - tokei
