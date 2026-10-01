@@ -5,15 +5,7 @@
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.browser {
-      dot.nixpkgs.allowUnfreePredicates = [
-        (
-          package:
-          let
-            name = lib.getName package;
-          in
-          name == "slack"
-        )
-      ];
+      dot.nixpkgs.allowUnfreePackageNames = [ "slack" ];
     };
 
   self.lib.deprecated.homeModules.slack-teams-vesktop =

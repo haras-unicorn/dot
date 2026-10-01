@@ -31,12 +31,8 @@
       ];
 
       dot.hardware.cuda = cuda;
-      dot.hardware.rocm = false;
 
-      nixpkgs.config = {
-        nvidia.acceptLicense = true;
-        cudaSupport = cuda;
-      };
+      nixpkgs.config.nvidia.acceptLicense = true;
 
       # NOTE: https://applicative.systems/nixos-test-driver-manual/tutorials/cuda-tests
       programs.nix-required-mounts = {

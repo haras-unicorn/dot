@@ -10,14 +10,9 @@
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.gaming {
-      dot.nixpkgs.allowUnfreePredicates = [
-        (
-          package:
-          let
-            name = lib.getName package;
-          in
-          name == "steam" || name == "steam-unwrapped"
-        )
+      dot.nixpkgs.allowUnfreePackageNames = [
+        "steam"
+        "steam-unwrapped"
       ];
 
       programs.steam.enable = true;

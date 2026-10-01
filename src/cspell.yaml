@@ -559,3 +559,4 @@ ignoreWords:
   - nspawn
   - lnav
   - tokei
+  - uids

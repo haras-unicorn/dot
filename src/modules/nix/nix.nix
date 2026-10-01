@@ -9,7 +9,25 @@ let
     {
       registry.nixpkgs.flake = inputs.nixpkgs;
 
-      extraOptions = "experimental-features = nix-command flakes";
+      settings.experimental-features = [
+        "nix-command"
+        "flakes"
+        # NOTE: needed for uid-range
+        "auto-allocate-uids"
+        # NOTE: needed for uid-range
+        "cgroups"
+      ];
+      settings.system-features = [
+        # NOTE: defaults
+        "benchmark"
+        "big-parallel"
+        "kvm"
+        "nixos-test"
+        # NOTE: needed for nixos container tests
+        "uid-range"
+      ];
+      # NOTE: needed for uid-range
+      settings.auto-allocate-uids = true;
 
       settings.max-jobs = hardware.threads / 3;
       settings.cores = 2;

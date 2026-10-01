@@ -107,6 +107,7 @@
         ssh-test-container
         pkgs.htop
         pkgs.duf
+        pkgs.dua
         pkgs.man-pages
         pkgs.man-pages-posix
         pkgs.rustscan
