@@ -10,7 +10,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    nixos-facter-detection-modules.url = "github:haras-unicorn/nixos-facter-detection-modules/refs/tags/v1.1.2";
+    nixos-facter-detection-modules.url = "github:haras-unicorn/nixos-facter-detection-modules/refs/tags/v1.1.3";
     nixos-facter-detection-modules.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";

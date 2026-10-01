@@ -22,6 +22,11 @@
       dot.location.accuracy = 30000;
       dot.location.address = "Zagreb, Croatia";
 
+      hardware.facter.hintsV1.graphics.cards.vramMap = {
+        "PCI:1:0:0" = 12 * 1000 * 1000 * 1000;
+        "PCI:12:0:0" = 512 * 1000 * 1000;
+      };
+
       home-manager.users.${config.dot.user.user} = {
         xdg.dataFile."easyeffects/autoload/output/krk.json".source =
           "${self}/assets/easyeffects/hearth-krk-autoload.json";

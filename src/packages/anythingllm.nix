@@ -1,18 +1,12 @@
 {
-  machines.homeModules.anything-llm =
+  perSystem =
     {
-      pkgs,
+      system,
       lib,
-      config,
-      osConfig,
+      pkgs,
       ...
     }:
     let
-      hardware = osConfig.dot.hardware;
-
-      prefix = "anythingllm";
-      dataDir = "${config.xdg.dataHome}/${prefix}";
-
       version = "1.15.0";
 
       arch =
@@ -70,8 +64,7 @@
 
         extraInstallCommands = ''
           install -Dm644 ${appimageContents}/anythingllm-desktop.desktop $out/share/applications/anything-llm.desktop
-          substituteInPlace $out/share/applications/anything-llm.desktop \
-            --replace-fail 'Exec=AppRun --no-sandbox %U' 'Exec=anything-llm --user-data-dir=${dataDir} --no-sandbox %U'
+          rm $out/share/applications/anything-llm.desktop
         '';
 
         meta = {
@@ -87,30 +80,7 @@
         };
       };
     in
-    lib.mkIf hardware.browser {
-      home.packages = [
-        package
-      ];
-
-      systemd.user.services.anythingllm = {
-        Install.WantedBy = [ "graphical-session.target" ];
-        Unit = {
-          Description = "Anything LLM";
-          After = [
-            "tray.target"
-            "graphical-session.target"
-          ];
-          PartOf = [ "graphical-session.target" ];
-          Requires = [ "tray.target" ];
-        };
-        Service = {
-          ExecStart = "${lib.getExe package} --user-data-dir=${dataDir}";
-          Restart = "on-failure";
-          WorkingDirectory = dataDir;
-          Environment = "DISABLE_TELEMETRY=true";
-          KillMode = "mixed";
-          TimeoutStopSec = 15;
-        };
-      };
+    {
+      packages.anythingllm = package;
     };
 }

@@ -10,15 +10,7 @@
       hardware = config.dot.hardware;
     in
     lib.mkIf hardware.gaming {
-      dot.nixpkgs.allowUnfreePredicates = [
-        (
-          package:
-          let
-            name = lib.getName package;
-          in
-          name == "spotify"
-        )
-      ];
+      dot.nixpkgs.allowUnfreePackageNames = [ "spotify" ];
     };
 
   machines.homeModules.spicetify =

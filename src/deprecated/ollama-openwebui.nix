@@ -7,15 +7,7 @@
       cuda = config.dot.hardware.cuda;
     in
     lib.mkIf cuda {
-      dot.nixpkgs.allowUnfreePredicates = [
-        (
-          package:
-          let
-            name = lib.getName package;
-          in
-          name == "open-webui"
-        )
-      ];
+      dot.nixpkgs.allowUnfreePackageNames = [ "open-webui" ];
     };
 
   self.lib.deprecated.homeModules.ollama-openwebui =

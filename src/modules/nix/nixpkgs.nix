@@ -11,8 +11,18 @@
     {
       options.dot = {
         nixpkgs = {
+          allowUnfreePackageNames = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            description = ''
+              List of package names to convert to a predicate
+              in dot.nixpkgs.allowUnfreePredicates.
+            '';
+          };
+
           allowUnfreePredicates = lib.mkOption {
             type = lib.types.listOf (lib.types.functionTo lib.types.bool);
+            default = [ ];
             description = ''
               List of predicates to merge with a logical OR (||)
               for the nixpkgs.config.allowUnfreePredicate option.
@@ -29,6 +39,13 @@
           _module.args.unstablePkgs = import inputs.nixpkgs-unstable {
             system = pkgs.stdenv.hostPlatform.system;
           };
+
+          dot.nixpkgs.allowUnfreePredicates = [
+            (
+              package:
+              builtins.any (name: (lib.getName package == name)) config.dot.nixpkgs.allowUnfreePackageNames
+            )
+          ];
 
           nixpkgs.config.cudaSupport = hardware.cuda;
           # NOTE: lots of packages broken right now

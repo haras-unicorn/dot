@@ -624,16 +624,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1790628854,
-        "narHash": "sha256-ju8Flkmv1/HYiFzepXrn640TCJmhJcSFZWbxf+cj6tg=",
+        "lastModified": 1790841975,
+        "narHash": "sha256-dAxkbU37KMTTGFd9Gxrbzhm049qX7MMTgvem4LhjkBc=",
         "owner": "haras-unicorn",
         "repo": "nixos-facter-detection-modules",
-        "rev": "4e1541a67b033570ea6d88988bf42e0dab345954",
+        "rev": "b892003bc6e86c82d75b4c708eacc8a2500f409e",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/v1.1.2",
+        "ref": "refs/tags/v1.1.3",
         "repo": "nixos-facter-detection-modules",
         "type": "github"
       }
