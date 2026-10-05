@@ -560,3 +560,5 @@ ignoreWords:
   - lnav
   - tokei
   - uids
+  - mgnt
+  - regdom

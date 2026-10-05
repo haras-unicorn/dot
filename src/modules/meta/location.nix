@@ -51,6 +51,13 @@
               Free-form location address (e.g. city name).
             '';
           };
+
+          countryCode = lib.mkOption {
+            type = lib.types.str;
+            description = ''
+              ISO-3166 alpha-2 country code.
+            '';
+          };
         };
       };
     };
