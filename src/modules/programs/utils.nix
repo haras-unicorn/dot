@@ -123,6 +123,7 @@
         pkgs.tokei
         pkgs.openssh
         pkgs.openssl
+        pkgs.iw
         (pkgs.rustPlatform.buildRustPackage (
           let
             version = "1.3.0";

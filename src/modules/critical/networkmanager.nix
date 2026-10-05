@@ -9,6 +9,7 @@
       systemd.network.wait-online.enable = false;
 
       networking.networkmanager.enable = true;
+      networking.networkmanager.wifi.powersave = false;
 
       programs.nm-applet.enable = lib.mkIf hardware.graphics true;
     };

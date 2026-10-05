@@ -7,5 +7,6 @@
     dot.location.altitude = 125;
     dot.location.accuracy = 30000;
     dot.location.address = "Zagreb, Croatia";
+    dot.location.countryCode = "HR";
   };
 }

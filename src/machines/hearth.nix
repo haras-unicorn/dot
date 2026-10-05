@@ -21,6 +21,7 @@
       dot.location.altitude = 125;
       dot.location.accuracy = 30000;
       dot.location.address = "Zagreb, Croatia";
+      dot.location.countryCode = "HR";
 
       hardware.facter.hintsV1.graphics.cards.vramMap = {
         "PCI:1:0:0" = 12 * 1000 * 1000 * 1000;
