@@ -27,33 +27,18 @@ let
   };
 in
 {
-  machines.nixosModules.stable-diffusion-cpp =
+  self.lib.deprecated.nixosModules.stable-diffusion-cpp =
     {
-      pkgs,
       config,
       lib,
       ...
     }:
     let
       cuda = config.dot.hardware.cuda;
-
-      models = makeModels pkgs;
     in
-    lib.mkIf cuda {
-      dot.ai.models.sd-3-5-turbo = {
-        family = "sd";
-        name = "3-5-turbo";
-        files = [
-          models.model
-          models.clip_g
-          models.clip_l
-          models.t5xxl
-          models.vae
-        ];
-      };
-    };
+    lib.mkIf cuda { };
 
-  machines.homeModules.stable-diffusion-cpp =
+  self.lib.deprecated.homeModules.stable-diffusion-cpp =
     {
       pkgs,
       lib,

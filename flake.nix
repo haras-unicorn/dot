@@ -50,11 +50,9 @@
     septabee.url = "github:Ap6661/septabee-flake";
     septabee.inputs.nixpkgs.follows = "nixpkgs";
 
-    # NOTE: https://github.com/haras-unicorn/mcp-nix/blob/v0.1.4/README.md
-    mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.4";
-
-    # NOTE: https://github.com/haras-unicorn/mcp-rss/blob/v0.2.0/README.md
-    mcp-rss.url = "github:haras-unicorn/mcp-rss/refs/tags/v0.2.0";
+    # NOTE: https://github.com/haras-unicorn/corm/blob/main/README.md
+    corm.url = "github:haras-unicorn/corm";
+    corm.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

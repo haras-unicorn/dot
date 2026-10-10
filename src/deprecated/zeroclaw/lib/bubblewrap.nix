@@ -1,5 +1,5 @@
 {
-  self.lib.ai.bubblewrap = {
+  self.lib.deprecated.lib.ai.bubblewrap = {
     flags = {
       nvidia = [
         "--ro-bind-try"

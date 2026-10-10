@@ -1,5 +1,5 @@
 {
-  self.lib.ai.shell = {
+  self.lib.deprecated.lib.ai.shell = {
     allowedCommands = [
       "ls"
       "mkdir"

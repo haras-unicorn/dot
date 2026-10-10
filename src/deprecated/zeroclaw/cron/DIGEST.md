@@ -1,10 +1,8 @@
 # DIGEST.md
 
-Shared digest: fetch rules and cron job instructions.
+This is a cron job description for producing a shared daily digest.
 
-## Cron Job Instructions
-
-When running the digest cron job:
+## Instructions
 
 1. Read `DIGEST.md` from your workspace to get feeds, filters and preferences
    and last run date.
