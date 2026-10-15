@@ -1,7 +1,7 @@
 {
   "output": {
     "autogain#0": {
-      "bypass": false,
+      "bypass": true,
       "force-silence": false,
       "input-gain": 0.0,
       "maximum-history": 30,
