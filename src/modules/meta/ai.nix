@@ -8,7 +8,7 @@ let
 
       model = lib.mkOption {
         type = lib.types.str;
-        description = "Model id and reference to dot.ai.models";
+        description = "Model id";
       };
     };
   };
@@ -21,10 +21,21 @@ let
         type = lib.types.ints.unsigned;
         description = "Allocated context size";
       };
+
       vision = lib.mkOption {
         type = lib.types.bool;
         default = false;
         description = "Whether the API supports vision";
+      };
+
+      tpsIn = lib.mkOption {
+        type = lib.types.ints.unsigned;
+        description = "Token speed in tokens per second for input";
+      };
+
+      tpsOut = lib.mkOption {
+        type = lib.types.ints.unsigned;
+        description = "Token speed in tokens per second for output";
       };
     };
   };
@@ -51,33 +62,6 @@ in
             default = null;
             description = "Embedding API";
           };
-        };
-
-        models = lib.mkOption {
-          default = { };
-          description = "Model definitions";
-          type = lib.types.attrsOf (
-            lib.types.submodule (
-              { name, lib, ... }: {
-                options = {
-                  name = lib.mkOption {
-                    type = lib.types.str;
-                    default = name;
-                    description = "Model name";
-                  };
-                  family = lib.mkOption {
-                    type = lib.types.str;
-                    default = name;
-                    description = "Model family";
-                  };
-                  files = lib.mkOption {
-                    type = lib.types.listOf lib.types.package;
-                    description = "Model files (GGUF, config, etc.)";
-                  };
-                };
-              }
-            )
-          );
         };
       };
     };

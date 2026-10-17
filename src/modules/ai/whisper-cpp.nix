@@ -14,29 +14,6 @@ let
   };
 in
 {
-  machines.nixosModules.whisper-cpp =
-    {
-      pkgs,
-      config,
-      lib,
-      ...
-    }:
-    let
-      cuda = config.dot.hardware.cuda;
-
-      models = makeModels pkgs;
-    in
-    lib.mkIf cuda {
-      dot.ai.models.whisper-tiny = {
-        name = "tiny";
-        family = "whisper";
-        files = [
-          models.tinyModel
-          models.tinyVad
-        ];
-      };
-    };
-
   machines.homeModules.whisper-cpp =
     {
       pkgs,

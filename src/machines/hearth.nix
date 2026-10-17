@@ -28,6 +28,14 @@
         "PCI:12:0:0" = 512 * 1000 * 1000;
       };
 
+      corm.gpu-provider.kind.strata = {
+        cudaArchitectures = [ "86" ];
+        extraArgs = [
+          "--vram-reserve-mib"
+          "2048"
+        ];
+      };
+
       home-manager.users.${config.dot.user.user} = {
         xdg.dataFile."easyeffects/autoload/output/krk.json".source =
           "${self}/assets/easyeffects/hearth-krk-autoload.json";
