@@ -1,5 +1,5 @@
 {
-  self.lib.deprecated.nixosModules.tuigreet =
+  machines.nixosModules.tuigreet =
     {
       lib,
       config,
@@ -13,7 +13,7 @@
     lib.mkIf (hardware.visual && hardware.wayland) {
       dot.desktop.login =
         lib.getExe pkgs.tuigreet
-        + " --sessions '${config.dot.desktop.sessions}'"
+        + " --sessions '${config.dot.desktop.sessions}/share/wayland-sessions'"
         + " --user-menu"
         + " --theme '${theme}'"
         + " --asterisks"

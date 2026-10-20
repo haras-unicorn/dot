@@ -4,6 +4,8 @@ version: "0.2"
 language: en
 ignorePaths:
   - modules/services/searxng/engines.json
+  - modules/ai/zeroclaw/**
+  - deprecated/zeroclaw/morgan-fetch.json
 ignoreWords:
   - nixfmt
   - langservers
@@ -563,3 +565,12 @@ ignoreWords:
   - mgnt
   - regdom
   - usbutils
+  - librechat
+  - meilisearch
+  - creds
+  - convo
+  - libuuid
+  - uuidgen
+  - mtok
+  - aieos
+  - agentic

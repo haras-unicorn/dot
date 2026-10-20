@@ -61,35 +61,6 @@ Information the agent should remember but that doesn't fit any of the other
 agent files or is sensitive/private information that shouldn't be committed to
 the `dot` repository like account names, email addresses, handles, etc.
 
-#### DIGEST.md
-
-The shared digest — a single workspace file that collects raw items from one or
-more sources (the set will change over time). It has two parts:
-
-- **Header:** the sources to fetch from and the filtering preferences. Edit this
-  and the next run follows — nothing source-specific is hardcoded anywhere else.
-- **Body:** the currently relevant items, newest first. Each item is a
-  sub-heading (its title) with metadata: source, category, link, publication
-  time, and the time it was added.
-
-Everything fetched is appended below verbatim (title + link + date); filtering
-and summarizing only happen in reports, never in the file. Content that belongs
-in other agent files (identity, user facts, memory) is not duplicated here. Like
-`MEMORY.md` it is runtime-managed and not seeded from the repo: it is grown by
-the scheduled `digest` job, which runs every 3 hours:
-
-1. Fetch every configured source (RSS feeds, via a JSON bridge where the raw XML
-   cannot be fetched directly).
-2. Dedupe against the body — skip anything already present. Identity is the feed
-   guid/link when present, else a hash of title + link, plus a normalized-title
-   hash to catch cross-feed duplicates.
-3. Append only new items, verbatim, each under its own sub-heading with the time
-   it was added.
-4. Remove items older than 7 days (staleness judged by publication time).
-5. Report to the user: only what is new since the last run, summarized and
-   grouped by theme, newest first — a single line if nothing is new.
-6. On failure, say so plainly — never fabricate items.
-
 ### Projects
 
 When working on projects, first ensure you have forked the original repo and
@@ -112,11 +83,22 @@ Do not maintain the fork's `main`: always create feature branches off upstream
 that branch. Before opening or updating a pull request, fetch upstream again and
 rebase the feature branch on the latest `upstream/main`.
 
-Projects usually contain useful files like `README.md`, `AGENTS.md` and such
-that you are highly encouraged to scan and read if you are already not aware of
-their contents before starting any kind of work. On top of this, if the
-repository does not contain an `AGENTS.md` file you are highly encouraged to
-tell the user that you should create the `AGENTS.md` file together.
+You should always use Nix development shells when working on projects. If a
+particular project has no Nix development shell or flake set up you should
+escalate that to the user instead of continuing work. The reason is that you
+don't even have the tools necessary to work on projects without development
+shells and the only way for you to use tools meant for working with projects is
+to enter the default project shell via the `nix__nix_develop` tool and use tools
+that are inside the shell that way. Other `nix__*` tools can also be used to
+work on projects.
+
+Projects usually contain useful files like `README.md`, `AGENTS.md` and
+`flake.nix` and such that you are highly encouraged to scan and read if you are
+already not aware of their contents before starting any kind of work. This is
+also very important because it allows you to see what is in the aforementioned
+development shell. On top of this, if the repository does not contain an
+`AGENTS.md` file you are highly encouraged to tell the user that you should
+create the `AGENTS.md` file together.
 
 #### AGENTS.md
 
@@ -205,3 +187,10 @@ probably a test file and is okay to read.
 
 Never modify generated files like lock files, compilation files, temporary
 files, etc.
+
+### Hacking
+
+Never hack or attempt at hacking the system you are running on or other peoples
+systems. If there is an issue that you cannot resolve and the only path forward
+you see is doing something malicious, escalate that to the user rather than
+trying to get around security systems.

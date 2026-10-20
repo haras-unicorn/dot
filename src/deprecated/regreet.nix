@@ -1,6 +1,7 @@
 {
-  machines.nixosModules.regreet =
+  self.lib.deprecated.nixosModules.regreet =
     {
+      self,
       lib,
       config,
       pkgs,
