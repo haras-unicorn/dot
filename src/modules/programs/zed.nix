@@ -1,11 +1,8 @@
-{ selfLib, ... }:
-
 {
   self.homeModules.zed.value =
     {
       osConfig,
       config,
-      pkgs,
       lib,
       ...
     }:
@@ -13,53 +10,9 @@
       hardware = osConfig.dot.hardware;
 
       package = config.programs.zed-editor.package;
-
-      source = pkgs.writeShellApplication {
-        name = "zed-editor-source";
-        runtimeInputs = [ package ];
-        text = ''
-          tmp="$(mktemp)"
-          trap 'rm -f "$tmp"' EXIT
-          zeditor --foreground -n "$tmp" &>/dev/null
-          cat "$tmp"
-        '';
-      };
-
-      node = pkgs.writeShellApplication {
-        name = "zed-editor-node";
-        runtimeInputs = [ package ];
-        text = ''
-          tmp="$(mktemp)"
-          trap 'rm -f "$tmp"' EXIT
-          cat > "$tmp"
-          zeditor --foreground -n "$tmp" &>/dev/null
-        '';
-      };
     in
     lib.mkIf hardware.visual {
       dot.programs.visual.package = package;
-
-      dot.processing = {
-        sources.zed-editor = {
-          note = "Write text";
-          tags = [
-            "text"
-            "write"
-          ];
-          output = "detect";
-          package = source;
-        };
-        nodes.zed-editor = {
-          note = "Edit text";
-          tags = [
-            "text"
-            "editor"
-          ];
-          inputs = selfLib.mime.editor;
-          output = "detect";
-          package = node;
-        };
-      };
 
       programs.zed-editor.enable = true;
       programs.zed-editor.extensions = [

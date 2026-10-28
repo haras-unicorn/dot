@@ -639,7 +639,7 @@
         "import-tree": "import-tree_3",
         "nix-unit": "nix-unit",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "pyproject-build-systems": "pyproject-build-systems_2",
         "pyproject-nix": "pyproject-nix_2",

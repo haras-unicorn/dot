@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ... }:
 
 {
   self.overlays.overlays.playerctl.value = final: _prev: {

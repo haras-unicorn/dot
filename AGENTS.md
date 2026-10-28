@@ -8,6 +8,8 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
 - `src/` — the flake module tree; `flake.nix` passes it to `makeFlake`
   - `systems.nix` — supported systems (`x86_64-linux`, `aarch64-linux`)
   - `namespace.nix` — sets the haraspkgs overlay namespace to `harasPackages`
+  - `unit-tests.nix` — passes haraspkgs' inputs (recursively) to the sandboxed
+    `nix-unit` check through `nix-unit.inputs`
   - `machines/` — one file per machine; each registers a
     `self.nixosConfigurations.<name>` with `flake = true`
   - `modules/` — shared NixOS and home-manager modules, grouped by category:
@@ -55,10 +57,9 @@ Put something in an overlay when it is a general-purpose tool or an override of
 an existing package that other modules or the user could want globally, and it
 does not depend on one module's options. Keep it in the owning module when it
 depends on that module's `config`, a host device, a service unit, a compositor
-or session, a per-instance data directory, or when it only plugs that module's
-processing graph. Overlay values are evaluated outside the NixOS and
-home-manager module system, so they cannot read `config`; pass what they need as
-arguments.
+or session, or a per-instance data directory. Overlay values are evaluated
+outside the NixOS and home-manager module system, so they cannot read `config`;
+pass what they need as arguments.
 
 ## Development
 
@@ -67,12 +68,12 @@ provides the `dev` command (a bash CLI from haraspkgs; `dev -h` lists
 everything):
 
 - `dev format` — format the repository with treefmt (`nixfmt` + `prettier`)
-- `dev check` — run cspell, markdownlint, and markdown-link-check in the
-  checkout
+- `dev check` — run cspell, markdownlint, markdown-link-check, and nil
+  diagnostics in the checkout
 - `nix flake check` — build the checks and format derivation (`default-format`,
   `default-cspell`, `default-markdownlint`, `default-markdown-link-check`,
-  `default-workflows`); CI runs this on pull requests. Markdown link checks are
-  skipped inside the Nix build sandbox.
+  `default-nix-diagnostics`, `default-workflows`, `nix-unit`); CI runs this on
+  pull requests. Markdown link checks are skipped inside the Nix build sandbox.
 - `dev rebuild report|switch|boot` — `nixos-rebuild` for the current host
   (hostname read from `/etc/hostname`)
 - `dev detect` — run `nixos-facter` and save the hardware report to

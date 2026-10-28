@@ -35,38 +35,13 @@
   self.homeModules.pinentry-wayprompt.value =
     {
       osConfig,
-      pkgs,
       lib,
       ...
     }:
     let
       hardware = osConfig.dot.hardware;
-
-      processor = pkgs.writeShellApplication {
-        name = "pinentry-processor";
-        text = ''
-          echo GETPIN \
-            | ${lib.getExe osConfig.dot.pinentry.package} \
-            | grep '^D ' \
-            | cut -c3-
-        '';
-      };
     in
     {
-      dot.processing.sources.pinentry = {
-        note = "Capture a secure string (e.g. password or pin or key)";
-        tags = [
-          "password"
-          "pin"
-          "key"
-          "secure"
-          "string"
-          "text"
-        ];
-        output = "text/plain";
-        package = processor;
-      };
-
       programs.wayprompt = lib.mkIf (hardware.wayland && hardware.graphics) {
         enable = true;
         package = osConfig.dot.pinentry.package;

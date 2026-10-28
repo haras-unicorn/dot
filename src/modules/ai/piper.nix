@@ -123,28 +123,4 @@
         ];
       };
     };
-
-  self.homeModules.piper.value =
-    {
-      lib,
-      osConfig,
-      ...
-    }:
-    let
-      hardware = osConfig.dot.hardware;
-    in
-    lib.mkIf hardware.sound {
-      dot.processing.nodes.piper-tts = {
-        note = "Turn text into speech";
-        tags = [
-          "tts"
-          "text-to-speech"
-          "text"
-          "speech"
-        ];
-        inputs = [ "text/plain" ];
-        output = "audio/x-raw; rate=${toString osConfig.dot.piper.sampleRate}; channels=1; format=s16";
-        package = osConfig.dot.piper.node;
-      };
-    };
 }

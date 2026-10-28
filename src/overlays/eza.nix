@@ -1,7 +1,7 @@
 # TODO: make the list command output an actual
 # line-by-line list and not a grid
 
-{ self, ... }:
+{ ... }:
 
 {
   self.overlays.overlays.eza.value =

@@ -129,7 +129,8 @@
               xvxl xwayland xwaylandvideobridge xworkspaces yapf yazi ydotool zeditor
               zenity zeroclaw zeroclawlabs zipfs zlibrary zram editorconfig
               prettierignore cspell markdownlint markdown-link-check hx shfmt tidy
-              nixos-rebuild MEMLOCK
+              nixos-rebuild MEMLOCK arstechnica autoupdater bleepingcomputer
+              handback notif unsandboxed wakeup
             ''
           )
         );
@@ -485,6 +486,25 @@
                 fd --glob '**/*.md' . -0 | xargs -0 -r markdown-link-check \
                   --config ${markdownLinkCheckConfig} \
                   --quiet
+              fi
+            '';
+          };
+
+          nix-diagnostics = {
+            packages = [
+              pkgs.findutils
+              pkgs.nil
+            ];
+            commands = ''
+              # NOTE: nil exits 0 on warnings, so any output is a failure
+              output="$(find . -name '*.nix' -type f -print0 \
+                | xargs -0 -r -n 1 nil diagnostics 2>&1)" || {
+                printf '%s\n' "$output" >&2
+                exit 1
+              }
+              if [ -n "$output" ]; then
+                printf '%s\n' "$output" >&2
+                exit 1
               fi
             '';
           };

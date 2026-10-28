@@ -38,6 +38,7 @@
 
         settings = {
           editorMode = "vim";
+          theme = "dark-ansi";
 
           autoUpdaterStatus = "disabled";
           disableAutoMode = "disable";

@@ -1,5 +1,3 @@
-{ selfLib, ... }:
-
 {
   self.homeModules.grim-slurp-maim-slop.value =
     {
@@ -72,69 +70,9 @@
         ];
         command = ''maim -u -g "$(slop -f "%wx%h+%x+%y")" "$tmp/$name.$type"'';
       };
-
-      grimSource = pkgs.writeShellApplication {
-        name = "grim-source";
-        runtimeInputs = [ pkgs.grim ];
-        text = ''grim -t "png" -'';
-      };
-
-      maimSource = pkgs.writeShellApplication {
-        name = "maim-source";
-        runtimeInputs = [ pkgs.maim ];
-        text = ''maim -u -f "png"'';
-      };
-
-      grimSlurpSource = pkgs.writeShellApplication {
-        name = "grim-slurp-source";
-        runtimeInputs = [
-          pkgs.grim
-          pkgs.slurp
-        ];
-        text = ''grim -g "$(slurp)" -t "png" -'';
-      };
-
-      maimSlopSource = pkgs.writeShellApplication {
-        name = "maim-slop-source";
-        runtimeInputs = [
-          pkgs.maim
-          pkgs.slop
-        ];
-        text = ''maim -u -g "$(slop -f "%wx%h+%x+%y")" -f "png"'';
-      };
     in
     lib.mkMerge [
       (lib.mkIf (hardware.graphics && hardware.wayland) {
-        dot.processing.sources = lib.mkMerge [
-          {
-            grim = {
-              note = "Take a screenshot";
-              tags = [
-                "image"
-                "screenshot"
-                "screen"
-              ];
-              output = "image/png";
-              aliases = [ selfLib.processing.sources.screenshot ];
-              package = grimSource;
-            };
-          }
-          (lib.mkIf hardware.pointing {
-            grim-slurp = {
-              note = "Take a screenshot of a screen region";
-              tags = [
-                "image"
-                "screenshot"
-                "screen"
-                "region"
-              ];
-              output = "image/png";
-              aliases = [ selfLib.processing.sources.regionshot ];
-              package = grimSlurpSource;
-            };
-          })
-        ];
-
         dot.commands.screenshot = lib.mkDefault grimCommand;
         dot.commands.regionshot = lib.mkIf hardware.typing (lib.mkDefault grimSlurpCommand);
 
@@ -144,36 +82,6 @@
         ];
       })
       (lib.mkIf (hardware.graphics && !hardware.wayland) {
-        dot.processing.sources = lib.mkMerge [
-          {
-            maim = {
-              note = "Take a screenshot";
-              tags = [
-                "image"
-                "screenshot"
-                "screen"
-              ];
-              aliases = [ selfLib.processing.sources.screenshot ];
-              output = "image/png";
-              package = maimSource;
-            };
-          }
-          (lib.mkIf hardware.pointing {
-            maim-slop = {
-              note = "Take a screenshot of a screen region";
-              tags = [
-                "image"
-                "screenshot"
-                "screen"
-                "region"
-              ];
-              aliases = [ selfLib.processing.sources.regionshot ];
-              output = "image/png";
-              package = maimSlopSource;
-            };
-          })
-        ];
-
         dot.commands.screenshot = lib.mkDefault maimCommand;
         dot.commands.regionshot = lib.mkIf hardware.pointing (lib.mkDefault maimSlopCommand);
 
