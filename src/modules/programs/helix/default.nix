@@ -1,5 +1,3 @@
-{ selfLib, ... }:
-
 {
   self.homeModules.helix.value =
     {
@@ -15,10 +13,6 @@
       package = config.programs.helix.package;
 
       editor = lib.getExe package;
-
-      terminal = lib.getExe config.dot.programs.terminal.package;
-
-      nodeCommand = if hardware.graphics then ''${terminal} hx "$tmp"'' else ''hx "$tmp"'';
 
       builtinLanguages =
         (builtins.fromTOML (builtins.readFile (pkgs.helix-unwrapped.src + "/languages.toml"))).language;
@@ -40,54 +34,9 @@
             language-servers = language.language-servers or [ ];
           }
         ) rest;
-
-      source = pkgs.writeShellApplication {
-        name = "helix-editor-source";
-        runtimeInputs = [ package ];
-        text = ''
-          tmp="$(mktemp)"
-          trap 'rm -f "$tmp"' EXIT
-          ${nodeCommand} &>/dev/null
-          cat "$tmp"
-        '';
-      };
-
-      node = pkgs.writeShellApplication {
-        name = "helix-editor-node";
-        runtimeInputs = [ package ];
-        text = ''
-          tmp="$(mktemp)"
-          trap 'rm -f "$tmp"' EXIT
-          cat > "$tmp"
-          ${nodeCommand} &>/dev/null
-        '';
-      };
     in
     lib.mkIf hardware.editor {
       dot.programs.editor.package = package;
-
-      dot.processing = {
-        sources.helix-editor = {
-          note = "Write text";
-          tags = [
-            "text"
-            "write"
-          ];
-          output = "text/plain";
-          package = source;
-        };
-
-        nodes.helix-editor = {
-          note = "Edit text";
-          tags = [
-            "text"
-            "editor"
-          ];
-          inputs = selfLib.mime.editor;
-          output = "detect";
-          package = node;
-        };
-      };
 
       programs.helix.enable = true;
 

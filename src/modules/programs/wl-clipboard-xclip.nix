@@ -16,31 +16,6 @@
     in
     lib.mkMerge [
       (lib.mkIf (hardware.graphics && hardware.wayland) {
-        dot.processing = {
-          sources = {
-            wl-clipboard = {
-              note = "Paste contents of the clipboard";
-              tags = [
-                "clipboard"
-                "paste"
-              ];
-              output = "detect";
-              package = pkgs.harasPackages.paste-wl;
-            };
-          };
-          sinks = {
-            wl-clipboard = {
-              note = "Copy contents to the clipboard";
-              tags = [
-                "clipboard"
-                "copy"
-              ];
-              inputs = "any";
-              package = pkgs.harasPackages.copy-wl;
-            };
-          };
-        };
-
         dot.commands.copy = pkgs.harasPackages.copy-wl;
         dot.commands.paste = pkgs.harasPackages.paste-wl;
 
@@ -50,31 +25,6 @@
         ];
       })
       (lib.mkIf (hardware.graphics && !hardware.wayland) {
-        dot.processing = {
-          sources = {
-            xclip = {
-              note = "Paste contents of the clipboard";
-              tags = [
-                "clipboard"
-                "paste"
-              ];
-              output = "detect";
-              package = pkgs.harasPackages.paste-x;
-            };
-          };
-          sinks = {
-            xclip = {
-              note = "Copy contents to the clipboard";
-              tags = [
-                "clipboard"
-                "copy"
-              ];
-              inputs = "any";
-              package = pkgs.harasPackages.copy-x;
-            };
-          };
-        };
-
         dot.commands.copy = pkgs.harasPackages.copy-x;
         dot.commands.paste = pkgs.harasPackages.paste-x;
 

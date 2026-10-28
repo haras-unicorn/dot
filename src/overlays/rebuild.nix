@@ -1,4 +1,4 @@
-{ self, selfLib, ... }:
+{ selfLib, ... }:
 
 {
   self.overlays.overlays.rebuild.value =

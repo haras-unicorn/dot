@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ... }:
 
 {
   self.overlays.overlays.theme.value = final: _prev: {

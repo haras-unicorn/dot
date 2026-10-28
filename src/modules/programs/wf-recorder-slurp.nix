@@ -65,63 +65,8 @@
       wf-recorder = pkgs.wf-recorder;
 
       slurp = pkgs.slurp;
-
-      screenrecordSource = pkgs.writeShellApplication {
-        name = "wf-recorder-source";
-        runtimeInputs = [
-          wf-recorder
-        ];
-        text = ''
-          tmp="$(mktemp)"
-          trap 'rm -f "$tmp"' EXIT
-          wf-recorder -c ${codec} -o "$tmp" &>/dev/null
-          cat "$tmp"
-        '';
-      };
-
-      regionrecordSource = pkgs.writeShellApplication {
-        name = "wf-recorder-slurp-source";
-        runtimeInputs = [
-          wf-recorder
-          slurp
-        ];
-        text = ''
-          tmp="$(mktemp)"
-          trap 'rm -f "$tmp"' EXIT
-          wf-recorder -g "$(slurp)" -c ${codec} -o "$tmp" &>/dev/null
-          cat "$tmp"
-        '';
-      };
     in
     lib.mkIf (hardware.browser && hardware.wayland) {
-      dot.processing.sources = lib.mkMerge [
-        {
-          wf-recorder = {
-            note = "Take a screen recording";
-            tags = [
-              "image"
-              "record"
-              "screen"
-            ];
-            output = "image/png";
-            package = screenrecordSource;
-          };
-        }
-        (lib.mkIf hardware.pointing {
-          wf-recorder-slurp = {
-            note = "Take a screen recording of a screen region";
-            tags = [
-              "image"
-              "record"
-              "screen"
-              "region"
-            ];
-            output = "image/png";
-            package = regionrecordSource;
-          };
-        })
-      ];
-
       dot.commands.screenrecord = lib.mkDefault screenrecordCommand;
       dot.commands.regionrecord = lib.mkIf hardware.typing (lib.mkDefault regionrecordCommand);
 

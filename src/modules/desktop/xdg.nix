@@ -102,31 +102,6 @@
         }) config.dot.mime.apps
       );
 
-      sinks = builtins.listToAttrs (
-        builtins.map (
-          { package, types, ... }:
-          let
-            name = lib.getName package;
-          in
-          {
-            inherit name;
-            value = {
-              note = "Open";
-              inputs = types;
-              package = pkgs.writeShellApplication {
-                name = "${name}-sink";
-                text = ''
-                  tmp="$(mktemp)"
-                  trap 'rm -f "$tmp"' EXIT
-                  cat > "$tmp"
-                  ${lib.getExe package} "$tmp"
-                '';
-              };
-            };
-          }
-        ) config.dot.mime.apps
-      );
-
       mime = lib.mergeAttrsList (
         builtins.map (
           { package, types, ... }:
@@ -314,8 +289,6 @@
           }
         ])
       ];
-
-      dot.processing.sinks = sinks;
 
       home.packages =
         (with pkgs; [

@@ -1,5 +1,3 @@
-{ selfLib, ... }:
-
 {
   self.nixosModules.ydotool.value =
     {
@@ -45,12 +43,5 @@
     in
     lib.mkIf hardware.visual {
       dot.commands.type = type;
-
-      dot.processing.sinks."ydotool type" = {
-        note = "Type text from stdin via ydotool";
-        aliases = [ selfLib.processing.sinks.type ];
-        inputs = [ "text/plain" ];
-        package = type;
-      };
     };
 }

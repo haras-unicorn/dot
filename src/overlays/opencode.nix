@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ... }:
 
 {
   self.overlays.overlays.opencode.value = final: prev: {

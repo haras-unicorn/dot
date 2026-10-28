@@ -1,4 +1,4 @@
-{ self, ... }:
+{ ... }:
 
 {
   self.overlays.overlays.clipboard.value = final: _prev: {

@@ -1,5 +1,4 @@
 {
-  self,
   selfLib,
   lib,
   inputs,
@@ -53,7 +52,7 @@
       sshDir = "${dataDir}/.ssh";
       planDb = "${dataDir}/plan.db";
       zeroclawConfigFile = "${dataDir}/config.toml";
-      sopRunStateDir = "${dataDir}/sop";
+      # sopRunStateDir = "${dataDir}/sop";
       matrixChannelName = "morgan_fetch";
       matrixChannel = "matrix.morgan_fetch";
 

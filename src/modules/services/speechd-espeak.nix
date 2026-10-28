@@ -50,28 +50,4 @@
         environment.systemPackages = [ espeak ];
       };
     };
-
-  self.homeModules.speechd-espeak.value =
-    {
-      osConfig,
-      lib,
-      ...
-    }:
-    let
-      hardware = osConfig.dot.hardware;
-    in
-    lib.mkIf hardware.sound {
-      dot.processing.nodes.espeak = {
-        note = "Turn text into speech";
-        tags = [
-          "tts"
-          "text-to-speech"
-          "text"
-          "speech"
-        ];
-        inputs = [ "text/plain" ];
-        output = "audio/x-wav";
-        package = osConfig.dot.espeak.processor;
-      };
-    };
 }

@@ -97,9 +97,5 @@
       image = "image/png";
       text = "text/plain";
     };
-
-    toolbelt = {
-      audio = "audio/x-raw";
-    };
   };
 }
