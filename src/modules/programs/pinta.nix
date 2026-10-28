@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.homeModules.pinta =
+  self.homeModules.pinta.value =
     {
       osConfig,
       lib,

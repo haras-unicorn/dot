@@ -2,10 +2,8 @@
   description = "My NixOS configurations.";
 
   inputs = {
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
-
-    import-tree.url = "github:vic/import-tree";
+    haraspkgs.url = "github:haras-unicorn/haraspkgs/v1.1.2";
+    haraspkgs.inputs.nixpkgs.follows = "nixpkgs";
 
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -50,16 +48,20 @@
     septabee.url = "github:Ap6661/septabee-flake";
     septabee.inputs.nixpkgs.follows = "nixpkgs";
 
-    # NOTE: https://github.com/haras-unicorn/mcp-nix/blob/v0.1.4/README.md
-    mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.4";
+    # NOTE: https://github.com/haras-unicorn/corm/blob/main/README.md
+    corm.url = "github:haras-unicorn/corm";
+    corm.inputs.nixpkgs.follows = "nixpkgs";
 
-    # NOTE: https://github.com/haras-unicorn/mcp-rss/blob/v0.2.0/README.md
-    mcp-rss.url = "github:haras-unicorn/mcp-rss/refs/tags/v0.2.0";
+    mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.4";
+    mcp-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    { flake-parts, import-tree, ... }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } (import-tree ./src);
+    { haraspkgs, ... }@inputs:
+    haraspkgs.lib.makeFlake {
+      inherit inputs;
+      modules = [ ./src ];
+    };
 
   nixConfig = {
     extra-substituters = [

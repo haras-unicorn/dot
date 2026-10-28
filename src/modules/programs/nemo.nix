@@ -1,5 +1,5 @@
 {
-  machines.homeModules.nemo =
+  self.homeModules.nemo.value =
     {
       pkgs,
       lib,

@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  machines.nixosModules.septabee =
+  self.nixosModules.septabee.value =
     { config, lib, ... }:
     let
       hardware = config.dot.hardware;

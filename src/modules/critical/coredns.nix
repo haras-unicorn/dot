@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.coredns =
+  self.nixosModules.coredns.value =
     { lib, config, ... }:
     let
       hardware = config.dot.hardware;

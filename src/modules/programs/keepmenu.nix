@@ -1,5 +1,5 @@
 {
-  machines.homeModules.keepmenu =
+  self.homeModules.keepmenu.value =
     {
       pkgs,
       lib,

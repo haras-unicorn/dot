@@ -1,7 +1,7 @@
 # FIXME: https://github.com/dbeaver/dbeaver/issues/34528#issuecomment-2412519650
 
 {
-  machines.homeModules.dbeaver =
+  self.homeModules.dbeaver.value =
     {
       pkgs,
       lib,

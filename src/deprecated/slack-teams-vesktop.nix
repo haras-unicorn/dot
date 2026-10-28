@@ -1,12 +1,5 @@
 {
-  self.lib.deprecated.nixosModules.slack-teams-vesktop =
-    { lib, config, ... }:
-    let
-      hardware = config.dot.hardware;
-    in
-    lib.mkIf hardware.browser {
-      dot.nixpkgs.allowUnfreePackageNames = [ "slack" ];
-    };
+  self.nixpkgs.config.allowUnfreePackageNames = [ "slack" ];
 
   self.lib.deprecated.homeModules.slack-teams-vesktop =
     {

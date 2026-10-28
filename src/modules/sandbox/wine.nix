@@ -1,5 +1,5 @@
 {
-  machines.homeModules.wine =
+  self.homeModules.wine.value =
     {
       pkgs,
       config,

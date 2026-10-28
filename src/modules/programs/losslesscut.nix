@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.homeModules.losslesscut =
+  self.homeModules.losslesscut.value =
     {
       osConfig,
       lib,

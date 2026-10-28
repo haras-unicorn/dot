@@ -2,7 +2,7 @@
 # its hardcoded in a lot of modules and a lot of the time
 # it is not necessary to configure services after/before it
 {
-  machines.homeModules.tray =
+  self.homeModules.tray.value =
     {
       lib,
       osConfig,

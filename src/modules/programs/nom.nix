@@ -1,5 +1,5 @@
 {
-  machines.homeModules.nom =
+  self.homeModules.nom.value =
     {
       config,
       lib,

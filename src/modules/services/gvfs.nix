@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.gvfs =
+  self.nixosModules.gvfs.value =
     {
       lib,
       config,

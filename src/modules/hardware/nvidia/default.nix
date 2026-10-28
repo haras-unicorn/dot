@@ -1,9 +1,21 @@
+{ lib, ... }:
+
 # TODO: hardware.fancontrol.enable
 # TODO: hardware.brillo.enable
 # FIXME: https://github.com/NixOS/nixpkgs/issues/306276
 
 {
-  machines.nixosModules.hardware-nvidia =
+  self.nixpkgs.config.allowUnfreePredicate = [
+    (
+      package:
+      lib.getName package == "nvidia-x11"
+      || lib.getName package == "nvidia-settings"
+      || lib.getName package == "cuda-merged"
+      || package ? cudaMajorVersion
+    )
+  ];
+
+  self.nixosModules.hardware-nvidia.value =
     {
       config,
       pkgs,
@@ -19,26 +31,10 @@
       cuda = default.version == "latest" || default.version == "production";
     in
     lib.mkIf (default.type == "nvidia") {
-      # NOTE: even without cuda it still asks for all these
-      dot.nixpkgs.allowUnfreePredicates = [
-        (
-          package:
-          lib.getName package == "nvidia-x11"
-          || lib.getName package == "nvidia-settings"
-          || lib.getName package == "cuda-merged"
-          || package ? cudaMajorVersion
-        )
-      ];
 
       dot.hardware.cuda = cuda;
 
       nixpkgs.config.nvidia.acceptLicense = true;
-
-      # NOTE: https://applicative.systems/nixos-test-driver-manual/tutorials/cuda-tests
-      programs.nix-required-mounts = {
-        enable = true;
-        presets.nvidia-gpu.enable = true;
-      };
 
       # NOTE: needed for early splash
       boot.initrd.availableKernelModules = [

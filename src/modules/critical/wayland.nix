@@ -1,5 +1,5 @@
 {
-  machines.homeModules.wayland =
+  self.homeModules.wayland.value =
     {
       lib,
       osConfig,

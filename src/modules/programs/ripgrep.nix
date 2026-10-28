@@ -1,5 +1,5 @@
 {
-  machines.homeModules.ripgrep =
+  self.homeModules.ripgrep.value =
     { lib, config, ... }:
     {
       dot.programs.shell.aliases = {

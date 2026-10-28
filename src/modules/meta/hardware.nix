@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.hardware =
+  self.nixosModules.hardware.value =
     { lib, config, ... }:
     let
       detection = config.hardware.facter.detection;

@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.greetd =
+  self.nixosModules.greetd.value =
     {
       config,
       lib,

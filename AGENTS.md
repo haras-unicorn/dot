@@ -1,42 +1,86 @@
 # AGENTS.md
 
-NixOS configuration flake built with `flake-parts` and `import-tree` over the
-`src` directory. Every Nix module in the flake is a `flake-parts` module.
+NixOS configuration flake built with `haraspkgs.lib.makeFlake` over the `src`
+directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
 
 ## Structure
 
-- `src/` — the flake module tree; `flake.nix` imports it via `import-tree`
+- `src/` — the flake module tree; `flake.nix` passes it to `makeFlake`
   - `systems.nix` — supported systems (`x86_64-linux`, `aarch64-linux`)
-  - `machines.nix` — machine wiring: every `machines.machines.<name>` entry
-    becomes a `nixosConfiguration` with `networking.hostName` set from the
-    machine name; the nixos-facter report at `assets/hardware/<name>.json` is
-    used when present
-  - `machines/` — one file per machine
+  - `namespace.nix` — sets the haraspkgs overlay namespace to `harasPackages`
+  - `machines/` — one file per machine; each registers a
+    `self.nixosConfigurations.<name>` with `flake = true`
   - `modules/` — shared NixOS and home-manager modules, grouped by category:
     - `meta/` — defines the `dot.*` option interface the rest consumes
     - `critical/`, `desktop/`, `hardware/`, `nix/`, `programs/`, `sandbox/`,
       `services/`, `ai/` — module implementations
-    - `deprecated/` — retired modules kept for reference
+    - `hardware/facter.nix` — shared facter report and `nixpkgs.system` wiring
+  - `deprecated/` — retired modules kept for reference; they register under
+    `self.lib.deprecated.*` and are inert unless imported explicitly
   - `lib/` — `self.lib` helpers shared across the flake
-  - `dev/` — the development shell and tooling (see below)
+  - `overlays/` — standalone packages, general wrappers, and overlays; each
+    registers `self.overlays.overlays.<name>.value = final: prev: { … }` and is
+    available as `pkgs.harasPackages.<name>` (namespace from `namespace.nix`)
+  - `modules/ai/` — AI tooling: OpenCode, Claude Code, and their shared
+    `AGENTS.md`
+  - `dev/` — `shell.nix` configures the haraspkgs dev shell and generates
+    repository files (see below)
 - `assets/` — static files referenced by modules (hardware reports, wallpapers,
   presets)
-- `.github/workflows/check.yaml` — CI, runs `nix flake check` on pull requests
+- `.github/workflows/` — generated mirror for `check`; CI runs `nix flake check`
+  on pull requests
 
-Modules register themselves under `machines.nixosModules.<name>` or
-`machines.homeModules.<name>`: `meta/` files declare the `dot.*` options,
+Modules register themselves under `self.nixosModules.<name>.value` or
+`self.homeModules.<name>.value`: `meta/` files declare the `dot.*` options,
 everything else consumes them and defines the concrete NixOS or home-manager
-configuration.
+configuration. Every `self.nixosModules.*` entry is included automatically, and
+every `self.homeModules.*` entry becomes a home-manager shared module.
+`deprecated/` modules register under `self.lib.deprecated.*` and stay inert
+until imported explicitly.
+
+### Packages and overlays
+
+Overlays register `self.overlays.overlays.<name>.value`. With the default
+`self = true` the result is available as `pkgs.harasPackages.<name>` in NixOS,
+home-manager, and the dev shell, and its derivations appear in
+`packages.<system>.<name>`. Set `flake = true` when the overlay itself should
+also be exported as `flake.overlays.<name>`.
+
+Standalone packages, general-purpose tools, and reusable wrappers live in
+`src/overlays/` (for example `anythingllm`, `zeroclaw`, `utils`, and
+`clipboard`). A wrapper that depends on one module's `config`, a host device, a
+service unit, or a session stays a local binding in that module.
+
+Put something in an overlay when it is a general-purpose tool or an override of
+an existing package that other modules or the user could want globally, and it
+does not depend on one module's options. Keep it in the owning module when it
+depends on that module's `config`, a host device, a service unit, a compositor
+or session, a per-instance data directory, or when it only plugs that module's
+processing graph. Overlay values are evaluated outside the NixOS and
+home-manager module system, so they cannot read `config`; pass what they need as
+arguments.
 
 ## Development
 
 Enter the development shell with `nix develop` (or `direnv` via `.envrc`). It
-provides the `dev` command (a Nushell CLI; `dev -h` lists everything):
+provides the `dev` command (a bash CLI from haraspkgs; `dev -h` lists
+everything):
 
-- `dev format` — format the repository (`prettier` + `nixfmt`)
-- `dev lint` — lint the repository (`prettier`, `nixfmt`, `markdownlint`,
-  `cspell`, `markdown-link-check`); CI runs this via `nix flake check`
+- `dev format` — format the repository with treefmt (`nixfmt` + `prettier`)
+- `dev check` — run cspell, markdownlint, and markdown-link-check in the
+  checkout
+- `nix flake check` — build the checks and format derivation (`default-format`,
+  `default-cspell`, `default-markdownlint`, `default-markdown-link-check`,
+  `default-workflows`); CI runs this on pull requests. Markdown link checks are
+  skipped inside the Nix build sandbox.
 - `dev rebuild report|switch|boot` — `nixos-rebuild` for the current host
   (hostname read from `/etc/hostname`)
 - `dev detect` — run `nixos-facter` and save the hardware report to
   `assets/hardware/<hostname>.json`
+
+`.gitignore`, `.gitattributes`, `.github/workflows/*.yaml`, and `LICENSE.md` are
+generated by the dev shell. Commit their mirrors; the dev module is the source
+of truth. `.envrc` is committed and is not regenerated on shell entry. The
+CSpell, EditorConfig, and Prettier-ignore configs are generated in the Nix store
+and bound into the sandboxed tools, so they are not committed. The `hx` wrapper
+receives a generated `.helix/languages.toml`.

@@ -1,7 +1,7 @@
 # TODO: prompt after starship like nushell
 
 {
-  machines.nixosModules.bash =
+  self.nixosModules.bash.value =
     {
       lib,
       pkgs,
@@ -22,7 +22,7 @@
       environment.enableAllTerminfo = true;
     };
 
-  machines.homeModules.bash =
+  self.homeModules.bash.value =
     {
       pkgs,
       lib,

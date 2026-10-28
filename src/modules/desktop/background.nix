@@ -1,7 +1,7 @@
 { self, ... }:
 
 {
-  machines.nixosModules.background =
+  self.nixosModules.background.value =
     {
       lib,
       config,

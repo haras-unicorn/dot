@@ -2,7 +2,7 @@
 # theres a lot of environment variables...
 
 {
-  machines.homeModules.gum =
+  self.homeModules.gum.value =
     {
       lib,
       osConfig,

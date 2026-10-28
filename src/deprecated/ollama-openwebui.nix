@@ -1,14 +1,7 @@
 { selfLib, ... }:
 
 {
-  self.lib.deprecated.nixosModules.ollama-openwebui =
-    { lib, config, ... }:
-    let
-      cuda = config.dot.hardware.cuda;
-    in
-    lib.mkIf cuda {
-      dot.nixpkgs.allowUnfreePackageNames = [ "open-webui" ];
-    };
+  self.nixpkgs.config.allowUnfreePackageNames = [ "open-webui" ];
 
   self.lib.deprecated.homeModules.ollama-openwebui =
     {

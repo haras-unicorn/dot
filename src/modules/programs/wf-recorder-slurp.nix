@@ -1,5 +1,5 @@
 {
-  machines.homeModules.wf-recorder-slurp =
+  self.homeModules.wf-recorder-slurp.value =
     {
       osConfig,
       config,

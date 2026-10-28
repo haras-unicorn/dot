@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.polkit =
+  self.nixosModules.polkit.value =
     {
       pkgs,
       config,
@@ -15,7 +15,7 @@
       };
     };
 
-  machines.homeModules.polkit =
+  self.homeModules.polkit.value =
     {
       pkgs,
       osConfig,

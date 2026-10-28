@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.networkmanager =
+  self.nixosModules.networkmanager.value =
     { lib, config, ... }:
     let
       hardware = config.dot.hardware;
@@ -14,7 +14,7 @@
       programs.nm-applet.enable = lib.mkIf hardware.graphics true;
     };
 
-  machines.homeModules.networkmanager =
+  self.homeModules.networkmanager.value =
     {
       pkgs,
       lib,

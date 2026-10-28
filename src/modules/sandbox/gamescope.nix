@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.gamescope =
+  self.nixosModules.gamescope.value =
     { config, lib, ... }:
     let
       hardware = config.dot.hardware;
@@ -15,7 +15,7 @@
       ];
     };
 
-  machines.homeModules.gamescope =
+  self.homeModules.gamescope.value =
     {
       osConfig,
       lib,

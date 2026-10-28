@@ -1,7 +1,7 @@
 # NOTE: ferdium outlook - Self Hosted at https://outlook.office.com/mail/
 # TODO: use network isolation when adding VPN
 {
-  machines.homeModules.ferdium =
+  self.homeModules.ferdium.value =
     {
       config,
       osConfig,

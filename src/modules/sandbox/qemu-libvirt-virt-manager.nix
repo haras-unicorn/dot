@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.qemu-libvirt-quickemu =
+  self.nixosModules.qemu-libvirt-quickemu.value =
     {
       pkgs,
       config,

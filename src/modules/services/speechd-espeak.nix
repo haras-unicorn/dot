@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.speechd-espeak =
+  self.nixosModules.speechd-espeak.value =
     {
       pkgs,
       config,
@@ -51,7 +51,7 @@
       };
     };
 
-  machines.homeModules.speechd-espeak =
+  self.homeModules.speechd-espeak.value =
     {
       osConfig,
       lib,

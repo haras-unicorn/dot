@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.ananicy =
+  self.nixosModules.ananicy.value =
     { pkgs, ... }:
     {
       config = {

@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.nixosModules.ydotool =
+  self.nixosModules.ydotool.value =
     {
       config,
       lib,
@@ -21,7 +21,7 @@
       ];
     };
 
-  machines.homeModules.ydotool =
+  self.homeModules.ydotool.value =
     {
       config,
       osConfig,

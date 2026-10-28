@@ -3,7 +3,7 @@ let
   address = "127.0.0.1:${builtins.toString port}";
 in
 {
-  machines.nixosModules.syncthing =
+  self.nixosModules.syncthing.value =
     {
       lib,
       config,
@@ -19,7 +19,7 @@ in
       ];
     };
 
-  machines.homeModules.syncthing =
+  self.homeModules.syncthing.value =
     {
       lib,
       config,

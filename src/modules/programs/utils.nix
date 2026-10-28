@@ -1,75 +1,10 @@
 {
-  machines.homeModules.utils =
+  self.homeModules.utils.value =
     {
       pkgs,
-      lib,
-      config,
       ...
     }:
     let
-      run-disowned = pkgs.writeShellApplication {
-        name = "run-disowned";
-        text = ''
-          "$@" &>/dev/null & disown %-
-        '';
-      };
-
-      nix-run-nixpkgs = pkgs.writeShellApplication {
-        name = "nix-run-nixpkgs";
-        text = ''
-          name="$1"
-          shift
-          exec nix run "nixpkgs#$name" -- "$@"
-        '';
-      };
-
-      nix-run-unstable = pkgs.writeShellApplication {
-        name = "nruu";
-        text = ''
-          name="$1"
-          shift
-          exec nix run --impure "github:nixos/nixpkgs/nixos-unstable#$name" -- "$@"
-        '';
-      };
-
-      nix-unfree = pkgs.writeShellApplication {
-        name = "nix-unfree";
-        text = ''
-          export NIXPKGS_ALLOW_UNFREE=1
-          exec "$@"
-        '';
-      };
-
-      nix-fast = pkgs.writeShellApplication {
-        name = "nix-fast";
-        text = ''
-          export NIX_CONFIG="''${NIX_CONFIG:-}
-          max-jobs = auto
-          cores = 0"
-          exec "$@"
-        '';
-      };
-
-      nix-trace = pkgs.writeShellApplication {
-        name = "nix-trace";
-        text = ''
-          export NIX_CONFIG="''${NIX_CONFIG:-}
-          show-trace = true"
-          exec "$@"
-        '';
-      };
-
-      dd-if-of = pkgs.writeShellApplication {
-        name = "dd-if-of";
-        text = ''
-          if="$1"
-          of="$2"
-          shift
-          shift
-          exec dd "if=$if" "of=$of" bs=4M conv=sync,noerror oflag=direct status=progress "$@"
-        '';
-      };
-
       ssh-test-container = pkgs.writeShellApplication {
         name = "ssh-test-container";
         runtimeInputs = [
@@ -97,13 +32,13 @@
       };
 
       home.packages = [
-        run-disowned
-        nix-run-nixpkgs
-        nix-run-unstable
-        nix-unfree
-        nix-fast
-        nix-trace
-        dd-if-of
+        pkgs.harasPackages.run-disowned
+        pkgs.harasPackages.nix-run-nixpkgs
+        pkgs.harasPackages.nix-run-unstable
+        pkgs.harasPackages.nix-unfree
+        pkgs.harasPackages.nix-fast
+        pkgs.harasPackages.nix-trace
+        pkgs.harasPackages.dd-if-of
         ssh-test-container
         pkgs.htop
         pkgs.duf

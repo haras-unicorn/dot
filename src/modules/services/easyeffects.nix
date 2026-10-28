@@ -1,5 +1,5 @@
 {
-  machines.homeModules.easyeffects =
+  self.homeModules.easyeffects.value =
     {
       pkgs,
       lib,

@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.systemd = {
+  self.nixosModules.systemd.value = {
     services.journald.extraConfig = ''
       SystemMaxUse=750M
       SystemMaxFileSize=100M
@@ -7,7 +7,7 @@
     '';
   };
 
-  machines.homeModules.systemd =
+  self.homeModules.systemd.value =
     { lib, pkgs, ... }:
     {
       dot.programs.shell.aliases = {

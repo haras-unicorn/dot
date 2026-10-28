@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.homeModules.zed =
+  self.homeModules.zed.value =
     {
       osConfig,
       config,

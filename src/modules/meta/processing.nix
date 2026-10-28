@@ -1,5 +1,5 @@
 {
-  machines.homeModules.processing =
+  self.homeModules.processing.value =
     {
       lib,
       ...

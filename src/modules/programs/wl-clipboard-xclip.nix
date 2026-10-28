@@ -1,7 +1,7 @@
 # TODO: ensure -t and -l behavior for commands
 
 {
-  machines.homeModules.wl-clipboard-xclip =
+  self.homeModules.wl-clipboard-xclip.value =
     {
       pkgs,
       lib,
@@ -13,46 +13,6 @@
 
       wl-clipboard = pkgs.wl-clipboard;
       xclip = pkgs.xclip;
-
-      copyWayland = pkgs.writeShellApplication {
-        name = "copy-wlx";
-        runtimeInputs = [
-          wl-clipboard
-          xclip
-        ];
-        text = ''
-          tmp="$(mktemp)"
-          trap 'rm -f "$tmp"' EXIT
-          cat > "$tmp"
-          wl-copy "$@" < "$tmp"
-          xclip -sel clip "$@" < "$tmp"
-        '';
-      };
-
-      pasteWayland = pkgs.writeShellApplication {
-        name = "paste-wlx";
-        runtimeInputs = [ wl-clipboard ];
-        text = ''
-          wl-paste "$@" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
-        '';
-      };
-
-      copyXServer = pkgs.writeShellApplication {
-        name = "copy-wlx";
-        runtimeInputs = [ xclip ];
-        text = ''
-          cat | xclip -sel clip "$@"
-          printf "copy done" 1>&2
-        '';
-      };
-
-      pasteXServer = pkgs.writeShellApplication {
-        name = "paste-wlx";
-        runtimeInputs = [ xclip ];
-        text = ''
-          xclip -o -sel clip "$@" | sed -z 's/^[[:space:]]*//; s/[[:space:]]*$//'
-        '';
-      };
     in
     lib.mkMerge [
       (lib.mkIf (hardware.graphics && hardware.wayland) {
@@ -65,7 +25,7 @@
                 "paste"
               ];
               output = "detect";
-              package = pasteWayland;
+              package = pkgs.harasPackages.paste-wl;
             };
           };
           sinks = {
@@ -76,13 +36,13 @@
                 "copy"
               ];
               inputs = "any";
-              package = copyWayland;
+              package = pkgs.harasPackages.copy-wl;
             };
           };
         };
 
-        dot.commands.copy = copyWayland;
-        dot.commands.paste = pasteWayland;
+        dot.commands.copy = pkgs.harasPackages.copy-wl;
+        dot.commands.paste = pkgs.harasPackages.paste-wl;
 
         home.packages = [
           wl-clipboard
@@ -99,7 +59,7 @@
                 "paste"
               ];
               output = "detect";
-              package = pasteXServer;
+              package = pkgs.harasPackages.paste-x;
             };
           };
           sinks = {
@@ -110,13 +70,13 @@
                 "copy"
               ];
               inputs = "any";
-              package = copyXServer;
+              package = pkgs.harasPackages.copy-x;
             };
           };
         };
 
-        dot.commands.copy = copyXServer;
-        dot.commands.paste = pasteXServer;
+        dot.commands.copy = pkgs.harasPackages.copy-x;
+        dot.commands.paste = pkgs.harasPackages.paste-x;
 
         home.packages = [
           xclip

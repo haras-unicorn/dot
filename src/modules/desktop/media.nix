@@ -1,7 +1,7 @@
 { selfLib, ... }:
 
 {
-  machines.homeModules.media =
+  self.homeModules.media.value =
     {
       pkgs,
       lib,

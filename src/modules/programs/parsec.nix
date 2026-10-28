@@ -1,14 +1,7 @@
 {
-  machines.nixosModules.ollama-openwebui =
-    { lib, config, ... }:
-    let
-      hardware = config.dot.hardware;
-    in
-    lib.mkIf hardware.browser {
-      dot.nixpkgs.allowUnfreePackageNames = [ "parsec-bin" ];
-    };
+  self.nixpkgs.config.allowUnfreePackageNames = [ "parsec-bin" ];
 
-  machines.homeModules.parsec =
+  self.homeModules.parsec.value =
     {
       pkgs,
       lib,

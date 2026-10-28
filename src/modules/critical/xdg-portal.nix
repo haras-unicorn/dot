@@ -3,7 +3,7 @@
 # and it is totally safe to do it on both ends since the
 # home-manager config will just override the nixos configuration
 {
-  machines.nixosModules.xdg-portal =
+  self.nixosModules.xdg-portal.value =
     {
       lib,
       pkgs,
@@ -34,7 +34,7 @@
       };
     };
 
-  machines.homeModules.xdg-portal =
+  self.homeModules.xdg-portal.value =
     {
       pkgs,
       lib,

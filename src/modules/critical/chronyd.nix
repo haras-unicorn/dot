@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.chronyd =
+  self.nixosModules.chronyd.value =
     { lib, config, ... }:
     let
       hardware = config.dot.hardware;

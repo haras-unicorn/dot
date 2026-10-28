@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.piper =
+  self.nixosModules.piper.value =
     {
       pkgs,
       lib,
@@ -38,11 +38,6 @@
             url = "${url}/${full}.onnx.json";
             sha256 = voice.configHash;
           };
-          sampleRate =
-            let
-              json = builtins.fromJSON (builtins.readFile config);
-            in
-            json.audio.sample_rate;
           format = "s16";
           code = builtins.replaceStrings [ "_" ] [ "-" ] voice.dialect;
         };
@@ -55,6 +50,7 @@
           dialect = "en_US";
           name = "amy";
           quality = "low";
+          sampleRate = 16000;
           type = "FEMALE1";
         };
       };
@@ -122,36 +118,13 @@
         dot.piper.node = node;
         dot.piper.sampleRate = defaultVoice.sampleRate;
 
-        dot.ai.models = builtins.listToAttrs (
-          builtins.map (
-            {
-              model,
-              config,
-              ...
-            }:
-            let
-              json = builtins.fromJSON (builtins.readFile config);
-            in
-            {
-              name = "piper-${json.dataset}";
-              value = {
-                family = "piper";
-                files = [
-                  model
-                  config
-                ];
-              };
-            }
-          ) (builtins.attrValues voices)
-        );
-
         environment.systemPackages = [
           package
         ];
       };
     };
 
-  machines.homeModules.piper =
+  self.homeModules.piper.value =
     {
       lib,
       osConfig,

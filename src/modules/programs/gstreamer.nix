@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.gstreamer =
+  self.nixosModules.gstreamer.value =
     {
       pkgs,
       config,

@@ -1,5 +1,5 @@
 {
-  machines.homeModules.mommy =
+  self.homeModules.mommy.value =
     {
       config,
       lib,

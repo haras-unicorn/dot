@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.libinput =
+  self.nixosModules.libinput.value =
     {
       config,
       lib,

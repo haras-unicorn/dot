@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.commands =
+  self.nixosModules.commands.value =
     {
       lib,
       ...
@@ -54,7 +54,7 @@
       };
     };
 
-  machines.homeModules.commands =
+  self.homeModules.commands.value =
     { lib, ... }:
     {
       options.dot = {

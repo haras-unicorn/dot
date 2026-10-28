@@ -1,5 +1,5 @@
 {
-  machines.homeModules.kando =
+  self.homeModules.kando.value =
     {
       pkgs,
       lib,

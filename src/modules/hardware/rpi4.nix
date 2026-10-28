@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.rpi4 =
+  self.nixosModules.rpi4.value =
     {
       config,
       lib,

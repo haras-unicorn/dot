@@ -1,5 +1,5 @@
 {
-  machines.homeModules.git-delta-lazygit =
+  self.homeModules.git-delta-lazygit.value =
     {
       config,
       lib,

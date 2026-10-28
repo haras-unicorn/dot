@@ -1,13 +1,13 @@
 # NOTE: https://github.com/nix-community/home-manager/issues/3113
 
 {
-  machines.nixosModules.dconf =
+  self.nixosModules.dconf.value =
     { pkgs, ... }:
     {
       programs.dconf.enable = true;
     };
 
-  machines.homeModules.dconf =
+  self.homeModules.dconf.value =
     { pkgs, ... }:
     {
       home.packages = [ pkgs.dconf ];

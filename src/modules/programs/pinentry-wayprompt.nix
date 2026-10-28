@@ -1,5 +1,5 @@
 {
-  machines.nixosModules.pinentry-wayprompt =
+  self.nixosModules.pinentry-wayprompt.value =
     {
       config,
       lib,
@@ -32,7 +32,7 @@
       };
     };
 
-  machines.homeModules.pinentry-wayprompt =
+  self.homeModules.pinentry-wayprompt.value =
     {
       osConfig,
       pkgs,

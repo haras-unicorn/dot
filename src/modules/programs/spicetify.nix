@@ -4,16 +4,9 @@
 # on login it will display a black window
 
 {
-  machines.nixosModules.spicetify =
-    { lib, config, ... }:
-    let
-      hardware = config.dot.hardware;
-    in
-    lib.mkIf hardware.gaming {
-      dot.nixpkgs.allowUnfreePackageNames = [ "spotify" ];
-    };
+  self.nixpkgs.config.allowUnfreePackageNames = [ "spotify" ];
 
-  machines.homeModules.spicetify =
+  self.homeModules.spicetify.value =
     {
       lib,
       osConfig,

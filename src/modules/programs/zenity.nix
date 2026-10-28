@@ -1,5 +1,5 @@
 {
-  machines.homeModules.zenity =
+  self.homeModules.zenity.value =
     {
       lib,
       osConfig,
