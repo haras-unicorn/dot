@@ -96,9 +96,14 @@
         "/dev/nvidia-uvm-tools"
       ];
 
+      # NOTE: overlay mounts cannot nest in this sandbox, so haraspkgs tools
+      # copy their generated files into the tree instead
       nixSandbox = builtins.concatStringsSep " " (
         bwrapBase
         ++ [
+          "--setenv"
+          "HARASPKGS_MATERIALIZE"
+          "1"
           "--bind"
           "@ROOT@"
           "@ROOT@"
