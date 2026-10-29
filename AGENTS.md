@@ -17,9 +17,11 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
     - `critical/`, `desktop/`, `hardware/`, `nix/`, `programs/`, `sandbox/`,
       `services/` — module implementations
     - `hardware/facter.nix` — shared facter report and `nixpkgs.system` wiring
-    - `ai/` — Claude Code and OpenCode home modules, the `AGENTS.md` both load
-      as their global context, and supporting AI services (`corm`, `librechat`,
-      `piper`, `tesseract`, `whisper-cpp`)
+    - `ai/` — Claude Code and OpenCode home modules, `mcps` (the shared
+      `programs.mcp` registry both consume, with the sandboxed git, filesystem,
+      nix, and memory MCP servers and the `mcp-memory` user service), the
+      `AGENTS.md` both load as their global context, and supporting AI services
+      (`corm`, `librechat`, `piper`, `tesseract`, `whisper-cpp`)
   - `deprecated/` — retired modules kept for reference; they register under
     `self.lib.deprecated.*` and are inert unless imported explicitly
   - `lib/` — `self.lib` helpers shared across the flake
@@ -51,11 +53,12 @@ also be exported as `flake.overlays.<name>`.
 
 Standalone packages, general-purpose tools, and reusable wrappers live in
 `src/overlays/` (for example `anythingllm`, `zeroclaw`, `utils`, `clipboard`,
-and `ai-mcp`, which builds the git, filesystem, and nix MCP server definitions
-that both AI home modules consume). Overlay values are evaluated outside the
-NixOS and home-manager module system, so they cannot read `config`; they take
-what they need as arguments. A wrapper that depends on one module's `config`, a
-host device, a service unit, or a session stays a local binding in that module.
+and `mcp-memory-service`, which packages the memory MCP server with its offline
+embedding and rerank models). Overlay values are evaluated outside the NixOS and
+home-manager module system, so they cannot read `config`; they take what they
+need as arguments. A wrapper that depends on one module's `config`, a host
+device, a service unit, or a session stays a local binding in that module, like
+the MCP server sandboxes in `modules/ai/mcps.nix`.
 
 ## Development
 

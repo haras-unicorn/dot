@@ -6,19 +6,12 @@
       pkgs,
       lib,
       osConfig,
-      config,
       ...
     }:
     let
       hardware = osConfig.dot.hardware;
 
       theme = "stylix";
-
-      mcp = pkgs.harasPackages.ai-mcp {
-        inherit lib hardware;
-        rootRef = "{env:DOT_MCP_ROOT}";
-        sshDir = "${config.home.homeDirectory}/.cache/dot/git-mcp";
-      };
 
       opencodeLocal = pkgs.writeShellApplication {
         name = "opencode-local";
@@ -64,6 +57,8 @@
         enable = true;
 
         package = pkgs.harasPackages.opencode;
+
+        enableMcpIntegration = true;
 
         tui = {
           theme = theme;
@@ -130,26 +125,6 @@
             git_git_push = false;
             git_git_tag = false;
             git_git_remote = false;
-          };
-          mcp = {
-            git = {
-              type = "local";
-              command = mcp.git.command;
-              enabled = true;
-              environment = mcp.git.environment;
-            };
-            filesystem = {
-              type = "local";
-              command = mcp.filesystem.command;
-              enabled = true;
-              environment = mcp.filesystem.environment;
-            };
-            nix = {
-              type = "local";
-              command = mcp.nix.command;
-              enabled = true;
-              environment = mcp.nix.environment;
-            };
           };
         };
 

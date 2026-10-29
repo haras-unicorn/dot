@@ -130,7 +130,10 @@
               zenity zeroclaw zeroclawlabs zipfs zlibrary zram editorconfig
               prettierignore cspell markdownlint markdown-link-check hx shfmt tidy
               nixos-rebuild MEMLOCK arstechnica autoupdater bleepingcomputer
-              handback notif unsandboxed wakeup unreviewed
+              handback notif unsandboxed wakeup unreviewed mcps rerank reranking
+              RERANK clearenv streamable pyproject pypa scikit aiofiles aiohttp
+              aiosqlite apscheduler authlib certifi chardet fastapi httpx numpy
+              pyjwt pypdf pyyaml starlette uvicorn zeroconf onnxruntime testkey
             ''
           )
         );

@@ -3,7 +3,6 @@
 
   self.homeModules.claude-code.value =
     {
-      pkgs,
       unstablePkgs,
       lib,
       osConfig,
@@ -12,19 +11,6 @@
     }:
     let
       hardware = osConfig.dot.hardware;
-
-      mcp = pkgs.harasPackages.ai-mcp {
-        inherit lib hardware;
-        rootRef = "\${CLAUDE_PROJECT_DIR}";
-        sshDir = "${config.home.homeDirectory}/.cache/dot/git-mcp";
-      };
-
-      mcpServers = lib.mapAttrs (_: server: {
-        type = "stdio";
-        command = builtins.head server.command;
-        args = builtins.tail server.command;
-        env = server.environment;
-      }) mcp;
     in
     lib.mkIf hardware.editor {
       programs.claude-code = {
@@ -49,7 +35,7 @@
             but has no schema, load it with `ToolSearch` before calling it.
         '';
 
-        mcpServers = mcpServers;
+        enableMcpIntegration = true;
 
         settings = {
           editorMode = "vim";
@@ -127,7 +113,7 @@
               "WaitForMcpServers"
             ]
             ++ builtins.map (mcp: "mcp__plugin_claude-code-home-manager_${mcp}__*") (
-              builtins.attrNames mcpServers
+              builtins.attrNames config.programs.mcp.servers
             );
 
             deny = [
