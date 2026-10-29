@@ -130,7 +130,7 @@
               zenity zeroclaw zeroclawlabs zipfs zlibrary zram editorconfig
               prettierignore cspell markdownlint markdown-link-check hx shfmt tidy
               nixos-rebuild MEMLOCK arstechnica autoupdater bleepingcomputer
-              handback notif unsandboxed wakeup
+              handback notif unsandboxed wakeup unreviewed
             ''
           )
         );

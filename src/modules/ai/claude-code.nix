@@ -32,7 +32,22 @@
 
         package = unstablePkgs.claude-code;
 
-        context = ./AGENTS.md;
+        context = ''
+          ${builtins.readFile ./AGENTS.md}
+          ## Claude Code
+
+          Extra notes for Claude Code on top of everything above.
+
+          - **Use the MCP servers, not the denied built-in tools.** Built-in tools
+            like `Read`, `Edit`, `Write`, `Glob`, `Grep` and `Bash` are denied by
+            the harness. The one exception is `Read` on `AGENTS.md`, which exists
+            only so this file can be loaded. I know it is sitting in your tool
+            list and that this file is already in your context, but reaching for
+            it just gets a denial and wastes a turn. Use the `filesystem` MCP for
+            files, `git` for repository work, and `nix` for commands.
+          - **MCP tool schemas can be deferred.** If an MCP tool is listed by name
+            but has no schema, load it with `ToolSearch` before calling it.
+        '';
 
         mcpServers = mcpServers;
 

@@ -15,16 +15,17 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
   - `modules/` — shared NixOS and home-manager modules, grouped by category:
     - `meta/` — defines the `dot.*` option interface the rest consumes
     - `critical/`, `desktop/`, `hardware/`, `nix/`, `programs/`, `sandbox/`,
-      `services/`, `ai/` — module implementations
+      `services/` — module implementations
     - `hardware/facter.nix` — shared facter report and `nixpkgs.system` wiring
+    - `ai/` — Claude Code and OpenCode home modules, the `AGENTS.md` both load
+      as their global context, and supporting AI services (`corm`, `librechat`,
+      `piper`, `tesseract`, `whisper-cpp`)
   - `deprecated/` — retired modules kept for reference; they register under
     `self.lib.deprecated.*` and are inert unless imported explicitly
   - `lib/` — `self.lib` helpers shared across the flake
   - `overlays/` — standalone packages, general wrappers, and overlays; each
     registers `self.overlays.overlays.<name>.value = final: prev: { … }` and is
     available as `pkgs.harasPackages.<name>` (namespace from `namespace.nix`)
-  - `modules/ai/` — AI tooling: OpenCode, Claude Code, and their shared
-    `AGENTS.md`
   - `dev/` — `shell.nix` configures the haraspkgs dev shell and generates
     repository files (see below)
 - `assets/` — static files referenced by modules (hardware reports, wallpapers,
@@ -49,17 +50,12 @@ home-manager, and the dev shell, and its derivations appear in
 also be exported as `flake.overlays.<name>`.
 
 Standalone packages, general-purpose tools, and reusable wrappers live in
-`src/overlays/` (for example `anythingllm`, `zeroclaw`, `utils`, and
-`clipboard`). A wrapper that depends on one module's `config`, a host device, a
-service unit, or a session stays a local binding in that module.
-
-Put something in an overlay when it is a general-purpose tool or an override of
-an existing package that other modules or the user could want globally, and it
-does not depend on one module's options. Keep it in the owning module when it
-depends on that module's `config`, a host device, a service unit, a compositor
-or session, or a per-instance data directory. Overlay values are evaluated
-outside the NixOS and home-manager module system, so they cannot read `config`;
-pass what they need as arguments.
+`src/overlays/` (for example `anythingllm`, `zeroclaw`, `utils`, `clipboard`,
+and `ai-mcp`, which builds the git, filesystem, and nix MCP server definitions
+that both AI home modules consume). Overlay values are evaluated outside the
+NixOS and home-manager module system, so they cannot read `config`; they take
+what they need as arguments. A wrapper that depends on one module's `config`, a
+host device, a service unit, or a session stays a local binding in that module.
 
 ## Development
 
@@ -70,10 +66,9 @@ everything):
 - `dev format` — format the repository with treefmt (`nixfmt` + `prettier`)
 - `dev check` — run cspell, markdownlint, markdown-link-check, and nil
   diagnostics in the checkout
-- `nix flake check` — build the checks and format derivation (`default-format`,
-  `default-cspell`, `default-markdownlint`, `default-markdown-link-check`,
-  `default-nix-diagnostics`, `default-workflows`, `nix-unit`); CI runs this on
-  pull requests. Markdown link checks are skipped inside the Nix build sandbox.
+- `nix flake check` — build the same checks as `dev check` plus the format,
+  generated-workflow, and `nix-unit` checks; CI runs this on pull requests.
+  Markdown link checks are skipped inside the Nix build sandbox.
 - `dev rebuild report|switch|boot` — `nixos-rebuild` for the current host
   (hostname read from `/etc/hostname`)
 - `dev detect` — run `nixos-facter` and save the hardware report to
