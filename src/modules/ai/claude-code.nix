@@ -107,7 +107,7 @@
           ];
           model = "claude-sonnet-5-5";
           fallbackModel = [ "claude-haiku-5-5" ];
-          effortLevel = "medium";
+          effortLevel = "high";
 
           autoCompactEnabled = true;
           autoCompactWindow = 400000;
