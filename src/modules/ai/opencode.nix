@@ -60,6 +60,8 @@
 
         enableMcpIntegration = true;
 
+        skills = selfLib.ai.skills;
+
         tui = {
           theme = theme;
           scroll_acceleration = true;
@@ -119,7 +121,6 @@
             todowrite = false;
             repo_clone = false;
             repo_overview = false;
-            skill = false;
             lsp = false;
             plan = false;
             git_git_push = false;
@@ -128,7 +129,7 @@
           };
         };
 
-        context = builtins.readFile ./AGENTS.md;
+        context = selfLib.ai.agents;
 
         themes.${theme}.theme.background = lib.mkForce "none";
       };
