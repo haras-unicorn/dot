@@ -647,16 +647,16 @@
         "uv2nix": "uv2nix_2"
       },
       "locked": {
-        "lastModified": 1793206591,
-        "narHash": "sha256-l96AnELgJMmrxLvQl7dWrR0aREvZFEJH4nW0uRDMYU0=",
+        "lastModified": 1793295562,
+        "narHash": "sha256-OaG2RoE90F8FabCGFRaNTqbKyfffSgC/wPj//Gv6u30=",
         "owner": "haras-unicorn",
         "repo": "haraspkgs",
-        "rev": "b15f72134222f7792724125beaf599b94d684e85",
+        "rev": "e0139477d9988b715223156737e4b9fb50e75307",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "v1.1.2",
+        "ref": "v1.2.0",
         "repo": "haraspkgs",
         "type": "github"
       }
@@ -818,16 +818,16 @@
         "rust-overlay": "rust-overlay_6"
       },
       "locked": {
-        "lastModified": 1787427099,
-        "narHash": "sha256-87dZlh8N3mjgSSpSS1fQ5RLCMSe5I3Jgsbfd4n5u1Fs=",
+        "lastModified": 1793342518,
+        "narHash": "sha256-m8LT1szcmgjRNp0mi0PQGKur09L67M/VTEeO/sL1zqI=",
         "owner": "haras-unicorn",
         "repo": "mcp-nix",
-        "rev": "7611c8dc61fb95478a0a87a75f7796bcaf43c8f9",
+        "rev": "54f80ab90c929ea3900be3bbca115e1cf4f975b1",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/v0.1.4",
+        "ref": "refs/tags/v0.1.5",
         "repo": "mcp-nix",
         "type": "github"
       }

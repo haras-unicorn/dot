@@ -45,6 +45,11 @@ Then explain it like you would to a colleague at their desk, in plain prose.
   the supporting detail after. Cut anything that does not help them review.
 - Reread your message as the human before sending it. If you would have to ask a
   question to understand it, answer that question in the message.
+- Keep the human's cognitive load low. Write plainly and shortly, as if to
+  someone new to the topic: simple words, short sentences, one idea at a time.
+  Explain a term the first time you use it, skip jargon where a plain word
+  works, and cut every sentence that does not help them decide or review. The
+  human asked for this, so do not worry about sounding too simple.
 
 ### Looking after the human
 

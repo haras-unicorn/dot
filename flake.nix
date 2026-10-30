@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    haraspkgs.url = "github:haras-unicorn/haraspkgs/v1.1.2";
+    haraspkgs.url = "github:haras-unicorn/haraspkgs/v1.2.0";
     haraspkgs.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     nixos-facter-detection-modules.url = "github:haras-unicorn/nixos-facter-detection-modules/refs/tags/v1.1.3";
@@ -52,7 +52,7 @@
     corm.url = "github:haras-unicorn/corm";
     corm.inputs.nixpkgs.follows = "nixpkgs";
 
-    mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.4";
+    mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.5";
     mcp-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 

@@ -1,8 +1,11 @@
+{ self, ... }:
+
 {
   self.nixpkgs.config.allowUnfreePackageNames = [ "claude-code" ];
 
   self.homeModules.claude-code.value =
     {
+      pkgs,
       unstablePkgs,
       lib,
       osConfig,
@@ -11,6 +14,23 @@
     }:
     let
       hardware = osConfig.dot.hardware;
+
+      # NOTE: the built-in terminal notification does not say which session it
+      # came from, so this one is titled with the project folder instead
+      notify = pkgs.writeShellApplication {
+        name = "claude-code-notify";
+        runtimeInputs = [
+          pkgs.jq
+          pkgs.libnotify
+          pkgs.coreutils
+        ];
+        text = ''
+          input="$(cat)"
+          project="$(basename "$(jq -r '.cwd' <<<"$input")")"
+          message="$(jq -r '.message // "Needs your attention"' <<<"$input")"
+          notify-send --app-name "Claude Code" --icon ${self}/assets/icons/claude-code.svg "$project" "$message"
+        '';
+      };
     in
     lib.mkIf hardware.editor {
       programs.claude-code = {
@@ -38,6 +58,17 @@
         enableMcpIntegration = true;
 
         settings = {
+          hooks.Notification = [
+            {
+              hooks = [
+                {
+                  type = "command";
+                  command = lib.getExe notify;
+                }
+              ];
+            }
+          ];
+
           editorMode = "vim";
           theme = "dark-ansi";
 
@@ -49,6 +80,7 @@
           feedbackSurveyRate = 0;
           includeGitInstructions = false;
           inputNeededNotifEnabled = true;
+          preferredNotifChannel = "notifications_disabled";
           promptSuggestionEnabled = false;
           respectGitignore = true;
           wheelScrollAccelerationEnabled = true;
