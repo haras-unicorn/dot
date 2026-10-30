@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, selfLib, ... }:
 
 {
   self.nixpkgs.config.allowUnfreePackageNames = [ "claude-code" ];
@@ -39,7 +39,7 @@
         package = unstablePkgs.claude-code;
 
         context = ''
-          ${builtins.readFile ./AGENTS.md}
+          ${selfLib.ai.agents}
           ## Claude Code
 
           Extra notes for Claude Code on top of everything above.
@@ -56,6 +56,8 @@
         '';
 
         enableMcpIntegration = true;
+
+        skills = selfLib.ai.skills;
 
         settings = {
           hooks.Notification = [
@@ -176,7 +178,6 @@
               "SendMessage"
               "SendUserFile"
               "ShareOnboardingGuide"
-              "Skill"
               "SubagentHandback"
               "TaskStop"
               "TodoWrite"

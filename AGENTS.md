@@ -19,19 +19,22 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
     - `hardware/facter.nix` — shared facter report and `nixpkgs.system` wiring
     - `ai/` — Claude Code and OpenCode home modules, `mcps` (the shared
       `programs.mcp` registry both consume, with the sandboxed git, filesystem,
-      nix, and memory MCP servers and the `mcp-memory` user service), the
-      `AGENTS.md` both load as their global context, and supporting AI services
-      (`corm`, `librechat`, `piper`, `tesseract`, `whisper-cpp`)
+      nix, and memory MCP servers and the `mcp-memory` user service), and
+      supporting AI services (`corm`, `librechat`, `piper`, `tesseract`,
+      `whisper-cpp`)
   - `deprecated/` — retired modules kept for reference; they register under
     `self.lib.deprecated.*` and are inert unless imported explicitly
-  - `lib/` — `self.lib` helpers shared across the flake
+  - `lib/` — `self.lib` helpers shared across the flake; `self.lib.ai` loads the
+    global agent instructions and skills from `assets/ai/` for the Claude Code
+    and OpenCode modules
   - `overlays/` — standalone packages, general wrappers, and overlays; each
     registers `self.overlays.overlays.<name>.value = final: prev: { … }` and is
     available as `pkgs.harasPackages.<name>` (namespace from `namespace.nix`)
   - `dev/` — `shell.nix` configures the haraspkgs dev shell and generates
     repository files (see below)
 - `assets/` — static files referenced by modules (hardware reports, wallpapers,
-  presets)
+  presets, and the global `AGENTS.md` and skill files under `ai/`; every
+  markdown file in `ai/skills/` is a skill named after the file)
 - `.github/workflows/` — generated mirror for `check`; CI runs `nix flake check`
   on pull requests
 
