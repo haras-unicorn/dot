@@ -54,6 +54,9 @@
 
     mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.5";
     mcp-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    mcp-server-web.url = "github:haras-unicorn/mcp-server-web/refs/tags/v0.2.0";
+    mcp-server-web.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

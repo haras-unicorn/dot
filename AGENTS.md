@@ -19,7 +19,7 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
     - `hardware/facter.nix` — shared facter report and `nixpkgs.system` wiring
     - `ai/` — Claude Code and OpenCode home modules, `mcps` (the shared
       `programs.mcp` registry both consume, with the sandboxed git, filesystem,
-      nix, and memory MCP servers and the `mcp-memory` user service), and
+      nix, web, and memory MCP servers and the `mcp-memory` user service), and
       supporting AI services (`corm`, `librechat`, `piper`, `tesseract`,
       `whisper-cpp`)
   - `deprecated/` — retired modules kept for reference; they register under

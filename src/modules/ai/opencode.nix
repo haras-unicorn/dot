@@ -100,10 +100,12 @@
           small_model = selfLib.openrouter.profiles.dev.model;
           lsp = true;
           permission = {
-            webfetch = "allow";
             websearch = "allow";
           };
           tools = {
+            # NOTE: the web MCP's `web_fetch` replaces the built-in one
+            webfetch = false;
+            web_web_search = false;
             question = false;
             bash = false;
             shell = false;
