@@ -27,6 +27,7 @@
       };
       filesystemMcpServer = inputs.haraspkgs.packages.${system}.mcp-server-filesystem-bwrap;
       memoryMcpServer = pkgs.harasPackages.mcp-memory-service;
+      webMcpServer = inputs.mcp-server-web.packages.${system}.mcp-server-web;
 
       bwrapBase = [
         "--die-with-parent"
@@ -200,6 +201,67 @@
             --sse-host 127.0.0.1 --sse-port ${builtins.toString memoryPort} "$@"
         '';
       };
+
+      # NOTE: the server matches subdomains of every entry
+      webAllowedDomains = [
+        "claude.com"
+        "github.com"
+        "github.io"
+        "githubusercontent.com"
+        "nixos.org"
+        "nix.dev"
+        "kernel.org"
+        "developer.mozilla.org"
+        "docs.rs"
+        "doc.rust-lang.org"
+        "rfc-editor.org"
+        "arxiv.org"
+        "wikipedia.org"
+        "wikimedia.org"
+        "index.hr"
+        "arstechnica.com"
+        "bleepingcomputer.com"
+        "404media.co"
+        "lwn.net"
+        "ycombinator.com"
+        "algolia.com"
+        "crates.io"
+        "python.org"
+        "readthedocs.io"
+        "man7.org"
+        "stackoverflow.com"
+        "stackexchange.com"
+      ];
+
+      # NOTE: nothing is writable (the page cache lives in memory), the network
+      # is shared because fetching pages is the whole point, the CA bundle is
+      # already visible through the store bind, and the environment is cleared
+      # so no harness secrets leak into it
+      webSandbox = bwrapBase ++ [
+        "--share-net"
+        "--clearenv"
+        "--setenv"
+        "HOME"
+        "/tmp"
+        "--setenv"
+        "LANG"
+        "C.UTF-8"
+        "--setenv"
+        "SSL_CERT_FILE"
+        "${osConfig.security.pki.caBundle}"
+        "--setenv"
+        "MCP_WEB_ALLOW_DOMAINS"
+        (builtins.concatStringsSep "," webAllowedDomains)
+      ];
+
+      webMcpServerWrapper = pkgs.writeShellApplication {
+        name = "dot-web-mcp-server";
+        runtimeInputs = [ pkgs.bubblewrap ];
+        text = ''
+          exec bwrap ${lib.escapeShellArgs webSandbox} \
+            ${lib.getExe webMcpServer} "$@"
+        '';
+      };
     in
     lib.mkIf hardware.editor {
       programs.mcp = {
@@ -214,6 +276,8 @@
           filesystem.command = lib.getExe filesystemMcpServerWrapper;
 
           nix.command = lib.getExe nixMcpServerWrapper;
+
+          web.command = lib.getExe webMcpServerWrapper;
 
           memory = {
             url = "http://127.0.0.1:${builtins.toString memoryPort}/mcp";

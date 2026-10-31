@@ -53,6 +53,14 @@
             files, `git` for repository work, and `nix` for commands.
           - **MCP tool schemas can be deferred.** If an MCP tool is listed by name
             but has no schema, load it with `ToolSearch` before calling it.
+          - **Use the `web` MCP's `web_fetch` when you need a page verbatim.** The
+            built-in `WebFetch` runs the page through a small model that
+            summarizes and may refuse to quote it. `web_fetch` returns the page
+            itself, as markdown or as an image, so use it whenever the exact
+            text matters. Long pages come back in slices: keep calling with the
+            returned `next_offset` (and the same `mode`) until it is gone. Use
+            `mode: full` when the readable extraction might drop something you
+            need.
         '';
 
         enableMcpIntegration = true;
@@ -151,6 +159,9 @@
             );
 
             deny = [
+              # NOTE: only `web_fetch` is wanted from the web MCP, searching
+              # stays with the built-in tool
+              "mcp__plugin_claude-code-home-manager_web__web_search"
               # NOTE: otherwise it can't read AGENTS.md...
               "Read(**/*)"
               "Read(!AGENTS.md)"
@@ -190,45 +201,3 @@
       };
     };
 }
-
-# NOTE: keeping this here just in case
-# sandbox = {
-#   enabled = true;
-#   failIfUnavailable = true;
-#   enableWeakerNestedSandbox = false;
-#   enableWeakerNetworkIsolation = false;
-#   allowNestedUserNamespaces = false;
-#   autoAllowBashIfSandboxed = true;
-#   allowUnsandboxedCommands = false;
-
-#   ripgrep.command = lib.getExe config.programs.ripgrep.package;
-#   bwrapPath = lib.getExe pkgs.bubblewrap;
-#   socatPath = lib.getExe pkgs.socat;
-
-#   network = {
-#     allowLocalBinding = false;
-#     strictAllowlist = true;
-#     allowedDomains = [
-#       "claude.com"
-#       "*.claude.com"
-#       "github.com"
-#       "*.github.com"
-#       "raw.githubusercontent.com"
-#       "nixos.org"
-#       "*.nixos.org"
-#       "nix.dev"
-#       "kernel.org"
-#       "*.kernel.org"
-#       "developer.mozilla.org"
-#       "docs.rs"
-#       "doc.rust-lang.org"
-#       "rfc-editor.org"
-#       "arxiv.org"
-#       "wikipedia.org"
-#       "*.wikipedia.org"
-#       "index.hr"
-#       "arstechnica.com"
-#       "bleepingcomputer.com"
-#     ];
-#   };
-# };
