@@ -15,6 +15,12 @@
     let
       hardware = osConfig.dot.hardware;
 
+      models = [
+        "claude-opus-5-5"
+        "claude-sonnet-5-5"
+        "claude-haiku-5-5"
+      ];
+
       # NOTE: the built-in terminal notification does not say which session it
       # came from, so this one is titled with the project folder instead
       notify = pkgs.writeShellApplication {
@@ -108,14 +114,17 @@
             checker = "hunspell";
             language = "en_US";
           };
-          availableModels = [
-            "claude-opus-5-5"
-            "claude-sonnet-5-5"
-            "claude-haiku-5-5"
-          ];
+          availableModels = models;
           model = "claude-sonnet-5-5";
           fallbackModel = [ "claude-haiku-5-5" ];
-          effortLevel = "high";
+          modelSettings = builtins.listToAttrs (
+            builtins.map (model: {
+              name = model;
+              value = {
+                effortLevel = "high";
+              };
+            }) models
+          );
 
           autoCompactEnabled = true;
           autoCompactWindow = 400000;
