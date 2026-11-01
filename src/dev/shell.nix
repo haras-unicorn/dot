@@ -65,7 +65,7 @@
               environement envrc envsubst erikreider errorlens esac esbenp espeak
               expanduser extlinux ezdd facter fakespot fancontrol fastmod fbcat
               fbgrab fenix ferdium fetchgit fetchurl findutils firstparty flac
-              flakehub flatseal foldfix foldl fontsize formfill foxundermoon fract
+              flakehub flatseal foldfix foldl fontsize forkstat formfill foxundermoon fract
               freedns freesound freetube gabi gadiguibou gameid gamemode gamescope
               gammaray gammastep gamunu geoclue gerg gguf ghostty gitc gitea
               github-mcp-server gitui gles glsl glxinfo gnugrep gnused gpsd grayscale
@@ -94,7 +94,7 @@
               ongunm onnx openclaw opencode opendocument openfang openlibrary openpage
               openrouter opensearch opensearchdescription openwebui openxmlformats
               optimise optimus optoutstudies otxt passthru pbmode pcmanfm pdfjs
-              peerconnection performatively pgxz picom pinentry pipefail pipewire
+              peerconnection performatively pgrep pgxz picom pinentry pipefail pipewire
               piratebay pkgs pkief pkill playerctl playerctld pname polkit polybar
               postrouting powermenu poweroff powersave powertop presentationml
               privatebrowsing procname procps progressbar protonpath protontricks
