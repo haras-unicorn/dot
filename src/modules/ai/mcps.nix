@@ -231,6 +231,8 @@
         "man7.org"
         "stackoverflow.com"
         "stackexchange.com"
+        "wearedevelopers.com"
+        "workingnomads.com"
       ];
 
       # NOTE: nothing is writable (the page cache lives in memory), the network
