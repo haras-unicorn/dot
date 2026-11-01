@@ -134,7 +134,7 @@
               RERANK clearenv streamable pyproject pypa scikit aiofiles aiohttp
               aiosqlite apscheduler authlib certifi chardet fastapi httpx numpy
               pyjwt pypdf pyyaml starlette uvicorn zeroconf onnxruntime testkey
-              ycombinator stackoverflow stackexchange
+              ycombinator stackoverflow stackexchange wearedevelopers workingnomads
             ''
           )
         );
