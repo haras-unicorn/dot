@@ -12,46 +12,11 @@
       hardware = osConfig.dot.hardware;
 
       theme = "stylix";
-
-      opencodeLocal = pkgs.writeShellApplication {
-        name = "opencode-local";
-        runtimeInputs = [
-          pkgs.harasPackages.opencode
-          pkgs.systemd
-        ];
-        text = ''
-          set -euo pipefail
-
-          service="omw.service"
-          model="${osConfig.corm.gpu-provider.model.passthru.modelName}"
-
-          cleanup() {
-            sudo systemctl start "$service" >/dev/null 2>&1 || true
-          }
-          trap cleanup EXIT INT TERM
-
-          sudo systemctl stop "$service"
-
-          has_model=false
-          for arg in "$@"; do
-            case "$arg" in
-              --model | --model=*) has_model=true ;;
-            esac
-          done
-          if [ "$has_model" = false ]; then
-            set -- --model "corm/$model" "$@"
-          fi
-
-          opencode "$@"
-        '';
-      };
     in
     lib.mkIf hardware.editor {
       home.sessionVariables = {
         OPENCODE_DISABLE_LSP_DOWNLOAD = true;
       };
-
-      home.packages = lib.optionals hardware.cuda [ opencodeLocal ];
 
       programs.opencode = {
         enable = true;
@@ -75,27 +40,8 @@
             openrouter.options = selfLib.openrouter.profiles.dev.options // {
               session_id = "{env:OPENCODE__PROVIDER__OPENROUTER__OPTIONS__SESSION_ID}";
             };
-          }
-          // lib.optionalAttrs hardware.cuda {
-            corm = {
-              npm = "@ai-sdk/openai-compatible";
-              name = "Corm GPU";
-              options = {
-                baseURL = "http://${osConfig.corm.gpu-provider.host}:${builtins.toString osConfig.corm.gpu-provider.port}/v1";
-                apiKey = "corm";
-              };
-              models = {
-                "${osConfig.corm.gpu-provider.model.passthru.modelName}" = {
-                  name = osConfig.corm.gpu-provider.model.passthru.modelName;
-                  limit = {
-                    context = osConfig.corm.gpu-provider.ctx;
-                    output = 8192;
-                  };
-                };
-              };
-            };
           };
-          enabled_providers = [ "openrouter" ] ++ lib.optionals hardware.cuda [ "corm" ];
+          enabled_providers = [ "openrouter" ];
           model = selfLib.openrouter.profiles.dev.model;
           small_model = selfLib.openrouter.profiles.dev.model;
           lsp = true;
