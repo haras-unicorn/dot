@@ -31,9 +31,10 @@ half-adopt it without saying so.
 
 ## Before you start
 
-Ask only what was not stated. Keep it to a few focused questions and lead with
-your recommendation. Usually: what the project is, its languages, whether it
-ships packages, which license, and whether it needs CI.
+I have set this up many times already, so there is no need to chunk it. Ask me
+for a description of the project and its tooling, and I will provide it. Ask a
+follow-up only if something you need is missing, for example the languages,
+whether it ships packages, the license, or whether it needs CI.
 
 ## Read, then write
 
@@ -56,7 +57,7 @@ not need.
 ## Steps
 
 1. `flake.nix`: a `nixpkgs` input, a `haraspkgs` input pinned to the latest
-   release tag, and `haraspkgs.lib.makeFlake` over `./src`. Do not declare
+   release tag, and `haraspkgs.lib.makeFlake` over `./src/nix`. Do not declare
    `flake-parts` or `import-tree`; haraspkgs provides them.
 
    ```nix
@@ -64,12 +65,12 @@ not need.
      { haraspkgs, ... }@inputs:
      haraspkgs.lib.makeFlake {
        inherit inputs;
-       modules = [ ./src ];
+       modules = [ ./src/nix ];
      };
    ```
 
-2. `src/`: every `.nix` file is a flake module. Start with `systems.nix` and a
-   dev shell at `dev/shell.nix` that registers `self.devShells.default`.
+2. `src/nix/`: every `.nix` file is a flake module. Start with `systems.nix` and
+   a dev shell at `dev/shell.nix` that registers `self.devShells.default`.
 3. `git add` the new files, then check through the `nix` MCP. Reference the
    flake as `git+file://<project root>`, which only sees tracked files.
 4. Commit the generated files (`.gitignore`, `.gitattributes`, workflows,
@@ -78,4 +79,6 @@ not need.
 5. Write the project's `AGENTS.md` with the `agents-md` skill, and keep
    `README.md` short.
 
-Stop after steps 1 and 2 for review before filling in the rest of the dev shell.
+Do all of the steps in one go, without stopping for review in between, then
+commit everything as `feat: init`. I will check for general signs that it makes
+sense.
