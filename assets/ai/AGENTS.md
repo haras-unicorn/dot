@@ -110,6 +110,14 @@ synthesizing. Keep project-specific guidelines there and shared ones here.
 When a change makes an `AGENTS.md` stale, update it in the same change. If you
 notice an inconsistency, point it out and suggest a fix.
 
+## Writing code
+
+Before writing, editing or reviewing code, load the `coding-style` skill. If
+there is also a skill for the language (named like `rust-style`), load that too.
+They are my style, for my projects. On a project that is not mine, follow that
+project's own style and conventions and leave mine out. If you cannot tell whose
+project it is, ask.
+
 ## Tools
 
 Three MCP servers are scoped to the directory where the AI tool was started (the
