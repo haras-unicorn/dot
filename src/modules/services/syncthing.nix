@@ -7,7 +7,6 @@ in
     {
       lib,
       config,
-      flake,
       ...
     }:
     let
@@ -22,9 +21,7 @@ in
   self.homeModules.syncthing.value =
     {
       lib,
-      config,
       osConfig,
-      flake,
       ...
     }:
     let

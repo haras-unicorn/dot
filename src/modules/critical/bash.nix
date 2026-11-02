@@ -1,5 +1,3 @@
-# TODO: prompt after starship like nushell
-
 {
   self.nixosModules.bash.value =
     {

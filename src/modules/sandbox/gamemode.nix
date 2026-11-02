@@ -30,7 +30,6 @@
   self.homeModules.gamemode.value =
     {
       osConfig,
-      config,
       lib,
       ...
     }:

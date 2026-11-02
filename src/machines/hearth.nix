@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, selfLib, ... }:
 
 {
   self.nixosConfigurations.hearth = {
@@ -19,12 +19,7 @@
 
         dot.wallpaper.static = true;
 
-        dot.location.latitude = 45.815010;
-        dot.location.longitude = 15.981919;
-        dot.location.altitude = 125;
-        dot.location.accuracy = 30000;
-        dot.location.address = "Zagreb, Croatia";
-        dot.location.countryCode = "HR";
+        dot.location = selfLib.location;
 
         hardware.facter.hintsV1.graphics.cards.vramMap = {
           "PCI:1:0:0" = 12 * 1000 * 1000 * 1000;

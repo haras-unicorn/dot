@@ -1,5 +1,3 @@
-{ ... }:
-
 let
   makeNix =
     lib: config:

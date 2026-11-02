@@ -1,7 +1,5 @@
 {
-  self.nixosModules.earlyoom.value =
-    { config, pkgs, ... }:
-    {
-      services.earlyoom.enable = true;
-    };
+  self.nixosModules.earlyoom.value = {
+    services.earlyoom.enable = true;
+  };
 }

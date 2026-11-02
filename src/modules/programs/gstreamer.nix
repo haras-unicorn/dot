@@ -7,14 +7,14 @@
       ...
     }:
     let
-      plugins = with pkgs.gst_all_1; [
-        gstreamer
-        gst-plugins-base
-        gst-plugins-good
-        gst-plugins-bad
-        gst-plugins-ugly
-        gst-plugins-rs
-        gst-libav
+      plugins = [
+        pkgs.gst_all_1.gstreamer
+        pkgs.gst_all_1.gst-plugins-base
+        pkgs.gst_all_1.gst-plugins-good
+        pkgs.gst_all_1.gst-plugins-bad
+        pkgs.gst_all_1.gst-plugins-ugly
+        pkgs.gst_all_1.gst-plugins-rs
+        pkgs.gst_all_1.gst-libav
       ];
 
       variables = [
@@ -53,8 +53,8 @@
       };
 
       home-manager.users.${config.dot.user.user} = {
-        programs.obs-studio.plugins = with pkgs.obs-studio-plugins; [
-          obs-gstreamer
+        programs.obs-studio.plugins = [
+          pkgs.obs-studio-plugins.obs-gstreamer
         ];
       };
     };

@@ -1,7 +1,6 @@
 {
   self.nixosModules.polkit.value =
     {
-      pkgs,
       config,
       lib,
       ...
@@ -17,7 +16,6 @@
 
   self.homeModules.polkit.value =
     {
-      pkgs,
       osConfig,
       config,
       lib,

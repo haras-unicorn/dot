@@ -24,7 +24,6 @@
       };
     in
     {
-      # FIXME: its not finding the grammars?
       xdg.configFile."tree-sitter/config.json".text = builtins.toJSON {
         "parser-directories" = [
           (pkgs.tree-sitter.withPlugins (p: builtins.attrValues p))

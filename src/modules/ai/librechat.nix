@@ -26,6 +26,22 @@ in
       librechatJwtSecret = "/etc/librechat/jwt-secret";
       librechatJwtRefreshSecret = "/etc/librechat/jwt-refresh-secret";
 
+      makeOpenRouterEndpoint = name: profile: {
+        inherit name;
+        apiKey = "\${OPENROUTER_KEY}";
+        baseURL = profile.url;
+        models = {
+          default = [ profile.model ];
+          fetch = true;
+        };
+        titleConvo = true;
+        titleModel = profile.model;
+        # NOTE: needed for compatibility
+        # https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/openrouter
+        dropParams = [ "stop" ];
+        addParams = profile.options;
+      };
+
       librechatCredentials = [
         {
           file = librechatCredsKey;
@@ -121,36 +137,8 @@ in
 
           endpoints = {
             custom = [
-              {
-                name = "OpenRouter";
-                apiKey = "\${OPENROUTER_KEY}";
-                baseURL = selfLib.openrouter.profiles.default.url;
-                models = {
-                  default = [ selfLib.openrouter.profiles.default.model ];
-                  fetch = true;
-                };
-                titleConvo = true;
-                titleModel = selfLib.openrouter.profiles.default.model;
-                # NOTE: needed for compatibility
-                # https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/openrouter
-                dropParams = [ "stop" ];
-                addParams = selfLib.openrouter.profiles.default.options;
-              }
-              {
-                name = "OpenRouter (dev)";
-                apiKey = "\${OPENROUTER_KEY}";
-                baseURL = selfLib.openrouter.profiles.dev.url;
-                models = {
-                  default = [ selfLib.openrouter.profiles.dev.model ];
-                  fetch = true;
-                };
-                titleConvo = true;
-                titleModel = selfLib.openrouter.profiles.dev.model;
-                # NOTE: needed for compatibility
-                # https://www.librechat.ai/docs/configuration/librechat_yaml/ai_endpoints/openrouter
-                dropParams = [ "stop" ];
-                addParams = selfLib.openrouter.profiles.dev.options;
-              }
+              (makeOpenRouterEndpoint "OpenRouter" selfLib.openrouter.profiles.default)
+              (makeOpenRouterEndpoint "OpenRouter (dev)" selfLib.openrouter.profiles.dev)
             ];
           };
 

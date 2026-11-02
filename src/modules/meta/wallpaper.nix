@@ -1,11 +1,6 @@
 {
   self.nixosModules.wallpaper.value =
-    {
-      pkgs,
-      lib,
-      config,
-      ...
-    }:
+    { lib, ... }:
     {
       options.dot = {
         wallpaper = {

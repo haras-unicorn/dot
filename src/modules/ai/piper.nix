@@ -4,7 +4,6 @@
       pkgs,
       lib,
       config,
-      osConfig,
       ...
     }:
     let
@@ -26,10 +25,13 @@
       makeVoiceModelFullName = voice: "${voice.dialect}-${voice.name}-${voice.quality}";
       makeVoice =
         voice:
-        voice
-        // rec {
+        let
           full = makeVoiceModelFullName voice;
           url = makeVoiceBaseUrl voice;
+        in
+        voice
+        // {
+          inherit full url;
           model = pkgs.fetchurl {
             url = "${url}/${full}.onnx";
             sha256 = voice.modelHash;

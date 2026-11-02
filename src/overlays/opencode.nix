@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   self.overlays.overlays.opencode.value = final: prev: {
     opencode = final.writeShellApplication {

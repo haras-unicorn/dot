@@ -4,7 +4,6 @@
   self.homeModules.librewolf.value =
     {
       pkgs,
-      config,
       osConfig,
       lib,
       ...
@@ -47,17 +46,15 @@
             searchUrl = "${searchUrl}/?q=$s";
           };
         };
-        packages =
-          with pkgs.nur.repos.rycee.firefox-addons;
-          [
-            ublock-origin
-            darkreader
-            vimium-c
-            i-dont-care-about-cookies
-            bitwarden
-            keepassxc-browser
-          ]
-          ++ [ textarea-cache ];
+        packages = [
+          pkgs.nur.repos.rycee.firefox-addons.ublock-origin
+          pkgs.nur.repos.rycee.firefox-addons.darkreader
+          pkgs.nur.repos.rycee.firefox-addons.vimium-c
+          pkgs.nur.repos.rycee.firefox-addons.i-dont-care-about-cookies
+          pkgs.nur.repos.rycee.firefox-addons.bitwarden
+          pkgs.nur.repos.rycee.firefox-addons.keepassxc-browser
+          textarea-cache
+        ];
 
       };
 

@@ -24,7 +24,7 @@
         ''
           mkdir -p $out/share/wayland-sessions
           mkdir -p $out/share/xsessions
-          ${lib.concatStringsSep "\n" (map desktopFile cfg.startup)}
+          ${lib.concatStringsSep "\n" (builtins.map desktopFile cfg.startup)}
         ''
       );
     in

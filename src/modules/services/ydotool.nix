@@ -21,7 +21,6 @@
 
   self.homeModules.ydotool.value =
     {
-      config,
       osConfig,
       lib,
       pkgs,

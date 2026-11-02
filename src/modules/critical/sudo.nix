@@ -1,5 +1,3 @@
-# TODO: please or doas
-
 {
   self.nixosModules.sudo.value =
     { pkgs, ... }:

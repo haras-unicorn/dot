@@ -8,8 +8,6 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
 - `src/` — the flake module tree; `flake.nix` passes it to `makeFlake`
   - `systems.nix` — supported systems (`x86_64-linux`, `aarch64-linux`)
   - `namespace.nix` — sets the haraspkgs overlay namespace to `harasPackages`
-  - `unit-tests.nix` — passes haraspkgs' inputs (recursively) to the sandboxed
-    `nix-unit` check through `nix-unit.inputs`
   - `machines/` — one file per machine; each registers a
     `self.nixosConfigurations.<name>` with `flake = true`
   - `modules/` — shared NixOS and home-manager modules, grouped by category:
@@ -54,6 +52,10 @@ home-manager, and the dev shell, and its derivations appear in
 `packages.<system>.<name>`. Set `flake = true` when the overlay itself should
 also be exported as `flake.overlays.<name>`.
 
+An overlay can also expose a builder function instead of a package, like
+`makeNetworkIsolate` and `makeServerClientApp`. Modules call it as
+`pkgs.harasPackages.<name>`, with no `selfLib` and no `pkgs` argument.
+
 Standalone packages, general-purpose tools, and reusable wrappers live in
 `src/overlays/` (for example `anythingllm`, `zeroclaw`, `utils`, `clipboard`,
 and `mcp-memory-service`, which packages the memory MCP server with its offline
@@ -62,6 +64,30 @@ home-manager module system, so they cannot read `config`; they take what they
 need as arguments. A wrapper that depends on one module's `config`, a host
 device, a service unit, or a session stays a local binding in that module, like
 the MCP server sandboxes in `modules/ai/mcps.nix`.
+
+## Style deviations
+
+This repository is only my own NixOS configurations. It is not a product, a
+library or a monorepo, and nobody else consumes it. So it strays from the
+defaults in these ways, on purpose:
+
+- **No mdbook in `docs/`.** There is no one to write documentation for, and the
+  `dot.*` options are used only by the machines in this repository.
+- **All Nix lives in `src/`, not `src/nix/`.** Nix is the whole repository, so a
+  `nix` subfolder would add a level and separate nothing. `flake.nix` passes
+  `./src` to `makeFlake`.
+- **No tests.** Anything that needs tests belongs in another repository, as a
+  package or a module with its own tests. What is left here is thin glue: small
+  overlays and modules that wire other things together. These are hard to test
+  on their own, so they are tested by hand after switching to the new
+  configuration. `mcp-memory-service` is the one exception, and it carries its
+  own `passthru.tests`.
+- **Magic values are allowed, but never repeated.** The whole repository is the
+  configuration, so a literal like a port or a timeout is already the value
+  wanted, and an option with one reader is only indirection. A value used once
+  stays a literal. A value used in several places in one file is bound once in
+  that file's `let`. A value used in several files is defined once in `src/lib/`
+  and read through `selfLib`.
 
 ## Development
 

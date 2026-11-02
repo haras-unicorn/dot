@@ -15,10 +15,13 @@
     let
       hardware = osConfig.dot.hardware;
 
+      defaultModel = "claude-sonnet-5-5";
+      fastModel = "claude-haiku-5-5";
+
       models = [
         "claude-opus-5-5"
-        "claude-sonnet-5-5"
-        "claude-haiku-5-5"
+        defaultModel
+        fastModel
       ];
 
       # NOTE: the built-in terminal notification does not say which session it
@@ -115,8 +118,8 @@
             language = "en_US";
           };
           availableModels = models;
-          model = "claude-sonnet-5-5";
-          fallbackModel = [ "claude-haiku-5-5" ];
+          model = defaultModel;
+          fallbackModel = [ fastModel ];
           modelSettings = builtins.listToAttrs (
             builtins.map (model: {
               name = model;

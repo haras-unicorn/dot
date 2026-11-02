@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   self.overlays.overlays.clipboard.value = final: _prev: {
     copy-wl = final.writeShellApplication {

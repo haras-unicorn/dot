@@ -32,6 +32,15 @@ ask for those. Write the comment as "idiomatic for X because Y", which is the
 reason I expect to see. The comment stays, because idioms change often between
 languages and frameworks and their versions.
 
+### Deviations for a whole repository
+
+Some projects stray from the defaults everywhere, for a reason that holds for
+the whole repository. For example, a repository that is only my own machine
+configurations is not a library or a product, so it needs no mdbook. Do not
+comment every place that strays. Write the deviation once in that repository's
+`AGENTS.md`, together with the reasoning, and treat it as the default from then
+on. A deviation without written reasoning is a violation.
+
 ### Comments
 
 A comment is for unexpected code: code that strays from the defaults, as above.
@@ -71,6 +80,16 @@ Everything else is left to whatever formatter the language uses, on purpose
 unconfigured. They are good enough, and every option I set is one more thing to
 carry between projects. Do not hand-format against a formatter and do not add
 formatter config beyond the values above.
+
+## File order
+
+A file reads from the big picture down to the details. The high-level ideas and
+implementations come first: the exported items and the main flow. The nitty
+gritty comes after, at the bottom: helper functions, then unit tests last.
+
+A reader who stops early has still read the important part. Where the language
+forces another order, like declarations that must come before their use, follow
+the language and keep the rest as close to this as it allows.
 
 ## Priorities
 
@@ -148,6 +167,8 @@ Every repo has an mdbook in `docs/` at the root of the repo.
 ## Testing
 
 - Test at least the happy path of every exported function.
+- Unit tests live in the same file as the code they test, at the bottom of it
+  (see File order).
 - Test integrations in separate test modules, apart from the unit tests. An
   integration test only checks that the facade (the trait, struct or interface
   that wraps the service, library or framework) works with a real instance of

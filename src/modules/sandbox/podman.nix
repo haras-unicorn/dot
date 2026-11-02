@@ -1,5 +1,5 @@
 {
-  self.nixosModules.podman.value = { config, pkgs, ... }: {
+  self.nixosModules.podman.value = { config, ... }: {
     virtualisation.containers.enable = true;
 
     virtualisation.podman = {

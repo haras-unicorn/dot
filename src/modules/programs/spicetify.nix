@@ -27,9 +27,9 @@
       config = lib.mkIf hardware.gaming {
         programs.spicetify = {
           enable = true;
-          enabledExtensions = with spicePkgs.extensions; [
-            hidePodcasts
-            aiBandBlocker
+          enabledExtensions = [
+            spicePkgs.extensions.hidePodcasts
+            spicePkgs.extensions.aiBandBlocker
           ];
 
           wayland = hardware.wayland;

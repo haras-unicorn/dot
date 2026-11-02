@@ -1,9 +1,13 @@
+{ config, selfLib, ... }:
+
 {
   self.overlays.overlays.mcp-memory-service.value = final: _prev: {
     mcp-memory-service =
       let
         python = final.python3Packages;
         version = "12.4.0";
+        host = selfLib.mcpMemory.host;
+        port = builtins.toString selfLib.mcpMemory.port;
 
         # NOTE: the service downloads this at runtime into
         # ~/.cache/mcp_memory/onnx_models/all-MiniLM-L6-v2 - we fetch it here
@@ -66,38 +70,38 @@
 
         # NOTE: base dependencies plus the `sqlite` extra (ONNX embeddings)
         # and scikit-learn for consolidation clustering
-        dependencies = with python; [
-          aiofiles
-          aiohttp
-          aiosqlite
-          apscheduler
-          authlib
-          build
-          certifi
-          chardet
-          click
-          cryptography
-          fastapi
-          httpx
-          mcp
-          numpy
-          psutil
-          pyjwt
-          pypdf
-          python-dotenv
-          python-multipart
-          pyyaml
-          requests
-          sqlite-vec
-          sse-starlette
-          uvicorn
-          zeroconf
+        dependencies = [
+          python.aiofiles
+          python.aiohttp
+          python.aiosqlite
+          python.apscheduler
+          python.authlib
+          python.build
+          python.certifi
+          python.chardet
+          python.click
+          python.cryptography
+          python.fastapi
+          python.httpx
+          python.mcp
+          python.numpy
+          python.psutil
+          python.pyjwt
+          python.pypdf
+          python.python-dotenv
+          python.python-multipart
+          python.pyyaml
+          python.requests
+          python.sqlite-vec
+          python.sse-starlette
+          python.uvicorn
+          python.zeroconf
 
-          huggingface-hub
-          onnxruntime
-          tokenizers
+          python.huggingface-hub
+          python.onnxruntime
+          python.tokenizers
 
-          scikit-learn
+          python.scikit-learn
         ];
 
         # NOTE: upstream pins very recent lower bounds
@@ -137,33 +141,33 @@
                 export TRANSFORMERS_OFFLINE=1
                 export MCP_API_KEY=testkey
 
-                memory server --streamable-http --sse-host 127.0.0.1 --sse-port 8765 \
+                memory server --streamable-http --sse-host ${host} --sse-port ${port} \
                   > "$TMPDIR/out" 2> "$TMPDIR/err" &
                 pid=$!
 
                 for _ in $(seq 1 90); do
-                  curl -s -o /dev/null http://127.0.0.1:8765/ && break
+                  curl -s -o /dev/null http://${host}:${port}/ && break
                   sleep 1
                 done
 
                 init='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"t","version":"0"}}}'
                 for path in /mcp /mcp/ /sse /; do
                   echo "=== no key $path"
-                  curl -sS -i -m 20 -X POST "http://127.0.0.1:8765$path" \
+                  curl -sS -i -m 20 -X POST "http://${host}:${port}$path" \
                     -H 'Content-Type: application/json' \
                     -H 'Accept: application/json, text/event-stream' \
                     -d "$init" | head -c 600 || true
                   echo
                 done
                 echo "=== with bearer /mcp"
-                curl -sS -i -m 20 -X POST http://127.0.0.1:8765/mcp \
+                curl -sS -i -m 20 -X POST http://${host}:${port}/mcp \
                   -H 'Content-Type: application/json' \
                   -H 'Accept: application/json, text/event-stream' \
                   -H 'Authorization: Bearer testkey' \
                   -d "$init" | head -c 600 || true
                 echo
                 echo "=== with x-api-key /mcp"
-                curl -sS -i -m 20 -X POST http://127.0.0.1:8765/mcp \
+                curl -sS -i -m 20 -X POST http://${host}:${port}/mcp \
                   -H 'Content-Type: application/json' \
                   -H 'Accept: application/json, text/event-stream' \
                   -H 'X-API-Key: testkey' \
@@ -245,10 +249,7 @@
           homepage = "https://github.com/doobidoo/mcp-memory-service";
           license = final.lib.licenses.asl20;
           mainProgram = "memory";
-          platforms = [
-            "x86_64-linux"
-            "aarch64-linux"
-          ];
+          platforms = config.systems;
         };
       };
   };

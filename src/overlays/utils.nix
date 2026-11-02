@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   self.overlays.overlays.utils.value = final: _prev: {
     run-disowned = final.writeShellApplication {

@@ -1,17 +1,10 @@
-# TODO: make the list command output an actual
-# line-by-line list and not a grid
-
-{ ... }:
+{ selfLib, ... }:
 
 {
   self.overlays.overlays.eza.value =
     final: _prev:
     let
-      baseOptions = [
-        "--all"
-        "--git-ignore"
-      ];
-      baseArgs = final.lib.escapeShellArgs baseOptions;
+      baseArgs = final.lib.escapeShellArgs selfLib.eza.baseOptions;
     in
     {
       list = final.writeShellApplication {

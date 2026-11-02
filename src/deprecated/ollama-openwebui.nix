@@ -1,5 +1,3 @@
-{ selfLib, ... }:
-
 {
   self.nixpkgs.config.allowUnfreePackageNames = [ "open-webui" ];
 
@@ -50,7 +48,7 @@
           '';
         };
 
-        desktopApp = selfLib.serverClientApp.make pkgs {
+        desktopApp = pkgs.harasPackages.makeServerClientApp {
           name = "ollama-${instanceName}-app";
           display = "Ollama OpenWebUI (${instanceName})";
           runtimeInputs = [

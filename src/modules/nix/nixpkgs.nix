@@ -2,12 +2,7 @@
 
 {
   self.nixosModules.nixpkgs.value =
-    {
-      pkgs,
-      lib,
-      config,
-      ...
-    }:
+    { config, ... }:
     let
       hardware = config.dot.hardware;
     in
@@ -17,7 +12,7 @@
         rocmSupport = hardware.rocm;
       };
 
-      _module.args.unstablePkgs = import inputs.nixpkgs-unstable {
+      _module.args.unstablePkgs = builtins.import inputs.nixpkgs-unstable {
         inherit (config.nixpkgs) system config overlays;
       };
     };

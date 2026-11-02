@@ -1,7 +1,6 @@
 {
   self.nixosModules.monitor.value =
     {
-      pkgs,
       lib,
       config,
       ...
@@ -22,7 +21,6 @@
     {
       pkgs,
       lib,
-      config,
       osConfig,
       ...
     }:

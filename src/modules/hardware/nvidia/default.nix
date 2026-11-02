@@ -1,9 +1,5 @@
 { lib, ... }:
 
-# TODO: hardware.fancontrol.enable
-# TODO: hardware.brillo.enable
-# FIXME: https://github.com/NixOS/nixpkgs/issues/306276
-
 {
   self.nixpkgs.config.allowUnfreePredicate = [
     (
@@ -29,6 +25,26 @@
       integrated = graphics.cards.integrated;
       enableIntegrated = integrated != null;
       cuda = default.version == "latest" || default.version == "production";
+
+      hardwareAccelerationVariables = {
+        LIBVA_DRIVER_NAME = "nvidia";
+        VDPAU_DRIVER = "va_gl";
+        NVD_BACKEND = "direct";
+      };
+      waylandRenderingVariables = {
+        GBM_BACKEND = "nvidia-drm";
+        WLR_RENDERER = "gles2";
+      };
+      variableRefreshRateVariables = {
+        __GL_GSYNC_ALLOWED = "1";
+        __GL_VRR_ALLOWED = "1";
+      };
+      primeOffloadVariables = {
+        __NV_PRIME_RENDER_OFFLOAD = "1";
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        __VK_LAYER_NV_optimus = "NVIDIA_only";
+        DRI_PRIME = "1";
+      };
     in
     lib.mkIf (default.type == "nvidia") {
 
@@ -91,43 +107,31 @@
 
       hardware.graphics.enable = true;
       hardware.graphics.enable32Bit = true;
-      hardware.graphics.extraPackages = with pkgs; [
-        nvidia-vaapi-driver
-        libvdpau-va-gl
+      hardware.graphics.extraPackages = [
+        pkgs.nvidia-vaapi-driver
+        pkgs.libvdpau-va-gl
       ];
-      hardware.graphics.extraPackages32 = with pkgs.driversi686Linux; [
-        libvdpau-va-gl
+      hardware.graphics.extraPackages32 = [
+        pkgs.driversi686Linux.libvdpau-va-gl
       ];
 
       hardware.nvidia-container-toolkit.enable = true;
 
-      environment.systemPackages = with pkgs; [
-        libva
-        libvdpau
-        vdpauinfo # NOTE: vdpauinfo
-        libva-utils # NOTE: vainfo
-        vulkan-tools # NOTE: vulkaninfo
-        mesa-demos # NOTE: glxinfo and eglinfo
-        nvtopPackages.full # NOTE: usage tui
+      environment.systemPackages = [
+        pkgs.libva
+        pkgs.libvdpau
+        pkgs.vdpauinfo
+        pkgs.libva-utils
+        pkgs.vulkan-tools
+        pkgs.mesa-demos
+        pkgs.nvtopPackages.full
       ];
 
-      environment.sessionVariables = {
-        LIBVA_DRIVER_NAME = "nvidia"; # NOTE: hardware acceleration
-        VDPAU_DRIVER = "va_gl"; # NOTE: hardware acceleration
-        GBM_BACKEND = "nvidia-drm"; # NOTE: wayland buffer api
-        WLR_RENDERER = "gles2"; # NOTE: wayland roots compositor renderer
-
-        NVD_BACKEND = "direct"; # NOTE: nvidia-vaapi-driver backend
-        __GL_GSYNC_ALLOWED = "1"; # NOTE: nvidia g-sync
-        __GL_VRR_ALLOWED = "1"; # NOTE: nvidia g-sync
-      }
-      // lib.optionalAttrs enableIntegrated {
-        # NOTE: offload everything to nvidia
-        __NV_PRIME_RENDER_OFFLOAD = "1";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        __VK_LAYER_NV_optimus = "NVIDIA_only";
-        DRI_PRIME = "1";
-      };
+      environment.sessionVariables =
+        hardwareAccelerationVariables
+        // waylandRenderingVariables
+        // variableRefreshRateVariables
+        // lib.optionalAttrs enableIntegrated primeOffloadVariables;
 
       users.users.${user}.extraGroups = [
         "video"
