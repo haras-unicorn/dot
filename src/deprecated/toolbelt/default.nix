@@ -1,18 +1,3 @@
-# TODO: static list of pipelines with unique names and icons to execute in streams and add to picker
-
-# LATER:
-# TODO: make a rust app out of this and auto check each config by pulling through generated files
-# TODO: find desktop entry files of sinks and parse them
-# TODO: make emoji picker from dmenu command and unicode-emoji package
-# TODO: add exec param to mime apps so it can be overridden if necessary
-# TODO: stdin/stdout sink/source in the toolbelt module
-# TODO: peek command thats like a modifier for sinking that doesn't remove contents
-# TODO: alternative picker for pipelines like a mouse menu (kando package)
-# TODO: audio generation node
-# TODO: video generation node
-# TODO: video description node
-# TODO: video audio extraction node
-
 # NOTE: the toolbelt and everything that fed `dot.processing` (sources, nodes,
 # sinks and pipelines) lives here now. Import
 # `self.lib.deprecated.homeModules.toolbelt` to bring all of it back: it brings

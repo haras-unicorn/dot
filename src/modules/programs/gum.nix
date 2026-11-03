@@ -1,6 +1,3 @@
-# TODO: styling via stylix
-# theres a lot of environment variables...
-
 {
   self.homeModules.gum.value =
     {

@@ -32,9 +32,9 @@
       boot.loader.grub.enable = lib.mkForce false;
       boot.loader.generic-extlinux-compatible.enable = true;
 
-      environment.systemPackages = with pkgs; [
-        libraspberrypi
-        raspberrypi-eeprom
+      environment.systemPackages = [
+        pkgs.libraspberrypi
+        pkgs.raspberrypi-eeprom
       ];
     };
 }

@@ -19,8 +19,8 @@
       dot.programs.terminal.package = config.programs.wezterm.package;
 
       programs.wezterm.enable = true;
-      # TODO: https://github.com/wezterm/wezterm/issues/6685
-      # replace with stable when the package there is older than june 16 2026
+      # NOTE: stable wezterm needs the fix from
+      # https://github.com/wezterm/wezterm/issues/6685, so this takes it from unstable
       programs.wezterm.package = unstablePkgs.wezterm;
       # NOTE: https://github.com/nix-community/stylix/blob/release-26.05/modules/wezterm/hm.nix
       # stylix overrides home-manager settings so we need to write it like this in 26.05...

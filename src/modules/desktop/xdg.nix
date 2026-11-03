@@ -65,41 +65,45 @@
         builtins.map ({ package, ... }: package) (builtins.attrValues config.dot.programs)
       );
 
-      makeScreenshot =
-        name:
-        pkgs.writeShellApplication {
-          name = "screenshot";
-          runtimeInputs = [
-            pkgs.fbcat
-            config.dot.commands.copy
-          ];
-          text = ''
-            tmp="$(mktemp -d)"
-            mkdir -p "$tmp"
-            trap 'rm -rf "$tmp"' EXIT
+      screenshot = pkgs.writeShellApplication {
+        name = "screenshot";
+        runtimeInputs = [
+          pkgs.fbcat
+          config.dot.commands.copy
+        ];
+        text = ''
+          tmp="$(mktemp -d)"
+          mkdir -p "$tmp"
+          trap 'rm -rf "$tmp"' EXIT
 
-            name="$(date +${config.dot.desktop.timestamp})"
-            type="png"
-            fbgrab "$tmp/$name.$type"
-            copy -t image/$type < "$tmp/$name.$type"
+          name="$(date +${config.dot.desktop.timestamp})"
+          type="png"
+          fbgrab "$tmp/$name.$type"
+          copy -t image/$type < "$tmp/$name.$type"
 
-            dir='${config.dot.desktop.screenshots}'
-            mkdir -p "$dir"
-            mv -f "$tmp/$name.$type" "$dir/$name.$type"
-          '';
-        };
+          dir='${config.dot.desktop.screenshots}'
+          mkdir -p "$dir"
+          mv -f "$tmp/$name.$type" "$dir/$name.$type"
+        '';
+      };
 
       entries = builtins.listToAttrs (
-        builtins.map ({ package, types, ... }: rec {
-          name = "dot-${lib.getName package}";
-          value = {
+        builtins.map (
+          { package, types, ... }:
+          let
+            name = "dot-${lib.getName package}";
+          in
+          {
             inherit name;
-            exec = "${lib.getExe package} %U";
-            terminal = false;
-            mimeType = types;
-            noDisplay = true;
-          };
-        }) config.dot.mime.apps
+            value = {
+              inherit name;
+              exec = "${lib.getExe package} %U";
+              terminal = false;
+              mimeType = types;
+              noDisplay = true;
+            };
+          }
+        ) config.dot.mime.apps
       );
 
       mime = lib.mergeAttrsList (
@@ -121,8 +125,8 @@
         copy = lib.mkDefault copy;
         paste = lib.mkDefault paste;
         type = lib.mkDefault type;
-        screenshot = lib.mkDefault (makeScreenshot "screenshot");
-        regionshot = lib.mkDefault (makeScreenshot "regionshot");
+        screenshot = lib.mkDefault screenshot;
+        regionshot = lib.mkDefault screenshot;
         tree = lib.mkDefault tree;
         list = lib.mkDefault list;
       };
@@ -290,16 +294,15 @@
         ])
       ];
 
-      home.packages =
-        (with pkgs; [
-          xdg-user-dirs
-          xdg-utils
-          shared-mime-info
-          file
-        ])
-        ++ commands
-        ++ programs
-        ++ apps;
+      home.packages = [
+        pkgs.xdg-user-dirs
+        pkgs.xdg-utils
+        pkgs.shared-mime-info
+        pkgs.file
+      ]
+      ++ commands
+      ++ programs
+      ++ apps;
 
       home.sessionVariables = lib.mkMerge [
         {

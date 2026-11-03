@@ -1,11 +1,6 @@
 {
   self.nixosModules.geoclue.value =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { config, ... }:
     {
       location.provider = "geoclue2";
       i18n.defaultLocale = "en_US.UTF-8";

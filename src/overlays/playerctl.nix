@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   self.overlays.overlays.playerctl.value = final: _prev: {
     play-pause = final.writeShellApplication {

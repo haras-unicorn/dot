@@ -1,3 +1,5 @@
+{ config, ... }:
+
 {
   self.overlays.overlays.anythingllm = {
     flake = true;
@@ -70,11 +72,8 @@
             homepage = "https://anythingllm.com";
             license = final.lib.licenses.mit;
             mainProgram = "anything-llm";
-            platforms = [
-              "x86_64-linux"
-              "aarch64-linux"
-            ];
-            sourceProvenance = with final.lib.sourceTypes; [ binaryNativeCode ];
+            platforms = config.systems;
+            sourceProvenance = [ final.lib.sourceTypes.binaryNativeCode ];
           };
         };
     };

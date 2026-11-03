@@ -1,6 +1,6 @@
 {
   self.nixosModules.nix.value =
-    { lib, config, ... }:
+    { lib, ... }:
     {
       options.dot = {
         nix.gc = lib.mkEnableOption "Nix GC" // {

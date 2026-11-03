@@ -1,12 +1,9 @@
-# FIXME: links not opening https://github.com/flatpak/xdg-desktop-portal-gtk/issues/440
-
 {
   self.nixosModules.niri.value =
     {
       pkgs,
       lib,
       config,
-      flake,
       ...
     }:
     let
@@ -128,8 +125,8 @@
           window_height=$(echo "$window_info" | jq -r '.layout.window_size[1]')
 
           # check if window size matches monitor (with small margin for rounding)
-          if [ "$window_width" -ge ${toString (hardware.width - 5)} ] && \
-             [ "$window_height" -ge ${toString (hardware.height - 5)} ]; then
+          if [ "$window_width" -ge ${builtins.toString (hardware.width - 5)} ] && \
+             [ "$window_height" -ge ${builtins.toString (hardware.height - 5)} ]; then
             exit 0  # is fullscreen
           else
             exit 1  # not fullscreen

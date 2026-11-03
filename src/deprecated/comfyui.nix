@@ -1,4 +1,4 @@
-{ inputs, selfLib, ... }:
+{ inputs, ... }:
 
 {
   self.lib.deprecated.homeModules.comfyui =
@@ -29,7 +29,7 @@
           '';
         };
 
-        desktopApp = selfLib.serverClientApp.make pkgs {
+        desktopApp = pkgs.harasPackages.makeServerClientApp {
           name = "comfyui-${instanceName}-app";
           display = "ComfyUI (${instanceName})";
           runtimeInputs = [

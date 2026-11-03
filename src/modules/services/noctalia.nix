@@ -1,7 +1,7 @@
 { inputs, ... }:
 
-# NOTE: https://github.com/nix-community/stylix/commit/831414670d6b5b3aebb99e5ee6d3dac73f2a3f02
-# TODO: remove theme stuff if/when it lands in nixpkgs stable
+# NOTE: the stylix release in use has no noctalia target yet, so the theme is
+# built here https://github.com/nix-community/stylix/commit/831414670d6b5b3aebb99e5ee6d3dac73f2a3f02
 
 {
   self.homeModules.noctalia.value =
@@ -191,49 +191,49 @@
             };
           };
 
-          customPalettes.${theme}.${polarity} = with colors; {
-            mPrimary = base0D;
-            mOnPrimary = base00;
-            mSecondary = base0E;
-            mOnSecondary = base00;
-            mTertiary = base0C;
-            mOnTertiary = base00;
-            mError = base08;
-            mOnError = base00;
-            mSurface = base00;
-            mOnSurface = base05;
-            mHover = base0C;
-            mOnHover = base00;
-            mSurfaceVariant = base01;
-            mOnSurfaceVariant = base04;
-            mOutline = base03;
-            mShadow = base00;
+          customPalettes.${theme}.${polarity} = {
+            mPrimary = colors.base0D;
+            mOnPrimary = colors.base00;
+            mSecondary = colors.base0E;
+            mOnSecondary = colors.base00;
+            mTertiary = colors.base0C;
+            mOnTertiary = colors.base00;
+            mError = colors.base08;
+            mOnError = colors.base00;
+            mSurface = colors.base00;
+            mOnSurface = colors.base05;
+            mHover = colors.base0C;
+            mOnHover = colors.base00;
+            mSurfaceVariant = colors.base01;
+            mOnSurfaceVariant = colors.base04;
+            mOutline = colors.base03;
+            mShadow = colors.base00;
             terminal = {
-              foreground = base05;
-              background = base00;
-              cursor = base05;
-              cursorText = base00;
-              selectionFg = base05;
-              selectionBg = base02;
+              foreground = colors.base05;
+              background = colors.base00;
+              cursor = colors.base05;
+              cursorText = colors.base00;
+              selectionFg = colors.base05;
+              selectionBg = colors.base02;
               normal = {
-                black = base00;
-                red = base08;
-                green = base0B;
-                yellow = base0A;
-                blue = base0D;
-                magenta = base0E;
-                cyan = base0C;
-                white = base05;
+                black = colors.base00;
+                red = colors.base08;
+                green = colors.base0B;
+                yellow = colors.base0A;
+                blue = colors.base0D;
+                magenta = colors.base0E;
+                cyan = colors.base0C;
+                white = colors.base05;
               };
               bright = {
-                black = base03;
-                red = base08;
-                green = base0B;
-                yellow = base0A;
-                blue = base0D;
-                magenta = base0E;
-                cyan = base0C;
-                white = base07;
+                black = colors.base03;
+                red = colors.base08;
+                green = colors.base0B;
+                yellow = colors.base0A;
+                blue = colors.base0D;
+                magenta = colors.base0E;
+                cyan = colors.base0C;
+                white = colors.base07;
               };
             };
           };

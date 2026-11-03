@@ -19,8 +19,6 @@
 
   self.homeModules.mangohud.value =
     {
-      pkgs,
-      config,
       osConfig,
       lib,
       ...

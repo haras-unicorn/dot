@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, selfLib, ... }:
 
 {
   self.homeModules.mcps.value =
@@ -15,19 +15,12 @@
 
       sshDir = "${config.home.homeDirectory}/.cache/dot/git-mcp";
       memoryDir = "${config.home.homeDirectory}/.local/share/dot/memory";
-      memoryPort = 8765;
+      memoryHost = selfLib.mcpMemory.host;
+      memoryPort = selfLib.mcpMemory.port;
       # NOTE: only keeps other local processes from casually using the
       # loopback listener - it is not a secret, anything local can read the
       # nix store anyway
       memoryApiKey = "7c1e5b0f9a24d83e6b1f40c7a92d5e38";
-
-      nixMcpServer = inputs.mcp-nix.packages.${system}.default;
-      gitMcpServerBwrap = inputs.haraspkgs.packages.${system}.git-mcp-server-bwrap.override {
-        bwrapArgs = bwrapBase;
-      };
-      filesystemMcpServer = inputs.haraspkgs.packages.${system}.mcp-server-filesystem-bwrap;
-      memoryMcpServer = pkgs.harasPackages.mcp-memory-service;
-      webMcpServer = inputs.mcp-server-web.packages.${system}.mcp-server-web;
 
       bwrapBase = [
         "--die-with-parent"
@@ -72,6 +65,14 @@
         "--dev"
         "/dev"
       ];
+
+      nixMcpServer = inputs.mcp-nix.packages.${system}.default;
+      gitMcpServerBwrap = inputs.haraspkgs.packages.${system}.git-mcp-server-bwrap.override {
+        bwrapArgs = bwrapBase;
+      };
+      filesystemMcpServer = inputs.haraspkgs.packages.${system}.mcp-server-filesystem-bwrap;
+      memoryMcpServer = pkgs.harasPackages.mcp-memory-service;
+      webMcpServer = inputs.mcp-server-web.packages.${system}.mcp-server-web;
 
       bwrapNvidia = [
         "--ro-bind-try"
@@ -198,7 +199,7 @@
             --bind "${memoryDir}" /memory \
             --chdir /memory \
             ${lib.getExe memoryMcpServer} server --streamable-http \
-            --sse-host 127.0.0.1 --sse-port ${builtins.toString memoryPort} "$@"
+            --sse-host ${memoryHost} --sse-port ${builtins.toString memoryPort} "$@"
         '';
       };
 
@@ -282,7 +283,7 @@
           web.command = lib.getExe webMcpServerWrapper;
 
           memory = {
-            url = "http://127.0.0.1:${builtins.toString memoryPort}/mcp";
+            url = "http://${memoryHost}:${builtins.toString memoryPort}/mcp";
             headers.Authorization = "Bearer ${memoryApiKey}";
           };
         };

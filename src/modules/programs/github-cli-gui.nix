@@ -3,7 +3,6 @@
     {
       osConfig,
       config,
-      pkgs,
       lib,
       ...
     }:

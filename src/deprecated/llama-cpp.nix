@@ -1,8 +1,5 @@
 { ... }:
 
-# TODO: try UD models - they might still work with FATE
-# TODO: try speculative decoding - this is a perfect scenario for it
-# TODO: pick models based on vram somehow??
 # NOTE: ubatch ~= in tps, fate cache ~= out tps, ctx size ~= smart
 
 let

@@ -12,7 +12,6 @@
 
       easyeffects = config.services.easyeffects.package;
 
-      # FIXME: https://github.com/wwmm/easyeffects/issues/4402
       toggle-bypass = pkgs.writeShellApplication {
         name = "easyeffects-toggle-bypass";
         runtimeInputs = [ easyeffects ];

@@ -1,6 +1,6 @@
 {
   self.homeModules.bat.value =
-    { config, lib, ... }:
+    { config, ... }:
     {
       dot.programs.pager.package = config.programs.bat.package;
 

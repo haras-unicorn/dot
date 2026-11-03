@@ -25,8 +25,6 @@
 
   self.homeModules.steam.value =
     {
-      pkgs,
-      config,
       lib,
       osConfig,
       ...

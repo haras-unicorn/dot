@@ -1,7 +1,6 @@
 {
   self.homeModules.git-delta-lazygit.value =
     {
-      config,
       lib,
       pkgs,
       ...

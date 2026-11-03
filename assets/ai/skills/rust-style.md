@@ -103,6 +103,12 @@ it, use `#[allow]` with a reason.
   `coding-style`.
 - Use pure Rust crates. Use a crate that binds C only when there is literally no
   other way, and sqlite is a good example of that.
+- Every binary crate uses the system TLS trust store: `rustls` with the
+  platform's root certificates (for example `rustls-native-certs` or
+  `rustls-platform-verifier`), and not bundled roots like `webpki-roots`. The
+  machine decides which certificates it trusts, and I can add a private CA
+  without a rebuild. In Nix, point `SSL_CERT_FILE` or `SSL_CERT_DIR` at the CA
+  bundle where the tools run.
 - Start from these profiles. A project can change them when it needs to, with a
   reason comment.
 
@@ -167,6 +173,11 @@ Always ship a library in `src/crates`.
   the library.
 - Every library has a `prelude` module that exports what 90% of its users would
   use.
+- A library does not make choices for its users. It does not pick a TLS backend,
+  root certificates, an async runtime or a logging setup. If it needs one of
+  these, it is generic over it or exposes it as an opt-in Cargo feature that is
+  off by default, and the binary chooses. The binary crate that depends on the
+  library is where the choice, such as system TLS above, is made.
 - Document every public function with a doc comment, and with a doctest where
   possible. Ideally every public function has both, an explanation and an
   example. For many functions a doctest is impossible, and that is fine.

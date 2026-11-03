@@ -13,9 +13,12 @@
       let
         namespace = self.lib.overlays.namespace;
 
+        lineWidth = 80;
+        indentWidth = 2;
+
         prettierConfig = (pkgs.formats.yaml { }).generate "prettier.yaml" {
-          printWidth = 80;
-          tabWidth = 2;
+          printWidth = lineWidth;
+          tabWidth = indentWidth;
           useTabs = false;
           trailingComma = "all";
           endOfLine = "lf";
@@ -135,6 +138,7 @@
               aiosqlite apscheduler authlib certifi chardet fastapi httpx numpy
               pyjwt pypdf pyyaml starlette uvicorn zeroconf onnxruntime testkey
               ycombinator stackoverflow stackexchange wearedevelopers workingnomads
+              mdbook gsettings Solaar pwmconfig Coolbits oneline mimeapps
             ''
           )
         );
@@ -243,26 +247,26 @@
       {
         name = "dot";
 
-        packages = with pkgs; [
-          nil
-          nixos-facter
-          nixos-rebuild
+        packages = [
+          pkgs.nil
+          pkgs.nixos-facter
+          pkgs.nixos-rebuild
 
-          github-cli
-          nushell
-          helix
-          opencode
-          fd
-          ripgrep
-          fastmod
-          lazygit
+          pkgs.github-cli
+          pkgs.nushell
+          pkgs.helix
+          pkgs.opencode
+          pkgs.fd
+          pkgs.ripgrep
+          pkgs.fastmod
+          pkgs.lazygit
 
-          bash-language-server
-          yaml-language-server
-          vscode-langservers-extracted
-          markdownlint-cli
-          markdown-link-check
-          marksman
+          pkgs.bash-language-server
+          pkgs.yaml-language-server
+          pkgs.vscode-langservers-extracted
+          pkgs.markdownlint-cli
+          pkgs.markdown-link-check
+          pkgs.marksman
 
           nixfmtWrapped
           prettierWrapped
@@ -283,10 +287,10 @@
           settings."*" = {
             end_of_line = "lf";
             charset = "utf-8";
-            max_line_length = 80;
+            max_line_length = lineWidth;
             indent_style = "space";
-            indent_size = 2;
-            tab_width = 2;
+            indent_size = indentWidth;
+            tab_width = indentWidth;
             insert_final_newline = true;
             trim_trailing_whitespace = true;
           };

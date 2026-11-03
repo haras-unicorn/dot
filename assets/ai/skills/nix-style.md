@@ -39,7 +39,25 @@ are no idiomatic exceptions to the rules in this section.
   `toString`. Never name a variable the same as a builtin.
 - **Never leave unused variables, arguments or `...`.** A lambda that ignores
   its attrset argument takes `_` and not `{ ... }`. A module that takes no
-  arguments is a plain attrset, because an attrset is also a module.
+  arguments is a plain attrset, because an attrset is also a module. So
+  `{ ... }: { module content }` is wrong and `{ module content }` is right. This
+  is about a function that takes nothing, not about the `...` in
+  `{ lib, config, ... }:`. A module that takes arguments needs that `...`,
+  because the module system passes more arguments than it uses, and it stays.
+  Still list only the arguments the module uses.
+
+## File order
+
+This adds to File order in `coding-style`. Nix is a partial exception to it,
+because `let ... in` has to come first. So:
+
+1. First order by `let ... in` dependencies: a binding comes after the ones it
+   uses, as above.
+2. Then order everything else in the file from high level to low level, as in
+   `coding-style`.
+
+So helpers in a `let` above the module body are fine. What follows `in` still
+reads from the main idea down to the details.
 
 ## Tooling
 
@@ -71,9 +89,12 @@ Every repository is a flake, built on
 
 ## Testing
 
-The general rules are in `coding-style`. With haraspkgs:
+The general rules are in `coding-style`, and the layout follows what Rust does:
+unit tests sit next to the code, integration tests are apart in their own
+folder. With haraspkgs:
 
-- Unit tests use `nix-unit` through `self.unitTests`:
+- Unit tests use `nix-unit` through `self.unitTests`, in the same file as the
+  library functions they test:
 
   ```nix
   self.unitTests.<module-name>.<test-name> = {
@@ -82,7 +103,8 @@ The general rules are in `coding-style`. With haraspkgs:
   };
   ```
 
-- Integration tests depend on the module system. NixOS tests go through
+- Integration tests live in their own folder, `src/nix/tests/`, and not next to
+  the modules. They depend on the module system. NixOS tests go through
   `self.nixosTests`, which also work for home-manager. The `value` is a function
   that returns a NixOS test module, and `flake = true` makes it a check:
 

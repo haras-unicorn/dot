@@ -1,7 +1,6 @@
 {
   self.homeModules.nom.value =
     {
-      config,
       lib,
       pkgs,
       ...

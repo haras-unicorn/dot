@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   self.overlays.overlays.theme.value = final: _prev: {
     inspect-gtk = final.writeShellApplication {

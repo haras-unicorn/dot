@@ -93,8 +93,8 @@
     lib.mkIf hardware.browser {
       programs.chromium.enable = true;
       programs.chromium.package = osConfig.dot.programs.chromium.package;
-      programs.chromium.dictionaries = with pkgs.hunspellDictsChromium; [
-        en_US
+      programs.chromium.dictionaries = [
+        pkgs.hunspellDictsChromium.en_US
       ];
     };
 }

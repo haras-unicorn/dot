@@ -1,5 +1,3 @@
-# TODO: ensure -t and -l behavior for commands
-
 {
   self.homeModules.wl-clipboard-xclip.value =
     {

@@ -1,4 +1,5 @@
-# FIXME: https://github.com/dbeaver/dbeaver/issues/34528#issuecomment-2412519650
+# NOTE: dbeaver flickers on Wayland and upstream closed that as not planned,
+# so it runs on X11 https://github.com/dbeaver/dbeaver/issues/34528#issuecomment-2412519650
 
 {
   self.homeModules.dbeaver.value =

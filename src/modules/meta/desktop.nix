@@ -1,11 +1,6 @@
 {
   self.nixosModules.desktop.value =
-    {
-      pkgs,
-      lib,
-      config,
-      ...
-    }:
+    { lib, ... }:
     {
       options.dot = {
         desktop = {
@@ -57,7 +52,6 @@
 
   self.homeModules.desktop.value =
     {
-      pkgs,
       lib,
       config,
       ...
@@ -66,14 +60,14 @@
       options.dot = {
         desktop = {
           sessionVariables = lib.mkOption {
-            type =
-              with lib.types;
-              lazyAttrsOf (oneOf [
-                str
-                path
-                int
-                float
-              ]);
+            type = lib.types.lazyAttrsOf (
+              lib.types.oneOf [
+                lib.types.str
+                lib.types.path
+                lib.types.int
+                lib.types.float
+              ]
+            );
             default = { };
             description = ''
               Environment variables to set on session start with Hyprland.
@@ -81,7 +75,7 @@
           };
 
           sessionStartup = lib.mkOption {
-            type = with lib.types; listOf str;
+            type = lib.types.listOf lib.types.str;
             default = [ ];
             description = ''
               Commands to execute on session start with Hyprland.
@@ -98,15 +92,14 @@
           };
 
           keybinds = lib.mkOption {
-            # TODO: strictly check for the mods, key and command options
-            type =
-              with lib.types;
-              listOf (
-                lazyAttrsOf (oneOf [
-                  str
-                  (listOf str)
-                ])
-              );
+            type = lib.types.listOf (
+              lib.types.lazyAttrsOf (
+                lib.types.oneOf [
+                  lib.types.str
+                  (lib.types.listOf lib.types.str)
+                ]
+              )
+            );
             default = [ ];
             description = ''
               Keybinds to set with the selected desktop environment.
@@ -114,9 +107,8 @@
           };
 
           windowrules = lib.mkOption {
-            type =
-              with lib.types;
-              listOf (submodule {
+            type = lib.types.listOf (
+              lib.types.submodule {
                 options.rule = lib.mkOption {
                   type = lib.types.str;
                   description = "Window rule to apply";
@@ -129,7 +121,8 @@
                   type = lib.types.str;
                   description = "Selector argument with which to match";
                 };
-              });
+              }
+            );
             default = [ ];
           };
 

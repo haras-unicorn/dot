@@ -1,9 +1,6 @@
 {
   self.nixosModules.programs.value =
-    {
-      lib,
-      ...
-    }:
+    { lib, ... }:
     {
       options.dot = {
         programs = {
@@ -65,12 +62,7 @@
     };
 
   self.homeModules.programs.value =
-    {
-      lib,
-      pkgs,
-      config,
-      ...
-    }:
+    { lib, ... }:
     {
       options.dot = {
         programs = {
@@ -82,14 +74,14 @@
             };
 
             sessionVariables = lib.mkOption {
-              type =
-                with lib.types;
-                lazyAttrsOf (oneOf [
-                  str
-                  path
-                  int
-                  float
-                ]);
+              type = lib.types.lazyAttrsOf (
+                lib.types.oneOf [
+                  lib.types.str
+                  lib.types.path
+                  lib.types.int
+                  lib.types.float
+                ]
+              );
               default = { };
               description = ''
                 Environment variables to set on session start with Nushell.
@@ -97,7 +89,7 @@
             };
 
             sessionStartup = lib.mkOption {
-              type = with lib.types; listOf str;
+              type = lib.types.listOf lib.types.str;
               default = [ ];
               description = ''
                 Commands to execute on session start with default shell.
@@ -105,7 +97,7 @@
             };
 
             aliases = lib.mkOption {
-              type = with lib.types; lazyAttrsOf str;
+              type = lib.types.lazyAttrsOf lib.types.str;
               default = { };
               description = ''
                 Aliases to use in default shell.
@@ -143,14 +135,14 @@
             };
 
             sessionVariables = lib.mkOption {
-              type =
-                with lib.types;
-                lazyAttrsOf (oneOf [
-                  str
-                  path
-                  int
-                  float
-                ]);
+              type = lib.types.lazyAttrsOf (
+                lib.types.oneOf [
+                  lib.types.str
+                  lib.types.path
+                  lib.types.int
+                  lib.types.float
+                ]
+              );
               default = { };
               description = ''
                 Environment variables to set on default terminal startup.

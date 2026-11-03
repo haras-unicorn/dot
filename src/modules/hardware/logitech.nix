@@ -1,5 +1,3 @@
-# TODO: add service for tray
-
 {
   self.nixosModules.hardware-logitech.value =
     { config, ... }:

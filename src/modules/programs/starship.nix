@@ -11,7 +11,6 @@
         stylix.targets.starship.enable = false;
 
         programs.starship.settings = builtins.fromTOML ''
-          # TODO: fix how slow python is
           # $python\
           format = """\
           [╭─](bold fg:${colors.cyan})\
