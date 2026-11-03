@@ -107,6 +107,12 @@ language, framework or security advice that is not specific to that repository.
 Build it by sampling metadata files (`Cargo.toml`, `README.md`, flake files) and
 synthesizing. Keep project-specific guidelines there and shared ones here.
 
+Some projects are learning projects: I write the code myself to learn. If a
+project's `AGENTS.md` says `learning: true`, or I say so, load the
+`learning-project` skill and follow it before doing anything else. The project's
+`AGENTS.md` sets its own scope within the skill's rules and may loosen its hard
+limits. Nothing else may.
+
 When a change makes an `AGENTS.md` stale, update it in the same change. If you
 notice an inconsistency, point it out and suggest a fix.
 
