@@ -40,21 +40,23 @@
       startup = lib.strings.concatStringsSep "\n" (
         builtins.map (command: "${builtins.toString command}") cfg.sessionStartup
       );
+
+      # NOTE: nushell only accepts \u{1b} for the escape character, but
+      # JSON and home-manager's environmentVariables write \u001b
+      nushellString = value: builtins.replaceStrings [ "\\u001b" ] [ "\\u{1b}" ] (builtins.toJSON value);
     in
     {
       dot.programs.shell.package = config.programs.nushell.package;
 
       programs.nushell.enable = true;
 
-      programs.nushell.environmentVariables = {
-        PROMPT_INDICATOR_VI_INSERT = "󰞷 ";
-        PROMPT_INDICATOR_VI_NORMAL = " ";
-      };
-
       programs.nushell.envFile.text = ''
         ${builtins.readFile ./env.nu}
 
         ${vars}
+
+        $env.PROMPT_INDICATOR_VI_INSERT = ${nushellString config.dot.prompt.nushellIndicators.insert}
+        $env.PROMPT_INDICATOR_VI_NORMAL = ${nushellString config.dot.prompt.nushellIndicators.normal}
       '';
 
       programs.nushell.configFile.text = ''

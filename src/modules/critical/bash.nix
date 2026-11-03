@@ -51,6 +51,25 @@
       programs.bash.enableCompletion = true;
       programs.bash.package = pkgs.bashInteractive;
 
+      programs.readline.enable = true;
+      programs.readline.variables = {
+        editing-mode = "vi";
+        # NOTE: negative, zero, non-numeric makes
+        # exiting normal mode wait until you press another key
+        keyseq-timeout = 1;
+        show-mode-in-prompt = true;
+        vi-ins-mode-string = config.dot.prompt.readlineIndicators.insert;
+        vi-cmd-mode-string = config.dot.prompt.readlineIndicators.normal;
+      };
+
+      # NOTE: readline steps the cursor back when leaving insert mode, like
+      # vi does, so this steps it forward again to stay on the same character
+      programs.readline.extraConfig = ''
+        set keymap vi-insert
+        "\C-x\C-v": vi-movement-mode
+        "\e": "\C-x\C-vl"
+      '';
+
       programs.bash.initExtra = ''
         ${vars}
         ${aliases}
