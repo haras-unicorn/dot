@@ -6,6 +6,10 @@
 
     value =
       { config, ... }:
+      let
+        audioBoxNode = "usb-PreSonus_AudioBox_USB_96_000000000000-00.analog-stereo";
+        audioBoxDescription = "AudioBox USB 96 Analog Stereo";
+      in
       {
         boot.blacklistedKernelModules = [
           "amdgpu"
@@ -34,20 +38,28 @@
           ];
         };
 
+        dot.easyeffects.output.krk = {
+          preset = "${self}/assets/easyeffects/hearth-krk.json";
+          device = "alsa_output.${audioBoxNode}";
+          route = "Analog Output";
+          description = audioBoxDescription;
+        };
+
+        dot.easyeffects.output.redmi = {
+          preset = "${self}/assets/easyeffects/hearth-redmi.json";
+          device = "bluez_output.9C_49_52_87_9A_5B.1";
+          route = "Headphones";
+          description = "Redmi Buds 4 Lite";
+        };
+
+        dot.easyeffects.input.rode = {
+          preset = "${self}/assets/easyeffects/hearth-rode.json";
+          device = "alsa_input.${audioBoxNode}";
+          route = "Analog Input";
+          description = audioBoxDescription;
+        };
+
         home-manager.users.${config.dot.user.user} = {
-          xdg.dataFile."easyeffects/autoload/output/krk.json".source =
-            "${self}/assets/easyeffects/hearth-krk-autoload.json";
-          xdg.dataFile."easyeffects/output/krk.json".source = "${self}/assets/easyeffects/hearth-krk.json";
-
-          xdg.dataFile."easyeffects/autoload/input/rode.json".source =
-            "${self}/assets/easyeffects/hearth-rode-autoload.json";
-          xdg.dataFile."easyeffects/input/rode.json".source = "${self}/assets/easyeffects/hearth-rode.json";
-
-          xdg.dataFile."easyeffects/autoload/output/redmi.json".source =
-            "${self}/assets/easyeffects/hearth-redmi-autoload.json";
-          xdg.dataFile."easyeffects/output/redmi.json".source =
-            "${self}/assets/easyeffects/hearth-redmi.json";
-
           xdg.configFile."obs-studio/basic/scenes/Untitled.json" = {
             force = true;
             source = "${self}/assets/obs/hearth-scene.json";

@@ -1,7 +1,6 @@
 {
   self.homeModules.easyeffects.value =
     {
-      pkgs,
       lib,
       config,
       osConfig,
@@ -10,32 +9,33 @@
     let
       hardware = osConfig.dot.hardware;
 
+      presets = osConfig.dot.easyeffects;
+
       easyeffects = config.services.easyeffects.package;
 
-      toggle-bypass = pkgs.writeShellApplication {
-        name = "easyeffects-toggle-bypass";
-        runtimeInputs = [ easyeffects ];
-        text = ''
-          if [ "$(easyeffects -b 3)" = "1" ]; then
-            easyeffects -b 2
-          else
-            easyeffects -b 1
-          fi
-        '';
-      };
+      # EasyEffects looks autoload files up by this name and replaces "/"
+      autoloadName = preset: builtins.replaceStrings [ "/" ] [ "_" ] "${preset.device}:${preset.route}";
+
+      presetFiles =
+        kind:
+        lib.concatMapAttrs (
+          name: preset: {
+            "easyeffects/${kind}/${name}.json".source = preset.preset;
+            "easyeffects/autoload/${kind}/${autoloadName preset}.json".text = builtins.toJSON {
+              device = preset.device;
+              device-description = preset.description;
+              device-profile = preset.route;
+              preset-name = name;
+            };
+          }
+        );
     in
     lib.mkIf hardware.sound {
-      dot.desktop.keybinds = [
-        {
-          mods = [ "super" ];
-          key = "x";
-          command = lib.getExe toggle-bypass;
-        }
-      ];
+      home.packages = [ easyeffects ];
 
-      home.packages = [
-        easyeffects
-        toggle-bypass
+      xdg.dataFile = lib.mergeAttrsList [
+        (presetFiles "output" presets.output)
+        (presetFiles "input" presets.input)
       ];
 
       services.easyeffects.enable = true;
