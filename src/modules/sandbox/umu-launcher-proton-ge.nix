@@ -145,7 +145,7 @@
         runtimeInputs = [
           nushell
           pkgs.umu-launcher
-          pkgs.gum
+          config.dot.programs.gum.package
         ];
         runtimeEnv = {
           SDL_VIDEODRIVER = "windows";
