@@ -62,7 +62,7 @@
     };
 
   self.homeModules.programs.value =
-    { lib, ... }:
+    { lib, unstablePkgs, ... }:
     {
       options.dot = {
         programs = {
@@ -176,6 +176,17 @@
               default = null;
               description = ''
                 Default file manager package.
+              '';
+            };
+          };
+
+          gum = {
+            package = lib.mkOption {
+              type = lib.types.package;
+              default = unstablePkgs.gum;
+              description = ''
+                Gum package used by the gum module and by the scripts that
+                call it.
               '';
             };
           };
