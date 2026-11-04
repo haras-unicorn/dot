@@ -112,7 +112,7 @@
           builtins.listToAttrs (
             builtins.map (type: {
               name = type;
-              value = "dot-${lib.getName package}";
+              value = "dot-${lib.getName package}.desktop";
             }) types
           )
         ) config.dot.mime.apps
