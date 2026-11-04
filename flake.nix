@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    haraspkgs.url = "github:haras-unicorn/haraspkgs/v1.2.0";
+    haraspkgs.url = "github:haras-unicorn/haraspkgs/v1.3.0";
     haraspkgs.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     nixos-facter-detection-modules.url = "github:haras-unicorn/nixos-facter-detection-modules/refs/tags/v1.1.3";
