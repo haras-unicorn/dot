@@ -85,17 +85,15 @@
       "application/x-sh"
       "application/xhtml+xml"
       "application/xml"
+      "application/yaml"
+      "application/toml"
+      "text/plain"
+      "text/markdown"
+      "text/x-log"
     ];
 
     files = [
       "inode/directory"
     ];
-
-    default = {
-      audio = "audio/wav";
-      video = "video/x-matroska";
-      image = "image/png";
-      text = "text/plain";
-    };
   };
 }

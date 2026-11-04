@@ -124,7 +124,7 @@
           inherit name;
           value = {
             name = "LibreWolf (${name})";
-            exec = "${lib.getExe package} --profile ${name}";
+            exec = "${lib.getExe package} -P ${name}";
             terminal = false;
           };
         }) (builtins.tail profiles)
