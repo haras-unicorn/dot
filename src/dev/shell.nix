@@ -138,7 +138,7 @@
               aiosqlite apscheduler authlib certifi chardet fastapi httpx numpy
               pyjwt pypdf pyyaml starlette uvicorn zeroconf onnxruntime testkey
               ycombinator stackoverflow stackexchange wearedevelopers workingnomads
-              mdbook gsettings Solaar pwmconfig Coolbits oneline mimeapps
+              mdbook gsettings Solaar pwmconfig Coolbits oneline mimeapps keyseq
             ''
           )
         );
@@ -253,6 +253,7 @@
           pkgs.nixos-rebuild
 
           pkgs.github-cli
+          pkgs.bashInteractive
           pkgs.nushell
           pkgs.helix
           pkgs.opencode
