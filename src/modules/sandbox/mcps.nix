@@ -66,7 +66,7 @@
         "/dev"
       ];
 
-      nixMcpServer = inputs.mcp-nix.packages.${system}.default;
+      nixMcpServer = inputs.mcp-nix.packages.${system}.mcp-nix-podman;
       gitMcpServerBwrap = inputs.haraspkgs.packages.${system}.git-mcp-server-bwrap.override {
         bwrapArgs = bwrapBase;
       };
@@ -98,11 +98,15 @@
         "/dev/nvidia-uvm-tools"
       ];
 
-      # NOTE: overlay mounts cannot nest in this sandbox, so haraspkgs tools
-      # copy their generated files into the tree instead
+      # NOTE: this replaces the default sandbox of the server, so it has to
+      # keep what the default has: --new-session stops a program from pushing
+      # input into the terminal the server runs in. Overlay mounts cannot nest
+      # in this sandbox, so haraspkgs tools copy their generated files into
+      # the tree instead
       nixSandbox = builtins.concatStringsSep " " (
         bwrapBase
         ++ [
+          "--new-session"
           "--setenv"
           "HARASPKGS_MATERIALIZE"
           "1"
@@ -114,15 +118,15 @@
       );
 
       # NOTE: the stdio servers are scoped to the directory the harness was
-      # started in
+      # started in. The package adds the container sandbox to these
+      # arguments, and the sandbox of the nix commands comes with the server
       nixMcpServerWrapper = pkgs.writeShellApplication {
         name = "dot-nix-mcp-server";
-        runtimeInputs = [ nixMcpServer ];
         text = ''
           root="$(pwd -P)"
-          MCP_NIX_SANDBOX="${nixSandbox}"
-          MCP_NIX_SANDBOX="''${MCP_NIX_SANDBOX//@ROOT@/$root}"
-          export MCP_NIX_SANDBOX
+          sandbox="${nixSandbox}"
+          MCP_NIX__BWRAP_ARGS="''${sandbox//@ROOT@/$root}"
+          export MCP_NIX__BWRAP_ARGS
           exec ${lib.getExe nixMcpServer} "$@"
         '';
       };

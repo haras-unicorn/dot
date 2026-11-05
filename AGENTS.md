@@ -15,11 +15,12 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
     - `critical/`, `desktop/`, `hardware/`, `nix/`, `programs/`, `sandbox/`,
       `services/` — module implementations
     - `hardware/facter.nix` — shared facter report and `nixpkgs.system` wiring
-    - `ai/` — Claude Code and OpenCode home modules, `mcps` (the shared
-      `programs.mcp` registry both consume, with the sandboxed git, filesystem,
-      nix, web, and memory MCP servers and the `mcp-memory` user service), and
-      supporting AI services (`corm`, `librechat`, `piper`, `tesseract`,
-      `whisper-cpp`)
+    - `sandbox/mcps.nix` — the shared `programs.mcp` registry that Claude Code
+      and OpenCode consume, with the sandboxed git, filesystem, nix (with
+      containers through `mcp-nix-podman`), web, and memory MCP servers and the
+      `mcp-memory` user service
+    - `ai/` — Claude Code and OpenCode home modules and supporting AI services
+      (`corm`, `librechat`, `piper`, `tesseract`, `whisper-cpp`)
   - `deprecated/` — retired modules kept for reference; they register under
     `self.lib.deprecated.*` and are inert unless imported explicitly
   - `lib/` — `self.lib` helpers shared across the flake; `self.lib.ai` loads the
@@ -63,7 +64,7 @@ embedding and rerank models). Overlay values are evaluated outside the NixOS and
 home-manager module system, so they cannot read `config`; they take what they
 need as arguments. A wrapper that depends on one module's `config`, a host
 device, a service unit, or a session stays a local binding in that module, like
-the MCP server sandboxes in `modules/ai/mcps.nix`.
+the MCP server sandboxes in `modules/sandbox/mcps.nix`.
 
 ## Style deviations
 
