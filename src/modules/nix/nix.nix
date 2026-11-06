@@ -1,6 +1,10 @@
+{ selfLib, ... }:
+
 let
+  retention = builtins.toString selfLib.gc.retentionDays;
+
   makeNix =
-    lib: config:
+    config:
     let
       hardware = config.dot.hardware;
     in
@@ -8,9 +12,10 @@ let
       settings.max-jobs = hardware.threads / 3;
       settings.cores = 2;
 
-      gc = lib.mkIf config.dot.nix.gc {
+      gc = {
         automatic = true;
-        options = "--delete-older-than 30d";
+        dates = "daily";
+        options = "--delete-older-than ${retention}d";
       };
       settings.auto-optimise-store = true;
 
@@ -38,14 +43,14 @@ let
 in
 {
   self.nixosModules.nix.value =
-    { lib, config, ... }:
+    { config, ... }:
     {
-      nix = makeNix lib config;
+      nix = makeNix config;
     };
 
   self.homeModules.nix.value =
     { lib, osConfig, ... }:
     {
-      nix = makeNix lib osConfig;
+      nix = makeNix osConfig;
     };
 }

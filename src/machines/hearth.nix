@@ -16,8 +16,6 @@
           "radeon"
         ];
 
-        dot.nix.gc = false;
-
         dot.hardware.temperature = "/sys/class/hwmon/hwmon2/temp1_input";
         dot.hardware.display = "DP-1";
 
