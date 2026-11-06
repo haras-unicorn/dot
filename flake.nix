@@ -52,7 +52,7 @@
     corm.url = "github:haras-unicorn/corm";
     corm.inputs.nixpkgs.follows = "nixpkgs";
 
-    mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.1.5";
+    mcp-nix.url = "github:haras-unicorn/mcp-nix/refs/tags/v0.2.1";
     mcp-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     mcp-server-web.url = "github:haras-unicorn/mcp-server-web/refs/tags/v0.2.0";
