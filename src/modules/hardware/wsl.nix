@@ -21,6 +21,9 @@
         fileSystems = lib.mkForce { };
         swapDevices = lib.mkForce [ ];
 
+        # NOTE: WSLg mounts into /tmp, which a clean on boot should leave alone
+        boot.tmp.cleanOnBoot = lib.mkForce false;
+
         # NOTE: interface, DNS, firewall and time are managed by Windows/WSL.
         networking.networkmanager.enable = lib.mkForce false;
         networking.nameservers = lib.mkForce [ ];
@@ -47,9 +50,6 @@
         dot.wallpaper.static = true;
         dot.hardware.temperature = lib.mkDefault "/sys/class/thermal/thermal_zone0/temp";
         dot.hardware.display = lib.mkDefault "";
-
-        # NOTE: gc does not work well with WSL
-        dot.nix.gc = false;
       };
     };
 }
