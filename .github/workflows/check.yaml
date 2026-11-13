@@ -24,6 +24,24 @@
                     "name": "haras",
                   },
               },
+              {
+                "if": "runner.os == 'Linux'",
+                "name": "Enable KVM",
+                "run":
+                  "echo 'KERNEL==\"kvm\", GROUP=\"kvm\", MODE=\"0666\",
+                  OPTIONS+=\"static_node=kvm\"' | sudo tee
+                  /etc/udev/rules.d/99-kvm4all.rules\nsudo udevadm control
+                  --reload-rules\nsudo udevadm trigger --name-match=kvm\n",
+              },
+              {
+                "if": "runner.os == 'Linux'",
+                "name": "Allow unprivileged user namespaces",
+                "run":
+                  "if [ -e
+                  /proc/sys/kernel/apparmor_restrict_unprivileged_userns ];
+                  then\n  sudo sysctl -w
+                  kernel.apparmor_restrict_unprivileged_userns=0\nfi\n",
+              },
               { "run": "nix flake check --show-trace --all-systems" },
             ],
         },

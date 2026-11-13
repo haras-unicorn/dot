@@ -147,6 +147,10 @@ Every app has the same parts:
   from a config file, which is `<program name>.toml` in the current directory by
   default, or the path of a global `--config` argument. A missing default file
   is fine. A missing `--config` file is an error.
+- `schemars` on every config struct, so the config has a JSON Schema.
+- Two `clap` subcommands that do not start the app: `schema` prints the JSON
+  Schema of the config, and `config` prints the effective config, which is what
+  the app would run with after the file and the environment are merged.
 - `tracing` for logs, as JSON on stderr, and every event has a `message` field.
   This is the bare minimum, always. It is digestible for Prometheus and for a
   human with `grep` and `jq`.
@@ -155,7 +159,8 @@ Every app has the same parts:
 `main` does only these things, each in its own file:
 
 - Log setup, in `log.rs`.
-- Argument parsing, in `args.rs`, with the `clap` structures and their tests.
+- Argument parsing, in `args.rs`, with the `clap` structures (the `schema` and
+  `config` subcommands included) and their tests.
 - Config parsing, in `config.rs`, with the config structures and their tests.
 - Passing the arguments and the config to a `run` function, in `run.rs` or a
   file like it.

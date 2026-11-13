@@ -769,16 +769,16 @@
         "uv2nix": "uv2nix_2"
       },
       "locked": {
-        "lastModified": 1793783952,
-        "narHash": "sha256-eQlJ9SFf9ztXiCySG2+cFf7VhUtEO9kR2a+vwo0Rtms=",
+        "lastModified": 1794314304,
+        "narHash": "sha256-GEWXJkkognBShDpbZtbIK1waHze/Vswd2gG8zJQJX68=",
         "owner": "haras-unicorn",
         "repo": "haraspkgs",
-        "rev": "55799cd42b4cc9cbbc3d1399c9ab3546b6891b0f",
+        "rev": "251ca81d72ee1857a68fd87fd24e5df479e5cae5",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "v1.3.0",
+        "ref": "v1.5.2",
         "repo": "haraspkgs",
         "type": "github"
       }
@@ -802,16 +802,16 @@
         "uv2nix": "uv2nix_3"
       },
       "locked": {
-        "lastModified": 1793783952,
-        "narHash": "sha256-eQlJ9SFf9ztXiCySG2+cFf7VhUtEO9kR2a+vwo0Rtms=",
+        "lastModified": 1794217603,
+        "narHash": "sha256-4pM1iRcZSTg0Kk266T2dHfBwFjEWyPvNy8OwAhq7Kyk=",
         "owner": "haras-unicorn",
         "repo": "haraspkgs",
-        "rev": "55799cd42b4cc9cbbc3d1399c9ab3546b6891b0f",
+        "rev": "7ac093f32373b94477b1fa1a0794aa0def48cf4e",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "v1.3.0",
+        "ref": "v1.4.0",
         "repo": "haraspkgs",
         "type": "github"
       }
@@ -1080,16 +1080,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1793994430,
-        "narHash": "sha256-K3YygCNsmlNvwghWNosMkW0U4bsTnWlVDrTxsKZMhbk=",
+        "lastModified": 1794237704,
+        "narHash": "sha256-+ijgXrsr7e0+iUEHN/wimi6CpDFlkh7+dnMv2h0Ebsw=",
         "owner": "haras-unicorn",
         "repo": "mcp-nix",
-        "rev": "6cdaba3a5ce3990212205c67b48fddec53c91c48",
+        "rev": "5360c303e1eeeac710bd342e1c900c3789165525",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/v0.2.1",
+        "ref": "refs/tags/v0.2.2",
         "repo": "mcp-nix",
         "type": "github"
       }
