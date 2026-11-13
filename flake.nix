@@ -57,6 +57,12 @@
 
     mcp-server-web.url = "github:haras-unicorn/mcp-server-web/refs/tags/v0.2.0";
     mcp-server-web.inputs.nixpkgs.follows = "nixpkgs";
+
+    mcp-semantic-memory.url = "github:haras-unicorn/mcp-semantic-memory/refs/tags/v0.1.2";
+    mcp-semantic-memory.inputs.nixpkgs.follows = "nixpkgs";
+
+    mcp-plan.url = "github:haras-unicorn/mcp-plan/refs/tags/v0.1.10";
+    mcp-plan.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

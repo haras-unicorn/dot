@@ -6,6 +6,7 @@
       config,
       lib,
       pkgs,
+      unstablePkgs,
       ...
     }:
     let
@@ -44,6 +45,12 @@
           gpu-provider = {
             enable = true;
             model = pkgs.cormPackages.qwen-3-8-flash-next-iq2-xs;
+          };
+
+          embedding = {
+            enable = true;
+            # NOTE: the one in corm is outdated for the flags it sets
+            kind.llama-cpp.package = unstablePkgs.llama-cpp;
           };
 
           remote-provider = {

@@ -14,11 +14,7 @@
       ) detection.network.interfaces.byModel;
     in
     lib.mkIf hasRtl88x2bu {
-      boot.blacklistedKernelModules = [
-        "rtw88_8822bu"
-        "rtw88_core"
-        "rtw88_usb"
-      ];
+      boot.blacklistedKernelModules = [ "rtw88_8822bu" ];
       boot.extraModulePackages = [
         # NOTE: the nixpkgs version is heavily outdated
         (config.boot.kernelPackages.rtl88x2bu.overrideAttrs (

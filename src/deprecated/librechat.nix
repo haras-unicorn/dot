@@ -7,7 +7,7 @@ in
 {
   self.nixpkgs.config.allowUnfreePackageNames = [ "mongodb" ];
 
-  self.nixosModules.librechat.value =
+  self.lib.deprecated.nixosModules.librechat =
     {
       config,
       lib,
@@ -152,7 +152,7 @@ in
       };
     };
 
-  self.homeModules.librechat.value =
+  self.lib.deprecated.homeModules.librechat =
     { osConfig, lib, ... }:
     let
       hardware = osConfig.dot.hardware;

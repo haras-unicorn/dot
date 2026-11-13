@@ -1,4 +1,4 @@
-{ inputs, selfLib, ... }:
+{ inputs, ... }:
 
 {
   self.homeModules.mcps.value =
@@ -14,13 +14,9 @@
       system = pkgs.stdenv.hostPlatform.system;
 
       sshDir = "${config.home.homeDirectory}/.cache/dot/git-mcp";
-      memoryDir = "${config.home.homeDirectory}/.local/share/dot/memory";
-      memoryHost = selfLib.mcpMemory.host;
-      memoryPort = selfLib.mcpMemory.port;
-      # NOTE: only keeps other local processes from casually using the
-      # loopback listener - it is not a secret, anything local can read the
-      # nix store anyway
-      memoryApiKey = "7c1e5b0f9a24d83e6b1f40c7a92d5e38";
+      memoryDir = "${config.home.homeDirectory}/.local/share/mcp-semantic-memory";
+      planDir = "${config.home.homeDirectory}/.local/share/mcp-plan";
+      embedding = osConfig.corm.embedding;
 
       bwrapBase = [
         "--die-with-parent"
@@ -71,7 +67,8 @@
         bwrapArgs = bwrapBase;
       };
       filesystemMcpServer = inputs.haraspkgs.packages.${system}.mcp-server-filesystem-bwrap;
-      memoryMcpServer = pkgs.harasPackages.mcp-memory-service;
+      memoryMcpServer = inputs.mcp-semantic-memory.packages.${system}.mcp-semantic-memory;
+      planMcpServer = inputs.mcp-plan.packages.${system}.mcp-plan;
       webMcpServer = inputs.mcp-server-web.packages.${system}.mcp-server-web;
 
       bwrapNvidia = [
@@ -151,60 +148,50 @@
         '';
       };
 
-      # NOTE: the models are mounted from the store where the service expects
-      # its download cache, the only writable path is the memory directory,
-      # and the service is configured to never go online - the network
-      # namespace is only shared so clients can reach its loopback listener
+      # NOTE: the memory and plan servers are not sandboxed, because they only
+      # answer tool calls with what is in their own database
       memoryEnvironment = {
-        HOME = "/home/memory";
-        LANG = "C.UTF-8";
-        MCP_MEMORY_STORAGE_BACKEND = "sqlite_vec";
-        MCP_MEMORY_BASE_DIR = "/memory";
-        MCP_MEMORY_SQLITE_PATH = "/memory/sqlite_vec.db";
-        MCP_MEMORY_BACKUPS_PATH = "/memory/backups";
-        MCP_MEMORY_ARCHIVE_PATH = "/memory/archive";
-        MCP_MEMORY_USE_ONNX = "1";
-        MCP_MEMORY_ONNX_ALLOW_DOWNLOAD = "0";
-        MCP_MEMORY_OFFLINE = "1";
-        MCP_RERANK_ENABLED = "true";
-        MCP_RERANK_MODEL = "ms-marco-MiniLM-L-6-v2";
-        HF_HUB_OFFLINE = "1";
-        TRANSFORMERS_OFFLINE = "1";
-        MCP_CONSOLIDATION_ENABLED = "true";
-        MCP_API_KEY = memoryApiKey;
+        MCP_SEMANTIC_MEMORY__DATABASE__URL = "sqlite://${memoryDir}/data.db";
+        MCP_SEMANTIC_MEMORY__EMBEDDING__URL = "http://${embedding.host}:${builtins.toString embedding.port}";
+        MCP_SEMANTIC_MEMORY__EMBEDDING__MODEL = embedding.model.passthru.modelName;
+        # NOTE: the vector size of Qwen3-Embedding-0.6B, the default model of
+        # the corm embedding server
+        MCP_SEMANTIC_MEMORY__EMBEDDING__DIMENSION = "1024";
+        # NOTE: Qwen3-Embedding wants a task instruction before queries and
+        # nothing before documents
+        MCP_SEMANTIC_MEMORY__EMBEDDING__QUERY_PREFIX = "Instruct: Given a question, retrieve the memories that answer it\nQuery: ";
       };
 
-      memorySandbox =
-        bwrapBase
-        ++ [
-          "--share-net"
-          "--ro-bind"
-          "${memoryMcpServer.onnxModel}/onnx"
-          "/home/memory/.cache/mcp_memory/onnx_models/all-MiniLM-L6-v2/onnx"
-          "--ro-bind"
-          "${memoryMcpServer.rerankModel}"
-          "/home/memory/.cache/mcp_memory/onnx_models/ms-marco-MiniLM-L-6-v2"
-          "--clearenv"
-        ]
-        ++ lib.concatLists (
-          lib.mapAttrsToList (name: value: [
-            "--setenv"
-            name
-            value
-          ]) memoryEnvironment
-        );
+      # NOTE: the haraspkgs helpers are not in pkgs.harasPackages of a
+      # downstream flake yet, so this extends pkgs with them like stolon does
+      harasPackages = (pkgs.extend inputs.haraspkgs.overlays.default).harasPackages;
 
-      memoryMcpServerWrapper = pkgs.writeShellApplication {
+      memoryMcpServerWrapper = harasPackages.writeNushellApplication {
         name = "dot-memory-mcp-server";
-        runtimeInputs = [ pkgs.bubblewrap ];
         text = ''
-          mkdir -p "${memoryDir}"
-          exec bwrap ${lib.escapeShellArgs memorySandbox} \
-            --bind "${memoryDir}" /memory \
-            --chdir /memory \
-            ${lib.getExe memoryMcpServer} server --streamable-http \
-            --sse-host ${memoryHost} --sse-port ${builtins.toString memoryPort} "$@"
+          def --wrapped main [...rest] {
+            let data = r#'${memoryDir}'#
+            let server = r#'${lib.getExe memoryMcpServer}'#
+            mkdir $data
+            exec $server run ...$rest
+          }
         '';
+      };
+
+      # NOTE: the config is passed explicitly, because otherwise the server
+      # reads the config.toml of the project the harness starts it in, and
+      # every task needs a source, which only the config can add. The server
+      # creates the folder of the database itself
+      planConfig = (pkgs.formats.toml { }).generate "mcp-plan.toml" {
+        database.url = "sqlite://${planDir}/data.db";
+        sources = [
+          {
+            id = "manual";
+            title = "Manual";
+            description = "Tasks added by hand, by the human or by an agent in a session.";
+            type = "manual";
+          }
+        ];
       };
 
       # NOTE: the server matches subdomains of every entry
@@ -286,23 +273,21 @@
 
           web.command = lib.getExe webMcpServerWrapper;
 
-          memory = {
-            url = "http://${memoryHost}:${builtins.toString memoryPort}/mcp";
-            headers.Authorization = "Bearer ${memoryApiKey}";
+          # NOTE: only machines that run the corm embedding server get it
+          memory = lib.mkIf embedding.enable {
+            command = lib.getExe memoryMcpServerWrapper;
+            env = memoryEnvironment;
+          };
+
+          plan = {
+            command = lib.getExe planMcpServer;
+            args = [
+              "--config"
+              "${planConfig}"
+              "run"
+            ];
           };
         };
-      };
-
-      systemd.user.services.mcp-memory = {
-        Unit.Description = "Semantic memory MCP server";
-
-        Service = {
-          ExecStart = lib.getExe memoryMcpServerWrapper;
-          Restart = "on-failure";
-          RestartSec = 5;
-        };
-
-        Install.WantedBy = [ "default.target" ];
       };
     };
 }
