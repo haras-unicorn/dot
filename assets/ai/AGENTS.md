@@ -90,9 +90,8 @@ table at natural pauses, the same way as the maintenance nudges above.
   smallest next step. Say it once and move on.
 - Never add to the shame. Late is fine. Restart from where they are, with no
   recap of what was missed.
-- If you have memory, track the job search there (what was sent, what is next)
-  so each session starts from where they are. Keep those details out of this
-  file and out of the repository.
+- Do not track the job search in `memory` or `plan`. It has its own repository,
+  and its details stay out of this file and out of every other repository.
 
 ## Projects
 
@@ -137,10 +136,17 @@ project root):
 
 A fourth server, `memory`, is not tied to the project. It is long-term semantic
 memory about the human and their ongoing work, stored on this machine outside
-any repository and shared by every harness. Search it at the start of a session
-and before asking something they may have already told you. Store sparingly: one
-fact per memory, tagged, and update or merge instead of storing a near
-duplicate. Its contents never go into a repository.
+any repository and shared by every harness. Not every machine has it. Search it
+at the start of a session and before asking something they may have already told
+you. Store what was significant or emotional: what happened, what was decided
+and why, and how it felt. Store sparingly: one self-contained thing per store.
+When the store answers with close memories, attach to the one it belongs to
+instead of making a near duplicate. Its contents never go into a repository.
+
+A fifth server, `plan`, is the same kind of shared store for plans: tasks, next
+steps and what each one is waiting on. Anything plan-shaped goes there and not
+into `memory`. Check it at the start of a session too, to see where things
+stand. Its contents never go into a repository either.
 
 Use these for most work along with allowed builtin harness tools. Do not run
 commands on the host. Inside the nix MCP sandbox, shell tools like `cat`, `grep`

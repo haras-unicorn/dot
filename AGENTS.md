@@ -17,10 +17,12 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
     - `hardware/facter.nix` — shared facter report and `nixpkgs.system` wiring
     - `sandbox/mcps.nix` — the shared `programs.mcp` registry that Claude Code
       and OpenCode consume, with the sandboxed git, filesystem, nix (with
-      containers through `mcp-nix-podman`), web, and memory MCP servers and the
-      `mcp-memory` user service
+      containers through `mcp-nix-podman`), and web MCP servers, and the memory
+      (`mcp-semantic-memory` on SQLite, embedding through the corm embedding
+      server) and plan (`mcp-plan` on SQLite) MCP servers, which only touch
+      their own database and are not sandboxed
     - `ai/` — Claude Code and OpenCode home modules and supporting AI services
-      (`corm`, `librechat`, `piper`, `tesseract`, `whisper-cpp`)
+      (`corm`, `jan`, `piper`, `tesseract`, `whisper-cpp`)
   - `deprecated/` — retired modules kept for reference; they register under
     `self.lib.deprecated.*` and are inert unless imported explicitly
   - `lib/` — `self.lib` helpers shared across the flake; `self.lib.ai` loads the
@@ -49,22 +51,22 @@ until imported explicitly.
 
 Overlays register `self.overlays.overlays.<name>.value`. With the default
 `self = true` the result is available as `pkgs.harasPackages.<name>` in NixOS,
-home-manager, and the dev shell, and its derivations appear in
-`packages.<system>.<name>`. Set `flake = true` when the overlay itself should
-also be exported as `flake.overlays.<name>`.
+home-manager, and the dev shell. Set `flake = true` to export the overlay as
+`flake.overlays.<name>`; only those overlays feed `packages.<system>.<name>`,
+and a package also becomes `apps.<system>.<name>` when its `meta` has both
+`mainProgram` and `description`.
 
 An overlay can also expose a builder function instead of a package, like
 `makeNetworkIsolate` and `makeServerClientApp`. Modules call it as
 `pkgs.harasPackages.<name>`, with no `selfLib` and no `pkgs` argument.
 
 Standalone packages, general-purpose tools, and reusable wrappers live in
-`src/overlays/` (for example `anythingllm`, `zeroclaw`, `utils`, `clipboard`,
-and `mcp-memory-service`, which packages the memory MCP server with its offline
-embedding and rerank models). Overlay values are evaluated outside the NixOS and
-home-manager module system, so they cannot read `config`; they take what they
-need as arguments. A wrapper that depends on one module's `config`, a host
-device, a service unit, or a session stays a local binding in that module, like
-the MCP server sandboxes in `modules/sandbox/mcps.nix`.
+`src/overlays/` (for example `anythingllm`, `zeroclaw`, `utils`, and
+`clipboard`). Overlay values are evaluated outside the NixOS and home-manager
+module system, so they cannot read `config`; they take what they need as
+arguments. A wrapper that depends on one module's `config`, a host device, a
+service unit, or a session stays a local binding in that module, like the MCP
+server sandboxes in `modules/sandbox/mcps.nix`.
 
 ## Style deviations
 
@@ -81,8 +83,7 @@ defaults in these ways, on purpose:
   package or a module with its own tests. What is left here is thin glue: small
   overlays and modules that wire other things together. These are hard to test
   on their own, so they are tested by hand after switching to the new
-  configuration. `mcp-memory-service` is the one exception, and it carries its
-  own `passthru.tests`.
+  configuration.
 - **Magic values are allowed, but never repeated.** The whole repository is the
   configuration, so a literal like a port or a timeout is already the value
   wanted, and an option with one reader is only indirection. A value used once
