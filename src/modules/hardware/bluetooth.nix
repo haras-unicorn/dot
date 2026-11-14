@@ -4,6 +4,8 @@
     lib.mkIf config.hardware.facter.detection.bluetooth.enable {
       hardware.bluetooth.enable = true;
       services.blueman.enable = true;
+
+      stolon.keep.directories = [ "/var/lib/bluetooth" ];
     };
 
   self.homeModules.bluetooth-blueman.value =

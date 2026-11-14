@@ -63,6 +63,10 @@
 
     mcp-plan.url = "github:haras-unicorn/mcp-plan/refs/tags/v0.1.10";
     mcp-plan.inputs.nixpkgs.follows = "nixpkgs";
+
+    stolon.url = "github:haras-unicorn/stolon/refs/tags/v1.1.0";
+    stolon.inputs.nixpkgs.follows = "nixpkgs";
+    stolon.inputs.home-manager.follows = "home-manager";
   };
 
   outputs =

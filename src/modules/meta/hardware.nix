@@ -4,6 +4,10 @@
     let
       detection = config.hardware.facter.detection;
       capabilities = detection.capabilities;
+
+      disks = detection.disks.byModel;
+      diskPaths = if disks == [ ] then [ ] else (builtins.head disks).paths;
+      noDisk = builtins.throw "dot.hardware.disk: the facter report has no disk with a /dev/disk/by-id path";
     in
     {
       options.dot = {
@@ -98,6 +102,11 @@
             description = "Machine memory in bytes.";
           };
 
+          disk = lib.mkOption {
+            type = lib.types.str;
+            description = "Default machine disk /dev/disk/by-id path.";
+          };
+
           display = lib.mkOption {
             type = lib.types.str;
             description = "Default machine monitor display port.";
@@ -148,6 +157,7 @@
           wayland = detection.graphics.cards.default.wayland or false;
           threads = detection.cpu.threads;
           memory = detection.memory.size;
+          disk = lib.findFirst (path: lib.hasPrefix "/dev/disk/by-id/" path) noDisk diskPaths;
           network = detection.network.enable;
           dpi = detection.monitor.displays.default.dpi or 0;
           interface = detection.network.interfaces.default.name or "";

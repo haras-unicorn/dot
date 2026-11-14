@@ -10,6 +10,8 @@
     in
     lib.mkIf hardware.browser {
       services.flatpak.enable = true;
+
+      stolon.keep.directories = [ "/var/lib/flatpak" ];
     };
 
   self.homeModules.flatpak-warehouse.value =

@@ -3,6 +3,9 @@
 {
   self.nixosModules.machine.value =
     { config, ... }:
+    let
+      home = "/home/${config.dot.user.user}";
+    in
     {
       imports = [
         inputs.nur.modules.nixos.default
@@ -16,10 +19,14 @@
       users.users.${config.dot.user.user} = {
         isNormalUser = true;
         extraGroups = [ "wheel" ];
-        home = "/home/${config.dot.user.user}";
+        inherit home;
         initialPassword = config.dot.user.user;
         createHome = true;
       };
+
+      # NOTE: not read from users.users, because users.users depends on the
+      # file systems, which stolon makes from what it keeps
+      stolon.keep.directories = [ home ];
 
       home-manager.backupFileExtension = "backup";
       home-manager.overwriteBackup = true;
@@ -30,7 +37,7 @@
         ];
 
         home.username = config.dot.user.user;
-        home.homeDirectory = "/home/${config.dot.user.user}";
+        home.homeDirectory = home;
 
         home.stateVersion = "24.11";
       };

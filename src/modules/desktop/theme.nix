@@ -28,6 +28,7 @@
       stylix.opacity.desktop = 0.0;
       stylix.opacity.terminal = 0.75;
       stylix.opacity.popups = 1.0;
+      stylix.targets.grub.useWallpaper = true;
     };
 
   self.homeModules.theme.value =

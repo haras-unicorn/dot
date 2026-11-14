@@ -64,6 +64,8 @@
       };
     in
     lib.mkIf hardware.browser {
+      home.packages = [ jan ];
+
       xdg.desktopEntries.jan = {
         name = "Jan";
         exec = lib.getExe jan;
