@@ -141,7 +141,7 @@
               pyjwt pypdf pyyaml starlette uvicorn zeroconf onnxruntime testkey
               ycombinator stackoverflow stackexchange wearedevelopers workingnomads
               mdbook gsettings Solaar pwmconfig Coolbits oneline mimeapps keyseq
-              sonus bluez pactl zstd xcompression
+              sonus bluez pactl zstd xcompression easytier prismlauncher
             ''
           )
         );

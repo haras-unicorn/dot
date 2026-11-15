@@ -2887,16 +2887,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1794659732,
-        "narHash": "sha256-H0QoZXist0D37jiHZBmojSG6gZwzOLH6bcIREoZOmrY=",
+        "lastModified": 1794859584,
+        "narHash": "sha256-r7RbKjCt509UkW/OWX50yBUbvZgd2FWDPBkWhZO7PnU=",
         "owner": "haras-unicorn",
         "repo": "stolon",
-        "rev": "7f61932efc15097f8a8b295ad2baa018e24e4f73",
+        "rev": "e3275359a66d91ef7979664432bc966d4bf72b66",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "refs/tags/v1.1.0",
+        "ref": "refs/tags/v1.1.1",
         "repo": "stolon",
         "type": "github"
       }
