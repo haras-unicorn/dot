@@ -11,6 +11,8 @@
         ...
       }:
       let
+        system = pkgs.stdenv.hostPlatform.system;
+
         namespace = self.lib.overlays.namespace;
 
         lineWidth = 80;
@@ -55,7 +57,7 @@
               appname arcanis archlinux aspnetcorerazor asrouter astimezone asyncio
               attrset attrsets autohide avahi bbenoist behaviour betterlockscreen
               binde bindm binfmt bitburner bitwarden blueman bmalehorn bookworm
-              breakpad brightnessctl bruh bubblewrap bwrap cachix cachyos captioner
+              breakpad brightnessctl bruh btrfs bubblewrap bwrap cachix cachyos captioner
               captivedetect cdrom certilia charliermarsh chdir chrony chronyd
               ckgqnyjqy claude clawhub clearsitedata cmdline codeberg codegen
               codezombiech comfyui compiz conntrack contentblocking controld conv
@@ -103,7 +105,7 @@
               privatebrowsing procname procps progressbar protonpath protontricks
               psutil pulseaudio purescript pushback pwtku pwvucontrol pyenv pylsp
               pypi qtgraphicaleffects qtile qtwayland quickactions quickemu quickget
-              quicksuggest qwen radeon rasi raspberrypi rawvideo readlink
+              quicksuggest qwen radeon rasi raspberrypi rawvideo readlink realtek
               recentsearches redmi reflog regdom regionrecord regionshot regreet
               relace rels remmina remotetab renice rerere resizeactive resizewindow
               resolv rlang roboto rocm rofi rtcip rtkit rustc rustscan rycee
@@ -113,7 +115,7 @@
               shlvl shotcut shuf signon signons sigusr sissel skellock socat
               sourcehut speechd spicetify startpage statusline stdenv stdrename
               steamcompattool strikethrough stylix submap substituters suidsgid
-              supermaven swaybg swayidle swayosd switchxkblayout swtpm syncthing
+              supermaven swapfile swaybg swayidle swayosd switchxkblayout swtpm syncthing
               syscalls systray taesd tamasfe taplo tasklist teamviewer terminfo
               tesseract textwidth thenuprojectcontributors timespec timesyncd
               timonwong tmpfiles tmpfs tmpin tmpout todowrite togglefloating togroup
@@ -139,7 +141,7 @@
               pyjwt pypdf pyyaml starlette uvicorn zeroconf onnxruntime testkey
               ycombinator stackoverflow stackexchange wearedevelopers workingnomads
               mdbook gsettings Solaar pwmconfig Coolbits oneline mimeapps keyseq
-              sonus bluez pactl
+              sonus bluez pactl zstd xcompression
             ''
           )
         );
@@ -284,6 +286,11 @@
           ".prettierignore".source = prettierIgnore;
         };
 
+        direnv = {
+          enable = true;
+          extra = "dotenv_if_exists .env";
+        };
+
         editorconfig = {
           enable = true;
           settings."*" = {
@@ -413,7 +420,8 @@
 
         cli.commands = {
           detect = {
-            description = "Detect hardware and save the facter report.";
+            description =
+              "Detect hardware for the current machine" + " and save the facter report in the repository.";
             packages = [
               pkgs.coreutils
               pkgs.nixos-facter
@@ -426,7 +434,7 @@
           };
 
           rebuild = {
-            description = "Rebuild the current machine (report|switch|boot).";
+            description = "<report|switch|boot> Rebuild the current machine.";
             packages = [
               pkgs.coreutils
               pkgs.nixos-rebuild
@@ -442,6 +450,24 @@
               esac
               shift
               sudo nixos-rebuild "$action" --flake "$PWD#$(cat /etc/hostname)" "$@"
+            '';
+          };
+
+          image = {
+            description = "<machine> Build the offline installer image of a machine.";
+            commands = ''
+              image="''${1:+$1-image}"
+              nix build "$PWD#lib.${system}.overlays.other.installer.''${image:-installer-image}"
+            '';
+          };
+
+          installer = {
+            description = "Run the stolon installer of this checkout (--help lists its commands).";
+            commands = ''
+              sudo \
+                --preserve-env=STOLON_INSTALLER_DRY_RUN,STOLON_INSTALLER_FAKE \
+                "${lib.escapeShellArg (lib.getExe self.lib.${system}.overlays.other.installer.installer)}" \
+                "$@"
             '';
           };
         };
@@ -543,6 +569,9 @@
         workflows = {
           check = {
             on.pull_request = { };
+            matrix.os = [
+              "ubuntu-latest"
+            ];
             installable = null;
             jobName = "check";
             cachix = {
@@ -551,7 +580,9 @@
               authToken = "\${{ secrets.CACHIX_AUTH_TOKEN }}";
             };
             steps = [
-              { run = "nix flake check --show-trace --all-systems"; }
+              {
+                run = "nix flake check --max-jobs 1 --keep-going --show-trace";
+              }
             ];
           };
         };

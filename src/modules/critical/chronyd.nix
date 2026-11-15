@@ -20,5 +20,7 @@
       ];
 
       services.chrony.enable = true;
+
+      stolon.keep.directories = [ "/var/lib/chrony" ];
     };
 }

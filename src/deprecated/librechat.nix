@@ -66,6 +66,10 @@ in
       ];
     in
     lib.mkIf hardware.browser {
+      # NOTE: only the environment file with the API keys is kept, the chats
+      # are not worth keeping
+      stolon.keep.directories = [ "/etc/librechat" ];
+
       services.meilisearch.masterKeyFile = meilisearchMasterKey;
 
       systemd.services.meilisearch-master-key-generator = {

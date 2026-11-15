@@ -39,6 +39,9 @@
         virtualisation.libvirtd.enable = lib.mkForce false;
         programs.virt-manager.enable = lib.mkForce false;
 
+        # NOTE: stolon in WSL is still to be tested
+        stolon.enable = lib.mkForce false;
+
         # NOTE: headless CLI only, no desktop or sound stack.
         dot.hardware.graphics = lib.mkForce false;
         dot.hardware.sound = lib.mkForce false;

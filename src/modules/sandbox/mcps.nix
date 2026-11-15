@@ -14,9 +14,7 @@
       system = pkgs.stdenv.hostPlatform.system;
 
       sshDir = "${config.home.homeDirectory}/.cache/dot/git-mcp";
-      memoryDir = "${config.home.homeDirectory}/.local/share/mcp-semantic-memory";
       planDir = "${config.home.homeDirectory}/.local/share/mcp-plan";
-      embedding = osConfig.corm.embedding;
 
       bwrapBase = [
         "--die-with-parent"
@@ -67,7 +65,6 @@
         bwrapArgs = bwrapBase;
       };
       filesystemMcpServer = inputs.haraspkgs.packages.${system}.mcp-server-filesystem-bwrap;
-      memoryMcpServer = inputs.mcp-semantic-memory.packages.${system}.mcp-semantic-memory;
       planMcpServer = inputs.mcp-plan.packages.${system}.mcp-plan;
       webMcpServer = inputs.mcp-server-web.packages.${system}.mcp-server-web;
 
@@ -148,36 +145,9 @@
         '';
       };
 
-      # NOTE: the memory and plan servers are not sandboxed, because they only
-      # answer tool calls with what is in their own database
-      memoryEnvironment = {
-        MCP_SEMANTIC_MEMORY__DATABASE__URL = "sqlite://${memoryDir}/data.db";
-        MCP_SEMANTIC_MEMORY__EMBEDDING__URL = "http://${embedding.host}:${builtins.toString embedding.port}";
-        MCP_SEMANTIC_MEMORY__EMBEDDING__MODEL = embedding.model.passthru.modelName;
-        # NOTE: the vector size of Qwen3-Embedding-0.6B, the default model of
-        # the corm embedding server
-        MCP_SEMANTIC_MEMORY__EMBEDDING__DIMENSION = "1024";
-        # NOTE: Qwen3-Embedding wants a task instruction before queries and
-        # nothing before documents
-        MCP_SEMANTIC_MEMORY__EMBEDDING__QUERY_PREFIX = "Instruct: Given a question, retrieve the memories that answer it\nQuery: ";
-      };
-
-      # NOTE: the haraspkgs helpers are not in pkgs.harasPackages of a
-      # downstream flake yet, so this extends pkgs with them like stolon does
-      harasPackages = (pkgs.extend inputs.haraspkgs.overlays.default).harasPackages;
-
-      memoryMcpServerWrapper = harasPackages.writeNushellApplication {
-        name = "dot-memory-mcp-server";
-        text = ''
-          def --wrapped main [...rest] {
-            let data = r#'${memoryDir}'#
-            let server = r#'${lib.getExe memoryMcpServer}'#
-            mkdir $data
-            exec $server run ...$rest
-          }
-        '';
-      };
-
+      # NOTE: the plan server is not sandboxed, because it only answers tool
+      # calls with what is in its own database
+      #
       # NOTE: the config is passed explicitly, because otherwise the server
       # reads the config.toml of the project the harness starts it in, and
       # every task needs a source, which only the config can add. The server
@@ -272,12 +242,6 @@
           nix.command = lib.getExe nixMcpServerWrapper;
 
           web.command = lib.getExe webMcpServerWrapper;
-
-          # NOTE: only machines that run the corm embedding server get it
-          memory = lib.mkIf embedding.enable {
-            command = lib.getExe memoryMcpServerWrapper;
-            env = memoryEnvironment;
-          };
 
           plan = {
             command = lib.getExe planMcpServer;

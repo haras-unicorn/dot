@@ -1,5 +1,10 @@
 { inputs, selfLib, ... }:
 
+let
+  # NOTE: off for now because qwen 3.8 flash next blows up the offline images
+  # of the installer
+  enabled = false;
+in
 {
   self.nixosModules.corm.value =
     {
@@ -34,7 +39,7 @@
     {
       imports = [ inputs.corm.nixosModules.corm ];
 
-      config = lib.mkIf hardware.cuda {
+      config = lib.mkIf (hardware.cuda && enabled) {
         corm = {
           enable = true;
 
@@ -64,6 +69,15 @@
             environmentFile = "/etc/corm/.env";
           };
         };
+
+        # NOTE: the environment file and the prompt are written by hand, and
+        # the embedding model is converted once into its state directory
+        stolon.keep.directories = [
+          "/etc/corm"
+          "/var/lib/corm"
+          "/var/lib/corm-embedding"
+          "/var/lib/corm-gpu-provider"
+        ];
 
         systemd.services.omw = {
           requiredBy = lib.mkForce [ ];
@@ -176,9 +190,44 @@
     }:
     let
       hardware = osConfig.dot.hardware;
+      system = pkgs.stdenv.hostPlatform.system;
 
       gpu = osConfig.corm.gpu-provider;
+      embedding = osConfig.corm.embedding;
       model = gpu.model.passthru.modelName;
+
+      memoryDir = "${config.home.homeDirectory}/.local/share/mcp-semantic-memory";
+      memoryMcpServer = inputs.mcp-semantic-memory.packages.${system}.mcp-semantic-memory;
+
+      # NOTE: the memory server is not sandboxed, because it only answers tool
+      # calls with what is in its own database
+      memoryEnvironment = {
+        MCP_SEMANTIC_MEMORY__DATABASE__URL = "sqlite://${memoryDir}/data.db";
+        MCP_SEMANTIC_MEMORY__EMBEDDING__URL = "http://${embedding.host}:${builtins.toString embedding.port}";
+        MCP_SEMANTIC_MEMORY__EMBEDDING__MODEL = embedding.model.passthru.modelName;
+        # NOTE: the vector size of Qwen3-Embedding-0.6B, the default model of
+        # the corm embedding server
+        MCP_SEMANTIC_MEMORY__EMBEDDING__DIMENSION = "1024";
+        # NOTE: Qwen3-Embedding wants a task instruction before queries and
+        # nothing before documents
+        MCP_SEMANTIC_MEMORY__EMBEDDING__QUERY_PREFIX = "Instruct: Given a question, retrieve the memories that answer it\nQuery: ";
+      };
+
+      # NOTE: the haraspkgs helpers are not in pkgs.harasPackages of a
+      # downstream flake yet, so this extends pkgs with them like stolon does
+      harasPackages = (pkgs.extend inputs.haraspkgs.overlays.default).harasPackages;
+
+      memoryMcpServerWrapper = harasPackages.writeNushellApplication {
+        name = "dot-memory-mcp-server";
+        text = ''
+          def --wrapped main [...rest] {
+            let data = r#'${memoryDir}'#
+            let server = r#'${lib.getExe memoryMcpServer}'#
+            mkdir $data
+            exec $server run ...$rest
+          }
+        '';
+      };
 
       opencodeConfig = lib.escapeShellArg (
         builtins.toJSON {
@@ -206,8 +255,13 @@
         '';
       };
     in
-    lib.mkIf (hardware.cuda && hardware.editor) {
+    lib.mkIf (hardware.cuda && hardware.editor && enabled) {
       home.packages = [ opencodeCorm ];
+
+      programs.mcp.servers.memory = {
+        command = lib.getExe memoryMcpServerWrapper;
+        env = memoryEnvironment;
+      };
 
       programs.opencode.settings.provider.corm = {
         npm = "@ai-sdk/openai-compatible";

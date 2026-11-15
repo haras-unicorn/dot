@@ -5,6 +5,8 @@
       SystemMaxFileSize=100M
       MaxRetentionSec=1month
     '';
+
+    stolon.keep.directories = [ "/var/lib/systemd" ];
   };
 
   self.homeModules.systemd.value =

@@ -1,8 +1,4 @@
-{ selfLib, ... }:
-
 let
-  retention = builtins.toString selfLib.gc.retentionDays;
-
   makeNix =
     config:
     let
@@ -12,11 +8,6 @@ let
       settings.max-jobs = hardware.threads / 3;
       settings.cores = 2;
 
-      gc = {
-        automatic = true;
-        dates = "daily";
-        options = "--delete-older-than ${retention}d";
-      };
       settings.auto-optimise-store = true;
 
       settings.substituters = [
@@ -49,7 +40,7 @@ in
     };
 
   self.homeModules.nix.value =
-    { lib, osConfig, ... }:
+    { osConfig, ... }:
     {
       nix = makeNix osConfig;
     };

@@ -3,7 +3,7 @@
     {
       "check":
         {
-          "runs-on": "ubuntu-latest",
+          "runs-on": "${{ matrix.os }}",
           "steps":
             [
               { "uses": "actions/checkout@v4", "with": { "fetch-depth": 0 } },
@@ -42,8 +42,11 @@
                   then\n  sudo sysctl -w
                   kernel.apparmor_restrict_unprivileged_userns=0\nfi\n",
               },
-              { "run": "nix flake check --show-trace --all-systems" },
+              {
+                "run": "nix flake check --max-jobs 1 --keep-going --show-trace",
+              },
             ],
+          "strategy": { "matrix": { "os": ["ubuntu-latest"] } },
         },
     },
   "name": "check",

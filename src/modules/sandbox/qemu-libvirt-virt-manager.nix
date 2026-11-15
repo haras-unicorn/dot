@@ -23,5 +23,7 @@
         ];
 
         programs.virt-manager.enable = true;
+
+        stolon.keep.vms = [ "/var/lib/libvirt" ];
       };
 }
