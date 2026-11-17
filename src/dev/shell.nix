@@ -80,7 +80,7 @@
               hyprpicker hyprpolkitagent iconname identityfile ifname imap inputbar
               ints iseconds isoformat jasew jitless journalctl kando kawase kdbx
               keepassxc keepmenu keybind keybinds keyboar keyboardlayout keymap
-              killactive langservers lazydocker lazyjournal lazysql lcpxfnx libav
+              killactive langservers lazydocker lazyjournal lazymc lazysql lcpxfnx libav
               libdecor libexec libinput libnotify libqtile libraspberrypi librechat
               librewolf libuuid libva libvdpau libvirtd libx linecap linejoin
               listview llama-moe-cache llamacpp lldb lnav localip localipv localtimed
