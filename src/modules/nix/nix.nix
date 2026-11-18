@@ -5,31 +5,35 @@ let
       hardware = config.dot.hardware;
     in
     {
-      settings.max-jobs = hardware.threads / 3;
-      settings.cores = 2;
+      settings = {
+        max-jobs = hardware.threads / 3;
+        cores = 2;
 
-      settings.auto-optimise-store = true;
+        extra-sandbox-paths = [ "/dev/fuse" ];
 
-      settings.substituters = [
-        "https://haras.cachix.org"
-        "https://haras-releases.cachix.org"
-        "https://cache.nixos.org"
-        "https://nix-community.cachix.org"
-        "https://cache.nixos-cuda.org"
-        "https://comfyui.cachix.org"
-        "https://cache.numtide.com"
-        "https://noctalia.cachix.org"
-      ];
-      settings.trusted-public-keys = [
-        "haras.cachix.org-1:/HIo1JYqOIH1Nwk1EGXhuPPvDW0WekxIbY5CiXUZbYw="
-        "haras-releases.cachix.org-1:DK1D4cU3v6GUkdjynBsjk0cCMtLaueSUCD7wJBPxyMM="
-        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
-        "comfyui.cachix.org-1:33mf9VzoIjzVbp0zwj+fT51HG0y31ZTK3nzYZAX0rec="
-        "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-        "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
-      ];
+        auto-optimise-store = true;
+
+        substituters = [
+          "https://haras.cachix.org"
+          "https://haras-releases.cachix.org"
+          "https://cache.nixos.org"
+          "https://nix-community.cachix.org"
+          "https://cache.nixos-cuda.org"
+          "https://comfyui.cachix.org"
+          "https://cache.numtide.com"
+          "https://noctalia.cachix.org"
+        ];
+        trusted-public-keys = [
+          "haras.cachix.org-1:/HIo1JYqOIH1Nwk1EGXhuPPvDW0WekxIbY5CiXUZbYw="
+          "haras-releases.cachix.org-1:DK1D4cU3v6GUkdjynBsjk0cCMtLaueSUCD7wJBPxyMM="
+          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+          "comfyui.cachix.org-1:33mf9VzoIjzVbp0zwj+fT51HG0y31ZTK3nzYZAX0rec="
+          "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+          "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+        ];
+      };
     };
 in
 {
