@@ -2,6 +2,9 @@
   self.nixosModules.sudo.value =
     { pkgs, ... }:
     {
-      security.sudo.package = pkgs.sudo.override { withInsults = true; };
+      security.sudo = {
+        package = pkgs.sudo.override { withInsults = true; };
+        extraConfig = "Defaults lecture = never";
+      };
     };
 }
