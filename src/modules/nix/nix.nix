@@ -35,8 +35,23 @@ in
 {
   self.nixosModules.nix.value =
     { config, ... }:
+    let
+      rootHome = "/root";
+    in
     {
       nix = makeNix config;
+
+      # stolon.keep.directories cannot depend on users.users because
+      # users.users depend on file systems which stolon sets.
+      # Instead, setting root home in both settings to a common value
+      # should at least result in an error when someone tries to modify
+      # root home from somewhere else.
+      users.users.root.home = rootHome;
+
+      stolon.keep.directories = [
+        "${rootHome}/.local/share/nix"
+        "${rootHome}/.cache/nix"
+      ];
     };
 
   self.homeModules.nix.value =

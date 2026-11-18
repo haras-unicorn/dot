@@ -19,5 +19,9 @@
         + " --asterisks"
         + " --remember"
         + " --remember-user-session";
+
+      # This directory is not configurable in tuigreet, so if tuigreet changes it,
+      # this breaks.
+      stolon.keep.directories = [ "/var/cache/tuigreet" ];
     };
 }
