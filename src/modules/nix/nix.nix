@@ -9,7 +9,10 @@ let
         max-jobs = hardware.threads / 3;
         cores = 2;
 
-        extra-sandbox-paths = [ "/dev/fuse" ];
+        extra-sandbox-paths = [
+          "/dev/fuse"
+          "/dev/net/tun"
+        ];
 
         auto-optimise-store = true;
 
