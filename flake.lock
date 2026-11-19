@@ -992,16 +992,16 @@
         "uv2nix": "uv2nix_2"
       },
       "locked": {
-        "lastModified": 1794314304,
-        "narHash": "sha256-GEWXJkkognBShDpbZtbIK1waHze/Vswd2gG8zJQJX68=",
+        "lastModified": 1795073790,
+        "narHash": "sha256-op7FfPXjiYMwR2+YupeN5zyWVPlQhQRTK/NthUQfxxg=",
         "owner": "haras-unicorn",
         "repo": "haraspkgs",
-        "rev": "251ca81d72ee1857a68fd87fd24e5df479e5cae5",
+        "rev": "a61fbb335d659bfbc3ae83fd5c18d5ffa2dd66ce",
         "type": "github"
       },
       "original": {
         "owner": "haras-unicorn",
-        "ref": "v1.5.2",
+        "ref": "v1.6.0",
         "repo": "haraspkgs",
         "type": "github"
       }
