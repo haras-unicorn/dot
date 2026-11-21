@@ -180,7 +180,7 @@
 
           timestamp = lib.mkOption {
             type = lib.types.str;
-            default = "+%Y-%m-%d_%H-%M-%S";
+            default = "%Y-%m-%d_%H-%M-%S";
             description = ''
               Screenshot/capture/recording timestamp format.
             '';
