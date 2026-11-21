@@ -232,9 +232,14 @@
         enable = true;
 
         servers = {
+          # NOTE: signing is off because the sandbox has no gpg, so every
+          # commit would come out unsigned with a warning anyway
           git = {
             command = lib.getExe gitMcpServerWrapper;
-            env.GIT_SSH_DIR = sshDir;
+            env = {
+              GIT_SSH_DIR = sshDir;
+              GIT_SIGN_COMMITS = "false";
+            };
           };
 
           filesystem.command = lib.getExe filesystemMcpServerWrapper;
