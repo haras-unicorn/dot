@@ -114,13 +114,19 @@
       # NOTE: the stdio servers are scoped to the directory the harness was
       # started in. The package adds the container sandbox to these
       # arguments, and the sandbox of the nix commands comes with the server
+      #
+      # NOTE: the sandbox of nix binds only the cwd of the call, so a call with
+      # a cwd below the root hides the rest of the repository, and flakes like
+      # git+file://<root> fail with "not a git repository". The extra argument
+      # binds the whole root read-only
       nixMcpServerWrapper = pkgs.writeShellApplication {
         name = "dot-nix-mcp-server";
         text = ''
           root="$(pwd -P)"
           sandbox="${nixSandbox}"
           MCP_NIX__BWRAP_ARGS="''${sandbox//@ROOT@/$root}"
-          export MCP_NIX__BWRAP_ARGS
+          MCP_NIX__NIX_BWRAP_ARGS_EXTRA="--ro-bind $root $root"
+          export MCP_NIX__BWRAP_ARGS MCP_NIX__NIX_BWRAP_ARGS_EXTRA
           exec ${lib.getExe nixMcpServer} "$@"
         '';
       };
