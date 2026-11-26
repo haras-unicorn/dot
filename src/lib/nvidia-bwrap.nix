@@ -1,0 +1,25 @@
+{
+  self.lib.nvidiaBwrap = [
+    "--ro-bind-try"
+    "/run/opengl-driver"
+    "/run/opengl-driver"
+    "--dev-bind-try"
+    "/dev/dri"
+    "/dev/dri"
+    "--dev-bind-try"
+    "/dev/nvidia0"
+    "/dev/nvidia0"
+    "--dev-bind-try"
+    "/dev/nvidiactl"
+    "/dev/nvidiactl"
+    "--dev-bind-try"
+    "/dev/nvidia-modeset"
+    "/dev/nvidia-modeset"
+    "--dev-bind-try"
+    "/dev/nvidia-uvm"
+    "/dev/nvidia-uvm"
+    "--dev-bind-try"
+    "/dev/nvidia-uvm-tools"
+    "/dev/nvidia-uvm-tools"
+  ];
+}

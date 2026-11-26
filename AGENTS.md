@@ -25,10 +25,15 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
       (`mcp-plan` on SQLite) MCP server, which only touches its own database and
       is not sandboxed
     - `ai/` — Claude Code and OpenCode home modules and supporting AI services
-      (`corm`, `jan`, `piper`, `tesseract`, `whisper-cpp`); `corm` also adds the
-      memory MCP server (`mcp-semantic-memory` on SQLite, embedding through the
-      corm embedding server), and it is switched off by `enabled` at the top of
-      its file for now, because its models do not fit the offline images
+      (`corm`, `jan`, `learnharness`, `piper`, `tesseract`, `whisper-cpp`);
+      `jan` and `learnharness` run whole inside bwrap through
+      `makeSandboxedApp`, with an empty home and only their own data folders,
+      both get their tool and privacy settings merged into their `settings.json`
+      on every start, Jan gets no MCP server but `web`, and LearnHarness gets a
+      read-only workspace folder; `corm` also adds the memory MCP server
+      (`mcp-semantic-memory` on SQLite, embedding through the corm embedding
+      server), and it is switched off by `enabled` at the top of its file for
+      now, because its models do not fit the offline images
   - `deprecated/` — retired modules kept for reference; they register under
     `self.lib.deprecated.*` and are inert unless imported explicitly
   - `lib/` — `self.lib` helpers shared across the flake; `self.lib.ai` loads the
@@ -37,6 +42,8 @@ directory. Haraspkgs provides the `flake-parts` and `import-tree` plumbing.
   - `overlays/` — standalone packages, general wrappers, and overlays; each
     registers `self.overlays.overlays.<name>.value = final: prev: { … }` and is
     available as `pkgs.harasPackages.<name>` (namespace from `namespace.nix`)
+    - `sandboxed-app.nix` — `makeSandboxedApp`, a Wayland GUI app inside bwrap
+      with the network, the GPU, and the data folders it is given
     - `installer.nix` — the stolon installer made from the machines: the
       installer, `installer-image`, and the offline `<machine>-image` of every
       stolon machine, all with the RTL88x2BU Wi-Fi driver from
