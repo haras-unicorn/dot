@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, selfLib, ... }:
 
 {
   self.homeModules.mcps.value =
@@ -68,30 +68,6 @@
       planMcpServer = inputs.mcp-plan.packages.${system}.mcp-plan;
       webMcpServer = inputs.mcp-server-web.packages.${system}.mcp-server-web;
 
-      bwrapNvidia = [
-        "--ro-bind-try"
-        "/run/opengl-driver"
-        "/run/opengl-driver"
-        "--dev-bind-try"
-        "/dev/dri"
-        "/dev/dri"
-        "--dev-bind-try"
-        "/dev/nvidia0"
-        "/dev/nvidia0"
-        "--dev-bind-try"
-        "/dev/nvidiactl"
-        "/dev/nvidiactl"
-        "--dev-bind-try"
-        "/dev/nvidia-modeset"
-        "/dev/nvidia-modeset"
-        "--dev-bind-try"
-        "/dev/nvidia-uvm"
-        "/dev/nvidia-uvm"
-        "--dev-bind-try"
-        "/dev/nvidia-uvm-tools"
-        "/dev/nvidia-uvm-tools"
-      ];
-
       # NOTE: this replaces the default sandbox of the server, so it has to
       # keep what the default has: --new-session stops a program from pushing
       # input into the terminal the server runs in. Overlay mounts cannot nest
@@ -108,7 +84,7 @@
           "@ROOT@"
           "@ROOT@"
         ]
-        ++ lib.optionals hardware.cuda bwrapNvidia
+        ++ lib.optionals hardware.cuda selfLib.nvidiaBwrap
       );
 
       # NOTE: the stdio servers are scoped to the directory the harness was
